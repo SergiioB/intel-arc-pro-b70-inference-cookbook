@@ -22,7 +22,8 @@ Qwen3.8 `f01e24f6` digest. Image tag **2026.08.19** applies the Qwen MTP pair
 (SHA-256-verified against `5c6b6b1`) **and** the optional mixed-split v5 +
 draft-INT4 S+M1 patches, with prefix cache **on** for serving. `DRAFT_INT4=0`
 recovers the 18 August BF16-draft path. Display-attached VRAM pin (0.75 +
-4.25 GiB fp8 KV, 100K) is unchanged.
+4.30 GiB fp8 KV, 100K; bumped from 4.25 on 2026-08-22 for headroom) is
+otherwise unchanged.
 
 Nemotron-3.5-Lightning DFlash is a **second generation**. It uses a newer
 public digest than the Qwen3.6 Pi matrix below. Do not mix patch lists.

@@ -47,7 +47,7 @@ So both kits pin, instead of negotiating:
 | Lever | Value | Effect |
 |---|---|---|
 | `GPU_MEMORY_UTILIZATION` | **0.75** | Leaves ~8 GiB of the card for Windows, the display server and Docker Desktop's WSL VM |
-| `--kv-cache-memory-bytes` | **4563402752** (exactly 4.25 GiB) | No auto-sizing surprise; reported capacity 102,631 tokens at 100K context (1.03× concurrency) |
+| `--kv-cache-memory-bytes` | **4617089843** (exactly 4.30 GiB) | No auto-sizing surprise; reported capacity 102,631 tokens at 100K context (1.03× concurrency). Bumped from 4.25 GiB on 2026-08-22: some Windows hosts need 4.26 GiB for 100K (mamba page alignment + padding layers) and failed boot by ~10 MiB (issue #4) |
 | `--kv-cache-dtype` | **fp8** | Same requirement as Linux dense 27B — fp16 KV does not fit |
 | `MAX_NUM_SEQS` | **1** | Single-user desktop serving; this is **not** the concurrent Cn profile |
 
@@ -99,7 +99,7 @@ What changed in **2026.08.19**:
 | Prefix cache | off | **on** (real multi-turn sessions). Turn it off only for a cold decode test |
 | Sampling | template only | `--generation-config auto` (Qwen thinking / non-thinking defaults) |
 | Image tag | `qwen38-b70-docker:2026.08.18` / `qwen38-b70-friendly:2026.08.18` | `…:2026.08.19` |
-| Display-safe VRAM | 0.75 + 4.25 GiB fp8 KV, 100K, MTP4, C1 | **unchanged** |
+| Display-safe VRAM | 0.75 + 4.25 GiB fp8 KV, 100K, MTP4, C1 | same pin; KV default later bumped 4.25 → 4.30 GiB for headroom (see [Troubleshooting](#troubleshooting-windows)) |
 
 Linux, same overlay, C1, n=5, cache **off**: **112.65** vs matched BF16-draft **81.20** tok/s at p512/g128. Prefill is flat. Quality KEEP on the 12/15 coding gate. That is a Linux campaign, not a Windows re-measure. On Windows expect “noticeably faster than your ~70”, not a copied 112.
 
@@ -253,7 +253,7 @@ kit folder you downloaded (or `windows/Qwen38-*-Standalone/` from this repo).
 3. **Daily controls:**
 
    ```powershell
-   .\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.25 -KvCacheDtype fp8
+   .\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.3 -KvCacheDtype fp8
    .\Stop-Qwen38.ps1
    .\Stop-Qwen38.ps1 -ReleaseGpuMemory   # terminates the WSLC session to return ALL GPU memory to Windows
    .\Test-B70Gpu.ps1                      # standalone B70 passthrough + XPU probe
@@ -316,6 +316,40 @@ this fix, `git pull` and rebuild (`.\Upgrade-Qwen38-Docker.ps1` or
 - **Slow first model load is expected:** weights are read from a Windows bind
   mount through WSL's 9P file system; the Docker kit preserves the stopped
   container to keep its compiled-graph cache.
+
+## Troubleshooting (Windows)
+
+**Red `NativeCommandError` text while the container is actually fine.**
+vLLM (and `docker`/`wslc` themselves) write progress and INFO lines to stderr,
+and PowerShell with `$ErrorActionPreference = "Stop"` can promote that harmless
+stderr text into a terminating `NativeCommandError`, killing the readiness loop
+of older kit copies. The start and download scripts now capture native stderr
+inside a `Continue` scope, so `git pull` fixes it. If you see the red text on an
+old copy while `http://127.0.0.1:8000/v1/models` responds, the server is fine —
+update the kit and rerun.
+
+**Intel NEO `linear_stream.h` abort under sustained load.** With XPU graphs on
+and Level Zero's default immediate command lists, long agent sessions could
+abort the engine (`Abort was called at 90 line in file:
+.../linear_stream.h`, then `EngineDeadError`). Both start scripts now set
+`SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=0` by default — the
+reporter-verified workaround from issue #6, which stopped the aborts while
+keeping graph-enabled speed (~104–106 tok/s short decode). Existing containers
+keep their old env: recreate with `.\Start-Qwen38-Docker.ps1 -Recreate` (or the
+WSLC twin) to pick it up.
+
+**Throughput and MTP acceptance degrade over hours, server stays alive.**
+One Windows reporter (issue #6) observed short-decode falling from ~104 to
+~19 tok/s, MTP acceptance from ~99% to ~70%, and TGP from ~120 W to ~82 W after
+an ~85-minute Hermes session, with the endpoint still responsive. A plain
+`docker restart` (or `.\Stop-Qwen38-Docker.ps1` + `.\Start-Qwen38-Docker.ps1`)
+restored full performance with no configuration change. This reads as a
+long-running runtime-state degradation (vLLM XPU / Level Zero), not a cookbook
+configuration error; it is not root-caused yet and is tracked in issue #6. If
+you hit it: restart the container, and if it recurs, post your env plus
+`docker logs` to the issue. The open isolation matrix there is BF16 draft
+(`-DraftInt4 0`), MTP2, graphs off, and a repeated-benchmark control without
+Hermes.
 
 ## Measured results — self-reported, one Windows machine
 

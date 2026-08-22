@@ -21,7 +21,7 @@ Write-Host "Windows container devised and tested by Ian Hudson - aitesthive.com"
 Write-Host ""
 Write-Host "[Docker] Starting the Qwen3.8-27B server on the Intel Arc Pro B70."
 Write-Host "[Docker] Model: Qwen3.8-27B GPTQ INT4 with MTP4"
-Write-Host "[Docker] Context: 100,000 tokens; explicit FP8 KV cache: 4.25 GiB"
+Write-Host "[Docker] Context: 100,000 tokens; explicit FP8 KV cache: 4.30 GiB"
 Write-Host "[Docker] Draft INT4 overlay: $(if ($DraftInt4 -eq 1) { 'ON (default, 2026.08.19)' } else { 'OFF (BF16 draft)' })"
 Write-Host "[Docker] Prefix cache: $(if ($PrefixCache -eq 1) { 'ON (default, real sessions)' } else { 'OFF (decode-test only)' })"
 
@@ -70,10 +70,17 @@ if ($containerExists) {
         "-e", "CCL_ENABLE_SYCL_KERNELS=0", "-e", "CCL_TOPO_P2P_ACCESS=0",
         "-e", "CCL_TOPO_FABRIC_VERTEX_CONNECTION_CHECK=0", "-e", "CCL_ZE_CACHE_OPEN_IPC_HANDLES=0",
         "-e", "SYCL_UR_USE_LEVEL_ZERO_V2=0", "-e", "TORCH_LLM_ALLREDUCE=1",
+        # The default immediate-command-list path can abort in Intel NEO
+        # (linear_stream.h) under sustained graph-enabled load; =0 stopped the
+        # aborts while keeping graph speed in reporter testing (issue #6).
+        "-e", "SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=0",
         "-e", "MTP_TOKENS=4", "-e", "MAX_MODEL_LEN=100000", "-e", "KV_CACHE_DTYPE=fp8",
         "-e", "DRAFT_INT4=$DraftInt4", "-e", "PREFIX_CACHE=$PrefixCache",
         "-e", "MAX_NUM_SEQS=1", "-e", "GPU_MEMORY_UTILIZATION=0.75",
-        "-e", "KV_CACHE_MEMORY_BYTES=4563402752", $ImageName
+        # 4.30 GiB: some Windows hosts need 4.26 GiB for the 100K context
+        # (mamba page alignment + padding layers), so 4.25 GiB failed their
+        # engine boot by ~10 MiB (issue #4). Small deliberate over-allocation.
+        "-e", "KV_CACHE_MEMORY_BYTES=4617089843", $ImageName
     )
     & $docker @args | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "Docker container creation failed with exit code $LASTEXITCODE." }
@@ -95,11 +102,17 @@ do {
 
     $status = (& $docker inspect --format '{{.State.Status}} {{.State.ExitCode}}' $ContainerName 2>$null)
     if ($status -notmatch '^running ') {
-        & $docker logs --tail 80 $ContainerName
+        & { $ErrorActionPreference = "Continue"; & $docker logs --tail 80 $ContainerName 2>&1 }
         throw "The Docker server exited before its API became ready ($status)."
     }
 
-    $logs = (& $docker logs --tail 120 $ContainerName 2>&1) -join "`n"
+    # vLLM writes its progress to stderr; capture it in a Continue scope so
+    # PowerShell cannot promote harmless stderr text into a terminating
+    # NativeCommandError and kill the readiness loop (issue #5).
+    $logs = & {
+        $ErrorActionPreference = "Continue"
+        (& $docker logs --tail 120 $ContainerName 2>&1) -join "`n"
+    }
     $stage = if ($logs -match 'Loading safetensors checkpoint shards:\s+(\d+)%') {
         "Loading model checkpoint shards ($($Matches[1])% of the current checkpoint pass)"
     } elseif ($logs -match 'torch\.compile') {

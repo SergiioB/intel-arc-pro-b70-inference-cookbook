@@ -54,9 +54,11 @@ if ((Test-Path -LiteralPath $configPath) -and $shards.Count -eq $ExpectedShards)
     return
 }
 
-$listText = (& wslc.exe list --all --no-trunc 2>&1 | Out-String)
+# WSLC answers "not found" on stderr; capture in a Continue scope so
+# PowerShell cannot promote it into a terminating NativeCommandError (issue #5).
+$listText = & { $ErrorActionPreference = "Continue"; (& wslc.exe list --all --no-trunc 2>&1 | Out-String) }
 if ($listText -match [regex]::Escape($DownloadContainer)) {
-    $downloadInspect = ((& wslc.exe inspect $DownloadContainer 2>&1 | Out-String) | ConvertFrom-Json)[0]
+    $downloadInspect = (& { $ErrorActionPreference = "Continue"; (& wslc.exe inspect $DownloadContainer 2>&1 | Out-String) } | ConvertFrom-Json)[0]
     if ($downloadInspect.State.Running) {
         Write-Host "[Download] Another Qwen3.8 download container is already running." -ForegroundColor Yellow
         Write-Host "Container: $DownloadContainer"
@@ -109,7 +111,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Model download failed with exit code $LASTEXITCODE" }
 } finally {
     # --rm normally handles this; explicit cleanup covers interrupted clients.
-    $containersAfterDownload = (& wslc.exe list --all --no-trunc 2>&1 | Out-String)
+    $containersAfterDownload = & { $ErrorActionPreference = "Continue"; (& wslc.exe list --all --no-trunc 2>&1 | Out-String) }
     if ($containersAfterDownload -match [regex]::Escape($DownloadContainer)) {
         Write-Host "[Cleanup] Removing the download container..."
         & wslc.exe remove --force $DownloadContainer | Out-Null

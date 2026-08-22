@@ -91,9 +91,9 @@ Copy the repository contents directly into that folder. It must contain
 ## Main controls
 
 ```powershell
-.\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.25 -KvCacheDtype fp8
-.\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.25 -KvCacheDtype fp8 -PrefixCache 0
-.\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.25 -KvCacheDtype fp8 -DraftInt4 0
+.\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.3 -KvCacheDtype fp8
+.\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.3 -KvCacheDtype fp8 -PrefixCache 0
+.\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.3 -KvCacheDtype fp8 -DraftInt4 0
 .\Stop-Qwen38.ps1
 ```
 
@@ -108,7 +108,7 @@ Copy the repository contents directly into that folder. It must contain
 - Model name: `qwen38`
 - Tools: automatic tool choice enabled with the `qwen3_coder` parser
 - Vision: disabled
-- Profile: MTP4, 100K context, FP8 KV cache, explicit 4.25 GiB cache,
+- Profile: MTP4, 100K context, FP8 KV cache, explicit 4.30 GiB cache,
   draft-INT4 overlay on, prefix cache on
 
 Startup and model download can take several minutes. The setup script prints

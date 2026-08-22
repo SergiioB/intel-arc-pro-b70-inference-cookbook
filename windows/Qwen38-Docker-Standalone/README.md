@@ -143,7 +143,7 @@ Copy the repository contents directly into that folder. It must contain
 - Model name: `qwen38`
 - Tools: enabled with the `qwen3_coder` parser
 - Vision: disabled
-- Profile: MTP4, 100K context, FP8 KV cache, explicit 4.25 GiB cache,
+- Profile: MTP4, 100K context, FP8 KV cache, explicit 4.30 GiB cache,
   draft-INT4 overlay on, prefix cache on
 
 The first image build and model download can take a long time. Model loading is

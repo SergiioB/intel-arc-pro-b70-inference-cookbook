@@ -27,8 +27,9 @@ if (-not (Test-Path -LiteralPath (Join-Path $ModelDirectory "config.json"))) {
 
 # Replacement is intentionally scoped to this project's fixed container name.
 # Query first because PowerShell can promote WSLC's harmless "not found"
-# stderr response into a terminating NativeCommandError.
-$containerList = (& wslc.exe list --all --no-trunc 2>&1 | Out-String)
+# stderr response into a terminating NativeCommandError, so every native
+# stderr capture below runs in a Continue scope (issue #5).
+$containerList = & { $ErrorActionPreference = "Continue"; (& wslc.exe list --all --no-trunc 2>&1 | Out-String) }
 if ($containerList -match [regex]::Escape($ContainerName)) {
     Write-Host "[Server] Removing the previous $ContainerName container..."
     & wslc.exe remove --force $ContainerName
@@ -82,6 +83,10 @@ $run = @(
     "--env", "CCL_TOPO_FABRIC_VERTEX_CONNECTION_CHECK=0",
     "--env", "CCL_ZE_CACHE_OPEN_IPC_HANDLES=0",
     "--env", "SYCL_UR_USE_LEVEL_ZERO_V2=0",
+    # The default immediate-command-list path can abort in Intel NEO
+    # (linear_stream.h) under sustained graph-enabled load; =0 stopped the
+    # aborts while keeping graph speed in reporter testing (issue #6).
+    "--env", "SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=0",
     "--env", "TORCH_LLM_ALLREDUCE=1",
     "--env", "MTP_TOKENS=$MtpTokens",
     "--env", "MAX_MODEL_LEN=$MaxModelLength",
@@ -123,7 +128,7 @@ while ((Get-Date) -lt $deadline) {
         $containerExited = $false
         $containerExitCode = $null
         try {
-            $inspectText = (& wslc.exe inspect $ContainerName 2>&1 | Out-String)
+            $inspectText = & { $ErrorActionPreference = "Continue"; (& wslc.exe inspect $ContainerName 2>&1 | Out-String) }
             $inspectData = $inspectText | ConvertFrom-Json
             $containerState = $inspectData[0].State
             if (-not $containerState.Running) {
@@ -138,14 +143,14 @@ while ((Get-Date) -lt $deadline) {
             Write-Host "[Server] Exit code: $containerExitCode"
             Write-Host ""
             Write-Host "[Server] Final log output:" -ForegroundColor Yellow
-            & wslc.exe logs $ContainerName | Select-Object -Last 100
+            & { $ErrorActionPreference = "Continue"; & wslc.exe logs $ContainerName 2>&1 } | Select-Object -Last 100
             throw "Qwen3.8 server startup failed with container exit code $containerExitCode."
         }
 
         # vLLM does not publish a true loading percentage. Infer a useful
         # human-readable stage from its latest log output instead.
         try {
-            $recentLogs = (& wslc.exe logs $ContainerName 2>&1 | Select-Object -Last 250 | Out-String)
+            $recentLogs = & { $ErrorActionPreference = "Continue"; (& wslc.exe logs $ContainerName 2>&1 | Select-Object -Last 250 | Out-String) }
             $shardMatches = [regex]::Matches(
                 $recentLogs,
                 '(?im)(?:shard|checkpoint shard)[^\r\n]*?(\d+)\s*(?:of|/)\s*(\d+)'
