@@ -52,6 +52,39 @@ report so "broken" has a reference point.
   conversational MoE — GPTQ stacks expert errors on MoE experts. XMX INT4 DPAS
   beats NVFP4 on this silicon.
 
+- **Correctness gap — hybrid MTP + prefix caching (⚠️, single card).** With
+  `--enable-prefix-caching` (which forces `mamba_cache_mode="align"` on
+  Qwen3_5-class hybrids), MTP speculative decode and async scheduling on the V1
+  runner, three upstream defects combine into **silent** output corruption
+  (umbrella vllm#53912 / #43559; the reported signatures — short duplicated
+  keys, fragments of another context, `content` empty with `finish_reason=stop`
+  — match what we saw in production OCR traffic on the B70):
+  1. the accepted-token D2H copy lands in step-N row order while step N+1's
+     `_update_states`/`condense()` permutes the same pinned buffer before the
+     event is awaited, and `prev_positions` permutes it a second time — a
+     request decodes with **another request's** accepted count, and the wrong
+     state is written back into the cache (vllm#53919, open; our V1-side audit
+     confirms both trees of both pinned images carry the ordering bug);
+  2. `MambaManager.find_longest_cache_hit` accepts `drop_eagle_block` and never
+     acts on it, so a snapshot taken over draft positions that verification
+     rejected stays reachable through the prefix cache (vllm#48375/#43650,
+     open — #48375 also misses the fine-grained branch entirely);
+  3. the align boundary state copy has no guard against a **backward**
+     (`dest < src`) copy, which stomps the state `preprocess` just migrated
+     (vllm#53505; includes the `precopy_mamba_align_fused_kernel` path that
+     V2 executes).
+  Text-only fail-closed ports with env gates: `patches/patch_fix_accepted_sync.py`,
+  `patch_fix_eagle_drop.py`, `patch_fix_backward_copy.py`; GPU-free dry-run of the
+  whole apply-list: `scripts/verify-mtp-apc-fixes.sh`. Mitigations without them:
+  `--no-enable-prefix-caching` (drops `align`; upstream A/B 0/288 vs 16/288 with
+  async also shows `--no-async-scheduling` suffices). The V2 runner keeps its
+  counters GPU-resident, so (1) does not apply there — the patch detects this and
+  says so — but (2)/(3) are runner-independent. On images ≥ 0.28.1, note the
+  separate **performance** defect: when the drafter's KV groups cannot be
+  identified, every group is treated as draft and mamba prefix reuse is silently
+  disabled (vllm#52047; measured 0 % hits at 32k on nightly vs 91 % at C1 on
+  these pinned builds).
+
 **Reliability note:** single-card runs in the cookbook have never produced an
 unrecoverable wedge; restarts were always clean. The failures below are
 specifically multi-card and/or sustained-load phenomena.
