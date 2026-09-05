@@ -29,8 +29,8 @@ speculator.
 | Draft | [`SergiioB/Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16`](https://huggingface.co/SergiioB/Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16) |
 | Source BF16 | `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16` |
 | Source DFlash | `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4-DFlash` |
-| Runtime (in launcher) | `patches/patch_xpu_grouped_topk_native_v2.py` + `patches/ssu-b70-b8w4/` |
-| Open upstream PRs (2026-08-13) | [vllm#52159](https://github.com/vllm-project/vllm/pull/52159) (XPU `grouped_topk` compile disable) · [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524) (`at::zeros` + Muse tuple) |
+| Runtime (in launcher) | `patches/patch_xpu_grouped_topk_native_v2.py` + `patches/ssu-b70-b8w4/` (still required on this `0.1.12.3` image) |
+| Upstream (2026-09-05) | [vllm#52159](https://github.com/vllm-project/vllm/pull/52159) closed without merge. Fused XPU grouped_topk is [vllm#53580](https://github.com/vllm-project/vllm/pull/53580) (open). [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524) (`at::zeros`) still open. Muse tuple already in kernels `main` via [#526](https://github.com/vllm-project/vllm-xpu-kernels/pull/526). |
 | Context / batch / seqs | **120,000** serving limit / 8,192 / `max_num_seqs=1`. Speed card remains the isolated 16K n=5 matrix |
 | Cache | **explicitly off** (`--no-enable-prefix-caching`) |
 | Power | configured **150 W** |
@@ -166,3 +166,8 @@ though the command snippet and notes carry `method=dflash` n=7.
   [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524).
   Source copies live in `patches/vllm-xpu-kernels/`. Launcher already applies
   the Python router patch; kernel `at::zeros` still needs a rebuild.
+- 2026-09-05: [vllm#52159](https://github.com/vllm-project/vllm/pull/52159)
+  closed without merge. Muse paged-decode tuple is in kernels `main`
+  ([#526](https://github.com/vllm-project/vllm-xpu-kernels/pull/526)); do not
+  apply `0002`. `#524` (`at::zeros`) and [vllm#53580](https://github.com/vllm-project/vllm/pull/53580)
+  remain open. Python router patch still required on this pinned image.

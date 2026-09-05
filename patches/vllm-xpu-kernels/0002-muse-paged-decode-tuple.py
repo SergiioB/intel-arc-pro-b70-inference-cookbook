@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-"""Apply vllm-xpu-kernels#524 part B: Muse local paged-decode tuple.
+"""Apply Muse local paged-decode tuple (historical).
 
-Not required for Nemotron DFlash. Source-only; rebuild after applying.
+Already in vllm-xpu-kernels main via PR #526 (merged 2026-08-14):
+`16,128,64,false,true,false`. Do not run this against current main.
+
+Kept for old checkouts. No-ops if the tuple is present. Not required for
+Nemotron DFlash. Source-only; rebuild after applying on a pre-#526 tree.
 """
 from __future__ import annotations
 

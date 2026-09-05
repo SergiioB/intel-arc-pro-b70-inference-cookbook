@@ -49,7 +49,7 @@ No-spec graph n=5 is a separate campaign on the same target / image family.
 | Capacity decode rates (g32) | Run 38 TTFT / post-first numbers are diagnostics on n=1 g32 cells |
 | Isolated engine prefill = 7160 | 7160 is prompt/TTFT |
 | “16K budget → 9874 / 10k prefill” | n=3 screen only. Fresh n=5 at batched=16384 was **6096** (−15% vs 7160) and decode dropped to 167. Keep batched=8192 |
-| A local Docker tag is required | Public digest is the reproduce default. Kernel `at::zeros` is [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524) + `patches/vllm-xpu-kernels/` |
+| A local Docker tag is required | Public digest is the reproduce default. Kernel `at::zeros` is still [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524) + `0001`. Do not apply `0002`. |
 
 ## HF ids (keep)
 

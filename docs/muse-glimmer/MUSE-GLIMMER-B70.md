@@ -83,24 +83,26 @@ llama.cpp GGUF + DFlash n2 remains the **recommended public recipe**.
 
 What changed after the 2026-08-10 “vLLM blocked” note:
 
-- **Architecture smoke (local overlay):** vLLM PR #51655 Python overlay on the
-  older Pi digest can load Muse. Text completions and a vision smoke passed.
-  Chat still leaks reasoning/channel text into `content`. Not a pullable image.
+- **Architecture:** [vllm#51655](https://github.com/vllm-project/vllm/pull/51655)
+  merged 2026-08-14. No local overlay on current vLLM. The 2026-08-10 smoke
+  used a Python overlay on the older Pi digest; that overlay is historical.
+  Chat still leaked reasoning/channel text into `content` on that smoke.
 - **INT4 dispatch:** the `cyankiwi` compressed-tensors W4A16 artifact selected
   `XPUwNa16LinearKernel`. A leftover `hf_quant_config.json` / NVFP4-style
   metadata still fails closed — same class of trap as Nemotron DFlash.
-- **Paged-decode tuple:** missing `16,128,64,false,true,false` aborted Muse
-  text decode after load. The one-line add is
-  [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524)
-  / `patches/vllm-xpu-kernels/0002-muse-paged-decode-tuple.py`. It is **not**
-  the Nemotron grouped-topk / SSU / graph stack — Muse is dense, not LatentMoE.
+- **Paged-decode tuple:** `16,128,64,false,true,false` is in kernels `main`
+  via [vllm-xpu-kernels#526](https://github.com/vllm-project/vllm-xpu-kernels/pull/526)
+  (merged 2026-08-14). Do not apply `0002-muse-paged-decode-tuple.py` on a
+  current kernels checkout. Missing that tuple aborted Muse text decode on
+  the 2026-08-13 experimental overlay.
 - **Speed:** a text-only n=3 C1 screen at 150 W measured **21.34 / 24.60**
   client post-first at p512/p8192 g128. That is **slower** than llama.cpp
   DFlash **26.8 / 22.9** at 128K, and it is n=3 — not a headline cell.
 
 Still true: FP8-block 34.4 GB does not fit; XPU has no FP8 linear kernel.
-Do not apply Nemotron `grouped_topk` / SSU patches to Muse. Revisit vLLM
-Muse after #51655 merges and a public XPU image exists.
+Do not apply Nemotron `grouped_topk` / SSU patches to Muse. Public recipe
+remains llama.cpp. A current XPU nightly has the architecture and the decode
+tuple; it is not a measured cookbook generation.
 
 ## LocalMaxxing submission (2026-08-10)
 

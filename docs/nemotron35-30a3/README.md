@@ -31,8 +31,10 @@ conversion.” The names already encode format (`GPTQ-INT4-G64-sym`,
 4. Lane 1 input is **7160** at **p8192/g1 n=5**. The ~10.3k figure is a
    no-spec n=3 TTFT on a **g128** cell.
 5. LocalMaxxing `cmsr9po4w000ams01e4fc5qhj` is APPROVED.
-6. Open PRs: [vllm#52159](https://github.com/vllm-project/vllm/pull/52159),
-   [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524).
-   The DFlash launcher already applies the Python router patch. Kernel
-   `at::zeros` is optional (graph-replay determinism) via
-   `patches/vllm-xpu-kernels/`.
+6. [vllm#52159](https://github.com/vllm-project/vllm/pull/52159) closed
+   2026-09-02 without merge. The DFlash launcher still applies the Python
+   router patch on the pinned `0.1.12.3` image. Kernel `at::zeros` is
+   optional (graph-replay determinism) via `0001` /
+   [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524)
+   (still open). Do not apply `0002`; that tuple is in kernels `main`
+   ([#526](https://github.com/vllm-project/vllm-xpu-kernels/pull/526)).

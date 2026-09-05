@@ -30,6 +30,20 @@ otherwise unchanged.
 Nemotron-3.5-Lightning DFlash is a **second generation**. It uses a newer
 public digest than the Qwen3.6 Pi matrix below. Do not mix patch lists.
 
+## Upstream status (checked 2026-09-05)
+
+Pinned cookbook images are older than this table. Their Apply lists above
+still stand. Skip a patch only when the tree you are building from already
+contains the equivalent.
+
+| Patch | Upstream (2026-09-05) | User action |
+|---|---|---|
+| `0002-muse-paged-decode-tuple.py` | **In.** [vllm-xpu-kernels#526](https://github.com/vllm-project/vllm-xpu-kernels/pull/526) merged 2026-08-14. `16,128,64,false,true,false` is on kernels `main`. | Do not apply when rebuilding from current kernels. |
+| Muse architecture overlay | **In.** [vllm#51655](https://github.com/vllm-project/vllm/pull/51655) merged 2026-08-14. | No local overlay on current vLLM. Public Muse recipe is still llama.cpp. |
+| `0001-zero-xe2-grouped-gemm-atomic.py` | **Not in.** [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524) open. kernels `main` still has `at::empty` for the Xe2 scheduler counter. | Still apply before a kernels rebuild if you need temp-0 graph-replay determinism. |
+| `patch_xpu_grouped_topk_native_v2.py` | **Not in vLLM.** [vllm#52159](https://github.com/vllm-project/vllm/pull/52159) closed 2026-09-02 without merge. Native grouped_topk kernel is in kernels via [#527](https://github.com/vllm-project/vllm-xpu-kernels/pull/527) / PyPI `0.1.14.1`, but vLLM `main` still gates the fused op with `is_cuda()`. Successor [vllm#53580](https://github.com/vllm-project/vllm/pull/53580) is open. torch NaN `topk` fix is in [torch-xpu-ops#4986](https://github.com/intel/torch-xpu-ops/pull/4986) (merged). | Still required on the pinned Nemotron `1da0a954` / kernels `0.1.12.3` image. |
+| Qwen MTP pair, GDN mixed-split v5, draft-INT4 S+M1, worker affinity, APC trio (`patch_fix_*`) | **Not in.** [vllm#47828](https://github.com/vllm-project/vllm/pull/47828) (MTP GPTQ), [vllm#48375](https://github.com/vllm-project/vllm/pull/48375) (drop_eagle), [vllm#53919](https://github.com/vllm-project/vllm/pull/53919) (accepted-token sync), [vllm#54165](https://github.com/vllm-project/vllm/pull/54165) (align cache) are open. MambaManager on `main` still ignores `drop_eagle_block`. | Still required on the pinned Qwen images. |
+
 ## Known limitation: Qwen3.6-35B-A3B FP8 TP2 graph capture
 
 The official `Qwen/Qwen3.6-35B-A3B-FP8` checkpoint loads and compiles on two
@@ -87,13 +101,15 @@ vllm-xpu-kernels 0.1.12.3
 
 Runtime patches, in order: `patch_xpu_grouped_topk_native_v2.py`, then copy
 `ssu-b70-b8w4/*.json` into the SSU config dir. That Python router change is
-also [vllm#52159](https://github.com/vllm-project/vllm/pull/52159).
+still required on this pinned `0.1.12.3` image. [vllm#52159](https://github.com/vllm-project/vllm/pull/52159)
+was closed without merge; see Upstream status above.
 
-Optional **source** kernel edits (need a `vllm-xpu-kernels` rebuild, **not**
+Optional **source** kernel edit (needs a `vllm-xpu-kernels` rebuild, **not**
 a local Docker tag): `patches/vllm-xpu-kernels/0001-zero-xe2-grouped-gemm-atomic.py`
-then `0002-muse-paged-decode-tuple.py` —
-[vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524).
-`0001` is for temperature-0 graph-replay determinism. `0002` is Muse-only.
+([vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524),
+still open). Temperature-0 graph-replay determinism. Do **not** apply
+`0002-muse-paged-decode-tuple.py`: that tuple is already on kernels `main`
+via [vllm-xpu-kernels#526](https://github.com/vllm-project/vllm-xpu-kernels/pull/526).
 
 Models: `SergiioB/Nemotron-3.5-Lightning-30B-A3B-GPTQ-INT4-G64-sym` +
 `SergiioB/Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16`.

@@ -15,8 +15,8 @@ their coordinates; do not mix with the DFlash table. See the changelog.
 | vLLM observed in image | `0.26.1rc1.dev668+g3ee2df303` |
 | `vllm-xpu-kernels` observed | `0.1.12.3` |
 | Model artifact | published local conversion [`SergiioB/Nemotron-3.5-Lightning-30B-A3B-GPTQ-INT4-G64-sym`](https://huggingface.co/SergiioB/Nemotron-3.5-Lightning-30B-A3B-GPTQ-INT4-G64-sym) from `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16` |
-| Patches, in order | `patch_xpu_grouped_topk_native_v2.py` (graph-safe native grouped-topk + `torch.compiler.disable` — [vllm#52159](https://github.com/vllm-project/vllm/pull/52159)), B70 SSU JSON `ssu-b70-b8w4/` |
-| Optional kernel rebuild | `patches/vllm-xpu-kernels/0001-zero-xe2-grouped-gemm-atomic.py` — [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524) |
+| Patches, in order | `patch_xpu_grouped_topk_native_v2.py` (graph-safe native grouped-topk + `torch.compiler.disable`; still required on this pinned image), B70 SSU JSON `ssu-b70-b8w4/` |
+| Optional kernel rebuild | `patches/vllm-xpu-kernels/0001-zero-xe2-grouped-gemm-atomic.py` ([vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524), still open). Do not apply `0002`. |
 | Context / scheduler / memory | 16,384 / 8,192 / `gpu-memory-utilization=0.90` |
 | Decode path | compiled mode + `VLLM_XPU_ENABLE_XPU_GRAPH=1` (PIECEWISE + FULL decode graphs), `--async-scheduling`, cache explicitly off |
 
