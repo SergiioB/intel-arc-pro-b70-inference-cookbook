@@ -1,0 +1,68 @@
+name: "Hardware result: B50 / B60 / B65 / other B70 counts"
+description: "Ran the guides on hardware not yet validated in the cookbook — share what worked, what didn't, and what you changed"
+title: "[Hardware] "
+labels: ["hardware-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The cookbook directly validates 1× B70 and the 2×/4× B70 infrastructure. Reports for B50, B60, B65, and other B70 counts start as compatibility guidance and get promoted when evidence is strong. Paste the launch command and image digest so your result can be reviewed.
+
+  - type: dropdown
+    id: gpu
+    attributes:
+      label: "GPU"
+      options: ["B50 (16 GiB)", "B60 (24 GiB)", "B65 (32 GiB)", "B70 (32 GiB)"]
+      default: 0
+    validations: { required: true }
+
+  - type: dropdown
+    id: count
+    attributes:
+      label: "Card count"
+      options: ["1", "2", "3", "4", "5-8", "more than 8"]
+      default: 0
+    validations: { required: true }
+
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: "Outcome"
+      options:
+        - "Worked with the guide unchanged"
+        - "Worked after changes (describe below)"
+        - "Did not work — setup or driver error"
+        - "Did not work — model would not fit in VRAM"
+      default: 0
+    validations: { required: true }
+
+  - type: input
+    id: model
+    attributes:
+      label: "Model (HF id)"
+      placeholder: "Qwen/Qwen3.6-27B-GPTQ-Int4"
+    validations: { required: true }
+
+  - type: textarea
+    id: what_you_ran
+    attributes:
+      label: "Launch command and last output line"
+      description: "Include the image digest if you ran a container, e.g. vllm/vllm-openai-xpu@sha256:..."
+      placeholder: |
+        vllm serve ... --tensor-parallel-size 2
+        # last line: ...
+    validations: { required: true }
+
+  - type: textarea
+    id: changes
+    attributes:
+      label: "What you changed"
+      description: "Context length, model swap, quantization, flags, driver — anything different from the guide."
+    validations: { required: false }
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notes"
+      description: "Anything else: throughput, stability, driver version. No serials or hostnames."
+    validations: { required: false }
