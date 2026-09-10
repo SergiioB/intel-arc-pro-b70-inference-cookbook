@@ -36,6 +36,16 @@ module.exports = async function triage({ github, context, core, issueNumber }) {
   );
 
   const labels = new Set((issue.labels || []).map((l) => l.name));
+  // Maintainer override: ready is sticky. The bot may add ready when the
+  // repro is complete, but it never removes a human-set ready and never
+  // re-adds needs-info on top of it. Humans own removal. This stops the
+  // bot reverting Sergio's label on every follow-up comment (seen on #10:
+  // ready set by hand, then issue_comment triage flipped it back because
+  // the digest + launch line live in comments/attachments, not the body).
+  if (labels.has("ready")) {
+    classified.add = classified.add.filter((l) => l !== "needs-info");
+    classified.remove = classified.remove.filter((l) => l !== "ready");
+  }
   const toAdd = classified.add.filter((l) => !labels.has(l));
   const toRemove = classified.remove.filter((l) => labels.has(l));
   for (const l of toAdd) {
