@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   precheck:
+    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
