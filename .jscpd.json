@@ -1,0 +1,15 @@
+{
+  "threshold": 100,
+  "min-tokens": 50,
+  "reporters": ["consoleFull"],
+  "format": ["python", "javascript"],
+  "patterns": [
+    "scripts/**/*.py",
+    "tests/**/*.py",
+    "tests/**/*.js",
+    "watchdog/**/*.sh",
+    ".github/scripts/**/*.js"
+  ],
+  "ignore": ["**/__pycache__/**"],
+  "absolute": true
+}

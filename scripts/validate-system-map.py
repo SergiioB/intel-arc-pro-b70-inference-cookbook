@@ -6,13 +6,23 @@ from __future__ import annotations
 import json
 import pathlib
 import sys
+from typing import Any
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 MAP_PATH = ROOT / "data" / "system-map.v1.json"
-REQUIRED_INTENTS = {"read", "setup", "reproduce", "connect", "operate", "submit", "publish", "triage"}
+REQUIRED_INTENTS = {
+    "read",
+    "setup",
+    "reproduce",
+    "connect",
+    "operate",
+    "submit",
+    "publish",
+    "triage",
+}
 
 
-def validate_system_map(data: dict) -> list[str]:
+def validate_system_map(data: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if data.get("schema_version") != "1.0":
         errors.append("schema_version must be 1.0")
@@ -42,7 +52,13 @@ def validate_system_map(data: dict) -> list[str]:
             errors.append(f"missing referenced path: {relative}")
 
     layers = data.get("layers")
-    if not isinstance(layers, list) or [layer.get("id") for layer in layers] != ["L0", "L1", "L2", "L3", "L4"]:
+    if not isinstance(layers, list) or [layer.get("id") for layer in layers] != [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+    ]:
         errors.append("layers must be ordered L0 through L4")
 
     invariants = data.get("invariants")
@@ -69,7 +85,10 @@ def main() -> int:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
 
-    print(f"OK: {MAP_PATH.relative_to(ROOT)} ({len(data['authorities'])} authorities, {len(data['invariants'])} invariants)")
+    print(
+        f"OK: {MAP_PATH.relative_to(ROOT)} "
+        f"({len(data['authorities'])} authorities, {len(data['invariants'])} invariants)"
+    )
     return 0
 
 

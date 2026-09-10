@@ -14,7 +14,7 @@ VENDORED = [
 
 
 class DraftInt4TpGuardTests(unittest.TestCase):
-    def test_each_patch_reads_runtime_tp_and_fails_closed(self):
+    def test_each_patch_reads_runtime_tp_and_fails_closed(self) -> None:
         for path in PATCHES:
             text = path.read_text()
             with self.subTest(path=path.name):
@@ -24,7 +24,7 @@ class DraftInt4TpGuardTests(unittest.TestCase):
                 self.assertIn("fail-closed, issue #9", text)
                 self.assertIn("TP>1 (tp=%d) detected; skipping", text)
 
-    def test_each_patch_checks_guard_before_quantization(self):
+    def test_each_patch_checks_guard_before_quantization(self) -> None:
         for path in PATCHES:
             text = path.read_text()
             with self.subTest(path=path.name):
@@ -32,14 +32,14 @@ class DraftInt4TpGuardTests(unittest.TestCase):
                 quantize = text.index("quantize_", guard)
                 self.assertLess(guard, quantize)
 
-    def test_lmhead_hook_does_not_reenter_after_tp_block(self):
+    def test_lmhead_hook_does_not_reenter_after_tp_block(self) -> None:
         text = PATCHES[1].read_text()
         self.assertIn(
             'and not getattr(self, \\"_b70_lmhead_int4_tp_blocked\\", False)',
             text,
         )
 
-    def test_vendored_patches_match_canonical(self):
+    def test_vendored_patches_match_canonical(self) -> None:
         for vendored in VENDORED:
             canonical = ROOT / "patches" / vendored.name
             with self.subTest(path=vendored.relative_to(ROOT)):

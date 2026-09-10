@@ -1,0 +1,49 @@
+# Dev-tooling configuration only. This repository ships no pip package:
+# the runtime contract is Python 3.11+ standard library exclusively
+# (see AGENTS.md). Do not add runtime dependencies here or anywhere else.
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+# Exclude evidence catalogs, family patches, and prose routes: they are
+# historical or prose authorities, not lintable dev code.
+extend-exclude = [
+    "patches",
+    "results",
+    "research",
+    "windows",
+    "benchmarks",
+    "submissions",
+    "docs",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "C90"]
+ignore = [
+    # "E501" is NOT ignored: scripts and tests must stay within 100 columns.
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["scripts", "tests"]
+
+# Per-module overrides go here only with a written reason. No blanket disables.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+
+[tool.coverage.run]
+# Measure the shipped validators and the test suite itself.
+source = ["scripts", "tests"]
+omit = []
+
+[tool.coverage.report]
+show_missing = true
+# Threshold measured on this suite (see ci.yml job "validate"); keep both equal.
+fail_under = 55

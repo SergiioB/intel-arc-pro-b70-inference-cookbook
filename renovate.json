@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "minimumReleaseAge": "7 days",
+  "rangeStrategy": "pin",
+  "packageRules": [
+    {
+      "description": "Group dev tooling bumps",
+      "matchManagers": ["pip"],
+      "groupName": "python dev tools"
+    },
+    {
+      "description": "Group action bumps",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    }
+  ],
+  "timezone": "Europe/Madrid",
+  "schedule": ["before 6am on monday"]
+}

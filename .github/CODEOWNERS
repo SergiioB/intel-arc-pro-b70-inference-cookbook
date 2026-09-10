@@ -1,0 +1,4 @@
+# Single-maintainer repository. Sergio (@SergiioB) owns every path in this
+# cookbook; all pull requests require his review. Authority routing for which
+# file to change lives in AGENTS.md and data/system-map.v1.json.
+*       @SergiioB

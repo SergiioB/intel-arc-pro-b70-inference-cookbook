@@ -21,13 +21,21 @@ def repository_markdown() -> list[pathlib.Path]:
         text=True,
         capture_output=True,
     )
-    return [ROOT / line for line in completed.stdout.splitlines() if line]
+    candidates = [ROOT / line for line in completed.stdout.splitlines() if line]
+    # Untracked scratch files (for example tmp dirs from parallel test runs)
+    # vanish between listing and reading; only keep files that still exist.
+    return [path for path in candidates if path.is_file()]
 
 
 def validate_links(files: list[pathlib.Path]) -> list[str]:
     errors: list[str] = []
     for source in files:
-        for line_number, line in enumerate(source.read_text(errors="replace").splitlines(), 1):
+        relative = source.relative_to(ROOT)
+        try:
+            content = source.read_text(errors="replace")
+        except FileNotFoundError:
+            continue  # untracked file deleted after listing; nothing to validate
+        for line_number, line in enumerate(content.splitlines(), 1):
             for raw_target in LINK_RE.findall(line):
                 target = raw_target.strip().split(maxsplit=1)[0].strip("<>")
                 if not target or target.startswith(("#", "http://", "https://", "mailto:")):
@@ -39,10 +47,10 @@ def validate_links(files: list[pathlib.Path]) -> list[str]:
                 try:
                     resolved.relative_to(ROOT)
                 except ValueError:
-                    errors.append(f"{source.relative_to(ROOT)}:{line_number}: link escapes repository: {target}")
+                    errors.append(f"{relative}:{line_number}: link escapes repository: {target}")
                     continue
                 if not resolved.exists():
-                    errors.append(f"{source.relative_to(ROOT)}:{line_number}: missing link target: {target}")
+                    errors.append(f"{relative}:{line_number}: missing link target: {target}")
     return errors
 
 

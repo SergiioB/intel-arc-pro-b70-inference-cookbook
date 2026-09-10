@@ -234,6 +234,8 @@ Prompt hashes match across no-spec, MTP1, MTP2, and MTP4. Output parity does not
 
 ## Repository map
 
+Architecture diagrams: [docs/architecture/architecture.md](docs/architecture/architecture.md) · Runtime env-flag registry: [docs/FEATURE-FLAGS.md](docs/FEATURE-FLAGS.md)
+
 ```text
 benchmarks/
   qwen36-35a3/       MoE Qwen3.6-35B-A3B launchers and model-specific campaigns

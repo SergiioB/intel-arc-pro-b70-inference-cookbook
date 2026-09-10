@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180" role="img" aria-labelledby="title desc">
     <title id="title">Intel Arc Pro B70 Nemotron-3.5-Lightning DFlash Dashboard</title>
     <desc id="desc">Speed and Capacity statistics for Nemotron-3.5-Lightning on Intel Arc Pro B70. Block A details decode and input speeds; Block B details context capacity completion.</desc>
-    
+
     <defs>
         <style>
             .bg { fill: #07111f; }
@@ -49,7 +49,7 @@
         <text x="20" y="175" class="text-muted table-header">p512 / g128</text>
         <text x="20" y="200" class="text-primary table-text font-mono">194.61 <tspan fill="#ffb45c" font-size="14px" font-family="system-ui, -apple-system, sans-serif">(DO NOT HEADLINE)</tspan></text>
         <text x="20" y="220" class="text-muted caption font-mono">140.20 – 220.01</text>
-        
+
         <text x="320" y="175" class="text-muted table-header">p8192 / g128</text>
         <text x="320" y="200" class="text-primary table-text font-mono">157.92</text>
     </g>
@@ -79,7 +79,7 @@
         <rect x="0" y="30" width="410" height="190" rx="6" fill="#07111f" stroke="#263a53" />
         <text x="30" y="75" class="text-muted metric-sub">Method</text>
         <text x="30" y="105" class="text-primary metric-label">DFlash (n_spec=7)</text>
-        
+
         <text x="30" y="155" class="text-muted metric-sub">Window Acceptance</text>
         <text x="30" y="195" class="text-accent metric-large" font-size="48">52.0%</text>
     </g>
@@ -98,7 +98,7 @@
 
     <!-- Ladder Chart -->
     <g transform="translate(100, 750)">
-        
+
         <!-- Y-Axis Lines -->
         <line x1="0" y1="0" x2="1320" y2="0" class="grid-line" />
         <text x="-10" y="5" class="text-muted caption font-mono" text-anchor="end">120 t/s</text>
