@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.1.0...v1.1.1) (2026-09-11)
+
+
+### Bug Fixes
+
+* **flash-next:** repin evidence to full post-rebase SHA ([0565f3a](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/0565f3a52896a06dbba605b93a9690584c0dfaab))
+
 ## [1.1.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.0.0...v1.1.0) (2026-09-10)
 
 
