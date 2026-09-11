@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="1080" height="620" fill="#ffffff"/>
+  <text x="40" y="46" font-size="24" font-weight="700" fill="#111827">Decode vs context — pre-wiring vs wired kernel</text>
+  <text x="40" y="72" font-size="14" fill="#6b7280">Median decode tok/s (engine-native C1) at c8 / c16 / c131072; gain per context labelled</text>
+
+  <line x1="90" y1="120" x2="1040" y2="120" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="210" x2="1040" y2="210" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="300" x2="1040" y2="300" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="390" x2="1040" y2="390" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="480" x2="1040" y2="480" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="120" x2="90" y2="540" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="60" y="124" font-size="12" fill="#9ca3af" text-anchor="end">40</text>
+  <text x="60" y="214" font-size="12" fill="#9ca3af" text-anchor="end">30</text>
+  <text x="60" y="304" font-size="12" fill="#9ca3af" text-anchor="end">20</text>
+  <text x="60" y="394" font-size="12" fill="#9ca3af" text-anchor="end">10</text>
+  <text x="60" y="484" font-size="12" fill="#9ca3af" text-anchor="end">0</text>
+
+  <!-- scale: y = 480 - v*360/40 -->
+  <!-- c8 cluster -->
+  <text x="245" y="105" font-size="14" font-weight="700" fill="#374151" text-anchor="middle">c8 · P~0.5K</text>
+  <rect x="185" y="269.6" width="70" height="210.4" rx="6" fill="#e5e7eb"/>
+  <text x="220" y="258" font-size="13" font-weight="600" fill="#6b7280" text-anchor="middle">23.38</text>
+  <text x="220" y="242" font-size="11" fill="#9ca3af" text-anchor="middle">old build</text>
+  <rect x="265" y="203.9" width="70" height="276.1" rx="6" fill="#0068b5"/>
+  <text x="300" y="192" font-size="13" font-weight="600" fill="#0068b5" text-anchor="middle">30.68</text>
+  <text x="300" y="176" font-size="11" fill="#6b7280" text-anchor="middle">prose n5</text>
+  <rect x="345" y="180.8" width="70" height="299.2" rx="6" fill="#ff6a00"/>
+  <text x="380" y="169" font-size="13" font-weight="600" fill="#c2410c" text-anchor="middle">33.25</text>
+  <text x="380" y="153" font-size="11" fill="#6b7280" text-anchor="middle">code n5</text>
+  <text x="300" y="560" font-size="13" font-weight="700" fill="#0a7d2c" text-anchor="middle">+31% prose · +42% code</text>
+
+  <!-- c16 cluster -->
+  <text x="610" y="105" font-size="14" font-weight="700" fill="#374151" text-anchor="middle">c16 · P~8.5–9K</text>
+  <rect x="545" y="287.5" width="70" height="192.5" rx="6" fill="#e5e7eb"/>
+  <text x="580" y="276" font-size="13" font-weight="600" fill="#6b7280" text-anchor="middle">21.38</text>
+  <text x="580" y="260" font-size="11" fill="#9ca3af" text-anchor="middle">pre-wiring</text>
+  <rect x="625" y="202.3" width="70" height="277.7" rx="6" fill="#0a7d2c"/>
+  <text x="660" y="191" font-size="13" font-weight="600" fill="#0a7d2c" text-anchor="middle">30.85</text>
+  <text x="660" y="175" font-size="11" fill="#6b7280" text-anchor="middle">matched n5</text>
+  <rect x="705" y="232.4" width="70" height="247.6" rx="6" fill="#0068b5"/>
+  <text x="740" y="221" font-size="13" font-weight="600" fill="#0068b5" text-anchor="middle">27.51</text>
+  <text x="740" y="205" font-size="11" fill="#6b7280" text-anchor="middle">filler n3</text>
+  <text x="660" y="560" font-size="13" font-weight="700" fill="#0a7d2c" text-anchor="middle">+44% matched · +29% filler</text>
+
+  <!-- c128 cluster -->
+  <text x="955" y="105" font-size="14" font-weight="700" fill="#374151" text-anchor="middle">c131072 · P~120K</text>
+  <rect x="890" y="314.3" width="70" height="165.7" rx="6" fill="#e5e7eb"/>
+  <text x="925" y="303" font-size="13" font-weight="600" fill="#6b7280" text-anchor="middle">18.53</text>
+  <text x="925" y="287" font-size="11" fill="#9ca3af" text-anchor="middle">old build</text>
+  <rect x="970" y="314.6" width="70" height="165.4" rx="6" fill="#0068b5"/>
+  <text x="1005" y="303" font-size="13" font-weight="600" fill="#0068b5" text-anchor="middle">18.38</text>
+  <text x="1005" y="287" font-size="11" fill="#6b7280" text-anchor="middle">wired n5*</text>
+  <text x="925" y="560" font-size="13" font-weight="700" fill="#6b7280" text-anchor="middle">~0% — attention/serial-bound</text>
+
+  <rect x="90" y="578" width="900" height="32" rx="8" fill="#f9fafb"/>
+  <text x="105" y="599" font-size="12" fill="#374151">* First completed near-boundary 128K on this host (P~120.7K actual + g128, all 5 samples valid); GPU1 transient free 391 MiB — capacity-observation tier.</text>
+</svg>

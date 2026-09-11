@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="1080" height="620" fill="#ffffff"/>
+  <text x="40" y="46" font-size="24" font-weight="700" fill="#111827">The wired multi-token MoE kernel — A/B and round cost</text>
+  <text x="40" y="72" font-size="14" fill="#6b7280">Fused MUL_MAT_ID for M=2..8 (gate-up + grouped down) · 3D src1 [n_embd,1,T] routed off the counting-sort path</text>
+
+  <!-- round cost panel -->
+  <rect x="40" y="100" width="480" height="220" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="60" y="130" font-size="15" font-weight="700" fill="#111827">Verify-round cost (implied, c8 P512)</text>
+  <rect x="110" y="200" width="120" height="70" rx="6" fill="#e5e7eb"/>
+  <text x="170" y="219" font-size="12" fill="#6b7280" text-anchor="middle">pre-wiring</text>
+  <text x="170" y="248" font-size="20" font-weight="700" fill="#374151" text-anchor="middle">118 ms</text>
+  <rect x="300" y="218" width="120" height="52" rx="6" fill="#0a7d2c"/>
+  <text x="360" y="234" font-size="12" fill="#ffffff" text-anchor="middle">wired kernel</text>
+  <text x="360" y="258" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">85 ms</text>
+  <text x="245" y="290" font-size="14" font-weight="700" fill="#0a7d2c" text-anchor="middle">−26%</text>
+  <text x="60" y="308" font-size="12" fill="#6b7280">= per-request acceptance × draft counters (14,996 tok / 7,158 rounds)</text>
+
+  <!-- kernel A/B panel -->
+  <rect x="560" y="100" width="480" height="220" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="580" y="130" font-size="15" font-weight="700" fill="#111827">Acceptance-controlled A/B (same cell)</text>
+  <text x="600" y="162" font-size="12.5" fill="#374151">warm c8, acceptance ≈0.90 (n=3)</text>
+  <rect x="600" y="174" width="180" height="34" rx="5" fill="#e5e7eb"/><text x="690" y="196" font-size="14" font-weight="600" fill="#374151" text-anchor="middle">off: 29.90</text>
+  <rect x="800" y="174" width="180" height="34" rx="5" fill="#0a7d2c"/><text x="890" y="196" font-size="14" font-weight="600" fill="#ffffff" text-anchor="middle">on: 37.37</text>
+  <text x="600" y="236" font-size="12.5" fill="#374151">c16 P9096 (n=3)</text>
+  <rect x="600" y="248" width="180" height="34" rx="5" fill="#e5e7eb"/><text x="690" y="270" font-size="14" font-weight="600" fill="#374151" text-anchor="middle">off: 21.38</text>
+  <rect x="800" y="248" width="180" height="34" rx="5" fill="#0a7d2c"/><text x="890" y="270" font-size="14" font-weight="600" fill="#ffffff" text-anchor="middle">on: 27.51</text>
+  <text x="600" y="308" font-size="12" fill="#6b7280">Kernel on with *worse* acceptance (0.70) still matches kernel-off with 0.94</text>
+
+  <!-- dispatch proof panel -->
+  <rect x="40" y="340" width="1000" height="250" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="60" y="370" font-size="15" font-weight="700" fill="#111827">Dispatch proof (env-gated shape probes, mid-decode window, wired build)</text>
+  <text x="60" y="398" font-size="13" fill="#374151">Pre-wiring: every MUL_MAT_ID is ids=[10,1] — multi-token graphs hid behind the 3D src1 [n_embd,1,T] gate → counting-sort path (D2H ids + host sort + grouped GEMM, ×144 ops/round).</text>
+  <text x="60" y="424" font-size="13" fill="#374151">Post-wiring: [mt-kernel] dispatch #N type=iq3_s k=10 M=2 … — multi-token fused GEMV active; correctness gates pass (42/42 code tests).</text>
+  <text x="60" y="462" font-size="14" font-weight="700" fill="#111827">Kill-switch A/B (GGML_SYCL_MT_OFF)</text>
+  <rect x="120" y="478" width="200" height="40" rx="5" fill="#e5e7eb"/><text x="220" y="503" font-size="14" font-weight="600" fill="#374151" text-anchor="middle">off: 28.73 (n=3)</text>
+  <rect x="360" y="478" width="200" height="40" rx="5" fill="#0a7d2c"/><text x="460" y="503" font-size="14" font-weight="600" fill="#ffffff" text-anchor="middle">on: 29.9–37.4</text>
+  <text x="60" y="560" font-size="12" fill="#6b7280">Correctness: harness gates (B70-FLASH-OK / 703 / Paris) pass on both; no MTP damage (quality battery, OFF/OFF envelope).</text>
+</svg>

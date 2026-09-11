@@ -8,9 +8,88 @@ not a 16K cap.
 This is a different model from [Qwen3.8-27B](../qwen38-27/README.md). The
 numbers are llama.cpp engine timings, not vLLM client rates.
 
+> **2026-09-11 update — MTP + fused multi-token MoE kernel.** The recipe below
+> (no-spec, pinned build `9723942`) still works and is the fallback. The new
+> leader route is upstream main `52d4268` + a qwen4exp MTP port + a local fused
+> multi-token `MUL_MAT_ID` kernel: **33.25 tok/s** decode (P512/G128 C1, code
+> task, n=5 median; prose 30.68) vs **23.38** on the old build (+42%), **585.9
+> tok/s** prefill (F16 path), and the **first completed near-boundary 128K**
+> (P~120.7K, 18.38 tok/s, n=5). See "MTP + kernel update" section. The main
+> GGUF still carries no MTP tensors — the draft is a separate head GGUF.
+
 ![Leaders](../assets/b70-qwen38-flash-next-dashboard.svg)
 
 ![Prefill and decode vs context](../assets/b70-qwen38-flash-next-context.svg)
+
+## MTP + kernel update (2026-09-11)
+
+![MTP progression](../assets/b70-qwen38-flash-next-mtp-progression.svg)
+
+Same serving contract as below (C1, n=5 fresh-server medians unless noted,
+t=1.0 / top_p 0.95 / top_k 20, ignore_eos, exact token counts, zero cache
+reuse, 195 W, PLE pre-warmed). Matched natural-prompt cells (prose/code
+tasks), not filler.
+
+| Build | Cell | Decode | vs old build 23.38 |
+|---|---|---:|---:|
+| pinned `9723942` (recipe below) | 8K p512/g128 | 23.38 | base |
+| upstream `52d4268`, no-spec | 8K p512/g128 | 26.86 (n=3) | +15% |
+| `52d4268` + MTP tuned, warm | 8K p512/g128 | 29.90 (n=3) | +28% |
+| + **wired multi-token kernel**, warm | 8K p512/g128 | **37.37** (n=3, peak 43.76) | **+60%** |
+| + wired kernel, matched **prose** | 8K p512/g128 | **30.68** (n=5) | +31% |
+| + wired kernel, matched **code** | 8K p512/g128 | **33.25** (n=5) | **+42%** |
+
+![Decode vs context](../assets/b70-qwen38-flash-next-mtp-context.svg)
+
+| Context / input | Pre-wiring | Wired | Gain |
+|---|---:|---:|---:|
+| c8, P~0.5K code | 23.38 (old build) | 33.25 | +42% |
+| c16, P~8.5K prose | 21.38 | **30.85** (n=5) | +44% |
+| c131072, P~120.7K near-boundary | 18.53 (old build) | **18.38** (n=5, first completed 120K) | ~0% (attention/serial-bound) |
+
+Prefill unchanged-best on the F16 binary: **585.9 tok/s** cold input
+(P9096/G128/C1, n=3; old build was 594.49 n=5 — same class).
+
+![Kernel A/B](../assets/b70-qwen38-flash-next-mtp-kernel-ab.svg)
+
+**Why it is faster:** upstream MTP verify runs every routed MoE op as
+`ids=[10,1]` even for multi-row verify batches — the 3D `src1 [n_embd,1,T]`
+form hid behind the `ne12 == 1` gate and fell to the counting-sort path
+(D2H expert ids + host sort + grouped GEMM, ~144 ops/round). The local patch
+fuses those into one multi-token GEMV: verify-round cost **118 → ~85 ms**,
+measured by per-request acceptance/counters; env kill-switch
+`GGML_SYCL_MT_OFF=1` reproduces the pre-wiring numbers. Quality battery:
+42/42 code tests, output divergence inside the spec-OFF envelope.
+
+![Prefill F16](../assets/b70-qwen38-flash-next-mtp-prefill-f16.svg)
+
+### MTP recipe delta (on top of the flags below)
+
+- Tree: upstream main `52d42686560a9e8f441f9b9780c8890c37d2802d` (the pinned
+  `9723942` patches are superseded — the fused IQ3_S/IQ4_NL MMVQ is upstream).
+- Patches: qwen4exp MTP draft-head support (adapted from
+  [dzannotti's patch](https://huggingface.co/dzannotti/Qwen3.8-Flash-Next-MTP-GGUF):
+  MTP-only tensor walk, `graph_mtp`, `DECODER_MTP` routing, `t_h_nextn`
+  handover, two drift fixes for post-b10612 upstream) **plus** the local
+  multi-token kernel (`mul_mat_vec_q_moe_mt`, M=2..8, gate-up + grouped down
+  forms) and wrapper acceptance of the 3D/2D multi-token shapes. Full
+  inventory in the evidence:
+  [`results/qwen38-flash-next-mtp-kernel-v1/summary.json`](../../results/qwen38-flash-next-mtp-kernel-v1/summary.json).
+- Draft head:
+  [`dzannotti/Qwen3.8-Flash-Next-MTP-GGUF`](https://huggingface.co/dzannotti/Qwen3.8-Flash-Next-MTP-GGUF)
+  `Q4_K_M` (2.44 GiB, SHA-256 `1f2a6991…f4c02`), served with
+  `-md <draft.gguf> -ngld 999 --spec-type draft-mtp --spec-draft-n-max 3
+  --spec-draft-p-min 0.75 --spec-draft-backend-sampling --spec-draft-device SYCL1`.
+- **`LLAMA_ATTN_ROT_DISABLE=1` is mandatory** with quantized KV on qwen4exp
+  (load/decode crash otherwise, upstream issue #21038).
+- Decode binary: FP32 (`GGML_SYCL_F16=OFF`). Prefill binary: F16, no spec.
+- 128K with MTP needs `-b/-ub 1024` and fits only as a capacity observation
+  (GPU1 transient free 391 MiB at demand time; all 5 samples valid).
+
+Catalog records:
+[`qwen38-flash-next-mtp-kernel-decode-v1`](../BENCHMARK-CATALOG.md),
+`-prefill-v1`, `-c128-nearboundary-v1`. LocalMaxxing: matched decode record
+`cmtwyygmq0ah0ps01vvutjf7u` (APPROVED).
 
 ## What we measured
 
@@ -56,7 +135,9 @@ This is not the Qwen3.8-27B vLLM recipe.
   `142262902a46f7daed19c79d0771534c8106ad59` (33 shards, 88.03 GiB).
 - Mixed quant: gate/up **IQ3_S**, down **IQ4_NL**. The folder name `Q4_K_M` is
   not a uniform Q4_K_M file.
-- KV: `q8_0` K + `q4_1` V. Flash attention on. No MTP in this artifact.
+- KV: `q8_0` K + `q4_1` V. Flash attention on. The main GGUF carries no MTP
+  tensors; the MTP route uses the separate dzannotti draft head (see the
+  2026-09-11 update above).
 
 #### N-gram (per-layer token embedding) table
 
@@ -262,9 +343,12 @@ JSON: [`n3-context-map.json`](../../results/qwen38-flash-next-dual-b70-c1/n3-con
 `quantization` is `IQ3_S`; mixed IQ3_S/IQ4_NL is in the notes.
 
 | Cell | `tokSOut` | `tokSPrefill` | Context | Run |
-|---|---:|---:|---:|---|
+|---|---:|---:|---|---|
 | FP32 p512/g128 | 23.38 | 183.98 | 8192 | `cmtigo30804dyp401alu7nger` |
 | F16 p9096/g128 | 20.34 | 594.49 | 16384 | `cmtigo39n04e2p401eumx5joo` |
+| MTP+kernel p512/g128 code (matched) | 33.25 | — | 8192 | `cmtwyygmq0ah0ps01vvutjf7u` |
+| MTP warm p512/g128 | 27.71 | 173.2 | 8192 | `cmtwkbb6j0af5ps01d3eta1lj` |
+| F16 p9096/g128 (new build) | 22.96 | 585.9 | 16384 | `cmtwkbbgr0af9ps01dhv7ntgu` |
 
 Receipts: [`localmaxxing-receipts.json`](../../results/qwen38-flash-next-dual-b70-c1/localmaxxing-receipts.json).
 
