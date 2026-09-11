@@ -748,8 +748,8 @@
     "results/qwen38-flash-next-mtp-kernel-v1/figures/03-kernel-ab.svg"
    ],
    "evidence": {
-    "commit": "229f44766f3df5ae00fdb4aec2e48e27db2d4dae",
-    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/229f44766f3df5ae00fdb4aec2e48e27db2d4dae/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
+    "commit": "61bc9478424f5f240cef1cee6678864e55ebeceb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/61bc9478424f5f240cef1cee6678864e55ebeceb/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
    }
   },
   {
@@ -800,8 +800,8 @@
     "results/qwen38-flash-next-mtp-kernel-v1/figures/05-prefill-f16.svg"
    ],
    "evidence": {
-    "commit": "229f44766f3df5ae00fdb4aec2e48e27db2d4dae",
-    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/229f44766f3df5ae00fdb4aec2e48e27db2d4dae/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
+    "commit": "61bc9478424f5f240cef1cee6678864e55ebeceb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/61bc9478424f5f240cef1cee6678864e55ebeceb/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
    }
   },
   {
@@ -853,8 +853,8 @@
     "results/qwen38-flash-next-mtp-kernel-v1/figures/04-acceptance-thermals.svg"
    ],
    "evidence": {
-    "commit": "229f44766f3df5ae00fdb4aec2e48e27db2d4dae",
-    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/229f44766f3df5ae00fdb4aec2e48e27db2d4dae/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
+    "commit": "61bc9478424f5f240cef1cee6678864e55ebeceb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/61bc9478424f5f240cef1cee6678864e55ebeceb/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
    }
   }
  ]
