@@ -8,10 +8,10 @@
 
 <rect x="56" y="172" width="728" height="460" rx="28" fill="#0f1d30"/>
 <text x="92" y="224" fill="#55d6be" font-size="20" font-weight="700" letter-spacing="0.6" font-family="ui-sans-serif, system-ui, sans-serif">BEST DECODE · measured at 8K</text>
-<text x="92" y="256" fill="#9caec4" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif">FP32 binary · GGML_SYCL_F16=OFF · not the GGUF</text>
-<text x="92" y="352" fill="#55d6be" font-size="88" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">23.38</text>
+<text x="92" y="256" fill="#9caec4" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif">MTP + fused multi-token MUL_MAT_ID kernel</text>
+<text x="92" y="352" fill="#55d6be" font-size="88" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">33.25</text>
 <text x="92" y="406" fill="#9caec4" font-size="22" font-family="ui-sans-serif, system-ui, sans-serif">engine tok/s · p512 / g128</text>
-<text x="92" y="454" fill="#f5f8fc" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif">range 23.22–23.73 · cold input 184</text>
+<text x="92" y="454" fill="#f5f8fc" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif">range 32.7–43.76 · cold input 184</text>
 <text x="92" y="496" fill="#9caec4" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif">-b 512 · q8_0 K / q4_1 V · weights IQ3_S / IQ4_NL</text>
 <text x="92" y="584" fill="#9caec4" font-size="15" font-family="ui-sans-serif, system-ui, sans-serif">timings.predicted_per_second · cache off</text>
 
