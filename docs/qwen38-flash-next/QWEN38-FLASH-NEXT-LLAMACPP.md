@@ -82,6 +82,9 @@ measured by per-request acceptance/counters; env kill-switch
   --spec-draft-p-min 0.75 --spec-draft-backend-sampling --spec-draft-device SYCL1`.
 - **`LLAMA_ATTN_ROT_DISABLE=1` is mandatory** with quantized KV on qwen4exp
   (load/decode crash otherwise, upstream issue #21038).
+- Sampling defaults follow the HF card's **thinking** mode (reasoning on):
+  `--temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0` — these are baked into the
+  desktop launcher and match every measured cell on this page.
 - Decode binary: FP32 (`GGML_SYCL_F16=OFF`). Prefill binary: F16, no spec.
 - 128K with MTP needs `-b/-ub 1024` and fits only as a capacity observation
   (GPU1 transient free 391 MiB at demand time; all 5 samples valid).
@@ -266,6 +269,25 @@ Shared flags for every context size:
 --cache-type-k q8_0 --cache-type-v q4_1
 --no-warmup --no-cache-prompt --host 127.0.0.1 --port 8001
 ```
+
+**Sampling — Hugging Face card defaults** (`Qwen/Qwen3.8-Flash-Next`). Serve with
+the card's values as server-side defaults so clients that omit parameters get
+recommended behavior:
+
+| Mode | `--temp` | `--top-p` | `--top-k` | `--min-p` | `--presence-penalty` |
+|---|---:|---:|---:|---:|---:|
+| Thinking (default; this page's MTP recipe) | 1.0 | 0.95 | 20 | 0.0 | 0.0 |
+| Non-thinking (`chat_template_kwargs: {"enable_thinking": false}`) | 0.7 | 0.80 | 20 | 0.0 | 1.5 |
+
+Thinking-mode line to append to any serve command below:
+
+```text
+--temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0
+```
+
+For non-thinking serving use `--temp 0.7 --top-p 0.80 --top-k 20 --min-p 0.0
+--presence-penalty 1.5` instead (card: presence_penalty may be raised 0–2 against
+endless repetition; higher values can cause language mixing).
 
 `-ot 'per_layer_token_embd=CPU'` pins the N-gram table (shard `00002`, Q5_1)
 to host memory — see "N-gram (per-layer token embedding) table" above. It is
