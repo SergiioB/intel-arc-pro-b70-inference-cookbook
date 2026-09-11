@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="1080" height="620" fill="#ffffff"/>
+  <text x="40" y="46" font-size="24" font-weight="700" fill="#111827">MTP acceptance, server warmth and card asymmetry</text>
+  <text x="40" y="72" font-size="14" fill="#6b7280">Draft-head acceptance on natural text · the variance source behind the 27.6↔37.4 decode band</text>
+
+  <!-- acceptance panel -->
+  <rect x="40" y="100" width="560" height="300" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="60" y="130" font-size="15" font-weight="700" fill="#111827">Acceptance by content class and warmth</text>
+  <line x1="120" y1="165" x2="560" y2="165" stroke="#e5e7eb"/>
+  <text x="120" y="152" font-size="11" fill="#9ca3af">0%</text><text x="340" y="152" font-size="11" fill="#9ca3af" text-anchor="middle">50%</text><text x="560" y="152" font-size="11" fill="#9ca3af" text-anchor="end">100%</text>
+
+  <text x="120" y="195" font-size="12.5" fill="#374151">Battery prose+code, 7,158 rounds (natural)</text>
+  <rect x="120" y="203" width="399" height="16" rx="4" fill="#0a7d2c"/><text x="530" y="216" font-size="12.5" font-weight="700" fill="#0a7d2c">87.7%</text>
+
+  <text x="120" y="245" font-size="12.5" fill="#374151">Matched CODE cell (n=5, c8)</text>
+  <rect x="120" y="253" width="379" height="16" rx="4" fill="#0068b5"/><text x="510" y="266" font-size="12.5" font-weight="700" fill="#0068b5">83.3%</text>
+
+  <text x="120" y="295" font-size="12.5" fill="#374151">Matched PROSE cell (n=5, c8)</text>
+  <rect x="120" y="303" width="362" height="16" rx="4" fill="#0068b5"/><text x="493" y="316" font-size="12.5" font-weight="700" fill="#0068b5">79.5%</text>
+
+  <text x="120" y="345" font-size="12.5" fill="#374151">Warm-probe repeat (same prose, hot server, n=3)</text>
+  <rect x="120" y="353" width="380" height="16" rx="4" fill="#ff6a00"/><text x="511" y="366" font-size="12.5" font-weight="700" fill="#c2410c">83.4%</text>
+
+  <text x="60" y="388" font-size="12" fill="#6b7280">Cold first-cell draw was 72% → warmth lifts acceptance; content class (code &gt; prose) dominates.</text>
+
+  <!-- thermal panel -->
+  <rect x="640" y="100" width="400" height="300" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="660" y="130" font-size="15" font-weight="700" fill="#111827">Card asymmetry (loaded-idle, by design)</text>
+  <text x="660" y="160" font-size="13" fill="#6b7280">Layer split 1:1 · GPU1 also runs the LM head</text>
+  <text x="660" y="178" font-size="13" fill="#6b7280">and the whole MTP draft layer (draft @ SYCL1)</text>
+
+  <text x="680" y="215" font-size="12.5" fill="#374151">GPU0 · layers 0–23 · idles between tokens</text>
+  <rect x="680" y="223" width="330" height="16" rx="4" fill="#93b8dc"/><text x="1020" y="236" font-size="12.5" font-weight="700" fill="#4b7aa8" text-anchor="end">54 °C pkg</text>
+
+  <text x="680" y="265" font-size="12.5" fill="#374151">GPU1 · layers 24–47 + head + draft</text>
+  <rect x="680" y="273" width="330" height="16" rx="4" fill="#ff6a00"/><text x="1020" y="286" font-size="12.5" font-weight="700" fill="#c2410c" text-anchor="end">66–67 °C pkg</text>
+
+  <text x="680" y="320" font-size="12.5" fill="#374151">Configured power cap (both cards)</text>
+  <rect x="680" y="328" width="134" height="16" rx="4" fill="#e5e7eb"/><text x="824" y="341" font-size="12.5" font-weight="700" fill="#374151" text-anchor="end">195 W</text>
+  <text x="680" y="380" font-size="12" fill="#6b7280">xe hwmon exposes no clock attrs — freq reads come from the</text>
+  <text x="680" y="396" font-size="12" fill="#6b7280">dashboard/debugfs; telemetry records temps + energy @0.5 s.</text>
+</svg>
