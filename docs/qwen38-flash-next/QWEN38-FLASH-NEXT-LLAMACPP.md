@@ -67,13 +67,32 @@ measured by per-request acceptance/counters; env kill-switch
 
 - Tree: upstream main `52d42686560a9e8f441f9b9780c8890c37d2802d` (the pinned
   `9723942` patches are superseded — the fused IQ3_S/IQ4_NL MMVQ is upstream).
-- Patches: qwen4exp MTP draft-head support (adapted from
+- Patches, in this order, from the cookbook checkout:
+
+```bash
+git checkout 52d42686560a9e8f441f9b9780c8890c37d2802d
+git apply patches/llamacpp-sycl/qwen4exp-mtp-draft-head.patch
+git apply patches/llamacpp-sycl/sycl-fused-mmvq-mt.patch
+```
+
+  Copy the two files next to the llama.cpp tree, or pass the cookbook path
+  to `git apply`. Do not apply `flashnext-arch-overlay.patch` or
+  `sycl-fused-mmvq-and-gpu-group.patch` on this pin.
+
+| File | SHA-256 |
+|---|---|
+| `qwen4exp-mtp-draft-head.patch` | `86fccb037a98605079b2b0178cc21d910341f9a0b060e5b534da499a0a2c1222` |
+| `sycl-fused-mmvq-mt.patch` | `126632bbf5ec5fe16401254d262dacba1a4b6728756400ba65010faa1c30516e` |
+
+  First file: qwen4exp MTP draft-head (adapted from
   [dzannotti's patch](https://huggingface.co/dzannotti/Qwen3.8-Flash-Next-MTP-GGUF):
   MTP-only tensor walk, `graph_mtp`, `DECODER_MTP` routing, `t_h_nextn`
-  handover, two drift fixes for post-b10612 upstream) **plus** the local
-  multi-token kernel (`mul_mat_vec_q_moe_mt`, M=2..8, gate-up + grouped down
-  forms) and wrapper acceptance of the 3D/2D multi-token shapes. Full
-  inventory in the evidence:
+  handover, two drift fixes for post-b10612 upstream).
+  Second file: fused multi-token MoE kernel (`mul_mat_vec_q_moe_mt` +
+  `ggml_sycl_mul_mat_vec_q_id_mt`, M=2..8, gate-up + grouped down forms).
+  Wrapper accepts 3D `src1 [n_embd,1,T]` and `[n_embd,k,T]`.
+  `GGML_SYCL_MT_OFF=1` falls back to the counting-sort path (MTP accept
+  stays high, tok/s drops below no-spec). Full inventory:
   [`results/qwen38-flash-next-mtp-kernel-v1/summary.json`](../../results/qwen38-flash-next-mtp-kernel-v1/summary.json).
 - Draft head:
   [`dzannotti/Qwen3.8-Flash-Next-MTP-GGUF`](https://huggingface.co/dzannotti/Qwen3.8-Flash-Next-MTP-GGUF)
