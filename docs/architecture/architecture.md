@@ -6,6 +6,7 @@ from the repository's own authorities:
 - Layers and routing: `data/system-map.v1.json` and `docs/AGENT-SYSTEM.md`
 - Watchdog behavior: `watchdog/README.md`
 - Runtime env flags: `docs/FEATURE-FLAGS.md`
+- OpenVINO GenAI vs Cascadia: `docs/architecture/openvino-and-cascadia.md`
 
 If this page and an authority disagree, the authority wins. Fix this page or
 file an issue.

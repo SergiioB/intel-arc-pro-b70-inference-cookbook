@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-labelledby="t d">
+  <title id="t">Qwen3.8-27B OpenVINO vs Cascadia vs llama.cpp on one B70</title>
+  <desc id="d">P512 G128 C1 n=5 median at 230 W except llama.cpp at 150 W GGUF</desc>
+  <rect width="1600" height="900" fill="#07111f"/>
+  <text x="60" y="64" fill="#68a7ff" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">INTEL ARC PRO B70 · 2026-09-12</text>
+  <text x="60" y="118" fill="#f5f8fc" font-size="40" font-weight="800" font-family="Segoe UI, Inter, sans-serif">Qwen3.8-27B backends</text>
+  <text x="60" y="156" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">P512 / G128 / C1 · n=5 median · mixed INT4-GDN8 IR (llama.cpp is Q4_K_M GGUF)</text>
+
+  <rect x="60" y="190" width="460" height="520" rx="24" fill="#0f0f1d" fill-opacity="0.45" stroke="#252d3a"/>
+  <text x="90" y="240" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">OpenVINO GenAI 2026.5</text>
+  <text x="90" y="360" fill="#55d6be" font-size="84" font-weight="700" font-family="Segoe UI, Inter, sans-serif">15.79</text>
+  <text x="430" y="360" fill="#9caec4" font-size="28" font-family="Segoe UI, Inter, sans-serif">t/s</text>
+  <text x="90" y="420" fill="#68a7ff" font-size="22" font-family="Segoe UI, Inter, sans-serif">183 W · 79 °C · PASS</text>
+  <text x="90" y="470" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">LATENCY + f16 · VLMPipeline</text>
+  <text x="90" y="500" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">on-device decode · 230 W cap</text>
+  <text x="90" y="560" fill="#ffb45c" font-size="18" font-family="Segoe UI, Inter, sans-serif">Speed path on one card</text>
+
+  <rect x="560" y="190" width="460" height="520" rx="24" fill="#0f0f1d" fill-opacity="0.45" stroke="#252d3a"/>
+  <text x="590" y="240" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">Cascadia qwen35 2026.3.1</text>
+  <text x="590" y="360" fill="#f5f8fc" font-size="84" font-weight="700" font-family="Segoe UI, Inter, sans-serif">4.95</text>
+  <text x="910" y="360" fill="#9caec4" font-size="28" font-family="Segoe UI, Inter, sans-serif">t/s</text>
+  <text x="590" y="420" fill="#68a7ff" font-size="22" font-family="Segoe UI, Inter, sans-serif">102 W · 66 °C · PASS</text>
+  <text x="590" y="470" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">LATENCY + f16 wired</text>
+  <text x="590" y="500" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">host logits · 230 W cap unused</text>
+  <text x="590" y="560" fill="#ffb45c" font-size="18" font-family="Segoe UI, Inter, sans-serif">HTTP / pipeline-parallel path</text>
+
+  <rect x="1060" y="190" width="480" height="520" rx="24" fill="#0f0f1d" fill-opacity="0.45" stroke="#252d3a"/>
+  <text x="1090" y="240" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">llama.cpp SYCL Q4_K_M</text>
+  <text x="1090" y="360" fill="#f5f8fc" font-size="84" font-weight="700" font-family="Segoe UI, Inter, sans-serif">18.58</text>
+  <text x="1460" y="360" fill="#9caec4" font-size="28" font-family="Segoe UI, Inter, sans-serif">t/s</text>
+  <text x="1090" y="420" fill="#68a7ff" font-size="22" font-family="Segoe UI, Inter, sans-serif">tg128 · 150 W · PASS</text>
+  <text x="1090" y="470" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">Different artifact (GGUF)</text>
+  <text x="1090" y="500" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">Not an IR race</text>
+  <text x="1090" y="560" fill="#ffb45c" font-size="18" font-family="Segoe UI, Inter, sans-serif">Simple GGUF production path</text>
+
+  <text x="60" y="760" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">Hub OpenVINO/Qwen3.8-27B-int4-ov: garbage on GPU and CPU. Working IR: SergiioB/Qwen3.8-27B-int4-gdn8-ov (GDN left float).</text>
+  <text x="60" y="800" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">Cascadia LATENCY=f16 vs THROUGHPUT: 4.95 vs 4.92. Plugin hints do not close the 3.2× gap.</text>
+  <text x="60" y="860" fill="#64748b" font-size="15" font-family="Segoe UI, Inter, sans-serif">Research only. Not a catalog row vs GPTQ vLLM.</text>
+</svg>

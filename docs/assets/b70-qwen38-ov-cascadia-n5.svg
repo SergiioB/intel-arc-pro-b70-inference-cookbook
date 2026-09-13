@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 980" width="1600" height="980" role="img">
+  <rect width="1600" height="980" fill="#07111f"/>
+  <text x="60" y="64" fill="#68a7ff" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">N5 LENGTH SWEEP · 230 W CAP</text>
+  <text x="60" y="118" fill="#f5f8fc" font-size="36" font-weight="800" font-family="Segoe UI, Inter, sans-serif">OpenVINO GenAI vs Cascadia qwen35</text>
+  <text x="60" y="156" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · mixed INT4-GDN8 · median of 5</text>
+
+  <text x="80" y="220" fill="#9caec4" font-size="18" font-family="Segoe UI, Inter, sans-serif">P / G</text>
+  <text x="280" y="220" fill="#9caec4" font-size="18" font-family="Segoe UI, Inter, sans-serif">OpenVINO t/s</text>
+  <text x="620" y="220" fill="#9caec4" font-size="18" font-family="Segoe UI, Inter, sans-serif">Cascadia t/s</text>
+  <text x="960" y="220" fill="#9caec4" font-size="18" font-family="Segoe UI, Inter, sans-serif">OV W / °C</text>
+  <text x="1240" y="220" fill="#9caec4" font-size="18" font-family="Segoe UI, Inter, sans-serif">Casc W / °C</text>
+  <line x1="60" y1="240" x2="1540" y2="240" stroke="#252d3a" stroke-width="2"/>
+
+  <g font-family="Segoe UI, Inter, sans-serif" font-size="28" font-weight="600">
+    <text x="80" y="300" fill="#f5f8fc">128 / 128</text>
+    <text x="280" y="300" fill="#55d6be">15.14</text>
+    <text x="620" y="300" fill="#f5f8fc">4.97</text>
+    <text x="960" y="300" fill="#9caec4">186 / 79</text>
+    <text x="1240" y="300" fill="#9caec4">102 / 65</text>
+
+    <text x="80" y="380" fill="#f5f8fc">512 / 128</text>
+    <text x="280" y="380" fill="#55d6be">15.79</text>
+    <text x="620" y="380" fill="#f5f8fc">4.95</text>
+    <text x="960" y="380" fill="#9caec4">183 / 79</text>
+    <text x="1240" y="380" fill="#9caec4">102 / 66</text>
+
+    <text x="80" y="460" fill="#f5f8fc">1024 / 128</text>
+    <text x="280" y="460" fill="#55d6be">15.25</text>
+    <text x="620" y="460" fill="#f5f8fc">4.92</text>
+    <text x="960" y="460" fill="#9caec4">185 / 81</text>
+    <text x="1240" y="460" fill="#9caec4">102 / 66</text>
+
+    <text x="80" y="540" fill="#f5f8fc">512 / 64</text>
+    <text x="280" y="540" fill="#55d6be">12.45</text>
+    <text x="620" y="540" fill="#f5f8fc">4.77</text>
+    <text x="960" y="540" fill="#9caec4">185 / 79</text>
+    <text x="1240" y="540" fill="#9caec4">102 / 66</text>
+
+    <text x="80" y="620" fill="#f5f8fc">512 / 256</text>
+    <text x="280" y="620" fill="#55d6be">20.52</text>
+    <text x="620" y="620" fill="#f5f8fc">5.04</text>
+    <text x="960" y="620" fill="#9caec4">181 / 79</text>
+    <text x="1240" y="620" fill="#9caec4">103 / 67</text>
+  </g>
+
+  <text x="60" y="720" fill="#ffb45c" font-size="20" font-family="Segoe UI, Inter, sans-serif">Headline row: P512/G128. G256 looking faster is TTFT amortized over more tokens.</text>
+  <text x="60" y="760" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">OpenVINO at 150 W P512/G128: 14.65 t/s / 150 W / 73 °C. Dense 27B scales ~8% to 230 W.</text>
+  <text x="60" y="800" fill="#aeb9c7" font-size="18" font-family="Segoe UI, Inter, sans-serif">Cascadia power is flat ~102 W at a 230 W cap. Prefill length does not move decode.</text>
+  <text x="60" y="860" fill="#64748b" font-size="15" font-family="Segoe UI, Inter, sans-serif">QUALITY_PASS on every row (English). Hub all-INT4 is not in this table.</text>
+</svg>
