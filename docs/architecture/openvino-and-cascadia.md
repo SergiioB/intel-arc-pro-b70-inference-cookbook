@@ -78,6 +78,7 @@ What it does not offer on one B70 for Qwen3.8-27B:
 - Tok/s matching Python `VLMPipeline` (15.79 vs 4.95 at 230 W P512/G128).
   `qwen35` is a host-side greedy loop around a surgery IR, not fused GenAI
 - A paged-attention GDN decode that fits 32 GB with a ~21 GB mixed-INT4 graph
+- Future optimization: **If Intel implements a fused INT4 `CascadiaInt4Gemv` equivalent for GatedDeltaNet**, OpenVINO performance on Qwen3.8 could dramatically increase, bringing it closer to vLLM's speeds. Currently, GDN layers must be evaluated in FP16 to avoid garbage output, which creates a catastrophic VRAM bandwidth bottleneck.
 
 ## How they differ
 
