@@ -35,6 +35,7 @@ Nemotron DFlash.
 | **Qwen3.8-Flash-Next** | llama.cpp SYCL (two B70s, C1) | MTP + fused multi-token `MUL_MAT_ID` kernel. 8K/16K/128K are context windows. FP32 and F16 are separate compile-time binaries. | C1 n=5: FP32 **33.25** tok/s p512/g128 at 8K (+42%); F16 cold input **585.9** at p9096/g128, 16K. | [Recipe](docs/qwen38-flash-next/QWEN38-FLASH-NEXT-LLAMACPP.md) |
 | **Ornith-1.5-35B-A3B** | vLLM XPU (Qwen3.8 nightly digest) | Local GPTQ-INT4 MixedCal-v2, **MTP1 + DraftINT4 default**; 262K C1; 150↔230 W prefill A/B | Self-reported E2: combined 230 W LMX `tokSOut` **108.4** / `tokSPrefill` **9073** (`cmt2tdx5q0hy0mv01koh4xwpw`); host p512/g128 **106.64**. BF16-draft MTP1 150 W **96.43**. No-spec 230 W prefill **9780** (`cmt2sr6gq0himmv01ogieh0c8`) | [ORNITH-VLLM-XPU](docs/ornith15-35a3/ORNITH-VLLM-XPU.md) |
 | **Ornith-1.5-35B-A3B** (converters) | vLLM XPU (nightly digest) | GPTQ→AutoRound converter head-to-head; MTP1; **reference logprob parity vs BF16** | MTP1 96.4 t/s n=5 @150 W; AutoRound equal-or-best parity (self-report, E2) | [AUTOROUND-VS-GPTQ](docs/ornith15-35a3/AUTOROUND-VS-GPTQ.md) |
+| **Qwen3.8-27B** | OpenVINO GenAI & Cascadia | Native INT4 VLM, NNCF surgery, Paged Attention (`--cb`) | 15.8 tok/s OpenVINO 230 W (single-user limit) vs 4.95 Cascadia. Fast pipeline-parallel but bottlenecked by GDN. | [OpenVINO vs Cascadia](docs/qwen38-27/OPENVINO-CASCADIA-REPORT.md) · [Architecture Guide](docs/architecture/openvino-and-cascadia.md) |
 
 Image + patch pin: [IMAGE-AND-PATCH-MATRIX.md](docs/IMAGE-AND-PATCH-MATRIX.md).
 
@@ -60,6 +61,28 @@ The command regenerates [`docs/BENCHMARK-CATALOG.md`](docs/BENCHMARK-CATALOG.md)
 Complete numeric rows require an exact workload, sample count, metric definition,
 and commit-pinned evidence. Working recipes without those coordinates stay as
 capability records and do not enter benchmark rankings.
+
+## Engine Quick Selection
+
+The B70 has 32 GB of VRAM and 608 GB/s bandwidth. The right engine depends on your model architecture and deployment goal.
+
+**1. vLLM XPU (Docker + Python)**
+- **Best for:** Absolute maximum speed, speculative decoding (MTP), OpenAI API serving, multi-user throughput.
+- **Why:** XPU flash attention crushes prefill (often 5-10× faster than llama.cpp). MTP kernels provide massive decode boosts for Qwen.
+- **Catch:** Dense FP16 models OOM on a single card. You must use GPTQ/AWQ INT4 formats or TP2 across two cards. Docker + `--privileged` required.
+- **Guide:** [vLLM XPU Setup](docs/FULL-SETUP-COMMANDS.md)
+
+**2. llama.cpp SYCL (Bare Metal C++)**
+- **Best for:** Low VRAM footprint, GGUF compatibility, interactive local chat, running dense models that don't fit in vLLM.
+- **Why:** Highly optimized `Q4_K_M` quants fit huge models (e.g., 35B) comfortably in 32 GB. Zero dependencies, compiles natively.
+- **Catch:** Slower prefill. Layer-split multi-GPU does not scale decode speed.
+- **Guide:** [llama.cpp SYCL vs vLLM XPU](docs/engine-comparison.md) (from our early benchmarks)
+
+**3. OpenVINO GenAI & Cascadia (Bare Metal / Rust)**
+- **Best for:** Edge deployments, NPU utilization (Core Ultra), pipeline-parallel across machines over the network.
+- **Why:** JIT cache (`--ov-cache-dir`) drops cold-start to ~1 second. Cascadia provides a single Rust binary for serving.
+- **Catch:** Model coverage lags behind vLLM/llama.cpp (e.g., Qwen3.8 GDN kernels missing/broken).
+- **Guide:** [OpenVINO vs Cascadia Architecture](docs/architecture/openvino-and-cascadia.md)
 
 ## Quick Start (3-Step Setup)
 
