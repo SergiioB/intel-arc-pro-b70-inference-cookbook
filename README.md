@@ -76,7 +76,7 @@ The B70 has 32 GB of VRAM and 608 GB/s bandwidth. The right engine depends on yo
 - **Best for:** Low VRAM footprint, GGUF compatibility, interactive local chat, running dense models that don't fit in vLLM.
 - **Why:** Highly optimized `Q4_K_M` quants fit huge models (e.g., 35B) comfortably in 32 GB. Zero dependencies, compiles natively.
 - **Catch:** Slower prefill. Layer-split multi-GPU does not scale decode speed.
-- **Guide:** [llama.cpp SYCL vs vLLM XPU](docs/engine-comparison.md) (from our early benchmarks)
+- **Guide:** [llama.cpp SYCL vs vLLM XPU](docs/FULL-SETUP-COMMANDS.md) (from our early benchmarks)
 
 **3. OpenVINO GenAI & Cascadia (Bare Metal / Rust)**
 - **Best for:** Edge deployments, NPU utilization (Core Ultra), pipeline-parallel across machines over the network.
