@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.1.1...v1.2.0) (2026-09-13)
+
+
+### Features
+
+* **flash-next:** publish MTP draft-head + fused multi-token MoE kernel patches ([72dc153](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/72dc15382656bec35d2a7e4d6518f8a7298ba01d))
+
+
+### Bug Fixes
+
+* **flash-next:** document multi-token kernel ids-transpose fix (wrong experts in verify; quality restored, speed unchanged) ([31b3707](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/31b370710d95a023fe7d1c05f536983f59594790))
+
 ## [1.1.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.1.0...v1.1.1) (2026-09-11)
 
 
