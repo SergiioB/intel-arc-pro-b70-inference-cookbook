@@ -101,6 +101,22 @@ workspace reserve, single card, INT8 weights. Linear state is fixed
 not context cost. Model max_position_embeddings = 262,144 (256K); reaching it
 on one card needs KV INT8 or the INT4 weights.
 
+## Long-context behavior (2026-09-14, 1× B70, int8-ov)
+
+| len | prefill tps | decode tps | config |
+|---:|---:|---:|---|
+| 512 | 1537 | 62.1 | MTP nat5, f16 KV |
+| 2K | 1815 | 56.5 | MTP nat5, f16 KV |
+| 8K | 1643 | 50.8 | MTP nat5, f16 KV |
+| 32K | 1119 (f16) / 1117 (u8) | 41.3 / 41.8 | MTP nat5 |
+| 48K | 916 | 30.2 | MTP nat5, f16 KV (last clean MTP length) |
+| 64K | 775 | BROKEN w/ MTP; 15.2 no-MTP | u8 KV |
+| 96K | 587 | (u8, no-MTP path only) | |
+| 128K | 465 | (u8, no-MTP path only) | TTFT 278 s |
+
+KV u8 halves cache with zero cost ≤32K; f16 KV + MTP dies at 64K (CL -14);
+u8 + MTP prefills but decode breaks >32K. Full guide: OPENVINO-B70-TUNING.md.
+
 ## Next targets
 
 1. Export an MTP draft unit for `SergiioB/Qwen3.8-27B-int4-gdn8-ov` (the fixed
