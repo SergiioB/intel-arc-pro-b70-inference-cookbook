@@ -25,7 +25,7 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 
 ## Prefill tok/s (input / TTFT)
 
-| len | OpenVINO | vLLM | llama.cpp |
+| len | OpenVINO | vLLM | llama.cpp (150W-capped†) |
 |---:|---:|---:|---:|
 | 512 | **1537** | 1491 | 230 |
 | 2K | 1815 | **1753** | 227 |
@@ -40,6 +40,9 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 ⁴ mixed KV fix: main u8 + draft f16 (see OPENVINO-B70-TUNING.md §7b)
 ⁵ no-MTP u8-KV path; u4/f16 verified to 96K (13.3-14.5 tok/s), see below
 ⁶ 27.04 GiB weights + 128K f16 KV exceeds 32 GB at model init
+
+† llama.cpp prefill measured under the 150W default cap; at 230W it gains
++23% (230→285 t/s at 512). Decode is cap-insensitive (15.2 both caps).
 
 ## Power (energy-counter means)
 
@@ -58,9 +61,15 @@ in this doc comes from the dedicated timestamped sampler run.
 
 ## Protocol notes
 
+- n counts: 512–8K n=5, 32K+ n=3 for the three full sweeps. EXCEPTIONS: the
+  OV 64K mixed-KV point (n=2) and the 96K f16/u4 points (n=1 each) come from
+  single-purpose ceiling probes — treat as provisional until rerun.
+
 - llama.cpp measured via llama-bench pp/tg (engine metrics, fresh process
   per length); OV and vLLM measured client-side post-first-token. llama-bench
-  tg is engine decode rate — comparable at C1.
+  uses synthetic prompts/tokens, not the shared counting task — immaterial
+  for dense no-spec decode (its flat 14.0 matches OV no-MTP ~15), but spec
+  acceptance on a real task would need the server path, not llama-bench.
 - vLLM served via docker (OpenAI API, streaming TTFT); OV/llama native.
 - Watt measurement: `energy1_input` µJ counter. Earlier drafts showed ~45 W
   for vLLM/llama — that was the idle card (wrong PCI device); corrected here.
@@ -92,6 +101,11 @@ and MTP-independent. Upstream-filable against genai 2026.5.0.0-3412.
 
 Graphs ON = +8.7% at 512, +1.8% at 8K. The context-driven decode collapse is
 NOT a graph artifact (both arms collapse identically).
+
+> Note on OV 512: the headline catalog number 71.0 post-first (n=5, counting
+> prompt) and this table's 62.1 are different prompts — the sweep uses the
+> shared Eiffel-filler task for cross-engine comparability; acceptance rates
+> differ by task. Same-protocol comparisons use this table only.
 
 ## Reading (v2-corrected)
 
