@@ -70,6 +70,16 @@ Compressed-KV decode (u8 AND u4) breaks between 98K and 131K with normal TTFT
 and empty output — same signature as the u8-on-draft defect but length-driven
 and MTP-independent. Upstream-filable against genai 2026.5.0.0-3412.
 
+## vLLM XPU graph A/B (same GPTQ-Int4 MTP4 config, n=3)
+
+| len | graph ON | graph OFF |
+|---:|---:|---:|
+| 512 | 57.27 | 52.66 |
+| 8K | 13.58 | 13.34 |
+
+Graphs ON = +8.7% at 512, +1.8% at 8K. The context-driven decode collapse is
+NOT a graph artifact (both arms collapse identically).
+
 ## Reading
 
 - **≤32K chat/RAG workloads: OpenVINO + MTP is the clear pick** — 3-4x the
