@@ -30,7 +30,7 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 ² GPTQ-Int4 sym G128, MTP4 BF16-draft, fp8 KV, 0.27.2rc1, docker
 ³ Q8_0 GGUF (unsloth), flashnext 52d4268, fa on, no spec decode
 ⁴ mixed KV fix: main u8 + draft f16 (see OPENVINO-B70-TUNING.md §7b)
-⁵ no-MTP u8-KV path (MTP ceiling ~64-80K on 32GB)
+⁵ no-MTP u8-KV path; u4/f16 verified to 96K (13.3-14.5 tok/s), see below
 ⁶ 27.04 GiB weights + 128K f16 KV exceeds 32 GB at model init
 
 ## Power (energy-counter means)
@@ -55,6 +55,20 @@ well under cap), so the cap difference does not explain the decode gaps.
   for vLLM/llama — that was the idle card (wrong PCI device); corrected here.
 - OV ceiling work (KV u8, mixed draft precision) documented in
   OPENVINO-B70-TUNING.md; raw JSONs in B70-DOCS `qw38-ov-mtp-20260914/`.
+
+## OV context ceiling detail (all measured 2026-09-14 night)
+
+| Config | max working | failure mode beyond |
+|---|---|---|
+| MTP nat5 + f16 KV | 48K clean | 64K: CL -14 crash |
+| MTP nat5 + u8 main/f16 draft | 64K (25 tok/s) | 96K: CL_OUT_OF_RESOURCES |
+| no MTP + f16 KV | 96K (13.3 tok/s @96K) | 131K: VRAM (33.8 GB needed) |
+| no MTP + u8 KV | 64K (15.2) | >96K: decode returns empty (gen_tokens==1) |
+| no MTP + u4 KV | 96K (14.5 tok/s @98K probe) | 131K: decode returns empty (prefill fine, 470 t/s) |
+
+Compressed-KV decode (u8 AND u4) breaks between 98K and 131K with normal TTFT
+and empty output — same signature as the u8-on-draft defect but length-driven
+and MTP-independent. Upstream-filable against genai 2026.5.0.0-3412.
 
 ## Reading
 
