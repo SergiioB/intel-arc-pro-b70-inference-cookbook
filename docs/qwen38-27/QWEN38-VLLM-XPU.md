@@ -62,6 +62,16 @@ curl -f http://127.0.0.1:8000/health
 > [!NOTE]
 > **Context & Headroom:** 100,000 tokens (`--max-model-len 100000`, `U=0.88`) provides ~1.5–2.0 GiB free VRAM headroom. If running full 131,072 context, keep `--gpu-memory-utilization 0.88` (leaves ~870 MiB free after load for isolated C1 runs).
 
+> [!TIP]
+> **Compile-time OOM on a second card (or fresh compile):** if engine init dies with
+> `UR_RESULT_ERROR_OUT_OF_RESOURCES` during `_compile_to_module`, parallel inductor
+> compile workers exhausted the Level Zero context. Add
+> `-e TORCHINDUCTOR_COMPILE_THREADS=1` to the `docker run` line (verified 2026-09-14;
+> cold start ~3–4 min single-threaded). MTP **depth 4 is confirmed optimal** on one
+> B70 — depth 6 measured 10–20% slower at both decode anchors because acceptance
+> collapses past draft position 4; see
+> [MTP-DEPTH-DFLASH2-KNORM-20260914.md](MTP-DEPTH-DFLASH2-KNORM-20260914.md).
+
 ---
 
 ## 1. Model download from Hugging Face
@@ -501,3 +511,29 @@ ceiling. A float32 math non-causal shim with context attached
 packing, not “raise n”. **Keep MTP4 as the serving spec.** Not a Lane 1 card
 and not a cookbook apply-list item. Never apply Nemotron DFlash patches
 to this family. Writeup: `B70-DOCS/research/qwen38-dflash2-smoke-20260819.md`.
+
+### 13.1 Root cause found (2026-09-14): stacked K-norm XPU kernel bug — still not ready
+
+The zero-acceptance mystery now has a mechanism: upstream **vLLM PR #56431**
+(open; kernel fix in vllm-xpu-kernels#579, also open) — the XPU `rms_norm`
+kernel applies **layer 0's K-norm weight to every draft layer** of the stacked
+`[layers, head_dim]` weight, corrupting draft context K. Porting the per-layer
+fallback onto the pinned image roughly **doubled acceptance** (accepted length
+≈0.71–0.85 → ≈1.62–2.26 greedy, coherent output on all test classes) — a real
+recovery, but **still below matched MTP4 (≈3.3–4.0) and short of the adoption
+gate**; a second defect (all-NaN selector walks deep in the draft, upstream
+issue #54928) remains. Verdict unchanged: **keep MTP4**; retry DFlash2 only on
+an official image containing both #56431 and vxk#579 plus a selector-NaN fix.
+
+Three new operational traps if you experiment anyway (full details:
+[MTP-DEPTH-DFLASH2-KNORM-20260914.md](MTP-DEPTH-DFLASH2-KNORM-20260914.md)):
+
+1. the DFlash2 draft path **cannot torch.compile** on this image — run
+   `--enforce-eager`;
+2. eager still needs `--max-num-seqs 1` (`causal_conv1d does not support
+   spec-decode and non-spec tokens in the same invocation` at seqs 8) plus
+   `--async-scheduling --block-size 64 --mamba-ssm-cache-dtype float16`;
+3. run the container with `--workdir /` — otherwise draft-model registry
+   inspection resolves the image's `/workspace/vllm` checkout instead of your
+   patched site-packages and fails with a confusing `ModuleNotFoundError`.
+
