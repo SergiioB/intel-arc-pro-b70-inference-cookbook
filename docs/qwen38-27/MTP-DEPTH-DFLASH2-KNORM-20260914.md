@@ -74,3 +74,26 @@ upstream resolution of the selector-NaN path (#54928 / #56692).
 - No cross-cap or cross-host comparisons are claimed. The 2026-09-13 single-card
   campaign (45.7 tok/s MTP4 at 150 W) and this screen (50.8 at 230 W) differ in cap
   and host load — directional only.
+
+## Update (2026-09-14 later): the compile-path break is fixed, and the selector NaN resolved
+
+- **DFlash2 can now run with a compiled target.** The engine-init death under
+  torch.compile (dynamic-shape stride assert on the (5, ctx, 8, 128) context-KV
+  layout, "incorrect fake kernel for a custom op") is worked around by stripping
+  `@support_torch_compile` from `DFlashQwen3Model` (draft runs eager; target keeps
+  its compiled decode, ~1.7× vs full `--enforce-eager` on the same setup). Server
+  inits in ~4 min and serves coherently. Filed upstream with the verified
+  workaround: [vLLM issue #56787](https://github.com/vllm-project/vllm/issues/56787).
+- **The all-NaN selector walks are an eager-mode artifact.** A per-position
+  finite-fraction probe of the draft hidden states (115 windows) shows 100% finite
+  values and zero NaN-guard fires in the compiled-target/eager-draft configuration.
+  The remaining acceptance gap vs MTP4 (≈1.8–2.2 vs ≈3.3–4.0 accepted length) is
+  drafter quality on this GPTQ-INT4 target, not a local bug.
+- **Independent B70 verification posted on upstream PR #56431**
+  (comment 5661018741): non-CUDA hardware data for the stacked K-norm fix, plus the
+  context-vs-forward path analysis.
+- **vxk build bug fixed upstream:** the docker wheel-build script omitted `psutil`
+  (imported by `setup.py:compute_num_jobs` when `MAX_JOBS` is unset) — fixed in
+  [vllm-xpu-kernels PR #597](https://github.com/vllm-project/vllm-xpu-kernels/pull/597);
+  the merged kernel fix vxk#579 is not yet in any released wheel, so XPU users
+  should keep native MTP4 until a vxk release + a DFlash2-acceptance fix ship.
