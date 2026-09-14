@@ -16,7 +16,7 @@ Hub `OpenVINO/Qwen3.8-27B-int4-ov` is still broken
    `ignored_scope: null` quantized GatedDeltaNet. Not a plugin bug.
 2. **Flags on that IR** (fresh JIT, dyn-quant 0/128, official image kwargs)
    did not fix it.
-3. **INT8 Hub IR** QUALITY_PASS. Python 13.09 tok/s (150 W, n=128).
+3. **INT8 Hub IR** QUALITY_PASS. Python 13.09 tok/s (150 W, n=128). Superseded 2026-09-14 by MTP decode: 18.72 tok/s no-MTP → 61.56 at MTP4 (230 W) — see [OPENVINO-MTP.md](OPENVINO-MTP.md).
    Cascadia `qwen35` 4.56 tok/s. `ov-genai` SIGSEGV (2026.2 and 2026.3.1).
 4. **Disk** for a BF16 re-export: dropped DeepSeek Q8, Qwen3.6-35B,
    Nemotron GPTQ, leftover 3.6-27B, vxk-build, qw38-fp8. ComfyUI kept.

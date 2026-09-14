@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 780" width="1600" height="780" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B INT8 OpenVINO MTP decode ladder on one B70</title>
+ <desc id="d">Wall tok/s at MTP depth 0-4, 230 W cap, greedy, 192 tokens: 18.72, 42.81, 52.67, 61.56</desc>
+ <rect width="1600" height="780" fill="#07111f"/>
+ <text x="60" y="64" fill="#68a7ff" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">OPENVINO GENAI MTP LADDER · 1× ARC PRO B70 · 230 W · 2026-09-14</text>
+ <text x="60" y="92" fill="#8fa3c0" font-size="15" font-family="Segoe UI, Inter, sans-serif">Qwen3.8-27B int8-ov · VLMPipeline · greedy · 192 tok · byte-identical output at every depth</text>
+ <line x1="110" y1="640" x2="1540" y2="640" stroke="#26364e" stroke-width="2"/>
+ <line x1="110" y1="140" x2="110" y2="640" stroke="#26364e" stroke-width="2"/>
+ <!-- gridlines: 0 at 640, 70 tok/s at 140 => 500px / 70 tps => 7.143 px per tps -->
+ <g stroke="#1a2740" stroke-width="1">
+  <line x1="110" y1="568.6" x2="1540" y2="568.6"/><line x1="110" y1="497.1" x2="1540" y2="497.1"/>
+  <line x1="110" y1="425.7" x2="1540" y2="425.7"/><line x1="110" y1="354.3" x2="1540" y2="354.3"/>
+  <line x1="110" y1="282.9" x2="1540" y2="282.9"/><line x1="110" y1="211.4" x2="1540" y2="211.4"/>
+ </g>
+ <g fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
+  <text x="98" y="645">0</text><text x="98" y="573">10</text><text x="98" y="502">20</text>
+  <text x="98" y="430">30</text><text x="98" y="359">40</text><text x="98" y="287">50</text><text x="98" y="216">60</text>
+ </g>
+ <!-- bars: x centers 300/650/1000/1350, width 200; heights = tps*7.143 -->
+ <rect x="200" y="506.3" width="200" height="133.7" fill="#3d5a80"/>
+ <rect x="550" y="334.0" width="200" height="306.0" fill="#4f7cac"/>
+ <rect x="900" y="263.8" width="200" height="376.2" fill="#68a7ff"/>
+ <rect x="1250" y="200.0" width="200" height="440.0" fill="#81c9ff"/>
+ <g fill="#e8eefb" font-size="26" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="300" y="488">18.72</text><text x="650" y="316">42.81</text>
+  <text x="1000" y="246">52.67</text><text x="1350" y="182">61.56</text>
+ </g>
+ <g fill="#8fa3c0" font-size="17" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="300" y="672">no MTP</text><text x="650" y="672">MTP depth 2</text>
+  <text x="1000" y="672">MTP depth 3</text><text x="1350" y="672">MTP depth 4</text>
+ </g>
+ <g fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="300" y="696">1.00x · TTFT 112 ms</text><text x="650" y="696">2.29x · TTFT 109 ms</text>
+  <text x="1000" y="696">2.81x · TTFT 108 ms</text><text x="1350" y="696">3.29x · TTFT 136 ms</text>
+ </g>
+ <text x="60" y="748" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">Prose workload MTP3: 36.43 tok/s (1.95x) · VRAM 25.8/32 GB · draft = bundled openvino_mtp_model · parity byte-identical</text>
+</svg>
