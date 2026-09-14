@@ -537,3 +537,20 @@ Three new operational traps if you experiment anyway (full details:
    inspection resolves the image's `/workspace/vllm` checkout instead of your
    patched site-packages and fails with a confusing `ModuleNotFoundError`.
 
+### 13.2 Final closure: why DFlash2 is inferior to native MTP4 here
+
+With every bug above fixed, measured head-to-head on one B70 (230 W, compiled
+target, n=3): DFlash2 k=7 = **25.16 / 25.30 tok/s** (p512/p8192 g128) vs native
+MTP4 = **50.78 / 46.58** — acceptance ≈1.4–2.2 vs ≈3.3–4.0 tok/step. The gap is
+architectural on quantized single-card serving: the 3.85 GB 5-layer BF16
+drafter's acceptance is conditioned on full-precision hidden states (a quantized
+target shifts them), its cycle streams far more weight per step than the
+shared-embedding single-layer MTP head, and its 7-token proposals decay to
+near-zero acceptance past position 4. Worse numerator, worse denominator.
+
+Full analysis and the general drafter-selection rule live in
+[Quantization and Drafters](../QUANTIZATION-AND-DRAFTERS.md). Standing retry
+condition: a drafter trained on the quantized target's own hidden states with
+≥1.5× the native head's acceptance on held-out text — not another port of a
+BF16-trained artifact.
+
