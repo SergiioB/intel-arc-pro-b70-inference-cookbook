@@ -64,7 +64,11 @@ cfg.num_assistant_tokens = 4                          # MTP depth
 | **5** | **68.36** | **3.65x — best** |
 | 8 | 42.83 | rejected drafts dominate |
 
-Outputs byte-identical at nat 3/4/5. The `num_assistant_tokens_schedule`
+Outputs byte-identical at nat 3/4/5.
+
+**n=5 confirmation (P512/G128 cell, 128 gen tokens):** count median 67.91 wall /
+71.01 post-first tok/s, TTFT 96 ms; prose median 34.34 / 35.04, TTFT 104 ms.
+Variance ±0.4 tok/s. Raw: B70-DOCS `qw38-ov-mtp-20260914/nat5-n5.json`. The `num_assistant_tokens_schedule`
 constant/heuristic/dynamic triad no longer exists in 2026.5 nightly — MTP is
 static-count only (`assistant_confidence_threshold` is rejected for MTP).
 `ATTENTION_BACKEND` is not a valid pipeline property (Option not found); the
