@@ -55,9 +55,32 @@ cfg.apply_chat_template = False                       # render ChatML yourself
 cfg.num_assistant_tokens = 4                          # MTP depth
 ```
 
+## num_assistant_tokens sweep (same night, probe8)
+
+| nat | wall tok/s | note |
+|---:|---:|---|
+| 3 | 52.59 | |
+| 4 | 61.56 | |
+| **5** | **68.36** | **3.65x — best** |
+| 8 | 42.83 | rejected drafts dominate |
+
+Outputs byte-identical at nat 3/4/5. The `num_assistant_tokens_schedule`
+constant/heuristic/dynamic triad no longer exists in 2026.5 nightly — MTP is
+static-count only (`assistant_confidence_threshold` is rejected for MTP).
+`ATTENTION_BACKEND` is not a valid pipeline property (Option not found); the
+audit says non-Gemma4 MTP wants PA on GPU, default backend already reaches 68.
+
+## Cross-GPU draft: driver crash (do not retry as-is)
+
+`og.draft_model(MODEL, 'GPU.0')` + `VLMPipeline(MODEL, 'GPU.1', draft_model=...)`
+aborts the OpenCL runtime (`enqueue_svm.h:308`) before the first generate.
+Not a config error — the compute-runtime level dies. Both GPUs survived,
+caps restored manually. Worth an upstream issue; not a local tuning lane.
+
 ## Next targets
 
 1. Export an MTP draft unit for `SergiioB/Qwen3.8-27B-int4-gdn8-ov` (the fixed
    INT4) — INT4 weights + MTP is the real size/speed target. No draft unit exists yet.
-2. Cross-GPU draft: `og.draft_model(dir, 'GPU.0')` + main on GPU.1.
-3. `num_assistant_tokens_schedule` and depth 5-6 ceiling on prose workloads.
+2. llama.cpp reference: single-head MTP, n_max=3 default, top_k=10 draft sampling,
+   ~0.93 acceptance / ~3.2 tok per step on this family — nat5 beating it suggests
+   the OpenVINO verifier window batches better on Xe2.
