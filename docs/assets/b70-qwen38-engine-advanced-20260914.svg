@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1180" width="1600" height="1180" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B on one Arc Pro B70 per engine: decode, prefill, context ceilings, power — OpenVINO vs vLLM vs llama.cpp</title>
+ <desc id="d">Two panels: decode vs context and prefill vs context for the three engines, plus ceiling map and power annotations. 2026-09-14.</desc>
+ <rect width="1600" height="1180" fill="#07111f"/>
+ <text x="60" y="52" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">QWEN3.8-27B · 1× ARC PRO B70 PER ENGINE · FULL CONTEXT SWEEP · 2026-09-14</text>
+ <text x="60" y="78" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · same filler · n=5 ≤8K, n=3 ≥32K · OV int8 MTP nat5 · vLLM GPTQ-Int4 MTP4 fp8KV graph-on · llama.cpp Q8_0 no-spec</text>
+
+ <!-- ===== PANEL 1: DECODE (y 120..560) ===== -->
+ <text x="60" y="118" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">DECODE tok/s</text>
+ <line x1="110" y1="530" x2="1540" y2="530" stroke="#26364e" stroke-width="2"/>
+ <line x1="110" y1="140" x2="110" y2="530" stroke="#26364e" stroke-width="2"/>
+ <g stroke="#1a2740" stroke-width="1">
+  <line x1="110" y1="470" x2="1540" y2="470"/><line x1="110" y1="410" x2="1540" y2="410"/>
+  <line x1="110" y1="350" x2="1540" y2="350"/><line x1="110" y1="290" x2="1540" y2="290"/>
+  <line x1="110" y1="230" x2="1540" y2="230"/><line x1="110" y1="170" x2="1540" y2="170"/>
+ </g>
+ <g fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
+  <text x="98" y="535">0</text><text x="98" y="475">10</text><text x="98" y="415">20</text>
+  <text x="98" y="355">30</text><text x="98" y="295">40</text><text x="98" y="235">50</text><text x="98" y="175">60</text>
+ </g>
+ <!-- x: 512,2K,8K,32K,64K,80K,96K at 240,450,660,870,1080,1290,1440 -->
+ <!-- OV y = 530 - tps*6.5 : 62.1→126.35? no: 530-62.1*6.5=126.4 clip -> use 6.0: 530-tps*6 -->
+ <polyline points="240,157.4 450,191 660,225.2 870,282.2 1080,380 1440,450.2" fill="none" stroke="#81c9ff" stroke-width="4"/>
+ <polyline points="240,181.6 450,323 660,450.9 870,509.7 1080,521.6 1440,525.4" fill="none" stroke="#e8a87c" stroke-width="4"/>
+ <polyline points="240,446 450,446 660,446 870,446 1080,446 1440,446" fill="none" stroke="#7d9b76" stroke-width="4" stroke-dasharray="10,6"/>
+ <!-- OV no-MTP long tail (f16/u4): 80K 14.2, 96K 13.3 -->
+ <polyline points="1080,444.8 1290,444.8 1440,450.2" fill="none" stroke="#81c9ff" stroke-width="2.5" stroke-dasharray="4,5" opacity="0.85"/>
+ <g fill="#81c9ff"><circle cx="240" cy="157.4" r="5.5"/><circle cx="450" cy="191" r="5.5"/><circle cx="660" cy="225.2" r="5.5"/><circle cx="870" cy="282.2" r="5.5"/><circle cx="1080" cy="380" r="5.5"/><circle cx="1440" cy="450.2" r="5.5"/></g>
+ <g fill="#e8a87c"><circle cx="240" cy="181.6" r="5.5"/><circle cx="450" cy="323" r="5.5"/><circle cx="660" cy="450.9" r="5.5"/><circle cx="870" cy="509.7" r="5.5"/><circle cx="1080" cy="521.6" r="5.5"/><circle cx="1440" cy="525.4" r="5.5"/></g>
+ <g fill="#7d9b76"><circle cx="240" cy="446" r="5.5"/><circle cx="660" cy="446" r="5.5"/><circle cx="1080" cy="446" r="5.5"/><circle cx="1440" cy="446" r="5.5"/></g>
+ <g fill="#e8eefb" font-size="14" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="142">62.1</text><text x="450" y="176">56.5</text><text x="660" y="210">50.8</text>
+  <text x="870" y="267">41.3</text><text x="1080" y="365">25.0</text><text x="1440" y="435">13.3</text>
+ </g>
+ <g fill="#e8a87c" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="268" y="196">58.1</text><text x="478" y="345">34.5</text><text x="688" y="468">13.2</text>
+  <text x="898" y="503">3.4</text><text x="1108" y="514">1.4</text><text x="1440" y="543">0.8</text>
+ </g>
+ <g fill="#7d9b76" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="430">14.0</text><text x="870" y="430">14.0</text><text x="1350" y="430">14.0</text>
+ </g>
+ <g fill="#8fa3c0" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="558">512</text><text x="450" y="558">2K</text><text x="660" y="558">8K</text>
+  <text x="870" y="558">32K</text><text x="1080" y="558">64K</text><text x="1290" y="558">80K</text><text x="1440" y="558">96K</text>
+ </g>
+ <!-- ceiling markers -->
+ <text x="1080" y="345" fill="#a5dcff" font-size="12" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">64K mixed-KV fix (main u8 / draft f16)</text>
+ <text x="1440" y="470" fill="#a5dcff" font-size="12" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">96K no-MTP u4/f16 KV</text>
+ <text x="1170" y="545" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">OV 131K: compressed-KV decode returns empty · vLLM config max 100K</text>
+
+ <!-- ===== PANEL 2: PREFILL (y 620..950) ===== -->
+ <text x="60" y="628" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">PREFILL tok/s (input / TTFT)</text>
+ <line x1="110" y1="930" x2="1540" y2="930" stroke="#26364e" stroke-width="2"/>
+ <line x1="110" y1="650" x2="110" y2="930" stroke="#26364e" stroke-width="2"/>
+ <g stroke="#1a2740" stroke-width="1">
+  <line x1="110" y1="876" x2="1540" y2="876"/><line x1="110" y1="822" x2="1540" y2="822"/>
+  <line x1="110" y1="768" x2="1540" y2="768"/><line x1="110" y1="714" x2="1540" y2="714"/>
+ </g>
+ <g fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
+  <text x="98" y="935">0</text><text x="98" y="881">500</text><text x="98" y="827">1000</text>
+  <text x="98" y="773">1500</text><text x="98" y="719">2000</text>
+ </g>
+ <!-- y = 930 - tps*0.108 -->
+ <polyline points="240,764 450,733.8 660,752.6 870,809.1 1080,845.8 1440,866.6" fill="none" stroke="#81c9ff" stroke-width="4"/>
+ <polyline points="240,805.3 450,803.6 660,810.9 870,830.2 1080,848.7 1440,861.8" fill="none" stroke="#e8a87c" stroke-width="4"/>
+ <polyline points="240,905.2 450,905.5 660,905.8 870,906.2 1080,907" fill="none" stroke="#7d9b76" stroke-width="4" stroke-dasharray="10,6"/>
+ <g fill="#81c9ff"><circle cx="240" cy="764" r="5.5"/><circle cx="450" cy="733.8" r="5.5"/><circle cx="660" cy="752.6" r="5.5"/><circle cx="870" cy="809.1" r="5.5"/><circle cx="1080" cy="845.8" r="5.5"/><circle cx="1440" cy="866.6" r="5.5"/></g>
+ <g fill="#e8a87c"><circle cx="240" cy="805.3" r="5.5"/><circle cx="450" cy="803.6" r="5.5"/><circle cx="660" cy="810.9" r="5.5"/><circle cx="870" cy="830.2" r="5.5"/><circle cx="1080" cy="848.7" r="5.5"/><circle cx="1440" cy="861.8" r="5.5"/></g>
+ <g fill="#7d9b76"><circle cx="240" cy="905.2" r="5.5"/><circle cx="660" cy="905.8" r="5.5"/><circle cx="1080" cy="907" r="5.5"/></g>
+ <g fill="#e8eefb" font-size="14" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="748">1537</text><text x="450" y="718">1815</text><text x="660" y="737">1643</text>
+  <text x="870" y="793">1119</text><text x="1080" y="830">780</text><text x="1440" y="851">587</text>
+ </g>
+ <g fill="#e8a87c" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="268" y="795">1155</text><text x="688" y="800">1103</text><text x="1108" y="838">753</text><text x="1440" y="880">632</text>
+ </g>
+ <g fill="#7d9b76" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="893">230</text><text x="870" y="894">220</text><text x="1080" y="895">213</text>
+ </g>
+ <g fill="#8fa3c0" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="958">512</text><text x="450" y="958">2K</text><text x="660" y="958">8K</text>
+  <text x="870" y="958">32K</text><text x="1080" y="958">64K</text><text x="1290" y="958">80K</text><text x="1440" y="958">96K</text>
+ </g>
+ <text x="1160" y="918" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">llama.cpp prefill at 230W: 285 (+23%) — was 150W-cap-limited in sweep</text>
+
+ <!-- ===== PANEL 3: legend + power + notes ===== -->
+ <g font-size="15" font-family="Segoe UI, Inter, sans-serif">
+  <rect x="110" y="995" width="14" height="14" fill="#81c9ff"/><text x="132" y="1007" fill="#c9d8f0">OpenVINO GenAI 2026.5 · int8-ov · MTP nat5</text>
+  <rect x="480" y="995" width="14" height="14" fill="#e8a87c"/><text x="502" y="1007" fill="#c9d8f0">vLLM 0.27.2rc1 XPU · GPTQ-Int4 G128 · MTP4 · fp8 KV</text>
+  <rect x="920" y="995" width="14" height="14" fill="#7d9b76"/><text x="942" y="1007" fill="#c9d8f0">llama.cpp flashnext 52d4268 · Q8_0 · no spec</text>
+ </g>
+ <text x="110" y="1040" fill="#c9d8f0" font-size="14" font-weight="600" font-family="Segoe UI, Inter, sans-serif">POWER (energy counter, steady decode)</text>
+ <text x="110" y="1062" fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif">OpenVINO 202–211 W @230W cap (GPU.1) · vLLM ~149 W @150W cap · llama.cpp 149.5 W @150W cap (n=53 samples) — vLLM/llama at the cap; llama decode NOT power-bound (flat 15.2 at 230W)</text>
+ <text x="110" y="1092" fill="#c9d8f0" font-size="14" font-weight="600" font-family="Segoe UI, Inter, sans-serif">WHY THE CURVES DIFFER</text>
+ <text x="110" y="1114" fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV MTP verify window batches 5 drafts/step on Xe2 → 3.3–3.7x no-MTP; holds ≥50 tok/s to 8K. vLLM MTP4 acceptance collapses as GPTQ-Int4 draft drifts from fp8-KV main at length (58→0.8).</text>
+ <text x="110" y="1134" fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif">llama.cpp Q8_0: 27 GB weights leave tiny KV headroom but flat ~14 tok/s at every length — no speculative path engaged, decode bound by dense 27B step time, not attention.</text>
+ <text x="110" y="1154" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">vLLM XPU graph A/B: on +8.7% @512 / +1.8% @8K — collapse is not graph-driven · Source: B70-DOCS qw38-ov-mtp-20260914 · cookbook ENGINE-COMPARISON-CTX-20260914.md</text>
+</svg>

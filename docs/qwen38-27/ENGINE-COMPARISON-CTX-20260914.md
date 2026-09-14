@@ -70,6 +70,8 @@ Compressed-KV decode (u8 AND u4) breaks between 98K and 131K with normal TTFT
 and empty output — same signature as the u8-on-draft defect but length-driven
 and MTP-independent. Upstream-filable against genai 2026.5.0.0-3412.
 
+![Advanced engine comparison](../assets/b70-qwen38-engine-advanced-20260914.svg)
+
 ## vLLM XPU graph A/B (same GPTQ-Int4 MTP4 config, n=3)
 
 | len | graph ON | graph OFF |
