@@ -15,7 +15,7 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 
 | len | OpenVINO GenAI¹ | vLLM XPU² | llama.cpp SYCL³ |
 |---:|---:|---:|---:|
-| 512 | 62.1 | **78.2** | 14.0 |
+| 512 | 62.1 | **75.6** | 14.0 |
 | 2K | 56.5 | **71.6** | 14.0 |
 | 8K | 50.8 | **61.2** | 14.0 |
 | 32K | 41.3 | **52.4** | 14.0 |
@@ -27,8 +27,8 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 
 | len | OpenVINO | vLLM | llama.cpp |
 |---:|---:|---:|---:|
-| 512 | **1537** | 1486 | 230 |
-| 2K | 1815 | **1754** | 227 |
+| 512 | **1537** | 1491 | 230 |
+| 2K | 1815 | **1753** | 227 |
 | 8K | 1643 | **1689** | 224 |
 | 32K | 1119 | **1375** | 220 |
 | 64K | 780 | **1086** | 213 |
@@ -52,7 +52,9 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 llama.cpp decode is NOT power-bound: at 230W decode stays 15.2 (prefill
 +23% to 285). vLLM v1's "~149W" was the 150W cap clipping it, and the
 sweep-JSON watt fields for llama/vLLM-v1 read the idle card — known-bad,
-superseded by v2 single-stream energy on GPU.0.
+superseded by v2 single-stream energy on GPU.0. The llama sweep JSON still
+contains the idle-card 46W rows (wrong PCI); the 149.5W steady-state figure
+in this doc comes from the dedicated timestamped sampler run.
 
 ## Protocol notes
 
@@ -94,9 +96,9 @@ NOT a graph artifact (both arms collapse identically).
 ## Reading (v2-corrected)
 
 - **vLLM XPU + GPTQ-Int4 + MTP4 + fp8 KV wins at every context length** —
-  78→51 tok/s decode, near-flat to 96K, and the highest prefill at ≥2K.
+  76→51 tok/s decode, near-flat to 96K, and the highest prefill at ≥2K.
   With fair measurement (same 230W cap, single-stream timing) it beats
-  OV-int8-MTP5 by 26% at 512 and ~4x at 96K.
+  OV-int8-MTP5 by 22% at 512 and ~4x at 96K.
 - **OpenVINO + MTP is the strongest int8-weights option** — 62→41 tok/s to
   32K — but its long-context path degrades: MTP caps at 64K (mixed-KV),
   no-MTP at 96K (13-15 tok/s).
