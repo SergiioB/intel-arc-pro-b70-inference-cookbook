@@ -77,6 +77,26 @@ aborts the OpenCL runtime (`enqueue_svm.h:308`) before the first generate.
 Not a config error — the compute-runtime level dies. Both GPUs survived,
 caps restored manually. Worth an upstream issue; not a local tuning lane.
 
+## Engine comparison, 1× B70, same P/G protocol
+
+- vLLM Qwen3.8-27B Draft INT4: 106.7 tok/s (client post-first-token tps, n=5) — still the single-card leader, but INT4 weights + draft sampling, not parity-greedy
+- vLLM Qwen3.6-27B MTP4: 69.3 tok/s (n=5)
+- OpenVINO GenAI INT8 MTP nat5: 68.36 tok/s wall / 70.69 engine (n=1 smoke; n=5 pending) — byte-identical greedy output, heaviest weights of the three
+- llama.cpp Flash-Next (2× B70): 33.25 tok/s native decode
+
+Read: OpenVINO with native MTP now matches vLLM's dense-27 MTP4 on INT8 weights,
+with exact greedy parity — and 3.65x its own no-MTP baseline.
+
+## Context ceiling (computed from config, not yet measured)
+
+Hybrid attention: 16 full-attention + 48 GatedDeltaNet linear layers of 64.
+Full-attn KV = 16 layers × 2 × 4 kv-heads × 256 dim × 2 B = 64 KiB/token.
+Post-load free VRAM 8.0 GiB -> ~129K tokens headroom; ~100K with a safe
+workspace reserve, single card, INT8 weights. Linear state is fixed
+~72 MiB/sequence (48 layers × 48 v-heads × 128×128 × 2 B) — concurrency cost,
+not context cost. Model max_position_embeddings = 262,144 (256K); reaching it
+on one card needs KV INT8 or the INT4 weights.
+
 ## Next targets
 
 1. Export an MTP draft unit for `SergiioB/Qwen3.8-27B-int4-gdn8-ov` (the fixed
