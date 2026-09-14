@@ -1,5 +1,13 @@
 # Qwen3.8-27B engine context sweep — OpenVINO vs vLLM vs llama.cpp (2026-09-14)
 
+> **MEASUREMENT CORRECTION (v2, same night):** the first vLLM arm had two
+> defects: decode was computed as tokens/wall including TTFT (understating
+> decode drastically at long context), watts read the idle card, and it ran at
+> the 150W default cap while OV ran 230W. The v2 rerun (single streaming
+> request per run, GPU.0 counter, 230W cap, n=3) reverses the conclusion:
+> vLLM does NOT collapse with context. v1 numbers below are kept for the
+> record; the v2 table is authoritative.
+
 Same model family, one Arc Pro B70 per engine, same filler text and lengths
 (512→98K/128K), greedy, n=5 (≤8K) / n=3 (≥32K), C1.
 
@@ -7,24 +15,24 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 
 | len | OpenVINO GenAI¹ | vLLM XPU² | llama.cpp SYCL³ |
 |---:|---:|---:|---:|
-| 512 | **62.1** | 58.1 | 14.0 |
-| 2K | **56.5** | 34.5 | 14.0 |
-| 8K | **50.8** | 13.2 | 14.0 |
-| 32K | **41.3** | 3.4 | 14.0 |
-| 64K | **25.0**⁴ | 1.4 | 14.0 |
-| 96K | 15.2⁵ | 0.8 | **14.0** |
+| 512 | 62.1 | **78.2** | 14.0 |
+| 2K | 56.5 | **71.6** | 14.0 |
+| 8K | 50.8 | **61.2** | 14.0 |
+| 32K | 41.3 | **52.4** | 14.0 |
+| 64K | 25.0⁴ | **49.8** | 14.0 |
+| 96K | 13.3⁵ | **51.1** | 14.0 |
 | 128K | — | — | init-crash⁶ |
 
 ## Prefill tok/s (input / TTFT)
 
 | len | OpenVINO | vLLM | llama.cpp |
 |---:|---:|---:|---:|
-| 512 | **1537** | 1155 | 230 |
-| 2K | **1815** | 1170 | 227 |
-| 8K | **1643** | 1103 | 224 |
-| 32K | **1119** | 924 | 220 |
-| 64K | **780** | 753 | 213 |
-| 96K | 587 | **632** | — |
+| 512 | **1537** | 1486 | 230 |
+| 2K | 1815 | **1754** | 227 |
+| 8K | 1643 | **1689** | 224 |
+| 32K | 1119 | **1375** | 220 |
+| 64K | 780 | **1086** | 213 |
+| 96K | 587 | **895** | — |
 
 ¹ int8-ov VL split, VLMPipeline, MTP nat5, KV f16 ≤48K
 ² GPTQ-Int4 sym G128, MTP4 BF16-draft, fp8 KV, 0.27.2rc1, docker
@@ -38,12 +46,13 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 | Engine | mean W | cap | card |
 |---|---:|---:|---|
 | OpenVINO MTP | 202–211 | 230 W | GPU.1 |
-| vLLM MTP4 | ~149 | 150 W | GPU.0 |
-| llama.cpp Q8_0 | ~90 | 150 W | GPU.0 |
+| vLLM MTP4 (v2) | 194–229 | 230 W | GPU.0 |
+| llama.cpp Q8_0 | 149.5 (n=53) | 150 W | GPU.0 |
 
-Note: OV ran at its 230 W measurement cap; vLLM/llama ran at the host default
-150 W cap on the other card. Neither vLLM nor llama was power-limited (both
-well under cap), so the cap difference does not explain the decode gaps.
+llama.cpp decode is NOT power-bound: at 230W decode stays 15.2 (prefill
++23% to 285). vLLM v1's "~149W" was the 150W cap clipping it, and the
+sweep-JSON watt fields for llama/vLLM-v1 read the idle card — known-bad,
+superseded by v2 single-stream energy on GPU.0.
 
 ## Protocol notes
 
@@ -82,13 +91,19 @@ and MTP-independent. Upstream-filable against genai 2026.5.0.0-3412.
 Graphs ON = +8.7% at 512, +1.8% at 8K. The context-driven decode collapse is
 NOT a graph artifact (both arms collapse identically).
 
-## Reading
+## Reading (v2-corrected)
 
-- **≤32K chat/RAG workloads: OpenVINO + MTP is the clear pick** — 3-4x the
-  decode of the alternatives, prefill 1.4-7x llama.cpp.
-- **Long-context tail (96K+): llama.cpp** — flat 14 tok/s at every length,
-  never falls over; OV no-MTP still beats it at 96K (15.2) but caps out.
-- **vLLM MTP4 on this stack collapses with context** (58→0.8 tok/s at 96K);
-  at short context it matches OV's decode within 7% but with Int4 weights.
-- 128K on one card requires ≤Int4 weights (llama Q8_0 init-crashes; OV needs
-  no-MTP u8 KV; vLLM configured max 100K).
+- **vLLM XPU + GPTQ-Int4 + MTP4 + fp8 KV wins at every context length** —
+  78→51 tok/s decode, near-flat to 96K, and the highest prefill at ≥2K.
+  With fair measurement (same 230W cap, single-stream timing) it beats
+  OV-int8-MTP5 by 26% at 512 and ~4x at 96K.
+- **OpenVINO + MTP is the strongest int8-weights option** — 62→41 tok/s to
+  32K — but its long-context path degrades: MTP caps at 64K (mixed-KV),
+  no-MTP at 96K (13-15 tok/s).
+- **llama.cpp Q8_0 = the flat floor** — 14 tok/s at every length, no
+  speculative path, simplest ops. Never wins, never falls over.
+- Fair-comparison caveats that REMAIN: OV runs int8 weights vs vLLM's Int4
+  (int8 rerun pending weights download); llama.cpp ran no spec decoding
+  (draft-mtp untested on this fork).
+- 128K on one card: vLLM config max 100K; OV blocked >96K (compressed-KV
+  decode defect / f16 VRAM); llama Q8_0 init-crash (weights+KV > 32GB).
