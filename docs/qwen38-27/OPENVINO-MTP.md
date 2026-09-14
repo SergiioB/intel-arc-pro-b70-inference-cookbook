@@ -110,11 +110,11 @@ on one card needs KV INT8 or the INT4 weights.
 | 8K | 1643 | 50.8 | MTP nat5, f16 KV |
 | 32K | 1119 (f16) / 1117 (u8) | 41.3 / 41.8 | MTP nat5 |
 | 48K | 916 | 30.2 | MTP nat5, f16 KV (last clean MTP length) |
-| 64K | 775 | BROKEN w/ MTP; 15.2 no-MTP | u8 KV |
+| 64K | 780 | 25.0 (main u8, draft f16 — the fix) · 15.2 no-MTP | u8 main KV |
 | 96K | 587 | (u8, no-MTP path only) | |
 | 128K | 465 | (u8, no-MTP path only) | TTFT 278 s |
 
-KV u8 halves cache with zero cost ≤32K; f16 KV + MTP dies at 64K (CL -14);
+KV u8 halves cache with zero cost ≤32K; f16 KV + MTP dies at 64K (CL -14); u8 on BOTH breaks MTP decode >32K — keep the draft at f16 (main=u8 works: 25 tok/s @64K);
 u8 + MTP prefills but decode breaks >32K. Full guide: OPENVINO-B70-TUNING.md.
 
 ## Next targets

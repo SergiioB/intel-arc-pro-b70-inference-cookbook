@@ -75,10 +75,12 @@ cfg.do_sample = False               # MTP path is greedy-verified
 - It is passed as a **pipeline property dict**, not a SchedulerConfig field:
 
 ```python
-props = {'KV_CACHE_PRECISION': 'u8'}
-draft = og.draft_model(MODEL_DIR, 'GPU.1', **props)
+# u8 on the MAIN model only. Do NOT pass the prop to draft_model() —
+# a u8 draft KV corrupts long-context MTP (>32K -> empty decode).
+draft = og.draft_model(MODEL_DIR, 'GPU.1')
 pipe = og.VLMPipeline(MODEL_DIR, 'GPU.1', draft_model=draft,
-                      scheduler_config=sc, **props)
+                      scheduler_config=sc,
+                      KV_CACHE_PRECISION='u8')
 ```
 
 Notes: INT4 (`u4`) upstream requires the Paged Attention backend for by-channel
@@ -113,8 +115,9 @@ if __name__ != '__main__':
 | nat 8 | 42.83 — rejections dominate; nat5 is the sweet spot on this model |
 | f16 KV ceiling | clean through 49152 input (916 t/s prefill, 30.2 decode); CL_EXEC crash at 65536 |
 | KV u8 ≤32K | identical speed to f16 (decode 41.3→41.8, prefill 1119→1117), coherent — free memory win |
-| KV u8 64K–128K + MTP | prefill WORKS where f16 crashed (775→465 t/s), but decode emits ~1 empty token — broken |
-| KV u8 64K no MTP | prefill 828 t/s, decode 15.15 t/s, 128 tokens coherent — defect isolated to MTP-verify × u8 KV >32K |
+| KV u8 64K–128K + MTP (u8 on BOTH main and draft) | prefill WORKS where f16 crashed (775→465 t/s), but decode emits ~1 empty token — broken |
+| KV u8 64K no MTP | prefill 828 t/s, decode 15.15 t/s, 128 tokens coherent — defect isolated to draft KV precision |
+| **KV mixed: main=u8, draft=f16** | **THE FIX: 64K decode 25.0 tok/s with MTP nat5, 128 tokens coherent — u8 only on the main model, draft stays default f16** |
 | Prefix caching | must stay off with MTP (linear-attn verifier); ON is fine without MTP |
 | Cross-GPU draft (GPU.0 draft / GPU.1 main) | OpenCL runtime abort (`enqueue_svm.h:308`) — driver-level, do not retry as-is |
 
@@ -122,14 +125,22 @@ if __name__ != '__main__':
 
 | Context | Config | Decode |
 |---|---|---|
-| ≤32K | MTP nat5 + u8 or f16 KV | 41.8 tok/s @32K |
-| 32–48K | MTP nat5 + f16 KV | 30.2 tok/s @48K |
-| 48–128K | NO MTP + u8 KV | 15.2 tok/s @64K, prefill reaches 128K |
+| ≤32K | MTP nat5, main KV u8 or f16, draft f16 | 41.8 tok/s @32K |
+| 32–48K | MTP nat5 + f16 KV (both) | 30.2 tok/s @48K |
+| 48–~80K | **MTP nat5, main=u8 draft=f16 (mixed)** | **25.0 tok/s @64K** |
+| >~80K | NO MTP + u8 KV everywhere | 15.2 tok/s @64K-class; prefill reaches 128K |
 
-`KV_CACHE_PRECISION: u8` × MTP verify beyond 32K = upstream defect (decode
-returns empty). Isolated 2026-09-14: same 64K prompt without draft works fine.
-File-able signature: genai 2026.5.0.0-3412, Qwen3.8-27B-int8-ov, u8 KV,
-nat5, >32K input, TTFT normal, `gen_tokens==1`, empty text.
+**The mixed-KV rule:** when passing `KV_CACHE_PRECISION='u8'`, pass it to the
+MAIN pipeline only — `og.draft_model(MODEL, 'GPU.1')` with NO precision prop.
+u8 on the draft's own KV corrupts its attention at >32K (garbage drafts ->
+verifier rejects -> `gen_tokens==1`, empty text). With draft at f16 the main
+model still gets the full u8 memory saving; 96K then dies on true VRAM
+exhaustion (CL_OUT_OF_RESOURCES), not on the defect — mixed config ceiling is
+~64-80K on one 32GB card.
+
+File-able upstream signature (u8-on-draft defect): genai 2026.5.0.0-3412,
+Qwen3.8-27B-int8-ov, u8 KV on draft+main, nat5, >32K input, TTFT normal,
+`gen_tokens==1`, empty text; same prompt with draft at f16 decodes normally.
 
 ## 8. Failure fingerprints (what the error means)
 
