@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1180" width="1600" height="1180" role="img" aria-labelledby="t d">
  <title id="t">Qwen3.8-27B one B70 per engine: corrected decode/prefill vs context — vLLM leads all lengths after measurement fix</title>
- <desc id="d">v2 corrected: vLLM 78.2/71.6/61.2/52.4/49.8/51.1 decode; OV 62.1/56.5/50.8/41.3/25.0/13.3; llama flat 14.0. Prefill vLLM 1486-895, OV 1537-587.</desc>
+ <desc id="d">v2 corrected: vLLM 75.6/71.6/61.2/52.4/49.8/51.1 decode; OV 62.1/56.5/50.8/41.3/25.0/13.3; llama flat 14.0. Prefill vLLM 1486-895, OV 1537-587.</desc>
  <rect width="1600" height="1180" fill="#07111f"/>
  <text x="60" y="52" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">QWEN3.8-27B · 1× ARC PRO B70 PER ENGINE · CORRECTED SWEEP (v2) · 2026-09-14</text>
  <text x="60" y="78" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · same filler · n=3-5 · single-stream timing · 230W caps both cards · vLLM Int4-MTP4 · OV int8-MTP5 · llama.cpp Q8_0</text>
@@ -20,13 +20,13 @@
  </g>
  <!-- x: 512,2K,8K,32K,64K,96K at 240,450,660,870,1080,1440; y=530-tps*5.14 -->
  <polyline points="240,146.1 450,162.5 660,215.7 870,316.7 1080,401.5 1440,461.6" fill="none" stroke="#81c9ff" stroke-width="4"/>
- <polyline points="240,128.1 450,162 660,215.9 870,260.7 1080,274 1440,267.3" fill="none" stroke="#e8a87c" stroke-width="4.5"/>
+ <polyline points="240,141.7 450,162 660,215.9 870,260.7 1080,274 1440,267.3" fill="none" stroke="#e8a87c" stroke-width="4.5"/>
  <polyline points="240,458 450,458 660,458 870,458 1080,458 1440,458" fill="none" stroke="#7d9b76" stroke-width="4" stroke-dasharray="10,6"/>
- <g fill="#e8a87c"><circle cx="240" cy="128.1" r="6"/><circle cx="450" cy="162" r="6"/><circle cx="660" cy="215.9" r="6"/><circle cx="870" cy="260.7" r="6"/><circle cx="1080" cy="274" r="6"/><circle cx="1440" cy="267.3" r="6"/></g>
+ <g fill="#e8a87c"><circle cx="240" cy="141.7" r="6"/><circle cx="450" cy="162" r="6"/><circle cx="660" cy="215.9" r="6"/><circle cx="870" cy="260.7" r="6"/><circle cx="1080" cy="274" r="6"/><circle cx="1440" cy="267.3" r="6"/></g>
  <g fill="#81c9ff"><circle cx="240" cy="146.1" r="5.5"/><circle cx="450" cy="162.5" r="5.5"/><circle cx="660" cy="215.7" r="5.5"/><circle cx="870" cy="316.7" r="5.5"/><circle cx="1080" cy="401.5" r="5.5"/><circle cx="1440" cy="461.6" r="5.5"/></g>
  <g fill="#7d9b76"><circle cx="240" cy="458" r="5.5"/><circle cx="870" cy="458" r="5.5"/><circle cx="1440" cy="458" r="5.5"/></g>
  <g fill="#f2c9a0" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="240" y="112">78.2</text><text x="478" y="150">71.6</text><text x="688" y="204">61.2</text>
+  <text x="240" y="112">75.6</text><text x="478" y="150">71.6</text><text x="688" y="204">61.2</text>
   <text x="898" y="249">52.4</text><text x="1080" y="262">49.8</text><text x="1440" y="255">51.1</text>
  </g>
  <g fill="#a5dcff" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
