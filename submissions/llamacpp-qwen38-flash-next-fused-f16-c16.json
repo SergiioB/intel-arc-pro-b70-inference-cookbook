@@ -1,0 +1,29 @@
+{
+  "backend": "xpu",
+  "batchSize": 1,
+  "contextLength": 16384,
+  "engineFlags": {
+    "commandSnippet": "llama-server -m Qwen3.8-Flash-Next-AD-4.27bpw-Q4_K_M-M64-00001-of-00033.gguf --device SYCL0,SYCL1 --tensor-split 1,1 --split-mode layer -ngl 99 -ot per_layer_token_embd=CPU -c 16384 -fa on -t 6 -tb 14 -np 1 -b 3072 --ubatch-size 3072 --cache-type-k q8_0 --cache-type-v q4_1 --no-warmup --no-cache-prompt",
+    "flashAttn": true,
+    "kvCacheDtype": "q8_0/q4_1",
+    "numParallel": 1
+  },
+  "engineName": "llama.cpp",
+  "engineVersion": "0.3.0-dev b492 9723942 SYCL F16=ON",
+  "hardware": {
+    "gpuCount": 2,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "vramGb": 64
+  },
+  "hfId": "Qwen/Qwen3.8-Flash-Next",
+  "id": "cmtigo39n04e2p401eumx5joo",
+  "notes": "C1 only (-np 1, one client). c16 means context 16384, not concurrency 16. Prefill = llama.cpp engine timings.prompt_per_second median n=5 at actual p9096/g128, fused IQ3_S/IQ4_NL MMVQ, GGML_SYCL_F16=ON, -b/-ub 3072, cache_n=0. Decode on this same F16 server is 20.34, not the fused-FP32 23.38 cell. Artifact AtomicChat Qwen3.8-Flash-Next-AD-4.27bpw-Q4_K_M-M64 rev 142262902a46f7daed19c79d0771534c8106ad59. Mixed: gate/up IQ3_S, down IQ4_NL, PLE Q5_1 CPU mmap (platform quantization field is IQ3_S). KV q8_0/q4_1, FA on, layer split 1,1, 195 W configured cap. Loaded-idle GPU1 pkg ~62 C. E2 self-report. Independent reproduction pending. Patches: patches/llamacpp-sycl/flashnext-arch-overlay.patch then sycl-fused-mmvq-and-gpu-group.patch.",
+  "quantization": "IQ3_S",
+  "submissionId": "cmtigo39n04e2p401eumx5joo",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-09-01T09:24:46.859Z",
+  "tokSOut": 20.34,
+  "tokSPrefill": 594.49
+}

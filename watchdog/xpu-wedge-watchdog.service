@@ -1,0 +1,47 @@
+# Xe2 / Battlemage Level-Zero wedge watchdog
+# Drop into /etc/systemd/system/xpu-wedge-watchdog.service
+# Defaults monitor a vLLM server on port 8000 and restart the named container
+# when a GPU engine-reset signature + health failure confirm a wedge.
+#
+# Install:
+#   sudo cp xpu-wedge-watchdog.sh /usr/local/bin/xpu-wedge-watchdog.sh
+#   sudo chmod +x /usr/local/bin/xpu-wedge-watchdog.sh
+#   sudo cp xpu-wedge-watchdog.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now xpu-wedge-watchdog
+#
+# Then read events with:  journalctl -u xpu-wedge-watchdog -f
+
+[Unit]
+Description=Intel Arc GPU (Xe2) Level-Zero wedge watchdog
+Documentation=https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/tree/master/watchdog
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# --- edit these for your stack -------------------------------------------
+Environment=HEALTH_URL=http://127.0.0.1:8000/health
+Environment=CONTAINER=vllm-serve
+Environment=SCAN_INTERVAL_S=10
+Environment=HEALTH_TIMEOUT_S=5
+Environment=FAIL_STREAK=3
+Environment=RECOVERY_TIMEOUT_S=180
+Environment=TRIGGER_MODE=both
+# Environment=KMSG_SOURCE=dmesg            # uncomment on non-journald hosts
+# Environment=WEBHOOK_URL=https://hooks.example.com/notify
+# Environment=RECOVERY_CMD=docker restart vllm-serve
+# --------------------------------------------------------------------------
+ExecStart=/usr/local/bin/xpu-wedge-watchdog.sh --loop
+Restart=on-failure
+RestartSec=5
+
+# Hardening (kernel logs + docker socket are the only privileged needs)
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/log
+
+[Install]
+WantedBy=multi-user.target

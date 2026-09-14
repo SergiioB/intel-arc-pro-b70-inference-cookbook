@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "status": "official-lab-self-report",
+  "evidence_tier": "E2",
+  "model": "Qwen/Qwen3.8-27B-FP8",
+  "engine": "vllm 0.27.2rc1.dev77+gac7509e2b",
+  "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "parallelism": "TP2",
+    "configured_power_cap_w_per_gpu": 230
+  },
+  "stack": {
+    "quantization": "FP8 W8A16 target path",
+    "speculation": "native MTP8",
+    "context_limit_tokens": 9216,
+    "prefix_cache": "disabled",
+    "max_num_seqs": 1
+  },
+  "workload": {
+    "concurrency": 1,
+    "prompt_tokens_actual_each": 512,
+    "output_tokens_actual_each": 128,
+    "requests": 5,
+    "warmups_discarded": 1,
+    "prompt_content": "random-token synthetic",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "presence_penalty": 1.5,
+      "seed": 0
+    }
+  },
+  "client_e2e_output_tps_samples": [15.26, 33.60, 22.16, 36.80, 17.15],
+  "statistics": {
+    "median_client_e2e_output_tps": 22.16,
+    "maximum_observed_client_e2e_output_tps": 36.80,
+    "minimum_client_e2e_output_tps": 15.26,
+    "standard_deviation_client_e2e_output_tps": 8.69,
+    "run_level_output_tps": 22.13,
+    "mean_tpot_ms": 42.40,
+    "median_ttft_ms": 389.83
+  },
+  "speculative_decode": {
+    "drafts": 327,
+    "draft_tokens": 2616,
+    "accepted_tokens": 320,
+    "mean_acceptance_length": 1.979,
+    "draft_token_acceptance_percent": 12.2324
+  },
+  "power": {
+    "measurement": "energy1_input delta over the recorded cell interval",
+    "interval_seconds": 58.900,
+    "gpu0_average_card_w": 99.265,
+    "gpu1_average_card_w": 111.255
+  },
+  "correctness": "All five requests completed with exactly 128 output tokens; no independent quality or parity claim is made.",
+  "claim_scope": "Model-card sampling applied to random-token synthetic prompts. This is a sampling diagnostic, not a natural-content workload or completed quality evaluation."
+}

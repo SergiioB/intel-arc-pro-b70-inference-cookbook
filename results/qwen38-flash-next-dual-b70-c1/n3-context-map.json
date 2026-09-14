@@ -1,0 +1,68 @@
+{
+ "campaign": "overnight-n3-context-map-20260831",
+ "kind": "provisional-n3-screen",
+ "hardware": {
+  "gpu_model": "Intel Arc Pro B70",
+  "gpu_count": 2,
+  "vram_gib_per_gpu": 32,
+  "power_cap_w": 195
+ },
+ "note": "c8, c16, and c128 are configured context windows, not concurrency. Every row is C1 (-np 1, one client). n=3 after one discarded same-shape warmup. Not n=5 and not ranking cells. Loaded-model GPU package typically 59-66 C.",
+ "rows": [
+  {
+   "binary": "fused-FP32",
+   "context_limit_tokens": 8192,
+   "batch": 512,
+   "p512_decode_median": 23.38,
+   "p512_cold_input_median": 183.17,
+   "p9096_decode_median": null,
+   "p9096_cold_input_median": null
+  },
+   {
+    "binary": "fused-FP32",
+    "context_limit_tokens": 16384,
+    "batch": 3072,
+    "p512_decode_median": 23.37,
+    "p512_cold_input_median": 183.61,
+    "p9096_decode_median": 20.25,
+    "p9096_cold_input_median": 478.71
+   },
+   {
+    "binary": "fused-FP32",
+    "context_limit_tokens": 131072,
+    "batch": 1024,
+    "p512_decode_median": 23.54,
+    "p512_cold_input_median": 183.38,
+    "p9096_decode_median": 20.41,
+    "p9096_cold_input_median": 353.95
+   },
+  {
+   "binary": "fused-F16",
+   "context_limit_tokens": 8192,
+   "batch": 512,
+   "p512_decode_median": 22.96,
+   "p512_cold_input_median": 191.55,
+   "p9096_decode_median": null,
+   "p9096_cold_input_median": null
+  },
+   {
+    "binary": "fused-F16",
+    "context_limit_tokens": 16384,
+    "batch": 3072,
+    "p512_decode_median": 23.31,
+    "p512_cold_input_median": 192.64,
+    "p9096_decode_median": 20.4,
+    "p9096_cold_input_median": 593.98
+   },
+   {
+    "binary": "fused-F16",
+    "context_limit_tokens": 131072,
+    "batch": 1024,
+    "p512_decode_median": 23.06,
+    "p512_cold_input_median": 195.57,
+    "p9096_decode_median": 20.25,
+    "p9096_cold_input_median": 398.02
+   }
+ ],
+ "128k_batch_limit": "b1536+ rejected with n_gpu_layers already set by user to 99; measured 128K cells used -b/-ub 1024"
+}

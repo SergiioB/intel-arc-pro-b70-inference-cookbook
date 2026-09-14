@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1300" viewBox="0 0 1500 1300" role="img" aria-labelledby="title desc">
+<title id="title">Intel Arc Pro B70 · dense 27B · resident 32K session · prefix-cache effect</title>
+<desc id="desc">Cold 32,640-token document ingest at 38.2 s TTFT followed by eight sequential follow-up turns at 2.6-4.9 s TTFT with 89.9-94.7 percent token reuse on a growing session.</desc>
+<rect width="1500" height="1300" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="40" y="50" fill="#55d6be" font-size="16" font-weight="800" text-anchor="start">PI DOCUMENT SESSION · DENSE 27B · PREFIX-CACHE EFFECT</text>
+<text x="40" y="96" fill="#f5f8fc" font-size="36" font-weight="750" text-anchor="start">One document, eight questions: Pi reads it once, then remembers</text>
+<text x="40" y="130" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">Qwen3.6-27B GPTQ-INT4 · vLLM XPU · MTP4 · fp8 KV · prefix cache on · 230 W cap</text>
+<rect x="40" y="170" width="880" height="460" rx="28" fill="#0f1d30"/>
+<text x="70" y="206" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">EVERY LATER QUESTION REUSES IT · CLIENT TTFT</text>
+<text x="70" y="238" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">First question reads the whole document</text>
+<line x1="110" y1="510.0" x2="880" y2="510.0" stroke="#263a53" stroke-width="1"/>
+<text x="96" y="515.0" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">0s</text>
+<line x1="110" y1="455.2" x2="880" y2="455.2" stroke="#263a53" stroke-width="1"/>
+<text x="96" y="460.23809523809524" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">10s</text>
+<line x1="110" y1="400.5" x2="880" y2="400.5" stroke="#263a53" stroke-width="1"/>
+<text x="96" y="405.4761904761905" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">20s</text>
+<line x1="110" y1="345.7" x2="880" y2="345.7" stroke="#263a53" stroke-width="1"/>
+<text x="96" y="350.7142857142857" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">30s</text>
+<line x1="110" y1="291.0" x2="880" y2="291.0" stroke="#263a53" stroke-width="1"/>
+<text x="96" y="295.95238095238096" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">40s</text>
+<rect x="110" y="495.8" width="770" height="-12.8" fill="#ffb45c" opacity="0.12"/>
+<text x="872" y="474.99311902761906" fill="#ffb45c" font-size="14" font-weight="700" text-anchor="end">warm band 2.6-4.9 s</text>
+<text x="110.0" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">cold</text>
+<text x="110.0" y="548" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">ingest</text>
+<text x="206.25" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t1</text>
+<text x="302.5" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t2</text>
+<text x="398.75" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t3</text>
+<text x="495.0" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t4</text>
+<text x="591.25" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t5</text>
+<text x="687.5" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t6</text>
+<text x="783.75" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t7</text>
+<text x="880.0" y="530" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle">t8</text>
+<circle cx="110.0" cy="300.9" r="9" fill="#ff6b6b" stroke="#0f1d30" stroke-width="3"/>
+<text x="126.0" y="305.86038631619044" fill="#ff6b6b" font-size="16" font-weight="800" text-anchor="start">38.2 s</text>
+<text x="126.0" y="322.86038631619044" fill="#9caec4" font-size="13" font-weight="500" text-anchor="start">0 cache hits</text>
+<polyline points="206.2,487.7 302.5,487.2 398.8,486.8 495.0,485.4 591.2,485.1 687.5,484.9 783.8,483.0 880.0,495.8" fill="none" stroke="#ffb45c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="206.2" cy="487.7" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="206.25" y="473.71622151690474" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">4.1</text>
+<circle cx="302.5" cy="487.2" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="302.5" y="473.20644000476193" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">4.2</text>
+<circle cx="398.8" cy="486.8" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="398.75" y="472.77630407547616" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">4.2</text>
+<circle cx="495.0" cy="485.4" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="495.0" y="471.4090917140476" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">4.5</text>
+<circle cx="591.2" cy="485.1" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="591.25" y="471.06600482119046" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">4.6</text>
+<circle cx="687.5" cy="484.9" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="687.5" y="470.8885060888095" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">4.6</text>
+<circle cx="783.8" cy="483.0" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="783.75" y="500.99311902761906" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">4.9</text>
+<circle cx="880.0" cy="495.8" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<text x="880.0" y="481.8136497895238" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">2.6</text>
+<line x1="110.0" y1="334.8" x2="206.2" y2="466.2" stroke="#9caec4" stroke-width="2" stroke-dasharray="6 5"/>
+<rect x="108.1" y="383.0" width="100" height="24" fill="#0f1d30"/>
+<text x="158.125" y="400.0" fill="#f5f8fc" font-size="15" font-weight="800" text-anchor="middle">8-15× faster</text>
+<text x="70" y="594" fill="#9caec4" font-size="14" font-weight="500" text-anchor="start">You ask Pi 8 questions over one 32K document: the first reads it all (38.2 s),</text>
+<text x="70" y="614" fill="#9caec4" font-size="14" font-weight="500" text-anchor="start">every follow-up reuses the cache (~4 s) as the session grows.</text>
+<rect x="940" y="170" width="520" height="220" rx="28" fill="#0f1d30"/>
+<text x="970" y="206" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">REUSED PROMPT TOKENS PER TURN</text>
+<text x="970" y="238" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">How much of each prompt is known</text>
+<rect x="996.1" y="288.8" width="29.7" height="21.2" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1011.0" y="280.840973090569" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">91.3%</text>
+<text x="1011.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t1</text>
+<rect x="1050.2" y="289.7" width="29.7" height="20.3" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1065.0" y="281.72063414831933" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">91.1%</text>
+<text x="1065.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t2</text>
+<rect x="1104.2" y="290.4" width="29.7" height="19.6" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1119.0" y="282.4299020054003" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">90.9%</text>
+<text x="1119.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t3</text>
+<rect x="1158.2" y="291.3" width="29.7" height="18.7" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1173.0" y="283.2821443698191" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">90.6%</text>
+<text x="1173.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t4</text>
+<rect x="1212.2" y="292.2" width="29.7" height="17.8" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1227.0" y="284.1659477341056" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">90.4%</text>
+<text x="1227.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t5</text>
+<rect x="1266.2" y="292.7" width="29.7" height="17.3" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1281.0" y="284.6828876575925" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">90.2%</text>
+<text x="1281.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t6</text>
+<rect x="1320.2" y="293.6" width="29.7" height="16.4" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1335.0" y="285.6305146139145" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">89.9%</text>
+<text x="1335.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t7</text>
+<rect x="1374.2" y="277.6" width="29.7" height="32.4" rx="4" fill="#ffb45c" opacity="0.9"/>
+<text x="1389.0" y="269.5869610809839" fill="#f5f8fc" font-size="13" font-weight="700" text-anchor="middle">94.7%</text>
+<text x="1389.0" y="328" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle">t8</text>
+<line x1="984" y1="310.0" x2="1416" y2="310.0" stroke="#263a53" stroke-width="1"/>
+<text x="976" y="314.0" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">85%</text>
+<line x1="984" y1="293.3" x2="1416" y2="293.3" stroke="#263a53" stroke-width="1"/>
+<text x="976" y="297.3333333333333" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">90%</text>
+<line x1="984" y1="276.7" x2="1416" y2="276.7" stroke="#263a53" stroke-width="1"/>
+<text x="976" y="280.6666666666667" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">95%</text>
+<line x1="984" y1="260.0" x2="1416" y2="260.0" stroke="#263a53" stroke-width="1"/>
+<text x="976" y="264.0" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">100%</text>
+<text x="970" y="348" fill="#9caec4" font-size="13" font-weight="500" text-anchor="start">89.9-94.7% of every follow-up prompt is cache hits —</text>
+<text x="970" y="370" fill="#9caec4" font-size="13" font-weight="500" text-anchor="start">only the new question + reply are processed.</text>
+<rect x="940" y="410" width="520" height="220" rx="28" fill="#0f1d30"/>
+<text x="970" y="446" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">CLIENT POST-FIRST TOK/S PER TURN</text>
+<text x="970" y="478" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Answering speed stays flat</text>
+<polyline points="1016.6,531.7 1069.9,520.1 1123.1,522.2 1176.4,517.8 1229.6,526.8 1282.9,526.5 1336.1,517.7 1389.4,507.1" fill="none" stroke="#55d6be" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1016.6" cy="531.7" r="5" fill="#55d6be"/>
+<rect x="1001.6" y="506.7" width="30" height="16" fill="#0f1d30"/>
+<text x="1016.625" y="519.6692102292023" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">41</text>
+<circle cx="1069.9" cy="520.1" r="5" fill="#55d6be"/>
+<rect x="1054.9" y="495.1" width="30" height="16" fill="#0f1d30"/>
+<text x="1069.875" y="508.07150548626817" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">48</text>
+<circle cx="1123.1" cy="522.2" r="5" fill="#55d6be"/>
+<rect x="1108.1" y="497.2" width="30" height="16" fill="#0f1d30"/>
+<text x="1123.125" y="510.174623572433" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">47</text>
+<circle cx="1176.4" cy="517.8" r="5" fill="#55d6be"/>
+<rect x="1161.4" y="492.8" width="30" height="16" fill="#0f1d30"/>
+<text x="1176.375" y="505.7702665133479" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">49</text>
+<circle cx="1229.6" cy="526.8" r="5" fill="#55d6be"/>
+<rect x="1214.6" y="501.8" width="30" height="16" fill="#0f1d30"/>
+<text x="1229.625" y="514.7812574878308" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">44</text>
+<circle cx="1282.9" cy="526.5" r="5" fill="#55d6be"/>
+<rect x="1267.9" y="501.5" width="30" height="16" fill="#0f1d30"/>
+<text x="1282.875" y="514.5402913848753" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">44</text>
+<circle cx="1336.1" cy="517.7" r="5" fill="#55d6be"/>
+<rect x="1321.1" y="492.7" width="30" height="16" fill="#0f1d30"/>
+<text x="1336.125" y="505.69315016079486" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">49</text>
+<circle cx="1389.4" cy="507.1" r="5" fill="#55d6be"/>
+<rect x="1374.4" y="482.1" width="30" height="16" fill="#0f1d30"/>
+<text x="1389.375" y="495.08154445680134" fill="#f5f8fc" font-size="12" font-weight="600" text-anchor="middle">56</text>
+<line x1="990" y1="550.0" x2="1416" y2="550.0" stroke="#263a53" stroke-width="1"/>
+<text x="982" y="554.0" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">30</text>
+<line x1="990" y1="533.3" x2="1416" y2="533.3" stroke="#263a53" stroke-width="1"/>
+<text x="982" y="537.3333333333334" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">40</text>
+<line x1="990" y1="516.7" x2="1416" y2="516.7" stroke="#263a53" stroke-width="1"/>
+<text x="982" y="520.6666666666666" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">50</text>
+<line x1="990" y1="500.0" x2="1416" y2="500.0" stroke="#263a53" stroke-width="1"/>
+<text x="982" y="504.0" fill="#9caec4" font-size="12" font-weight="500" text-anchor="end">60</text>
+<text x="1016.625" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t1</text>
+<text x="1069.875" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t2</text>
+<text x="1123.125" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t3</text>
+<text x="1176.375" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t4</text>
+<text x="1229.625" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t5</text>
+<text x="1282.875" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t6</text>
+<text x="1336.125" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t7</text>
+<text x="1389.375" y="568" fill="#9caec4" font-size="12" font-weight="600" text-anchor="middle">t8</text>
+<text x="970" y="588" fill="#9caec4" font-size="13" font-weight="500" text-anchor="start">Cache speeds up reading the question, not generating the answer —</text>
+<text x="970" y="610" fill="#9caec4" font-size="13" font-weight="500" text-anchor="start">decode is flat at 41-56 t/s (MTP4, g128).</text>
+<rect x="40" y="650" width="1420" height="630" rx="28" fill="#0f1d30"/>
+<text x="70" y="686" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">32,640-TOKEN DOCUMENT · MTP4 · G128 · PREFIX CACHE ON · 230 W</text>
+<text x="70" y="718" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">The session, step by step</text>
+<rect x="60" y="750" width="1380" height="44" rx="10" fill="#0b1829"/>
+<text x="80" y="778" fill="#9caec4" font-size="15" font-weight="700" text-anchor="start">Step</text>
+<text x="260" y="778" fill="#9caec4" font-size="15" font-weight="700" text-anchor="start">Prompt tokens</text>
+<text x="490" y="778" fill="#9caec4" font-size="15" font-weight="700" text-anchor="start">Reused</text>
+<text x="690" y="778" fill="#9caec4" font-size="15" font-weight="700" text-anchor="start">Hit %</text>
+<text x="890" y="778" fill="#9caec4" font-size="15" font-weight="700" text-anchor="start">Novel</text>
+<text x="1090" y="778" fill="#9caec4" font-size="15" font-weight="700" text-anchor="start">TTFT (s)</text>
+<text x="1270" y="778" fill="#9caec4" font-size="15" font-weight="700" text-anchor="start">Post-first (tok/s)</text>
+<text x="80" y="826" fill="#ff6b6b" font-size="15" font-weight="800" text-anchor="start">cold</text>
+<text x="260" y="826" fill="#ff6b6b" font-size="15" font-weight="800" text-anchor="start">32,640</text>
+<text x="490" y="826" fill="#ff6b6b" font-size="15" font-weight="800" text-anchor="start">0</text>
+<text x="690" y="826" fill="#ff6b6b" font-size="15" font-weight="800" text-anchor="start">0%</text>
+<text x="890" y="826" fill="#ff6b6b" font-size="15" font-weight="800" text-anchor="start">32,640</text>
+<text x="1090" y="826" fill="#ff6b6b" font-size="15" font-weight="800" text-anchor="start">38.191</text>
+<text x="1270" y="826" fill="#ff6b6b" font-size="15" font-weight="800" text-anchor="start">41.2</text>
+<rect x="60" y="846" width="1380" height="52" fill="#12243a" opacity="0.5" rx="6"/>
+<text x="80" y="878" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 1</text>
+<text x="260" y="878" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">32,789</text>
+<text x="490" y="878" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">29,952</text>
+<text x="690" y="878" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">91.3%</text>
+<text x="890" y="878" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">2,837</text>
+<text x="1090" y="878" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">4.069</text>
+<text x="1270" y="878" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">41.0</text>
+<text x="80" y="930" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 2</text>
+<text x="260" y="930" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">32,884</text>
+<text x="490" y="930" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">29,952</text>
+<text x="690" y="930" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">91.1%</text>
+<text x="890" y="930" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">2,932</text>
+<text x="1090" y="930" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">4.162</text>
+<text x="1270" y="930" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">48.0</text>
+<rect x="60" y="950" width="1380" height="52" fill="#12243a" opacity="0.5" rx="6"/>
+<text x="80" y="982" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 3</text>
+<text x="260" y="982" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">32,961</text>
+<text x="490" y="982" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">29,952</text>
+<text x="690" y="982" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">90.9%</text>
+<text x="890" y="982" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">3,009</text>
+<text x="1090" y="982" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">4.241</text>
+<text x="1270" y="982" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">46.7</text>
+<text x="80" y="1034" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 4</text>
+<text x="260" y="1034" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">33,054</text>
+<text x="490" y="1034" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">29,952</text>
+<text x="690" y="1034" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">90.6%</text>
+<text x="890" y="1034" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">3,102</text>
+<text x="1090" y="1034" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">4.491</text>
+<text x="1270" y="1034" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">49.3</text>
+<rect x="60" y="1054" width="1380" height="52" fill="#12243a" opacity="0.5" rx="6"/>
+<text x="80" y="1086" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 5</text>
+<text x="260" y="1086" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">33,151</text>
+<text x="490" y="1086" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">29,952</text>
+<text x="690" y="1086" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">90.4%</text>
+<text x="890" y="1086" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">3,199</text>
+<text x="1090" y="1086" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">4.553</text>
+<text x="1270" y="1086" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">43.9</text>
+<text x="80" y="1138" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 6</text>
+<text x="260" y="1138" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">33,208</text>
+<text x="490" y="1138" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">29,952</text>
+<text x="690" y="1138" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">90.2%</text>
+<text x="890" y="1138" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">3,256</text>
+<text x="1090" y="1138" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">4.586</text>
+<text x="1270" y="1138" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">44.1</text>
+<rect x="60" y="1158" width="1380" height="52" fill="#12243a" opacity="0.5" rx="6"/>
+<text x="80" y="1190" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 7</text>
+<text x="260" y="1190" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">33,313</text>
+<text x="490" y="1190" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">29,952</text>
+<text x="690" y="1190" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">89.9%</text>
+<text x="890" y="1190" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">3,361</text>
+<text x="1090" y="1190" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">4.932</text>
+<text x="1270" y="1190" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">49.4</text>
+<text x="80" y="1242" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">turn 8</text>
+<text x="260" y="1242" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">33,377</text>
+<text x="490" y="1242" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">31,616</text>
+<text x="690" y="1242" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">94.7%</text>
+<text x="890" y="1242" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">1,761</text>
+<text x="1090" y="1242" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">2.591</text>
+<text x="1270" y="1242" fill="#f5f8fc" font-size="15" font-weight="500" text-anchor="start">55.8</text>
+<text x="40" y="1292" fill="#9caec4" font-size="14" font-weight="500" text-anchor="start">Client TTFT = request send to first SSE token · post-first = (completion-1)/(end-first) · cache matches in 64-token blocks.</text>
+</svg>

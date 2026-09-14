@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-27B GPTQ MTP4: BF16 draft vs optional draft-INT4 overlay on Intel Arc Pro B70</title>
+<desc id="desc">Matched same-image n=5 C1 client post-first and agentic medians. Prefill is flat. 32K agentic omitted (abort-zone VRAM). Quality panel from the temperature-0 task suite when present. E2 self-reported.</desc>
+<rect width="1600" height="1180" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="58" fill="#55d6be" font-size="16" font-weight="800" text-anchor="start">QWEN3.8-27B GPTQ-INT4 · OPTIONAL DRAFT-INT4 OVERLAY · 1× B70</text>
+<text x="58" y="102" fill="#f5f8fc" font-size="36" font-weight="750" text-anchor="start">Same image, same prompts, n=5 — not the old +51% table</text>
+<text x="58" y="138" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">vLLM 0.27.2rc1.dev77+gac7509e2b · kernels 0.1.12.3 · MTP4 · cache off · 230 W cap · client post-first · E2 self-reported</text>
+<rect x="48" y="170" width="1504" height="620" rx="28" fill="#0f1d30"/>
+<text x="82" y="214" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">MATCHED C1 + AGENTIC</text>
+<text x="82" y="252" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start">BF16 draft vs draft INT4 S+M1</text>
+<text x="980" y="214" fill="#68a7ff" font-size="15" font-weight="600" text-anchor="start">Blue = cookbook BF16 draft</text>
+<text x="1260" y="214" fill="#ffb45c" font-size="15" font-weight="600" text-anchor="start">Orange = optional INT4 draft</text>
+<text x="82" y="308" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">p512/g128 C1 post-first</text>
+<rect x="82" y="318" width="520" height="18" rx="8" fill="#0b1829"/><rect x="82" y="318" width="324.8" height="18" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="332" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">81.20 tok/s</text>
+<rect x="780" y="318" width="520" height="18" rx="8" fill="#0b1829"/><rect x="780" y="318" width="450.6" height="18" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="332" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">112.65  +38.7%</text>
+<text x="82" y="388" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">p8192/g128 C1 post-first</text>
+<rect x="82" y="398" width="520" height="18" rx="8" fill="#0b1829"/><rect x="82" y="398" width="310.1" height="18" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="412" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">77.52 tok/s</text>
+<rect x="780" y="398" width="520" height="18" rx="8" fill="#0b1829"/><rect x="780" y="398" width="414.5" height="18" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="412" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">103.63  +33.7%</text>
+<text x="82" y="468" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">short agentic 3×5 g256</text>
+<rect x="82" y="478" width="520" height="18" rx="8" fill="#0b1829"/><rect x="82" y="478" width="281.3" height="18" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="492" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">43.27 tok/s</text>
+<rect x="780" y="478" width="520" height="18" rx="8" fill="#0b1829"/><rect x="780" y="478" width="373.4" height="18" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="492" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">57.45  +32.8%</text>
+<text x="82" y="548" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">8K agentic median</text>
+<rect x="82" y="558" width="520" height="18" rx="8" fill="#0b1829"/><rect x="82" y="558" width="325.4" height="18" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="572" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">50.06 tok/s</text>
+<rect x="780" y="558" width="520" height="18" rx="8" fill="#0b1829"/><rect x="780" y="558" width="446.7" height="18" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="572" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">68.73  +37.3%</text>
+<text x="82" y="628" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">16K agentic median</text>
+<rect x="82" y="638" width="520" height="18" rx="8" fill="#0b1829"/><rect x="82" y="638" width="365.9" height="18" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="652" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">56.29 tok/s</text>
+<rect x="780" y="638" width="520" height="18" rx="8" fill="#0b1829"/><rect x="780" y="638" width="460.6" height="18" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="652" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">70.86  +25.9%</text>
+<text x="82" y="708" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">p8192/g1 cold input</text>
+<rect x="82" y="718" width="520" height="18" rx="8" fill="#0b1829"/><rect x="82" y="718" width="439.7" height="18" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="732" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">1691.10 tok/s</text>
+<rect x="780" y="718" width="520" height="18" rx="8" fill="#0b1829"/><rect x="780" y="718" width="441.0" height="18" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="732" fill="#9caec4" font-size="16" font-weight="700" text-anchor="start">1696.00  +0.3%</text>
+<rect x="48" y="812" width="740" height="320" rx="28" fill="#0f1d30"/>
+<text x="82" y="856" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">QUALITY GATE</text>
+<text x="82" y="896" fill="#68a7ff" font-size="20" font-weight="700" text-anchor="start">BF16 draft  12/15   replay 15/15</text>
+<text x="82" y="932" fill="#ffb45c" font-size="20" font-weight="700" text-anchor="start">INT4 draft  12/15   replay 15/15</text>
+<text x="82" y="978" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">Regressions (A pass, C fail): none</text>
+<text x="82" y="1010" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">Improvements: none</text>
+<text x="82" y="1042" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">Greedy SHA mismatches: 1 / 15  · temp=0 thinking-off</text>
+<text x="82" y="1088" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">Speed is not quality. Keep overlay only if C does not regress A.</text>
+<rect x="812" y="812" width="740" height="320" rx="28" fill="#0f1d30"/>
+<text x="846" y="856" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">WHAT THIS IS NOT</text>
+<text x="846" y="900" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">Not +51% vs Run 40 83.7 (wrong image/cache/MBT).</text>
+<text x="846" y="934" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">Not llama-bench pp/tg. Not 2× B70 TP2.</text>
+<text x="846" y="968" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">Prefill flat (~1691 vs 1696). v5 mixed-split is speed-flat.</text>
+<text x="846" y="1002" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">128K S+M1 62.52 n=5 is isolated C1 (870 MiB) — not serving.</text>
+<text x="846" y="1036" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">Prefix-on agentic is a separate card (58.86 vs 43.81).</text>
+<text x="846" y="1070" fill="#ff7a7a" font-size="16" font-weight="600" text-anchor="start">DFlash 2 overlay loaded; accept 0/574. Keep MTP4.</text>
+<text x="846" y="1104" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">Default recipe remains BF16-draft MTP4 83.7 (Run 40).</text>
+</svg>

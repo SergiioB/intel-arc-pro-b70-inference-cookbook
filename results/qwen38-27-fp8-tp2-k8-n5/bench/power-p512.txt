@@ -1,0 +1,5 @@
+gpu0_energy_delta_uJ=3054908081 gpu0_avg_W=97.632
+interval_s=31.290
+gpu1_energy_delta_uJ=3243008484 gpu1_avg_W=103.644
+energy_end_raw: gpu0=3760409453735 gpu1=3781553029174 hwmon=/sys/class/hwmon/hwmon5,/sys/class/hwmon/hwmon6
+temps_end: gpu0=61000 gpu1=66000

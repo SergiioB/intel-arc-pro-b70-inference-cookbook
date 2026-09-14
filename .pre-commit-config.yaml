@@ -1,0 +1,32 @@
+# Dev hooks. Fixing hooks exclude evidence catalogs and hash-pinned routes:
+# patches/, results/, watchdog/, data/, benchmarks/ must never be rewritten
+# (patches/*.py and the benchmark prompts are SHA256-pinned in the docs).
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '^(patches|results|watchdog|data|benchmarks)/'
+      - id: end-of-file-fixer
+        exclude: '^(patches|results|watchdog|data|benchmarks)/'
+      - id: check-yaml
+      - id: check-json
+      - id: mixed-line-ending
+        args: [--fix=lf]
+        exclude: '^(patches|results|watchdog|data|benchmarks)/'
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^(scripts|tests)/.*\.py$
+      - id: ruff-format
+        files: ^(scripts|tests)/.*\.py$
+  - repo: local
+    hooks:
+      - id: vulture
+        name: dead code detection (vulture)
+        entry: vulture scripts tests --min-confidence 80
+        language: system
+        pass_filenames: false
+        types_or: [python]

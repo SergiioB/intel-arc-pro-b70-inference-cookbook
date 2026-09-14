@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-27B draft-INT4 S+M1 generation curve and isolated-C1 128K ladder on Intel Arc Pro B70</title>
+<desc id="desc">C1 client post-first medians n=5, cache-off, 230 W configured cap. Generation curve at p512 and p8192. Long-context g128 ladder is isolated C1 at 870 MiB free after load, not a serving config. Reused Lane 1 g128 112.65 / 103.63. E2 self-reported.</desc>
+<rect width="1600" height="1180" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="52" fill="#55d6be" font-size="16" font-weight="800" text-anchor="start">QWEN3.8-27B · DRAFT-INT4 S+M1 · GENERATION + ISOLATED C1 128K</text>
+<text x="58" y="94" fill="#f5f8fc" font-size="32" font-weight="750" text-anchor="start">n=5 medians · client post-first · not the 83.7 BF16-draft card</text>
+<text x="58" y="128" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">vLLM 0.27.2rc1.dev77+gac7509e2b · kernels 0.1.12.3 · MTP4 · cache off · 230 W cap · E2 self-reported</text>
+<rect x="48" y="154" width="736" height="680" rx="28" fill="#0f1d30"/>
+<text x="78" y="196" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">GENERATION LENGTH  ·  C1</text>
+<text x="78" y="230" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">g32 is not sustained. g512 is a length diagnostic.</text>
+<text x="78" y="268" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p512/g32  acc 84.9%</text>
+<rect x="78" y="278" width="460" height="16" rx="8" fill="#0b1829"/><rect x="78" y="278" width="359.4" height="16" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="552" y="292" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="start">101.57  max 102.73</text>
+<text x="78" y="360" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p512/g256  acc 89.0%</text>
+<rect x="78" y="370" width="460" height="16" rx="8" fill="#0b1829"/><rect x="78" y="370" width="391.9" height="16" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="552" y="384" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="start">110.76  max 112.87</text>
+<text x="78" y="452" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p512/g512  acc 81.2%</text>
+<rect x="78" y="462" width="460" height="16" rx="8" fill="#0b1829"/><rect x="78" y="462" width="358.1" height="16" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="552" y="476" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="start">101.20  max 112.71</text>
+<text x="78" y="544" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p8192/g32  acc 86.5%</text>
+<rect x="78" y="554" width="460" height="16" rx="8" fill="#0b1829"/><rect x="78" y="554" width="332.3" height="16" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="552" y="568" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="start">93.92  max 94.64</text>
+<text x="78" y="636" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p8192/g256  acc 62.5%</text>
+<rect x="78" y="646" width="460" height="16" rx="8" fill="#0b1829"/><rect x="78" y="646" width="268.0" height="16" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="552" y="660" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="start">75.75  max 80.33</text>
+<text x="78" y="728" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p8192/g512  acc 51.6%</text>
+<rect x="78" y="738" width="460" height="16" rx="8" fill="#0b1829"/><rect x="78" y="738" width="229.9" height="16" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="552" y="752" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="start">64.96  max 72.22</text>
+<rect x="816" y="154" width="736" height="680" rx="28" fill="#0f1d30"/>
+<text x="846" y="196" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">LONG CONTEXT g128  ·  ISOLATED C1</text>
+<text x="846" y="230" fill="#ff7a7a" font-size="15" font-weight="600" text-anchor="start">After-load free VRAM 870 MiB. Not production-safe.</text>
+<text x="846" y="278" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p16384/g128  acc 92.6%  input/TTFT 1495</text>
+<rect x="846" y="288" width="430" height="16" rx="8" fill="#0b1829"/><rect x="846" y="288" width="314.0" height="16" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="1290" y="302" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">94.92</text>
+<text x="846" y="378" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p32768/g128  acc 93.8%  input/TTFT 1269</text>
+<rect x="846" y="388" width="430" height="16" rx="8" fill="#0b1829"/><rect x="846" y="388" width="291.9" height="16" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="1290" y="402" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">88.25</text>
+<text x="846" y="478" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p65536/g128  acc 94.8%  input/TTFT 1000</text>
+<rect x="846" y="488" width="430" height="16" rx="8" fill="#0b1829"/><rect x="846" y="488" width="253.8" height="16" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="1290" y="502" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">76.72</text>
+<text x="846" y="578" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p98304/g128  acc 93.4%  input/TTFT 827</text>
+<rect x="846" y="588" width="430" height="16" rx="8" fill="#0b1829"/><rect x="846" y="588" width="224.7" height="16" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="1290" y="602" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">67.93</text>
+<text x="846" y="678" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">p130944/g128  acc 92.6%  input/TTFT 708</text>
+<rect x="846" y="688" width="430" height="16" rx="8" fill="#0b1829"/><rect x="846" y="688" width="206.8" height="16" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="1290" y="702" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">62.52</text>
+<rect x="48" y="854" width="1504" height="282" rx="28" fill="#0f1d30"/>
+<text x="78" y="898" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">REUSED LANE 1 + CAPACITY NOTE</text>
+<text x="78" y="938" fill="#f5f8fc" font-size="18" font-weight="650" text-anchor="start">p512/g128 112.65 · p8192/g128 103.63  (sibling n=5, not remeasured here)</text>
+<text x="78" y="974" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">vs matched BF16-draft MTP4 81.20 / 77.52  (+38.7% / +33.7%)  ·  comparison matched_except_quant</text>
+<text x="78" y="1010" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p130944+g128 completed 5/5 exact 131,072 tokens at 62.52 median (58.74–65.57). Mid-request free VRAM dipped to tens of MiB.</text>
+<text x="78" y="1046" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">Default public recipe remains BF16-draft MTP4 83.7 (LMX cmsur82fz06svms01ga1f0z83). Do not overwrite that row.</text>
+<text x="78" y="1082" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">Timing is client post-first, not llama-bench tg. Cold input is prompt tokens / TTFT, not isolated prefill.</text>
+</svg>

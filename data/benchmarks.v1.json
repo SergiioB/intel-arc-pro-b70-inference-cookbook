@@ -1,0 +1,1109 @@
+{
+ "schema_version": "1.0",
+ "updated_at": "2026-09-14",
+ "source": {
+  "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
+  "branch": "master"
+ },
+ "records": [
+  {
+   "id": "qwen36-35a3-mtp4-p512-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.6-35B-A3B MTP4",
+   "summary": "Short-context C1 decode on the pinned Pi image.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 165
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.26.1rc1.dev457+gc810e5ee9.xpu"
+   },
+   "model": {
+    "id": "llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-GPTQ-Int4",
+    "quantization": "GPTQ-INT4",
+    "speculation": "MTP4"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 131072,
+    "cache": "enabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 170.91,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/qwen36-35a3/QWEN36-MOE-VLLM-XPU.md"
+   }
+  },
+  {
+   "id": "qwen38-27-draft-int4-p512-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B Draft INT4",
+   "summary": "Current-stack calibrated Pi prompt result; target GPTQ-INT4 with Draft INT4 S+M1.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b"
+   },
+   "model": {
+    "id": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+    "quantization": "GPTQ-INT4 + Draft INT4 S+M1",
+    "speculation": "MTP4"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 131072,
+    "cache": "enabled"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 106.7,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/qwen38-27/QWEN38-VLLM-XPU.md"
+   }
+  },
+  {
+   "id": "qwen36-27-mtp4-p512-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.6-27B MTP4",
+   "summary": "Dense GPTQ-INT4 decode with mandatory FP8 KV cache.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.26.1rc1.dev457+gc810e5ee9.xpu"
+   },
+   "model": {
+    "id": "llmfan46/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-GPTQ-Int4",
+    "quantization": "GPTQ-INT4",
+    "speculation": "MTP4"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 131072,
+    "cache": "enabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 69.3,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/qwen36-27/QWEN36-DENSE-VLLM-XPU.md"
+   }
+  },
+  {
+   "id": "nemotron35-dflash-p2048-g128-c1",
+   "kind": "benchmark",
+   "title": "Nemotron-3.5-Lightning DFlash",
+   "summary": "Representative C1 DFlash decode cell; cache off.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.26.1rc1.dev668+g3ee2df303"
+   },
+   "model": {
+    "id": "SergiioB/Nemotron-3.5-Lightning-30B-A3B-GPTQ-INT4-G64-sym",
+    "quantization": "GPTQ-INT4 G64",
+    "speculation": "DFlash n7"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 2048,
+    "output_tokens": 128,
+    "context_limit_tokens": 16384,
+    "cache": "disabled"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 186.61,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/nemotron35-30a3/NEMOTRON-DFLASH-B70.md"
+   }
+  },
+  {
+   "id": "muse-glimmer-dflash-p512-g128-c1",
+   "kind": "benchmark",
+   "title": "Muse-Glimmer-30B DFlash",
+   "summary": "llama.cpp engine-reported generation rate at 128K context.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "d2f83055d"
+   },
+   "model": {
+    "id": "unsloth/Muse-Glimmer-30B-GGUF",
+    "quantization": "UD-Q4_K_XL",
+    "speculation": "DFlash n2"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 131072,
+    "cache": "cold"
+   },
+   "metrics": [
+    {
+     "name": "engine_predicted_output_tps",
+     "value": 26.8,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/muse-glimmer/MUSE-GLIMMER-B70.md"
+   }
+  },
+  {
+   "id": "ornith15-35a3-mtp1-draft-int4-p512-g128-c1",
+   "kind": "benchmark",
+   "title": "Ornith-1.5-35B-A3B MTP1",
+   "summary": "MixedCal-v2 GPTQ target with the default Draft INT4 overlay.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b"
+   },
+   "model": {
+    "id": "SergiioB/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2",
+    "quantization": "GPTQ-INT4 MixedCal-v2 + Draft INT4",
+    "speculation": "MTP1"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 16384,
+    "cache": "disabled"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 106.27,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/ornith15-35a3/ORNITH-VLLM-XPU.md"
+   }
+  },
+  {
+   "id": "dual-b70-tp2-serving-v1",
+   "kind": "capability",
+   "title": "Dual-B70 TP2 / PP2 serving",
+   "summary": "Validated infrastructure path for dual-B70 TP2 / PP2 using spawn-time worker affinity, Docker SYS_PTRACE/ipc=host, and oneCCL simple-threshold variables. Model-specific numeric cards, exact stacks, and evidence are published separately.",
+   "evidence_status": "validated",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32
+   },
+   "engine": {
+    "name": "vllm"
+   },
+   "evidence": {
+    "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/DUAL-B70-TP2.md"
+   }
+  },
+  {
+   "id": "qwen38-fp8-w8a16-v1",
+   "kind": "capability",
+   "title": "Qwen3.8-27B FP8 W8A16",
+   "summary": "The XPU reroute removes dynamic activation quantization and reports roughly 34% speedup and 48 token/s at p1024. Output length, sample count, and full public result coordinates are not yet recorded, so this is excluded from benchmark rankings. Superseded by qwen38-fp8-tp2-k8-p1024-g128-c1 (same recipe lineage, n=5, dual-card).",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b"
+   },
+   "model": {
+    "id": "Qwen3.8-27B block-FP8",
+    "quantization": "FP8 W8A16"
+   },
+   "evidence": {
+    "commit": "0f876e141c7a45b9db6081fba53b207b150206ca",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/0f876e141c7a45b9db6081fba53b207b150206ca/patches/patch_fp8_w8a16.py"
+   }
+  },
+  {
+   "id": "qwen38-fp8-tp2-k8-p1024-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B FP8 TP2 MTP8 decode",
+   "summary": "Dual B70 TP2, W8A16 reroute + custom Xe2 small-M kernel + native MTP8. Greedy diagnostic median (n=5); model-card sampling is in the evidence doc. p1024/g128 C1.",
+   "evidence_status": "official-lab",
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 1024,
+    "output_tokens": 128,
+    "context_limit_tokens": 9216,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "client_e2e_output_tps",
+     "value": 60.13,
+     "unit": "token/s"
+    },
+    {
+     "name": "client_e2e_output_tps_max",
+     "value": 71.06,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b"
+   },
+   "evidence": {
+    "commit": "8c69e5f5143aff60f0bc1cabc97c2fcc364697b2",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8c69e5f5143aff60f0bc1cabc97c2fcc364697b2/docs/qwen38-27/FP8-TP2-W8A16.md"
+   }
+  },
+  {
+   "id": "qwen38-fp8-tp2-k8-p1024-prefill-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B FP8 TP2 cold-input prefill",
+   "summary": "Dual B70 TP2 cold-input rate = actual endpoint prompt tokens / client TTFT, prefix cache disabled, zero-hit delta (n=5).",
+   "evidence_status": "official-lab",
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 1024,
+    "output_tokens": 128,
+    "context_limit_tokens": 9216,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "cold_input_rate_tps",
+     "value": 1736.2,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b"
+   },
+   "evidence": {
+    "commit": "8c69e5f5143aff60f0bc1cabc97c2fcc364697b2",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8c69e5f5143aff60f0bc1cabc97c2fcc364697b2/docs/qwen38-27/FP8-TP2-W8A16.md"
+   }
+  },
+  {
+   "id": "qwen38-fp8-tp2-k8-modelsampling-p512-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B FP8 TP2 MTP8 model-card sampling",
+   "summary": "Dual B70 TP2 model-card non-thinking sampling on random-token synthetic prompts; sampling-sensitivity diagnostic, not a natural-content quality evaluation. p512/g128 C1.",
+   "evidence_status": "official-lab",
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 9216,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "client_e2e_output_tps",
+     "value": 22.16,
+     "unit": "token/s"
+    },
+    {
+     "name": "client_e2e_output_tps_max",
+     "value": 36.8,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B-FP8",
+    "quantization": "FP8 W8A16",
+    "speculation": "MTP8"
+   },
+   "evidence": {
+    "commit": "2c6de11bd7ab097040a11e3746d915b99c5552f0",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/2c6de11bd7ab097040a11e3746d915b99c5552f0/results/qwen38-27-fp8-tp2-k8-n5/bench/model-card-sampling-p512-g128.json"
+   }
+  },
+  {
+   "id": "qwen38-fp8-tp2-k8-modelsampling-p1024-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B FP8 TP2 MTP8 model-card sampling",
+   "summary": "Dual B70 TP2 model-card non-thinking sampling on random-token synthetic prompts; sampling-sensitivity diagnostic, not a natural-content quality evaluation. p1024/g128 C1.",
+   "evidence_status": "official-lab",
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 1024,
+    "output_tokens": 128,
+    "context_limit_tokens": 9216,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "client_e2e_output_tps",
+     "value": 11.66,
+     "unit": "token/s"
+    },
+    {
+     "name": "client_e2e_output_tps_max",
+     "value": 28.21,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B-FP8",
+    "quantization": "FP8 W8A16",
+    "speculation": "MTP8"
+   },
+   "evidence": {
+    "commit": "2c6de11bd7ab097040a11e3746d915b99c5552f0",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/2c6de11bd7ab097040a11e3746d915b99c5552f0/results/qwen38-27-fp8-tp2-k8-n5/bench/model-card-sampling-p1024-g128.json"
+   }
+  },
+  {
+   "id": "qwen38-fp8-tp2-localmaxxing-p74-g256-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B FP8 TP2 LocalMaxxing speed test",
+   "summary": "LocalMaxxing APPROVED self-reported submission cmtg4erjj001xqr01jhqw81dt; serialized-idle C1. Approval is platform acceptance, not independent reproduction.",
+   "evidence_status": "community-reviewed",
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 74,
+    "output_tokens": 256,
+    "context_limit_tokens": 9216,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 31.1,
+     "unit": "token/s"
+    },
+    {
+     "name": "client_ttft_ms",
+     "value": 189.93,
+     "unit": "ms"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 3
+   },
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B-FP8",
+    "quantization": "FP8 W8A16",
+    "speculation": "MTP8"
+   },
+   "evidence": {
+    "commit": "2c6de11bd7ab097040a11e3746d915b99c5552f0",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/2c6de11bd7ab097040a11e3746d915b99c5552f0/results/qwen38-27-fp8-tp2-k8-n5/localmaxxing-approved-receipt.json"
+   }
+  },
+  {
+   "id": "qwen38-flash-next-fused-fp32-p512-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-Flash-Next fused-FP32 C1 decode",
+   "summary": "Dual B70 llama.cpp SYCL, fused IQ3_S/IQ4_NL MMVQ, GGML_SYCL_F16=OFF, 8K context. C1 only (-np 1). Engine timings.predicted_per_second median n=5 at p512/g128. c8 is context, not concurrency. Do not mix with the fused-F16 prefill recipe.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 195
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "0.3.0-dev b492 9723942",
+    "ggml_sycl_f16": false
+   },
+   "model": {
+    "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "AD-4.27bpw mixed IQ3_S/IQ4_NL",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "engine_predicted_output_tps",
+     "value": 23.38,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_predicted_output_tps_max",
+     "value": 23.73,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_prompt_tps",
+     "value": 183.98,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "53836d9df7225a83ea6dcef3a38dcdb6abf2453e",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/53836d9df7225a83ea6dcef3a38dcdb6abf2453e/results/qwen38-flash-next-dual-b70-c1/n5-fused-fp32-c8k-p512-g128/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-flash-next-fused-f16-p9096-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-Flash-Next fused-F16 C1 cold input",
+   "summary": "Dual B70 llama.cpp SYCL, fused IQ3_S/IQ4_NL MMVQ, GGML_SYCL_F16=ON, 16K context, -b/-ub 3072. C1 only. Engine timings.prompt_per_second median n=5 at actual p9096/g128. c16 is context, not concurrency. Separate binary from the 23.38 decode recipe.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 195
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "0.3.0-dev b492 9723942",
+    "ggml_sycl_f16": true
+   },
+   "model": {
+    "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "AD-4.27bpw mixed IQ3_S/IQ4_NL",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 9096,
+    "output_tokens": 128,
+    "context_limit_tokens": 16384,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "engine_prompt_tps",
+     "value": 594.49,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_predicted_output_tps",
+     "value": 20.34,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "53836d9df7225a83ea6dcef3a38dcdb6abf2453e",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/53836d9df7225a83ea6dcef3a38dcdb6abf2453e/results/qwen38-flash-next-dual-b70-c1/n5-fused-f16-c16k-p9096-g128/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-flash-next-128k-c1-v1",
+   "kind": "capability",
+   "title": "Qwen3.8-Flash-Next 128K C1 capacity",
+   "summary": "C1 llama.cpp SYCL completed p512/g128 and actual-p9096/g128 at -c 131072 -b/-ub 1024 (b1536+ rejected). n=3 only. p512 decode ~23.06-23.54 engine tok/s. c128 is context, not concurrency. Not a ranking cell.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 195
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "0.3.0-dev b492 9723942"
+   },
+   "model": {
+    "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "AD-4.27bpw mixed IQ3_S/IQ4_NL",
+    "speculation": "none"
+   },
+   "evidence": {
+    "commit": "53836d9df7225a83ea6dcef3a38dcdb6abf2453e",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/53836d9df7225a83ea6dcef3a38dcdb6abf2453e/results/qwen38-flash-next-dual-b70-c1/n3-context-map.json"
+   }
+  },
+  {
+   "id": "qwen38-flash-next-gpu-group-v1",
+   "kind": "capability",
+   "title": "Qwen3.8-Flash-Next GPU MUL_MAT_ID grouping",
+   "summary": "Matched C1 n=3 fused-F16 16K actual-p9096: GPU grouping 599.48 vs disable 594.67 cold-input (+0.81%). Decode unchanged. Occupancy D2H remains. Not a ranking cell.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 195
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "0.3.0-dev b492 9723942"
+   },
+   "model": {
+    "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "AD-4.27bpw mixed IQ3_S/IQ4_NL",
+    "speculation": "none"
+   },
+   "evidence": {
+    "commit": "53836d9df7225a83ea6dcef3a38dcdb6abf2453e",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/53836d9df7225a83ea6dcef3a38dcdb6abf2453e/results/qwen38-flash-next-dual-b70-c1/n3-f16-gpu-group-c16k-p9096-g128/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-flash-next-mtp-kernel-decode-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-Flash-Next MTP + fused multi-token MoE kernel (decode)",
+   "summary": "Short-context C1 decode with native MTP (draft-mtp n-max 3, 87.7% acceptance on natural text) and a local fused multi-token MUL_MAT_ID kernel (M=2..8, gate-up + grouped down). Matched natural-prompt n=5 medians: 33.25 tok/s (code task), 30.68 (prose task); warm-server n=3 37.37, peak sample 43.76. Baseline 2026-09-01 build: 23.38 (+42%). Engine-native timing metric, single client, exact token counts, zero cache reuse. PROVISIONAL self-report: not independently reproduced.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 195
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 52d4268 + qwen4exp MTP port + fused multi-token MoE kernel (M=2..8)"
+   },
+   "model": {
+    "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "AD-4.27bpw Q4_K_M M64 (mixed iq2_s/q4_K/iq3_s gate-up, iq4_nl/q8_0 down)",
+    "speculation": "draft-mtp n-max=3 p-min=0.75 (dzannotti Q4_K_M draft head)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_decode_tps",
+     "value": 33.25,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_decode_tps_prose_task",
+     "value": 30.68,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "figures": [
+    "results/qwen38-flash-next-mtp-kernel-v1/figures/01-speed-progression.svg",
+    "results/qwen38-flash-next-mtp-kernel-v1/figures/03-kernel-ab.svg"
+   ],
+   "evidence": {
+    "commit": "61bc9478424f5f240cef1cee6678864e55ebeceb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/61bc9478424f5f240cef1cee6678864e55ebeceb/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-flash-next-mtp-kernel-prefill-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-Flash-Next prefill (F16 no-spec)",
+   "summary": "Long-prompt cold-input rate on the F16-accumulation binary (GGML_SYCL_F16=ON), no speculation: 585.9 tok/s at P9096/G128/C1 (n=3 median, stdev 0.2). Decode in the same cell 22.96 tok/s. FP32+MTP same cell: 441.7. Prefill-heavy serving runs F16 no-spec; decode runs FP32 + MTP + kernel.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 195
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 52d4268, GGML_SYCL_F16=ON"
+   },
+   "model": {
+    "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "AD-4.27bpw Q4_K_M M64",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 9096,
+    "output_tokens": 128,
+    "context_limit_tokens": 16384,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_cold_input_tps",
+     "value": 585.9,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_decode_tps",
+     "value": 22.96,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 3
+   },
+   "figures": [
+    "results/qwen38-flash-next-mtp-kernel-v1/figures/05-prefill-f16.svg"
+   ],
+   "evidence": {
+    "commit": "61bc9478424f5f240cef1cee6678864e55ebeceb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/61bc9478424f5f240cef1cee6678864e55ebeceb/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-flash-next-mtp-kernel-c128-nearboundary-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-Flash-Next 128K near-boundary (first completed 120K on dual B70)",
+   "summary": "Near-boundary context capacity: c131072 loaded with MTP (b1024 memory-fit limit) and a ~120.7K-token real prose input completed end-to-end, all 5 samples valid: 18.38 tok/s decode median, 222.9 tok/s cold input. Capacity-observation tier: GPU1 transient free 391 MiB at demand time; staged 60-64C gates (GPU1 loaded-idle 66-67C). 262144 rejected by memory-fit guard.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 195
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 52d4268 + qwen4exp MTP port + fused multi-token MoE kernel (M=2..8)"
+   },
+   "model": {
+    "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "AD-4.27bpw Q4_K_M M64 (mixed iq2_s/q4_K/iq3_s gate-up, iq4_nl/q8_0 down)",
+    "speculation": "draft-mtp n-max=3 p-min=0.75 (dzannotti Q4_K_M draft head)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 120768,
+    "output_tokens": 128,
+    "context_limit_tokens": 131072,
+    "cache": "disabled-zero-hit"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_decode_tps",
+     "value": 18.38,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_cold_input_tps",
+     "value": 222.9,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "figures": [
+    "results/qwen38-flash-next-mtp-kernel-v1/figures/02-decode-vs-context.svg",
+    "results/qwen38-flash-next-mtp-kernel-v1/figures/04-acceptance-thermals.svg"
+   ],
+   "evidence": {
+    "commit": "61bc9478424f5f240cef1cee6678864e55ebeceb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/61bc9478424f5f240cef1cee6678864e55ebeceb/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-27-gguf-q4km-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B GGUF Q4_K_M (fresh, one B70)",
+   "summary": "Freshly quantized from the same SHA-verified BF16 source; fleet KV q8_0/q4_1, fa on, -b 8192 -ub 4096, one B70 GPU, llama-bench r=5 (engine-native). Decode tracks streamed bytes; long-prompt prefill is byte-flat (844-871 across formats). PROVISIONAL self-report. Q4_K_M is the llama.cpp workhorse for this model.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (build 361)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B (BF16, SHA-verified) -> llama-quantize",
+    "quantization": "Q4_K_M (16.81 GB)",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "llama-bench synthetic (prefix cache off internally)"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_tg128_p512",
+     "value": 20.01,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_tg128_p8192",
+     "value": 20.06,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp2048",
+     "value": 848.04,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp8192",
+     "value": 844.25,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp512",
+     "value": 611.73,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-gguf-q5km-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B GGUF Q5_K_M (fresh, one B70)",
+   "summary": "Freshly quantized from the same SHA-verified BF16 source; fleet KV q8_0/q4_1, fa on, -b 8192 -ub 4096, one B70 GPU, llama-bench r=5 (engine-native). Decode tracks streamed bytes; long-prompt prefill is byte-flat (844-871 across formats). PROVISIONAL self-report.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (build 361)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B (BF16, SHA-verified) -> llama-quantize",
+    "quantization": "Q5_K_M (19.54 GB)",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "llama-bench synthetic (prefix cache off internally)"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_tg128_p512",
+     "value": 16.97,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_tg128_p8192",
+     "value": 16.9,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp2048",
+     "value": 871.34,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp8192",
+     "value": 856.76,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-gguf-q80-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B GGUF Q8_0 (fresh, one B70)",
+   "summary": "Freshly quantized from the same SHA-verified BF16 source; fleet KV q8_0/q4_1, fa on, -b 8192 -ub 4096, one B70 GPU, llama-bench r=5 (engine-native). Decode tracks streamed bytes; long-prompt prefill is byte-flat (844-871 across formats). PROVISIONAL self-report. Q8_0 shows the best effective streaming (~396 GB/s vs ~336 for Q4_K_M) but loses on byte count.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (build 361)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B (BF16, SHA-verified) -> llama-quantize",
+    "quantization": "Q8_0 (29.05 GB)",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "llama-bench synthetic (prefix cache off internally)"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_tg128_p512",
+     "value": 13.62,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_tg128_p8192",
+     "value": 13.54,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp2048",
+     "value": 864.56,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp8192",
+     "value": 853.08,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-powercap-prefill-v1",
+   "kind": "capability",
+   "title": "Power cap A/B: prefill clipped at 150 W, decode cap-insensitive (one B70)",
+   "summary": "Controlled 150 W vs 230 W stock-cap A/B on the GPTQ-INT4 vLLM route: spec-off decode flat (24.41 -> 24.25 tok/s p512/g128), but cold input jumped 1039 -> 1586 tok/s at p8192/g1 (+53%) and MTP-4 cold input +38-45%. Decode is launch-gap-bound (~75-110 W draw); prefill pulls 177-202 W and is heavily clipped at 150 W. If you serve long prompts, the eco cap costs half your prefill throughput. PROVISIONAL self-report.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "XPU image sha256:f01e24f6 (v0.27.2rc1.dev77-class), compile-only"
+   },
+   "model": {
+    "id": "Qwen3.8-27B GPTQ-INT4 sym G128 W4A16",
+    "quantization": "GPTQ-INT4 G128",
+    "speculation": "none / MTP-4"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 8192,
+    "output_tokens": 128,
+    "context_limit_tokens": 9216,
+    "cache": "disabled (config + zero-hit counters)"
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-ppl-hybrid-gdn-warning-v1",
+   "kind": "capability",
+   "title": "Warning: llama-perplexity cannot rank quant formats on hybrid-GDN models",
+   "summary": "On Qwen3.8-27B (qwen3_5: 48 GDN + 16 full-attention layers), wikitext-2 PPL came back NON-monotonic in precision: Q4_K_M 6.547 < mixed 6.653 < Q8_0 6.678 < Q5_K_M 6.794. Root cause: the full-F16 reference scored 6.5545 - worse than Q4_K_M on 7/8 chunks and ~= Q8_0 - so the metric (recurrent-state accumulation), not the weights, is confounded; quant kernels exonerated. PPL also grows with chunk length (6.29 -> 7.15 at c2048 -> c8192). Upstream: ggml-org/llama.cpp#28879. Use per-position logit parity vs F16 for quality on linear-attention hybrids.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (llama-perplexity)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B + llama-quantize arms",
+    "quantization": "F16/Q4_K_M/Q5_K_M/Q8_0",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 4096,
+    "output_tokens": 0,
+    "context_limit_tokens": 8192,
+    "cache": "n/a (offline perplexity)"
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  }
+ ]
+}

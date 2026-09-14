@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1720" viewBox="0 0 1600 1720" role="img" aria-labelledby="title desc">
+<title id="title">Intel Arc Pro B70 Nemotron-3.5-Lightning DFlash advanced card</title>
+<desc id="desc">Lane 1 n=5 C1 on one Arc Pro B70: representative decode 186.61 tok/s client post-first at p2048/g128; cold input 7160 at p8192/g1 (prompt/TTFT). Matched 1.81× vs no-spec graphs at p8192/g128. Capacity completed 119,904 tokens.</desc>
+<rect width="1600" height="1720" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="56" fill="#55d6be" font-size="18" font-weight="800" text-anchor="start">NEMOTRON-3.5-LIGHTNING 30B-A3B · DFLASH n=7 · C1 · 150 W CAP</text>
+<text x="58" y="108" fill="#f5f8fc" font-size="36" font-weight="750" text-anchor="start">Speed card, matched speculation, and capacity — separated</text>
+<text x="58" y="144" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">vLLM 0.26.1rc1.dev668+g3ee2df303 XPU · GPTQ-INT4-G64-sym + local BF16 DFlash · cache off · n=5 means repeats, not users</text>
+<rect x="48" y="176" width="488" height="250" rx="28" fill="#0f1d30"/>
+<text x="78" y="216" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">REPRESENTATIVE DECODE</text>
+<text x="78" y="248" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p2048 / g128 · client post-first</text>
+<text x="78" y="336" fill="#55d6be" font-size="72" font-weight="800" text-anchor="start">186.61</text>
+<text x="348" y="336" fill="#9caec4" font-size="26" font-weight="400" text-anchor="start">t/s</text>
+<text x="78" y="392" fill="#68a7ff" font-size="15" font-weight="500" text-anchor="start">median n=5 · 174.60–201.83</text>
+<rect x="556" y="176" width="488" height="250" rx="28" fill="#0f1d30"/>
+<text x="586" y="216" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">COLD INPUT</text>
+<text x="586" y="248" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p8192 / g1 · prompt ÷ TTFT</text>
+<text x="586" y="336" fill="#68a7ff" font-size="72" font-weight="800" text-anchor="start">7,160</text>
+<text x="856" y="336" fill="#9caec4" font-size="26" font-weight="400" text-anchor="start">t/s</text>
+<text x="586" y="392" fill="#68a7ff" font-size="15" font-weight="500" text-anchor="start">n=5 · 7,117–7,226 · not engine prefill</text>
+<rect x="1064" y="176" width="488" height="250" rx="28" fill="#0f1d30"/>
+<text x="1094" y="216" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">MATCHED-EXCEPT-SPEC</text>
+<text x="1094" y="248" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p8192 / g128 only · both n=5</text>
+<text x="1094" y="336" fill="#ffb45c" font-size="72" font-weight="800" text-anchor="start">1.81×</text>
+<text x="1094" y="392" fill="#68a7ff" font-size="15" font-weight="500" text-anchor="start">DFlash 157.92 vs no-spec 87.25</text>
+<rect x="48" y="450" width="744" height="430" rx="28" fill="#0f1d30"/>
+<text x="78" y="490" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">CLIENT POST-FIRST DECODE</text>
+<text x="78" y="526" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Do not headline p512 (range 140–220)</text>
+<text x="78" y="584" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p512/g128</text>
+<rect x="250" y="560" width="300" height="30" rx="8" fill="#1f2937"/>
+<rect x="250" y="560" width="300.0" height="30" rx="8" fill="#ffb45c"/>
+<text x="566" y="582" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">194.61</text>
+<text x="770" y="582" fill="#ffb45c" font-size="13" font-weight="500" text-anchor="end">not representative</text>
+<text x="78" y="652" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p2048/g128</text>
+<rect x="250" y="628" width="300" height="30" rx="8" fill="#1f2937"/>
+<rect x="250" y="628" width="289.3" height="30" rx="8" fill="#55d6be"/>
+<text x="566" y="650" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">186.61</text>
+<text x="770" y="650" fill="#ffb45c" font-size="13" font-weight="500" text-anchor="end">Lane 1 headline</text>
+<text x="78" y="720" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p8192/g128</text>
+<rect x="250" y="696" width="300" height="30" rx="8" fill="#1f2937"/>
+<rect x="250" y="696" width="251.0" height="30" rx="8" fill="#68a7ff"/>
+<text x="566" y="718" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">157.92</text>
+<text x="770" y="718" fill="#ffb45c" font-size="13" font-weight="500" text-anchor="end">1.81× vs 87.25</text>
+<text x="78" y="788" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">no-spec p8192</text>
+<rect x="250" y="764" width="300" height="30" rx="8" fill="#1f2937"/>
+<rect x="250" y="764" width="156.6" height="30" rx="8" fill="#aeb9c7"/>
+<text x="566" y="786" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">87.25</text>
+<text x="770" y="786" fill="#ffb45c" font-size="13" font-weight="500" text-anchor="end">graphs only</text>
+<text x="78" y="848" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">Window acceptance 1830/3521 = 52.0% at n_spec=7</text>
+<rect x="808" y="450" width="744" height="430" rx="28" fill="#0f1d30"/>
+<text x="838" y="490" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">COLD INPUT + vLLM JOURNEY</text>
+<text x="838" y="526" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Same card, three stages — one matched cell</text>
+<text x="838" y="572" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p2048/g1</text>
+<rect x="980" y="550" width="300" height="30" rx="8" fill="#1f2937"/>
+<rect x="980" y="550" width="274.4" height="30" rx="8" fill="#aeb9c7"/>
+<text x="1296" y="572" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">6,456</text>
+<text x="838" y="632" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">p8192/g1</text>
+<rect x="980" y="610" width="300" height="30" rx="8" fill="#1f2937"/>
+<rect x="980" y="610" width="300.0" height="30" rx="8" fill="#68a7ff"/>
+<text x="1296" y="632" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">7,160</text>
+<text x="838" y="690" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start">vLLM p8192/g128 journey (client post-first)</text>
+<text x="838" y="732" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">eager</text>
+<rect x="980" y="710" width="280" height="26" rx="7" fill="#1f2937"/>
+<rect x="980" y="710" width="64.5" height="26" rx="7" fill="#aeb9c7"/>
+<text x="1274" y="730" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">21.80</text>
+<text x="1528" y="730" fill="#ffb45c" font-size="13" font-weight="500" text-anchor="end">~950 launches/tok</text>
+<text x="838" y="778" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">+ graphs</text>
+<rect x="980" y="756" width="280" height="26" rx="7" fill="#1f2937"/>
+<rect x="980" y="756" width="168.1" height="26" rx="7" fill="#68a7ff"/>
+<text x="1274" y="776" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">87.25</text>
+<text x="1528" y="776" fill="#ffb45c" font-size="13" font-weight="500" text-anchor="end">4.0× over eager</text>
+<text x="838" y="824" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">+ DFlash</text>
+<rect x="980" y="802" width="280" height="26" rx="7" fill="#1f2937"/>
+<rect x="980" y="802" width="280.0" height="26" rx="7" fill="#55d6be"/>
+<text x="1274" y="822" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="start">157.92</text>
+<text x="1528" y="822" fill="#ffb45c" font-size="13" font-weight="500" text-anchor="end">1.81× over graphs</text>
+<text x="838" y="854" fill="#9caec4" font-size="13" font-weight="400" text-anchor="start">Representative DFlash remains 186.61 at p2048/g128, not the 157.92 matched cell.</text>
+<rect x="48" y="904" width="1504" height="430" rx="28" fill="#0f1d30"/>
+<text x="78" y="944" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">CAPACITY LADDER · Run 38 · max-model-len=120000 · n=1 C1</text>
+<text x="78" y="982" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="start">Completed tokens only — g32 rates are diagnostics, not a decode card. 128K was not run.</text>
+<text x="1528" y="944" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">After load 5,328 MiB free · logged KV 295,000</text>
+<rect x="110" y="1170.8" width="200" height="89.2" rx="10" fill="#68a7ff" opacity="0.85"/>
+<text x="210" y="1154.7606084867894" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">32,800</text>
+<text x="210" y="1290" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle">32K + 32</text>
+<text x="210" y="1314" fill="#aeb9c7" font-size="13" font-weight="500" text-anchor="middle">completed</text>
+<rect x="470" y="1121.6" width="200" height="138.4" rx="10" fill="#68a7ff" opacity="0.85"/>
+<text x="570" y="1105.5692554043235" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">65,568</text>
+<text x="570" y="1290" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle">64K + 32</text>
+<text x="570" y="1314" fill="#aeb9c7" font-size="13" font-weight="500" text-anchor="middle">completed</text>
+<rect x="830" y="1072.4" width="200" height="187.6" rx="10" fill="#68a7ff" opacity="0.85"/>
+<text x="930" y="1056.3779023218574" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">98,336</text>
+<text x="930" y="1290" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle">96K + 32</text>
+<text x="930" y="1314" fill="#aeb9c7" font-size="13" font-weight="500" text-anchor="middle">completed</text>
+<rect x="1190" y="1040.0" width="200" height="220.0" rx="10" fill="#55d6be" opacity="0.85"/>
+<text x="1290" y="1024.0" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">119,904</text>
+<text x="1290" y="1290" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle">119872 + 32</text>
+<text x="1290" y="1314" fill="#aeb9c7" font-size="13" font-weight="500" text-anchor="middle">completed</text>
+<rect x="48" y="1358" width="1504" height="320" rx="28" fill="#0f1d30"/>
+<text x="78" y="1400" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">PROTOCOL · POWER · WHAT THIS IS NOT</text>
+<text x="78" y="1444" fill="#f5f8fc" font-size="20" font-weight="600" text-anchor="start">C1 one stream · cache explicitly off · 150 W configured cap</text>
+<text x="78" y="1480" fill="#9caec4" font-size="18" font-weight="500" text-anchor="start">Cell-window draw ~149–160 W · peak interval-avg 179.26 W · pkg max 68.0 °C</text>
+<text x="78" y="1520" fill="#9caec4" font-size="18" font-weight="500" text-anchor="start">LocalMaxxing APPROVED. Cache off. 150 W configured cap. Cold input is prompt/TTFT.</text>
+<text x="78" y="1556" fill="#ffb45c" font-size="18" font-weight="500" text-anchor="start">Not isolated engine prefill. Not llama-bench pp/tg. Not 128K. Not faster than a 5090 / Spark / H100.</text>
+<text x="78" y="1592" fill="#ffb45c" font-size="18" font-weight="500" text-anchor="start">p512 194.6 is not the headline. 10,349 was no-spec n=3 p8192/g128 TTFT. Native MTP still 0%.</text>
+<text x="78" y="1636" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start">Recipe and tables: docs/nemotron35-30a3/NEMOTRON-DFLASH-B70.md</text>
+<text x="78" y="1668" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start">PRs: vllm#52159 grouped_topk compile-disable  ·  vllm-xpu-kernels#524 at::zeros + Muse paged-decode tuple</text>
+</svg>

@@ -1,0 +1,7 @@
+file=n5-p1024-g128.json
+output_throughput=53.74
+per_request_tok/s median=60.13 max=71.06 min=35.19 std=12.51
+rates=[53.17, 60.13, 66.20, 71.06, 35.19]
+mean_tpot_ms=14.15 p50_ttft_ms=589.78
+spec: drafts=112 draft_tokens=896 accepted=532 accept_len=5.750 accept_rate=59.3750
+output_lens=[128, 128, 128, 128, 128] max_concurrent_requests=2

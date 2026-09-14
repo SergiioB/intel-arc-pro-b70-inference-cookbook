@@ -1,0 +1,27 @@
+{
+ "llama_cpp_commit": "9723942adc518b43c4b95dc4dce6906903eb5e09",
+ "llama_cpp_version": "0.3.0-dev b492",
+ "intel_llvm": "2026.0.0",
+ "gguf": {
+  "repo": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+  "variant": "Qwen3.8-Flash-Next-AD-4.27bpw-Q4_K_M-M64",
+  "revision": "142262902a46f7daed19c79d0771534c8106ad59",
+  "shards": 33,
+  "size_gib": 88.03
+ },
+ "binaries": {
+  "decode_fused_fp32_llama_server_sha256": "f56a838b0e1a16aa8a1321ce2a217c8f3e972e961cf0aca706f76f4d6421c98b",
+  "prefill_fused_f16_llama_server_sha256": "2da6e9fc89d9cb68368feb1a2e7ef1045ff705acb16721755ac1f72149dd1ee3",
+  "grouped_libggml_sycl_sha256": "85e7409157a44992c2f14d7af409df5413d40297971c9e8530b0f6a03fa83fae"
+ },
+  "patches": {
+   "flashnext-arch-overlay.patch": "bf9b00b89cf132c6db95bd51f7f3398b5362986c7c116e083631ac9cec8972b1",
+   "sycl-fused-mmvq-and-gpu-group.patch": "4fb812ee13d0df5217b2a93f3d11e9cb98afccaf55d08963d16674da4ad2c836",
+   "sycl-fused-mmvq-iq3s-iq4nl.patch": "2d8709fff6c6fad0c50faabddaf9ef8ae204931b83eb818b973e77c8c5bee00f",
+   "sycl-mmid-gpu-group-20260901.patch": "c84ebfcade8a993dd61603f69dbac0e08c00c1af208adcb0f79ba63e9d969511"
+  },
+  "apply_order": [
+   "flashnext-arch-overlay.patch",
+   "sycl-fused-mmvq-and-gpu-group.patch"
+  ]
+}

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Question / bigger model / how-to"
+    url: https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/discussions
+    about: "Use Discussions for questions, not Issues — Issues are for repro'd bugs only."
+  - name: "Benchmark numbers & catalog"
+    url: https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/master/docs/BENCHMARK-CATALOG.md
+    about: "All official numbers live in data/benchmarks.v1.json"

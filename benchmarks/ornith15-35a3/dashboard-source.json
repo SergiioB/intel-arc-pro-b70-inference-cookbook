@@ -1,0 +1,68 @@
+{
+  "title": "Ornith-1.5-35B-A3B MixedCal-v2",
+  "subtitle": "GPTQ INT4 G128 experts-only · default MTP1 + DraftINT4 · C1 · cache off",
+  "banner": "SELF-REPORTED E2",
+  "banner_sub": "C1 · LMX APPROVED = self-report",
+  "stack": {
+    "image_digest": "f01e24f6",
+    "vllm": "0.27.2rc1.dev77+gac7509e2b",
+    "kernels": "0.1.12.3",
+    "moe": "XPU WNA16 (int_wna16)",
+    "timing": "client SSE post-first · cold input = endpoint tokens / client TTFT"
+  },
+  "rtn": {
+    "wikitext_pct": 24.76,
+    "mixedcal_pct": 10.37,
+    "mixedcal_count": 3186,
+    "total": 30720
+  },
+  "decode": [
+    {"label": "No-spec 32K orig @150 W", "p512": 70.80, "p8192": 64.86, "accept": null, "kind": "nospec"},
+    {"label": "No-spec 32K MixedCal @150 W", "p512": 70.74, "p8192": 64.95, "accept": null, "kind": "nospec"},
+    {"label": "MTP1 16K orig BF16 @150 W", "p512": 97.88, "p8192": 91.06, "accept": 78.5, "kind": "mtp1"},
+    {"label": "MTP1 16K MixedCal BF16 @150 W", "p512": 96.43, "p8192": 89.85, "accept": 77.0, "kind": "mtp1"},
+    {"label": "MTP2 MixedCal BF16 @150 W", "p512": 84.16, "p8192": 75.86, "accept": 41.7, "kind": "mtp2"},
+    {"label": "MTP4 MixedCal BF16 @150 W", "p512": 66.27, "p8192": 59.69, "accept": 22.1, "kind": "mtp4"},
+    {"label": "MTP1 DraftINT4 16K @150 W", "p512": 106.27, "p8192": 97.16, "accept": 81.9, "kind": "default", "winner": true},
+    {"label": "MTP1 DraftINT4 32K @230 W", "p512": 106.64, "p8192": null, "accept": null, "kind": "default", "winner": true}
+  ],
+  "cold": [
+    {"label": "p2048/g1 MixedCal n=5 32K @150 W", "value": 6968, "cap": 150},
+    {"label": "p8192/g1 MixedCal n=5 32K @150 W", "value": 6963, "cap": 150},
+    {"label": "paired A/B p2048 @150 W (3-round med)", "value": 7212, "cap": 150},
+    {"label": "paired A/B p2048 @230 W no-spec (3-round med)", "value": 9748, "cap": 230},
+    {"label": "MTP1+DraftINT4 p2048/g1 @230 W n=5", "value": 9403, "cap": 230},
+    {"label": "LMX no-spec tokSPrefill @230 W g128", "value": 9780, "cap": 230},
+    {"label": "LMX MTP1+DraftINT4 tokSPrefill @230 W", "value": 9072.9, "cap": 230}
+  ],
+  "capacity": [
+    {"serve": "65,536 no-spec", "cell": "p65408/g128", "value": 54.49, "note": "n=3", "mtp": false},
+    {"serve": "131,072 no-spec", "cell": "p130944/g128", "value": 45.84, "note": "n=3", "mtp": false},
+    {"serve": "131,072 MTP1", "cell": "p130944/g128", "value": 70.25, "note": "n=3", "mtp": true},
+    {"serve": "131K MTP1 U=0.90", "cell": "p512/g128", "value": 98.16, "note": "n=5 85.3% acc", "mtp": true},
+    {"serve": "262,144 no-spec", "cell": "p262016/g128", "value": 35.35, "note": "n=3", "mtp": false}
+  ],
+  "lmx": [
+    {
+      "id": "cmt2tdx5q0hy0mv01koh4xwpw",
+      "serve": "MTP1 + DraftINT4, 32K, 230 W",
+      "prompt": "long / g128",
+      "tokSOut": 108.4,
+      "tokSPrefill": 9072.9
+    },
+    {
+      "id": "cmt2sr6gq0himmv01ogieh0c8",
+      "serve": "no-spec, 32K, 230 W",
+      "prompt": "long / g128",
+      "tokSOut": 69.9,
+      "tokSPrefill": 9780
+    },
+    {
+      "id": "cmt2sl6eg0hdcmv01gre5o3ub",
+      "serve": "MTP1 BF16 draft, 16K, 150 W",
+      "prompt": "p32 / g256",
+      "tokSOut": 94.1,
+      "tokSPrefill": 654.7
+    }
+  ]
+}

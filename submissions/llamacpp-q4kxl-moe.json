@@ -1,0 +1,25 @@
+{
+  "hfId": "Qwen/Qwen3.6-35B-A3B",
+  "hardware": {
+    "hwClass": "DISCRETE_GPU",
+    "gpuName": "Intel Arc Pro B70",
+    "gpuCount": 1,
+    "vramGb": 32.0,
+    "os": "Linux"
+  },
+  "engineName": "llama.cpp",
+  "engineVersion": "b10255+ (071327508) SYCL",
+  "quantization": "Q4_K_XL",
+  "backend": "xpu",
+  "tokSOut": 69.0,
+  "tokSPrefill": 1498.0,
+  "contextLength": 16384,
+  "batchSize": 1,
+  "notes": "Single-stream SYCL llama-server. engine rate timings.predicted_per_second (per AGENTS.md §9.4). Qwen3.6-35B-A3B-UD-Q4_K_XL GGUF. q8_0 K + q4_1 V KV, FA on, -ngl 99 -ncmoe 0. 150W (MoE self-limits). Measured 2026-08-06 Run 19.",
+  "engineFlags": {
+    "commandSnippet": "llama-server -m Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 16384 -b 8192 -ub 4096 -t 8 --no-mmap -dev SYCL0",
+    "kvCacheDtype": "q8_0/q4_1",
+    "flashAttn": true,
+    "numParallel": 1
+  }
+}

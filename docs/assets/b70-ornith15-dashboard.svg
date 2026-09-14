@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1640" viewBox="0 0 1600 1640" role="img" aria-labelledby="title desc">
+<title id="title">Ornith 1.5 MixedCal-v2 on Intel Arc Pro B70 — self-reported C1 card</title>
+<desc id="desc">Client post-first decode and cold-input rates for Ornith MixedCal-v2 GPTQ INT4 on one Intel Arc Pro B70. Default serve is MTP1 plus DraftINT4. MTP4 is slower than no-spec. Self-reported E2. LocalMaxxing APPROVED means accepted self-report, not independent reproduction.</desc>
+<rect width="1600" height="1640" fill="#07111f"/>
+<text x="48" y="52" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">INTEL ARC PRO B70 · vLLM XPU</text>
+<text x="48" y="96" fill="#f5f8fc" font-size="36" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Ornith-1.5-35B-A3B MixedCal-v2</text>
+<text x="48" y="130" fill="#9caec4" font-size="18" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">GPTQ INT4 G128 experts-only · default MTP1 + DraftINT4 · C1 · cache off</text>
+<rect x="1180" y="28" width="372" height="88" rx="18" fill="#0f1d30"/>
+<text x="1366" y="62" fill="#55d6be" font-size="20" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">SELF-REPORTED E2</text>
+<text x="1366" y="92" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">C1 · LMX APPROVED = self-report</text>
+<rect x="48" y="168" width="760" height="548" rx="28" fill="#0f1d30"/>
+<text x="82" y="208" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">C1 DECODE</text>
+<text x="82" y="246" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Client post-first tok/s · n=5</text>
+<rect x="82" y="270" width="692" height="40" rx="12" fill="#0b1829"/>
+<text x="98" y="297" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Mode</text>
+<text x="442" y="297" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p512/g128</text>
+<text x="592" y="297" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p8192/g128</text>
+<text x="722" y="297" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">accept</text>
+<circle cx="98" cy="337" r="5" fill="#aeb9c7"/>
+<text x="112" y="343" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">No-spec 32K orig @150 W</text>
+<text x="442" y="343" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">70.80</text>
+<text x="592" y="343" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">64.86</text>
+<text x="722" y="343" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">—</text>
+<rect x="82" y="360" width="692" height="46" fill="#12243a" opacity="0.5"/>
+<circle cx="98" cy="383" r="5" fill="#aeb9c7"/>
+<text x="112" y="389" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">No-spec 32K MixedCal @150 W</text>
+<text x="442" y="389" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">70.74</text>
+<text x="592" y="389" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">64.95</text>
+<text x="722" y="389" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">—</text>
+<circle cx="98" cy="429" r="5" fill="#55d6be"/>
+<text x="112" y="435" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP1 16K orig BF16 @150 W</text>
+<text x="442" y="435" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">97.88</text>
+<text x="592" y="435" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">91.06</text>
+<text x="722" y="435" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">78.5%</text>
+<rect x="82" y="452" width="692" height="46" fill="#12243a" opacity="0.5"/>
+<circle cx="98" cy="475" r="5" fill="#55d6be"/>
+<text x="112" y="481" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP1 16K MixedCal BF16 @150 W</text>
+<text x="442" y="481" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">96.43</text>
+<text x="592" y="481" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">89.85</text>
+<text x="722" y="481" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">77.0%</text>
+<circle cx="98" cy="521" r="5" fill="#68a7ff"/>
+<text x="112" y="527" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP2 MixedCal BF16 @150 W</text>
+<text x="442" y="527" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">84.16</text>
+<text x="592" y="527" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">75.86</text>
+<text x="722" y="527" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">41.7%</text>
+<rect x="82" y="544" width="692" height="46" fill="#12243a" opacity="0.5"/>
+<circle cx="98" cy="567" r="5" fill="#ffb45c"/>
+<text x="112" y="573" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP4 MixedCal BF16 @150 W</text>
+<text x="442" y="573" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">66.27</text>
+<text x="592" y="573" fill="#f5f8fc" font-size="17" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">59.69</text>
+<text x="722" y="573" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">22.1%</text>
+<circle cx="98" cy="613" r="5" fill="#55d6be"/>
+<text x="112" y="619" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP1 DraftINT4 16K @150 W</text>
+<text x="442" y="619" fill="#55d6be" font-size="17" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">106.27</text>
+<text x="592" y="619" fill="#55d6be" font-size="17" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">97.16</text>
+<text x="722" y="619" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">81.9%</text>
+<rect x="82" y="636" width="692" height="46" fill="#12243a" opacity="0.5"/>
+<circle cx="98" cy="659" r="5" fill="#55d6be"/>
+<text x="112" y="665" fill="#f5f8fc" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP1 DraftINT4 32K @230 W</text>
+<text x="442" y="665" fill="#55d6be" font-size="17" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">106.64</text>
+<text x="592" y="665" fill="#55d6be" font-size="17" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">—</text>
+<text x="722" y="665" fill="#9caec4" font-size="15" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">—</text>
+<rect x="832" y="168" width="720" height="548" rx="28" fill="#0f1d30"/>
+<text x="866" y="208" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">COLD INPUT</text>
+<text x="866" y="246" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Endpoint tokens / client TTFT</text>
+<text x="866" y="262" fill="#ffb45c" font-size="13" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">230 W is configured cap. Combined MTP prefill ≠ no-spec 9.7k (first token in TTFT).</text>
+<rect x="866" y="290" width="652" height="44" rx="12" fill="#0b1829"/>
+<text x="884" y="318" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p2048/g1 MixedCal n=5 32K @150 W</text>
+<text x="1496" y="318" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">6,968</text>
+<rect x="866" y="340" width="652" height="44" rx="12" fill="#0b1829"/>
+<text x="884" y="368" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p8192/g1 MixedCal n=5 32K @150 W</text>
+<text x="1496" y="368" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">6,963</text>
+<rect x="866" y="390" width="652" height="44" rx="12" fill="#0b1829"/>
+<text x="884" y="418" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">paired A/B p2048 @150 W (3-round med)</text>
+<text x="1496" y="418" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">7,212</text>
+<rect x="866" y="440" width="652" height="44" rx="12" fill="#0b1829"/>
+<text x="884" y="468" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">paired A/B p2048 @230 W no-spec (3-round med)</text>
+<text x="1496" y="468" fill="#ffb45c" font-size="18" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">9,748</text>
+<rect x="866" y="490" width="652" height="44" rx="12" fill="#0b1829"/>
+<text x="884" y="518" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP1+DraftINT4 p2048/g1 @230 W n=5</text>
+<text x="1496" y="518" fill="#ffb45c" font-size="18" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">9,403</text>
+<rect x="866" y="540" width="652" height="44" rx="12" fill="#0b1829"/>
+<text x="884" y="568" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">LMX no-spec tokSPrefill @230 W g128</text>
+<text x="1496" y="568" fill="#ffb45c" font-size="18" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">9,780</text>
+<rect x="866" y="590" width="652" height="44" rx="12" fill="#0b1829"/>
+<text x="884" y="618" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">LMX MTP1+DraftINT4 tokSPrefill @230 W</text>
+<text x="1496" y="618" fill="#ffb45c" font-size="18" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">9,073</text>
+<rect x="48" y="740" width="1504" height="250" rx="28" fill="#0f1d30"/>
+<text x="82" y="780" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">EXACT-TOKEN CAPACITY MIXEDCAL-V2</text>
+<text x="82" y="818" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Calibrated with /tokenize · finish=length</text>
+<rect x="82" y="834" width="278" height="132" rx="18" fill="#0b1829"/>
+<text x="100" y="866" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">65,536 no-spec</text>
+<text x="100" y="914" fill="#f5f8fc" font-size="32" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">54.49</text>
+<text x="100" y="946" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p65408/g128 · n=3</text>
+<rect x="376" y="834" width="278" height="132" rx="18" fill="#0b1829"/>
+<text x="394" y="866" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">131,072 no-spec</text>
+<text x="394" y="914" fill="#f5f8fc" font-size="32" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">45.84</text>
+<text x="394" y="946" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p130944/g128 · n=3</text>
+<rect x="670" y="834" width="278" height="132" rx="18" fill="#0b1829"/>
+<text x="688" y="866" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">131,072 MTP1</text>
+<text x="688" y="914" fill="#55d6be" font-size="32" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">70.25</text>
+<text x="688" y="946" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p130944/g128 · n=3</text>
+<rect x="964" y="834" width="278" height="132" rx="18" fill="#0b1829"/>
+<text x="982" y="866" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">131K MTP1 U=0.90</text>
+<text x="982" y="914" fill="#55d6be" font-size="32" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">98.16</text>
+<text x="982" y="946" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p512/g128 · n=5 85.3% acc</text>
+<rect x="1258" y="834" width="278" height="132" rx="18" fill="#0b1829"/>
+<text x="1276" y="866" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">262,144 no-spec</text>
+<text x="1276" y="914" fill="#f5f8fc" font-size="32" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">35.35</text>
+<text x="1276" y="946" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p262016/g128 · n=3</text>
+<rect x="48" y="1014" width="1504" height="292" rx="28" fill="#0f1d30"/>
+<text x="82" y="1054" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">LOCALMAXXING SPEED-TEST</text>
+<text x="82" y="1092" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">APPROVED = accepted self-report, not independent reproduction</text>
+<rect x="82" y="1110" width="1436" height="40" rx="12" fill="#0b1829"/>
+<text x="98" y="1137" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Serve</text>
+<text x="702" y="1137" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">prompt / gen</text>
+<text x="982" y="1137" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">tokSOut</text>
+<text x="1182" y="1137" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">tokSPrefill</text>
+<text x="1402" y="1137" fill="#9caec4" font-size="16" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">id</text>
+<text x="98" y="1183" fill="#f5f8fc" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP1 + DraftINT4, 32K, 230 W</text>
+<text x="702" y="1183" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">long / g128</text>
+<text x="982" y="1183" fill="#55d6be" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">108.4</text>
+<text x="1182" y="1183" fill="#55d6be" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">9,072.9</text>
+<text x="1402" y="1183" fill="#9caec4" font-size="12" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">cmt2tdx5q0hy0mv01koh4xwpw</text>
+<rect x="82" y="1200" width="1436" height="46" fill="#12243a" opacity="0.5"/>
+<text x="98" y="1229" fill="#f5f8fc" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">no-spec, 32K, 230 W</text>
+<text x="702" y="1229" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">long / g128</text>
+<text x="982" y="1229" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">69.9</text>
+<text x="1182" y="1229" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">9,780</text>
+<text x="1402" y="1229" fill="#9caec4" font-size="12" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">cmt2sr6gq0himmv01ogieh0c8</text>
+<text x="98" y="1275" fill="#f5f8fc" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP1 BF16 draft, 16K, 150 W</text>
+<text x="702" y="1275" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p32 / g256</text>
+<text x="982" y="1275" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">94.1</text>
+<text x="1182" y="1275" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">654.7</text>
+<text x="1402" y="1275" fill="#9caec4" font-size="12" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">cmt2sl6eg0hdcmv01gre5o3ub</text>
+<text x="48" y="1324" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Contract</text>
+<text x="48" y="1354" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Image digest f01e24f6  ·  0.27.2rc1.dev77+gac7509e2b  ·  kernels 0.1.12.3  ·  XPU WNA16 (int_wna16)</text>
+<text x="48" y="1378" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">client SSE post-first · cold input = endpoint tokens / client TTFT</text>
+<text x="48" y="1402" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MixedCal-v2 RTN 10.37% (3186/30720) vs WikiText 24.76%. Speed at 150 W is parity, not a MixedCal tok/s win.</text>
+<text x="48" y="1438" fill="#f5f8fc" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Default serve: MTP1 + DraftINT4. MTP4 is slower than no-spec. Prefill lever is configured 230 W (~9.7k no-spec), not MixedCal.</text>
+<text x="48" y="1474" fill="#ffb45c" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Combined tokSPrefill 9073 includes MTP first-token work inside TTFT, so it is not the no-spec 9780 cell.</text>
+<text x="48" y="1510" fill="#ffb45c" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Self-reported E2 with raw evidence · not independently reproduced · greedy diagnostic · C1 only</text>
+</svg>

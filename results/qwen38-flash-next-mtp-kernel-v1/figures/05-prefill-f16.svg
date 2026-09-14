@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="600" viewBox="0 0 1080 600" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="1080" height="600" fill="#ffffff"/>
+  <text x="40" y="46" font-size="24" font-weight="700" fill="#111827">Prefill (cold input) — the F16 lever holds</text>
+  <text x="40" y="72" font-size="14" fill="#6b7280">c16 · P9096 actual (uncached) / G128 · C1 · engine timings · 195 W</text>
+
+  <line x1="90" y1="130" x2="1040" y2="130" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="240" x2="1040" y2="240" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="350" x2="1040" y2="350" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="460" x2="1040" y2="460" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="130" x2="90" y2="510" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="60" y="134" font-size="12" fill="#9ca3af" text-anchor="end">700</text>
+  <text x="60" y="244" font-size="12" fill="#9ca3af" text-anchor="end">500</text>
+  <text x="60" y="354" font-size="12" fill="#9ca3af" text-anchor="end">300</text>
+  <text x="60" y="464" font-size="12" fill="#9ca3af" text-anchor="end">100</text>
+  <text x="60" y="530" font-size="12" fill="#9ca3af" text-anchor="end">0</text>
+
+  <!-- scale: y = 460 - v*330/700 -->
+  <text x="200" y="112" font-size="13" font-weight="700" fill="#374151" text-anchor="middle">2026-09-01 build</text>
+  <text x="200" y="128" font-size="11" fill="#6b7280" text-anchor="middle">F16 no-spec b3072 n=5</text>
+  <rect x="140" y="179.6" width="120" height="280.4" rx="6" fill="#9ca3af"/>
+  <text x="200" y="168" font-size="16" font-weight="700" fill="#374151" text-anchor="middle">594.5</text>
+
+  <text x="470" y="112" font-size="13" font-weight="700" fill="#374151" text-anchor="middle">new build (52d4268) — F16 no-spec</text>
+  <text x="470" y="128" font-size="11" fill="#6b7280" text-anchor="middle">b3072 n=3 (stdev 0.2)</text>
+  <rect x="410" y="183.5" width="120" height="276.5" rx="6" fill="#0a7d2c"/>
+  <text x="470" y="172" font-size="16" font-weight="700" fill="#0a7d2c" text-anchor="middle">585.9</text>
+
+  <text x="740" y="112" font-size="13" font-weight="700" fill="#374151" text-anchor="middle">new build — FP32 + MTP</text>
+  <text x="740" y="128" font-size="11" fill="#6b7280" text-anchor="middle">b3072 (wired kernel) n=3</text>
+  <rect x="680" y="274.2" width="120" height="185.8" rx="6" fill="#ff6a00"/>
+  <text x="740" y="263" font-size="16" font-weight="700" fill="#c2410c" text-anchor="middle">441.7</text>
+
+  <text x="950" y="112" font-size="13" font-weight="700" fill="#374151" text-anchor="middle">old FP32+MTP</text>
+  <text x="950" y="128" font-size="11" fill="#6b7280" text-anchor="middle">pre-wiring n=3</text>
+  <rect x="890" y="284.4" width="120" height="175.6" rx="6" fill="#e5e7eb"/>
+  <text x="950" y="273" font-size="16" font-weight="700" fill="#6b7280" text-anchor="middle">426.1</text>
+
+  <rect x="90" y="545" width="900" height="38" rx="8" fill="#f9fafb"/>
+  <text x="105" y="570" font-size="12.5" fill="#374151">F16-accumulation binary (GGML_SYCL_F16=ON) is the prefill recipe: +37.5% over FP32+MTP at the same cell. MTP costs ~7% prefill (h extraction per forward) — so prefill-heavy serving runs F16 no-spec, decode runs FP32 + MTP + wired kernel.</text>
+</svg>

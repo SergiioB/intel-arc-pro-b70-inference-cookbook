@@ -1,0 +1,212 @@
+{
+ "campaign": "n3-f16-gpu-group-off-c16k-p9096-g128-20260901T070736Z",
+ "hardware": {
+  "gpu_model": "Intel Arc Pro B70",
+  "gpu_count": 2,
+  "vram_gib_per_gpu": 32,
+  "power_cap_w": 195,
+  "topology": "CPU-attached x8+x8 layer split, no GPU P2P"
+ },
+ "engine": {
+  "name": "llama.cpp",
+  "version": "0.3.0-dev b492",
+  "commit": "9723942adc518b43c4b95dc4dce6906903eb5e09",
+  "compiler": "IntelLLVM 2026.0.0",
+  "backend": "SYCL",
+  "ggml_sycl_f16": true,
+  "libggml_sycl_sha256": "85e7409157a44992c2f14d7af409df5413d40297971c9e8530b0f6a03fa83fae",
+  "patches": [
+   "flashnext-arch-overlay.patch",
+   "sycl-mmid-gpu-group-20260901.patch"
+  ],
+  "gpu_group": "disabled-env"
+ },
+ "model": {
+  "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+  "variant": "Qwen3.8-Flash-Next-AD-4.27bpw-Q4_K_M-M64",
+  "revision": "142262902a46f7daed19c79d0771534c8106ad59",
+  "quantization": "mixed IQ3_S gate/up, IQ4_NL down, Q5_1 PLE",
+  "speculation": "none"
+ },
+ "workload": {
+  "concurrency": 1,
+  "prompt_tokens": 9096,
+  "output_tokens": 128,
+  "context_limit_tokens": 16384,
+  "cache": "disabled-zero-hit",
+  "batch": 3072,
+  "ubatch": 3072
+ },
+ "summary": {
+  "cell": "p9096/g128 C1 n=3 screen (post one same-shape discarded warmup)",
+  "config": "fused F16 + GGML_SYCL_DISABLE_MMID_GPU_GROUP=1, -c 16384, -b/-ub 3072, -t 6 -tb 14, 195 W",
+  "sampling": {
+   "temperature": 1.0,
+   "top_p": 0.95,
+   "top_k": 20
+  },
+  "cooldown_limit_mC": 65000,
+  "strict_prompt_tokens": true,
+  "n_valid": 3,
+  "decode_median_tps": 20.265089712913888,
+  "decode_max_tps": 20.44284020910289,
+  "decode_min_tps": 20.00585052983211,
+  "decode_stdev_tps": 0.21975750754317205,
+  "input_rate_median_tps": 594.6704426757894,
+  "ttft_note": "llama.cpp HTTP: prompt_ms here includes full 512-token cold prefill; client TTFT not isolated (non-stream).",
+  "validity": [
+   true,
+   true,
+   true
+  ],
+  "warmup_discarded": "warmup-discard-p9096g128",
+  "claim": "provisional n=3 A/B screen; not a ranking cell"
+ },
+ "samples": [
+  {
+   "tag": "s1-p9096g128",
+   "utc_end": "2026-09-01T07:13:05Z",
+   "usage_prompt_tokens": 9096,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 9096,
+   "prompt_ms": 15186.905,
+   "predicted_ms": 6212.444,
+   "engine_prompt_tps": 598.9370447764044,
+   "engine_decode_tps": 20.44284020910289,
+   "client_wall_s": 21.42174591100047,
+   "metrics_delta": {
+    "prompt_tokens": 9096.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 99.23551219112508,
+    "gpu1_0f": 107.70493547782735
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 168.30858377077885,
+    "gpu1_0f": 188.51096661290143
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 60000,
+    "gpu1_0f": 62000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 61000,
+    "gpu1_0f": 64000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 60000,
+     "gpu1_0f": 62000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  },
+  {
+   "tag": "s2-p9096g128",
+   "utc_end": "2026-09-01T07:13:26Z",
+   "usage_prompt_tokens": 9096,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 9096,
+   "prompt_ms": 15295.867,
+   "predicted_ms": 6266.935,
+   "engine_prompt_tps": 594.6704426757894,
+   "engine_decode_tps": 20.265089712913888,
+   "client_wall_s": 21.58527664999565,
+   "metrics_delta": {
+    "prompt_tokens": 9096.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 98.88571122836689,
+    "gpu1_0f": 107.62917349397627
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 167.5596685806416,
+    "gpu1_0f": 191.83312918439665
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 61000,
+    "gpu1_0f": 64000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 61000,
+    "gpu1_0f": 65000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 61000,
+     "gpu1_0f": 64000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  },
+  {
+   "tag": "s3-p9096g128",
+   "utc_end": "2026-09-01T07:13:49Z",
+   "usage_prompt_tokens": 9096,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 9096,
+   "prompt_ms": 15310.93,
+   "predicted_ms": 6348.143,
+   "engine_prompt_tps": 594.0854017358841,
+   "engine_decode_tps": 20.00585052983211,
+   "client_wall_s": 21.68187193099584,
+   "metrics_delta": {
+    "prompt_tokens": 9096.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 98.7945920646047,
+    "gpu1_0f": 107.71733608153332
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 167.09412804378255,
+    "gpu1_0f": 191.88212715793608
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 61000,
+    "gpu1_0f": 64000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 61000,
+    "gpu1_0f": 65000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 61000,
+     "gpu1_0f": 64000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  }
+ ],
+ "notes": [
+  "C1 only: llama-server -np 1, one client, slot idle between samples.",
+  "c8/c16/c128 are configured context windows, not concurrency.",
+  "Decode = engine timings.predicted_per_second; cold input = timings.prompt_per_second with cache_n=0.",
+  "Sampling temperature 1.0, top_p 0.95, top_k 20, ignore_eos, finish_reason=length, exact g=128.",
+  "KV q8_0 K + q4_1 V, flash attention on, --no-cache-prompt.",
+  "Configured cap 195 W per card; restore 150 W after the campaign. Cap is not measured draw.",
+  "Loaded-idle GPU1 package temperature did not fall to the ordinary <=55 C comparison floor with the 88 GiB model resident (stuck about 62 C at about 45 W idle). Samples ran at that loaded-idle plateau.",
+  "E2 self-reported with public raw samples. Independent reproduction pending.",
+  "Do not mix fused-FP32 decode numbers with fused-F16 prefill numbers as one recipe.",
+  "Do not mix with Qwen3.8-27B vLLM GPTQ/MTP or FP8 TP2 numbers.",
+  "Disable switch: GGML_SYCL_DISABLE_MMID_GPU_GROUP=1 on the same grouped library."
+ ]
+}

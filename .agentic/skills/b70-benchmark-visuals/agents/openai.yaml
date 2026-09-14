@@ -1,0 +1,4 @@
+interface:
+  display_name: "B70 Benchmark Visuals"
+  short_description: "Render evidence-backed B70 benchmark SVGs"
+  default_prompt: "Render the B70 benchmark dashboard and method SVGs from the canonical summary, verify them visually, and stage identical cookbook and portfolio copies."

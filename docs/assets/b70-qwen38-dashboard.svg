@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1720" viewBox="0 0 1600 1720" role="img" aria-labelledby="title desc">
+<title id="title">Intel Arc Pro B70 dense Qwen3.8-27B GPTQ-INT4 · 230 W vLLM 4-mode benchmark</title>
+<desc id="desc">Cold input rate, short and eight-thousand-token decode, measured power draw, and full-context decode for no-spec, MTP1, MTP2, and MTP4 on dense Qwen3.8-27B GPTQ-INT4 at 230 W.</desc>
+<rect width="1600" height="1720" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="64" fill="#55d6be" font-size="18" font-weight="800" text-anchor="start">Qwen3.8-27B GPTQ-INT4 · C1 · 4-MODE COMPARISON · 230 W</text>
+<text x="58" y="112" fill="#f5f8fc" font-size="39" font-weight="750" text-anchor="start">Prefill, decode length, and full context separated</text>
+<text x="58" y="148" fill="#9caec4" font-size="19" font-weight="500" text-anchor="start">vLLM 0.27.2rc1.dev77+gac7509e2b · XPU kernels 0.1.12.3 · fp8 KV · exact tokens · median n=5</text>
+<rect x="48" y="190" width="1504" height="390" rx="28" fill="#0f1d30"/>
+<text x="82" y="230" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">INPUT TOKENS ÷ CLIENT TTFT</text>
+<text x="82" y="268" fill="#f5f8fc" font-size="28" font-weight="700" text-anchor="start">Cold input rate</text>
+<rect x="82" y="316" width="1436" height="44" rx="12" fill="#0b1829"/>
+<text x="96" y="345" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">Mode</text>
+<text x="366.5" y="345" fill="#9caec4" font-size="17" font-weight="600" text-anchor="middle">p2K</text>
+<text x="695.5" y="345" fill="#9caec4" font-size="17" font-weight="600" text-anchor="middle">p4K</text>
+<text x="1024.5" y="345" fill="#9caec4" font-size="17" font-weight="600" text-anchor="middle">p6K</text>
+<text x="1353.5" y="345" fill="#9caec4" font-size="17" font-weight="600" text-anchor="middle">p8K</text>
+<circle cx="94" cy="388" r="5" fill="#aeb9c7"/>
+<text x="109" y="394" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">No spec</text>
+<rect x="238.2" y="368" width="256.6" height="38" rx="10" fill="#aeb9c7" opacity="0.14"/>
+<text x="366.5" y="394" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">1,851</text>
+<rect x="567.2" y="368" width="256.6" height="38" rx="10" fill="#aeb9c7" opacity="0.14"/>
+<text x="695.5" y="394" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">1,848</text>
+<rect x="896.2" y="368" width="256.6" height="38" rx="10" fill="#aeb9c7" opacity="0.14"/>
+<text x="1024.5" y="394" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">1,809</text>
+<rect x="1225.2" y="368" width="256.6" height="38" rx="10" fill="#aeb9c7" opacity="0.14"/>
+<text x="1353.5" y="394" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">1,774</text>
+<rect x="82" y="415" width="1436" height="55" fill="#12243a" opacity="0.52"/>
+<circle cx="94" cy="443" r="5" fill="#55d6be"/>
+<text x="109" y="449" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">MTP1</text>
+<text x="366.5" y="449" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,817</text>
+<text x="695.5" y="449" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,813</text>
+<text x="1024.5" y="449" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,776</text>
+<text x="1353.5" y="449" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,738</text>
+<circle cx="94" cy="498" r="5" fill="#68a7ff"/>
+<text x="109" y="504" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">MTP2</text>
+<text x="366.5" y="504" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,810</text>
+<text x="695.5" y="504" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,810</text>
+<text x="1024.5" y="504" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,770</text>
+<text x="1353.5" y="504" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,736</text>
+<rect x="82" y="525" width="1436" height="55" fill="#12243a" opacity="0.52"/>
+<circle cx="94" cy="553" r="5" fill="#ffb45c"/>
+<text x="109" y="559" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">MTP4</text>
+<text x="366.5" y="559" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,795</text>
+<text x="695.5" y="559" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,800</text>
+<text x="1024.5" y="559" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,767</text>
+<text x="1353.5" y="559" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">1,728</text>
+<rect x="48" y="610" width="730" height="420" rx="28" fill="#0f1d30"/>
+<text x="82" y="650" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">CLIENT POST-FIRST RATE</text>
+<text x="82" y="688" fill="#f5f8fc" font-size="28" font-weight="700" text-anchor="start">Decode at p512</text>
+<line x1="123" y1="950.0" x2="741" y2="950.0" stroke="#263a53" stroke-width="1"/>
+<text x="111" y="956.0" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">25</text>
+<line x1="123" y1="897.5" x2="741" y2="897.5" stroke="#263a53" stroke-width="1"/>
+<text x="111" y="903.5" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">41.25</text>
+<line x1="123" y1="845.0" x2="741" y2="845.0" stroke="#263a53" stroke-width="1"/>
+<text x="111" y="851.0" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">57.5</text>
+<line x1="123" y1="792.5" x2="741" y2="792.5" stroke="#263a53" stroke-width="1"/>
+<text x="111" y="798.5" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">73.75</text>
+<line x1="123" y1="740.0" x2="741" y2="740.0" stroke="#263a53" stroke-width="1"/>
+<text x="111" y="746.0" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">90</text>
+<text x="123.0" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g32</text>
+<text x="329.0" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g128</text>
+<text x="535.0" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g256</text>
+<text x="741.0" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g512</text>
+<polyline points="123.0,924.4 329.0,924.6 535.0,924.7 741.0,925.2" fill="none" stroke="#aeb9c7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="123.0" cy="924.4" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="329.0" cy="924.6" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="535.0" cy="924.7" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="741.0" cy="925.2" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<polyline points="123.0,865.7 329.0,862.6 535.0,862.5 741.0,864.7" fill="none" stroke="#55d6be" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="123.0" cy="865.7" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="329.0" cy="862.6" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="535.0" cy="862.5" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="741.0" cy="864.7" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<polyline points="123.0,827.7 329.0,818.0 535.0,820.0 741.0,844.0" fill="none" stroke="#68a7ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="123.0" cy="827.7" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="329.0" cy="818.0" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="535.0" cy="820.0" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="741.0" cy="844.0" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<polyline points="123.0,783.8 329.0,760.4 535.0,762.8 741.0,784.0" fill="none" stroke="#ffb45c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="123.0" cy="783.8" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="329.0" cy="760.4" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="535.0" cy="762.8" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="741.0" cy="784.0" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="83" cy="997" r="5" fill="#aeb9c7"/>
+<text x="95" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">No spec</text>
+<circle cx="215" cy="997" r="5" fill="#55d6be"/>
+<text x="227" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">MTP1</text>
+<circle cx="347" cy="997" r="5" fill="#68a7ff"/>
+<text x="359" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">MTP2</text>
+<circle cx="479" cy="997" r="5" fill="#ffb45c"/>
+<text x="491" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">MTP4</text>
+<rect x="808" y="610" width="744" height="420" rx="28" fill="#0f1d30"/>
+<text x="842" y="650" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">CLIENT POST-FIRST RATE</text>
+<text x="842" y="688" fill="#f5f8fc" font-size="28" font-weight="700" text-anchor="start">Decode at p8192</text>
+<line x1="883" y1="950.0" x2="1515" y2="950.0" stroke="#263a53" stroke-width="1"/>
+<text x="871" y="956.0" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">25</text>
+<line x1="883" y1="897.5" x2="1515" y2="897.5" stroke="#263a53" stroke-width="1"/>
+<text x="871" y="903.5" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">41.25</text>
+<line x1="883" y1="845.0" x2="1515" y2="845.0" stroke="#263a53" stroke-width="1"/>
+<text x="871" y="851.0" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">57.5</text>
+<line x1="883" y1="792.5" x2="1515" y2="792.5" stroke="#263a53" stroke-width="1"/>
+<text x="871" y="798.5" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">73.75</text>
+<line x1="883" y1="740.0" x2="1515" y2="740.0" stroke="#263a53" stroke-width="1"/>
+<text x="871" y="746.0" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end">90</text>
+<text x="883.0" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g32</text>
+<text x="1093.6666666666667" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g128</text>
+<text x="1304.3333333333333" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g256</text>
+<text x="1515.0" y="980" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">g512</text>
+<polyline points="883.0,929.5 1093.7,929.1 1304.3,929.1 1515.0,929.2" fill="none" stroke="#aeb9c7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="883.0" cy="929.5" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1093.7" cy="929.1" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1304.3" cy="929.1" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1515.0" cy="929.2" r="6" fill="#aeb9c7" stroke="#0f1d30" stroke-width="3"/>
+<polyline points="883.0,872.5 1093.7,869.2 1304.3,878.2 1515.0,882.3" fill="none" stroke="#55d6be" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="883.0" cy="872.5" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1093.7" cy="869.2" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1304.3" cy="878.2" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1515.0" cy="882.3" r="6" fill="#55d6be" stroke="#0f1d30" stroke-width="3"/>
+<polyline points="883.0,837.0 1093.7,827.5 1304.3,851.8 1515.0,869.0" fill="none" stroke="#68a7ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="883.0" cy="837.0" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1093.7" cy="827.5" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1304.3" cy="851.8" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1515.0" cy="869.0" r="6" fill="#68a7ff" stroke="#0f1d30" stroke-width="3"/>
+<polyline points="883.0,782.7 1093.7,781.8 1304.3,835.8 1515.0,862.3" fill="none" stroke="#ffb45c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="883.0" cy="782.7" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1093.7" cy="781.8" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1304.3" cy="835.8" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="1515.0" cy="862.3" r="6" fill="#ffb45c" stroke="#0f1d30" stroke-width="3"/>
+<circle cx="843" cy="997" r="5" fill="#aeb9c7"/>
+<text x="855" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">No spec</text>
+<circle cx="975" cy="997" r="5" fill="#55d6be"/>
+<text x="987" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">MTP1</text>
+<circle cx="1107" cy="997" r="5" fill="#68a7ff"/>
+<text x="1119" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">MTP2</text>
+<circle cx="1239" cy="997" r="5" fill="#ffb45c"/>
+<text x="1251" y="1002" fill="#9caec4" font-size="14" font-weight="600" text-anchor="start">MTP4</text>
+<rect x="48" y="1060" width="1504" height="420" rx="28" fill="#0f1d30"/>
+<text x="82" y="1100" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">DETAILED P512 AND P8192 COORDINATES</text>
+<text x="82" y="1138" fill="#f5f8fc" font-size="28" font-weight="700" text-anchor="start">Exact post-first decode rates (tok/s)</text>
+<rect x="82" y="1186" width="1436" height="44" rx="12" fill="#0b1829"/>
+<text x="96" y="1215" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">Mode</text>
+<text x="284.25" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p512/g32</text>
+<text x="448.75" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p512/g128</text>
+<text x="613.25" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p512/g256</text>
+<text x="777.75" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p512/g512</text>
+<text x="942.25" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p8192/g32</text>
+<text x="1106.75" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p8192/g128</text>
+<text x="1271.25" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p8192/g256</text>
+<text x="1435.75" y="1215" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle">p8192/g512</text>
+<circle cx="94" cy="1258" r="5" fill="#aeb9c7"/>
+<text x="109" y="1264" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">No spec</text>
+<text x="284.25" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">32.9</text>
+<text x="448.75" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">32.9</text>
+<text x="613.25" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">32.8</text>
+<text x="777.75" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">32.7</text>
+<text x="942.25" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">31.3</text>
+<text x="1106.75" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">31.5</text>
+<text x="1271.25" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">31.5</text>
+<text x="1435.75" y="1264" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">31.5</text>
+<rect x="82" y="1285" width="1436" height="55" fill="#12243a" opacity="0.52"/>
+<circle cx="94" cy="1313" r="5" fill="#55d6be"/>
+<text x="109" y="1319" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">MTP1</text>
+<text x="284.25" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">51.1</text>
+<text x="448.75" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">52.0</text>
+<text x="613.25" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">52.1</text>
+<text x="777.75" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">51.4</text>
+<text x="942.25" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">49.0</text>
+<text x="1106.75" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">50.0</text>
+<text x="1271.25" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">47.2</text>
+<text x="1435.75" y="1319" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">46.0</text>
+<circle cx="94" cy="1368" r="5" fill="#68a7ff"/>
+<text x="109" y="1374" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">MTP2</text>
+<text x="284.25" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">62.9</text>
+<text x="448.75" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">65.8</text>
+<text x="613.25" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">65.3</text>
+<text x="777.75" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">57.8</text>
+<text x="942.25" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">60.0</text>
+<text x="1106.75" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">62.9</text>
+<text x="1271.25" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">55.4</text>
+<text x="1435.75" y="1374" fill="#f5f8fc" font-size="18" font-weight="500" text-anchor="middle">50.1</text>
+<rect x="82" y="1395" width="1436" height="55" fill="#12243a" opacity="0.52"/>
+<circle cx="94" cy="1423" r="5" fill="#ffb45c"/>
+<text x="109" y="1429" fill="#f5f8fc" font-size="18" font-weight="600" text-anchor="start">MTP4</text>
+<rect x="218.4" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="284.25" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">76.5</text>
+<rect x="382.9" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="448.75" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">83.7</text>
+<rect x="547.5" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="613.25" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">82.9</text>
+<rect x="712.0" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="777.75" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">76.4</text>
+<rect x="876.5" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="942.25" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">76.8</text>
+<rect x="1041.0" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="1106.75" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">77.1</text>
+<rect x="1205.5" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="1271.25" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">60.4</text>
+<rect x="1370.0" y="1403" width="131.6" height="38" rx="10" fill="#ffb45c" opacity="0.14"/>
+<text x="1435.75" y="1429" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle">52.1</text>
+<rect x="48" y="1510" width="920" height="156" rx="26" fill="#0f1d30"/>
+<text x="78" y="1544" fill="#55d6be" font-size="15" font-weight="800" text-anchor="start">FULL CONTEXT · EXACT 131,072 TOKENS</text>
+<circle cx="78" cy="1582" r="6" fill="#aeb9c7"/>
+<text x="94" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">No spec</text>
+<text x="94" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g128 23.2</text>
+<text x="187" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g512 23.1</text>
+<line x1="277" y1="1560" x2="277" y2="1642" stroke="#263a53" stroke-width="1"/>
+<circle cx="293" cy="1582" r="6" fill="#55d6be"/>
+<text x="309" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">MTP1</text>
+<text x="309" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g128 38.9</text>
+<text x="402" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g512 35.3</text>
+<line x1="492" y1="1560" x2="492" y2="1642" stroke="#263a53" stroke-width="1"/>
+<circle cx="508" cy="1582" r="6" fill="#68a7ff"/>
+<text x="524" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">MTP2</text>
+<text x="524" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g128 44.4</text>
+<text x="617" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g512 36.3</text>
+<line x1="707" y1="1560" x2="707" y2="1642" stroke="#263a53" stroke-width="1"/>
+<circle cx="723" cy="1582" r="6" fill="#ffb45c"/>
+<text x="739" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">MTP4</text>
+<text x="739" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g128 56.3</text>
+<text x="832" y="1623" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start">g512 36.2</text>
+<rect x="988" y="1510" width="564" height="156" rx="26" fill="#0f1d30"/>
+<text x="1022" y="1544" fill="#55d6be" font-size="15" font-weight="800" text-anchor="start">POWER · CAMPAIGN WINDOW</text>
+<circle cx="1018" cy="1582" r="6" fill="#aeb9c7"/>
+<text x="1034" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">No spec</text>
+<text x="1034" y="1623" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">197 W</text>
+<text x="1092" y="1623" fill="#9caec4" font-size="14" font-weight="500" text-anchor="start">pk 274</text>
+<line x1="1135" y1="1560" x2="1135" y2="1642" stroke="#263a53" stroke-width="1"/>
+<circle cx="1153" cy="1582" r="6" fill="#55d6be"/>
+<text x="1169" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">MTP1</text>
+<text x="1169" y="1623" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">198 W</text>
+<text x="1227" y="1623" fill="#9caec4" font-size="14" font-weight="500" text-anchor="start">pk 276</text>
+<line x1="1270" y1="1560" x2="1270" y2="1642" stroke="#263a53" stroke-width="1"/>
+<circle cx="1288" cy="1582" r="6" fill="#68a7ff"/>
+<text x="1304" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">MTP2</text>
+<text x="1304" y="1623" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">199 W</text>
+<text x="1362" y="1623" fill="#9caec4" font-size="14" font-weight="500" text-anchor="start">pk 275</text>
+<line x1="1405" y1="1560" x2="1405" y2="1642" stroke="#263a53" stroke-width="1"/>
+<circle cx="1423" cy="1582" r="6" fill="#ffb45c"/>
+<text x="1439" y="1589" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="start">MTP4</text>
+<text x="1439" y="1623" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">196 W</text>
+<text x="1497" y="1623" fill="#9caec4" font-size="14" font-weight="500" text-anchor="start">pk 274</text>
+<text x="58" y="1700" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">Matched p9445/g128: MTP4 78.98 tok/s. Client post-first timing · cache on, zero hits · configured 230 W.</text>
+</svg>

@@ -1,0 +1,73 @@
+{
+ "label": "vllm-mtp-128k-scaling",
+ "model": "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+ "context_length_config": 131072,
+ "results": [
+  {
+   "tag": "p4k",
+   "reps": 110,
+   "prompt_n": 3872,
+   "comp": 64,
+   "ttft": 0.714,
+   "total": 1.24,
+   "prefill_tps": 5423.3,
+   "decode_tps": 120.9,
+   "ttft_ms": 714.0
+  },
+  {
+   "tag": "p10k",
+   "reps": 280,
+   "prompt_n": 9822,
+   "comp": 64,
+   "ttft": 1.384,
+   "total": 1.98,
+   "prefill_tps": 7098.0,
+   "decode_tps": 107.5,
+   "ttft_ms": 1384.0
+  },
+  {
+   "tag": "p20k",
+   "reps": 550,
+   "prompt_n": 19272,
+   "comp": 64,
+   "ttft": 2.631,
+   "total": 3.18,
+   "prefill_tps": 7325.3,
+   "decode_tps": 116.0,
+   "ttft_ms": 2631.0
+  },
+  {
+   "tag": "p40k",
+   "reps": 1100,
+   "prompt_n": 38522,
+   "comp": 64,
+   "ttft": 6.554,
+   "total": 7.19,
+   "prefill_tps": 5877.4,
+   "decode_tps": 100.0,
+   "ttft_ms": 6554.0
+  },
+  {
+   "tag": "p65k",
+   "reps": 1800,
+   "prompt_n": 63022,
+   "comp": 64,
+   "ttft": 14.264,
+   "total": 14.88,
+   "prefill_tps": 4418.3,
+   "decode_tps": 104.7,
+   "ttft_ms": 14264.0
+  },
+  {
+   "tag": "p128k",
+   "reps": 3500,
+   "prompt_n": 122522,
+   "comp": 64,
+   "ttft": 39.989,
+   "total": 40.68,
+   "prefill_tps": 3063.9,
+   "decode_tps": 92.5,
+   "ttft_ms": 39989.0
+  }
+ ]
+}

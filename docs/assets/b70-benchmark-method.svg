@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Repeatable B70 benchmark and cookbook workflow</title>
+<desc id="desc">Eight stages from software and model pinning through exact-token calibration, warmup, measurement, evidence audit, and publication.</desc>
+<rect width="1600" height="900" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}</style>
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#47617f"/></marker></defs>
+<text x="58" y="62" fill="#55d6be" font-size="18" font-weight="800" text-anchor="start">REPEATABLE BENCHMARK CONTRACT</text>
+<text x="58" y="110" fill="#f5f8fc" font-size="40" font-weight="750" text-anchor="start">From a new model to a publishable cookbook result</text>
+<text x="58" y="146" fill="#9caec4" font-size="19" font-weight="500" text-anchor="start">Same coordinates, evidence fields, and claim boundaries on every run</text>
+<line x1="398" y1="330" x2="419" y2="330" stroke="#47617f" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="48" y="205" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="86" cy="245" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="86" y="252" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">1</text>
+<text x="120" y="253" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Pin the stack</text>
+<text x="76" y="303" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Image digest · model ID</text>
+<text x="76" y="336" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">vLLM 0.26.1rc1.dev457+gc810e5ee9.xpu</text>
+<text x="76" y="369" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">XPU kernels 0.1.12</text>
+<line x1="787" y1="330" x2="808" y2="330" stroke="#47617f" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="437" y="205" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="475" cy="245" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="475" y="252" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">2</text>
+<text x="509" y="253" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Calibrate tokens</text>
+<text x="465" y="303" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Render with the model tokenizer</text>
+<text x="465" y="336" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Require exact pN counts</text>
+<text x="465" y="369" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Hash prompt files</text>
+<line x1="1176" y1="330" x2="1197" y2="330" stroke="#47617f" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="826" y="205" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="864" cy="245" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="864" y="252" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">3</text>
+<text x="898" y="253" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Choose prompt class</text>
+<text x="854" y="303" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Compact fixed system: p512-p8192</text>
+<text x="854" y="336" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Full Pi system: p9445 + full context</text>
+<path d="M 1390.0 455 C 1390.0 490, 223.0 490, 223.0 502" fill="none" stroke="#47617f" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="1215" y="205" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="1253" cy="245" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="1253" y="252" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">4</text>
+<text x="1287" y="253" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Warm the exact shape</text>
+<text x="1243" y="303" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Generic warmup, then one</text>
+<text x="1243" y="336" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">full-output same-shape warmup</text>
+<text x="1243" y="369" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Discard both</text>
+<line x1="398" y1="645" x2="419" y2="645" stroke="#47617f" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="48" y="520" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="86" cy="560" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="86" y="567" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">5</text>
+<text x="120" y="568" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Measure five C1 requests</text>
+<text x="76" y="618" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Unique entropy-first prefixes</text>
+<text x="76" y="651" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">ignore_eos=true for fixed gN</text>
+<text x="76" y="684" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Record raw SSE timestamps</text>
+<line x1="787" y1="645" x2="808" y2="645" stroke="#47617f" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="437" y="520" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="475" cy="560" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="475" y="567" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">6</text>
+<text x="509" y="568" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Check counters and limits</text>
+<text x="465" y="618" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Exact prompt/output tokens</text>
+<text x="465" y="651" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Zero cache-hit delta</text>
+<text x="465" y="684" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">MTP counters · VRAM · failures</text>
+<line x1="1176" y1="645" x2="1197" y2="645" stroke="#47617f" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="826" y="520" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="864" cy="560" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="864" y="567" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">7</text>
+<text x="898" y="568" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Compile and audit</text>
+<text x="854" y="618" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Median, range, TPOT, E2E</text>
+<text x="854" y="651" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Keep exclusions and replacements</text>
+<text x="854" y="684" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Separate C1 from concurrency</text>
+<rect x="1215" y="520" width="350" height="250" rx="28" fill="#0f1d30"/>
+<circle cx="1253" cy="560" r="22" fill="#55d6be" opacity="0.18"/>
+<text x="1253" y="567" fill="#55d6be" font-size="18" font-weight="800" text-anchor="middle">8</text>
+<text x="1287" y="568" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Publish with evidence</text>
+<text x="1243" y="618" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Generate tables + SVG</text>
+<text x="1243" y="651" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Update AGENTS and cookbook</text>
+<text x="1243" y="684" fill="#9caec4" font-size="17" font-weight="500" text-anchor="start">Run claims gate before headlines</text>
+<text x="58" y="850" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">Fixed-length decode: early EOS is retained as user behavior, excluded from gN throughput, and rerun with ignore_eos=true.</text>
+</svg>

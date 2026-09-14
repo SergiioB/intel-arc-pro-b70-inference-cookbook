@@ -1,0 +1,21 @@
+# Pin LF for every text file. Windows Git defaults to core.autocrlf=true,
+# which otherwise rewrites working-tree bytes to CRLF. That breaks:
+#   - SHA-256 checks on the five hash-pinned patch files
+#   - Linux shebangs (container/start.sh -> /usr/bin/env bash^M)
+#   - Docker COPY of those scripts into the XPU image
+#
+# PowerShell 5.1/7 run LF scripts. Do not mark *.ps1 as CRLF.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.zip binary
+*.7z binary
+*.gz binary
+*.tgz binary
+*.whl binary
+*.safetensors binary

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" style="background-color:#07111f; font-family:-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif; font-variant-numeric: tabular-nums;">
+  <defs>
+    <style>
+      .eyebrow { font-size: 20px; font-weight: 600; fill: #68a7ff; letter-spacing: 2px; }
+      .title { font-size: 44px; font-weight: 800; fill: #f5f8fc; letter-spacing: -0.5px; }
+      .card { fill: #0f0f1d; fill-opacity: 0.3; stroke: #252d3a; stroke-width: 1.5; rx: 28; }
+      .card-title { font-size: 22px; font-weight: 600; fill: #f5f8fc; }
+      .card-subtitle { font-size: 22px; font-weight: 400; fill: #9caec4; }
+      .value-large { font-size: 88px; font-weight: 700; fill: #55d6be; letter-spacing: -2px; }
+      .unit-large { font-size: 32px; font-weight: 400; fill: #9caec4; }
+      .subtitle-large { font-size: 22px; font-weight: 500; fill: #68a7ff; }
+      .bar-label { font-size: 24px; font-weight: 500; fill: #9caec4; }
+      .bar-value { font-size: 28px; font-weight: 700; fill: #f5f8fc; }
+      .bar-unit { font-size: 20px; font-weight: 400; fill: #9caec4; }
+      .callout { font-size: 20px; font-weight: 500; fill: #ffb45c; }
+      .footer-note { font-size: 20px; font-weight: 400; fill: #aeb9c7; font-style: italic; }
+      .footer { font-size: 15px; font-weight: 400; fill: #64748b; }
+    </style>
+  </defs>
+
+  <!-- Header -->
+  <text x="60" y="70" class="eyebrow">INTEL ARC PRO B70 INFERENCE</text>
+  <text x="60" y="125" class="title">META MUSE GLIMMER 30B</text>
+  <text x="630" y="123" class="card-subtitle">(DRAFT-DFLASH PERFORMANCE)</text>
+
+  <!-- Panel 1: Decode Speed -->
+  <rect x="60" y="170" width="1480" height="280" class="card" />
+  <text x="100" y="220" class="card-title">DECODE SPEED <tspan class="card-subtitle" font-size="20">(DFlash n_max=2, 128K ctx, 230 W)</tspan></text>
+  <line x1="100" y1="240" x2="1500" y2="240" stroke="#252d3a" stroke-width="2"/>
+
+  <g transform="translate(120, 270)">
+    <text x="0" y="25" class="bar-label">p512</text>
+    <text x="0" y="115" class="value-large">26.8</text>
+    <text x="215" y="115" class="unit-large">t/s</text>
+    <text x="0" y="155" class="subtitle-large">vs no-spec: +19%</text>
+  </g>
+
+  <g transform="translate(620, 270)">
+    <text x="0" y="25" class="bar-label">p8192</text>
+    <text x="0" y="115" class="value-large">22.9</text>
+    <text x="215" y="115" class="unit-large">t/s</text>
+    <text x="0" y="155" class="subtitle-large">vs no-spec: +33%</text>
+  </g>
+
+  <g transform="translate(1120, 270)">
+    <text x="0" y="25" class="bar-label">p32768</text>
+    <text x="0" y="115" class="value-large">21.1</text>
+    <text x="205" y="115" class="unit-large">t/s</text>
+    <text x="0" y="155" class="subtitle-large">vs no-spec: +52%</text>
+  </g>
+
+  <!-- Panel 2: Prefill Speed -->
+  <rect x="60" y="480" width="1480" height="210" class="card" />
+  <text x="100" y="530" class="card-title">PREFILL SPEED</text>
+  <line x1="100" y1="550" x2="1500" y2="550" stroke="#252d3a" stroke-width="2"/>
+
+  <g transform="translate(100, 560)">
+    <!-- Bar 1: pp4096 -->
+    <text x="0" y="38" class="bar-label">pp4096</text>
+    <rect x="110" y="12" width="700" height="34" rx="6" fill="#1f2937"/>
+    <rect x="110" y="12" width="700" height="34" rx="6" fill="#68a7ff"/>
+    <text x="830" y="38" class="bar-value">1,301 <tspan class="bar-unit">t/s</tspan></text>
+    <text x="1420" y="38" class="callout" text-anchor="end">GGML_SYCL_F16=ON: 293 → 1,301 t/s (+344%)</text>
+
+    <!-- Bar 2: pp32768 -->
+    <text x="0" y="98" class="bar-label">pp32768</text>
+    <rect x="110" y="72" width="700" height="34" rx="6" fill="#1f2937"/>
+    <rect x="110" y="72" width="465" height="34" rx="6" fill="#68a7ff"/>
+    <text x="595" y="98" class="bar-value">865 <tspan class="bar-unit">t/s</tspan></text>
+  </g>
+
+  <!-- Panel 3 / Single Line Note -->
+  <text x="800" y="730" class="footer-note" text-anchor="middle">DFlash n_max=2 wins the sweep; n_max=8 aborts; acceptance decays with depth</text>
+
+  <!-- Footer -->
+  <g text-anchor="middle" class="footer">
+    <text x="800" y="770">llama.cpp SYCL · DFlash n2 · 230 W</text>
+    <text x="800" y="795">Timings: decode = engine timings.predicted_per_second, C1; prefill = llama-bench pp — never merged</text>
+    <text x="800" y="820">Config: -c 131072 --parallel 1 -b 8192 -ub 8192 --spec-type draft-dflash --spec-draft-n-max 2 | Evidence: Run 33/34/35</text>
+    <text x="800" y="845">Public path: llama.cpp SYCL. vLLM Muse is experimental overlay + n=3 only — not this dashboard</text>
+  </g>
+</svg>

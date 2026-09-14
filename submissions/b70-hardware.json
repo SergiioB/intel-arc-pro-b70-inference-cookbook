@@ -1,0 +1,11 @@
+{
+  "hwClass": "DISCRETE_GPU",
+  "gpuName": "Intel Arc Pro B70",
+  "gpuCount": 1,
+  "vramGb": 32.0,
+  "os": "linux",
+  "cpu": "AMD Ryzen 7 5700X3D 8-Core Processor",
+  "cpuThreads": 8,
+  "ramGb": 30.0,
+  "powerWatts": 150
+}

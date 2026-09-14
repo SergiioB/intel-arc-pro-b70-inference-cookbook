@@ -1,0 +1,22 @@
+{
+  "submission": {
+    "createdAt": "2026-08-10T19:11:39.442Z",
+    "engineId": "cmsnly2su00goo001wn6c98ly",
+    "benchmarkRunId": "cmsnly2sy00gqo001ui1k5l67",
+    "status": "submitted (E2 provisional self-report)"
+  },
+  "payload": {
+    "hfId": "meta-models/Muse-Glimmer-30B",
+    "hardware": {"hwClass": "DISCRETE_GPU", "gpuName": "Intel Arc Pro B70", "gpuCount": 1, "vramGb": 32.0, "os": "Linux"},
+    "engineName": "llama.cpp",
+    "engineVersion": "d2f83055d (284) SYCL",
+    "quantization": "Q4_K_XL",
+    "backend": "xpu",
+    "tokSOut": 26.8,
+    "tokSPrefill": 1301.0,
+    "contextLength": 131072,
+    "batchSize": 1,
+    "notes": "Muse-Glimmer-30B UD-Q4_K_XL GGUF, llama.cpp SYCL d2f83055d (GGML_SYCL_F16=ON), single-stream C1. Decode = engine timings.predicted_per_second with DFlash draft n_max=2, p512/g128 median n=5, 128K ctx, 230W cap; no-spec baseline 22.5. Prefill = llama-bench pp4096. Reasoning model (decode includes reasoning tokens). E2 provisional self-report. 2026-08-10 (Run 33-35).",
+    "commandSnippet": "llama-server -m Muse-Glimmer-30B-UD-Q4_K_XL.gguf --mmproj mmproj-kquant.gguf -c 131072 --parallel 1 -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -t 8 -b 8192 -ub 8192 --spec-type draft-dflash --spec-draft-model dflash-kquant.gguf --spec-draft-n-max 2"
+  }
+}

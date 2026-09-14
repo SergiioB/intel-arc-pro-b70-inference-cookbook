@@ -1,0 +1,29 @@
+{
+  "backend": "xpu",
+  "batchSize": 1,
+  "contextLength": 131072,
+  "engineFlags": {
+    "commandSnippet": "vllm serve /model --quantization gptq --dtype float16 --max-model-len 131072 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --max-num-seqs 64 --max-num-batched-tokens 8192 --enable-prefix-caching --language-model-only --speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\":4}",
+    "flashAttn": true,
+    "kvCacheDtype": "fp8",
+    "numParallel": 1
+  },
+  "engineName": "vllm",
+  "engineVersion": "0.26.1rc1.dev457+gc810e5ee9.xpu",
+  "hardware": {
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "vramGb": 32
+  },
+  "hfId": "Qwen/Qwen3.6-27B",
+  "id": "cmsmekk3p001wo001hksfq66z",
+  "notes": "Single-stream C1. vLLM XPU pinned nightly (vllm/vllm-openai-xpu@sha256:2c427ef477da092eb6f2cdbbbd24950b5fa171565b916db69d4c7bb10e68ca97), vllm-xpu-kernels 0.1.12. Model: llmfan46/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-GPTQ-Int4 (dense 27B, GPTQ-INT4 g128 sym, preserved BF16 MTP head). Patches: patch_mtp_nightly.py + patch_mtp_boundary.py. fp8 KV cache (REQUIRED for dense 128K; fp16 does not fit). MTP4 speculative decode, 1-layer draft. gpu-memory-utilization 0.88, scheduler 8192, max-num-seqs 64, prefix cache on with zero hit delta. tokSOut = client post-first rate at p512/g128, median n=5 (not engine-native decode); tokSPrefill = actual input tokens / client TTFT at p2048/g1, median n=5 (not llama-bench pp). 230W configured cap. E2 provisional self-reported; independent reproduction pending. Measured 2026-08-09 Run 31.",
+  "quantization": "GPTQ-Int4",
+  "submissionId": "cmsmekk3p001wo001hksfq66z",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-08-09T22:57:25.189Z",
+  "tokSOut": 69.3,
+  "tokSPrefill": 1754.6
+}

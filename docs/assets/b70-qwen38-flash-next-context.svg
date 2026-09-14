@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1560" viewBox="0 0 1600 1560" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-Flash-Next C1 prefill and decode from 8K to 128K context</title>
+<desc id="desc">Grouped bar charts, y-axis from zero. Prefill peaks at 16K then drops at 128K. Decode p512/g128 stays ~23 tok/s from 8K through 128K. After a 9k prompt, decode is 20.3 tok/s at 16K and 128K. F16 vs FP32 is GGML_SYCL_F16 (compile-time), not the GGUF. Weights mixed IQ3_S/IQ4_NL. C1 llama.cpp SYCL on two Intel Arc Pro B70 GPUs. 8K/16K/128K are context windows.</desc>
+<rect width="1600" height="1560" fill="#07111f"/>
+<text x="56" y="56" fill="#55d6be" font-size="22" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">QWEN3.8-FLASH-NEXT · 2× INTEL ARC PRO B70 · llama.cpp SYCL</text>
+<text x="56" y="108" fill="#f5f8fc" font-size="40" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">How speed changes with context</text>
+<text x="56" y="148" fill="#9caec4" font-size="20" font-family="ui-sans-serif, system-ui, sans-serif">Single request (C1) · 8K → 16K → 128K context windows · y-axis starts at 0</text>
+
+<rect x="56" y="168" width="1488" height="520" rx="28" fill="#0f1d30"/>
+<text x="88" y="218" fill="#68a7ff" font-size="20" font-weight="700" letter-spacing="0.6" font-family="ui-sans-serif, system-ui, sans-serif">PREFILL · COLD INPUT tok/s</text>
+<text x="88" y="254" fill="#f5f8fc" font-size="26" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">Peaks at 16K, then drops at 128K</text>
+<line x1="160" y1="292" x2="1480" y2="292" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="296" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">650</text>
+<line x1="160" y1="369.5" x2="1480" y2="369.5" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="373.5" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">500</text>
+<line x1="160" y1="447.1" x2="1480" y2="447.1" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="451.1" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">350</text>
+<line x1="160" y1="524.6" x2="1480" y2="524.6" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="528.6" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">200</text>
+<line x1="160" y1="628" x2="1480" y2="628" stroke="#9caec4" stroke-width="2"/>
+<text x="148" y="632" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">0</text>
+
+<rect x="318" y="529.0" width="72" height="99.0" rx="8" fill="#68a7ff"/>
+<rect x="402" y="533.3" width="72" height="94.7" rx="8" fill="#55d6be"/>
+<text x="354" y="516" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">191.6</text>
+<text x="438" y="520" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">183.2</text>
+<text x="396" y="656" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">8K</text>
+<text x="396" y="676" fill="#9caec4" font-size="13" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p512 · 9k prompt does not fit</text>
+
+<rect x="742" y="321.0" width="72" height="307.0" rx="8" fill="#68a7ff"/>
+<rect x="826" y="380.5" width="72" height="247.5" rx="8" fill="#55d6be"/>
+<text x="778" y="308" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">594.0</text>
+<text x="862" y="367" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">478.7</text>
+<text x="820" y="656" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">16K</text>
+<text x="820" y="676" fill="#9caec4" font-size="13" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p9096 · peak</text>
+
+<rect x="1166" y="422.3" width="72" height="205.7" rx="8" fill="#68a7ff"/>
+<rect x="1250" y="445.0" width="72" height="183.0" rx="8" fill="#55d6be"/>
+<text x="1202" y="409" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">398.0</text>
+<text x="1286" y="432" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">354.0</text>
+<text x="1244" y="656" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">128K</text>
+<text x="1244" y="676" fill="#9caec4" font-size="13" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p9096 · -b 1024</text>
+
+<rect x="88" y="652" width="14" height="14" rx="3" fill="#68a7ff"/>
+<text x="110" y="664" fill="#9caec4" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif">F16 binary (GGML_SYCL_F16=ON)</text>
+<rect x="360" y="652" width="14" height="14" rx="3" fill="#55d6be"/>
+<text x="382" y="664" fill="#9caec4" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif">FP32 binary (GGML_SYCL_F16=OFF) · not GGUF dtype</text>
+
+<rect x="56" y="712" width="1488" height="480" rx="28" fill="#0f1d30"/>
+<text x="88" y="762" fill="#55d6be" font-size="20" font-weight="700" letter-spacing="0.6" font-family="ui-sans-serif, system-ui, sans-serif">DECODE · p512 / g128 tok/s</text>
+<text x="88" y="798" fill="#f5f8fc" font-size="26" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">Holds ~23 tok/s from 8K through 128K</text>
+<line x1="160" y1="820" x2="1480" y2="820" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="824" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">28</text>
+<line x1="160" y1="871.4" x2="1480" y2="871.4" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="875.4" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">21</text>
+<line x1="160" y1="922.9" x2="1480" y2="922.9" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="926.9" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">14</text>
+<line x1="160" y1="974.3" x2="1480" y2="974.3" stroke="#20344d" stroke-width="1"/>
+<text x="148" y="978.3" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">7</text>
+<line x1="160" y1="1026" x2="1480" y2="1026" stroke="#9caec4" stroke-width="2"/>
+<text x="148" y="1030" fill="#9caec4" font-size="13" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">0</text>
+
+<rect x="318" y="857.1" width="72" height="168.9" rx="8" fill="#68a7ff"/>
+<rect x="402" y="854.0" width="72" height="172.0" rx="8" fill="#55d6be"/>
+<text x="354" y="843" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">22.96</text>
+<text x="438" y="840" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">23.38</text>
+<text x="396" y="1056" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">8K</text>
+
+<rect x="742" y="854.5" width="72" height="171.5" rx="8" fill="#68a7ff"/>
+<rect x="826" y="854.1" width="72" height="171.9" rx="8" fill="#55d6be"/>
+<text x="778" y="840" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">23.31</text>
+<text x="862" y="840" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">23.37</text>
+<text x="820" y="1056" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">16K</text>
+
+<rect x="1166" y="856.3" width="72" height="169.7" rx="8" fill="#68a7ff"/>
+<rect x="1250" y="852.8" width="72" height="173.2" rx="8" fill="#55d6be"/>
+<text x="1202" y="842" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">23.06</text>
+<text x="1286" y="838" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">23.54</text>
+<text x="1244" y="1056" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">128K</text>
+
+<rect x="88" y="1088" width="14" height="14" rx="3" fill="#68a7ff"/>
+<text x="110" y="1100" fill="#9caec4" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif">F16 binary (GGML_SYCL_F16=ON)</text>
+<rect x="360" y="1088" width="14" height="14" rx="3" fill="#55d6be"/>
+<text x="382" y="1100" fill="#9caec4" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif">FP32 binary (GGML_SYCL_F16=OFF)</text>
+<text x="680" y="1100" fill="#9caec4" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif">After a 9096-token prompt, decode is 20.3 tok/s at both 16K and 128K.</text>
+
+<rect x="56" y="1228" width="1488" height="280" rx="28" fill="#0f1d30"/>
+<text x="88" y="1272" fill="#f5f8fc" font-size="18" font-weight="700" font-family="ui-sans-serif, system-ui, sans-serif">Qwen3.8-Flash-Next on 2× Intel Arc Pro B70. llama.cpp SYCL. One request.</text>
+<text x="88" y="1308" fill="#9caec4" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif">Same F16 server, 16K context: 20.3 tok/s decode, 594 tok/s prefill on a 9k prompt (n=5).</text>
+<text x="88" y="1340" fill="#9caec4" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif">128K also serves. Short-prompt decode stays ~23 tok/s from 8K through 128K. After a 9k prompt it stays ~20.3. Prefill peaks at 16K, then drops at 128K.</text>
+<text x="88" y="1372" fill="#9caec4" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif">F16 vs FP32 is not the GGUF. Weights are mixed IQ3_S / IQ4_NL. GGML_SYCL_F16 is a compile-time SYCL flag (two binaries). F16 wins prefill. FP32 is a bit faster on decode (23.4 at 8K).</text>
+<text x="88" y="1412" fill="#f5f8fc" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif">8K / 16K / 128K = context, not concurrency. Self-reported. n=3 screens on this chart; n=5 leaders on the card above.</text>
+<text x="88" y="1476" fill="#64748b" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif">Recipe: github.com/SergiioB/intel-arc-pro-b70-inference-cookbook · docs/qwen38-flash-next/QWEN38-FLASH-NEXT-LLAMACPP.md</text>
+</svg>

@@ -1,0 +1,31 @@
+{
+  "platform": "LocalMaxxing",
+  "submission_id": "cmtg4erjj001xqr01jhqw81dt",
+  "submission_status": "APPROVED",
+  "trust_label": "approved self-reported submission",
+  "submitted_at": "2026-08-30T18:06:04.015Z",
+  "model": "Qwen/Qwen3.8-27B-FP8",
+  "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "reported_total_vram_gib": 64,
+    "reported_power_cap_w_per_gpu": 230
+  },
+  "engine": "vllm remote endpoint",
+  "workload": {
+    "concurrency": 1,
+    "prompt_tokens_actual": 74,
+    "output_tokens_actual": 256,
+    "warmups": 1,
+    "measured_samples": 3,
+    "sampling": "server-default temperature 1.0; the platform payload schema did not carry a temperature field"
+  },
+  "metrics": {
+    "median_client_post_first_output_tps": 31.1,
+    "maximum_client_post_first_output_tps": 32.0,
+    "minimum_client_post_first_output_tps": 30.4,
+    "median_client_ttft_ms": 189.93
+  },
+  "cache_guard": "Prefix caching was disabled; prefix cache query and hit counters remained zero across the serialized run.",
+  "qualification": "APPROVED means accepted into LocalMaxxing's self-reported dataset, not independently reproduced or verified. An older contended 28.6 token/s row remains on the platform and is superseded by this serialized-idle submission."
+}

@@ -1,0 +1,21 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.{ps1,psm1,psd1}]
+end_of_line = lf
+
+[*.{sh,bash}]
+end_of_line = lf
+
+[Dockerfile]
+end_of_line = lf
+
+[*.{png,jpg,jpeg,gif,webp,ico,zip,gz,tgz,whl,safetensors}]
+insert_final_newline = false
+trim_trailing_whitespace = false

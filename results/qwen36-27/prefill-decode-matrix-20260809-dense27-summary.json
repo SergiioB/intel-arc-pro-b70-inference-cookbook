@@ -1,0 +1,4198 @@
+{
+ "schema": 1,
+ "run_id": "vllm-dense27-4mode-230w-20260809T163138Z-74780",
+ "status": "E2_PROVISIONAL_SELF_REPORTED_NOT_INDEPENDENTLY_REPRODUCED",
+ "scope": "C1 cold-prefix matrix, 4 MTP modes, dense 27B GPTQ-INT4, 230 W",
+ "timing_source": "client monotonic (TTFT/TTFC/E2E), post-first client rate",
+ "prefill_metric_warning": "input tokens / client TTFT; includes scheduling + first-token work; NOT isolated engine prefill",
+ "decode_metric_warning": "client post-first rate; NOT engine-native vLLM decode",
+ "cache": "enabled, entropy-first unique prompts, zero hits delta required",
+ "configured_power_cap_W": 230,
+ "scheduler_budget": 8192,
+ "max_model_len": 131072,
+ "excluded": [],
+ "stack": {
+  "image": "vllm/vllm-openai-xpu@sha256:2c427ef477da092eb6f2cdbbbd24950b5fa171565b916db69d4c7bb10e68ca97",
+  "model": "llmfan46/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-GPTQ-Int4",
+  "model_local_directory_basename": "Qwen3.6-27B-MTP-Preserved-GPTQ-Int4",
+  "vllm": "0.26.1rc1.dev457+gc810e5ee9.xpu",
+  "vllm_xpu_kernels": "0.1.12",
+  "mtp_patch_sha256": "4d7a02c4ea10ca7c00dc89ad927fa3dafa747dbf0553d2adf24e30a3c53e9c14",
+  "boundary_patch_sha256": "41d2f74e5fef1f074b76b5a90dd1016de437228431802cfb1fa7bd7ce4cc9b50",
+  "kv_cache_dtype": "fp8",
+  "quantization": "gptq int4 w4a16 g128 sym desc_act false",
+  "gpu_memory_utilization": "0.88 (mtp4) / 0.90 (no-spec, mtp1, mtp2)"
+ },
+ "rows": [
+  {
+   "mode": "no-spec",
+   "coordinate": "prefill-p2048",
+   "class": "prefill",
+   "prompt_tokens": 2048,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "no-spec/prefill-p2048/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1781.2147816797876,
+    "mean": 1780.4262744230073,
+    "min": 1777.0097902419466,
+    "max": 1783.2606215345397,
+    "pstdev": 2.5362376508422053
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "prefill-p4096",
+   "class": "prefill",
+   "prompt_tokens": 4096,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "no-spec/prefill-p4096/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1812.75640514938,
+    "mean": 1812.3364169931199,
+    "min": 1809.3998540642153,
+    "max": 1815.5718361512854,
+    "pstdev": 2.320644542987138
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "prefill-p6144",
+   "class": "prefill",
+   "prompt_tokens": 6144,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "no-spec/prefill-p6144/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1781.9695083647407,
+    "mean": 1782.321050994577,
+    "min": 1775.8062813438264,
+    "max": 1789.201047313376,
+    "pstdev": 5.029380762542388
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "prefill-p8192",
+   "class": "prefill",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "no-spec/decode-p8192-g1/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1741.9280828167114,
+    "mean": 1742.3949277962558,
+    "min": 1740.0352701156007,
+    "max": 1747.5725562280936,
+    "pstdev": 2.733907112392816
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p512-g32",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "no-spec/decode-p512-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1906.7759723510035,
+    "mean": 1907.254882900126,
+    "min": 1906.3320614052493,
+    "max": 1908.6253302383134,
+    "pstdev": 0.9300724432074132
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 32.89658008384417,
+    "mean": 32.894188913032,
+    "min": 32.88569599756956,
+    "max": 32.89979633784365,
+    "pstdev": 0.005350956817847098
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p512-g128",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "no-spec/decode-p512-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1902.7149147898485,
+    "mean": 1903.2228506060621,
+    "min": 1899.714727408561,
+    "max": 1905.8173432869758,
+    "pstdev": 2.1915760399301494
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 32.85105126601302,
+    "mean": 32.8337111831605,
+    "min": 32.7594852750019,
+    "max": 32.859441998663854,
+    "pstdev": 0.03745528414139494
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p512-g256",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "no-spec/decode-p512-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1905.8496145437764,
+    "mean": 1905.420718048794,
+    "min": 1903.5316624459567,
+    "max": 1906.4735108631287,
+    "pstdev": 1.0222684176913532
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 32.784020754997336,
+    "mean": 32.776941428797834,
+    "min": 32.728671915451315,
+    "max": 32.79432134087236,
+    "pstdev": 0.02456239777832868
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p512-g512",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "no-spec/decode-p512-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1611.1118383490937,
+    "mean": 1670.4521020312827,
+    "min": 1606.523822140819,
+    "max": 1910.4983608856926,
+    "pstdev": 120.0751888556646
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 31.53821049781919,
+    "mean": 31.625965497747217,
+    "min": 31.49383598284777,
+    "max": 32.044304194611655,
+    "pstdev": 0.20986278623072188
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p8192-g32",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "no-spec/decode-p8192-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1749.338863193925,
+    "mean": 1748.4170726285904,
+    "min": 1744.5406473925732,
+    "max": 1751.0672367914726,
+    "pstdev": 2.296947115603151
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 31.48339887689495,
+    "mean": 31.483373603589634,
+    "min": 31.476036813418222,
+    "max": 31.490640618957766,
+    "pstdev": 0.004660281640261855
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p8192-g128",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "no-spec/decode-p8192-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1747.857012780572,
+    "mean": 1747.924690740849,
+    "min": 1744.4672282966133,
+    "max": 1750.1444489262437,
+    "pstdev": 2.0489258731818056
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 31.462376008243982,
+    "mean": 31.446266893396945,
+    "min": 31.372598185027115,
+    "max": 31.47292491104375,
+    "pstdev": 0.03745460475798658
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p8192-g256",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "no-spec/decode-p8192-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1746.0771514266814,
+    "mean": 1745.6933990203343,
+    "min": 1742.4386686267164,
+    "max": 1750.1319173148731,
+    "pstdev": 2.9234691578052274
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 31.452049841428423,
+    "mean": 31.444206393297257,
+    "min": 31.4099681617366,
+    "max": 31.45902355646712,
+    "pstdev": 0.017513370194234115
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-p8192-g512",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "no-spec/decode-p8192-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1742.284950726661,
+    "mean": 1743.896280373682,
+    "min": 1739.8759670543154,
+    "max": 1748.6701002605273,
+    "pstdev": 3.9756880261522642
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 31.424627860040324,
+    "mean": 31.425660262178464,
+    "min": 31.409406535648646,
+    "max": 31.448240999141923,
+    "pstdev": 0.014167232316707428
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-control-p9445-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "no-spec/decode-control-p9445-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1728.9159533288494,
+    "mean": 1728.2187908486655,
+    "min": 1724.1702735870674,
+    "max": 1731.383815126311,
+    "pstdev": 2.9393891325595196
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 31.348503779222447,
+    "mean": 31.331715646602774,
+    "min": 31.2542384100347,
+    "max": 31.361272131728455,
+    "pstdev": 0.0391236164066763
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-full-p130944-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128
+   ],
+   "source_results": "no-spec/decode-full-p130944-g128/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 783.5008500785093,
+    "mean": 783.5008500785093,
+    "min": 783.5008500785093,
+    "max": 783.5008500785093,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 23.14440928239075,
+    "mean": 23.14440928239075,
+    "min": 23.14440928239075,
+    "max": 23.14440928239075,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "no-spec",
+   "coordinate": "decode-full-p130560-g512",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512
+   ],
+   "source_results": "no-spec/decode-full-p130560-g512/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 786.278467415649,
+    "mean": 786.278467415649,
+    "min": 786.278467415649,
+    "max": 786.278467415649,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 23.048045392574952,
+    "mean": 23.048045392574952,
+    "min": 23.048045392574952,
+    "max": 23.048045392574952,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "prefill-p2048",
+   "class": "prefill",
+   "prompt_tokens": 2048,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp1/prefill-p2048/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1816.4625840797337,
+    "mean": 1814.408650080189,
+    "min": 1805.0303039292928,
+    "max": 1819.467544017233,
+    "pstdev": 4.997061002789974
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "prefill-p4096",
+   "class": "prefill",
+   "prompt_tokens": 4096,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp1/prefill-p4096/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1776.3454419845916,
+    "mean": 1775.0272995717585,
+    "min": 1767.8611288145757,
+    "max": 1781.0557544628466,
+    "pstdev": 4.757302742542098
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "prefill-p6144",
+   "class": "prefill",
+   "prompt_tokens": 6144,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp1/prefill-p6144/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1746.5412791631486,
+    "mean": 1747.5105963926114,
+    "min": 1741.275362892201,
+    "max": 1754.3952797268569,
+    "pstdev": 4.356308731521438
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "prefill-p8192",
+   "class": "prefill",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp1/decode-p8192-g1/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1712.8491045143023,
+    "mean": 1715.112211584632,
+    "min": 1711.6274780125466,
+    "max": 1721.8582905477278,
+    "pstdev": 3.8704775879035567
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p512-g32",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "mtp1/decode-p512-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1810.2112958528376,
+    "mean": 1790.0115821561074,
+    "min": 1711.444981120238,
+    "max": 1811.5413867858813,
+    "pstdev": 39.31704531409007
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 50.00481070474856,
+    "mean": 49.129226808888625,
+    "min": 47.11513160099009,
+    "max": 50.55551797504785,
+    "pstdev": 1.5063685317316533
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 82.0,
+   "mtp_accepted_tokens": 76.0,
+   "mtp_acceptance_pct": 92.6829268292683
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p512-g128",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp1/decode-p512-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1809.1258519776973,
+    "mean": 1770.1367350470484,
+    "min": 1704.5299985411289,
+    "max": 1811.6923054625327,
+    "pstdev": 49.47966455888506
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 50.47115767553447,
+    "mean": 50.36933093104713,
+    "min": 49.84603744348927,
+    "max": 50.57957046877703,
+    "pstdev": 0.26585706191835756
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 326.0,
+   "mtp_accepted_tokens": 310.0,
+   "mtp_acceptance_pct": 95.0920245398773
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p512-g256",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "mtp1/decode-p512-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1714.7192454511924,
+    "mean": 1744.2406513715332,
+    "min": 1698.4653380428194,
+    "max": 1808.4853759426242,
+    "pstdev": 47.396407666676986
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 50.19108159084091,
+    "mean": 50.0857933532458,
+    "min": 48.754978780281675,
+    "max": 51.00723319291883,
+    "pstdev": 0.8719676391716046
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 657.0,
+   "mtp_accepted_tokens": 620.0,
+   "mtp_acceptance_pct": 94.3683409436834
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p512-g512",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "mtp1/decode-p512-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1727.788757522875,
+    "mean": 1750.9062478442606,
+    "min": 1698.9482823252924,
+    "max": 1805.3634364616282,
+    "pstdev": 45.23398598208358
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 48.883234189451485,
+    "mean": 49.01646423574186,
+    "min": 48.33156750861751,
+    "max": 50.180874566261885,
+    "pstdev": 0.6486499002623303
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 1341.0,
+   "mtp_accepted_tokens": 1217.0,
+   "mtp_acceptance_pct": 90.75316927665921
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p8192-g32",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "mtp1/decode-p8192-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1722.9450558618116,
+    "mean": 1723.2518782878562,
+    "min": 1719.7755280794338,
+    "max": 1726.5315571377755,
+    "pstdev": 2.2124293983406047
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 48.08266421265157,
+    "mean": 47.63258389411569,
+    "min": 45.56431483290652,
+    "max": 48.39649856203777,
+    "pstdev": 1.0423443380207003
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 81.0,
+   "mtp_accepted_tokens": 75.0,
+   "mtp_acceptance_pct": 92.5925925925926
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p8192-g128",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp1/decode-p8192-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1263.1548041756712,
+    "mean": 1262.0503679496562,
+    "min": 1253.638217988795,
+    "max": 1265.687595767693,
+    "pstdev": 4.381631479953206
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 46.89757296507561,
+    "mean": 46.74525505917817,
+    "min": 46.12444814036298,
+    "max": 47.517464277916545,
+    "pstdev": 0.5064463817171964
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 326.0,
+   "mtp_accepted_tokens": 313.0,
+   "mtp_acceptance_pct": 96.0122699386503
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p8192-g256",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "mtp1/decode-p8192-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1723.6088732637947,
+    "mean": 1722.0423855013717,
+    "min": 1716.1035235177062,
+    "max": 1724.2244543432198,
+    "pstdev": 3.050303881749905
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 47.96872214483934,
+    "mean": 48.00873082929326,
+    "min": 46.92573190907802,
+    "max": 49.08878544494903,
+    "pstdev": 0.7240576273304759
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 660.0,
+   "mtp_accepted_tokens": 616.0,
+   "mtp_acceptance_pct": 93.33333333333333
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-p8192-g512",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "mtp1/decode-p8192-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1718.2420080990648,
+    "mean": 1719.197611377139,
+    "min": 1714.1890162567483,
+    "max": 1725.2490721046288,
+    "pstdev": 4.461492320825333
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 47.32556132361833,
+    "mean": 47.458111530877765,
+    "min": 46.83289420796962,
+    "max": 48.43681337617935,
+    "pstdev": 0.573413915220142
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 1337.0,
+   "mtp_accepted_tokens": 1218.0,
+   "mtp_acceptance_pct": 91.09947643979058
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-control-p9445-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp1/decode-control-p9445-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1702.2577292978942,
+    "mean": 1701.1006202501978,
+    "min": 1697.6098717225102,
+    "max": 1704.159602105664,
+    "pstdev": 2.4807703496084765
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 48.41018160027182,
+    "mean": 48.30917642457956,
+    "min": 47.74145642691329,
+    "max": 49.16086026971834,
+    "pstdev": 0.5259782532574612
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 326.0,
+   "mtp_accepted_tokens": 312.0,
+   "mtp_acceptance_pct": 95.70552147239263
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-full-p130944-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128
+   ],
+   "source_results": "mtp1/decode-full-p130944-g128/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 694.4469477434136,
+    "mean": 694.4469477434136,
+    "min": 694.4469477434136,
+    "max": 694.4469477434136,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 36.774619252575185,
+    "mean": 36.774619252575185,
+    "min": 36.774619252575185,
+    "max": 36.774619252575185,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 66.0,
+   "mtp_accepted_tokens": 60.0,
+   "mtp_acceptance_pct": 90.9090909090909
+  },
+  {
+   "mode": "mtp1",
+   "coordinate": "decode-full-p130560-g512",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512
+   ],
+   "source_results": "mtp1/decode-full-p130560-g512/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 695.3090047242945,
+    "mean": 695.3090047242945,
+    "min": 695.3090047242945,
+    "max": 695.3090047242945,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 37.21081211215756,
+    "mean": 37.21081211215756,
+    "min": 37.21081211215756,
+    "max": 37.21081211215756,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 264.0,
+   "mtp_accepted_tokens": 247.0,
+   "mtp_acceptance_pct": 93.56060606060606
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "prefill-p2048",
+   "class": "prefill",
+   "prompt_tokens": 2048,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp2/prefill-p2048/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1811.8760263463762,
+    "mean": 1811.0820377330674,
+    "min": 1808.1244469902585,
+    "max": 1813.7551895516847,
+    "pstdev": 2.0702846560222077
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "prefill-p4096",
+   "class": "prefill",
+   "prompt_tokens": 4096,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp2/prefill-p4096/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1766.751306505474,
+    "mean": 1768.711257868387,
+    "min": 1764.4663039533928,
+    "max": 1774.1773850912198,
+    "pstdev": 3.667775234756729
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "prefill-p6144",
+   "class": "prefill",
+   "prompt_tokens": 6144,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp2/prefill-p6144/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1743.5796405842366,
+    "mean": 1744.2017883118383,
+    "min": 1738.9121414549961,
+    "max": 1749.0440539087558,
+    "pstdev": 3.635031555752471
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "prefill-p8192",
+   "class": "prefill",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp2/decode-p8192-g1/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1711.4812509754813,
+    "mean": 1713.0649066831986,
+    "min": 1710.4637225900178,
+    "max": 1717.6454030540128,
+    "pstdev": 2.6553862828705466
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p512-g32",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "mtp2/decode-p512-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1604.8656316219513,
+    "mean": 1604.7239431819555,
+    "min": 1602.0505846971478,
+    "max": 1607.0166767402338,
+    "pstdev": 1.579441189085449
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 62.14607110854494,
+    "mean": 62.87655283277481,
+    "min": 60.95617332150904,
+    "max": 66.95885017726805,
+    "pstdev": 2.0934332127642237
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 112.0,
+   "mtp_accepted_tokens": 104.0,
+   "mtp_acceptance_pct": 92.85714285714286
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p512-g128",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp2/decode-p512-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1603.8612960702892,
+    "mean": 1604.3137917644035,
+    "min": 1603.3749941306141,
+    "max": 1606.5030591191273,
+    "pstdev": 1.1275777047058848
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 63.59220943499115,
+    "mean": 63.70734624092711,
+    "min": 62.96738792499202,
+    "max": 64.80108860154928,
+    "pstdev": 0.5976421787487017
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 442.0,
+   "mtp_accepted_tokens": 419.0,
+   "mtp_acceptance_pct": 94.79638009049773
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p512-g256",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "mtp2/decode-p512-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1605.3111317466055,
+    "mean": 1603.5252564405173,
+    "min": 1597.2734841114996,
+    "max": 1606.518766177146,
+    "pstdev": 3.464478069694189
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 61.45268777883443,
+    "mean": 60.65062085006328,
+    "min": 58.4115371024782,
+    "max": 62.158894019464505,
+    "pstdev": 1.3878895027612699
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 930.0,
+   "mtp_accepted_tokens": 815.0,
+   "mtp_acceptance_pct": 87.63440860215054
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p512-g512",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "mtp2/decode-p512-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1604.0474628872132,
+    "mean": 1604.9624796649302,
+    "min": 1603.5268319914314,
+    "max": 1607.6122499789699,
+    "pstdev": 1.5036180436922277
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 59.952642694205,
+    "mean": 59.89237677446255,
+    "min": 57.79557601928831,
+    "max": 61.93817167028334,
+    "pstdev": 1.3285842127594973
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 1874.0,
+   "mtp_accepted_tokens": 1624.0,
+   "mtp_acceptance_pct": 86.65955176093917
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p8192-g32",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "mtp2/decode-p8192-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1708.6537508858023,
+    "mean": 1709.1661924333032,
+    "min": 1706.2204558930416,
+    "max": 1712.9502821868127,
+    "pstdev": 2.4278183051384943
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 63.98094777813745,
+    "mean": 61.95073719174503,
+    "min": 58.27230262041372,
+    "max": 64.06045508307581,
+    "pstdev": 2.560775008200382
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 112.0,
+   "mtp_accepted_tokens": 108.0,
+   "mtp_acceptance_pct": 96.42857142857143
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p8192-g128",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp2/decode-p8192-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1719.6325585878142,
+    "mean": 1718.3025720791093,
+    "min": 1709.6914203145875,
+    "max": 1725.5255548473708,
+    "pstdev": 5.665043421136328
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 60.728365883067994,
+    "mean": 60.7277981229494,
+    "min": 58.113050347872,
+    "max": 62.148762871693286,
+    "pstdev": 1.4772352286137034
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 442.0,
+   "mtp_accepted_tokens": 417.0,
+   "mtp_acceptance_pct": 94.34389140271493
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p8192-g256",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "mtp2/decode-p8192-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1711.6633450319741,
+    "mean": 1712.254587040204,
+    "min": 1710.029069751058,
+    "max": 1716.856562319629,
+    "pstdev": 2.3879100215975124
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 59.615309672736046,
+    "mean": 59.45715870466074,
+    "min": 57.581762901322236,
+    "max": 60.319607114242636,
+    "pstdev": 0.9966674091714628
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 906.0,
+   "mtp_accepted_tokens": 827.0,
+   "mtp_acceptance_pct": 91.280353200883
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-p8192-g512",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "mtp2/decode-p8192-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1710.4068893108283,
+    "mean": 1709.2962980659877,
+    "min": 1704.6051534169837,
+    "max": 1712.5975428803197,
+    "pstdev": 2.736878420341538
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 57.09600688272318,
+    "mean": 56.25735017837629,
+    "min": 54.269364316888584,
+    "max": 57.471395484092206,
+    "pstdev": 1.330268997822374
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 1916.0,
+   "mtp_accepted_tokens": 1604.0,
+   "mtp_acceptance_pct": 83.7160751565762
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-control-p9445-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp2/decode-control-p9445-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1688.8723283915494,
+    "mean": 1688.984727088313,
+    "min": 1686.8830334809559,
+    "max": 1691.9247972348955,
+    "pstdev": 1.7682555808096558
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 60.12184526073516,
+    "mean": 60.61203192618175,
+    "min": 60.11502544345495,
+    "max": 61.481161423715555,
+    "pstdev": 0.6095737061447681
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 438.0,
+   "mtp_accepted_tokens": 421.0,
+   "mtp_acceptance_pct": 96.11872146118722
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-full-p130944-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128
+   ],
+   "source_results": "mtp2/decode-full-p130944-g128/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 694.300846119811,
+    "mean": 694.300846119811,
+    "min": 694.300846119811,
+    "max": 694.300846119811,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 42.66848083819152,
+    "mean": 42.66848083819152,
+    "min": 42.66848083819152,
+    "max": 42.66848083819152,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 90.0,
+   "mtp_accepted_tokens": 82.0,
+   "mtp_acceptance_pct": 91.11111111111111
+  },
+  {
+   "mode": "mtp2",
+   "coordinate": "decode-full-p130560-g512",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512
+   ],
+   "source_results": "mtp2/decode-full-p130560-g512/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 514.5482831683179,
+    "mean": 514.5482831683179,
+    "min": 514.5482831683179,
+    "max": 514.5482831683179,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 36.18310445052449,
+    "mean": 36.18310445052449,
+    "min": 36.18310445052449,
+    "max": 36.18310445052449,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 370.0,
+   "mtp_accepted_tokens": 325.0,
+   "mtp_acceptance_pct": 87.83783783783784
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "prefill-p2048",
+   "class": "prefill",
+   "prompt_tokens": 2048,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp4/prefill-p2048/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1754.6103219391835,
+    "mean": 1755.4491782538098,
+    "min": 1752.6332760856953,
+    "max": 1761.5568439835768,
+    "pstdev": 3.1427053230354707
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "prefill-p4096",
+   "class": "prefill",
+   "prompt_tokens": 4096,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp4/prefill-p4096/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1693.2946006745178,
+    "mean": 1692.683896440967,
+    "min": 1684.1752313490888,
+    "max": 1698.4662529200389,
+    "pstdev": 5.036574156026016
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "prefill-p6144",
+   "class": "prefill",
+   "prompt_tokens": 6144,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp4/prefill-p6144/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1683.4551741002585,
+    "mean": 1685.821235753579,
+    "min": 1681.3491328025616,
+    "max": 1692.824429550507,
+    "pstdev": 4.5715123557000235
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "prefill-p8192",
+   "class": "prefill",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 1,
+   "actual_output_tokens": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "source_results": "mtp4/prefill-p8192/results.json",
+   "ignore_eos": false,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1654.074994856098,
+    "mean": 1653.4079601890758,
+    "min": 1651.0189621359805,
+    "max": 1655.6479255114684,
+    "pstdev": 1.798528484490779
+   },
+   "client_post_first_tps": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 0.0,
+   "mtp_accepted_tokens": 0.0,
+   "mtp_acceptance_pct": null
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p512-g32",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "mtp4/decode-p512-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1422.0269621200237,
+    "mean": 1408.9256372433674,
+    "min": 1358.90934127366,
+    "max": 1431.007871197307,
+    "pstdev": 25.95382656398229
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 72.7837886347884,
+    "mean": 71.46099103155281,
+    "min": 56.60471274769903,
+    "max": 82.72550104300845,
+    "pstdev": 8.39276608859937
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 148.0,
+   "mtp_accepted_tokens": 123.0,
+   "mtp_acceptance_pct": 83.10810810810811
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p512-g128",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp4/decode-p512-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1424.0615440682673,
+    "mean": 1421.9235436982021,
+    "min": 1406.2331675160126,
+    "max": 1431.7134763943009,
+    "pstdev": 8.412606173023597
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 69.29589791850384,
+    "mean": 72.02947121400632,
+    "min": 66.83151556329551,
+    "max": 80.0425381089756,
+    "pstdev": 5.503277474443647
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 588.0,
+   "mtp_accepted_tokens": 493.0,
+   "mtp_acceptance_pct": 83.84353741496598
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p512-g256",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "mtp4/decode-p512-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1425.2827159617323,
+    "mean": 1426.0386050109676,
+    "min": 1422.960469924691,
+    "max": 1430.4349652393828,
+    "pstdev": 2.652788356631058
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 64.06250719211555,
+    "mean": 65.04470045642373,
+    "min": 60.2890194024425,
+    "max": 73.2264711508477,
+    "pstdev": 4.852486204836097
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 1292.0,
+   "mtp_accepted_tokens": 963.0,
+   "mtp_acceptance_pct": 74.53560371517028
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p512-g512",
+   "class": "decode",
+   "prompt_tokens": 512,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "mtp4/decode-p512-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1422.3036886168313,
+    "mean": 1419.4620513496118,
+    "min": 1405.9052893394412,
+    "max": 1424.1301887748816,
+    "pstdev": 6.829719433371132
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 64.12579297041073,
+    "mean": 62.8480144518393,
+    "min": 57.81437316571434,
+    "max": 65.61437629094617,
+    "pstdev": 2.7542770852078933
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 2656.0,
+   "mtp_accepted_tokens": 1895.0,
+   "mtp_acceptance_pct": 71.34789156626506
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p8192-g32",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 32,
+   "actual_output_tokens": [
+    32,
+    32,
+    32,
+    32,
+    32
+   ],
+   "source_results": "mtp4/decode-p8192-g32/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1640.962218427592,
+    "mean": 1642.0801769713776,
+    "min": 1637.8210702145132,
+    "max": 1647.1370255418833,
+    "pstdev": 3.908049265909542
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 67.43784393694702,
+    "mean": 67.11917103717052,
+    "min": 60.186645816925314,
+    "max": 78.58288074072406,
+    "pstdev": 6.807748438044497
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 152.0,
+   "mtp_accepted_tokens": 134.0,
+   "mtp_acceptance_pct": 88.15789473684211
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p8192-g128",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp4/decode-p8192-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1601.3654104725729,
+    "mean": 1613.1956242019116,
+    "min": 1594.2141897448796,
+    "max": 1652.5124440435395,
+    "pstdev": 21.830122213356486
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 64.10610498444102,
+    "mean": 64.72384040943217,
+    "min": 61.97942223544891,
+    "max": 67.56338676848709,
+    "pstdev": 1.9712633070297794
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 596.0,
+   "mtp_accepted_tokens": 501.0,
+   "mtp_acceptance_pct": 84.06040268456375
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p8192-g256",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 256,
+   "actual_output_tokens": [
+    256,
+    256,
+    256,
+    256,
+    256
+   ],
+   "source_results": "mtp4/decode-p8192-g256/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1639.8315184732207,
+    "mean": 1640.1217798334617,
+    "min": 1636.3493201593092,
+    "max": 1643.2465321650925,
+    "pstdev": 2.55280376235198
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 65.8707513936231,
+    "mean": 65.57684660169943,
+    "min": 58.913631920423796,
+    "max": 71.58145729059297,
+    "pstdev": 5.052159750516907
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 1216.0,
+   "mtp_accepted_tokens": 982.0,
+   "mtp_acceptance_pct": 80.75657894736842
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-p8192-g512",
+   "class": "decode",
+   "prompt_tokens": 8192,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512,
+    512,
+    512,
+    512,
+    512
+   ],
+   "source_results": "mtp4/decode-p8192-g512/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1638.549652344558,
+    "mean": 1639.8907440515866,
+    "min": 1632.1234460138662,
+    "max": 1646.1774658542538,
+    "pstdev": 4.957982521145045
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 57.78984216567232,
+    "mean": 60.72875486030649,
+    "min": 55.732327209212954,
+    "max": 68.31035576760101,
+    "pstdev": 4.941730172079835
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 2628.0,
+   "mtp_accepted_tokens": 1904.0,
+   "mtp_acceptance_pct": 72.45053272450532
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-control-p9445-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128,
+    128,
+    128,
+    128,
+    128
+   ],
+   "source_results": "mtp4/decode-control-p9445-g128/results.json",
+   "ignore_eos": true,
+   "samples": 5,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 5,
+    "median": 1617.1053217174187,
+    "mean": 1616.3182340525657,
+    "min": 1614.076349418861,
+    "max": 1617.5788521325749,
+    "pstdev": 1.300396856746277
+   },
+   "client_post_first_tps": {
+    "n": 5,
+    "median": 67.24884012271762,
+    "mean": 68.49808754762347,
+    "min": 60.68252597506924,
+    "max": 75.12143250912253,
+    "pstdev": 4.941478413486683
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 576.0,
+   "mtp_accepted_tokens": 500.0,
+   "mtp_acceptance_pct": 86.80555555555556
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-full-p130944-g128",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 128,
+   "actual_output_tokens": [
+    128
+   ],
+   "source_results": "mtp4/decode-full-p130944-g128/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 488.0839816531751,
+    "mean": 488.0839816531751,
+    "min": 488.0839816531751,
+    "max": 488.0839816531751,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 47.61406024708345,
+    "mean": 47.61406024708345,
+    "min": 47.61406024708345,
+    "max": 47.61406024708345,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 111.0,
+   "mtp_accepted_tokens": 99.0,
+   "mtp_acceptance_pct": 89.1891891891892
+  },
+  {
+   "mode": "mtp4",
+   "coordinate": "decode-full-p130560-g512",
+   "class": "decode",
+   "prompt_tokens": null,
+   "requested_output_tokens": 512,
+   "actual_output_tokens": [
+    512
+   ],
+   "source_results": "mtp4/decode-full-p130560-g512/results.json",
+   "ignore_eos": true,
+   "samples": 1,
+   "ttft_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "ttfc_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "e2e_s": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "input_tokens_per_ttft_s": {
+    "n": 1,
+    "median": 587.3309434910959,
+    "mean": 587.3309434910959,
+    "min": 587.3309434910959,
+    "max": 587.3309434910959,
+    "pstdev": 0.0
+   },
+   "client_post_first_tps": {
+    "n": 1,
+    "median": 42.55668275335675,
+    "mean": 42.55668275335675,
+    "min": 42.55668275335675,
+    "max": 42.55668275335675,
+    "pstdev": 0.0
+   },
+   "client_post_first_tpot_ms": {
+    "n": 0,
+    "median": null,
+    "mean": null,
+    "min": null,
+    "max": null,
+    "pstdev": null
+   },
+   "prefix_cache_hits_delta": 0.0,
+   "prefix_cache_queries_delta": null,
+   "mtp_proposed_tokens": 503.0,
+   "mtp_accepted_tokens": 382.0,
+   "mtp_acceptance_pct": 75.94433399602386
+  }
+ ],
+ "prompt_parity_across_modes": true,
+ "exact_output_parity_repetitions_out_of_5": "0-4 depending on longer-decode cell (speed is not correctness parity)"
+}

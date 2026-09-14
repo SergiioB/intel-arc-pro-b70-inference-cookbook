@@ -1,0 +1,29 @@
+{
+  "backend": "xpu",
+  "batchSize": 1,
+  "contextLength": 131072,
+  "engineFlags": {
+    "commandSnippet": "B70_DRAFT_LMHEAD_INT4=1 B70_DRAFT_MTP_INT4=1 vllm serve /model --quantization gptq --dtype float16 --max-model-len 131072 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --max-num-seqs 64 --max-num-batched-tokens 8192 --no-enable-prefix-caching --language-model-only --speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\":4}",
+    "flashAttn": true,
+    "kvCacheDtype": "fp8",
+    "numParallel": 1
+  },
+  "engineName": "vllm",
+  "engineVersion": "0.27.2rc1.dev77+gac7509e2b XPU",
+  "hardware": {
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "vramGb": 32
+  },
+  "hfId": "Qwen/Qwen3.8-27B",
+  "id": "cmszpqy000e8fms014ty6i5x3",
+  "notes": "NEW identity vs cmsur82fz06svms01ga1f0z83 (BF16 draft 83.7). Same 1x B70, same image vllm/vllm-openai-xpu@sha256:f01e24f6c7ff01f1e0662234255a1372297d1dbd89d003cf13c8fad3eab1ba4f, kernels 0.1.12.3, same target SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16. Extra patches after Qwen MTP nightly+boundary: patch_gdn_mixed_split_v5.py + patch_draft_lmhead_int4.py + patch_draft_mtp_int4.py (runtime RTN INT4 of draft LM head + 5 MTP linears only; target verify stays BF16). tokSOut = client post-first at p512/g128, median n=5, C1, cache OFF (zero prefix_cache_hits_total delta): 112.65 (range 111.58-117.73). Matched same-harness BF16-draft arm was 81.20, not the older Run40 83.7 card. tokSPrefill = actual input/TTFT at p8192/g1 MTP4 n=5: 1696 (flat vs 1691). Accept 510/540=94.44% vs 95.86%. Short agentic +32.8%; 8K/16K long-ctx agentic +37%/+26%. 230 W configured cap; measured median draw 205 W at p512/g128. Speed-only: no token/KL/task-quality parity vs BF16 draft. E2 self-reported. Measured 2026-08-18.",
+  "quantization": "GPTQ-Int4+draft-INT4-RTN",
+  "submissionId": "cmszpqy000e8fms014ty6i5x3",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-08-19T06:31:19.200Z",
+  "tokSOut": 112.65,
+  "tokSPrefill": 1696
+}

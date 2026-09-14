@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1080" viewBox="0 0 1600 1080" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-27B prefix-on agentic: cookbook BF16 draft vs draft-INT4 S+M1 through 64K</title>
+<desc id="desc">C1 client post-first medians with prefix caching on. Isolated C1 after-load VRAM. 96K thin. 128K is a single cold turn where S+M1 is slower. Not mixed with cache-off agentic or the 83.7 LMX row. E2 self-reported.</desc>
+<rect width="1600" height="1080" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="48" fill="#55d6be" font-size="16" font-weight="800" text-anchor="start">QWEN3.8-27B · PREFIX CACHE ON · AGENTIC C1 · 1× B70</text>
+<text x="58" y="88" fill="#f5f8fc" font-size="32" font-weight="750" text-anchor="start">INT4 draft wins coding sessions through 64K</text>
+<text x="58" y="122" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">vLLM 0.27.2rc1.dev77+gac7509e2b · MTP4 · 230 W cap · client post-first · matched_except_quant · E2</text>
+<rect x="48" y="148" width="1504" height="640" rx="28" fill="#0f1d30"/>
+<text x="82" y="188" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">CLIENT POST-FIRST tok/s, MEDIAN</text>
+<text x="980" y="188" fill="#68a7ff" font-size="15" font-weight="600" text-anchor="start">Blue = cookbook BF16 draft</text>
+<text x="1260" y="188" fill="#ffb45c" font-size="15" font-weight="600" text-anchor="start">Orange = INT4 draft S+M1</text>
+<text x="82" y="236" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">short coding 3×5 g256, 15 turns</text>
+<rect x="82" y="248" width="520" height="20" rx="8" fill="#0b1829"/><rect x="82" y="248" width="340" height="20" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="264" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="start">43.81 tok/s</text>
+<rect x="780" y="248" width="520" height="20" rx="8" fill="#0b1829"/><rect x="780" y="248" width="457" height="20" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="264" fill="#f5f8fc" font-size="17" font-weight="700" text-anchor="start">58.86  +34.4%</text>
+<text x="82" y="324" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">8K session g128, 15 turns</text>
+<rect x="82" y="336" width="520" height="20" rx="8" fill="#0b1829"/><rect x="82" y="336" width="373" height="20" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="352" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="start">48.04 tok/s</text>
+<rect x="780" y="336" width="520" height="20" rx="8" fill="#0b1829"/><rect x="780" y="336" width="520" height="20" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="352" fill="#f5f8fc" font-size="17" font-weight="700" text-anchor="start">66.99  +39.4%</text>
+<text x="82" y="412" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">16K session g128, 8 turns</text>
+<rect x="82" y="424" width="520" height="20" rx="8" fill="#0b1829"/><rect x="82" y="424" width="422" height="20" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="440" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="start">54.40 tok/s</text>
+<rect x="780" y="424" width="520" height="20" rx="8" fill="#0b1829"/><rect x="780" y="424" width="512" height="20" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="440" fill="#f5f8fc" font-size="17" font-weight="700" text-anchor="start">65.92  +21.2%</text>
+<text x="82" y="500" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">32K session g128, 6 turns</text>
+<rect x="82" y="512" width="520" height="20" rx="8" fill="#0b1829"/><rect x="82" y="512" width="360" height="20" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="528" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="start">46.34 tok/s</text>
+<rect x="780" y="512" width="520" height="20" rx="8" fill="#0b1829"/><rect x="780" y="512" width="474" height="20" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="528" fill="#f5f8fc" font-size="17" font-weight="700" text-anchor="start">61.02  +31.7%</text>
+<text x="82" y="588" fill="#9caec4" font-size="17" font-weight="600" text-anchor="start">64K session g128, 4 turns</text>
+<rect x="82" y="600" width="520" height="20" rx="8" fill="#0b1829"/><rect x="82" y="600" width="348" height="20" rx="8" fill="#68a7ff" opacity="0.85"/>
+<text x="620" y="616" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="start">44.83 tok/s</text>
+<rect x="780" y="600" width="520" height="20" rx="8" fill="#0b1829"/><rect x="780" y="600" width="436" height="20" rx="8" fill="#ffb45c" opacity="0.85"/>
+<text x="1320" y="616" fill="#f5f8fc" font-size="17" font-weight="700" text-anchor="start">56.20  +25.4%</text>
+<text x="82" y="676" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">96K (thin, 2 turns): 40.66 vs 47.85 (+17.7%). ~128K t1 n=1: cookbook 43.82 vs S+M1 37.48 (−14.5%) — do not headline.</text>
+<text x="82" y="708" fill="#9caec4" font-size="15" font-weight="500" text-anchor="start">Scale: 8K S+M1 66.99 = full orange bar. Isolated C1 after-load 825 / 816 MiB on the 32K–128K ladder.</text>
+<rect x="48" y="816" width="1504" height="220" rx="28" fill="#0f1d30"/>
+<text x="82" y="860" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start">LABELS</text>
+<text x="82" y="898" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">Prefix cache on (server logs). t1 hits=0; follow-ups 29952 / 63232 / 96512. Short t5 hits=1664.</text>
+<text x="82" y="932" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start">After-load 816–871 MiB — isolated C1, not a serving-capacity claim.</text>
+<text x="82" y="966" fill="#ff7a7a" font-size="16" font-weight="600" text-anchor="start">Do not mix with cache-off agentic. Do not mix this 128K t1 with synthetic cache-off 62.52 n=5.</text>
+<text x="82" y="1000" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start">Do not overwrite LMX 83.7. Synthetic cache-off overlay remains 112.65 vs 81.20.</text>
+</svg>

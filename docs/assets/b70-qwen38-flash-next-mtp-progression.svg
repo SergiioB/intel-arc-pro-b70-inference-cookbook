@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <rect width="1080" height="620" fill="#ffffff"/>
+  <text x="40" y="46" font-size="24" font-weight="700" fill="#111827">Qwen3.8-Flash-Next — decode speed progression</text>
+  <text x="40" y="72" font-size="14" fill="#6b7280">Dual Intel Arc Pro B70 · llama.cpp SYCL · P512/G128 C1 · engine-native medians · 195 W</text>
+
+  <line x1="90" y1="110" x2="1040" y2="110" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="195" x2="1040" y2="195" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="280" x2="1040" y2="280" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="365" x2="1040" y2="365" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="450" x2="1040" y2="450" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="90" y1="110" x2="90" y2="530" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="60" y="115" font-size="12" fill="#9ca3af" text-anchor="end">45</text>
+  <text x="60" y="200" font-size="12" fill="#9ca3af" text-anchor="end">32</text>
+  <text x="60" y="285" font-size="12" fill="#9ca3af" text-anchor="end">19</text>
+  <text x="60" y="370" font-size="12" fill="#9ca3af" text-anchor="end">6</text>
+  <text x="60" y="455" font-size="12" fill="#9ca3af" text-anchor="end">0</text>
+  <text x="60" y="540" font-size="11" fill="#6b7280" text-anchor="middle">base build</text>
+  <text x="205" y="540" font-size="11" fill="#6b7280" text-anchor="middle">upstream<br/>refresh</text>
+  <text x="320" y="540" font-size="11" fill="#6b7280" text-anchor="middle">+ MTP<br/>warm</text>
+  <text x="435" y="540" font-size="11" fill="#6b7280" text-anchor="middle">+MTP<br/>fresh n5</text>
+  <text x="550" y="540" font-size="11" fill="#6b7280" text-anchor="middle">+ kernel<br/>warm n5</text>
+  <text x="665" y="540" font-size="11" fill="#6b7280" text-anchor="middle">matched<br/>prose n5</text>
+  <text x="780" y="540" font-size="11" fill="#6b7280" text-anchor="middle">matched<br/>code n5</text>
+  <text x="895" y="540" font-size="11" fill="#6b7280" text-anchor="middle">kernel<br/>warm n3</text>
+  <text x="1010" y="540" font-size="11" fill="#6b7280" text-anchor="middle">peak<br/>sample</text>
+
+  <!-- scale: y = 450 - v*340/45 -->
+  <g>
+    <rect x="115" y="273.2" width="60" height="176.8" rx="6" fill="#9ca3af"/>
+    <text x="145" y="262" font-size="15" font-weight="700" fill="#374151" text-anchor="middle">23.38</text>
+    <text x="145" y="228" font-size="12" fill="#9ca3af" text-anchor="middle">base</text>
+
+    <rect x="230" y="246.9" width="60" height="203.1" rx="6" fill="#0068b5"/>
+    <text x="260" y="236" font-size="15" font-weight="700" fill="#0068b5" text-anchor="middle">26.86</text>
+    <text x="260" y="216" font-size="12" font-weight="600" fill="#0a7d2c" text-anchor="middle">+14.9%</text>
+
+    <rect x="345" y="224.1" width="60" height="225.9" rx="6" fill="#0068b5"/>
+    <text x="375" y="213" font-size="15" font-weight="700" fill="#0068b5" text-anchor="middle">29.90</text>
+    <text x="375" y="193" font-size="12" font-weight="600" fill="#0a7d2c" text-anchor="middle">+27.9%</text>
+
+    <rect x="460" y="249.7" width="60" height="200.3" rx="6" fill="#93b8dc"/>
+    <text x="490" y="239" font-size="15" font-weight="700" fill="#4b7aa8" text-anchor="middle">26.51</text>
+    <text x="490" y="219" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">+13.4%</text>
+
+    <rect x="575" y="218.8" width="60" height="231.2" rx="6" fill="#0068b5"/>
+    <text x="605" y="208" font-size="15" font-weight="700" fill="#0068b5" text-anchor="middle">31.11</text>
+    <text x="605" y="188" font-size="12" font-weight="600" fill="#0a7d2c" text-anchor="middle">+33.1%</text>
+
+    <rect x="690" y="222.4" width="60" height="227.6" rx="6" fill="#ff6a00"/>
+    <text x="720" y="211" font-size="15" font-weight="700" fill="#c2410c" text-anchor="middle">30.68</text>
+    <text x="720" y="191" font-size="12" font-weight="600" fill="#0a7d2c" text-anchor="middle">+31.2%</text>
+
+    <rect x="805" y="208.9" width="60" height="241.1" rx="6" fill="#ff6a00"/>
+    <text x="835" y="198" font-size="15" font-weight="700" fill="#c2410c" text-anchor="middle">33.25</text>
+    <text x="835" y="178" font-size="12" font-weight="600" fill="#0a7d2c" text-anchor="middle">+42.2%</text>
+
+    <rect x="920" y="178.7" width="60" height="271.3" rx="6" fill="#0a7d2c"/>
+    <text x="950" y="167" font-size="15" font-weight="700" fill="#0a7d2c" text-anchor="middle">37.37</text>
+    <text x="950" y="147" font-size="12" font-weight="600" fill="#0a7d2c" text-anchor="middle">+59.8%</text>
+  </g>
+
+  <rect x="90" y="555" width="900" height="40" rx="8" fill="#f9fafb"/>
+  <text x="105" y="580" font-size="12.5" fill="#374151">🤝 Peak sample 43.76 tok/s (+87%). Spread 26.5–37.4 = acceptance-draw variance (0.70–0.93), not config. Medians = n=5 fresh except warm n=3 where noted.</text>
+</svg>

@@ -1,0 +1,29 @@
+{
+  "backend": "xpu",
+  "batchSize": 1,
+  "contextLength": 131072,
+  "engineFlags": {
+    "commandSnippet": "vllm serve /model --quantization gptq --dtype float16 --max-model-len 131072 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --max-num-seqs 64 --max-num-batched-tokens 8192 --no-enable-prefix-caching --language-model-only --speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\":4}",
+    "flashAttn": true,
+    "kvCacheDtype": "fp8",
+    "numParallel": 1
+  },
+  "engineName": "vllm",
+  "engineVersion": "0.27.2rc1.dev77+gac7509e2b XPU",
+  "hardware": {
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "vramGb": 32
+  },
+  "hfId": "Qwen/Qwen3.8-27B",
+  "id": "cmsur82fz06svms01ga1f0z83",
+  "notes": "Single-stream C1. vLLM XPU nightly vllm/vllm-openai-xpu@sha256:f01e24f6c7ff01f1e0662234255a1372297d1dbd89d003cf13c8fad3eab1ba4f, vllm-xpu-kernels 0.1.12.3. Model SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16 (Qwen3_5ForConditionalGeneration, dense 27B, GPTQ-INT4 g128 sym desc_act=false, preserved BF16 MTP head). Patches: patch_mtp_nightly.py + patch_mtp_boundary.py. fp8 KV cache, gpu-memory-utilization 0.88, scheduler 8192, max-num-seqs 64, prefix cache OFF (--no-enable-prefix-caching, zero cache-query delta). MTP4 speculative decode, 1-layer draft. tokSOut = client post-first rate at p512/g128, median n=5 (not engine-native decode); tokSPrefill = actual input tokens / client TTFT at p8192/g1, median n=5, no-spec mode (not llama-bench pp). 230 W configured cap; measured campaign-window mean draw 196 W (MTP4 mode). E2 self-reported; independent reproduction pending. Measured 2026-08-15. Claims-audited: 83.7 tok/s MTP4 p512/g128 n=5 range 78.3-84.4; exact-128K full-context p130944/g128 56.3 tok/s n=1. 2000 t/s prefill NOT reached; max cold-input median 1851 t/s (no-spec p2048/g1).",
+  "quantization": "GPTQ-Int4",
+  "submissionId": "cmsur82fz06svms01ga1f0z83",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-08-15T19:13:46.847Z",
+  "tokSOut": 83.7,
+  "tokSPrefill": 1774
+}

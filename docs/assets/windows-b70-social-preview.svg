@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="spT spD">
+  <title id="spT">Qwen3.8-27B on Windows 11 — Intel Arc Pro B70</title>
+  <desc id="spD">Social preview: Windows panes, Qwen3.8-27B on Windows 11, Intel Arc Pro B70, MTP4, 100K context, Docker Desktop and WSLC standalone kits, cookbook GitHub URL.</desc>
+  <rect x="0" y="0" width="1280" height="640" fill="#0B1526"/>
+  <rect x="0" y="0" width="12" height="640" fill="#0078D4"/>
+  <g fill="#FFFFFF">
+    <rect x="96" y="195" width="116" height="116"/>
+    <rect x="230" y="195" width="116" height="116"/>
+    <rect x="96" y="329" width="116" height="116"/>
+    <rect x="230" y="329" width="116" height="116"/>
+  </g>
+  <text x="420" y="268" fill="#FFFFFF" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="60" font-weight="700">Qwen3.8-27B on Windows 11</text>
+  <text x="420" y="338" fill="#A9CDF2" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="40">Intel Arc Pro B70 &#183; MTP4 &#183; 100K context</text>
+  <text x="420" y="396" fill="#A9CDF2" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="40">Docker Desktop &#183; WSLC standalone kits</text>
+  <rect x="420" y="440" width="560" height="4" fill="#0078D4"/>
+  <text x="96" y="560" fill="#6E8FB8" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="26">github.com/SergiioB/intel-arc-pro-b70-inference-cookbook</text>
+</svg>

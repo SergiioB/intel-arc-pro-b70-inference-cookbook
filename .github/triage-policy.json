@@ -1,0 +1,25 @@
+{
+  "launch_commands": [
+    "docker run",
+    "podman run",
+    "vllm serve",
+    "llama-server",
+    "python -m sglang"
+  ],
+  "hang_signals": [
+    "coredump",
+    "timedout job",
+    "gpu reset",
+    "guc_id",
+    "driver hang"
+  ],
+  "hang_evidence": [
+    "seqno",
+    "guc_id",
+    "dmesg"
+  ],
+  "c1_only_patches": [
+    "patch_draft_lmhead_int4.py",
+    "patch_draft_mtp_int4.py"
+  ]
+}

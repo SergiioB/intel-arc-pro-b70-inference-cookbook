@@ -1,0 +1,48 @@
+{
+ "turn1": {
+  "turn_prompt_tokens": 122531,
+  "total_context_tokens": null,
+  "ttft_s": 39.634,
+  "total_s": 41.33,
+  "decode_tps": 75.3,
+  "completion_tokens": 128
+ },
+ "followups": [
+  {
+   "turn": 2,
+   "turn_prompt_tokens": 122561,
+   "total_context_tokens": 122561,
+   "ttft_s": 1.422,
+   "total_s": 2.24,
+   "decode_tps": 78.2,
+   "completion_tokens": 64
+  },
+  {
+   "turn": 3,
+   "turn_prompt_tokens": 122587,
+   "total_context_tokens": 122587,
+   "ttft_s": 1.425,
+   "total_s": 2.2,
+   "decode_tps": 82.4,
+   "completion_tokens": 64
+  },
+  {
+   "turn": 4,
+   "turn_prompt_tokens": 122611,
+   "total_context_tokens": 122611,
+   "ttft_s": 1.404,
+   "total_s": 2.18,
+   "decode_tps": 82.4,
+   "completion_tokens": 64
+  },
+  {
+   "turn": 5,
+   "turn_prompt_tokens": 122636,
+   "total_context_tokens": 122636,
+   "ttft_s": 1.415,
+   "total_s": 2.2,
+   "decode_tps": 81.9,
+   "completion_tokens": 64
+  }
+ ]
+}

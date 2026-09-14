@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1480" viewBox="0 0 1600 1480" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-27B FP8 TP2 benchmark dashboard on dual Intel Arc Pro B70</title>
+<desc id="desc">Three greedy random-token C1 cells for Qwen3.8-27B FP8 W8A16 with MTP8 on two Intel Arc Pro B70 GPUs in tensor parallel mode. Values are n=5 medians or explicitly labeled maxima. Cold input is endpoint prompt tokens divided by client TTFT. Self-reported E2 and not independently reproduced.</desc>
+<rect width="1600" height="1480" fill="#07111f"/>
+<text x="48" y="52" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">QWEN3.8-27B FP8 · DUAL B70 TP2 · vLLM XPU</text>
+<text x="48" y="98" fill="#f5f8fc" font-size="36" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">FP8 TP2 · W8A16 + Xe2 small-M · MTP8</text>
+<text x="48" y="132" fill="#9caec4" font-size="18" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Greedy random-token diagnostic · C1 · cache disabled · 230 W configured cap per GPU</text>
+<rect x="1190" y="30" width="362" height="88" rx="18" fill="#0f1d30"/>
+<text x="1371" y="64" fill="#55d6be" font-size="20" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">E2 SELF-REPORTED</text>
+<text x="1371" y="94" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">independent reproduction pending</text>
+<rect x="48" y="170" width="1504" height="410" rx="28" fill="#0f1d30"/>
+<text x="82" y="212" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">C1 OUTPUT THROUGHPUT</text>
+<text x="82" y="252" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Client end-to-end output tok/s · five measured requests per cell</text>
+<rect x="82" y="280" width="466" height="250" rx="20" fill="#0b1829"/>
+<text x="106" y="320" fill="#9caec4" font-size="18" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p512 / g128</text>
+<text x="106" y="382" fill="#55d6be" font-size="44" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">53.42</text>
+<text x="272" y="382" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">median tok/s</text>
+<text x="106" y="428" fill="#ffb45c" font-size="17" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">maximum observed  63.70</text>
+<text x="106" y="462" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">range  36.28–63.70</text>
+<text x="106" y="496" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">run-level output  49.93 tok/s</text>
+<rect x="566" y="280" width="466" height="250" rx="20" fill="#0b1829"/>
+<text x="590" y="320" fill="#9caec4" font-size="18" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p1024 / g128</text>
+<text x="590" y="382" fill="#55d6be" font-size="44" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">60.13</text>
+<text x="756" y="382" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">median tok/s</text>
+<text x="590" y="428" fill="#ffb45c" font-size="17" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">maximum observed  71.06</text>
+<text x="590" y="462" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">range  35.19–71.06</text>
+<text x="590" y="496" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">run-level output  53.74 tok/s</text>
+<rect x="1050" y="280" width="466" height="250" rx="20" fill="#0b1829"/>
+<text x="1074" y="320" fill="#9caec4" font-size="18" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p2048 / g128</text>
+<text x="1074" y="382" fill="#55d6be" font-size="44" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">33.52</text>
+<text x="1240" y="382" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">median tok/s</text>
+<text x="1074" y="428" fill="#ffb45c" font-size="17" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">maximum observed  38.00</text>
+<text x="1074" y="462" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">range  19.15–38.00</text>
+<text x="1074" y="496" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">run-level output  28.08 tok/s</text>
+<text x="82" y="555" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Greedy random-token diagnostic · median and maximum observed labeled separately.</text>
+<rect x="48" y="620" width="730" height="520" rx="28" fill="#0f1d30"/>
+<text x="82" y="662" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">LATENCY AND COLD INPUT</text>
+<text x="82" y="702" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Client timing · linear scales</text>
+<line x1="100.0" y1="755" x2="100.0" y2="1015" stroke="#20344d" stroke-width="1"/>
+<text x="100.0" y="1043" fill="#9caec4" font-size="13" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">0</text>
+<line x1="255.0" y1="755" x2="255.0" y2="1015" stroke="#20344d" stroke-width="1"/>
+<text x="255.0" y="1043" fill="#9caec4" font-size="13" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">500</text>
+<line x1="410.0" y1="755" x2="410.0" y2="1015" stroke="#20344d" stroke-width="1"/>
+<text x="410.0" y="1043" fill="#9caec4" font-size="13" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">1000</text>
+<line x1="565.0" y1="755" x2="565.0" y2="1015" stroke="#20344d" stroke-width="1"/>
+<text x="565.0" y="1043" fill="#9caec4" font-size="13" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">1500</text>
+<line x1="720.0" y1="755" x2="720.0" y2="1015" stroke="#20344d" stroke-width="1"/>
+<text x="720.0" y="1043" fill="#9caec4" font-size="13" font-weight="500" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">2000</text>
+<text x="100" y="773" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p512/g128</text>
+<rect x="100" y="783" width="374.07331861030804" height="28" rx="8" fill="#68a7ff"/>
+<text x="464.07331861030804" y="804" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">1206.7</text>
+<text x="720" y="773" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">TTFT 424.3 ms</text>
+<text x="100" y="851" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p1024/g128</text>
+<rect x="100" y="861" width="538.2391316169211" height="28" rx="8" fill="#68a7ff"/>
+<text x="628.2391316169211" y="882" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">1736.3</text>
+<text x="720" y="851" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">TTFT 589.8 ms</text>
+<text x="100" y="929" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p2048/g128</text>
+<rect x="100" y="939" width="407.6954606453391" height="28" rx="8" fill="#68a7ff"/>
+<text x="497.6954606453391" y="960" fill="#f5f8fc" font-size="15" font-weight="700" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">1315.1</text>
+<text x="720" y="929" fill="#9caec4" font-size="14" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">TTFT 1557.2 ms</text>
+<text x="410.0" y="1060" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">cold-input rate (actual endpoint prompt tokens / client TTFT), token/s</text>
+<text x="82" y="1104" fill="#ffb45c" font-size="14" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">This includes scheduling and first-token work; it is not engine-isolated prefill.</text>
+<rect x="822" y="620" width="730" height="520" rx="28" fill="#0f1d30"/>
+<text x="856" y="662" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP8 DIAGNOSTICS</text>
+<text x="856" y="702" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Acceptance and per-token latency</text>
+<rect x="856" y="750" width="662" height="42" rx="10" fill="#0b1829"/>
+<text x="872" y="778" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Cell</text>
+<text x="1096" y="778" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">accepted length</text>
+<text x="1276" y="778" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">draft-token accept</text>
+<text x="1441" y="778" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">mean TPOT</text>
+<text x="872" y="836" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p512/g128</text>
+<text x="1096" y="836" fill="#55d6be" font-size="19" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">5.27</text>
+<text x="1276" y="836" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">53.4%</text>
+<text x="1441" y="836" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">16.78 ms</text>
+<rect x="856" y="866" width="662" height="60" rx="0" fill="#12243a"/>
+<text x="872" y="904" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p1024/g128</text>
+<text x="1096" y="904" fill="#55d6be" font-size="19" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">5.75</text>
+<text x="1276" y="904" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">59.4%</text>
+<text x="1441" y="904" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">14.15 ms</text>
+<text x="872" y="972" fill="#f5f8fc" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p2048/g128</text>
+<text x="1096" y="972" fill="#55d6be" font-size="19" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">3.78</text>
+<text x="1276" y="972" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">46.3%</text>
+<text x="1441" y="972" fill="#f5f8fc" font-size="17" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">23.49 ms</text>
+<text x="856" y="1030" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p2048 uses hybrid mode (W8A8 prefill / W8A16 small-M decode).</text>
+<text x="856" y="1060" fill="#ffb45c" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Acceptance is content- and sampling-dependent; it is diagnostic, not a quality score.</text>
+<text x="856" y="1090" fill="#9caec4" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">All cells: C1, n=5, exact g128 completions, random-token synthetic prompts.</text>
+<rect x="48" y="1180" width="1504" height="220" rx="28" fill="#0f1d30"/>
+<text x="82" y="1222" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">CLAIM BOUNDARY</text>
+<text x="82" y="1262" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">What this evidence does and does not establish</text>
+<text x="82" y="1280" fill="#55d6be" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Establishes</text>
+<text x="82" y="1314" fill="#f5f8fc" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Completed fixed-length C1 cells, client timing,</text>
+<text x="82" y="1342" fill="#f5f8fc" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP counters, and retained raw samples.</text>
+<text x="820" y="1280" fill="#ffb45c" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Does not establish</text>
+<text x="820" y="1314" fill="#f5f8fc" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Natural-content quality, token/logit parity, sustained</text>
+<text x="820" y="1342" fill="#f5f8fc" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">serving, Cn capacity, or independent reproduction.</text>
+<text x="82" y="1380" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Source: public n5-p512-g128.json, n5-p1024-g128.json, n5-p2048-g128.json</text>
+</svg>

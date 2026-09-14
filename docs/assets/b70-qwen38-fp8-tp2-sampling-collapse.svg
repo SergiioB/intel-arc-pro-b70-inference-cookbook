@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1240" viewBox="0 0 1600 1240" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-27B FP8 TP2 sampling sensitivity on random-token prompts</title>
+<desc id="desc">Paired p512/g128 and p1024/g128 C1 comparisons between greedy temperature zero diagnostics and the Qwen model-card non-thinking sampling preset. Client end-to-end output throughput and mean accepted speculative length both fall under the sampled random-token workload. Each point is a median or aggregate from five measured requests. This is not a natural-content quality evaluation.</desc>
+<rect width="1600" height="1240" fill="#07111f"/>
+<text x="48" y="52" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">QWEN3.8-27B FP8 · DUAL B70 TP2 · vLLM XPU</text>
+<text x="48" y="98" fill="#f5f8fc" font-size="36" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Sampling sensitivity: greedy versus model-card preset</text>
+<text x="48" y="132" fill="#9caec4" font-size="18" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Same FP8 TP2 MTP8 stack · random-token synthetic prompts · C1 · n=5</text>
+<rect x="1190" y="30" width="362" height="88" rx="18" fill="#0f1d30"/>
+<text x="1371" y="64" fill="#55d6be" font-size="20" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">E2 SELF-REPORTED</text>
+<text x="1371" y="94" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">independent reproduction pending</text>
+<rect x="48" y="170" width="920" height="650" rx="28" fill="#0f1d30"/>
+<text x="82" y="212" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">OUTPUT THROUGHPUT</text>
+<text x="82" y="252" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Client end-to-end output tok/s · linear 0–70 axis</text>
+<line x1="110" y1="700.0" x2="910" y2="700.0" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="705.0" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">0</text>
+<line x1="110" y1="642.8571428571429" x2="910" y2="642.8571428571429" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="647.8571428571429" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">10</text>
+<line x1="110" y1="585.7142857142857" x2="910" y2="585.7142857142857" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="590.7142857142857" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">20</text>
+<line x1="110" y1="528.5714285714286" x2="910" y2="528.5714285714286" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="533.5714285714286" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">30</text>
+<line x1="110" y1="471.42857142857144" x2="910" y2="471.42857142857144" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="476.42857142857144" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">40</text>
+<line x1="110" y1="414.2857142857143" x2="910" y2="414.2857142857143" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="419.2857142857143" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">50</text>
+<line x1="110" y1="357.14285714285717" x2="910" y2="357.14285714285717" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="362.14285714285717" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">60</text>
+<line x1="110" y1="300.0" x2="910" y2="300.0" stroke="#20344d" stroke-width="1"/>
+<text x="94" y="305.0" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">70</text>
+<rect x="230" y="394.7604645542777" width="108" height="305.2395354457223" rx="10" fill="#55d6be"/>
+<text x="284.0" y="380.7604645542777" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">53.42</text>
+<text x="284.0" y="730" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">greedy</text>
+<rect x="362" y="573.3714285714286" width="108" height="126.62857142857143" rx="10" fill="#ffb45c"/>
+<text x="416.0" y="559.3714285714286" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">22.16</text>
+<text x="416.0" y="730" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">model-card</text>
+<text x="350" y="766" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p512/g128</text>
+<rect x="550" y="356.41946523898923" width="108" height="343.58053476101077" rx="10" fill="#55d6be"/>
+<text x="604.0" y="342.41946523898923" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">60.13</text>
+<text x="604.0" y="730" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">greedy</text>
+<rect x="682" y="633.3714285714286" width="108" height="66.62857142857143" rx="10" fill="#ffb45c"/>
+<text x="736.0" y="619.3714285714286" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">11.66</text>
+<text x="736.0" y="730" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">model-card</text>
+<text x="670" y="766" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p1024/g128</text>
+<text x="510" y="804" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">Teal: temperature 0 greedy · Orange: model-card 0.7 / 0.8 / 20 / presence 1.5</text>
+<rect x="1012" y="170" width="540" height="650" rx="28" fill="#0f1d30"/>
+<text x="1046" y="212" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">ACCEPTED LENGTH</text>
+<text x="1046" y="252" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Mean accepted MTP tokens · linear 0–6 axis</text>
+<line x1="1070" y1="700.0" x2="1490" y2="700.0" stroke="#20344d" stroke-width="1"/>
+<text x="1056" y="705.0" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">0</text>
+<line x1="1070" y1="633.3333333333334" x2="1490" y2="633.3333333333334" stroke="#20344d" stroke-width="1"/>
+<text x="1056" y="638.3333333333334" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">1</text>
+<line x1="1070" y1="566.6666666666666" x2="1490" y2="566.6666666666666" stroke="#20344d" stroke-width="1"/>
+<text x="1056" y="571.6666666666666" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">2</text>
+<line x1="1070" y1="500.0" x2="1490" y2="500.0" stroke="#20344d" stroke-width="1"/>
+<text x="1056" y="505.0" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">3</text>
+<line x1="1070" y1="433.3333333333333" x2="1490" y2="433.3333333333333" stroke="#20344d" stroke-width="1"/>
+<text x="1056" y="438.3333333333333" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">4</text>
+<line x1="1070" y1="366.6666666666667" x2="1490" y2="366.6666666666667" stroke="#20344d" stroke-width="1"/>
+<text x="1056" y="371.6666666666667" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">5</text>
+<line x1="1070" y1="300.0" x2="1490" y2="300.0" stroke="#20344d" stroke-width="1"/>
+<text x="1056" y="305.0" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">6</text>
+<rect x="1111" y="348.780487804878" width="66" height="351.219512195122" rx="8" fill="#55d6be"/>
+<text x="1144.0" y="336.780487804878" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">5.27</text>
+<rect x="1193" y="568.0666666666666" width="66" height="131.93333333333334" rx="8" fill="#ffb45c"/>
+<text x="1226.0" y="556.0666666666666" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">1.98</text>
+<text x="1185" y="742" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p512</text>
+<rect x="1306" y="316.6666666666667" width="66" height="383.3333333333333" rx="8" fill="#55d6be"/>
+<text x="1339.0" y="304.6666666666667" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">5.75</text>
+<rect x="1388" y="624.0" width="66" height="75.99999999999999" rx="8" fill="#ffb45c"/>
+<text x="1421.0" y="612.0" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">1.14</text>
+<text x="1380" y="742" fill="#f5f8fc" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">p1024</text>
+<text x="1046" y="760" fill="#ffb45c" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Acceptance is not a quality metric.</text>
+<text x="1046" y="790" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Random-token prompts can distort speculation behavior.</text>
+<rect x="48" y="860" width="1504" height="300" rx="28" fill="#0f1d30"/>
+<text x="82" y="902" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">INTERPRETATION</text>
+<text x="82" y="942" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">The sampling preset changes this synthetic workload materially</text>
+<text x="82" y="960" fill="#55d6be" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p512/g128</text>
+<text x="82" y="996" fill="#f5f8fc" font-size="20" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">53.42 → 22.16 tok/s median; mean accepted length 5.27 → 1.98.</text>
+<text x="790" y="960" fill="#55d6be" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p1024/g128</text>
+<text x="790" y="996" fill="#f5f8fc" font-size="20" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">60.13 → 11.66 tok/s median; mean accepted length 5.75 → 1.14.</text>
+<text x="82" y="1050" fill="#ffb45c" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Use the model-card cells as sampling-sensitivity diagnostics, not as natural-content quality results.</text>
+<text x="82" y="1084" fill="#9caec4" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Greedy and model-card cells are separate sampling conditions on the same synthetic prompt class.</text>
+<text x="82" y="1124" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Source: public n5 JSON and sanitized model-card-sampling JSON; all cells C1, n=5, exact g128.</text>
+</svg>

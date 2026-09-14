@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-27B FP8 W8A16 dual B70 TP2 inference pipeline</title>
+<desc id="desc">A process diagram for the public Qwen3.8-27B FP8 recipe. One C1 request enters vLLM, tensor-parallel workers are pinned to one Intel Arc Pro B70 each, oneCCL simple algorithms stage collectives through host memory because GPU peer-to-peer is unavailable, FP8 W8A16 target compute uses the Xe2 small-M decode path, and native MTP8 drafts are verified before streaming. The public evidence covers C1 only and is self-reported E2.</desc>
+<rect width="1600" height="1180" fill="#07111f"/>
+<text x="48" y="52" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">QWEN3.8-27B FP8 · DUAL B70 TP2 · vLLM XPU</text>
+<text x="48" y="98" fill="#f5f8fc" font-size="36" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Request-to-token pipeline</text>
+<text x="48" y="132" fill="#9caec4" font-size="18" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">TP2 worker isolation · host-staged collectives · W8A16 decode · native MTP8</text>
+<rect x="1190" y="30" width="362" height="88" rx="18" fill="#0f1d30"/>
+<text x="1371" y="64" fill="#55d6be" font-size="20" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">E2 SELF-REPORTED</text>
+<text x="1371" y="94" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">independent reproduction pending</text>
+<rect x="48" y="170" width="1504" height="760" rx="28" fill="#0f1d30"/>
+<text x="82" y="212" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">EXECUTION PATH</text>
+<text x="82" y="252" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">One request · two isolated workers · one streamed response</text>
+<rect x="82" y="270" width="230" height="150" rx="20" fill="#0b1829" stroke="#263a53" stroke-width="1"/>
+<text x="102" y="306" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">1</text>
+<text x="102" y="340" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">HTTP request</text>
+<text x="102" y="374" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">C1 only</text>
+<text x="102" y="400" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">exact prompt + g128</text>
+<rect x="365" y="270" width="250" height="150" rx="20" fill="#0b1829" stroke="#263a53" stroke-width="1"/>
+<text x="385" y="306" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">2</text>
+<text x="385" y="340" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">vLLM scheduler</text>
+<text x="385" y="374" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">max_num_seqs = 1</text>
+<text x="385" y="400" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">cache disabled</text>
+<rect x="668" y="270" width="350" height="150" rx="20" fill="#0b1829" stroke="#263a53" stroke-width="1"/>
+<text x="688" y="306" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">3</text>
+<text x="688" y="340" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">TP2 target forward</text>
+<text x="688" y="374" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">rank 0 → B70 GPU 0</text>
+<text x="688" y="400" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">rank 1 → B70 GPU 1</text>
+<rect x="1070" y="270" width="230" height="150" rx="20" fill="#0b1829" stroke="#263a53" stroke-width="1"/>
+<text x="1090" y="306" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">4</text>
+<text x="1090" y="340" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MTP8 draft</text>
+<text x="1090" y="374" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">native model head</text>
+<text x="1090" y="400" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">8 proposed positions</text>
+<rect x="1352" y="270" width="166" height="150" rx="20" fill="#0b1829" stroke="#263a53" stroke-width="1"/>
+<text x="1372" y="306" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">5</text>
+<text x="1372" y="340" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Stream</text>
+<text x="1372" y="374" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">verify</text>
+<text x="1372" y="400" fill="#9caec4" font-size="14" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">emit tokens</text>
+<line x1="312" y1="345" x2="365" y2="345" stroke="#68a7ff" stroke-width="4"/>
+<polygon points="365,345 349,336 349,354" fill="#68a7ff"/>
+<line x1="615" y1="345" x2="668" y2="345" stroke="#68a7ff" stroke-width="4"/>
+<polygon points="668,345 652,336 652,354" fill="#68a7ff"/>
+<line x1="1018" y1="345" x2="1070" y2="345" stroke="#68a7ff" stroke-width="4"/>
+<polygon points="1070,345 1054,336 1054,354" fill="#68a7ff"/>
+<line x1="1300" y1="345" x2="1352" y2="345" stroke="#68a7ff" stroke-width="4"/>
+<polygon points="1352,345 1336,336 1336,354" fill="#68a7ff"/>
+<rect x="300" y="505" width="420" height="210" rx="24" fill="#10253b" stroke="#68a7ff" stroke-width="2"/>
+<text x="330" y="548" fill="#68a7ff" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">TP rank 0</text>
+<text x="330" y="584" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">ZE_AFFINITY_MASK=0</text>
+<text x="330" y="620" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">B70 GPU 0 · FP8 target shard</text>
+<text x="330" y="652" fill="#55d6be" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">W8A16 + Xe2 small-M decode</text>
+<rect x="880" y="505" width="420" height="210" rx="24" fill="#10253b" stroke="#68a7ff" stroke-width="2"/>
+<text x="910" y="548" fill="#68a7ff" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">TP rank 1</text>
+<text x="910" y="584" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">ZE_AFFINITY_MASK=1</text>
+<text x="910" y="620" fill="#9caec4" font-size="16" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">B70 GPU 1 · FP8 target shard</text>
+<text x="910" y="652" fill="#55d6be" font-size="16" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">W8A16 + Xe2 small-M decode</text>
+<rect x="740" y="540" width="120" height="140" rx="18" fill="#0b1829" stroke="#ffb45c" stroke-width="2"/>
+<text x="800" y="580" fill="#ffb45c" font-size="16" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">HOST</text>
+<text x="800" y="612" fill="#f5f8fc" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">oneCCL</text>
+<text x="800" y="640" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">simple</text>
+<text x="800" y="662" fill="#9caec4" font-size="14" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">buffers</text>
+<line x1="720" y1="610" x2="740" y2="610" stroke="#ffb45c" stroke-width="4"/>
+<polygon points="740,610 724,601 724,619" fill="#ffb45c"/>
+<line x1="860" y1="610" x2="880" y2="610" stroke="#ffb45c" stroke-width="4"/>
+<polygon points="880,610 864,601 864,619" fill="#ffb45c"/>
+<text x="800" y="750" fill="#ffb45c" font-size="16" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">No GPU P2P: collectives are forced off the Level Zero device-IPC path.</text>
+<text x="800" y="782" fill="#9caec4" font-size="15" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">Required: per-worker affinity + SYS_PTRACE + oneCCL simple-threshold environment.</text>
+<rect x="220" y="820" width="1160" height="70" rx="18" fill="#0b1829"/>
+<text x="260" y="850" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Decode dispatch</text>
+<text x="260" y="878" fill="#f5f8fc" font-size="15" font-weight="400" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">W8A16 removes per-linear activation quantization; Xe2 small-M handles decode-sized matrix rows. Hybrid mode retains W8A8 for longer-prompt prefill.</text>
+<rect x="48" y="970" width="1504" height="170" rx="28" fill="#0f1d30"/>
+<text x="82" y="1012" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">EVIDENCE BOUNDARY</text>
+<text x="82" y="1052" fill="#f5f8fc" font-size="26" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Public recipe configuration and measured scope</text>
+<text x="82" y="1072" fill="#f5f8fc" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Qwen/Qwen3.8-27B-FP8 · vllm 0.27.2rc1.dev77+gac7509e2b</text>
+<text x="82" y="1100" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">FP8 W8A16 target path · native MTP8</text>
+<text x="82" y="1128" fill="#ffb45c" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Measured: C1 fixed-length random-token cells. Not claimed: Cn MTP, natural-content quality, or independent reproduction.</text>
+</svg>

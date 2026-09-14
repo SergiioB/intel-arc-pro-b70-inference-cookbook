@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">Qwen3.8-27B FP8 TP2 LocalMaxxing result on dual Intel Arc Pro B70</title>
+<desc id="desc">Social lead card for the approved self-reported LocalMaxxing submission. Qwen3.8-27B FP8 W8A16 with MTP8 on two Intel Arc Pro B70 GPUs measured 31.1 client post-first output tokens per second median at p74 g256, concurrency one, three measured samples, with 189.93 milliseconds median TTFT. Platform approval is acceptance of a self-reported submission, not independent reproduction.</desc>
+<rect width="1600" height="900" fill="#07111f"/>
+<text x="64" y="58" fill="#55d6be" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">QWEN3.8-27B FP8 · 2× INTEL ARC PRO B70 · TP2</text>
+<text x="64" y="116" fill="#f5f8fc" font-size="42" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">LocalMaxxing speed test</text>
+<text x="64" y="156" fill="#9caec4" font-size="19" font-weight="500" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">vLLM XPU · FP8 W8A16 · native MTP8</text>
+<rect x="1210" y="42" width="326" height="94" rx="20" fill="#0f1d30"/>
+<text x="1373" y="79" fill="#68a7ff" font-size="18" font-weight="700" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">APPROVED SELF-REPORT</text>
+<text x="1373" y="108" fill="#9caec4" font-size="13" font-weight="600" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif">independent reproduction pending</text>
+<rect x="64" y="214" width="1472" height="466" rx="34" fill="#0f1d30"/>
+<text x="110" y="270" fill="#68a7ff" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MEDIAN CLIENT POST-FIRST OUTPUT THROUGHPUT</text>
+<text x="110" y="456" fill="#68a7ff" font-size="146" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">31.1</text>
+<text x="510" y="448" fill="#f5f8fc" font-size="42" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">tok/s</text>
+<text x="112" y="508" fill="#9caec4" font-size="20" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">median across three measured requests</text>
+<line x1="820" y1="274" x2="820" y2="622" stroke="#263a53" stroke-width="2"/>
+<text x="884" y="304" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">WORKLOAD</text>
+<text x="884" y="358" fill="#f5f8fc" font-size="42" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">p74 / g256</text>
+<text x="884" y="398" fill="#9caec4" font-size="19" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">C1 · n=3 · one discarded warmup</text>
+<text x="884" y="470" fill="#55d6be" font-size="15" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">MEDIAN TTFT</text>
+<text x="884" y="530" fill="#f5f8fc" font-size="42" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">189.93 ms</text>
+<text x="884" y="574" fill="#9caec4" font-size="18" font-weight="500" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">client-measured time to first token</text>
+<text x="110" y="632" fill="#9caec4" font-size="16" font-weight="500" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">server-default temperature 1.0 · prefix cache disabled with zero query/hit counters</text>
+<rect x="64" y="724" width="1472" height="108" rx="24" fill="#0b1829" stroke="#263a53" stroke-width="1"/>
+<text x="100" y="766" fill="#f5f8fc" font-size="17" font-weight="700" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">LocalMaxxing APPROVED = accepted into its self-reported dataset</text>
+<text x="100" y="802" fill="#9caec4" font-size="15" font-weight="600" text-anchor="start" font-family="ui-sans-serif, system-ui, sans-serif">Serialized-idle C1 · 230 W configured cap per GPU · public JSON receipt · not an independent reproduction</text>
+<text x="1500" y="872" fill="#9caec4" font-size="13" font-weight="500" text-anchor="end" font-family="ui-sans-serif, system-ui, sans-serif">cmtg4erjj001xqr01jhqw81dt</text>
+</svg>

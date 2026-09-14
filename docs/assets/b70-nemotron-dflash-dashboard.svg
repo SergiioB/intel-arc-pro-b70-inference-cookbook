@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180" role="img" aria-labelledby="title desc">
+<title id="title">Intel Arc Pro B70 Nemotron-3.5-Lightning DFlash n=5 Lane 1</title>
+<desc id="desc">Isolated C1 n=5 on one Arc Pro B70. Representative decode 186.61 tok/s client post-first at p2048/g128. Cold input 7160 at p8192/g1 is prompt tokens over client TTFT, not isolated engine prefill.</desc>
+<rect width="1600" height="1180" fill="#07111f"/>
+<style>text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="56" fill="#55d6be" font-size="18" font-weight="800" text-anchor="start">NEMOTRON-3.5-LIGHTNING · DFLASH n=7 · C1 · 150 W CAP</text>
+<text x="58" y="104" fill="#f5f8fc" font-size="36" font-weight="750" text-anchor="start">Isolated n=5 Lane 1 — decode and cold input separated</text>
+<text x="58" y="140" fill="#9caec4" font-size="18" font-weight="500" text-anchor="start">vLLM 0.26.1rc1.dev668+g3ee2df303 XPU · GPTQ-INT4-G64-sym + local BF16 DFlash · cache off · 16K</text>
+<rect x="48" y="168" width="730" height="280" rx="28" fill="#0f1d30"/>
+<text x="82" y="210" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">REPRESENTATIVE DECODE</text>
+<text x="82" y="248" fill="#9caec4" font-size="22" font-weight="500" text-anchor="start">p2048 / g128</text>
+<text x="82" y="348" fill="#55d6be" font-size="88" font-weight="700" text-anchor="start">186.61</text>
+<text x="430" y="348" fill="#9caec4" font-size="32" font-weight="400" text-anchor="start">t/s</text>
+<text x="82" y="400" fill="#68a7ff" font-size="18" font-weight="500" text-anchor="start">median n=5 · range 174.60–201.83 · client post-first</text>
+<rect x="802" y="168" width="750" height="280" rx="28" fill="#0f1d30"/>
+<text x="836" y="210" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">MATCHED-EXCEPT-SPECULATION</text>
+<text x="836" y="248" fill="#9caec4" font-size="22" font-weight="500" text-anchor="start">p8192 / g128 only</text>
+<text x="836" y="348" fill="#ffb45c" font-size="88" font-weight="700" text-anchor="start">1.81×</text>
+<text x="836" y="400" fill="#68a7ff" font-size="18" font-weight="500" text-anchor="start">DFlash 157.92 vs no-spec 87.25 · same cell, n=5</text>
+<rect x="48" y="472" width="1504" height="250" rx="28" fill="#0f1d30"/>
+<text x="82" y="514" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">CLIENT POST-FIRST DECODE</text>
+<text x="82" y="550" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Do not headline p512 — family range 140–220</text>
+<text x="82" y="594" fill="#9caec4" font-size="20" font-weight="500" text-anchor="start">p512/g128</text>
+<rect x="242" y="572" width="620" height="34" rx="8" fill="#1f2937"/>
+<rect x="242" y="572" width="620.0" height="34" rx="8" fill="#ffb45c"/>
+<text x="882" y="598" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start">194.61  (140.20–220.01)</text>
+<text x="1532" y="598" fill="#ffb45c" font-size="17" font-weight="500" text-anchor="end">not the representative scalar</text>
+<text x="82" y="642" fill="#9caec4" font-size="20" font-weight="500" text-anchor="start">p2048/g128</text>
+<rect x="242" y="620" width="620" height="34" rx="8" fill="#1f2937"/>
+<rect x="242" y="620" width="597.811932507199" height="34" rx="8" fill="#55d6be"/>
+<text x="882" y="646" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start">186.61  (174.60–201.83)</text>
+<text x="1532" y="646" fill="#ffb45c" font-size="17" font-weight="500" text-anchor="end">representative · LMX tokSOut</text>
+<text x="82" y="690" fill="#9caec4" font-size="20" font-weight="500" text-anchor="start">p8192/g128</text>
+<rect x="242" y="668" width="620" height="34" rx="8" fill="#1f2937"/>
+<rect x="242" y="668" width="518.2056596626479" height="34" rx="8" fill="#68a7ff"/>
+<text x="882" y="694" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start">157.92  (143.50–170.25)</text>
+<text x="1532" y="694" fill="#ffb45c" font-size="17" font-weight="500" text-anchor="end">1.81× vs no-spec 87.25</text>
+<rect x="48" y="746" width="1504" height="250" rx="28" fill="#0f1d30"/>
+<text x="82" y="788" fill="#55d6be" font-size="16" font-weight="700" text-anchor="start">COLD INPUT = PROMPT TOKENS ÷ CLIENT TTFT</text>
+<text x="82" y="824" fill="#f5f8fc" font-size="24" font-weight="700" text-anchor="start">Not isolated engine prefill · not llama-bench pp · not the old 10.3k cell</text>
+<text x="82" y="872" fill="#9caec4" font-size="20" font-weight="500" text-anchor="start">p2048/g1</text>
+<rect x="242" y="850" width="620" height="34" rx="8" fill="#1f2937"/>
+<rect x="242" y="850" width="570.800522801723" height="34" rx="8" fill="#aeb9c7"/>
+<text x="882" y="876" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start">6,456  (6,263–7,353)</text>
+<text x="1532" y="876" fill="#ffb45c" font-size="17" font-weight="500" text-anchor="end"></text>
+<text x="82" y="924" fill="#9caec4" font-size="20" font-weight="500" text-anchor="start">p8192/g1</text>
+<rect x="242" y="902" width="620" height="34" rx="8" fill="#1f2937"/>
+<rect x="242" y="902" width="620.0" height="34" rx="8" fill="#68a7ff"/>
+<text x="882" y="928" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="start">7,160  (7,117–7,226)</text>
+<text x="1532" y="928" fill="#ffb45c" font-size="17" font-weight="500" text-anchor="end">Lane 1 input · LMX tokSPrefill</text>
+<text x="800" y="1048" fill="#9caec4" font-size="18" font-weight="500" text-anchor="middle">Window DFlash acceptance 1830/3521 = 52.0%   ·   cell-window draw ~149–160 W   ·   peak interval-avg 179.26 W   ·   pkg max 68.0 °C</text>
+<text x="800" y="1084" fill="#9caec4" font-size="16" font-weight="400" text-anchor="middle">LocalMaxxing APPROVED</text>
+<text x="800" y="1110" fill="#9caec4" font-size="16" font-weight="400" text-anchor="middle">10,349 was no-spec n=3 p8192/g128 TTFT · p512 194.6 is not the headline · campaign is 16K, not 128K</text>
+<text x="800" y="1136" fill="#64748b" font-size="15" font-weight="400" text-anchor="middle">Evidence: results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/  ·  HF: SergiioB GPTQ-INT4-G64-sym + DFlash-BF16</text>
+</svg>

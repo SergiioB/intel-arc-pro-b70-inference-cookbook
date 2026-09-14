@@ -1,0 +1,25 @@
+{
+  "hfId": "Qwen/Qwen3.6-35B-A3B",
+  "hardware": {
+    "hwClass": "DISCRETE_GPU",
+    "gpuName": "Intel Arc Pro B70",
+    "gpuCount": 1,
+    "vramGb": 32.0,
+    "os": "Linux"
+  },
+  "engineName": "vllm",
+  "engineVersion": "0.21.1.dev18+gec426505f XPU",
+  "quantization": "GPTQ-Int4",
+  "backend": "xpu",
+  "tokSOut": 132.9,
+  "tokSPrefill": 8718.0,
+  "contextLength": 16384,
+  "batchSize": 1,
+  "notes": "Single-stream. vLLM 0.21 XPU + 4 in-container patches (github.com/SergiioB/intel-arc-pro-b70-inference-cookbook): native int4 dtype (uint8->int8), BF16 MTP draft (strip quant_config for mtp prefix), XpuFusedMoe kwarg strip, GDN spec assert->warning. MTP speculative, 1 layer, num_spec=1. --max-num-batched-tokens 8192 to clear the MTP scheduled-tokens chunking cap. Model: llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-GPTQ-Int4. FLASH_ATTN PIECEWISE graphs. 150W. tokSOut=short/g32 best; tokSPrefill=p8k best (7545-token prompt). Byte-identical greedy replays verified; KL audit vs eager pending. Measured 2026-08-06 Run 20.",
+  "engineFlags": {
+    "commandSnippet": "vllm serve /model --quantization gptq --dtype float16 --max-model-len 16384 --gpu-memory-utilization 0.92 --max-num-seqs 1 --max-num-batched-tokens 8192 --language-model-only --speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\":1} --cudagraph-capture-sizes 1 2 4 8 16 32",
+    "kvCacheDtype": "auto",
+    "flashAttn": true,
+    "numParallel": 1
+  }
+}

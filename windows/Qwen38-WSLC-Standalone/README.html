@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Qwen3.8-27B on Microsoft WSLC</title>
+  <style>
+    body{font:16px/1.55 system-ui,Segoe UI,sans-serif;max-width:900px;margin:40px auto;padding:0 24px;color:#172033;background:#f7f9fc}main{background:white;padding:36px;border-radius:14px;box-shadow:0 4px 22px #18315318}h1,h2{color:#0d578c}code,pre{font-family:Consolas,monospace}pre{background:#102238;color:#eaf5ff;padding:16px;border-radius:8px;overflow:auto}a{color:#087bbf}.note{border-left:4px solid #1593d1;background:#edf8ff;padding:12px 16px}.warn{border-left-color:#d98200;background:#fff7e8}li{margin:.35em 0}
+  </style>
+</head>
+<body><main>
+  <h1>Qwen3.8-27B on Microsoft WSLC</h1>
+  <p>This guide installs the reproducible Intel Arc Pro B70 WSLC configuration.</p>
+  <h2>Requirements</h2>
+  <ul><li>Windows 11 with Microsoft WSLC installed</li><li>Intel Arc Pro B70 and a current Windows driver</li><li>At least 22 GiB free for the model, plus image space</li><li>An ordinary PowerShell window; administrator mode is normally unnecessary</li></ul>
+  <h2>Get a Hugging Face token</h2>
+  <p>The public model can download without authentication, but a token normally provides higher rate limits. Hugging Face calls it an <strong>access token</strong>.</p>
+  <ol><li>Sign in at <a href="https://huggingface.co/">huggingface.co</a>.</li><li>Open <a href="https://huggingface.co/settings/tokens">Settings → Access Tokens</a>.</li><li>Create a new <strong>Read</strong> token. Write access is unnecessary.</li><li>Copy the value beginning with <code>hf_</code>.</li></ol>
+  <p>Current PowerShell window only:</p><pre>$env:HF_TOKEN = "hf_your_read_token_here"</pre>
+  <p>Save permanently for your Windows user:</p><pre>[Environment]::SetEnvironmentVariable(
+    "HF_TOKEN",
+    "hf_your_read_token_here",
+    "User"
+)</pre>
+  <p>Open a new PowerShell window after saving permanently, or also set <code>$env:HF_TOKEN</code> in the current one. Verify without displaying the secret:</p><pre>if ($env:HF_TOKEN) { "HF_TOKEN is set" } else { "HF_TOKEN is not set" }</pre>
+  <p class="note warn"><strong>Security:</strong> Treat the token like a password. Never include it in screenshots, bug reports, Git commits or chat. Revoke it from Hugging Face if exposed.</p>
+  <h2>Complete installation</h2>
+  <p>Extract the complete ZIP, then open PowerShell in the extracted root folder:</p><pre>Set-ExecutionPolicy -Scope Process Bypass
+.\Setup-Qwen38-WSLC.ps1</pre>
+  <p>The installer builds the pinned image, verifies B70 compute, reuses or downloads the approximately 18.2 GiB model, and starts the server. Partial downloads are resumable.</p>
+  <p>For a manual model copy, place the complete repository contents directly in:</p><pre>.\models\Qwen3.8-27B-GPTQ-Int4</pre>
+  <h2>Main controls</h2><pre>.\Start-Qwen38.ps1 -MtpTokens 4 -MaxModelLength 100000 -GpuMemoryUtilization 0.75 -KvCacheMemoryGiB 4.25 -KvCacheDtype fp8
+.\Stop-Qwen38.ps1</pre>
+  <h2>Other controls</h2><pre>.\Test-CookbookDecode.ps1</pre>
+  <ul><li>Endpoint: <code>http://127.0.0.1:8000/v1</code></li><li>Model: <code>qwen38</code></li><li>Automatic tool choice enabled with the <code>qwen3_coder</code> parser; vision disabled</li><li>MTP4, 100K context, FP8 KV cache, explicit 4.25 GiB cache</li></ul>
+</main></body></html>

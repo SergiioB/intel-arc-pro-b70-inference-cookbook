@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180" role="img" aria-labelledby="title desc">
+    <title id="title">Intel Arc Pro B70 Nemotron-3.5-Lightning DFlash Dashboard</title>
+    <desc id="desc">Speed and Capacity statistics for Nemotron-3.5-Lightning on Intel Arc Pro B70. Block A details decode and input speeds; Block B details context capacity completion.</desc>
+
+    <defs>
+        <style>
+            .bg { fill: #07111f; }
+            .panel { fill: #0f1d30; stroke: #263a53; stroke-width: 2; }
+            .text-primary { fill: #f5f8fc; font-family: system-ui, -apple-system, sans-serif; }
+            .text-muted { fill: #9caec4; font-family: system-ui, -apple-system, sans-serif; }
+            .text-accent { fill: #55d6be; font-family: system-ui, -apple-system, sans-serif; }
+            .text-decode { fill: #68a7ff; font-family: system-ui, -apple-system, sans-serif; }
+            .text-caution { fill: #ffb45c; font-family: system-ui, -apple-system, sans-serif; }
+            .font-mono { font-family: ui-monospace, "SF Mono", monospace; font-variant-numeric: tabular-nums; }
+            .title { font-size: 36px; font-weight: 700; }
+            .subtitle { font-size: 20px; font-weight: 400; }
+            .panel-title { font-size: 28px; font-weight: 600; }
+            .metric-large { font-size: 72px; font-weight: 800; font-variant-numeric: tabular-nums; }
+            .metric-label { font-size: 22px; font-weight: 500; }
+            .metric-sub { font-size: 16px; font-weight: 400; }
+            .grid-line { stroke: #263a53; stroke-width: 1; stroke-dasharray: 4 4; }
+            .bar-fill { fill: #68a7ff; }
+            .table-text { font-size: 18px; }
+            .table-header { font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+            .caption { font-size: 14px; }
+        </style>
+    </defs>
+
+    <rect width="1600" height="1180" class="bg" />
+
+    <!-- HEADER -->
+    <text x="40" y="60" class="text-primary title">Intel Arc Pro B70 Inference: Nemotron-3.5-Lightning DFlash</text>
+    <text x="40" y="95" class="text-muted subtitle">vLLM 0.26.1rc1.dev668+g3ee2df303 XPU | 150W Configured Cap | C1 Client Post-First</text>
+
+    <!-- BLOCK A: SPEED CARD -->
+    <rect x="40" y="140" width="1520" height="430" rx="12" class="panel" />
+    <text x="70" y="190" class="text-primary panel-title">Block A: Speed Card (Run 36, max_model_len=16384)</text>
+    <text x="70" y="225" class="text-caution caption">n=5 means five measured C1 repeats after warmup, NOT concurrency. Concurrency is C1.</text>
+
+    <!-- Speed Box 1: Decode -->
+    <g transform="translate(70, 260)">
+        <text x="0" y="0" class="text-muted metric-label">Headline Decode Speed (p2048 / g128)</text>
+        <text x="0" y="80" class="text-decode metric-large">186.61</text>
+        <text x="245" y="80" class="text-muted metric-label">t/s</text>
+        <text x="0" y="115" class="text-primary metric-sub">Range: 174.60 – 201.83 (n=5 median, C1)</text>
+
+        <!-- Secondary Decode Metrics -->
+        <rect x="0" y="150" width="460" height="85" rx="6" fill="#07111f" stroke="#263a53" />
+        <text x="20" y="175" class="text-muted table-header">p512 / g128</text>
+        <text x="20" y="200" class="text-primary table-text font-mono">194.61 <tspan fill="#ffb45c" font-size="14px" font-family="system-ui, -apple-system, sans-serif">(DO NOT HEADLINE)</tspan></text>
+        <text x="20" y="220" class="text-muted caption font-mono">140.20 – 220.01</text>
+
+        <text x="320" y="175" class="text-muted table-header">p8192 / g128</text>
+        <text x="320" y="200" class="text-primary table-text font-mono">157.92</text>
+    </g>
+
+    <!-- Vertical Divider -->
+    <line x1="570" y1="260" x2="570" y2="530" class="grid-line" />
+
+    <!-- Speed Box 2: Input -->
+    <g transform="translate(610, 260)">
+        <text x="0" y="0" class="text-muted metric-label">Headline Input Speed (p8192 / g1)</text>
+        <text x="0" y="80" class="text-accent metric-large">7160.1</text>
+        <text x="250" y="80" class="text-muted metric-label">cold input t/s</text>
+        <text x="0" y="115" class="text-primary metric-sub">Prompt / TTFT at n=5 median</text>
+
+        <!-- Secondary Input Metrics -->
+        <rect x="0" y="150" width="380" height="70" rx="6" fill="#07111f" stroke="#263a53" />
+        <text x="20" y="175" class="text-muted table-header">p2048 / g1</text>
+        <text x="20" y="200" class="text-primary table-text font-mono">6455.6 <tspan fill="#9caec4" font-size="14px" font-family="system-ui, -apple-system, sans-serif">cold input t/s</tspan></text>
+    </g>
+
+    <!-- Vertical Divider -->
+    <line x1="1030" y1="260" x2="1030" y2="530" class="grid-line" />
+
+    <!-- Speed Box 3: Speculation -->
+    <g transform="translate(1070, 260)">
+        <text x="0" y="0" class="text-muted metric-label">Speculation &amp; Acceptance</text>
+        <rect x="0" y="30" width="410" height="190" rx="6" fill="#07111f" stroke="#263a53" />
+        <text x="30" y="75" class="text-muted metric-sub">Method</text>
+        <text x="30" y="105" class="text-primary metric-label">DFlash (n_spec=7)</text>
+
+        <text x="30" y="155" class="text-muted metric-sub">Window Acceptance</text>
+        <text x="30" y="195" class="text-accent metric-large" font-size="48">52.0%</text>
+    </g>
+
+
+    <!-- BLOCK B: CAPACITY LADDER -->
+    <rect x="40" y="600" width="1520" height="470" rx="12" class="panel" />
+    <text x="70" y="650" class="text-primary panel-title">Block B: Context Capacity Ladder (Run 38, max_model_len=120000)</text>
+    <text x="70" y="680" class="text-muted metric-sub">Single observation (n=1, C1). Speeds are <tspan fill="#ffb45c" font-weight="700">DIAGNOSTIC ONLY</tspan> — not for public decode cards.</text>
+
+    <!-- Memory Info box -->
+    <rect x="1100" y="625" width="440" height="90" rx="6" fill="#07111f" stroke="#263a53" />
+    <text x="1120" y="655" class="text-muted caption">Memory &amp; KV State</text>
+    <text x="1120" y="675" class="text-primary caption">After load: 5328 MiB free. 128K was NOT run.</text>
+    <text x="1120" y="695" class="text-primary caption">Logged KV: 295,000 tokens (4.43 GiB, same as 16K).</text>
+
+    <!-- Ladder Chart -->
+    <g transform="translate(100, 750)">
+
+        <!-- Y-Axis Lines -->
+        <line x1="0" y1="0" x2="1320" y2="0" class="grid-line" />
+        <text x="-10" y="5" class="text-muted caption font-mono" text-anchor="end">120 t/s</text>
+
+        <line x1="0" y1="75" x2="1320" y2="75" class="grid-line" />
+        <text x="-10" y="80" class="text-muted caption font-mono" text-anchor="end">80 t/s</text>
+
+        <line x1="0" y1="150" x2="1320" y2="150" class="grid-line" />
+        <text x="-10" y="155" class="text-muted caption font-mono" text-anchor="end">40 t/s</text>
+
+        <line x1="0" y1="225" x2="1320" y2="225" class="grid-line" stroke-dasharray="0" />
+        <text x="-10" y="230" class="text-muted caption font-mono" text-anchor="end">0 t/s</text>
+
+        <!-- Column 1: 32K -->
+        <g transform="translate(100, 0)">
+            <rect x="0" y="30.45" width="160" height="194.55" rx="4" class="bar-fill" opacity="0.8" />
+            <text x="80" y="260" class="text-primary metric-label" text-anchor="middle">32K + 32</text>
+            <text x="80" y="285" class="text-muted metric-sub font-mono" text-anchor="middle">Completed: 32,800</text>
+            <rect x="-10" y="5" width="180" height="32" fill="#07111f" rx="4" stroke="#263a53" />
+            <text x="80" y="28" class="text-decode table-text font-mono" font-weight="700" text-anchor="middle">103.76 t/s</text>
+            <text x="80" y="150" class="text-primary table-header" text-anchor="middle">g32</text>
+        </g>
+
+        <!-- Column 2: 64K -->
+        <g transform="translate(420, 0)">
+            <rect x="0" y="83.25" width="160" height="141.75" rx="4" class="bar-fill" opacity="0.8" />
+            <text x="80" y="260" class="text-primary metric-label" text-anchor="middle">64K + 32</text>
+            <text x="80" y="285" class="text-muted metric-sub font-mono" text-anchor="middle">Completed: 65,568</text>
+            <rect x="-10" y="57" width="180" height="32" fill="#07111f" rx="4" stroke="#263a53" />
+            <text x="80" y="80" class="text-decode table-text font-mono" font-weight="700" text-anchor="middle">75.60 t/s</text>
+            <text x="80" y="150" class="text-primary table-header" text-anchor="middle">g32</text>
+        </g>
+
+        <!-- Column 3: 96K -->
+        <g transform="translate(740, 0)">
+            <rect x="0" y="127.33" width="160" height="97.67" rx="4" class="bar-fill" opacity="0.8" />
+            <text x="80" y="260" class="text-primary metric-label" text-anchor="middle">96K + 32</text>
+            <text x="80" y="285" class="text-muted metric-sub font-mono" text-anchor="middle">Completed: 98,336</text>
+            <rect x="-10" y="101" width="180" height="32" fill="#07111f" rx="4" stroke="#263a53" />
+            <text x="80" y="124" class="text-decode table-text font-mono" font-weight="700" text-anchor="middle">52.09 t/s</text>
+            <text x="80" y="180" class="text-primary table-header" text-anchor="middle">g32</text>
+        </g>
+
+        <!-- Column 4: 119.8K -->
+        <g transform="translate(1060, 0)">
+            <rect x="0" y="155.43" width="160" height="69.57" rx="4" class="bar-fill" opacity="0.8" />
+            <text x="80" y="260" class="text-primary metric-label" text-anchor="middle">119872 + 32</text>
+            <text x="80" y="285" class="text-muted metric-sub font-mono" text-anchor="middle">Completed: 119,904</text>
+            <rect x="-10" y="129" width="180" height="32" fill="#07111f" rx="4" stroke="#263a53" />
+            <text x="80" y="152" class="text-decode table-text font-mono" font-weight="700" text-anchor="middle">37.10 t/s</text>
+            <text x="80" y="200" class="text-primary table-header" text-anchor="middle">g32</text>
+        </g>
+    </g>
+
+    <!-- FOOTER -->
+    <rect x="40" y="1100" width="1520" height="50" rx="8" fill="#0f1d30" stroke="#263a53" />
+    <text x="800" y="1130" class="text-muted caption" text-anchor="middle">Cache off. 150 W configured cap. Local conversions. Cold input ≠ isolated prefill. 128K not claimed.</text>
+
+</svg>

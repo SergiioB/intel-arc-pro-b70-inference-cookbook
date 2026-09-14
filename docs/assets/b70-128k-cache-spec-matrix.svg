@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+<title id="title">Intel Arc Pro B70 exact 128K cache and speculative decoding matrix</title>
+<desc id="desc">Eight matched rows compare no speculative decoding, MTP1, MTP2, and MTP4 with prefix caching on and off for cold exact 128K and resident 120K Pi sessions.</desc>
+<style>
+text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}
+.title{font-size:52px;font-weight:760;fill:#f8fafc;letter-spacing:-1.4px}
+.subtitle{font-size:23px;font-weight:450;fill:#a9b7c9}
+.kicker{font-size:17px;font-weight:700;fill:#4fd1c5;letter-spacing:2px}
+.head{font-size:17px;font-weight:700;fill:#a9b7c9;letter-spacing:.3px}
+.body{font-size:23px;font-weight:560;fill:#f8fafc}
+.muted{font-size:19px;font-weight:500;fill:#a9b7c9}
+.best{font-size:23px;font-weight:760;fill:#86efac}
+.pill{font-size:16px;font-weight:760;fill:#08111f;letter-spacing:.7px}
+.foot{font-size:17px;font-weight:480;fill:#a9b7c9}
+</style>
+<rect width="1600" height="1000" fill="#08111f"/>
+<rect x="42" y="42" width="1516" height="916" rx="26" fill="#101c2d"/>
+<text x="78" y="96" class="kicker" text-anchor="start">REAL-WORLD PI · MATCHED C1 MATRIX</text>
+<text x="78" y="158" class="title" text-anchor="start">What cache + MTP change at exact 128K</text>
+<text x="78" y="202" class="subtitle" text-anchor="start">Same image, model, prompts, p130944/g128, scheduler budget 8192 · median of 5 measured requests</text>
+<rect x="68" y="232" width="1464" height="58" rx="12" fill="#16243a"/>
+<text x="88" y="268" class="head" text-anchor="start">Mode</text>
+<text x="245" y="268" class="head" text-anchor="start">Cache</text>
+<text x="415" y="258" class="head" text-anchor="middle">Cold TTFC</text>
+<text x="415" y="280" class="muted" text-anchor="middle">lower is better</text>
+<text x="650" y="258" class="head" text-anchor="middle">Cold output</text>
+<text x="650" y="280" class="muted" text-anchor="middle">tok/s after first</text>
+<text x="885" y="258" class="head" text-anchor="middle">Resident TTFC</text>
+<text x="885" y="280" class="muted" text-anchor="middle">lower is better</text>
+<text x="1125" y="258" class="head" text-anchor="middle">Resident E2E</text>
+<text x="1125" y="280" class="muted" text-anchor="middle">lower is better</text>
+<text x="1390" y="258" class="head" text-anchor="middle">Resident reuse</text>
+<text x="1390" y="280" class="muted" text-anchor="middle">tokens</text>
+<rect x="68" y="302" width="1464" height="58" rx="10" fill="#0d2530"/>
+<text x="88" y="339" class="body" text-anchor="start">No spec</text>
+<rect x="238" y="316" width="70" height="32" rx="16" fill="#4fd1c5"/>
+<text x="273" y="338" class="pill" text-anchor="middle">ON</text>
+<text x="415" y="340" class="best" text-anchor="middle">41.589 s</text>
+<text x="650" y="340" class="body" text-anchor="middle">57.57</text>
+<text x="885" y="340" class="best" text-anchor="middle">0.554 s</text>
+<text x="1125" y="340" class="body" text-anchor="middle">2.671 s</text>
+<text x="1390" y="340" class="body" text-anchor="middle">119,680</text>
+<rect x="68" y="370" width="1464" height="58" rx="10" fill="#111b2a"/>
+<text x="88" y="407" class="body" text-anchor="start">No spec</text>
+<rect x="238" y="384" width="70" height="32" rx="16" fill="#94a3b8"/>
+<text x="273" y="406" class="pill" text-anchor="middle">OFF</text>
+<text x="415" y="408" class="body" text-anchor="middle">42.192 s</text>
+<text x="650" y="408" class="body" text-anchor="middle">57.19</text>
+<text x="885" y="408" class="body" text-anchor="middle">36.770 s</text>
+<text x="1125" y="408" class="body" text-anchor="middle">38.921 s</text>
+<text x="1390" y="408" class="body" text-anchor="middle">0</text>
+<rect x="68" y="438" width="1464" height="58" rx="10" fill="#0d2530"/>
+<text x="88" y="475" class="body" text-anchor="start">MTP1</text>
+<rect x="238" y="452" width="70" height="32" rx="16" fill="#4fd1c5"/>
+<text x="273" y="474" class="pill" text-anchor="middle">ON</text>
+<text x="415" y="476" class="body" text-anchor="middle">48.865 s</text>
+<text x="650" y="476" class="body" text-anchor="middle">85.10</text>
+<text x="885" y="476" class="body" text-anchor="middle">1.222 s</text>
+<text x="1125" y="476" class="body" text-anchor="middle">2.666 s</text>
+<text x="1390" y="476" class="body" text-anchor="middle">118,592</text>
+<rect x="68" y="506" width="1464" height="58" rx="10" fill="#111b2a"/>
+<text x="88" y="543" class="body" text-anchor="start">MTP1</text>
+<rect x="238" y="520" width="70" height="32" rx="16" fill="#94a3b8"/>
+<text x="273" y="542" class="pill" text-anchor="middle">OFF</text>
+<text x="415" y="544" class="body" text-anchor="middle">45.262 s</text>
+<text x="650" y="544" class="body" text-anchor="middle">86.21</text>
+<text x="885" y="544" class="body" text-anchor="middle">39.342 s</text>
+<text x="1125" y="544" class="body" text-anchor="middle">40.808 s</text>
+<text x="1390" y="544" class="body" text-anchor="middle">0</text>
+<rect x="68" y="574" width="1464" height="58" rx="10" fill="#0d2530"/>
+<text x="88" y="611" class="body" text-anchor="start">MTP2</text>
+<rect x="238" y="588" width="70" height="32" rx="16" fill="#4fd1c5"/>
+<text x="273" y="610" class="pill" text-anchor="middle">ON</text>
+<text x="415" y="612" class="body" text-anchor="middle">48.564 s</text>
+<text x="650" y="612" class="body" text-anchor="middle">98.81</text>
+<text x="885" y="612" class="body" text-anchor="middle">1.251 s</text>
+<text x="1125" y="612" class="best" text-anchor="middle">2.504 s</text>
+<text x="1390" y="612" class="body" text-anchor="middle">118,592</text>
+<rect x="68" y="642" width="1464" height="58" rx="10" fill="#111b2a"/>
+<text x="88" y="679" class="body" text-anchor="start">MTP2</text>
+<rect x="238" y="656" width="70" height="32" rx="16" fill="#94a3b8"/>
+<text x="273" y="678" class="pill" text-anchor="middle">OFF</text>
+<text x="415" y="680" class="body" text-anchor="middle">45.347 s</text>
+<text x="650" y="680" class="body" text-anchor="middle">101.68</text>
+<text x="885" y="680" class="body" text-anchor="middle">39.408 s</text>
+<text x="1125" y="680" class="body" text-anchor="middle">40.634 s</text>
+<text x="1390" y="680" class="body" text-anchor="middle">0</text>
+<rect x="68" y="710" width="1464" height="58" rx="10" fill="#0d2530"/>
+<text x="88" y="747" class="body" text-anchor="start">MTP4</text>
+<rect x="238" y="724" width="70" height="32" rx="16" fill="#4fd1c5"/>
+<text x="273" y="746" class="pill" text-anchor="middle">ON</text>
+<text x="415" y="748" class="body" text-anchor="middle">48.761 s</text>
+<text x="650" y="748" class="best" text-anchor="middle">102.30</text>
+<text x="885" y="748" class="body" text-anchor="middle">1.256 s</text>
+<text x="1125" y="748" class="body" text-anchor="middle">2.517 s</text>
+<text x="1390" y="748" class="body" text-anchor="middle">118,592</text>
+<rect x="68" y="778" width="1464" height="58" rx="10" fill="#111b2a"/>
+<text x="88" y="815" class="body" text-anchor="start">MTP4</text>
+<rect x="238" y="792" width="70" height="32" rx="16" fill="#94a3b8"/>
+<text x="273" y="814" class="pill" text-anchor="middle">OFF</text>
+<text x="415" y="816" class="body" text-anchor="middle">45.473 s</text>
+<text x="650" y="816" class="body" text-anchor="middle">93.60</text>
+<text x="885" y="816" class="body" text-anchor="middle">39.508 s</text>
+<text x="1125" y="816" class="body" text-anchor="middle">40.657 s</text>
+<text x="1390" y="816" class="body" text-anchor="middle">0</text>
+<line x1="78" y1="862" x2="1522" y2="862" stroke="#26364a" stroke-width="2"/>
+<text x="78" y="902" class="foot" text-anchor="start">Resident session: exact 120,000-token preparation + five changed ~120,148-token follow-ups.</text>
+<text x="78" y="932" class="foot" text-anchor="start">Cache-on reused 118,592–119,680 tokens; cache-off used the explicit negative flag and reused 0.</text>
+<text x="1522" y="902" class="foot" text-anchor="end">Intel Arc Pro B70 32 GB · vLLM XPU</text>
+<text x="1522" y="932" class="foot" text-anchor="end">C1 · n=5</text>
+</svg>

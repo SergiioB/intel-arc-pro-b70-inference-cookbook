@@ -1,0 +1,62 @@
+{
+ "run": "qwen38-flash-next-mtp-kernel-v1",
+ "date_utc": "2026-09-11",
+ "claim_state": "provisional, self-measured engine-native C1 timings, not independently reproduced",
+ "hardware": {
+  "gpu": "2x Intel Arc Pro B70 (32656 MiB each)",
+  "split": "layer 1:1, no P2P",
+  "power_cap_w": 195,
+  "cpu_threads": "6 decode / 14 batch",
+  "host_ram_gib": 60
+ },
+ "engine": {
+  "name": "llama.cpp",
+  "version": "SYCL 0.3.0-dev upstream main 52d4268",
+  "build": "IntelLLVM 2026.0.0, GGML_SYCL_F16 OFF (decode) / ON (prefill)"
+ },
+ "patches": [
+  "qwen4exp MTP draft-head support (dzannotti patch adapted: 4/5 hunks + manual MTP-block tensor walk, graph_mtp, DECODER_MTP routing, t_h_nextn handover)",
+  "drift fix: null-guard mctx_hyb for dense draft attention + compress-ratios bounds",
+  "drift fix: full-width t_h_nextn capture (embeddings_nextn_masked gate, qwen3next pattern)",
+  "local fused multi-token MoE kernel: mul_mat_vec_q_moe_mt + ggml_sycl_mul_mat_vec_q_id_mt for M=2..8 (gate-up token rows + grouped down slot-linear rows), wrapper accepts 3D src1 [n_embd,1,T] and [n_embd,k,T], GGML_SYCL_MT_OFF kill-switch",
+  "FIX 2026-09-11: multi-token kernel ids indexing was transposed (read j*k+t instead of t*k+j) \u2014 wrong experts in verify batches caused empty post-reasoning answers; fixed and re-validated (37*19=703, 4/4 chat content, 84% acceptance, decode 31.7 median / 39.7 peak warm-cache)"
+ ],
+ "model": {
+  "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+  "quantization": "AD-4.27bpw Q4_K_M M64 (88.03 GiB, mixed iq2_s/q4_K/iq3_s gate-up, iq4_nl/q8_0 down)",
+  "draft": "dzannotti/Qwen3.8-Flash-Next-MTP-GGUF Q4_K_M (sha256 1f2a6991237d5412c9582b654e89e3aaa5a0fd33206d2b6d1813b15c475f4c02)",
+  "ple_table": "51B n-gram table Q5_1 35.76 GiB mmap host, page-cache pre-warmed"
+ },
+ "flags": {
+  "decode": "-md <draft> -ngld 999 --spec-type draft-mtp --spec-draft-n-max 3 --spec-draft-p-min 0.75 --spec-draft-backend-sampling --spec-draft-device SYCL1 --device SYCL0,SYCL1 --tensor-split 1,1 --split-mode layer -ngl 99 -ot per_layer_token_embd=CPU -fa on -t 6 -tb 14 -np 1 -c 8192 -b 512 --ubatch-size 512 --cache-type-k q8_0 --cache-type-v q4_1 --no-warmup --no-cache-prompt; env LLAMA_ATTN_ROT_DISABLE=1, SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=0",
+  "prefill": "same common flags without spec, F16 binary, -c 16384 -b 3072 --ubatch-size 3072"
+ },
+ "sampling": {
+  "temperature": 1.0,
+  "top_p": 0.95,
+  "top_k": 20,
+  "ignore_eos": true
+ },
+ "results": {
+  "decode_p512_g128_c1_code_n5_median_tps": 33.25,
+  "decode_p512_g128_c1_code_n5_range": [
+   29.31,
+   38.06
+  ],
+  "decode_p512_g128_c1_prose_n5_median_tps": 30.68,
+  "decode_p512_g128_c1_prose_n5_range": [
+   26.11,
+   33.4
+  ],
+  "decode_p512_g128_c1_warm_n3_median_tps": 37.37,
+  "decode_p512_g128_c1_warm_n3_peak_tps": 43.76,
+  "decode_p9096_g128_c1_prose_n5_median_tps": 30.85,
+  "prefill_p9096_g128_c1_f16_nospec_n3_median_cold_input_tps": 585.9,
+  "decode_c131072_p120768_g128_c1_n5_median_tps": 18.38,
+  "prefill_c131072_p120768_c1_n5_median_cold_input_tps": 222.9,
+  "baseline_20260901_build_p512_g128_n5_median_tps": 23.38,
+  "mtp_acceptance_natural_text": "87.7% (13156/14996, 7158 rounds)",
+  "quality_battery": "42/42 code tests, divergence inside spec-OFF envelope"
+ },
+ "notes": "Matched natural-prompt cells (prose/code), exact per-sample token counts, unique leading entropy, zero cache reuse, one discarded same-shape warmup per cell. 128K cell: GPU1 transient free 391 MiB (capacity-observation tier); staged 60-64C gates used (GPU1 loaded-idle 66-67C). Engine-native timing metric, not client-side. Decode medians were measured with the pre-fix kernel: identical memory-traffic cost, but some verify forwards used wrong experts \u2014 quality-sensitive readers should prefer the fixed build; speeds unchanged within noise."
+}

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 980" width="1600" height="980" role="img">
+  <rect width="1600" height="980" fill="#07111f"/>
+  <text x="60" y="64" fill="#68a7ff" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">HINT A/B · BEST FLAGS</text>
+  <text x="60" y="118" fill="#f5f8fc" font-size="36" font-weight="800" font-family="Segoe UI, Inter, sans-serif">What actually changed tok/s</text>
+
+  <rect x="60" y="170" width="720" height="360" rx="24" fill="#0f0f1d" fill-opacity="0.45" stroke="#252d3a"/>
+  <text x="90" y="220" fill="#f5f8fc" font-size="24" font-weight="600" font-family="Segoe UI, Inter, sans-serif">OpenVINO P512/G128 n=3 · 230 W</text>
+  <text x="90" y="280" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">LATENCY f16 dq0</text>
+  <text x="480" y="280" fill="#55d6be" font-size="28" font-weight="700" font-family="Segoe UI, Inter, sans-serif">15.67</text>
+  <text x="90" y="330" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">LATENCY f16 dq128</text>
+  <text x="480" y="330" fill="#55d6be" font-size="28" font-weight="700" font-family="Segoe UI, Inter, sans-serif">15.74</text>
+  <text x="90" y="380" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">THROUGHPUT f16 dq0</text>
+  <text x="480" y="380" fill="#f5f8fc" font-size="28" font-weight="700" font-family="Segoe UI, Inter, sans-serif">15.59</text>
+  <text x="90" y="450" fill="#ffb45c" font-size="18" font-family="Segoe UI, Inter, sans-serif">Keep LATENCY + f16. dq 0 vs 128 is noise. C1 THROUGHPUT does not help.</text>
+
+  <rect x="820" y="170" width="720" height="360" rx="24" fill="#0f0f1d" fill-opacity="0.45" stroke="#252d3a"/>
+  <text x="850" y="220" fill="#f5f8fc" font-size="24" font-weight="600" font-family="Segoe UI, Inter, sans-serif">Cascadia P512/G128 · 230 W</text>
+  <text x="850" y="280" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">empty PluginConfig</text>
+  <text x="1240" y="280" fill="#f5f8fc" font-size="28" font-weight="700" font-family="Segoe UI, Inter, sans-serif">4.95</text>
+  <text x="850" y="330" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">LATENCY + f16</text>
+  <text x="1240" y="330" fill="#f5f8fc" font-size="28" font-weight="700" font-family="Segoe UI, Inter, sans-serif">4.95</text>
+  <text x="850" y="380" fill="#9caec4" font-size="20" font-family="Segoe UI, Inter, sans-serif">THROUGHPUT + f16</text>
+  <text x="1240" y="380" fill="#f5f8fc" font-size="28" font-weight="700" font-family="Segoe UI, Inter, sans-serif">4.92</text>
+  <text x="850" y="450" fill="#ffb45c" font-size="18" font-family="Segoe UI, Inter, sans-serif">Flags now apply. They do not move tok/s. Ceiling is the host loop.</text>
+
+  <rect x="60" y="560" width="1480" height="340" rx="24" fill="#0f0f1d" fill-opacity="0.45" stroke="#252d3a"/>
+  <text x="90" y="610" fill="#f5f8fc" font-size="24" font-weight="600" font-family="Segoe UI, Inter, sans-serif">Failed paths (do not retry as flags)</text>
+  <text x="90" y="660" fill="#aeb9c7" font-size="20" font-family="Segoe UI, Inter, sans-serif">Hub INT4 ignored_scope null — GPU and CPU same garbage. Issue openvino.genai#4467.</text>
+  <text x="90" y="700" fill="#aeb9c7" font-size="20" font-family="Segoe UI, Inter, sans-serif">nncf INT8→INT4 with GDN ignore — 0 INT4 layers (already quantized).</text>
+  <text x="90" y="740" fill="#aeb9c7" font-size="20" font-family="Segoe UI, Inter, sans-serif">Cascadia ov-genai 2026.2 and 2026.3.1 — SIGSEGV Tokenizer::setup_tokenizer.</text>
+  <text x="90" y="780" fill="#aeb9c7" font-size="20" font-family="Segoe UI, Inter, sans-serif">Paged GDN / --cb — does not fit leftover VRAM after ~21 GB weights.</text>
+  <text x="90" y="840" fill="#ffb45c" font-size="20" font-family="Segoe UI, Inter, sans-serif">Next real speed work: on-device argmax or ov-genai on OpenVINO 2026.5. Not more --ov-* strings.</text>
+</svg>

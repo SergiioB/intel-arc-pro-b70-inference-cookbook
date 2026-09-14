@@ -1,0 +1,105 @@
+name: "Bug / Hang / Corrupt output"
+description: "Reproducible bug on B70 — driver hang, corrupt output, perf regression"
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Run a pinned image by **sha256 digest**. Without digest + full launch line the issue stays `needs-info`. Hangs also need kernel log (seqno + guc_id or dmesg).
+
+  - type: dropdown
+    id: b70_count
+    attributes:
+      label: "B70 count"
+      options: ["1× B70", "2× B70", "4× B70", "7× B70", "other"]
+      default: 1
+    validations: { required: true }
+
+  - type: dropdown
+    id: tp_pp
+    attributes:
+      label: "Parallelism"
+      options: ["TP1", "TP2", "TP4", "PP2", "TP1+PP2", "other"]
+      default: 1
+    validations: { required: true }
+
+  - type: input
+    id: image
+    attributes:
+      label: "Image digest (pinned sha)"
+      description: "e.g. vllm/vllm-openai-xpu@sha256:f01e24f6... or 2c427ef..."
+      placeholder: "vllm/vllm-openai-xpu@sha256:f01e24f6..."
+    validations: { required: true }
+
+  - type: input
+    id: model
+    attributes:
+      label: "Model (HF id)"
+      placeholder: "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16"
+    validations: { required: true }
+
+  - type: textarea
+    id: cmd
+    attributes:
+      label: "Exact docker / launch command"
+      description: "Full command. Include image digest, patches mounted, prefix-cache flag, TP only if not 1."
+      placeholder: "docker run --device /dev/dri ... vllm/vllm-openai-xpu@sha256:f01e24f6... --quantization gptq ..."
+      render: shell
+    validations: { required: true }
+
+  - type: textarea
+    id: patches
+    attributes:
+      label: "Patches applied"
+      description: "List from patches/ + IMAGE-AND-PATCH-MATRIX.md, or 'none'. Include verified byte-identical check."
+      placeholder: "patch_draft_lmhead_int4.py + patch_draft_mtp_int4.py (verified byte-identical to master)"
+    validations: { required: false }
+
+  - type: input
+    id: host
+    attributes:
+      label: "Host caps (power cap, PCIe, CCL env)"
+      description: "e.g. 110W cap, PCIe gen3 x4, CCL_SYCL_* thresholds 4 GiB, ZE_AFFINITY_MASK=0,1"
+      placeholder: "2× B70 110W, PCIe gen3 x4, CCL thresholds 4 GiB, ipc=host"
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected vs actual"
+      description: "What you expected (from docs/ page + section) vs what you got."
+      placeholder: "Expected: DUAL-B70-TP2.md L208 — optional speed. Actual: 129 newlines, finish stop 328 tokens"
+    validations: { required: true }
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: "Repro steps (exact, 3× @ temp 0.0 if correctness)"
+      description: "For correctness: 3 prompts × 3 reps temp 0.0, tok/finish/content. For hang: how long until xe coredump."
+      render: markdown
+    validations: { required: true }
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Logs / dmesg / coredump"
+      description: "For hangs MUST include dmesg: xe ... coredump, guc_id, seqno. For corrupt output include raw JSON responses."
+      render: shell
+    validations: { required: false }
+
+  - type: input
+    id: acceptance
+    attributes:
+      label: "Speculation counters (if MTP/draft)"
+      description: "acceptance rate, mean accepted length if available"
+      placeholder: "control 0.5859/2.34, patched 0.4865/1.94"
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Checks"
+      options:
+        - label: "I verified patches are byte-identical to cookbook master at the image's commit"
+          required: false
+        - label: "I ran the control (without optional patches) and it passes"
+          required: false

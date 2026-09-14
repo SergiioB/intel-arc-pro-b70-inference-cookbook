@@ -1,0 +1,37 @@
+{
+  "platform": "LocalMaxxing",
+  "trust_label": "approved self-reported submission",
+  "qualification": "APPROVED means accepted into LocalMaxxing's self-reported dataset, not independently reproduced or verified.",
+  "model": "Qwen/Qwen3.8-Flash-Next",
+  "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "reported_total_vram_gib": 64
+  },
+  "submissions": [
+    {
+      "label": "fused-FP32 C1 8K p512/g128",
+      "payload": "submissions/llamacpp-qwen38-flash-next-fused-fp32-c8.json",
+      "status": "APPROVED",
+      "submitted_at": "2026-09-01T09:24:46.521Z",
+      "benchmark_run_id": "cmtigo30804dyp401alu7nger",
+      "engine_id": "cmtigo30104dvp401z6xq2odx",
+      "tokSOut": 23.38,
+      "tokSPrefill": 183.98,
+      "contextLength": 8192,
+      "quantization_field": "IQ3_S"
+    },
+    {
+      "label": "fused-F16 C1 16K actual-p9096/g128",
+      "payload": "submissions/llamacpp-qwen38-flash-next-fused-f16-c16.json",
+      "status": "APPROVED",
+      "submitted_at": "2026-09-01T09:24:46.859Z",
+      "benchmark_run_id": "cmtigo39n04e2p401eumx5joo",
+      "engine_id": "cmtigo39j04e0p401s330vh0z",
+      "tokSOut": 20.34,
+      "tokSPrefill": 594.49,
+      "contextLength": 16384,
+      "quantization_field": "IQ3_S"
+    }
+  ]
+}

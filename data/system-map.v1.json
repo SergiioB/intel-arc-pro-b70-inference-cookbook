@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "system": "intel-arc-pro-b70-inference-cookbook",
+  "purpose": "Public, reproducible Intel Arc Pro B60/B70 inference recipes and evidence.",
+  "default_intent": "read",
+  "intents": {
+    "read": {
+      "start": "README.md",
+      "then": ["docs/AGENT-SYSTEM.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md"]
+    },
+    "setup": {
+      "start": "docs/FULL-SETUP-COMMANDS.md",
+      "then": ["docs/IMAGE-AND-PATCH-MATRIX.md"]
+    },
+    "reproduce": {
+      "start": "docs/IMAGE-AND-PATCH-MATRIX.md",
+      "then": ["docs/<family>/README.md", "docs/<family>/<recipe>.md"]
+    },
+    "connect": {
+      "start": "docs/CONNECTING-CLIENTS.md",
+      "then": ["docs/<family>/<recipe>.md"]
+    },
+    "operate": {
+      "start": "docs/RELIABILITY-REPORT.md",
+      "then": ["watchdog/README.md", "docs/POWER-SWEET-SPOTS.md", "docs/DUAL-B70-TP2.md"]
+    },
+    "submit": {
+      "start": "docs/localmaxxing-submission-schema.md",
+      "then": ["docs/BENCHMARK-FORMAT.md", "data/benchmarks.v1.json"]
+    },
+    "publish": {
+      "start": "docs/ADDING-A-RECIPE.md",
+      "then": ["docs/BENCHMARK-FORMAT.md", "data/benchmarks.v1.json"]
+    },
+    "triage": {
+      "start": "docs/MAINTAINER-PRECHECKS.md",
+      "then": ["docs/RELIABILITY-REPORT.md"]
+    }
+  },
+  "authorities": {
+    "navigation": "data/system-map.v1.json",
+    "public_numeric_catalog": "data/benchmarks.v1.json",
+    "generated_numeric_view": "docs/BENCHMARK-CATALOG.md",
+    "benchmark_contract": "docs/BENCHMARK-FORMAT.md",
+    "image_patch_compatibility": "docs/IMAGE-AND-PATCH-MATRIX.md",
+    "full_setup": "docs/FULL-SETUP-COMMANDS.md",
+    "client_connections": "docs/CONNECTING-CLIENTS.md",
+    "power_policy": "docs/POWER-SWEET-SPOTS.md",
+    "submission_schema": "docs/localmaxxing-submission-schema.md",
+    "watchdog_operations": "watchdog/README.md",
+    "reliability_ownership": "docs/RELIABILITY-REPORT.md",
+    "contribution_workflow": "docs/ADDING-A-RECIPE.md",
+    "reporter_prechecks": "docs/MAINTAINER-PRECHECKS.md",
+    "architecture_reference": "docs/architecture/architecture.md",
+    "feature_flags_registry": "docs/FEATURE-FLAGS.md"
+  },
+  "layers": [
+    {"id": "L0", "name": "control", "contains": ["AGENTS.md", "data/system-map.v1.json"]},
+    {"id": "L1", "name": "contracts", "contains": ["docs/BENCHMARK-FORMAT.md", "docs/IMAGE-AND-PATCH-MATRIX.md", "docs/RELIABILITY-REPORT.md"]},
+    {"id": "L2", "name": "family recipes", "contains": ["docs/<family>/", "benchmarks/<family>/"]},
+    {"id": "L3", "name": "evidence", "contains": ["results/", "data/benchmarks.v1.json"]},
+    {"id": "L4", "name": "views", "contains": ["README.md", "docs/BENCHMARK-CATALOG.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md", "docs/assets/"]}
+  ],
+  "invariants": [
+    "Generated views are never edited as authorities.",
+    "Every numeric public claim resolves to a benchmark record and commit-pinned evidence.",
+    "Every recipe selects one compatible image and ordered patch stack before launch.",
+    "A changed image, model, tokenizer, patch, runtime, workload, or timing definition creates a new result generation.",
+    "Private host paths, addresses, credentials, and unpublished image names never enter public artifacts.",
+    "Historical evidence remains immutable and labeled; supersession uses links, not rewriting."
+  ],
+  "validation": [
+    "python3 scripts/check-repo.py"
+  ]
+}

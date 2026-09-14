@@ -1,0 +1,13 @@
+# PIN AUTHORITY for dev tooling.
+# This repository is stdlib-only Python at runtime (AGENTS.md hard invariant):
+# nothing in this file ships to users, affects runtime behavior, or may be
+# imported by scripts/ or tests/. These pins exist solely for lint, types,
+# tests, and hooks. CI installs exactly this file (see .github/workflows/ci.yml).
+ruff==0.16.6
+mypy==2.3.1
+pytest==9.1.1
+pytest-cov==7.1.0
+pytest-xdist==3.8.0
+coverage==7.16.0
+vulture==2.16
+pre-commit==4.6.2

@@ -1,0 +1,293 @@
+diff --git a/ggml/src/ggml-sycl/ggml-sycl.cpp b/ggml/src/ggml-sycl/ggml-sycl.cpp
+index 2b2d26c..999033c 100644
+--- a/ggml/src/ggml-sycl/ggml-sycl.cpp
++++ b/ggml/src/ggml-sycl/ggml-sycl.cpp
+@@ -105,6 +105,8 @@ int g_ggml_sycl_enable_flash_attention = 1;
+ int g_ggml_sycl_dev2dev_memcpy = DEV2DEV_MEMCPY_SYCL;
+ int g_ggml_sycl_usm_system = 0;
+ int g_ggml_sycl_enable_host_pinned_mem = 1;
++int g_ggml_sycl_disable_mmvq_fused_id = 0;
++int g_ggml_sycl_disable_mmid_gpu_group = 0;
+ 
+ static ggml_sycl_device_info ggml_sycl_init() {
+     ggml_sycl_device_info info = {};
+@@ -315,6 +317,8 @@ static void ggml_check_sycl() try {
+         g_ggml_sycl_enable_fusion = ggml_sycl_get_env("GGML_SYCL_ENABLE_FUSION", 1);
+         g_ggml_sycl_enable_esimd = ggml_sycl_get_env("GGML_SYCL_ENABLE_ESIMD", 1);
+         g_ggml_sycl_prioritize_dmmv = ggml_sycl_get_env("GGML_SYCL_PRIORITIZE_DMMV", 0);
++        g_ggml_sycl_disable_mmvq_fused_id = ggml_sycl_get_env("GGML_SYCL_DISABLE_MMVQ_FUSED_ID", 0);
++        g_ggml_sycl_disable_mmid_gpu_group = ggml_sycl_get_env("GGML_SYCL_DISABLE_MMID_GPU_GROUP", 0);
+ 
+         g_ggml_sycl_dev2dev_memcpy = ggml_sycl_get_env("GGML_SYCL_DEV2DEV_MEMCPY", DEV2DEV_MEMCPY_SYCL);
+         if (g_ggml_sycl_use_level_zero_api == 0) {
+@@ -417,6 +421,8 @@ static void ggml_check_sycl() try {
+ #endif
+ 
+         GGML_LOG_INFO("  GGML_SYCL_PRIORITIZE_DMMV: %d\n", g_ggml_sycl_prioritize_dmmv);
++        GGML_LOG_INFO("  GGML_SYCL_DISABLE_MMVQ_FUSED_ID: %d\n", g_ggml_sycl_disable_mmvq_fused_id);
++        GGML_LOG_INFO("  GGML_SYCL_DISABLE_MMID_GPU_GROUP: %d\n", g_ggml_sycl_disable_mmid_gpu_group);
+ 
+         g_ggml_sycl_use_async_mem_op_requested = ggml_sycl_get_env("GGML_SYCL_USE_ASYNC_MEM_OP", 1);
+         GGML_LOG_INFO("  GGML_SYCL_USE_ASYNC_MEM_OP: %d\n", g_ggml_sycl_use_async_mem_op_requested);
+@@ -4940,6 +4946,226 @@ static void mmid_counting_sort_rows(
+     }
+ }
+ 
++// GPU histogram + exclusive prefix + scatter for MUL_MAT_ID prefill (ne12 > 1).
++// Keeps expert IDs on-device. Does not touch the fused ne12==1 decode path.
++static void k_mmid_hist(
++    const int32_t * __restrict__ ids, int32_t * __restrict__ counts,
++    const int64_t n_tokens, const int64_t n_ids, const int64_t si1, const int64_t si0,
++    const sycl::nd_item<3> & item) {
++    const int64_t i = (int64_t) item.get_global_id(2);
++    const int64_t n_routed = n_tokens * n_ids;
++    if (i >= n_routed) {
++        return;
++    }
++    const int64_t iid1 = i / n_ids;
++    const int64_t id   = i % n_ids;
++    const int32_t expert = ids[iid1 * si1 + id * si0];
++    dpct::atomic_fetch_add<sycl::access::address_space::generic_space>(&counts[expert], 1);
++}
++
++static void k_mmid_exclusive_scan(
++    const int32_t * __restrict__ counts, int32_t * __restrict__ offsets, const int64_t n_as,
++    const sycl::nd_item<3> & item) {
++    if (item.get_global_id(2) != 0) {
++        return;
++    }
++    int32_t acc = 0;
++    for (int64_t e = 0; e < n_as; ++e) {
++        offsets[e] = acc;
++        acc += counts[e];
++    }
++    offsets[n_as] = acc;
++}
++
++static void k_mmid_scatter(
++    const int32_t * __restrict__ ids, int32_t * __restrict__ next,
++    mmid_row_mapping * __restrict__ mapping,
++    const int64_t n_tokens, const int64_t n_ids, const int64_t si1, const int64_t si0,
++    const sycl::nd_item<3> & item) {
++    const int64_t i = (int64_t) item.get_global_id(2);
++    const int64_t n_routed = n_tokens * n_ids;
++    if (i >= n_routed) {
++        return;
++    }
++    const int64_t iid1 = i / n_ids;
++    const int64_t id   = i % n_ids;
++    const int32_t expert = ids[iid1 * si1 + id * si0];
++    const int32_t slot = dpct::atomic_fetch_add<sycl::access::address_space::generic_space>(&next[expert], 1);
++    mapping[slot] = {(int32_t) id, (int32_t) iid1};
++}
++
++static bool ggml_sycl_mul_mat_id_gpu_group(
++    ggml_backend_sycl_context & ctx, ggml_tensor * dst) {
++    if (g_ggml_sycl_disable_mmid_gpu_group) {
++        return false;
++    }
++
++    const ggml_tensor * src0 = dst->src[0];
++    const ggml_tensor * src1 = dst->src[1];
++    const ggml_tensor * ids  = dst->src[2];
++    GGML_TENSOR_BINARY_OP_LOCALS
++
++    if (src1->type != GGML_TYPE_F32 || dst->type != GGML_TYPE_F32) {
++        return false;
++    }
++    if (ids->type != GGML_TYPE_I32) {
++        return false;
++    }
++    if (ne12 <= 1) {
++        return false;
++    }
++    if (ids->nb[0] % sizeof(int32_t) != 0 || ids->nb[1] % sizeof(int32_t) != 0) {
++        return false;
++    }
++
++    const queue_ptr stream = ctx.stream();
++    const int64_t n_as = ne02;
++    const int64_t n_ids = ids->ne[0];
++    const int64_t n_tokens = ids->ne[1];
++    const int64_t n_routed_rows = n_tokens * n_ids;
++    const int64_t si0 = ids->nb[0] / sizeof(int32_t);
++    const int64_t si1 = ids->nb[1] / sizeof(int32_t);
++
++    ggml_sycl_pool_alloc<int32_t> expert_counts(ctx.pool(), n_as);
++    ggml_sycl_pool_alloc<int32_t> expert_offsets(ctx.pool(), n_as + 1);
++    ggml_sycl_pool_alloc<int32_t> expert_next(ctx.pool(), n_as);
++    ggml_sycl_pool_alloc<mmid_row_mapping> dev_row_mapping(ctx.pool(), n_routed_rows);
++    ggml_sycl_pool_alloc<char> src1_contiguous(ctx.pool(), sizeof(float) * n_routed_rows * ne10);
++    ggml_sycl_pool_alloc<char> dst_contiguous(ctx.pool(), sizeof(float) * n_routed_rows * ne0);
++
++    SYCL_CHECK(CHECK_TRY_ERROR(stream->memset(expert_counts.get(), 0, n_as * sizeof(int32_t))));
++    SYCL_CHECK(CHECK_TRY_ERROR(stream->memset(expert_next.get(), 0, n_as * sizeof(int32_t))));
++
++    const unsigned int wg = 256;
++    const unsigned int n_groups = (unsigned int) ((n_routed_rows + wg - 1) / wg);
++    {
++        sycl::range<3> block_dims(1, 1, wg);
++        sycl::range<3> grid_dims(1, 1, n_groups);
++        const int32_t * ids_dev = (const int32_t *) ids->data;
++        int32_t * counts = expert_counts.get();
++        stream->submit([&](sycl::handler & cgh) {
++            cgh.parallel_for(sycl::nd_range<3>(grid_dims * block_dims, block_dims),
++                             [=](sycl::nd_item<3> item) {
++                                 k_mmid_hist(ids_dev, counts, n_tokens, n_ids, si1, si0, item);
++                             });
++        });
++    }
++    {
++        int32_t * counts = expert_counts.get();
++        int32_t * offsets = expert_offsets.get();
++        stream->submit([&](sycl::handler & cgh) {
++            cgh.parallel_for(sycl::nd_range<3>(sycl::range<3>(1, 1, 1), sycl::range<3>(1, 1, 1)),
++                             [=](sycl::nd_item<3> item) {
++                                 k_mmid_exclusive_scan(counts, offsets, n_as, item);
++                             });
++        });
++    }
++    SYCL_CHECK(CHECK_TRY_ERROR(stream->memcpy(expert_next.get(), expert_offsets.get(), n_as * sizeof(int32_t))));
++    {
++        sycl::range<3> block_dims(1, 1, wg);
++        sycl::range<3> grid_dims(1, 1, n_groups);
++        const int32_t * ids_dev = (const int32_t *) ids->data;
++        int32_t * next = expert_next.get();
++        mmid_row_mapping * mapping = dev_row_mapping.get();
++        stream->submit([&](sycl::handler & cgh) {
++            cgh.parallel_for(sycl::nd_range<3>(grid_dims * block_dims, block_dims),
++                             [=](sycl::nd_item<3> item) {
++                                 k_mmid_scatter(ids_dev, next, mapping, n_tokens, n_ids, si1, si0, item);
++                             });
++        });
++    }
++
++    std::vector<int32_t> expert_counts_host(n_as);
++    std::vector<int32_t> expert_offsets_host(n_as + 1);
++    SYCL_CHECK(CHECK_TRY_ERROR(stream->memcpy(expert_counts_host.data(), expert_counts.get(), n_as * sizeof(int32_t))));
++    SYCL_CHECK(CHECK_TRY_ERROR(stream->memcpy(expert_offsets_host.data(), expert_offsets.get(), (n_as + 1) * sizeof(int32_t))));
++
++    {
++        static std::atomic<int> logged{0};
++        if (logged.exchange(1, std::memory_order_relaxed) == 0) {
++            GGML_LOG_INFO("sycl: MUL_MAT_ID GPU group first hit type=%s n_tokens=%ld n_ids=%ld n_as=%ld n_routed=%ld\n",
++                          ggml_type_name(src0->type), (long) n_tokens, (long) n_ids, (long) n_as, (long) n_routed_rows);
++        }
++    }
++
++    ggml_tensor src0_row = *src0;
++    ggml_tensor src1_row = *src1;
++    ggml_tensor dst_row = *dst;
++
++    char * src0_original = (char *) src0->data;
++    char * src1_original = (char *) src1->data;
++    char * dst_original  = (char *) dst->data;
++
++    src0_row.ne[2] = 1;
++    src0_row.ne[3] = 1;
++    src0_row.nb[3] = nb02;
++
++    src1_row.ne[1] = 1;
++    src1_row.ne[2] = 1;
++    src1_row.ne[3] = 1;
++    src1_row.nb[2] = nb11;
++    src1_row.nb[3] = nb11;
++
++    dst_row.ne[1] = 1;
++    dst_row.ne[2] = 1;
++    dst_row.ne[3] = 1;
++    dst_row.nb[2] = nb1;
++    dst_row.nb[3] = nb1;
++
++    const unsigned int max_work_group_size = ggml_sycl_info().max_work_group_sizes[ctx.device];
++    {
++        sycl::range<3> block_dims(1, 1, std::min((unsigned int) ne10, max_work_group_size));
++        sycl::range<3> grid_dims(1, 1, n_routed_rows);
++        char * src1_contiguous_get = src1_contiguous.get();
++        mmid_row_mapping * mapping = dev_row_mapping.get();
++        stream->submit([&](sycl::handler & cgh) {
++            cgh.parallel_for(sycl::nd_range<3>(grid_dims * block_dims, block_dims),
++                             [=](sycl::nd_item<3> item_ct1) {
++                                 k_copy_src1_to_contiguous(src1_original, src1_contiguous_get, mapping,
++                                                           ne11, ne10, nb11, nb12, item_ct1);
++                             });
++        });
++    }
++    SYCL_CHECK(CHECK_TRY_ERROR(stream->wait()));
++
++    for (int64_t i02 = 0; i02 < n_as; i02++) {
++        const int64_t num_src1_rows = expert_counts_host[i02];
++        if (num_src1_rows == 0) {
++            continue;
++        }
++        const int64_t expert_row_offset = expert_offsets_host[i02];
++        src0_row.data = src0_original + i02 * nb02;
++        GGML_ASSERT(nb11 == sizeof(float) * ne10);
++        GGML_ASSERT(nb1 == sizeof(float) * ne0);
++        src1_row.data = src1_contiguous.get() + expert_row_offset * nb11;
++        src1_row.ne[1] = num_src1_rows;
++        src1_row.nb[1] = nb11;
++        src1_row.nb[2] = num_src1_rows * nb11;
++        src1_row.nb[3] = num_src1_rows * nb11;
++        dst_row.data = dst_contiguous.get() + expert_row_offset * nb1;
++        dst_row.ne[1] = num_src1_rows;
++        dst_row.nb[1] = nb1;
++        dst_row.nb[2] = num_src1_rows * nb1;
++        dst_row.nb[3] = num_src1_rows * nb1;
++        ggml_sycl_mul_mat(ctx, &src0_row, &src1_row, &dst_row);
++    }
++
++    {
++        sycl::range<3> block_dims(1, 1, std::min((unsigned int) ne0, max_work_group_size));
++        sycl::range<3> grid_dims(1, 1, n_routed_rows);
++        const char * dst_contiguous_get = dst_contiguous.get();
++        const mmid_row_mapping * mapping = dev_row_mapping.get();
++        stream->submit([&](sycl::handler & cgh) {
++            cgh.parallel_for(sycl::nd_range<3>(grid_dims * block_dims, block_dims),
++                             [=](sycl::nd_item<3> item_ct1) {
++                                 k_copy_dst_from_contiguous(dst_original, dst_contiguous_get, mapping,
++                                                            ne0, nb1, nb2, item_ct1);
++                             });
++        });
++    }
++    return true;
++}
++
+ static void ggml_sycl_mul_mat_id(ggml_backend_sycl_context & ctx,
+                                  ggml_tensor *dst) try {
+     scope_op_debug_print scope_dbg_print(__func__, dst, /*num_src=*/3);
+@@ -4955,10 +5181,33 @@ static void ggml_sycl_mul_mat_id(ggml_backend_sycl_context & ctx,
+     const int64_t n_as = ne02;
+     const int64_t n_ids = ids->ne[0];
+ 
+-    if (ne12 == 1) {
++    if (ne12 == 1 && !g_ggml_sycl_disable_mmvq_fused_id) {
+         if (ggml_sycl_mul_mat_id_mmvq_fused(ctx, src0, src1, ids, dst)) {
++            static std::atomic<uint64_t> fused_hits{0};
++            static std::atomic<int>      fused_logged{0};
++            const uint64_t n = fused_hits.fetch_add(1, std::memory_order_relaxed) + 1;
++            if (fused_logged.exchange(1, std::memory_order_relaxed) == 0) {
++                GGML_LOG_INFO("sycl: fused MUL_MAT_ID first hit type=%s n_ids=%ld nrows=%ld ncols=%ld\n",
++                              ggml_type_name(src0->type), (long) n_ids, (long) src0->ne[1], (long) src0->ne[0]);
++            }
++            if ((n & (n - 1)) == 0) {
++                GGML_LOG_INFO("sycl: fused MUL_MAT_ID hits=%llu type=%s\n",
++                              (unsigned long long) n, ggml_type_name(src0->type));
++            }
+             return;
+         }
++        {
++            static std::atomic<int> logged_types[GGML_TYPE_COUNT]{};
++            const int t = (int) src0->type;
++            if (t >= 0 && t < GGML_TYPE_COUNT && logged_types[t].exchange(1, std::memory_order_relaxed) == 0) {
++                GGML_LOG_INFO("sycl: fused MUL_MAT_ID fallback type=%s ne12=%ld ne11=%ld n_ids=%ld\n",
++                              ggml_type_name(src0->type), (long) ne12, (long) ne11, (long) n_ids);
++            }
++        }
++    }
++
++    if (ne12 != 1 && ggml_sycl_mul_mat_id_gpu_group(ctx, dst)) {
++        return;
+     }
+ 
+     std::vector<char> ids_host(ggml_nbytes(ids));

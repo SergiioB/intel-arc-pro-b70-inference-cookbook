@@ -1,0 +1,301 @@
+{
+ "campaign": "n5-fused-fp32-c8k-p512-g128-20260901T061439Z",
+ "hardware": {
+  "gpu_model": "Intel Arc Pro B70",
+  "gpu_count": 2,
+  "vram_gib_per_gpu": 32,
+  "power_cap_w": 195,
+  "topology": "CPU-attached x8+x8 layer split, no GPU P2P"
+ },
+ "engine": {
+  "name": "llama.cpp",
+  "version": "0.3.0-dev b492",
+  "commit": "9723942adc518b43c4b95dc4dce6906903eb5e09",
+  "compiler": "IntelLLVM 2026.0.0",
+  "backend": "SYCL",
+  "ggml_sycl_f16": false,
+  "llama_server_sha256": "f56a838b0e1a16aa8a1321ce2a217c8f3e972e961cf0aca706f76f4d6421c98b",
+  "patches": [
+   "flashnext-arch-overlay.patch",
+   "sycl-fused-mmvq-iq3s-iq4nl.patch"
+  ]
+ },
+ "model": {
+  "id": "AtomicChat/Qwen3.8-Flash-Next-GGUF",
+  "variant": "Qwen3.8-Flash-Next-AD-4.27bpw-Q4_K_M-M64",
+  "revision": "142262902a46f7daed19c79d0771534c8106ad59",
+  "quantization": "mixed IQ3_S gate/up, IQ4_NL down, Q5_1 PLE",
+  "speculation": "none"
+ },
+ "workload": {
+  "concurrency": 1,
+  "prompt_tokens": 512,
+  "output_tokens": 128,
+  "context_limit_tokens": 8192,
+  "cache": "disabled-zero-hit",
+  "batch": 512,
+  "ubatch": 512
+ },
+ "summary": {
+  "cell": "p512/g128 C1 n=5 screen (post one same-shape discarded warmup)",
+  "config": "fused IQ3_S/IQ4_NL MMVQ, GGML_SYCL_F16=OFF, SYCL0+SYCL1 layer split 1,1, -c 8192, -b/-ub 512, -t 6 -tb 14, PLE CPU mmap, 195 W",
+  "sampling": {
+   "temperature": 1.0,
+   "top_p": 0.95,
+   "top_k": 20
+  },
+  "cooldown_limit_mC": 63000,
+  "strict_prompt_tokens": true,
+  "n_valid": 5,
+  "decode_median_tps": 23.38472756332059,
+  "decode_max_tps": 23.732395747976906,
+  "decode_min_tps": 23.21912509970969,
+  "decode_stdev_tps": 0.19655359074538986,
+  "input_rate_median_tps": 183.98437570184467,
+  "ttft_note": "llama.cpp HTTP: prompt_ms here includes full 512-token cold prefill; client TTFT not isolated (non-stream).",
+  "validity": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "warmup_discarded": "warmup-discard-p512g128",
+  "claim": "official-lab n=5 C1 median; loaded-idle GPU1 pkg ~62 C not ordinary <=55 C"
+ },
+ "samples": [
+  {
+   "tag": "s1-p512g128",
+   "utc_end": "2026-09-01T06:38:46Z",
+   "usage_prompt_tokens": 512,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 512,
+   "prompt_ms": 2782.5170000000003,
+   "predicted_ms": 5436.451,
+   "engine_prompt_tps": 184.0060635748137,
+   "engine_decode_tps": 23.360828599393244,
+   "client_wall_s": 8.222198545001447,
+   "metrics_delta": {
+    "prompt_tokens": 512.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 96.9084254696616,
+    "gpu1_0f": 107.84366779735905
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 165.9951433561521,
+    "gpu1_0f": 198.6522753515815
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 56000,
+    "gpu1_0f": 53000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 57000,
+    "gpu1_0f": 56000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 56000,
+     "gpu1_0f": 53000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  },
+  {
+   "tag": "s2-p512g128",
+   "utc_end": "2026-09-01T06:38:54Z",
+   "usage_prompt_tokens": 512,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 512,
+   "prompt_ms": 2786.7490000000003,
+   "predicted_ms": 5351.335,
+   "engine_prompt_tps": 183.72662912949818,
+   "engine_decode_tps": 23.732395747976906,
+   "client_wall_s": 8.141209927998716,
+   "metrics_delta": {
+    "prompt_tokens": 512.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 97.54346770612887,
+    "gpu1_0f": 108.51531656945534
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 166.1266176325809,
+    "gpu1_0f": 198.00364264644793
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 57000,
+    "gpu1_0f": 55000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 58000,
+    "gpu1_0f": 57000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 57000,
+     "gpu1_0f": 55000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  },
+  {
+   "tag": "s3-p512g128",
+   "utc_end": "2026-09-01T06:39:03Z",
+   "usage_prompt_tokens": 512,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 512,
+   "prompt_ms": 2782.8450000000003,
+   "predicted_ms": 5430.895,
+   "engine_prompt_tps": 183.98437570184467,
+   "engine_decode_tps": 23.38472756332059,
+   "client_wall_s": 8.217143512003531,
+   "metrics_delta": {
+    "prompt_tokens": 512.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 97.43127514290286,
+    "gpu1_0f": 107.86430838541806
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 165.54303163894733,
+    "gpu1_0f": 199.19035255845296
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 58000,
+    "gpu1_0f": 57000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 58000,
+    "gpu1_0f": 58000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 58000,
+     "gpu1_0f": 57000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  },
+  {
+   "tag": "s4-p512g128",
+   "utc_end": "2026-09-01T06:39:11Z",
+   "usage_prompt_tokens": 512,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 512,
+   "prompt_ms": 2780.598,
+   "predicted_ms": 5393.622,
+   "engine_prompt_tps": 184.1330533935506,
+   "engine_decode_tps": 23.546329349739377,
+   "client_wall_s": 8.182673004004755,
+   "metrics_delta": {
+    "prompt_tokens": 512.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 97.81213284450594,
+    "gpu1_0f": 108.40495581510106
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 166.16257309279746,
+    "gpu1_0f": 198.63711718470188
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 58000,
+    "gpu1_0f": 58000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 59000,
+    "gpu1_0f": 60000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 58000,
+     "gpu1_0f": 58000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  },
+  {
+   "tag": "s5-p512g128",
+   "utc_end": "2026-09-01T06:39:20Z",
+   "usage_prompt_tokens": 512,
+   "finish_reason": "length",
+   "predicted_n": 128,
+   "cache_n": 0,
+   "prompt_n": 512,
+   "prompt_ms": 2791.926,
+   "predicted_ms": 5469.629,
+   "engine_prompt_tps": 183.3859493410642,
+   "engine_decode_tps": 23.21912509970969,
+   "client_wall_s": 8.264755693002371,
+   "metrics_delta": {
+    "prompt_tokens": 512.0,
+    "prompt_tokens_cached": 0.0,
+    "predicted_tokens": 128.0
+   },
+   "power_avg_W": {
+    "gpu0_0b": 97.51577585177988,
+    "gpu1_0f": 108.16020240879796
+   },
+   "power_peak_interval_W": {
+    "gpu0_0b": 167.07589046290823,
+    "gpu1_0f": 199.19111554723142
+   },
+   "pkg_temp_start_mC": {
+    "gpu0_0b": 59000,
+    "gpu1_0f": 59000
+   },
+   "pkg_temp_end_mC": {
+    "gpu0_0b": 60000,
+    "gpu1_0f": 61000
+   },
+   "valid": true,
+   "cooldown": {
+    "pkgs_mC": {
+     "gpu0_0b": 59000,
+     "gpu1_0f": 59000
+    },
+    "waited_s": 0,
+    "complete": true
+   }
+  }
+ ],
+ "notes": [
+  "C1 only: llama-server -np 1, one client, slot idle between samples.",
+  "c8/c16/c128 are configured context windows, not concurrency.",
+  "Decode = engine timings.predicted_per_second; cold input = timings.prompt_per_second with cache_n=0.",
+  "Sampling temperature 1.0, top_p 0.95, top_k 20, ignore_eos, finish_reason=length, exact g=128.",
+  "KV q8_0 K + q4_1 V, flash attention on, --no-cache-prompt.",
+  "Configured cap 195 W per card; restore 150 W after the campaign. Cap is not measured draw.",
+  "Loaded-idle GPU1 package temperature did not fall to the ordinary <=55 C comparison floor with the 88 GiB model resident (stuck about 62 C at about 45 W idle). Samples ran at that loaded-idle plateau.",
+  "E2 self-reported with public raw samples. Independent reproduction pending.",
+  "Do not mix fused-FP32 decode numbers with fused-F16 prefill numbers as one recipe.",
+  "Do not mix with Qwen3.8-27B vLLM GPTQ/MTP or FP8 TP2 numbers.",
+  "Correctness smoke PASS: B70-FLASH-OK / 703 / Paris on this server."
+ ]
+}

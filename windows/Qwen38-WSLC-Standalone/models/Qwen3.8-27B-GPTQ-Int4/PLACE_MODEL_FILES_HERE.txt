@@ -1,0 +1,7 @@
+The model is intentionally not included in this package.
+
+Run Setup-Qwen38-WSLC.ps1 to download the pinned public model automatically,
+or copy the complete contents of the model repository directly into this folder.
+
+The completed folder must include config.json, tokenizer files,
+model.safetensors.index.json and all five model-0000x-of-00005.safetensors files.
