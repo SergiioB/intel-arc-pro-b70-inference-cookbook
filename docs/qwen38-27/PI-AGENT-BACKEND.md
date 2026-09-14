@@ -24,15 +24,28 @@ docker run -d --name qw38speed -p 8000:8000 --device /dev/dri \
   --entrypoint bash vllm/vllm-openai-xpu@sha256:f01e24f6c7ff01f1e0662234255a1372297d1dbd89d003cf13c8fad3eab1ba4f -lc \
   "set -e; python /patch_mtp.py; python /patch_boundary.py; exec vllm serve /model \
      --quantization gptq --dtype float16 --max-model-len 131072 \
-     --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 \
+     --gpu-memory-utilization 0.90 --kv-cache-dtype fp8 --port 8000 \
      --max-num-seqs 64 --max-num-batched-tokens 8192 \
-     --no-enable-prefix-caching --served-model-name qwen38 --language-model-only \
-     --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":4}' \
+     --served-model-name qwen38 \
      --enable-auto-tool-choice --tool-call-parser qwen3_xml"
 ```
 
+Two deliberate differences from the benchmark recipe:
+1. **No speculative config** — the agent server must run no-spec (mixed
+   spec/non-spec batches crash the XPU `causal_conv1d` path, see the Known
+   limitation below).
+2. **Prefix caching is ON** (flag omitted; V1 defaults it on). Agent turns
+   resend the full conversation; caching the shared prefix cuts turn TTFT
+   ~7× (measured: 16K-prefix TTFT 2.03 s cold → 0.29 s cached). Reset KV
+   between sessions by restarting the container (`docker rm -f qw38speed` +
+   relaunch) so no cross-session state lingers.
+3. No `--language-model-only` — the artifact ships the F16 vision tower, so
+   the agent can read screenshots (see the Vision section below).
+
 Differences vs the benchmark recipe: `--enable-auto-tool-choice
---tool-call-parser qwen3_xml` added; ~940 MiB free after load at U=0.88.
+--tool-call-parser qwen3_xml` added; no speculative config; prefix caching
+on; vision enabled (no `--language-model-only`). At U=0.90 with vision and
+prefix caching: ~2.7 GiB free after load at 131072 ctx.
 
 ## 2. Register the model in pi
 
@@ -114,6 +127,18 @@ Verified behavior (payload-level, 2026-08-16):
 | medium | `medium` | `enable_thinking: true, preserve_thinking: true` |
 | xhigh | `xhigh` | `enable_thinking: true, preserve_thinking: true` |
 
+Sampling parameters follow the **official Qwen3.8-27B model card**, applied
+per mode by the extension (`patches/pi/qwen38-vllm-thinking.ts`):
+
+| Mode | temperature | top_p | top_k | min_p | presence_penalty | repetition_penalty |
+|---|---:|---:|---:|---:|---:|---:|
+| Thinking (low/medium/xhigh) | 1.0 | 0.95 | 20 | 0.0 | 0.0 | 1.0 |
+| Non-thinking (off / instruct) | 0.7 | 0.80 | 20 | 0.0 | 1.5 | 1.0 |
+
+Both parameter sets verified at the request payload (mock-echo): off sends
+`0.7/0.8/20/0/1.5/1.0`, medium sends `1.0/0.95/20/0/0.0/1.0`, with
+`enable_thinking` and `reasoning_effort` as in the table above.
+
 The agent plans, emits qwen3_xml tool calls that vLLM parses, pi executes
 `write`/`bash`/`edit`, files appear on disk.
 
@@ -122,3 +147,32 @@ Notes:
   this stack; the streaming `usage` does not expose reasoning-token counts.
 - Agent decode runs at ~30-50 tok/s (MTP4 acceptance ~45-60% on tool/agentic
   turns); a deep single-file game task takes minutes, not seconds.
+- Full working-setup record incl. failure ledger:
+  `B70-DOCS/research/qwen38-pi-agent-backend-20260816.md`.
+
+Known limitation — agent server must run **no-spec**:
+- Speculative decoding (MTP1/2/4) is fine for pure benchmark/serving decode
+  (77-84 tok/s), but **not** for agentic tool loops: a batch mixing spec-decode
+  and non-spec tokens (a tool call + small prefill arriving while a spec
+  response is in flight) hits the XPU GDN `causal_conv1d` mixed-token path and
+  crashes EngineCore. The failure is an open upstream XPU kernel limitation
+  (not fixed by any local patch), so an agent-facing server must launch with
+  no speculative config and `--max-num-seqs 64`; expect ~30-50 tok/s decode.
+- The MTP benchmark numbers (83.7 tok/s, Run 40) are therefore *not* the
+  agent-serving expectation — they are C1 benchmark cells only.
+
+Vision (the agent can SEE):
+- The model is multimodal out of the box: the GPTQ artifact ships the F16
+  vision tower (0.86 GiB, see QWEN38-VLLM-XPU.md §7). Serve WITHOUT
+  `--language-model-only` and keep the two preprocessor config files in the
+  model dir. 131072 ctx is retained (3219 MiB free at U=0.90).
+- In `~/.pi/agent/models.json`, the `qwen38` entry must list
+  `"input": ["text","image"]` — pi's `read` tool then sends image files
+  (png/jpg/webp/gif/bmp) as attachments to the model instead of omitting them.
+- Typical self-verification loop: the agent renders its own HTML with headless
+  chromium (swiftshader WebGL works: `/snap/chromium/3507/usr/lib/chromium-browser/chrome
+  --headless=new --no-sandbox --use-gl=swiftshader --enable-unsafe-swiftshader
+  --screenshot=game.png --window-size=1280,800 --virtual-time-budget=8000 file://...`),
+  then `read game.png` and judges the render, then fixes.
+- Measured: image+text prompt ≈ 1070 prompt tokens, 200 output tokens in
+  7.3 s end-to-end (vision prefill included, tower runs on XPU).

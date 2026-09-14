@@ -17,6 +17,9 @@ not share a numeric authority or an interchangeable patch list.
 
 ## Shared topology and compatibility references
 
+- [Quantization and Drafters](../QUANTIZATION-AND-DRAFTERS.md) — how weight
+  formats and speculative drafters were chosen on Xe2, including the DFlash2
+  vs native MTP closure and the drafter-selection rule for quantized targets.
 - [Dual-B70 TP2 / PP2](../DUAL-B70-TP2.md) explains worker affinity,
   `SYS_PTRACE`, and the oneCCL simple-threshold configuration required on
   non-P2P desktop platforms.
