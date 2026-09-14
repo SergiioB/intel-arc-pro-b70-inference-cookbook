@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-09-11",
+ "updated_at": "2026-09-14",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -855,6 +855,254 @@
    "evidence": {
     "commit": "61bc9478424f5f240cef1cee6678864e55ebeceb",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/61bc9478424f5f240cef1cee6678864e55ebeceb/results/qwen38-flash-next-mtp-kernel-v1/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-27-gguf-q4km-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B GGUF Q4_K_M (fresh, one B70)",
+   "summary": "Freshly quantized from the same SHA-verified BF16 source; fleet KV q8_0/q4_1, fa on, -b 8192 -ub 4096, one B70 GPU, llama-bench r=5 (engine-native). Decode tracks streamed bytes; long-prompt prefill is byte-flat (844-871 across formats). PROVISIONAL self-report. Q4_K_M is the llama.cpp workhorse for this model.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (build 361)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B (BF16, SHA-verified) -> llama-quantize",
+    "quantization": "Q4_K_M (16.81 GB)",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "llama-bench synthetic (prefix cache off internally)"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_tg128_p512",
+     "value": 20.01,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_tg128_p8192",
+     "value": 20.06,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp2048",
+     "value": 848.04,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp8192",
+     "value": 844.25,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp512",
+     "value": 611.73,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-gguf-q5km-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B GGUF Q5_K_M (fresh, one B70)",
+   "summary": "Freshly quantized from the same SHA-verified BF16 source; fleet KV q8_0/q4_1, fa on, -b 8192 -ub 4096, one B70 GPU, llama-bench r=5 (engine-native). Decode tracks streamed bytes; long-prompt prefill is byte-flat (844-871 across formats). PROVISIONAL self-report.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (build 361)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B (BF16, SHA-verified) -> llama-quantize",
+    "quantization": "Q5_K_M (19.54 GB)",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "llama-bench synthetic (prefix cache off internally)"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_tg128_p512",
+     "value": 16.97,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_tg128_p8192",
+     "value": 16.9,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp2048",
+     "value": 871.34,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp8192",
+     "value": 856.76,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-gguf-q80-v1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B GGUF Q8_0 (fresh, one B70)",
+   "summary": "Freshly quantized from the same SHA-verified BF16 source; fleet KV q8_0/q4_1, fa on, -b 8192 -ub 4096, one B70 GPU, llama-bench r=5 (engine-native). Decode tracks streamed bytes; long-prompt prefill is byte-flat (844-871 across formats). PROVISIONAL self-report. Q8_0 shows the best effective streaming (~396 GB/s vs ~336 for Q4_K_M) but loses on byte count.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (build 361)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B (BF16, SHA-verified) -> llama-quantize",
+    "quantization": "Q8_0 (29.05 GB)",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 8192,
+    "cache": "llama-bench synthetic (prefix cache off internally)"
+   },
+   "metrics": [
+    {
+     "name": "engine_native_tg128_p512",
+     "value": 13.62,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_tg128_p8192",
+     "value": 13.54,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp2048",
+     "value": 864.56,
+     "unit": "token/s"
+    },
+    {
+     "name": "engine_native_pp8192",
+     "value": 853.08,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-powercap-prefill-v1",
+   "kind": "capability",
+   "title": "Power cap A/B: prefill clipped at 150 W, decode cap-insensitive (one B70)",
+   "summary": "Controlled 150 W vs 230 W stock-cap A/B on the GPTQ-INT4 vLLM route: spec-off decode flat (24.41 -> 24.25 tok/s p512/g128), but cold input jumped 1039 -> 1586 tok/s at p8192/g1 (+53%) and MTP-4 cold input +38-45%. Decode is launch-gap-bound (~75-110 W draw); prefill pulls 177-202 W and is heavily clipped at 150 W. If you serve long prompts, the eco cap costs half your prefill throughput. PROVISIONAL self-report.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "XPU image sha256:f01e24f6 (v0.27.2rc1.dev77-class), compile-only"
+   },
+   "model": {
+    "id": "Qwen3.8-27B GPTQ-INT4 sym G128 W4A16",
+    "quantization": "GPTQ-INT4 G128",
+    "speculation": "none / MTP-4"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 8192,
+    "output_tokens": 128,
+    "context_limit_tokens": 9216,
+    "cache": "disabled (config + zero-hit counters)"
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27-ppl-hybrid-gdn-warning-v1",
+   "kind": "capability",
+   "title": "Warning: llama-perplexity cannot rank quant formats on hybrid-GDN models",
+   "summary": "On Qwen3.8-27B (qwen3_5: 48 GDN + 16 full-attention layers), wikitext-2 PPL came back NON-monotonic in precision: Q4_K_M 6.547 < mixed 6.653 < Q8_0 6.678 < Q5_K_M 6.794. Root cause: the full-F16 reference scored 6.5545 - worse than Q4_K_M on 7/8 chunks and ~= Q8_0 - so the metric (recurrent-state accumulation), not the weights, is confounded; quant kernels exonerated. PPL also grows with chunk length (6.29 -> 7.15 at c2048 -> c8192). Upstream: ggml-org/llama.cpp#28879. Use per-position logit parity vs F16 for quality on linear-attention hybrids.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 0.3.0-dev 1692f9e50 (llama-perplexity)"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B + llama-quantize arms",
+    "quantization": "F16/Q4_K_M/Q5_K_M/Q8_0",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 4096,
+    "output_tokens": 0,
+    "context_limit_tokens": 8192,
+    "cache": "n/a (offline perplexity)"
+   },
+   "evidence": {
+    "commit": "22bd3253ae908112a5681a63f7f2ddf20066948d",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22bd3253ae908112a5681a63f7f2ddf20066948d/docs/qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md"
    }
   }
  ]
