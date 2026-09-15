@@ -1,24 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-labelledby="t d">
- <title id="t">Qwen3.8-27B prefill vs context on one B70 per engine, with vLLM FP8 TP2 2-card reference</title>
- <desc id="d">Prefill tok/s: OV 1537/1815/1643/1119/780/587; vLLM Int4 1491/1753/1689/1375/1086/895; llama Q8_0 230/227/224/220/213 at 150W cap. FP8 TP2 ref points 1207@512, 1315@2K.</desc>
- <rect width="1600" height="1000" fill="#07111f"/>
- <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">PREFILL vs CONTEXT · QWEN3.8-27B · 2026-09-14</text>
- <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">input tokens / TTFT · shared task · n=3 medians · 2026-09-14</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 980" width="1600" height="980" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B prefill vs context — all engines, FP8 TP2 measured</title>
+ <desc id="d">Prefill tok/s: OV 1537/1815/1643/1119/780/587; vLLM Int4 1491/1753/1689/1375/1086/895; llama Q8_0 230/227/224/220/213; FP8 TP2 1077/1352/1392/1274/1132/1020.</desc>
+ <rect width="1600" height="980" fill="#07111f"/>
+ <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">PREFILL vs CONTEXT · QWEN3.8-27B · ARC PRO B70 · 2026-09-15</text>
+ <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">input tokens / TTFT · shared task · n=3 medians · weight format and card count labeled per curve</text>
 
- <!-- legend boxed -->
  <rect x="110" y="96" width="1430" height="46" rx="6" fill="#0d1b30" stroke="#26364e"/>
  <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
   <line x1="128" y1="119" x2="164" y2="119" stroke="#81c9ff" stroke-width="4"/><circle cx="146" cy="119" r="5" fill="#81c9ff"/>
-  <text x="172" y="124" fill="#c9d8f0">OpenVINO GenAI · int8 · 1× B70</text>
+  <text x="172" y="124" fill="#c9d8f0">OpenVINO · int8 (25.8 GB) · 1× B70</text>
   <line x1="470" y1="119" x2="506" y2="119" stroke="#e8a87c" stroke-width="5"/><circle cx="488" cy="119" r="5.5" fill="#e8a87c"/>
-  <text x="514" y="124" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 · MTP4 · graph ON · 1× B70</text>
-  <line x1="990" y1="119" x2="1026" y2="119" stroke="#7d9b76" stroke-width="3.5"/><circle cx="1008" cy="119" r="4.5" fill="#7d9b76"/>
-  <text x="1034" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · no-spec (230 t/s flat)</text>
-  <line x1="1340" y1="119" x2="1376" y2="119" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/><rect x="1356" y="111" width="7" height="16" fill="#c792ea"/>
-  <text x="1384" y="124" fill="#c9d8f0">vLLM FP8 · MTP8 · 2× B70 TP2 (1207/1736/1315)</text>
+  <text x="514" y="124" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 (19 GB) · MTP4 · graph on · 1× B70</text>
+  <line x1="1030" y1="119" x2="1066" y2="119" stroke="#7d9b76" stroke-width="3.5"/><circle cx="1048" cy="119" r="4.5" fill="#7d9b76"/>
+  <text x="1074" y="124" fill="#c9d8f0">llama.cpp · Q8_0 (27 GB) · no-spec · 1× B70</text>
+  <line x1="128" y1="160" x2="164" y2="160" stroke="#c792ea" stroke-width="4"/><rect x="143" y="152" width="7" height="16" fill="#c792ea"/>
+  <text x="172" y="165" fill="#c9d8f0">vLLM XPU · FP8 (30.9 GB) · MTP8 · 2× B70 TP2 — measured</text>
  </g>
 
- <!-- plot: y 0-2000 at 640..160 => 0.24 px per tps -->
  <line x1="110" y1="640" x2="1540" y2="640" stroke="#3a4c68" stroke-width="2"/>
  <line x1="110" y1="160" x2="110" y2="640" stroke="#3a4c68" stroke-width="2"/>
  <g stroke="#1a2740" stroke-width="1">
@@ -36,26 +34,27 @@
  <g stroke="#3a4c68" stroke-width="2">
   <line x1="280" y1="640" x2="280" y2="648"/><line x1="560" y1="640" x2="560" y2="648"/>
   <line x1="840" y1="640" x2="840" y2="648"/><line x1="1120" y1="640" x2="1120" y2="648"/>
-  <line x1="1400" y1="640" x2="1400" y2="648"/>
+  <line x1="1400" y1="640" x2="1400" y2="648"/><line x1="1520" y1="640" x2="1520" y2="648"/>
  </g>
  <g fill="#8fa3c0" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
   <text x="280" y="670">512</text><text x="560" y="670">2K</text><text x="840" y="670">8K</text>
   <text x="1120" y="670">32K</text><text x="1400" y="670">64K</text><text x="1520" y="670">96K</text>
  </g>
- <text x="825" y="698" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
+ <text x="825" y="696" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
 
- <!-- OV: 1537/1815/1643/1119/780/587 -> y=640-tps*0.24 -->
+ <!-- y = 640 - tps*0.24 -->
+ <!-- OV: 1537→271.1 1815→204.4 1643→245.7 1119→371.4 780→452.8 587→499.1 -->
  <polyline points="280,271.1 560,204.4 840,245.7 1120,371.4 1400,452.8 1520,499.1" fill="none" stroke="#81c9ff" stroke-width="4"/>
  <g fill="#81c9ff"><circle cx="280" cy="271.1" r="5.5"/><circle cx="560" cy="204.4" r="5.5"/><circle cx="840" cy="245.7" r="5.5"/><circle cx="1120" cy="371.4" r="5.5"/><circle cx="1400" cy="452.8" r="5.5"/><circle cx="1520" cy="499.1" r="5.5"/></g>
- <!-- vLLM: 1491/1753/1689/1375/1086/895 -->
+ <!-- vLLM Int4: 1491→282.2 1753→219.3 1689→234.6 1375→310 1086→379.4 895→425.2 -->
  <polyline points="280,282.2 560,219.3 840,234.6 1120,310 1400,379.4 1520,425.2" fill="none" stroke="#e8a87c" stroke-width="5"/>
  <g fill="#e8a87c"><circle cx="280" cy="282.2" r="6.5"/><circle cx="560" cy="219.3" r="6.5"/><circle cx="840" cy="234.6" r="6.5"/><circle cx="1120" cy="310" r="6.5"/><circle cx="1400" cy="379.4" r="6.5"/><circle cx="1520" cy="425.2" r="6.5"/></g>
- <!-- llama (no 96K): 230/227/224/220/213 -->
+ <!-- llama: 230→584.8 227→585.5 224→586.2 220→587.2 213→588.9 -->
  <polyline points="280,584.8 560,585.5 840,586.2 1120,587.2 1400,588.9" fill="none" stroke="#7d9b76" stroke-width="3.5" stroke-dasharray="8,6"/>
  <g fill="#7d9b76"><circle cx="280" cy="584.8" r="4.5"/><circle cx="840" cy="586.2" r="4.5"/><circle cx="1400" cy="588.9" r="4.5"/></g>
- <!-- FP8 TP2 ref: 1207@512, 1315@2K -->
- <polyline points="280,350.3 420,223.3 560,324.4" fill="none" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/>
- <g fill="#c792ea"><rect x="273" y="343.3" width="14" height="14"/><rect x="413" y="216.3" width="14" height="14"/><rect x="553" y="317.4" width="14" height="14"/></g>
+ <!-- FP8 TP2: 1077→381.5 1352→315.5 1392→305.9 1274→334.2 1132→368.3 1020→395.2 -->
+ <polyline points="280,381.5 560,315.5 840,305.9 1120,334.2 1400,368.3 1520,395.2" fill="none" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/>
+ <g fill="#c792ea"><rect x="273" y="374.5" width="14" height="14"/><rect x="553" y="308.5" width="14" height="14"/><rect x="833" y="298.9" width="14" height="14"/><rect x="1113" y="327.2" width="14" height="14"/><rect x="1393" y="361.3" width="14" height="14"/><rect x="1513" y="388.2" width="14" height="14"/></g>
 
  <!-- labels -->
  <g fill="#a5dcff" font-size="14.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
@@ -63,30 +62,27 @@
   <text x="1120" y="356">1119</text><text x="1400" y="437">780</text><text x="1520" y="483">587</text>
  </g>
  <g fill="#f2c9a0" font-size="15.5" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="280" y="303">1491</text><text x="560" y="243">1753</text><text x="840" y="215">1689</text>
-  <text x="1120" y="332">1375</text><text x="1400" y="402">1086</text><text x="1520" y="447">895</text>
+  <text x="280" y="267">1491</text><text x="560" y="204">1753</text><text x="840" y="219">1689</text>
+  <text x="1120" y="295">1375</text><text x="1400" y="364">1086</text><text x="1520" y="410">895</text>
  </g>
  <g fill="#8fb98a" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
   <text x="280" y="570">230</text><text x="840" y="572">224</text><text x="1400" y="574">213</text>
  </g>
- <g fill="#c792ea" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="330" y="368">1207</text><text x="420" y="208">1736</text><text x="610" y="342">1315</text>
+ <g fill="#e3c9fb" font-size="14.5" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="398">1077</text><text x="560" y="332">1352</text><text x="840" y="322">1392</text>
+  <text x="1120" y="350">1274</text><text x="1400" y="384">1132</text><text x="1520" y="411">1020</text>
  </g>
- <text x="420" y="188" fill="#c792ea" font-size="12" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">FP8 TP2 prefill peaks 1736 @1K — beats every 1-card arm</text>
 
- <!-- outcome notes -->
- <text x="620" y="480" fill="#f2c9a0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">vLLM chunked prefill (8192) holds rate: +39% over OV at 64K, +53% at 96K</text>
- <text x="620" y="502" fill="#a5dcff" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV leads ≤2K (1815 peak at 2K), then decays with length</text>
+ <text x="620" y="480" fill="#f2c9a0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">vLLM chunked prefill holds rate longest: +39% over OV at 64K, +53% at 96K</text>
+ <text x="620" y="502" fill="#a5dcff" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV peaks highest at short context (1815 @2K), then decays with length</text>
+ <text x="620" y="524" fill="#e3c9fb" font-size="13" font-family="Segoe UI, Inter, sans-serif">FP8 TP2: flat 1019–1392 across the whole sweep — prefill scales with cards</text>
  <text x="180" y="560" fill="#8fb98a" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">llama.cpp: decode-oriented engine — prefill is not its lane</text>
- <text x="440" y="300" fill="#c792ea" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">FP8 TP2 = 2× B70 reference cells (synthetic prompts, MTP8) — not same class</text>
 
- <!-- footer -->
  <text x="60" y="760" fill="#c9d8f0" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif">READING</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="786">Prefill is where vLLM's architecture pays: chunked 8192-token batches keep the GPU saturated as context grows — 1375 t/s at 32K vs OV's 1119.</text>
-  <text x="110" y="810">OV peaks highest at short context (1815 @2K) but its rate decays ~2.7x from 2K to 96K; vLLM decays ~2x.</text>
-  <text x="110" y="834">llama.cpp prefill is an order of magnitude behind on this hardware — its lane is decode simplicity, not prompt throughput.</text>
-  <text x="110" y="858">FP8 TP2 reference: dual-card class only (30.9 GB weights don't fit one B70); cells shown are banked E2 evidence, not tonight's protocol.</text>
+  <text x="110" y="786">Prefill is where vLLM's architecture pays on one card: chunked 8192-token batches keep the GPU saturated — 1375 @32K vs OV's 1119.</text>
+  <text x="110" y="810">FP8 TP2 uses the marginal card to keep prefill flat at every length (1392 @8K, 1020 @96K) — the only config without decay.</text>
+  <text x="110" y="834">llama.cpp prefill is an order of magnitude behind on this hardware — its lane is decode simplicity.</text>
  </g>
- <text x="60" y="920" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp}.json · FP8-TP2-W8A16.md (banked E2) · llama+MTP prefill shown separately</text>
+ <text x="60" y="890" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp,vllm-fp8-tp2}.json · ENGINE-SETUP-RECIPES.md · cookbook @ 2026-09-15</text>
 </svg>

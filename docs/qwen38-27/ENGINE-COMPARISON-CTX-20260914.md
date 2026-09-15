@@ -142,23 +142,35 @@ an engine limit.
 Exact per-engine setup commands, cold-start times, and graph-capture notes:
 [ENGINE-SETUP-RECIPES.md](ENGINE-SETUP-RECIPES.md).
 
-## vLLM FP8 TP2 (2× B70) — reference cells from banked evidence
+## vLLM FP8 TP2 (2× B70) — full measured sweep (2026-09-15)
 
-Not rerun tonight; from [FP8-TP2-W8A16.md](FP8-TP2-W8A16.md) (official-lab
-E2, random-token synthetic prompts, C1, n=5, MTP8, cold-input rate =
-input/TTFT client side). DIFFERENT protocol from the sweep tables — shown for
-the dual-card class only, not mixed into single-card rankings:
+Same v2 protocol as the single-card arms (shared filler task, n=3,
+single streaming request). Weights `Qwen/Qwen3.8-27B-FP8` (30.9 GB, MTP8,
+tensor-parallel 2, worker-affinity + oneCCL contract from DUAL-B70-TP2.md).
+Cold start 306 s (two-card compile + graph capture). Draw 416–458 W total.
 
-| cell | decode tok/s (median) | cold-input rate tok/s | draw/card |
-|---|---:|---:|---:|
-| p512 | 53.42 | 1206.7 | 97.6 / 103.6 W |
-| p1024 | 60.13 (max 71.06) | 1736.2 | 109.5 / 118.9 W |
-| p2048 (hybrid k=6) | 33.52 | 1315.1 | 135.1 / 147.2 W |
+| len | decode tok/s | prefill tok/s | ttft ms |
+|---:|---:|---:|---:|
+| 512 | **73.0** | 1077 | 525 |
+| 2K | **72.3** | 1352 | 1571 |
+| 8K | **61.6** | 1392 | 5943 |
+| 32K | **59.9** | 1274 | 25806 |
+| 64K | **65.5** | 1132 | 57926 |
+| 96K | **57.3** | 1020 | 96506 |
+
+FP8 TP2 is the only configuration with NO context decay: decode holds 73→57
+across 512→96K and prefill stays 1019–1392. The 64K decode (65.5) exceeds
+8K (61.6) — MTP8 acceptance variance, n=3.
+
+Earlier banked E2 cells (53.42/60.13/33.52 hybrid, synthetic prompts,
+max-model-len 9216) are superseded by this same-protocol sweep for ranking
+purposes; the E2 cells remain in [FP8-TP2-W8A16.md](FP8-TP2-W8A16.md) as the
+original capability evidence.
 
 Why TP2 and not single-card FP8: FP8 weights are 30.9 GB vs 30.3 GiB usable —
 weights alone exceed one B70. Same for int8-W8A16 (31.6 GB, load dies at
 init: measured, `vllm-int8-attempt.json`). Single-card classes that fit:
-Int4 / int8-ov / Q8_0. Full per-engine TP2 rerun is queued as future work.
+Int4 (19 GB) / int8-ov (25.8 GB) / Q8_0 (27 GB).
 
 ![Prefill vs context](../assets/b70-qwen38-engine-prefill-20260914.svg)
 
