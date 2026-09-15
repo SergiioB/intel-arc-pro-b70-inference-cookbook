@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.2...v1.2.3) (2026-09-15)
+
+
+### Bug Fixes
+
+* **docs:** finish folder unification — remaining bare qwen38-27 mentions in FEATURE-FLAGS now point at qwen38-27b ([443362e](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/443362e9592cc6aa3ee0d3eccf25137c36385d93))
+
 ## [1.2.2](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.1...v1.2.2) (2026-09-15)
 
 
