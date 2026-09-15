@@ -13,7 +13,8 @@ not share a numeric authority or an interchangeable patch list.
 | Windows standalone | One display-attached B70 | Docker Desktop and experimental WSLC packaging with display-safe VRAM budgets | [WINDOWS-STANDALONE.md](WINDOWS-STANDALONE.md) |
 | Pi agent backend | Qwen3.8 server | Tool calling, provider configuration, and recommended thinking/non-thinking sampling | [PI-AGENT-BACKEND.md](PI-AGENT-BACKEND.md) |
 | Draft INT4 overlay | One B70 | Optional draft LM-head and MTP-linear RTN INT4 overlay for the GPTQ route | [DRAFT-INT4-S-M1.md](DRAFT-INT4-S-M1.md) |
-| OpenVINO GenAI / Cascadia | One B70 | Official INT4-OV VLM research. Hub INT4 failed; custom mixed-INT4 works but is bottlenecked by host logits / GDN (15.8 tok/s). | [OPENVINO-CASCADIA-REPORT.md](OPENVINO-CASCADIA-REPORT.md) · [Architecture](../architecture/openvino-and-cascadia.md) |
+| OpenVINO GenAI | One B70 | INT4-GDN8 + grafted MTP5: single-card short-ctx champion (79 t/s @512); draft off ≥98K, full-protocol ceiling 128K | [OPENVINO-CASCADIA-REPORT.md](OPENVINO-CASCADIA-REPORT.md) · [Tuning](OPENVINO-B70-TUNING.md) |
+| Cascadia (separate engine) | One B70 | Rust server + IR surgery; `qwen35` ~5 t/s measured — multi-node pipeline-parallel research path, not a B70 speed path | [Architecture](../architecture/openvino-and-cascadia.md) |
 
 ## Shared topology and compatibility references
 
