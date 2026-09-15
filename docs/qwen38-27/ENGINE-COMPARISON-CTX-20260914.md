@@ -225,26 +225,45 @@ One card each, same v2 protocol (single stream, median post-first-token),
 8-bit KV on all arms (vLLM fp8 / llama q8_0 / OV u8). The honest same-class
 comparison: every engine runs an Int4/Q4 artifact.
 
-![INT4-class decode](../assets/b70-qwen38-int4-class-decode-20260915.svg)
+![INT4-class decode](../assets/b70-qwen38-engine-decode-int4-class-20260915.svg)
 
-| Context | vLLM GPTQ-Int4 (19 GB) | llama UD-Q4_K_M+MTP (16.5 GB) | OV INT4-GDN8 (21 GB, no draft) |
+![INT4-class prefill](../assets/b70-qwen38-engine-prefill-int4-class-20260915.svg)
+
+| Context | vLLM GPTQ-Int4 (19 GB) | llama UD-Q4_K_M+MTP (16.5 GB) | OV INT4-GDN8 + MTP5 (21 GB) |
 |---|---:|---:|---:|
-| 512 | 75.6 | 37.8 | 22.4 |
-| 2K | 71.6 | 38.4 | 22.1 |
-| 8K | 61.2 | 37.3 | 21.7 |
-| 32K | 52.4 | 33.4 | 19.6 |
-| 64K | 49.8 | 29.2 | CL_OUT_OF_RESOURCES — wall |
-| 98K | 45.7 | 25.8 | — |
+| 512 | 75.6 | 37.8 | **79.5** |
+| 2K | 71.6 | 38.4 | 73.0 |
+| 8K | 61.2 | 37.3 | 45.8 |
+| 32K | 52.4 | 33.4 | 47.7 |
+| 64K | 49.8 | 29.2 | 29.1 (no-draft crashed here) |
+| 98K | 45.7 | 25.8 | GPU event error (98K ceiling) |
 | 128K | 32.6 | 23.0 | — |
 | 196K | 34.5 | 18.9 | — |
 | 256K | not in KV budget | 15.9 | — |
 
+Prefill (input tok/s, cold):
+
+| Context | vLLM GPTQ-Int4 | OV INT4-GDN8 + MTP5 | llama Q4 (cold, no cache) |
+|---|---:|---:|---:|
+| 512 | 1491 | 1267 | 210 |
+| 2K | 1753 | 1592 | 250 |
+| 8K | 1688 | 1472 | 240 |
+| 32K | 1375 | 1083 | 233 |
+| 64K | 1086 | 775 | 222 |
+
 Key measured facts:
-- vLLM's single-card KV budget caps at ≈204K: 256K needs 9.33 GiB KV vs 7.47 GiB
-  free after 19 GB weights at util 0.94 (measured error message).
-- llama Q4 is the only engine that holds the full 256K on one card
-  (37.8 → 15.9, 2.4× decay), at ~155 W.
-- OV INT4-GDN8 needs an MTP draft export before it can compete in this class;
-  no-draft ~20-22 tok/s and a hard u8-KV wall at 64K.
-- Raw: `ctx-sweep-{llamacpp-q4km-mtp,ov-int4-gdn8,vllm-int4-262k-probe}.json`
-  in `results/qw38-ov-mtp-20260914/`.
+- **MTP head graft closed the OV gap**: OV INT4-GDN8 went from 22.4 (no draft)
+  to 79.5 @512 (+3.55×) with the Hub `OpenVINO/Qwen3.8-27B-int4-ov`
+  `openvino_mtp_model.*` grafted into the GDN8 dir. Output correctness verified
+  (numeric sequence intact). Without an MTP head OV cannot compete in this class.
+- OV ceiling moved 64K → 98K with the draft: 29.1 t/s @64K survived where the
+  no-draft lane threw CL_OUT_OF_RESOURCES; 98K fails on a GPU event wait.
+- llama Q4 is the only engine that holds the full 256K on one card (37.8 →
+  15.9, 2.4× decay) at ~155 W.
+- vLLM's single-card KV budget caps at ≈204K: 256K needs 9.33 GiB KV vs 7.47
+  GiB free after 19 GB weights at util 0.94 (measured error message).
+- llama Q4 prefill is flat 210-250 t/s measured COLD (--no-cache-prompt); the
+  earlier 28K-113K sweep TTFTs were prompt-cache hits and are excluded.
+- Raw: `ctx-sweep-{llamacpp-q4km-mtp,ov-int4-gdn8,ov-int4-gdn8-mtp5,vllm-v2}.json`,
+  `vllm-int4-262k-probe.json`, `llama-q4km-cold-prefill.json`,
+  `mtp-graft-validate.json` in `results/qw38-ov-mtp-20260914/`.

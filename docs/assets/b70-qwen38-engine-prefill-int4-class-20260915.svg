@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" width="1600" height="1080" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B INT4 class prefill vs context — ARC Pro B70, 2026-09-15, cold measurements</title>
+ <desc id="d">Prefill tok/s at 512..64K. vLLM Int4: 1491 1753 1688 1375 1086 895. OV INT4-GDN8+MTP5: 1267 1592 1472 1083 775. llama Q4 cold: 209 250 240 233 222.</desc>
+ <rect width="1600" height="1080" fill="#07111f"/>
+ <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">PREFILL vs CONTEXT · INT4 CLASS · QWEN3.8-27B · ARC PRO B70 · 2026-09-15</text>
+ <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">input tokens / TTFT · shared task · n=3 medians (n=1 llama cold) · weight format and card count labeled per curve</text>
+
+ <rect x="110" y="96" width="1430" height="72" rx="6" fill="#0d1b30" stroke="#26364e"/>
+ <g font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
+  <line x1="130" y1="118" x2="162" y2="118" stroke="#e8a87c" stroke-width="5"/><circle cx="146" cy="118" r="5.5" fill="#e8a87c"/>
+  <text x="170" y="122" fill="#c9d8f0">vLLM · GPTQ-Int4 (19 GB) · MTP4 · 1× B70</text>
+  <line x1="480" y1="118" x2="512" y2="118" stroke="#81c9ff" stroke-width="4"/><circle cx="496" cy="118" r="5" fill="#81c9ff"/>
+  <text x="520" y="122" fill="#c9d8f0">OpenVINO · INT4-GDN8 + MTP5 (21 GB) · 1× B70</text>
+  <line x1="1040" y1="118" x2="1072" y2="118" stroke="#7d9b76" stroke-width="3.5"/><circle cx="1056" cy="118" r="4.5" fill="#7d9b76"/>
+  <text x="1080" y="122" fill="#c9d8f0">llama.cpp · UD-Q4_K_M (16.5 GB) · MTP draft · 1× B70</text>
+ </g>
+ <g font-size="12" font-family="Segoe UI, Inter, sans-serif">
+  <text x="130" y="152" fill="#8fa3c0">llama prefill measured COLD (--no-cache-prompt) — sweep values (28K–113K t/s) were prompt-cache hits and are excluded</text>
+ </g>
+
+ <line x1="110" y1="640" x2="1540" y2="640" stroke="#3a4c68" stroke-width="2"/>
+ <line x1="110" y1="160" x2="110" y2="640" stroke="#3a4c68" stroke-width="2"/>
+ <g stroke="#1a2740" stroke-width="1">
+  <line x1="110" y1="580" x2="1540" y2="580"/><line x1="110" y1="520" x2="1540" y2="520"/>
+  <line x1="110" y1="460" x2="1540" y2="460"/><line x1="110" y1="400" x2="1540" y2="400"/>
+  <line x1="110" y1="340" x2="1540" y2="340"/><line x1="110" y1="280" x2="1540" y2="280"/>
+  <line x1="110" y1="220" x2="1540" y2="220"/><line x1="110" y1="160" x2="1540" y2="160"/>
+ </g>
+ <g fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
+  <text x="100" y="645">0</text><text x="100" y="585">250</text><text x="100" y="525">500</text>
+  <text x="100" y="465">750</text><text x="100" y="405">1000</text><text x="100" y="345">1250</text>
+  <text x="100" y="285">1500</text><text x="100" y="225">1750</text><text x="100" y="165">2000</text>
+ </g>
+ <text x="44" y="410" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" transform="rotate(-90 44 410)" text-anchor="middle">prefill — input tokens / second</text>
+ <g stroke="#3a4c68" stroke-width="2">
+  <line x1="280" y1="640" x2="280" y2="648"/><line x1="560" y1="640" x2="560" y2="648"/>
+  <line x1="840" y1="640" x2="840" y2="648"/><line x1="1120" y1="640" x2="1120" y2="648"/>
+  <line x1="1400" y1="640" x2="1400" y2="648"/><line x1="1520" y1="640" x2="1520" y2="648"/>
+ </g>
+ <g fill="#8fa3c0" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="670">512</text><text x="560" y="670">2K</text><text x="840" y="670">8K</text>
+  <text x="1120" y="670">32K</text><text x="1400" y="670">64K</text><text x="1520" y="670">—</text>
+ </g>
+ <text x="820" y="696" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
+
+ <!-- y = 640 - tps*0.24 -->
+ <!-- vLLM Int4: 1491 1753 1688 1375 1086 895 -->
+ <polyline points="280,282.2 560,219.3 840,234.9 1120,310 1400,379.4 1520,425.2" fill="none" stroke="#e8a87c" stroke-width="5"/>
+ <g fill="#e8a87c"><circle cx="280" cy="282.2" r="6.5"/><circle cx="560" cy="219.3" r="6.5"/><circle cx="840" cy="234.9" r="6.5"/><circle cx="1120" cy="310" r="6.5"/><circle cx="1400" cy="379.4" r="6.5"/><circle cx="1520" cy="425.2" r="6.5"/></g>
+ <!-- OV INT4-GDN8 + MTP5: 1267 1592 1472 1083 775 -->
+ <polyline points="280,335.9 560,257.9 840,286.7 1120,380.1 1400,454.0" fill="none" stroke="#81c9ff" stroke-width="4"/>
+ <g fill="#81c9ff"><circle cx="280" cy="335.9" r="5.5"/><circle cx="560" cy="257.9" r="5.5"/><circle cx="840" cy="286.7" r="5.5"/><circle cx="1120" cy="380.1" r="5.5"/><circle cx="1400" cy="454.0" r="5.5"/></g>
+ <!-- llama Q4 cold: 209.5 249.9 239.8 233.1 222.3 -->
+ <polyline points="280,589.7 560,580.0 840,582.4 1120,584.1 1400,586.6" fill="none" stroke="#7d9b76" stroke-width="3.5" stroke-dasharray="8,6"/>
+ <g fill="#7d9b76"><circle cx="280" cy="589.7" r="4.5"/><circle cx="560" cy="580.0" r="4.5"/><circle cx="840" cy="582.4" r="4.5"/><circle cx="1120" cy="584.1" r="4.5"/><circle cx="1400" cy="586.6" r="4.5"/></g>
+
+ <g fill="#f2c9a0" font-size="15.5" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="267">1491</text><text x="560" y="204">1753</text><text x="840" y="219">1688</text>
+  <text x="1120" y="295">1375</text><text x="1400" y="364">1086</text><text x="1520" y="410">895</text>
+ </g>
+ <g fill="#a5dcff" font-size="14.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="321">1267</text><text x="560" y="243">1592</text><text x="840" y="272">1472</text><text x="1120" y="365">1083</text><text x="1400" y="439">775</text>
+ </g>
+ <g fill="#8fb98a" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="575">210</text><text x="560" y="565">250</text><text x="840" y="567">240</text><text x="1120" y="569">233</text><text x="1400" y="571">222</text>
+ </g>
+
+ <text x="1230" y="340" fill="#81c9ff" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV with MTP5 survives 64K (775 t/s); 98K → GPU event error (ceiling)</text>
+
+ <text x="60" y="742" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">READING</text>
+ <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
+  <text x="110" y="772">Prefill in the INT4 class: vLLM and OV tie ~1500-1750 at short input; vLLM holds longer (895 @96K).</text>
+  <text x="110" y="796">llama.cpp cold prefill is 210-250 t/s flat — unchanged from Q8_0 (~230). Its lane is decode, not prefill (see decode chart).</text>
+  <text x="110" y="820">The llama Q4 sweep TTFTs (28K-113K t/s) were prompt-cache hits; a --no-cache-prompt cold re-run is the honest row.</text>
+  <text x="110" y="844">OV INT4-GDN8 prefill with the grafted MTP5 head: short-input ~1267-1592, decays like vLLM at length. 98K is the ceiling (GPU event error).</text>
+ </g>
+ <text x="60" y="980" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{vllm-v2,ov-int4-gdn8,ov-int4-gdn8-mtp5}.json + llama-q4km-cold-prefill.json · cookbook @ 2026-09-15</text>
+</svg>

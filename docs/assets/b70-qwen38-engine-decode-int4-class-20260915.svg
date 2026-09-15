@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" width="1600" height="1080" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B INT4 class decode vs context — ARC Pro B70, same weight class, 8-bit KV, 2026-09-15</title>
+ <desc id="d">Decode tok/s at 512..256K on one B70 each. vLLM Int4 MTP4: 75.6 71.6 61.2 52.4 49.8 51.1 45.7 32.6 34.5. llama Q4+MTP: 37.8 38.4 37.3 33.4 29.2 25.8 23.0 18.9 15.9. OV INT4-GDN8+MTP5 (grafted head): 79.5 73.0 45.8 47.7 29.1 then 98K CL error.</desc>
+ <rect width="1600" height="1080" fill="#07111f"/>
+ <text x="60" y="56" fill="#68a7ff" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">DECODE vs CONTEXT · INT4 CLASS · 3 ENGINES · QWEN3.8-27B · 1× ARC PRO B70 EACH · 2026-09-15</text>
+ <text x="60" y="82" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · single-stream · n=3 ≤64K, n=1 probes ≥98K · same filler text · post-first medians · 8-bit KV all arms (vLLM fp8 / llama q8_0 / OV u8)</text>
+ <line x1="110" y1="700" x2="1540" y2="700" stroke="#26364e" stroke-width="2"/>
+ <line x1="110" y1="130" x2="110" y2="700" stroke="#26364e" stroke-width="2"/>
+ <!-- y scale: 0 at 700, 80 tps at 130 => 7.125 px/tps -->
+ <g stroke="#1a2740" stroke-width="1">
+  <line x1="110" y1="558.0" x2="1540" y2="558.0"/><line x1="110" y1="416.25" x2="1540" y2="416.25"/>
+  <line x1="110" y1="274.5" x2="1540" y2="274.5"/><line x1="110" y1="202.25" x2="1540" y2="202.25"/>
+ </g>
+ <g fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
+  <text x="98" y="705">0</text><text x="98" y="628.9">10</text><text x="98" y="558">20</text><text x="98" y="487">30</text><text x="98" y="416.25">40</text><text x="98" y="345">50</text><text x="98" y="274.5">60</text><text x="98" y="204">70</text><text x="98" y="133">80</text>
+ </g>
+ <!-- x positions: 512=240 2K=440 8K=640 32K=840 64K=1010 96K=1180 128K=1310 196K=1440 256K=1530 -->
+ <!-- vLLM Int4: 75.58 71.63 61.15 52.35 49.83 51.08 45.66 32.62 34.5 -->
+ <polyline points="240,161.5 440,189.6 640,264.4 840,327.0 1010,344.9 1180,336.1 1310,374.7 1440,467.6 1530,454.2" fill="none" stroke="#e8a87c" stroke-width="4"/>
+ <g fill="#e8a87c"><circle cx="240" cy="161.5" r="6"/><circle cx="440" cy="189.6" r="6"/><circle cx="640" cy="264.4" r="6"/><circle cx="840" cy="327.0" r="6"/><circle cx="1010" cy="344.9" r="6"/><circle cx="1180" cy="336.1" r="6"/><circle cx="1310" cy="374.7" r="5.5" fill="none" stroke="#e8a87c" stroke-width="2"/><circle cx="1440" cy="467.6" r="5.5" fill="none" stroke="#e8a87c" stroke-width="2"/></g>
+ <!-- llama Q4+MTP: 37.81 38.38 37.29 33.41 29.19 25.81 23.0 18.93 15.95 -->
+ <polyline points="240,430.6 440,426.5 640,434.3 840,461.9 1010,492.0 1180,516.1 1310,536.1 1440,565.1 1530,586.4" fill="none" stroke="#7d9b76" stroke-width="4"/>
+ <g fill="#7d9b76"><circle cx="240" cy="430.6" r="6"/><circle cx="440" cy="426.5" r="6"/><circle cx="640" cy="434.3" r="6"/><circle cx="840" cy="461.9" r="6"/><circle cx="1010" cy="492.0" r="6"/><circle cx="1180" cy="516.1" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/><circle cx="1310" cy="536.1" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/><circle cx="1440" cy="565.1" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/><circle cx="1530" cy="586.4" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/></g>
+ <!-- OV INT4-GDN8 + MTP5 (grafted Hub int4-ov head): 79.53 72.98 45.83 47.72 29.09, 98K CL error -->
+ <polyline points="240,133.3 440,180.0 640,373.5 840,360.0 1010,492.7" fill="none" stroke="#81c9ff" stroke-width="4"/>
+ <g fill="#81c9ff"><circle cx="240" cy="133.3" r="6"/><circle cx="440" cy="180.0" r="6"/><circle cx="640" cy="373.5" r="6"/><circle cx="840" cy="360.0" r="6"/><circle cx="1010" cy="492.7" r="6"/></g>
+ <!-- OV no-draft baseline: 22.39 22.05 21.72 19.6 (from earlier sweep) -->
+ <polyline points="240,540.5 440,542.9 640,545.2 840,560.4" fill="none" stroke="#81c9ff" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.55"/>
+ <g fill="#81c9ff" opacity="0.55"><circle cx="240" cy="540.5" r="4"/><circle cx="440" cy="542.9" r="4"/><circle cx="640" cy="545.2" r="4"/><circle cx="840" cy="560.4" r="4"/></g>
+ <g fill="#e8eefb" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="144">75.6</text><text x="440" y="172">71.6</text><text x="640" y="247">61.2</text><text x="840" y="310">52.4</text><text x="1010" y="328">49.8</text><text x="1180" y="319">51.1</text><text x="1310" y="358">45.7</text><text x="1440" y="451">32.6</text><text x="1530" y="437">34.5</text>
+ </g>
+ <g fill="#8fb98a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="422">37.8</text><text x="440" y="418">38.4</text><text x="640" y="426">37.3</text><text x="840" y="453">33.4</text><text x="1010" y="483">29.2</text><text x="1180" y="507">25.8</text><text x="1310" y="527">23.0</text><text x="1440" y="556">18.9</text><text x="1530" y="577">15.9</text>
+ </g>
+ <g fill="#a5dcff" font-size="13.5" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="116">79.5</text><text x="440" y="163">73.0</text><text x="640" y="356">45.8</text><text x="840" y="343">47.7</text><text x="1010" y="476">29.1</text>
+ </g>
+ <g fill="#8fa3c0" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="240" y="732">512</text><text x="440" y="732">2K</text><text x="640" y="732">8K</text><text x="840" y="732">32K</text><text x="1010" y="732">64K</text><text x="1180" y="732">96K</text><text x="1310" y="732">128K</text><text x="1440" y="732">196K</text><text x="1530" y="732">256K</text>
+ </g>
+ <g stroke="#26364e" stroke-width="2">
+  <line x1="240" y1="700" x2="240" y2="708"/><line x1="440" y1="700" x2="440" y2="708"/><line x1="640" y1="700" x2="640" y2="708"/><line x1="840" y1="700" x2="840" y2="708"/><line x1="1010" y1="700" x2="1010" y2="708"/><line x1="1180" y1="700" x2="1180" y2="708"/><line x1="1310" y1="700" x2="1310" y2="708"/><line x1="1440" y1="700" x2="1440" y2="708"/><line x1="1530" y1="700" x2="1530" y2="708"/>
+ </g>
+ <text x="820" y="764" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens), log-ish placement</text>
+ <g font-size="15" font-family="Segoe UI, Inter, sans-serif">
+  <rect x="130" y="96" width="14" height="14" fill="#e8a87c"/><text x="152" y="108" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 · MTP4 · fp8 KV · 19 GB</text>
+  <rect x="520" y="96" width="14" height="14" fill="#7d9b76"/><text x="542" y="108" fill="#c9d8f0">llama.cpp SYCL · UD-Q4_K_M + native MTP draft · q8_0 KV · 16.5 GB</text>
+  <rect x="1030" y="96" width="14" height="14" fill="#81c9ff"/><text x="1052" y="108" fill="#c9d8f0">OpenVINO · INT4-GDN8 + grafted MTP5 head · u8 KV · 21 GB</text>
+ </g>
+ <text x="60" y="800" fill="#fbbf24" font-size="14" font-weight="600" font-family="Segoe UI, Inter, sans-serif">INT4 CLASS AFTER THE MTP GRAFT — OV IS NOW EQUAL:</text>
+ <g fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif">
+  <text x="76" y="824">OpenVINO jumped 22.4 → 79.5 @512 (+3.55×) with the Intel Hub int4-ov MTP head grafted into the GDN8 export — correct output, realistic 79.5/73.0 vs vLLM MTP4 75.6/71.6.</text>
+  <text x="76" y="848">llama Q4+MTP 37.8 vs stale Q8 no-spec 14.0 — 2.7× faster: 16.5 GB fits + native MTP draft. Q8 lane had no draft unit.</text>
+  <text x="76" y="872">The prior no-draft 22.4 line is the dashed baseline. Without an MTP head OpenVINO cannot compete in this class; with one it leads at 512.</text>
+  <text x="76" y="896">Ceilings: OV MTP5 survives 64K (29.1, no-draft crashed) but dies at 98K (GPU event wait). vLLM caps ≈204K (KV budget). llama alone holds 256K.</text>
+ </g>
+ <text x="60" y="950" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">Open circles = n=1 ceiling probes (98K+); · vLLM 262K rejected by vLLM itself: 256K needs 9.33 GiB KV vs 7.47 GiB free on one card → ceiling ≈204K</text>
+ <text x="60" y="1000" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Power (energy counter): vLLM ~228 W · llama ~155 W · OV MTP5 ~205 W @230W cap — none power-limited at C1. Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{vllm-v2,llamacpp-q4km-mtp,ov-int4-gdn8,ov-int4-gdn8-mtp5}.json + vllm-int4-262k-probe.json</text>
+</svg>
