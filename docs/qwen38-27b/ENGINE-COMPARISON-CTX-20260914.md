@@ -1,5 +1,14 @@
 # Qwen3.8-27B engine context sweep — OpenVINO vs vLLM vs llama.cpp (2026-09-14)
 
+**TL;DR — INT4-class ranking (2026-09-15, single-stream greedy, one B70 per
+engine):** OpenVINO INT4-GDN8 + grafted MTP5 draft leads short context at
+**79.5 tok/s @512** (73.0 @2K); vLLM GPTQ-Int4 + MTP4 is the serving leader
+and decays slowest (**75.6 @512, 61.1 @8K, 45.7 @98K, 34.5 @196K**);
+llama.cpp UD-Q4_K_M + draft is the only engine serving the full **256K**
+(37.8 @512 → 16.0 @256K). OpenVINO's full-protocol ceiling is **128K**
+(196K+ fails `CL_OUT_OF_RESOURCES`; those rows are 40-token capacity probes,
+upstream [openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483)).
+
 > **MEASUREMENT CORRECTION (v2, same night):** the first vLLM arm had two
 > defects: decode was computed as tokens/wall including TTFT (understating
 > decode drastically at long context), watts read the idle card, and it ran at
