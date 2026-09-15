@@ -336,7 +336,7 @@ one headline. Same-arm generation curve + isolated C1 synthetic 128K (n=5,
 870 MiB after load): p512/g256 **110.76**, p8192/g512 **64.96**,
 p130944/g128 **62.52** (5/5 exact 131,072 tokens). Isolated C1 only — not
 a serving headline. Tables:
-[DRAFT-INT4-S-M1.md](qwen38-27/DRAFT-INT4-S-M1.md).
+[DRAFT-INT4-S-M1.md](qwen38-27b/DRAFT-INT4-S-M1.md).
 Do **not** apply Nemotron grouped-topk / SSU, and do **not** apply the original
 full-buffer GDN split.
 
@@ -346,7 +346,7 @@ The launch line above already sets `--max-num-seqs 64`. For concurrent
 serving apply v5 (required) and optionally S+M1, switch
 `--no-enable-prefix-caching` → `--enable-prefix-caching`, and drive N
 concurrent clients. Measured 2026-08-19 (results and labels:
-[QWEN38-VLLM-XPU.md §11](qwen38-27/QWEN38-VLLM-XPU.md)): 0 crashes at every
+[QWEN38-VLLM-XPU.md §11](qwen38-27b/QWEN38-VLLM-XPU.md)): 0 crashes at every
 cell including mixed long-prefill + spec decode; LocalMaxxing harness
 aggregate **C5 203.8 / C32 224.2 tok/s** (self-reported records), controlled
 long-prefill wall-aggregate C32 160.5 with per-stream ~28 tok/s. MTP
@@ -368,7 +368,7 @@ DFlash 2 (`incoai/Qwen3.8-27B-DFlash2`) is **not** a recipe on this image.
 A research overlay of open vLLM PR #52816 + v5 **did load** on 2026-08-19
 (`/health` 200) but spec acceptance was **0/574**. One-shot post-first
 19.18 tok/s is not a median and is slower than MTP4. Keep MTP4. Details:
-[QWEN38-VLLM-XPU.md §13](qwen38-27/QWEN38-VLLM-XPU.md).
+[QWEN38-VLLM-XPU.md §13](qwen38-27b/QWEN38-VLLM-XPU.md).
 
 ## 12. Dual-B70 multi-GPU (TP2 / PP2)
 

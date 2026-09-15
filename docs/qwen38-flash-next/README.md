@@ -8,4 +8,4 @@ peak, not a maximum context.
 |---|---|---|
 | llama.cpp SYCL, AtomicChat M64 GGUF | Two B70s, C1 | [QWEN38-FLASH-NEXT-LLAMACPP.md](QWEN38-FLASH-NEXT-LLAMACPP.md) |
 
-Qwen3.8-27B GPTQ and FP8 TP2 live under [`docs/qwen38-27/`](../qwen38-27/README.md).
+Qwen3.8-27B GPTQ and FP8 TP2 live under [`docs/qwen38-27b/`](../qwen38-27b/README.md).

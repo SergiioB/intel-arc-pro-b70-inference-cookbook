@@ -10,9 +10,9 @@ digests, kernel builds, serve flags, context limits, performance numbers, power
 measurements, and evidence belong on model-specific pages and in the generated
 benchmark catalog.
 
-- Qwen3.8 family routes: [qwen38-27/README.md](qwen38-27/README.md)
+- Qwen3.8 family routes: [qwen38-27b/README.md](qwen38-27b/README.md)
 - Qwen3.8 FP8 W8A16 TP2 recipe and evidence:
-  [qwen38-27/FP8-TP2-W8A16.md](qwen38-27/FP8-TP2-W8A16.md)
+  [qwen38-27b/FP8-TP2-W8A16.md](qwen38-27b/FP8-TP2-W8A16.md)
 - Image and model patch compatibility:
   [IMAGE-AND-PATCH-MATRIX.md](IMAGE-AND-PATCH-MATRIX.md)
 - Published numeric records: [BENCHMARK-CATALOG.md](BENCHMARK-CATALOG.md)

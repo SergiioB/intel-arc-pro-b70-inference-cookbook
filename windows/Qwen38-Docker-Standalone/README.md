@@ -2,7 +2,7 @@
 
 > Vendored from `Qwen38-Docker-Standalone-2026.08.18.zip`, then the
 > 2026.08.19 overlay (draft-INT4 S+M1 + mixed-split v5, prefix cache on).
-> See [WINDOWS-STANDALONE.md](../../docs/qwen38-27/WINDOWS-STANDALONE.md)
+> See [WINDOWS-STANDALONE.md](../../docs/qwen38-27b/WINDOWS-STANDALONE.md)
 > for the upgrade steps, provenance and measured results.
 
 Windows container devised and tested by Ian Hudson - aitesthive.com

@@ -34,7 +34,7 @@ Rules that generalize:
 ## 2. Drafters — the native MTP head wins on quantized single-card serving
 
 Measured closure on Qwen3.8-27B GPTQ-INT4 (one B70, 230 W, all known bugs
-fixed — see [MTP-DEPTH-DFLASH2-KNORM-20260914.md](qwen38-27/MTP-DEPTH-DFLASH2-KNORM-20260914.md)):
+fixed — see [MTP-DEPTH-DFLASH2-KNORM-20260914.md](qwen38-27b/MTP-DEPTH-DFLASH2-KNORM-20260914.md)):
 
 | Drafter | Acceptance (tok/step) | p512/g128 | p8192/g128 |
 |---|---:|---:|---:|
@@ -69,9 +69,9 @@ here disputes that regime — it is simply not single-card quantized Xe2 serving
 
 ## 3. Related pages
 
-- [Qwen3.8-27B GPTQ recipe](qwen38-27/QWEN38-VLLM-XPU.md) — the serving route
+- [Qwen3.8-27B GPTQ recipe](qwen38-27b/QWEN38-VLLM-XPU.md) — the serving route
   these decisions produce, including the DFlash2 research history and traps.
-- [Draft INT4 overlay](qwen38-27/DRAFT-INT4-S-M1.md) — quantizing the native
+- [Draft INT4 overlay](qwen38-27b/DRAFT-INT4-S-M1.md) — quantizing the native
   MTP head itself (the sanctioned drafter-cost reduction).
 - [Image and patch matrix](IMAGE-AND-PATCH-MATRIX.md) — quantization-specific
   patch compatibility.

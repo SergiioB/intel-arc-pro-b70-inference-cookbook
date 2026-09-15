@@ -5,7 +5,7 @@ are **context windows**, not concurrency. The same patched tree serves all
 three. The n=5 leader cells happen to be 8K decode and 16K prefill — that is
 not a 16K cap.
 
-This is a different model from [Qwen3.8-27B](../qwen38-27/README.md). The
+This is a different model from [Qwen3.8-27B](../qwen38-27b/README.md). The
 numbers are llama.cpp engine timings, not vLLM client rates.
 
 > **2026-09-11 update — MTP + fused multi-token MoE kernel.** The recipe below
@@ -176,7 +176,7 @@ It never enters GPU memory. The serve line forces it to host RAM with
 combined ~65 GiB VRAM next to the experts and the `q8_0`/`q4_1` KV cache, so
 llama.cpp memory-maps it from the GGUF and serves the lookups from CPU/disk.
 Treat it as a separate placement and quantization axis from the GPU-resident
-weights (see `docs/qwen38-27/README.md` for the sibling 27B route; do not mix).
+weights (see `docs/qwen38-27b/README.md` for the sibling 27B route; do not mix).
 
 ## Reproduce
 
