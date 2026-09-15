@@ -15,10 +15,10 @@ authoritative watchdog operational envs stay in
 
 | Flag | Default | Effect | Family / route | Source |
 |---|---|---|---|---|
-| `B70_MTP_BF16_DRAFT=1` | off | Loads the preserved BF16 MTP draft weights outside the GPTQ quantization config. Required by every MTP recipe on GPTQ checkpoints. | qwen36-35a3, qwen36-27, qwen38-27, ornith15-35a3 | [launch-vllm-128k-mode.sh](../benchmarks/qwen36-35a3/launch-vllm-128k-mode.sh), [FULL-SETUP §11](FULL-SETUP-COMMANDS.md) |
-| `B70_DRAFT_LMHEAD_INT4=1` | off | Draft-INT4 overlay: runtime RTN of the draft LM head. Target verify stays BF16. Set together with `B70_DRAFT_MTP_INT4`. Blocked under tensor parallelism by a guard. | qwen38-27 S+M1 overlay | [§11](FULL-SETUP-COMMANDS.md), [patch_draft_lmhead_int4.py](../patches/patch_draft_lmhead_int4.py) |
-| `B70_DRAFT_MTP_INT4=1` | off | Draft-INT4 overlay: runtime RTN of the five MTP linears. Same pairing and TP guard as above. | qwen38-27 S+M1 overlay | [§11](FULL-SETUP-COMMANDS.md), [patch_draft_mtp_int4.py](../patches/patch_draft_mtp_int4.py) |
-| `B70_GDN_MIXED_SPLIT_V5` | off | Patch marker for the mixed-batch GDN split v5; keeps the patch idempotent and lets logs prove it applied. | qwen38-27 v5 overlay | [patch_gdn_mixed_split_v5.py](../patches/patch_gdn_mixed_split_v5.py) |
+| `B70_MTP_BF16_DRAFT=1` | off | Loads the preserved BF16 MTP draft weights outside the GPTQ quantization config. Required by every MTP recipe on GPTQ checkpoints. | qwen36-35a3, qwen36-27, qwen38-27b, ornith15-35a3 | [launch-vllm-128k-mode.sh](../benchmarks/qwen36-35a3/launch-vllm-128k-mode.sh), [FULL-SETUP §11](FULL-SETUP-COMMANDS.md) |
+| `B70_DRAFT_LMHEAD_INT4=1` | off | Draft-INT4 overlay: runtime RTN of the draft LM head. Target verify stays BF16. Set together with `B70_DRAFT_MTP_INT4`. Blocked under tensor parallelism by a guard. | qwen38-27b S+M1 overlay | [§11](FULL-SETUP-COMMANDS.md), [patch_draft_lmhead_int4.py](../patches/patch_draft_lmhead_int4.py) |
+| `B70_DRAFT_MTP_INT4=1` | off | Draft-INT4 overlay: runtime RTN of the five MTP linears. Same pairing and TP guard as above. | qwen38-27b S+M1 overlay | [§11](FULL-SETUP-COMMANDS.md), [patch_draft_mtp_int4.py](../patches/patch_draft_mtp_int4.py) |
+| `B70_GDN_MIXED_SPLIT_V5` | off | Patch marker for the mixed-batch GDN split v5; keeps the patch idempotent and lets logs prove it applied. | qwen38-27b v5 overlay | [patch_gdn_mixed_split_v5.py](../patches/patch_gdn_mixed_split_v5.py) |
 | `B70_MTP_NIGHTLY_DRAFT` | patch marker | Identifies the BF16 MTP draft build inserted by `patch_mtp_nightly.py`. | every route applying `patch_mtp_nightly.py` | [patch_mtp_nightly.py](../patches/patch_mtp_nightly.py) |
 | `B70_MTP_PARTIAL_FINAL_GROUP` | patch marker | Handles the partial final speculative group at the exact 131,072-token boundary. | every route applying `patch_mtp_boundary.py` | [patch_mtp_boundary.py](../patches/patch_mtp_boundary.py), [FULL-SETUP §5](FULL-SETUP-COMMANDS.md) |
 
