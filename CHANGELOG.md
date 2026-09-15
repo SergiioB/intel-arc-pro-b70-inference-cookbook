@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.4](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.3...v1.2.4) (2026-09-15)
+
+
+### Bug Fixes
+
+* **data:** stale OV numbers swept; Cascadia split as its own engine ([150bed4](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/150bed477cba66d18f656a91afec13e2a14c6f2b))
+* **data:** stale OV numbers swept; Cascadia split as its own engine ([676c371](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/676c371f8e16a74ae505638486fbaa7b1e4b2098))
+
 ## [1.2.3](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.2...v1.2.3) (2026-09-15)
 
 
