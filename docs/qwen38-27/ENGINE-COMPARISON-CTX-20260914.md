@@ -142,6 +142,44 @@ an engine limit.
 Exact per-engine setup commands, cold-start times, and graph-capture notes:
 [ENGINE-SETUP-RECIPES.md](ENGINE-SETUP-RECIPES.md).
 
+## vLLM FP8 TP2 (2× B70) — reference cells from banked evidence
+
+Not rerun tonight; from [FP8-TP2-W8A16.md](FP8-TP2-W8A16.md) (official-lab
+E2, random-token synthetic prompts, C1, n=5, MTP8, cold-input rate =
+input/TTFT client side). DIFFERENT protocol from the sweep tables — shown for
+the dual-card class only, not mixed into single-card rankings:
+
+| cell | decode tok/s (median) | cold-input rate tok/s | draw/card |
+|---|---:|---:|---:|
+| p512 | 53.42 | 1206.7 | 97.6 / 103.6 W |
+| p1024 | 60.13 (max 71.06) | 1736.2 | 109.5 / 118.9 W |
+| p2048 (hybrid k=6) | 33.52 | 1315.1 | 135.1 / 147.2 W |
+
+Why TP2 and not single-card FP8: FP8 weights are 30.9 GB vs 30.3 GiB usable —
+weights alone exceed one B70. Same for int8-W8A16 (31.6 GB, load dies at
+init: measured, `vllm-int8-attempt.json`). Single-card classes that fit:
+Int4 / int8-ov / Q8_0. Full per-engine TP2 rerun is queued as future work.
+
+![Prefill vs context](../assets/b70-qwen38-engine-prefill-20260914.svg)
+
+## PREFILL summary (single-card arms, v2 protocol)
+
+| len | OpenVINO int8 | vLLM GPTQ-Int4 | llama.cpp Q8_0 (150W-capped†) | FP8 TP2 ref (2×B70) |
+|---:|---:|---:|---:|---:|
+| 512 | **1537** | 1491 | 230 | 1207 |
+| 2K | 1815 | 1753 | 227 | 1315 (hybrid k=6) |
+| 8K | 1643 | **1689** | 224 | — |
+| 32K | 1119 | **1375** | 220 | — |
+| 64K | 780 | **1086** | 213 | — |
+| 96K | 587 | **895** | — | — |
+
+† llama.cpp prefill under the 150W default cap; +23% at 230W (230→285 t/s
+@512). llama+draft-MTP prefill INVALID in that run (server prompt-cache hits).
+TP2 prefill cells are synthetic-prompt cold-input rates, not the filler task.
+
+vLLM holds prefill best as context grows (chunked prefill, 8192 batches);
+OV wins ≤2K; llama.cpp is decode-optimized, not prefill.
+
 ## Reading (v2-corrected)
 
 - **vLLM XPU + GPTQ-Int4 + MTP4 + fp8 KV wins at every context length** —
