@@ -15,7 +15,7 @@
   <line x1="990" y1="119" x2="1026" y2="119" stroke="#7d9b76" stroke-width="3.5"/><circle cx="1008" cy="119" r="4.5" fill="#7d9b76"/>
   <text x="1034" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · no-spec · 150W cap</text>
   <line x1="1340" y1="119" x2="1376" y2="119" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/><rect x="1356" y="111" width="7" height="16" fill="#c792ea"/>
-  <text x="1384" y="124" fill="#c9d8f0">vLLM FP8 · MTP8 · 2× B70 TP2 ref</text>
+  <text x="1384" y="124" fill="#c9d8f0">vLLM FP8 · MTP8 · 2× B70 TP2 (1207/1736/1315)</text>
  </g>
 
  <!-- plot: y 0-2000 at 640..160 => 0.24 px per tps -->
@@ -54,8 +54,8 @@
  <polyline points="280,584.8 560,585.5 840,586.2 1120,587.2 1400,588.9" fill="none" stroke="#7d9b76" stroke-width="3.5" stroke-dasharray="8,6"/>
  <g fill="#7d9b76"><circle cx="280" cy="584.8" r="4.5"/><circle cx="840" cy="586.2" r="4.5"/><circle cx="1400" cy="588.9" r="4.5"/></g>
  <!-- FP8 TP2 ref: 1207@512, 1315@2K -->
- <polyline points="280,350.3 560,324.4" fill="none" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/>
- <g fill="#c792ea"><rect x="273" y="343.3" width="14" height="14"/><rect x="553" y="317.4" width="14" height="14"/></g>
+ <polyline points="280,350.3 420,223.3 560,324.4" fill="none" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/>
+ <g fill="#c792ea"><rect x="273" y="343.3" width="14" height="14"/><rect x="413" y="216.3" width="14" height="14"/><rect x="553" y="317.4" width="14" height="14"/></g>
 
  <!-- labels -->
  <g fill="#a5dcff" font-size="14.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
@@ -70,8 +70,9 @@
   <text x="280" y="570">230</text><text x="840" y="572">224</text><text x="1400" y="574">213</text>
  </g>
  <g fill="#c792ea" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="330" y="368">1207</text><text x="610" y="342">1315</text>
+  <text x="330" y="368">1207</text><text x="420" y="208">1736</text><text x="610" y="342">1315</text>
  </g>
+ <text x="420" y="188" fill="#c792ea" font-size="12" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">FP8 TP2 prefill peaks 1736 @1K — beats every 1-card arm</text>
 
  <!-- outcome notes -->
  <text x="620" y="480" fill="#f2c9a0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">vLLM chunked prefill (8192) holds rate: +39% over OV at 64K, +53% at 96K</text>

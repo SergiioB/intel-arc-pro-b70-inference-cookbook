@@ -6,17 +6,19 @@
  <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · shared filler task · n=3 · single-stream timing · 230W caps · weight formats LABELED per curve</text>
 
  <!-- LEGEND boxed, quant in name -->
- <rect x="110" y="96" width="1430" height="46" rx="6" fill="#0d1b30" stroke="#26364e"/>
+ <rect x="110" y="84" width="1430" height="74" rx="6" fill="#0d1b30" stroke="#26364e"/>
  <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
-  <line x1="128" y1="119" x2="164" y2="119" stroke="#e8a87c" stroke-width="5"/><circle cx="146" cy="119" r="5.5" fill="#e8a87c"/>
-  <text x="172" y="124" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 · MTP4 · fp8 KV · graph ON</text>
-  <line x1="520" y1="119" x2="556" y2="119" stroke="#81c9ff" stroke-width="4"/><circle cx="538" cy="119" r="5" fill="#81c9ff"/>
-  <text x="564" y="124" fill="#c9d8f0">OpenVINO GenAI · int8-ov · MTP nat5</text>
-  <line x1="880" y1="119" x2="916" y2="119" stroke="#b8e09a" stroke-width="4.5"/><circle cx="898" cy="119" r="5" fill="#b8e09a"/>
-  <text x="924" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · draft-MTP</text>
+  <line x1="128" y1="119" x2="164" y2="119" stroke="#e8a87c" stroke-width="5"/><circle cx="146" cy="107" r="5.5" fill="#e8a87c"/>
+  <text x="172" y="112" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 · MTP4 · fp8 KV · graph ON</text>
+  <line x1="520" y1="119" x2="556" y2="119" stroke="#81c9ff" stroke-width="4"/><circle cx="538" cy="107" r="5" fill="#81c9ff"/>
+  <text x="564" y="112" fill="#c9d8f0">OpenVINO GenAI · int8-ov · MTP nat5</text>
+  <line x1="880" y1="119" x2="916" y2="119" stroke="#b8e09a" stroke-width="4.5"/><circle cx="898" cy="107" r="5" fill="#b8e09a"/>
+  <text x="924" y="112" fill="#c9d8f0">llama.cpp · Q8_0 · draft-MTP</text>
   <line x1="1160" y1="119" x2="1196" y2="119" stroke="#7d9b76" stroke-width="3" stroke-dasharray="8,6"/>
-  <circle cx="1178" cy="119" r="4.5" fill="#7d9b76"/>
-  <text x="1204" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · no spec</text>
+  <circle cx="1178" cy="107" r="4.5" fill="#7d9b76"/>
+  <text x="1204" y="112" fill="#c9d8f0">llama.cpp · Q8_0 · no spec</text>
+  <line x1="128" y1="140" x2="164" y2="152" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/><rect x="143" y="132" width="7" height="16" fill="#c792ea"/>
+  <text x="172" y="145" fill="#c9d8f0">vLLM FP8 · MTP8 · 2× B70 TP2 — banked E2 cells (p512/p1K/p2K only, synthetic prompts)</text>
  </g>
 
  <!-- PLOT: y 0-80 at 600..160 (5.5 px/tps) -->
@@ -45,7 +47,15 @@
  </g>
  <text x="825" y="658" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
 
- <!-- series -->
+ <!-- vLLM FP8 TP2 (2x B70, banked E2): 53.4/60.1/33.5 -->
+ <polyline points="280,306.7 420,269.3 560,415.6" fill="none" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/>
+ <g fill="#c792ea"><rect x="273" y="299.7" width="14" height="14"/><rect x="413" y="262.3" width="14" height="14"/><rect x="553" y="408.6" width="14" height="14"/></g>
+ <g fill="#c792ea" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="292">53.4</text><text x="420" y="255">60.1</text><text x="560" y="440">33.5</text>
+ </g>
+ <text x="420" y="470" fill="#c792ea" font-size="12" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">FP8 TP2: 2× B70 · MTP8 · synthetic prompts — different class, shown for reference</text>
+
+<!-- series 1-card -->
  <polyline points="280,183.8 560,205.8 840,263.4 1120,311.8 1400,326.1" fill="none" stroke="#e8a87c" stroke-width="5"/>
  <g fill="#e8a87c"><circle cx="280" cy="183.8" r="6.5"/><circle cx="560" cy="205.8" r="6.5"/><circle cx="840" cy="263.4" r="6.5"/><circle cx="1120" cy="311.8" r="6.5"/><circle cx="1400" cy="326.1" r="6.5"/></g>
  <polyline points="280,258.5 560,289.3 840,320.6 1120,372.9 1400,462.5" fill="none" stroke="#81c9ff" stroke-width="4"/>
@@ -129,6 +139,6 @@
  </g>
 
  <text x="60" y="1330" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Setup recipes (exact commands, cold-start times, graph-capture notes): ENGINE-SETUP-RECIPES.md</text>
- <text x="60" y="1372" fill="#c792ea" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">vLLM FP8 MTP8 TP2 (2× B70) reference, banked E2 cells: decode 53.4 @p512, 60.1 @p1024 (max 71.1), 33.5 @p2048 hybrid — dual-card class, not comparable to the 1-card arms above.</text>
-<text x="60" y="1390" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 · ctx-sweep-vllm-v2.json · ctx-sweep-llamacpp-mtp.json · ctx-sweep-openvino.json · ENGINE-COMPARISON-CTX-20260914.md</text>
+ <text x="60" y="1390" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 · ctx-sweep-vllm-v2.json · ctx-sweep-llamacpp-mtp.json · ctx-sweep-openvino.json · ENGINE-COMPARISON-CTX-20260914.md</text>
 </svg>
+<!-- TP2 plotted -->
