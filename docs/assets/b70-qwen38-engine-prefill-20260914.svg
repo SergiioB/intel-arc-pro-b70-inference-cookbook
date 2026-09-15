@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" width="1600" height="1080" role="img" aria-labelledby="t d">
- <title id="t">Qwen3.8-27B prefill vs context — all engines, FP8 TP2 measured</title>
+ <title id="t">Qwen3.8-27B prefill vs context — ARC Pro B70, all engines, all weight classes</title>
  <desc id="d">Prefill tok/s: OV 1537/1815/1643/1119/780/587; vLLM Int4 1491/1753/1689/1375/1086/895; llama Q8_0 230/227/224/220/213; FP8 TP2 1077/1352/1392/1274/1132/1020.</desc>
- <rect width="1600" height="980" fill="#07111f"/>
+ <rect width="1600" height="1080" fill="#07111f"/>
  <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">PREFILL vs CONTEXT · QWEN3.8-27B · ARC PRO B70 · 2026-09-15</text>
  <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">input tokens / TTFT · shared task · n=3 medians · weight format and card count labeled per curve</text>
 
- <rect x="110" y="96" width="1430" height="46" rx="6" fill="#0d1b30" stroke="#26364e"/>
- <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
-  <line x1="128" y1="119" x2="164" y2="119" stroke="#81c9ff" stroke-width="4"/><circle cx="146" cy="119" r="5" fill="#81c9ff"/>
-  <text x="172" y="124" fill="#c9d8f0">OpenVINO · int8 (25.8 GB) · 1× B70</text>
-  <line x1="470" y1="119" x2="506" y2="119" stroke="#e8a87c" stroke-width="5"/><circle cx="488" cy="119" r="5.5" fill="#e8a87c"/>
-  <text x="514" y="124" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 (19 GB) · MTP4 · graph on · 1× B70</text>
-  <line x1="1030" y1="119" x2="1066" y2="119" stroke="#7d9b76" stroke-width="3.5"/><circle cx="1048" cy="119" r="4.5" fill="#7d9b76"/>
-  <text x="1074" y="124" fill="#c9d8f0">llama.cpp · Q8_0 (27 GB) · no-spec · 1× B70</text>
-  <line x1="128" y1="160" x2="164" y2="160" stroke="#c792ea" stroke-width="4"/><rect x="143" y="152" width="7" height="16" fill="#c792ea"/>
-  <text x="172" y="165" fill="#c9d8f0">vLLM XPU · FP8 (30.9 GB) · MTP8 · 2× B70 TP2 — measured</text>
+ <rect x="110" y="96" width="1430" height="72" rx="6" fill="#0d1b30" stroke="#26364e"/>
+ <g font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
+  <line x1="130" y1="118" x2="162" y2="118" stroke="#81c9ff" stroke-width="4"/><circle cx="146" cy="118" r="5" fill="#81c9ff"/>
+  <text x="170" y="122" fill="#c9d8f0">OpenVINO · int8 (25.8 GB) · 1× B70</text>
+  <line x1="470" y1="118" x2="502" y2="118" stroke="#e8a87c" stroke-width="5"/><circle cx="486" cy="118" r="5.5" fill="#e8a87c"/>
+  <text x="510" y="122" fill="#c9d8f0">vLLM · GPTQ-Int4 (19 GB) · MTP4 · 1× B70</text>
+  <line x1="940" y1="118" x2="972" y2="118" stroke="#7d9b76" stroke-width="3.5"/><circle cx="956" cy="118" r="4.5" fill="#7d9b76"/>
+  <text x="980" y="122" fill="#c9d8f0">llama.cpp · Q8_0 (27 GB) · 1× B70</text>
+  <line x1="130" y1="152" x2="162" y2="152" stroke="#c792ea" stroke-width="4"/><rect x="143" y="144" width="7" height="16" fill="#c792ea"/>
+  <text x="170" y="157" fill="#c9d8f0">vLLM · FP8 (30.9 GB) · MTP8 · 2× B70 TP2</text>
  </g>
 
  <line x1="110" y1="640" x2="1540" y2="640" stroke="#3a4c68" stroke-width="2"/>
@@ -43,20 +43,15 @@
  <text x="825" y="696" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
 
  <!-- y = 640 - tps*0.24 -->
- <!-- OV: 1537→271.1 1815→204.4 1643→245.7 1119→371.4 780→452.8 587→499.1 -->
  <polyline points="280,271.1 560,204.4 840,245.7 1120,371.4 1400,452.8 1520,499.1" fill="none" stroke="#81c9ff" stroke-width="4"/>
  <g fill="#81c9ff"><circle cx="280" cy="271.1" r="5.5"/><circle cx="560" cy="204.4" r="5.5"/><circle cx="840" cy="245.7" r="5.5"/><circle cx="1120" cy="371.4" r="5.5"/><circle cx="1400" cy="452.8" r="5.5"/><circle cx="1520" cy="499.1" r="5.5"/></g>
- <!-- vLLM Int4: 1491→282.2 1753→219.3 1689→234.6 1375→310 1086→379.4 895→425.2 -->
  <polyline points="280,282.2 560,219.3 840,234.6 1120,310 1400,379.4 1520,425.2" fill="none" stroke="#e8a87c" stroke-width="5"/>
  <g fill="#e8a87c"><circle cx="280" cy="282.2" r="6.5"/><circle cx="560" cy="219.3" r="6.5"/><circle cx="840" cy="234.6" r="6.5"/><circle cx="1120" cy="310" r="6.5"/><circle cx="1400" cy="379.4" r="6.5"/><circle cx="1520" cy="425.2" r="6.5"/></g>
- <!-- llama: 230→584.8 227→585.5 224→586.2 220→587.2 213→588.9 -->
  <polyline points="280,584.8 560,585.5 840,586.2 1120,587.2 1400,588.9" fill="none" stroke="#7d9b76" stroke-width="3.5" stroke-dasharray="8,6"/>
  <g fill="#7d9b76"><circle cx="280" cy="584.8" r="4.5"/><circle cx="840" cy="586.2" r="4.5"/><circle cx="1400" cy="588.9" r="4.5"/></g>
- <!-- FP8 TP2: 1077→381.5 1352→315.5 1392→305.9 1274→334.2 1132→368.3 1020→395.2 -->
  <polyline points="280,381.5 560,315.5 840,305.9 1120,334.2 1400,368.3 1520,395.2" fill="none" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/>
  <g fill="#c792ea"><rect x="273" y="374.5" width="14" height="14"/><rect x="553" y="308.5" width="14" height="14"/><rect x="833" y="298.9" width="14" height="14"/><rect x="1113" y="327.2" width="14" height="14"/><rect x="1393" y="361.3" width="14" height="14"/><rect x="1513" y="388.2" width="14" height="14"/></g>
 
- <!-- labels -->
  <g fill="#a5dcff" font-size="14.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
   <text x="280" y="256">1537</text><text x="560" y="189">1815</text><text x="840" y="230">1643</text>
   <text x="1120" y="356">1119</text><text x="1400" y="437">780</text><text x="1520" y="483">587</text>
@@ -73,32 +68,32 @@
   <text x="1120" y="350">1274</text><text x="1400" y="384">1132</text><text x="1520" y="411">1020</text>
  </g>
 
- <text x="620" y="480" fill="#f2c9a0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">vLLM chunked prefill holds rate longest: +39% over OV at 64K, +53% at 96K</text>
- <text x="620" y="502" fill="#a5dcff" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV peaks highest at short context (1815 @2K), then decays with length</text>
- <text x="620" y="524" fill="#e3c9fb" font-size="13" font-family="Segoe UI, Inter, sans-serif">FP8 TP2: flat 1019–1392 across the whole sweep — prefill scales with cards</text>
- <text x="180" y="560" fill="#8fb98a" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">llama.cpp: decode-oriented engine — prefill is not its lane</text>
+ <text x="560" y="470" fill="#f2c9a0" font-size="13" font-family="Segoe UI, Inter, sans-serif">vLLM chunked prefill: best long-context hold (+39% vs OV @64K)</text>
+ <text x="560" y="490" fill="#a5dcff" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">OV peak @2K (1815), decays with length</text>
+ <text x="560" y="510" fill="#e3c9fb" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">FP8 TP2 flat 1019–1392 — prefill scales with cards</text>
+ <text x="180" y="560" fill="#8fb98a" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">llama.cpp: decode-oriented — prefill not its lane</text>
 
-  <text x="60" y="742" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">TIME TO SERVE (cold start, measured)</text>
+ <text x="60" y="742" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">TIME TO SERVE (cold start, measured)</text>
  <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
-  <rect x="110" y="758" width="272" height="52" rx="8" fill="#0d1b30" stroke="#e8a87c" stroke-opacity="0.6"/>
+  <rect x="110" y="758" width="300" height="52" rx="8" fill="#0d1b30" stroke="#e8a87c" stroke-opacity="0.6"/>
   <text x="128" y="782" fill="#f2c9a0" font-size="13.5" font-weight="600">vLLM Int4 · 1× B70</text>
-  <text x="128" y="800" fill="#8fa3c0" font-size="12.5">≈3 min (170–190 s, ok w/ graph capture)</text>
-  <rect x="398" y="758" width="272" height="52" rx="8" fill="#0d1b30" stroke="#81c9ff" stroke-opacity="0.6"/>
-  <text x="416" y="782" fill="#a5dcff" font-size="13.5" font-weight="600">OpenVINO int8 · 1× B70</text>
-  <text x="416" y="800" fill="#8fa3c0" font-size="12.5">60–70 s load incl. draft</text>
-  <rect x="686" y="758" width="272" height="52" rx="8" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.6"/>
-  <text x="704" y="782" fill="#d4f0b8" font-size="13.5" font-weight="600">llama.cpp Q8_0 · 1× B70</text>
-  <text x="704" y="800" fill="#8fa3c0" font-size="12.5">41 s incl. MTP draft context</text>
-  <rect x="974" y="758" width="300" height="52" rx="8" fill="#0d1b30" stroke="#c792ea" stroke-opacity="0.6"/>
-  <text x="992" y="782" fill="#e3c9fb" font-size="13.5" font-weight="600">vLLM FP8 TP2 · 2× B70</text>
-  <text x="992" y="800" fill="#8fa3c0" font-size="12.5">306 s (two-card compile + capture)</text>
+  <text x="128" y="800" fill="#8fa3c0" font-size="12.5">≈3 min (170–190 s), incl. graph capture</text>
+  <rect x="432" y="758" width="300" height="52" rx="8" fill="#0d1b30" stroke="#81c9ff" stroke-opacity="0.6"/>
+  <text x="450" y="782" fill="#a5dcff" font-size="13.5" font-weight="600">OpenVINO int8 · 1× B70</text>
+  <text x="450" y="800" fill="#8fa3c0" font-size="12.5">60–70 s load incl. draft</text>
+  <rect x="754" y="758" width="300" height="52" rx="8" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.6"/>
+  <text x="772" y="782" fill="#d4f0b8" font-size="13.5" font-weight="600">llama.cpp Q8_0 · 1× B70</text>
+  <text x="772" y="800" fill="#8fa3c0" font-size="12.5">41 s incl. MTP draft context</text>
+  <rect x="1076" y="758" width="330" height="52" rx="8" fill="#0d1b30" stroke="#c792ea" stroke-opacity="0.6"/>
+  <text x="1094" y="782" fill="#e3c9fb" font-size="13.5" font-weight="600">vLLM FP8 TP2 · 2× B70</text>
+  <text x="1094" y="800" fill="#8fa3c0" font-size="12.5">306 s (two-card compile + capture)</text>
  </g>
 
- <text x="60" y="870" fill="#c9d8f0" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif">READING</text>
+ <text x="60" y="860" fill="#c9d8f0" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif">READING</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="896">Prefill is where vLLM's architecture pays on one card: chunked 8192-token batches keep the GPU saturated — 1375 @32K vs OV's 1119.</text>
-  <text x="110" y="920">FP8 TP2 uses the marginal card to keep prefill flat at every length (1392 @8K, 1020 @96K) — the only config without decay.</text>
-  <text x="110" y="944">llama.cpp prefill is an order of magnitude behind on this hardware — its lane is decode simplicity.</text>
+  <text x="110" y="886">Prefill: vLLM chunked 8192-token batches win on one card — 1375 @32K vs OV 1119.</text>
+  <text x="110" y="910">FP8 TP2 keeps prefill flat at every length (1392 @8K, 1020 @96K) — only config without decay.</text>
+  <text x="110" y="934">llama.cpp prefill ~230 t/s flat — decode is its lane.</text>
  </g>
- <text x="60" y="1000" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp,vllm-fp8-tp2}.json · ENGINE-SETUP-RECIPES.md · cookbook @ 2026-09-15</text>
+ <text x="60" y="980" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp,vllm-fp8-tp2}.json · cookbook @ 2026-09-15</text>
 </svg>
