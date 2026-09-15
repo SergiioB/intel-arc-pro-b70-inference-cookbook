@@ -1,64 +1,108 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" width="1600" height="1080" role="img" aria-labelledby="t d">
- <title id="t">Qwen3.8-27B INT4 class decode vs context — ARC Pro B70, same weight class, 2026-09-15, full data</title>
- <desc id="d">Decode tok/s at 512..256K on one B70 each. vLLM Int4 MTP4: 75.6..34.5 (ceiling ~200K). llama Q4+MTP: 37.8..15.9 (holds 256K). OV MTP5 (u8): 79.5..29.1 (speed, ≤64K). OV no-MTP u4: 14.7..11.3 (holds 256K).</desc>
- <rect width="1600" height="1080" fill="#07111f"/>
- <text x="60" y="56" fill="#68a7ff" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">DECODE vs CONTEXT · INT4 CLASS · 3 ENGINES · QWEN3.8-27B · 1× ARC PRO B70 EACH · 2026-09-15</text>
- <text x="60" y="82" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · single-stream · n=3 ≤64K, n=1 probes ≥98K · same filler text · post-first medians · KV per arm labeled (vLLM fp8 / llama q8_0 / OV u8, u4)</text>
- <line x1="110" y1="700" x2="1540" y2="700" stroke="#26364e" stroke-width="2"/>
- <line x1="110" y1="130" x2="110" y2="700" stroke="#26364e" stroke-width="2"/>
- <!-- y scale: 0 at 700, 80 tps at 130 => 7.125 px/tps -->
- <g stroke="#1a2740" stroke-width="1">
-  <line x1="110" y1="558.0" x2="1540" y2="558.0"/><line x1="110" y1="416.25" x2="1540" y2="416.25"/>
-  <line x1="110" y1="274.5" x2="1540" y2="274.5"/><line x1="110" y1="202.25" x2="1540" y2="202.25"/>
- </g>
- <g fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
-  <text x="98" y="705">0</text><text x="98" y="628.9">10</text><text x="98" y="558">20</text><text x="98" y="487">30</text><text x="98" y="416.25">40</text><text x="98" y="345">50</text><text x="98" y="274.5">60</text><text x="98" y="204">70</text><text x="98" y="133">80</text>
- </g>
- <!-- x positions: 512=240 2K=440 8K=640 32K=840 64K=1010 96K=1180 128K=1310 196K=1440 256K=1540 -->
- <!-- vLLM Int4 MTP4: 75.58 71.63 61.15 52.35 49.83 51.08 32.62 34.5  (stop 196K) -->
- <polyline points="240,161.5 440,189.6 640,264.4 840,327.0 1010,344.9 1180,336.1 1310,467.6 1440,454.2" fill="none" stroke="#e8a87c" stroke-width="4"/>
- <g fill="#e8a87c"><circle cx="240" cy="161.5" r="6"/><circle cx="440" cy="189.6" r="6"/><circle cx="640" cy="264.4" r="6"/><circle cx="840" cy="327.0" r="6"/><circle cx="1010" cy="344.9" r="6"/><circle cx="1180" cy="336.1" r="6"/><circle cx="1310" cy="467.6" r="5.5" fill="none" stroke="#e8a87c" stroke-width="2"/><circle cx="1440" cy="454.2" r="5.5" fill="none" stroke="#e8a87c" stroke-width="2"/></g>
- <!-- llama Q4+MTP: 37.81 38.38 37.29 33.41 29.19 25.81 23.0 18.93 15.95 -->
- <polyline points="240,430.6 440,426.5 640,434.3 840,461.9 1010,492.0 1180,516.1 1310,536.1 1440,565.1 1540,586.4" fill="none" stroke="#7d9b76" stroke-width="4"/>
- <g fill="#7d9b76"><circle cx="240" cy="430.6" r="6"/><circle cx="440" cy="426.5" r="6"/><circle cx="640" cy="434.3" r="6"/><circle cx="840" cy="461.9" r="6"/><circle cx="1010" cy="492.0" r="6"/><circle cx="1180" cy="516.1" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/><circle cx="1310" cy="536.1" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/><circle cx="1440" cy="565.1" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/><circle cx="1540" cy="586.4" r="5.5" fill="none" stroke="#7d9b76" stroke-width="2"/></g>
- <!-- OV MTP5 u8 (speed arm, ≤64K): 79.53 72.98 45.83 47.72 29.09 -->
- <polyline points="240,133.3 440,180.0 640,373.5 840,360.0 1010,492.7" fill="none" stroke="#81c9ff" stroke-width="4"/>
- <g fill="#81c9ff"><circle cx="240" cy="133.3" r="6"/><circle cx="440" cy="180.0" r="6"/><circle cx="640" cy="373.5" r="6"/><circle cx="840" cy="360.0" r="6"/><circle cx="1010" cy="492.7" r="6"/></g>
- <!-- OV no-MTP u4 (context arm): 14.72@128K 12.78@196K 12.13@224K → 11.28@256K (x 224K=1493) -->
- <polyline points="1310,595.1 1440,608.9 1493,613.6 1540,619.6" fill="none" stroke="#81c9ff" stroke-width="2.5" stroke-dasharray="5,4" opacity="0.9"/>
- <g fill="#81c9ff"><rect x="1304" y="589.1" width="12" height="12"/><rect x="1434" y="602.9" width="12" height="12"/><rect x="1487" y="607.6" width="12" height="12"/><rect x="1534" y="613.6" width="12" height="12"/></g>
-
- <g fill="#e8eefb" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="240" y="144">75.6</text><text x="440" y="172">71.6</text><text x="640" y="247">61.2</text><text x="840" y="310">52.4</text><text x="1010" y="328">49.8</text><text x="1180" y="319">51.1</text><text x="1310" y="451">32.6</text><text x="1440" y="437">34.5</text>
- </g>
- <g fill="#8fb98a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="240" y="422">37.8</text><text x="440" y="418">38.4</text><text x="640" y="426">37.3</text><text x="840" y="453">33.4</text><text x="1010" y="483">29.2</text><text x="1180" y="507">25.8</text><text x="1310" y="527">23.0</text><text x="1440" y="556">18.9</text><text x="1540" y="577">15.9</text>
- </g>
- <g fill="#a5dcff" font-size="13.5" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="240" y="116">79.5</text><text x="440" y="163">73.0</text><text x="640" y="356">45.8</text><text x="840" y="343">47.7</text><text x="1010" y="476">29.1</text>
- </g>
- <g fill="#a5dcff" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="1316" y="580">14.7</text><text x="1446" y="594">12.8</text><text x="1506" y="598">12.1</text><text x="1540" y="604">11.3</text>
- </g>
- <g fill="#8fa3c0" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
-  <text x="240" y="732">512</text><text x="440" y="732">2K</text><text x="640" y="732">8K</text><text x="840" y="732">32K</text><text x="1010" y="732">64K</text><text x="1180" y="732">96K</text><text x="1310" y="732">128K</text><text x="1440" y="732">196K</text><text x="1540" y="732">256K</text>
- </g>
- <g stroke="#26364e" stroke-width="2">
-  <line x1="240" y1="700" x2="240" y2="708"/><line x1="440" y1="700" x2="440" y2="708"/><line x1="640" y1="700" x2="640" y2="708"/><line x1="840" y1="700" x2="840" y2="708"/><line x1="1010" y1="700" x2="1010" y2="708"/><line x1="1180" y1="700" x2="1180" y2="708"/><line x1="1310" y1="700" x2="1310" y2="708"/><line x1="1440" y1="700" x2="1440" y2="708"/><line x1="1540" y1="700" x2="1540" y2="708"/>
- </g>
- <text x="820" y="764" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens), log-ish placement</text>
- <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
-  <rect x="130" y="96" width="14" height="14" fill="#e8a87c"/><text x="152" y="108" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 · MTP4 · fp8 KV · 19 GB (to ≈200K)</text>
-  <rect x="520" y="96" width="14" height="14" fill="#7d9b76"/><text x="542" y="108" fill="#c9d8f0">llama.cpp SYCL · UD-Q4_K_M + MTP · q8_0 KV · 16.5 GB</text>
-  <rect x="990" y="96" width="14" height="14" fill="#81c9ff"/><text x="1012" y="108" fill="#c9d8f0">OpenVINO INT4-GDN8 · solid MTP5 u8 (speed) · dashed no-MTP u4 (context)</text>
- </g>
- <text x="60" y="800" fill="#fbbf24" font-size="14" font-weight="600" font-family="Segoe UI, Inter, sans-serif">INT4 CLASS FINAL — SAME WEIGHT CLASS, ONE CARD EACH, FULL MAX-CONTEXT DATA:</text>
- <g fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif">
-  <text x="76" y="826">OpenVINO with u4 KV + cache_size=0 now HOLDS 256K like llama (11.3 t/s, 28.8 GB) — the old 64K/98K walls were KV precision, not the card.</text>
-  <text x="76" y="850">Speed arm: OV MTP5 wins ≤64K (79.5 @512 — best single-card decode in the class); swap to no-MTP u4 for 98K-256K when you need the context.</text>
-  <text x="76" y="874">llama Q4+MTP: the all-context king — 37.8 → 15.9 across the full 256K with the MTP draft ON the whole way, 16.5 GB weights, ~155 W.</text>
-  <text x="76" y="898">vLLM Int4 MTP4: fastest all-rounder to ~200K (75.6 → 34.5 @196K) but 256K rejected by vLLM's own KV budget (9.33 GiB vs 7.47 free) — software, not VRAM.</text>
- </g>
- <text x="60" y="962" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">Dashed OV squares = no-MTP u4 with cache_size=0 (lazy KV). MTP5 u8 collapses to ~4.7 t/s @98K (verifier window) — MTP is a short-context speed arm only.</text>
- <text x="60" y="1006" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Power (energy counter): vLLM ~228 W · llama ~155 W · OV MTP5 ~205 W · OV u4 ~215 W @230W cap — none power-limited at C1. Source: B70-DOCS qw38-ov-mtp-20260914/</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="888" viewBox="0 0 1560 888">
+<rect width="1560" height="888" fill="#07111f"/>
+<text x="150" y="46" fill="#f5f8fc" font-size="29" font-weight="700">Decode vs context — Qwen3.8-27B INT4-class, three engines, one B70 host</text>
+<text x="150" y="74" fill="#9caec4" font-size="16">INT4-class arms · single-stream · greedy diagnostic · n=3 ≤64K, n=1 beyond · FP8 TP2 reference only · PROVISIONAL — NOT FOR PUBLIC HEADLINE</text>
+<line x1="150.0" y1="96" x2="150.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="150.0" y="666" fill="#9caec4" font-size="14" text-anchor="middle">512</text>
+<line x1="447.8" y1="96" x2="447.8" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="447.8" y="666" fill="#9caec4" font-size="14" text-anchor="middle">2K</text>
+<line x1="745.6" y1="96" x2="745.6" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="745.6" y="666" fill="#9caec4" font-size="14" text-anchor="middle">8K</text>
+<line x1="1043.3" y1="96" x2="1043.3" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1043.3" y="666" fill="#9caec4" font-size="14" text-anchor="middle">32K</text>
+<line x1="1192.2" y1="96" x2="1192.2" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1192.2" y="666" fill="#9caec4" font-size="14" text-anchor="middle">64K</text>
+<line x1="1279.3" y1="96" x2="1279.3" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1279.3" y="666" fill="#9caec4" font-size="14" text-anchor="middle">98K</text>
+<line x1="1341.1" y1="96" x2="1341.1" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1341.1" y="666" fill="#9caec4" font-size="14" text-anchor="middle">128K</text>
+<line x1="1428.2" y1="96" x2="1428.2" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1428.2" y="666" fill="#9caec4" font-size="14" text-anchor="middle">196K</text>
+<line x1="1461.3" y1="96" x2="1461.3" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1461.3" y="666" fill="#9caec4" font-size="14" text-anchor="middle">229K</text>
+<line x1="1490.0" y1="96" x2="1490.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1490.0" y="666" fill="#9caec4" font-size="14" text-anchor="middle">256K</text>
+<line x1="150" y1="640.0" x2="1490" y2="640.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="645.0" fill="#9caec4" font-size="14" text-anchor="end">0</text>
+<line x1="150" y1="504.0" x2="1490" y2="504.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="509.0" fill="#9caec4" font-size="14" text-anchor="end">25</text>
+<line x1="150" y1="368.0" x2="1490" y2="368.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="373.0" fill="#9caec4" font-size="14" text-anchor="end">50</text>
+<line x1="150" y1="232.0" x2="1490" y2="232.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="237.0" fill="#9caec4" font-size="14" text-anchor="end">75</text>
+<line x1="150" y1="96.0" x2="1490" y2="96.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="101.0" fill="#9caec4" font-size="14" text-anchor="end">100</text>
+<text x="32" y="368.0" fill="#f5f8fc" font-size="17" text-anchor="middle" transform="rotate(-90 32 368.0)">decode tok/s (median)</text>
+<text x="820.0" y="692" fill="#9caec4" font-size="15" text-anchor="middle">context length (tokens, log scale)</text>
+<line x1="1428.2" y1="102" x2="1428.2" y2="632" stroke="#ffd23f" stroke-width="2" stroke-dasharray="4,6"/>
+<text x="1428.2" y="120" fill="#ffd23f" font-size="15" text-anchor="middle">↓ OV full-protocol wall</text>
+<polyline points="150.0,518.0 447.8,519.8 745.6,520.8 1043.3,530.1 1192.2,538.9 1279.3,546.6 1341.1,553.5" fill="none" stroke="#68a7ff" stroke-width="3.5" opacity="1.0"/>
+<circle cx="150.0" cy="518.0" r="4.5" fill="#68a7ff"/>
+<circle cx="447.8" cy="519.8" r="4.5" fill="#68a7ff"/>
+<circle cx="745.6" cy="520.8" r="4.5" fill="#68a7ff"/>
+<circle cx="1043.3" cy="530.1" r="4.5" fill="#68a7ff"/>
+<circle cx="1192.2" cy="538.9" r="4.5" fill="#68a7ff"/>
+<circle cx="1279.3" cy="546.6" r="4.5" fill="#68a7ff"/>
+<circle cx="1341.1" cy="553.5" r="4.5" fill="#68a7ff"/>
+<text x="156.0" y="500.0" fill="#68a7ff" font-size="13.5" text-anchor="start">22.4</text>
+<text x="745.6" y="502.8" fill="#68a7ff" font-size="13.5" text-anchor="middle">21.9</text>
+<text x="1192.2" y="520.9" fill="#68a7ff" font-size="13.5" text-anchor="middle">18.6</text>
+<text x="1341.1" y="535.5" fill="#68a7ff" font-size="13.5" text-anchor="middle">15.9</text>
+<polyline points="1341.1,559.9 1428.2,570.5 1461.3,574.0 1490.0,578.6" fill="none" stroke="#68a7ff" stroke-width="2.5" opacity="0.8" stroke-dasharray="9,7"/>
+<circle cx="1341.1" cy="559.9" r="3.5" fill="#68a7ff"/>
+<circle cx="1428.2" cy="570.5" r="3.5" fill="#68a7ff"/>
+<circle cx="1461.3" cy="574.0" r="3.5" fill="#68a7ff"/>
+<circle cx="1490.0" cy="578.6" r="3.5" fill="#68a7ff"/>
+<text x="1341.1" y="589.9" fill="#68a7ff" font-size="13.5" text-anchor="middle">14.7</text>
+<text x="1484.0" y="608.6" fill="#68a7ff" font-size="13.5" text-anchor="end">11.3</text>
+<polyline points="150.0,434.3 447.8,431.2 745.6,437.1 1043.3,458.2 1192.2,481.2 1279.3,499.6 1341.1,514.9 1428.2,537.0 1490.0,553.2" fill="none" stroke="#7ee787" stroke-width="3.5" opacity="1.0"/>
+<circle cx="150.0" cy="434.3" r="4.5" fill="#7ee787"/>
+<circle cx="447.8" cy="431.2" r="4.5" fill="#7ee787"/>
+<circle cx="745.6" cy="437.1" r="4.5" fill="#7ee787"/>
+<circle cx="1043.3" cy="458.2" r="4.5" fill="#7ee787"/>
+<circle cx="1192.2" cy="481.2" r="4.5" fill="#7ee787"/>
+<circle cx="1279.3" cy="499.6" r="4.5" fill="#7ee787"/>
+<circle cx="1341.1" cy="514.9" r="4.5" fill="#7ee787"/>
+<circle cx="1428.2" cy="537.0" r="4.5" fill="#7ee787"/>
+<circle cx="1490.0" cy="553.2" r="4.5" fill="#7ee787"/>
+<text x="156.0" y="416.3" fill="#7ee787" font-size="13.5" text-anchor="start">37.8</text>
+<text x="745.6" y="419.1" fill="#7ee787" font-size="13.5" text-anchor="middle">37.3</text>
+<text x="1192.2" y="463.2" fill="#7ee787" font-size="13.5" text-anchor="middle">29.2</text>
+<text x="1484.0" y="535.2" fill="#7ee787" font-size="13.5" text-anchor="end">15.9</text>
+<polyline points="150.0,228.8 447.8,250.3 745.6,307.3 1043.3,355.2 1192.2,368.9 1279.3,362.1 1341.1,462.7 1428.2,452.3" fill="none" stroke="#ff8a7a" stroke-width="3.5" opacity="1.0"/>
+<circle cx="150.0" cy="228.8" r="4.5" fill="#ff8a7a"/>
+<circle cx="447.8" cy="250.3" r="4.5" fill="#ff8a7a"/>
+<circle cx="745.6" cy="307.3" r="4.5" fill="#ff8a7a"/>
+<circle cx="1043.3" cy="355.2" r="4.5" fill="#ff8a7a"/>
+<circle cx="1192.2" cy="368.9" r="4.5" fill="#ff8a7a"/>
+<circle cx="1279.3" cy="362.1" r="4.5" fill="#ff8a7a"/>
+<circle cx="1341.1" cy="462.7" r="4.5" fill="#ff8a7a"/>
+<circle cx="1428.2" cy="452.3" r="4.5" fill="#ff8a7a"/>
+<text x="156.0" y="258.8" fill="#ff8a7a" font-size="13.5" text-anchor="start">75.6</text>
+<text x="745.6" y="337.3" fill="#ff8a7a" font-size="13.5" text-anchor="middle">61.1</text>
+<text x="1192.2" y="398.9" fill="#ff8a7a" font-size="13.5" text-anchor="middle">49.8</text>
+<text x="1428.2" y="482.3" fill="#ff8a7a" font-size="13.5" text-anchor="middle">34.5</text>
+<polyline points="150.0,242.7 447.8,246.7 745.6,305.2 1043.3,314.3 1192.2,283.7 1279.3,328.1" fill="none" stroke="#8a97a8" stroke-width="2.5" opacity="0.8" stroke-dasharray="2,6"/>
+<circle cx="150.0" cy="242.7" r="3.5" fill="#8a97a8"/>
+<circle cx="447.8" cy="246.7" r="3.5" fill="#8a97a8"/>
+<circle cx="745.6" cy="305.2" r="3.5" fill="#8a97a8"/>
+<circle cx="1043.3" cy="314.3" r="3.5" fill="#8a97a8"/>
+<circle cx="1192.2" cy="283.7" r="3.5" fill="#8a97a8"/>
+<circle cx="1279.3" cy="328.1" r="3.5" fill="#8a97a8"/>
+<text x="156.0" y="224.7" fill="#8a97a8" font-size="13.5" text-anchor="start">73.0</text>
+<text x="1279.3" y="310.1" fill="#8a97a8" font-size="13.5" text-anchor="middle">57.3</text>
+<rect x="60" y="706" width="1440" height="156" rx="16" fill="#0f1d30"/>
+<text x="86" y="740" fill="#55d6be" font-size="15" font-weight="700">SERIES (points, last context)</text>
+<line x1="86" y1="763" x2="146" y2="763" stroke="#68a7ff" stroke-width="3"/>
+<text x="160" y="768" fill="#68a7ff" font-size="15">OpenVINO INT4-GDN8 u4 no-MTP · 7 pts → 128K</text>
+<line x1="86" y1="790" x2="146" y2="790" stroke="#68a7ff" stroke-width="3" stroke-dasharray="9,7"/>
+<text x="160" y="795" fill="#68a7ff" font-size="15">OpenVINO u4 40-tok capacity probe (derived) · 4 pts → 256K</text>
+<line x1="86" y1="817" x2="146" y2="817" stroke="#7ee787" stroke-width="3"/>
+<text x="160" y="822" fill="#7ee787" font-size="15">llama.cpp UD-Q4_K_M + draft-MTP · 9 pts → 256K</text>
+<line x1="86" y1="844" x2="146" y2="844" stroke="#ff8a7a" stroke-width="3"/>
+<text x="160" y="849" fill="#ff8a7a" font-size="15">vLLM GPTQ-Int4 MTP4 · 8 pts → 196K</text>
+<line x1="86" y1="871" x2="146" y2="871" stroke="#8a97a8" stroke-width="3" stroke-dasharray="2,6"/>
+<text x="160" y="876" fill="#8a97a8" font-size="15">vLLM FP8 W8A16 MTP8 TP2 2×B70 — reference, other quant class · 6 pts → 98K</text>
+<text x="86" y="905" fill="#ffd23f" font-size="14.5">⚠ yellow line @196K: OV full-protocol wall — CL_OUT_OF_RESOURCES (-5) with max_new_tokens=128; u8 KV + MTP crashes at 98K (-14); dashed OV points are 40-token capacity probes (196K/256K pass only there)</text>
+<text x="86" y="927" fill="#9caec4" font-size="13.5">Evidence: results/2026/09/qw38-ov-mtp-20260914/ · regenerated by scripts/tmp/ov-mtp-20260914/render-ctx-sweep-svg.py · llama prefill is honest cold (no cache-prompt) · engine max ctx: llama.cpp 256K &gt; vLLM Int4 196K &gt; OV 131K (full protocol)</text>
 </svg>
