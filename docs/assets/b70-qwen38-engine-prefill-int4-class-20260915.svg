@@ -39,7 +39,7 @@
  </g>
  <g fill="#8fa3c0" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
   <text x="280" y="670">512</text><text x="560" y="670">2K</text><text x="840" y="670">8K</text>
-  <text x="1120" y="670">32K</text><text x="1400" y="670">64K</text><text x="1520" y="670">—</text>
+  <text x="1120" y="670">32K</text><text x="1400" y="670">64K</text><text x="1520" y="670">96K</text>
  </g>
  <text x="820" y="696" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
 

@@ -237,9 +237,10 @@ comparison: every engine runs an Int4/Q4 artifact.
 | 32K | 52.4 | 33.4 | 47.7 |
 | 64K | 49.8 | 29.2 | 29.1 (no-draft crashed here) |
 | 98K | 45.7 | 25.8 | ~4.7 (MTP collapses; 196K no-MTP fits) |
-| 128K | 32.6 | 23.0 | — |
-| 196K | 34.5 | 18.9 | — |
-| 256K | not in KV budget | 15.9 | — |
+| 128K | 32.6 | 23.0 | 14.7 (no-MTP u4) |
+| 196K | 34.5 | 18.9 | 12.8 (no-MTP u4) |
+| 224K | — | — | 12.1 (no-MTP u4) |
+| 256K | not in KV budget | 15.9 | **11.3 (no-MTP u4) — OV holds 256K** |
 
 Prefill (input tok/s, cold):
 
@@ -256,11 +257,10 @@ Key measured facts:
   to 79.5 @512 (+3.55×) with the Hub `OpenVINO/Qwen3.8-27B-int4-ov`
   `openvino_mtp_model.*` grafted into the GDN8 dir. Output correctness verified
   (numeric sequence intact). Without an MTP head OV cannot compete in this class.
-- OV ceiling with the draft: 29.1 t/s @64K (no-draft crashed there with default
-  `cache_size` preallocation), decode collapses to ~4.7 t/s at 98K, 128K OOMs.
-  With `cache_size=0` (lazy KV) the NO-MTP lane fits 196K (11.4 t/s, 30.5 GB)
-  — the true one-card u8 ceiling is 196-224K, not 64K. MTP is a short-context
-  speed win, not a context-scaling path.
+- **OV max context unlocked with u4 KV + cache_size=0**: holds the FULL 256K
+  (11.3 t/s, 28.8 GB) — joins llama at 256K. u8 no-MTP caps at 196-224K; the
+  old 64K/98K limits were KV precision + default `cache_size` preallocation,
+  not the card. MTP5 stays the speed arm ≤64K (79.5 @512) but collapses at 98K.
 - llama Q4 is the only engine that holds the full 256K on one card (37.8 →
   15.9, 2.4× decay) at ~155 W.
 - vLLM's single-card KV budget caps at ≈204K: 256K needs 9.33 GiB KV vs 7.47

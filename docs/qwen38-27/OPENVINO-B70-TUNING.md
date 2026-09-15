@@ -146,7 +146,9 @@ if __name__ != '__main__':
 | 64K | same | 29.1 tok/s — survives (no-draft crashed here) |
 | 98K | MTP5 | decode collapses to ~4.7 tok/s (verifier window) |
 | 128K | MTP5 | CL_OUT_OF_RESOURCES (draft f16 KV eats the margin) |
-| ≤196K | **NO MTP + u8, cache_size=0** | 11.4 tok/s @196K — 224K OOMs. True one-card ceiling |
+| 98K | NO MTP + u8, cache_size=0 | 14.96 tok/s |
+| 196K | NO MTP + u8, cache_size=0 | 11.39 tok/s |
+| 128K–256K | **NO MTP + u4 (**`KV_CACHE_PRECISION='u4'`**), cache_size=0** | **14.72 @128K · 12.78 @196K · 12.13 @224K · 11.28 @256K — OV HOLDS 256K** (28.8 GB, correct output) |
 
 **The two 2026-09-15 corrections to earlier int8-ov findings:**
 1. `cache_size=0` (lazy KV) removes the fake 64K wall — no-MTP u8 fits 196K
