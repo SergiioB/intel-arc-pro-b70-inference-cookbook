@@ -107,6 +107,36 @@ NOT a graph artifact (both arms collapse identically).
 > shared Eiffel-filler task for cross-engine comparability; acceptance rates
 > differ by task. Same-protocol comparisons use this table only.
 
+## llama.cpp + draft-MTP (the untested lever, now measured)
+
+Same Q8_0 GGUF has native MTP tensors; `llama-server --spec-type draft-mtp`.
+230W cap, GPU.0, same filler task, single streaming request, n=3:
+
+| len | decode tok/s | vs no-spec 14.0 | watts |
+|---:|---:|---:|---:|
+| 512 | 52.0 | 3.7x | ~103 |
+| 2K | 51.2 | 3.7x | 101.7 |
+| 8K | 49.6 | 3.5x | 102.3 |
+| 32K | 44.0 | 3.1x | 100.4 |
+| 64K | 38.3 | 2.7x | 98.8 |
+
+Prefill column INVALID in this run: server prompt-cache served the repeated
+filler (TTFT 232-700 ms = cache hits, "prefill" up to 88K t/s). Decode is
+clean — every run generates 128 fresh tokens. Cold-prefill measurement
+needs cache_bos/prompt eviction between runs (follow-up).
+
+**Updated ranking (decode, corrected protocol):**
+- 512: vLLM 75.6 > llama-MTP 52.0 > OV 62.1 → vLLM leads
+- 2K: vLLM 71.6 > OV 56.5 > llama-MTP 51.2
+- 8K: vLLM 61.2 > OV 50.8 > llama-MTP 49.6
+- 32K: vLLM 52.4 > llama-MTP 44.0 > OV 41.3
+- 64K: vLLM 49.8 > llama-MTP 38.3 > OV 25.0
+- 96K: vLLM 51.1 > llama-MTP (untested) > OV 13.3
+
+vLLM still leads at every length, but llama.cpp+MTP closes most of the gap
+and beats OV from 32K up — the "flat 14" picture was a config choice, not
+an engine limit.
+
 ## Reading (v2-corrected)
 
 - **vLLM XPU + GPTQ-Int4 + MTP4 + fp8 KV wins at every context length** —
