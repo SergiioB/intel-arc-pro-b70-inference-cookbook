@@ -1,29 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1260" width="1600" height="1260" role="img" aria-labelledby="t d">
- <title id="t">Qwen3.8-27B on one B70 per engine: decode vs context, all levers enabled, 2026-09-14</title>
- <desc id="d">Decode tok/s 512 to 64K: vLLM Int4-MTP4 75.6 71.6 61.2 52.4 49.8; OV int8-MTP5 62.1 56.5 50.8 41.3 25.0; llama Q8_0 draft-MTP 52.0 51.2 49.6 44.0 38.3; llama no-spec flat 14.0. Y axis 0-80, all points inside.</desc>
- <rect width="1600" height="1260" fill="#07111f"/>
- <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">DECODE vs CONTEXT · QWEN3.8-27B · 1× ARC PRO B70 PER ENGINE · ALL LEVERS ON</text>
- <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · shared filler task · n=3 · single-stream timing · 230W caps · 2026-09-14</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1460" width="1600" height="1460" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B decode vs context on one B70 per engine — final ranking, weights labeled, all points in-frame</title>
+ <desc id="d">vLLM GPTQ-Int4 MTP4 graph-on: 75.6 71.6 61.2 52.4 49.8. OV int8 MTP5: 62.1 56.5 50.8 41.3 25.0. llama Q8_0 draft-MTP: 52.0 51.2 49.6 44.0 38.3. llama no-spec: 14.0 flat. Y 0-80.</desc>
+ <rect width="1600" height="1460" fill="#07111f"/>
+ <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">DECODE vs CONTEXT · QWEN3.8-27B · 1× ARC PRO B70 PER ENGINE · 2026-09-14</text>
+ <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · shared filler task · n=3 · single-stream timing · 230W caps · weight formats LABELED per curve</text>
 
- <!-- ===== LEGEND (boxed, above plot) ===== -->
+ <!-- LEGEND boxed, quant in name -->
  <rect x="110" y="96" width="1430" height="46" rx="6" fill="#0d1b30" stroke="#26364e"/>
- <g font-size="14.5" font-family="Segoe UI, Inter, sans-serif">
-  <line x1="130" y1="119" x2="170" y2="119" stroke="#e8a87c" stroke-width="5"/><circle cx="150" cy="119" r="5.5" fill="#e8a87c"/>
-  <text x="180" y="124" fill="#c9d8f0">vLLM · GPTQ-Int4 · MTP4 · fp8 KV</text>
-  <line x1="460" y1="119" x2="500" y2="119" stroke="#81c9ff" stroke-width="4"/><circle cx="480" cy="119" r="5" fill="#81c9ff"/>
-  <text x="510" y="124" fill="#c9d8f0">OpenVINO GenAI · int8 · MTP nat5</text>
-  <line x1="800" y1="119" x2="840" y2="119" stroke="#b8e09a" stroke-width="4.5"/><circle cx="820" cy="119" r="5" fill="#b8e09a"/>
-  <text x="850" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · draft-MTP</text>
-  <line x1="1140" y1="119" x2="1180" y2="119" stroke="#7d9b76" stroke-width="3" stroke-dasharray="8,6"/>
-  <circle cx="1160" cy="119" r="4.5" fill="#7d9b76"/>
-  <text x="1190" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · no spec</text>
+ <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
+  <line x1="128" y1="119" x2="164" y2="119" stroke="#e8a87c" stroke-width="5"/><circle cx="146" cy="119" r="5.5" fill="#e8a87c"/>
+  <text x="172" y="124" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 · MTP4 · fp8 KV · graph ON</text>
+  <line x1="520" y1="119" x2="556" y2="119" stroke="#81c9ff" stroke-width="4"/><circle cx="538" cy="119" r="5" fill="#81c9ff"/>
+  <text x="564" y="124" fill="#c9d8f0">OpenVINO GenAI · int8-ov · MTP nat5</text>
+  <line x1="880" y1="119" x2="916" y2="119" stroke="#b8e09a" stroke-width="4.5"/><circle cx="898" cy="119" r="5" fill="#b8e09a"/>
+  <text x="924" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · draft-MTP</text>
+  <line x1="1160" y1="119" x2="1196" y2="119" stroke="#7d9b76" stroke-width="3" stroke-dasharray="8,6"/>
+  <circle cx="1178" cy="119" r="4.5" fill="#7d9b76"/>
+  <text x="1204" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · no spec</text>
  </g>
 
- <!-- ===== PLOT FRAME ===== -->
- <!-- y: 0 tps at 600, 80 tps at 160 => 5.5 px/tps -->
+ <!-- PLOT: y 0-80 at 600..160 (5.5 px/tps) -->
  <line x1="110" y1="600" x2="1540" y2="600" stroke="#3a4c68" stroke-width="2"/>
  <line x1="110" y1="160" x2="110" y2="600" stroke="#3a4c68" stroke-width="2"/>
- <!-- gridlines + y ticks INSIDE -->
  <g stroke="#1a2740" stroke-width="1">
   <line x1="110" y1="545" x2="1540" y2="545"/><line x1="110" y1="490" x2="1540" y2="490"/>
   <line x1="110" y1="435" x2="1540" y2="435"/><line x1="110" y1="380" x2="1540" y2="380"/>
@@ -36,8 +34,6 @@
   <text x="100" y="275">60</text><text x="100" y="220">70</text><text x="100" y="165">80</text>
  </g>
  <text x="46" y="390" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" transform="rotate(-90 46 390)" text-anchor="middle">decode — tokens / second</text>
-
- <!-- x ticks: 280,560,840,1120,1400 -->
  <g stroke="#3a4c68" stroke-width="2">
   <line x1="280" y1="600" x2="280" y2="608"/><line x1="560" y1="600" x2="560" y2="608"/>
   <line x1="840" y1="600" x2="840" y2="608"/><line x1="1120" y1="600" x2="1120" y2="608"/>
@@ -49,21 +45,17 @@
  </g>
  <text x="825" y="658" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
 
- <!-- ===== SERIES (y = 600 - tps*5.5, all inside 160..600) ===== -->
- <!-- vLLM: 75.6→183.8  71.6→205.8  61.2→263.4  52.4→311.8  49.8→326.1 -->
+ <!-- series -->
  <polyline points="280,183.8 560,205.8 840,263.4 1120,311.8 1400,326.1" fill="none" stroke="#e8a87c" stroke-width="5"/>
  <g fill="#e8a87c"><circle cx="280" cy="183.8" r="6.5"/><circle cx="560" cy="205.8" r="6.5"/><circle cx="840" cy="263.4" r="6.5"/><circle cx="1120" cy="311.8" r="6.5"/><circle cx="1400" cy="326.1" r="6.5"/></g>
- <!-- OV: 62.1→258.5  56.5→289.3  50.8→320.6  41.3→372.9  25.0→462.5 -->
  <polyline points="280,258.5 560,289.3 840,320.6 1120,372.9 1400,462.5" fill="none" stroke="#81c9ff" stroke-width="4"/>
  <g fill="#81c9ff"><circle cx="280" cy="258.5" r="5.5"/><circle cx="560" cy="289.3" r="5.5"/><circle cx="840" cy="320.6" r="5.5"/><circle cx="1120" cy="372.9" r="5.5"/><circle cx="1400" cy="462.5" r="5.5"/></g>
- <!-- llama+MTP: 52.0→314  51.2→318.4  49.6→327.2  44.0→358  38.3→389.4 -->
  <polyline points="280,314 560,318.4 840,327.2 1120,358 1400,389.4" fill="none" stroke="#b8e09a" stroke-width="4.5"/>
  <g fill="#b8e09a"><circle cx="280" cy="314" r="5.5"/><circle cx="560" cy="318.4" r="5.5"/><circle cx="840" cy="327.2" r="5.5"/><circle cx="1120" cy="358" r="5.5"/><circle cx="1400" cy="389.4" r="5.5"/></g>
- <!-- llama no-spec: 14.0 → 523 flat -->
  <polyline points="280,523 560,523 840,523 1120,523 1400,523" fill="none" stroke="#7d9b76" stroke-width="3" stroke-dasharray="8,6"/>
  <g fill="#7d9b76"><circle cx="280" cy="523" r="4.5"/><circle cx="840" cy="523" r="4.5"/><circle cx="1400" cy="523" r="4.5"/></g>
 
- <!-- value labels, offset per series to avoid collisions -->
+ <!-- value labels -->
  <g fill="#f2c9a0" font-size="15.5" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
   <text x="280" y="166">75.6</text><text x="560" y="188">71.6</text><text x="840" y="246">61.2</text>
   <text x="1120" y="294">52.4</text><text x="1400" y="308">49.8</text>
@@ -80,45 +72,62 @@
   <text x="280" y="507">14.0</text><text x="840" y="507">14.0</text><text x="1400" y="507">14.0</text>
  </g>
 
- <!-- ===== OUTCOME CALLOUTS (in empty plot regions) ===== -->
+ <!-- in-plot one-liners only (no boxes, no collision) -->
+ <text x="600" y="200" fill="#f2c9a0" font-size="13" font-family="Segoe UI, Inter, sans-serif">← vLLM (Int4 weights) leads every length, ~3 min cold start w/ graph capture</text>
+ <text x="1445" y="360" fill="#d4f0b8" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">llama+MTP holds ≥38 → 41 s cold start</text>
+
+ <!-- OUTCOMES row (outside plot, boxed, one per engine) -->
+ <text x="60" y="712" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">OUTCOMES</text>
  <g font-family="Segoe UI, Inter, sans-serif">
-  <rect x="960" y="168" width="330" height="56" rx="6" fill="#0d1b30" stroke="#e8a87c" stroke-opacity="0.55"/>
-  <text x="975" y="191" fill="#f2c9a0" font-size="13.5" font-weight="600">vLLM leads at every context length</text>
-  <text x="975" y="210" fill="#8fa3c0" font-size="12.5">76 → 50 tok/s, shallowest decay of all</text>
+  <rect x="110" y="728" width="440" height="118" rx="8" fill="#0d1b30" stroke="#e8a87c" stroke-opacity="0.6"/>
+  <text x="128" y="754" fill="#f2c9a0" font-size="14.5" font-weight="600">vLLM XPU — wins every length</text>
+  <text x="128" y="776" fill="#8fa3c0" font-size="12.5">75.6 → 49.8 tok/s · Int4 weights (19 GB) — lightest model,</text>
+  <text x="128" y="794" fill="#8fa3c0" font-size="12.5">NOT int8: fp8 KV + graph capture (+8.7% @512 vs off)</text>
+  <text x="128" y="812" fill="#8fa3c0" font-size="12.5">cold start ≈3 min (compile + capture) · 194–229 W</text>
+  <text x="128" y="830" fill="#8fa3c0" font-size="12.5">config ceiling 100K</text>
 
-  <rect x="1180" y="430" width="330" height="72" rx="6" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.55"/>
-  <text x="1195" y="453" fill="#d4f0b8" font-size="13.5" font-weight="600">llama.cpp + draft-MTP passes OV ≥32K</text>
-  <text x="1195" y="472" fill="#8fa3c0" font-size="12.5">native MTP tensors in the same Q8_0:</text>
-  <text x="1195" y="490" fill="#8fa3c0" font-size="12.5">2.7–3.7x over no-spec, at ~100 W</text>
+  <rect x="580" y="728" width="440" height="118" rx="8" fill="#0d1b30" stroke="#81c9ff" stroke-opacity="0.6"/>
+  <text x="598" y="754" fill="#a5dcff" font-size="14.5" font-weight="600">OpenVINO GenAI — fastest int8 path</text>
+  <text x="598" y="776" fill="#8fa3c0" font-size="12.5">62.1 → 25.0 (MTP+f16) · int8 weights (25.8 GB)</text>
+  <text x="598" y="794" fill="#8fa3c0" font-size="12.5">decode collapses vs the other two from 32K: 41.3 → 25.0</text>
+  <text x="598" y="812" fill="#8fa3c0" font-size="12.5">load 60–70 s · 202–211 W · ceiling 96K on one card</text>
+  <text x="598" y="830" fill="#8fa3c0" font-size="12.5">mixed-KV fix (main u8 / draft f16) needed at 64K</text>
 
-  <rect x="150" y="420" width="300" height="56" rx="6" fill="#0d1b30" stroke="#7d9b76" stroke-opacity="0.6"/>
-  <text x="165" y="443" fill="#8fb98a" font-size="13.5" font-weight="600">no-spec floor: flat 14 tok/s</text>
-  <text x="165" y="462" fill="#8fa3c0" font-size="12.5">config choice, not engine limit</text>
+  <rect x="1050" y="728" width="490" height="118" rx="8" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.6"/>
+  <text x="1068" y="754" fill="#d4f0b8" font-size="14.5" font-weight="600">llama.cpp + draft-MTP — passes OV from 32K</text>
+  <text x="1068" y="776" fill="#8fa3c0" font-size="12.5">52.0 → 38.3 tok/s vs flat 14.0 no-spec: native MTP tensors</text>
+  <text x="1068" y="794" fill="#8fa3c0" font-size="12.5">in the SAME Q8_0 file, --spec-type draft-mtp (2.7–3.7x)</text>
+  <text x="1068" y="812" fill="#8fa3c0" font-size="12.5">41 s cold start · 99–103 W — efficiency pick</text>
+  <text x="1068" y="830" fill="#8fa3c0" font-size="12.5">beats OV where OV's KV/MTP ceiling bites: 44.0 vs 41.3 @32K,</text>
+  <text x="1068" y="848" fill="#8fa3c0" font-size="12.5">38.3 vs 25.0 @64K</text>
  </g>
 
- <!-- ===== BOTTOM: ledger, power, asymmetries ===== -->
- <text x="60" y="716" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">MEASUREMENT LEDGER — 5 defects found and fixed during the audit</text>
+ <!-- MEASUREMENT LEDGER -->
+ <text x="60" y="896" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">MEASUREMENT LEDGER — 5 defects found and fixed during the audit</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="742">1. vLLM decode was tokens/wall incl. TTFT → true 75.6 (not 58.1) @512; the "context collapse" was this bug — v2 rerun, single streaming request</text>
-  <text x="110" y="766">2. Power counters read the idle card on vLLM/llama arms → corrected PCI per card; true load draws 99–229 W</text>
-  <text x="110" y="790">3. Cap asymmetry (vLLM/llama at 150W default vs OV 230W) → all arms rerun at 230 W</text>
-  <text x="110" y="814">4. Stale v1 numbers in doc/chart/catalog → all pinned to archived v2 JSONs; 30/30 doc numbers trace to raw files</text>
-  <text x="110" y="838">5. llama+MTP prefill column cache-poisoned (prompt reuse) → marked INVALID; decode rows clean; cold-prefill rerun queued</text>
+  <text x="110" y="922">1. vLLM decode was tokens/wall incl. TTFT → true 75.6 (not 58.1) @512; the "context collapse" was this bug — v2 rerun, single streaming request</text>
+  <text x="110" y="946">2. Power counters read the idle card on vLLM/llama arms → corrected PCI per card; true load draws 99–229 W</text>
+  <text x="110" y="970">3. Cap asymmetry (vLLM/llama at 150W default vs OV 230W) → all arms rerun at 230 W</text>
+  <text x="110" y="994">4. Stale v1 numbers in doc/chart/catalog → pinned to archived v2 JSONs; 30/30 doc numbers trace to raw files</text>
+  <text x="110" y="1018">5. llama+MTP prefill column cache-poisoned (prompt reuse) → marked INVALID; decode rows clean; cold-prefill rerun queued</text>
  </g>
 
- <text x="60" y="890" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">POWER (steady-state energy counter, 230 W caps)</text>
+ <!-- POWER -->
+ <text x="60" y="1070" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">POWER (steady-state energy counter, 230 W caps)</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="916">vLLM 194–229 W · OpenVINO 202–211 W · llama+draft-MTP 99–103 W · llama no-spec 149.5 W (at its 150W cap; decode cap-insensitive)</text>
-  <text x="110" y="940">Efficiency pick: llama+MTP — lowest watts per token (38–52 tok/s at ~100 W)</text>
+  <text x="110" y="1096">vLLM 194–229 W · OpenVINO 202–211 W · llama+draft-MTP 99–103 W · llama no-spec 149.5 W (at its 150W cap; decode cap-insensitive)</text>
+  <text x="110" y="1120">Efficiency pick: llama+MTP — lowest watts per token (38–52 tok/s at ~100 W)</text>
  </g>
 
- <text x="60" y="992" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">REMAINING ASYMMETRIES (labeled, not hidden)</text>
+ <!-- ASYMMETRIES -->
+ <text x="60" y="1172" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">REMAINING ASYMMETRIES (labeled, not hidden)</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="1018">Weights differ: OV int8 25.8 GB · vLLM GPTQ-Int4 19 GB · llama Q8_0 27 GB — same model family, different compression (int8-vLLM rerun pending)</text>
-  <text x="110" y="1042">llama+MTP: prefill unmeasured (cache bug), 96K untested, acceptance measured on counting task</text>
-  <text x="110" y="1066">OV 64K/96K points are n=1–2 ceiling probes (provisional); all other points n=3</text>
-  <text x="110" y="1090">Context ceilings: vLLM config max 100K · OV 96K (131K blocked: VRAM f16 / compressed-KV decode defect) · llama 128K init-crash (27 GB + KV &gt; 32 GB)</text>
+  <text x="110" y="1198">Weights differ by design: vLLM GPTQ-Int4 19 GB · OV int8 25.8 GB · llama Q8_0 27 GB — int8-vLLM rerun pending (weights downloading)</text>
+  <text x="110" y="1222">llama+MTP: prefill unmeasured (cache bug), 96K untested, acceptance measured on counting task</text>
+  <text x="110" y="1246">OV 64K/96K points are n=1–2 ceiling probes (provisional); all other points n=3</text>
+  <text x="110" y="1270">Context ceilings: vLLM config 100K · OV 96K (131K blocked: VRAM f16 / compressed-KV decode defect) · llama 128K init-crash</text>
  </g>
 
- <text x="60" y="1150" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 · ctx-sweep-vllm-v2.json · ctx-sweep-llamacpp-mtp.json · ctx-sweep-openvino.json · cookbook ENGINE-COMPARISON-CTX-20260914.md</text>
+ <text x="60" y="1330" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Setup recipes (exact commands, cold-start times, graph-capture notes): ENGINE-SETUP-RECIPES.md</text>
+ <text x="60" y="1350" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 · ctx-sweep-vllm-v2.json · ctx-sweep-llamacpp-mtp.json · ctx-sweep-openvino.json · ENGINE-COMPARISON-CTX-20260914.md</text>
 </svg>

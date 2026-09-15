@@ -139,6 +139,9 @@ vLLM still leads at every length, but llama.cpp+MTP closes most of the gap
 and beats OV from 32K up — the "flat 14" picture was a config choice, not
 an engine limit.
 
+Exact per-engine setup commands, cold-start times, and graph-capture notes:
+[ENGINE-SETUP-RECIPES.md](ENGINE-SETUP-RECIPES.md).
+
 ## Reading (v2-corrected)
 
 - **vLLM XPU + GPTQ-Int4 + MTP4 + fp8 KV wins at every context length** —
