@@ -8,6 +8,12 @@ card. Measured card draw is reported only where the public evidence records it.
 
 [Qwen3.8 family hub](README.md) · [dual-B70 topology and oneCCL setup](../DUAL-B70-TP2.md) · [image/patch matrix](../IMAGE-AND-PATCH-MATRIX.md)
 
+> **2026-09-15:** the E2 cells on this page (random-token synthetic prompts,
+> max-model-len 9216) are superseded for ranking by the same-protocol
+> context sweep in [ENGINE-COMPARISON-CTX-20260914.md](ENGINE-COMPARISON-CTX-20260914.md)
+> — FP8 TP2 measured 73.0 → 57.3 tok/s decode across 512→96K, no decay.
+> This page remains the evidence base for the original capability cells.
+
 ## Executive overview
 
 This page is the authority for the Qwen3.8 FP8 model artifact, immutable image,

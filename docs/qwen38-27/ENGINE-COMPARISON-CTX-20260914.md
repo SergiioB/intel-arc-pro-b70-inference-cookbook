@@ -192,19 +192,29 @@ TP2 prefill cells are synthetic-prompt cold-input rates, not the filler task.
 vLLM holds prefill best as context grows (chunked prefill, 8192 batches);
 OV wins ≤2K; llama.cpp is decode-optimized, not prefill.
 
-## Reading (v2-corrected)
+## Reading (final, all lanes measured 2026-09-15)
 
-- **vLLM XPU + GPTQ-Int4 + MTP4 + fp8 KV wins at every context length** —
-  76→51 tok/s decode, near-flat to 96K, and the highest prefill at ≥2K.
-  With fair measurement (same 230W cap, single-stream timing) it beats
-  OV-int8-MTP5 by 22% at 512 and ~4x at 96K.
-- **OpenVINO + MTP is the strongest int8-weights option** — 62→41 tok/s to
-  32K — but its long-context path degrades: MTP caps at 64K (mixed-KV),
-  no-MTP at 96K (13-15 tok/s).
-- **llama.cpp Q8_0 = the flat floor** — 14 tok/s at every length, no
-  speculative path, simplest ops. Never wins, never falls over.
-- Fair-comparison caveats that REMAIN: OV runs int8 weights vs vLLM's Int4
-  (int8 rerun pending weights download); llama.cpp ran no spec decoding
-  (draft-mtp untested on this fork).
-- 128K on one card: vLLM config max 100K; OV blocked >96K (compressed-KV
-  decode defect / f16 VRAM); llama Q8_0 init-crash (weights+KV > 32GB).
+Weight formats and card counts are the axis that explains the curves; decode
+leadership tracks weight bytes more than engine quality.
+
+- **vLLM Int4 (19 GB, 1× B70)** — 76→51 tok/s, near-flat to 96K. Wins the
+  single-card ranking because it computes ~half the weight bytes of the int8
+  arms; that is expected physics, not an engine verdict.
+- **OpenVINO int8 (25.8 GB, 1× B70)** — 62→41 tok/s ≤32K then KV-ceiling:
+  25.0 @64K (mixed-KV fix: main u8 / draft f16), 13.3 @96K (no-MTP u4/f16).
+  Strongest int8-weights kernels: computing 1.36× the bytes of Int4 yet
+  within ~15% of it ≤8K.
+- **llama.cpp Q8_0 + native draft-MTP (27 GB, 1× B70)** — 52→38 tok/s,
+  2.7–3.7x its own no-spec 14.0 floor. Heaviest single-card weights, still
+  within 19% of Int4 ≤8K. The "flat 14" was a config choice: the MTP tensors
+  ship inside the same GGUF.
+- **vLLM FP8 TP2 (30.9 GB, 2× B70)** — 73→57 tok/s flat with zero context
+  decay (only configuration), prefill holds 1019–1392 everywhere. The price
+  of full-weight-fidelity serving: needs a second card (30.9 GB > 30.3 GiB).
+- Fair-comparison caveats that REMAIN: llama+MTP prefill unmeasured (server
+  prompt-cache, follow-up); llama+MTP 96K untested; OV 64K/96K are n=1–2
+  ceiling probes; FP8 TP2 64K decode (65.5) beats its 8K (61.6) on MTP8
+  acceptance variance (n=3).
+- 128K on one card: no config fits. vLLM config max 100K; OV blocked >96K
+  (compressed-KV decode defect / f16 VRAM); llama Q8_0 init-crash
+  (weights+KV > 32GB); FP8 weights physically exceed one card.

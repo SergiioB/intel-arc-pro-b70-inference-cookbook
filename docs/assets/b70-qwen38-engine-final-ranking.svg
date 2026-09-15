@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1400" width="1600" height="1400" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1560" width="1600" height="1560" role="img" aria-labelledby="t d">
  <title id="t">Qwen3.8-27B decode vs context — all engines, weight classes labeled, FP8 TP2 measured</title>
  <desc id="d">Decode tok/s 512-96K: vLLM Int4 75.6/71.6/61.2/52.4/49.8/51.1; OV int8 62.1/56.5/50.8/41.3/25.0/13.3; llama Q8_0+draftMTP 52.0/51.2/49.6/44.0/38.3; llama no-spec 14.0; vLLM FP8 TP2 73.0/72.3/61.6/59.9/65.5/57.3.</desc>
  <rect width="1600" height="1400" fill="#07111f"/>
@@ -88,31 +88,47 @@
  <text x="1470" y="470" fill="#e3c9fb" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">2 cards, full 8-bit weights: flat 73→57 — no context decay</text>
  <text x="420" y="490" fill="#a5dcff" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">OV int8 (1×): computes 1.36× bytes/token of Int4 yet stays within ~15% ≤8K</text>
 
- <text x="60" y="742" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">OUTCOMES</text>
- <g font-family="Segoe UI, Inter, sans-serif">
-  <rect x="110" y="758" width="500" height="120" rx="8" fill="#0d1b30" stroke="#e8a87c" stroke-opacity="0.6"/>
-  <text x="128" y="784" fill="#f2c9a0" font-size="14.5" font-weight="600">vLLM Int4 · 1× B70 · best single card</text>
-  <text x="128" y="806" fill="#8fa3c0" font-size="12.5">75.6 → 51.1 tok/s · half the weight bytes of int8/Q8</text>
-  <text x="128" y="824" fill="#8fa3c0" font-size="12.5">cold start ≈3 min (graph capture) · ceiling 100K</text>
-  <text x="128" y="842" fill="#8fa3c0" font-size="12.5">goes 96K with zero collapse (51.1 @96K)</text>
-  <text x="128" y="860" fill="#8fa3c0" font-size="12.5">the Int4 class win is expected — half the compute per token</text>
-
-  <rect x="640" y="758" width="500" height="120" rx="8" fill="#0d1b30" stroke="#81c9ff" stroke-opacity="0.6"/>
-  <text x="658" y="784" fill="#a5dcff" font-size="14.5" font-weight="600">OpenVINO int8 · 1× B70 · best int8 single card</text>
-  <text x="658" y="806" fill="#8fa3c0" font-size="12.5">62.1 → 41.3 ≤32K, then KV ceil: 25.0 @64K, 13.3 @96K</text>
-  <text x="658" y="824" fill="#8fa3c0" font-size="12.5">computing 1.36× the bytes of Int4 yet within ~15% ≤8K</text>
-  <text x="658" y="842" fill="#8fa3c0" font-size="12.5">load 60–70 s · long-context needs mixed-KV (u8 main/draft f16)</text>
-  <text x="658" y="860" fill="#8fa3c0" font-size="12.5">ceiling 96K on one card</text>
-
-  <rect x="1170" y="758" width="370" height="120" rx="8" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.6"/>
-  <text x="1188" y="784" fill="#d4f0b8" font-size="14.5" font-weight="600">llama.cpp Q8_0 · 1× B70</text>
-  <text x="1188" y="806" fill="#8fa3c0" font-size="12.5">52.0 → 38.3 with native draft-MTP</text>
-  <text x="1188" y="824" fill="#8fa3c0" font-size="12.5">heaviest weights (27 GB) within 19% of Int4 ≤8K</text>
-  <text x="1188" y="842" fill="#8fa3c0" font-size="12.5">41 s load · 96K untested</text>
-  <text x="1188" y="860" fill="#8fa3c0" font-size="12.5">no-spec floor flat 14.0</text>
+  <text x="60" y="742" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">TIME TO SERVE (cold start, measured)</text>
+ <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
+  <rect x="110" y="758" width="272" height="52" rx="8" fill="#0d1b30" stroke="#e8a87c" stroke-opacity="0.6"/>
+  <text x="128" y="782" fill="#f2c9a0" font-size="13.5" font-weight="600">vLLM Int4 · 1× B70</text>
+  <text x="128" y="800" fill="#8fa3c0" font-size="12.5">≈3 min (170–190 s, ok w/ graph capture)</text>
+  <rect x="398" y="758" width="272" height="52" rx="8" fill="#0d1b30" stroke="#81c9ff" stroke-opacity="0.6"/>
+  <text x="416" y="782" fill="#a5dcff" font-size="13.5" font-weight="600">OpenVINO int8 · 1× B70</text>
+  <text x="416" y="800" fill="#8fa3c0" font-size="12.5">60–70 s load incl. draft</text>
+  <rect x="686" y="758" width="272" height="52" rx="8" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.6"/>
+  <text x="704" y="782" fill="#d4f0b8" font-size="13.5" font-weight="600">llama.cpp Q8_0 · 1× B70</text>
+  <text x="704" y="800" fill="#8fa3c0" font-size="12.5">41 s incl. MTP draft context</text>
+  <rect x="974" y="758" width="300" height="52" rx="8" fill="#0d1b30" stroke="#c792ea" stroke-opacity="0.6"/>
+  <text x="992" y="782" fill="#e3c9fb" font-size="13.5" font-weight="600">vLLM FP8 TP2 · 2× B70</text>
+  <text x="992" y="800" fill="#8fa3c0" font-size="12.5">306 s (two-card compile + capture)</text>
  </g>
 
- <text x="60" y="930" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">FP8 TP2 · 2× B70 · full 8-bit weights, measured v2 protocol</text>
+ <text x="60" y="850" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">OUTCOMES</text>
+ <g font-family="Segoe UI, Inter, sans-serif">
+  <rect x="110" y="866" width="500" height="120" rx="8" fill="#0d1b30" stroke="#e8a87c" stroke-opacity="0.6"/>
+  <text x="128" y="892" fill="#f2c9a0" font-size="14.5" font-weight="600">vLLM Int4 · 1× B70 · best single card</text>
+  <text x="128" y="914" fill="#8fa3c0" font-size="12.5">75.6 → 51.1 tok/s · half the weight bytes of int8/Q8</text>
+  <text x="128" y="932" fill="#8fa3c0" font-size="12.5">cold start ≈3 min (graph capture) · ceiling 100K</text>
+  <text x="128" y="950" fill="#8fa3c0" font-size="12.5">goes 96K with zero collapse (51.1 @96K)</text>
+  <text x="128" y="968" fill="#8fa3c0" font-size="12.5">the Int4 class win is expected — half the compute per token</text>
+
+  <rect x="640" y="866" width="500" height="120" rx="8" fill="#0d1b30" stroke="#81c9ff" stroke-opacity="0.6"/>
+  <text x="658" y="892" fill="#a5dcff" font-size="14.5" font-weight="600">OpenVINO int8 · 1× B70 · best int8 single card</text>
+  <text x="658" y="914" fill="#8fa3c0" font-size="12.5">62.1 → 41.3 ≤32K, then KV ceil: 25.0 @64K, 13.3 @96K</text>
+  <text x="658" y="932" fill="#8fa3c0" font-size="12.5">computing 1.36× the bytes of Int4 yet within ~15% ≤8K</text>
+  <text x="658" y="950" fill="#8fa3c0" font-size="12.5">load 60–70 s · long-context needs mixed-KV (u8 main/draft f16)</text>
+  <text x="658" y="968" fill="#8fa3c0" font-size="12.5">ceiling 96K on one card</text>
+
+  <rect x="1170" y="866" width="370" height="120" rx="8" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.6"/>
+  <text x="1188" y="892" fill="#d4f0b8" font-size="14.5" font-weight="600">llama.cpp Q8_0 · 1× B70</text>
+  <text x="1188" y="914" fill="#8fa3c0" font-size="12.5">52.0 → 38.3 with native draft-MTP</text>
+  <text x="1188" y="932" fill="#8fa3c0" font-size="12.5">heaviest weights (27 GB) within 19% of Int4 ≤8K</text>
+  <text x="1188" y="950" fill="#8fa3c0" font-size="12.5">41 s load · 96K untested</text>
+  <text x="1188" y="968" fill="#8fa3c0" font-size="12.5">no-spec floor flat 14.0</text>
+ </g>
+
+ <text x="60" y="1050" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">FP8 TP2 · 2× B70 · full 8-bit weights, measured v2 protocol</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
   <text x="110" y="956">73.0 → 57.3 tok/s decode across 512→96K — the only configuration with NO context decay: prefill holds 1019–1392 across the whole sweep.</text>
   <text x="110" y="980">30.9 GB of FP8 weights need two cards (one B70 has 30.3 GiB) — this lane is the price of full-weight-fidelity serving.</text>
@@ -120,7 +136,7 @@
   <text x="110" y="1028">Banked E2 cells from earlier work (53.4 @p512, 60.1 @p1024, 33.5 @p2048 hybrid) are superseded by this same-protocol sweep.</text>
  </g>
 
- <text x="60" y="1080" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">CONTEXT CEILINGS AND WEIGHT FORMATS</text>
+ <text x="60" y="1200" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">CONTEXT CEILINGS AND WEIGHT FORMATS</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
   <text x="110" y="1106">Weights by design: vLLM Int4 19 GB · OV int8 25.8 GB · llama Q8_0 27 GB · FP8 30.9 GB — FP8/int8-W8A16 exceed one 32 GB card (measured, not assumed)</text>
   <text x="110" y="1130">vLLM 96K verified on the 1-card Int4 arm; llama+MTP 96K untested; OV 96K via no-MTP u4/f16</text>
@@ -128,5 +144,5 @@
   <text x="110" y="1178">Full launch recipes to reproduce every lane: ENGINE-SETUP-RECIPES.md + DUAL-B70-TP2.md (affinity, oneCCL, serve contract)</text>
  </g>
 
- <text x="60" y="1240" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp-mtp,vllm-fp8-tp2}.json · ENGINE-SETUP-RECIPES.md · cookbook @ 2026-09-15</text>
+ <text x="60" y="1380" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp-mtp,vllm-fp8-tp2}.json · ENGINE-SETUP-RECIPES.md · cookbook @ 2026-09-15</text>
 </svg>
