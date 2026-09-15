@@ -1109,7 +1109,7 @@
       "id": "qwen38-27-fp8-tp2-ctx-sweep-512-96k",
       "kind": "benchmark",
       "title": "Qwen3.8-27B FP8 TP2 engine ctx sweep",
-      "summary": "Same-protocol context sweep decode 512\u219296K on two B70s: 73.0 \u2192 57.3 token/s single-stream post-first, flat with no context decay; prefill 1077\u20131392. Supersedes the E2 synthetic-prompt cells for ranking.",
+      "summary": "Decode 73.0 -> 57.3 tok/s across 512->96K on two B70s: flat, no context decay. Prefill 1077-1392.",
       "evidence_status": "official-lab",
       "hardware": {
         "gpu_model": "Intel Arc Pro B70",
@@ -1135,23 +1135,18 @@
       },
       "metrics": [
         {
-          "name": "client_post_first_output_tps_512",
+          "name": "decode_512_tps",
           "value": 73.0,
           "unit": "token/s"
         },
         {
-          "name": "client_post_first_output_tps_96k",
+          "name": "decode_96k_tps",
           "value": 57.3,
           "unit": "token/s"
         },
         {
-          "name": "prefill_tps_8k",
-          "value": 1392.2,
-          "unit": "token/s"
-        },
-        {
-          "name": "prefill_tps_96k",
-          "value": 1019.5,
+          "name": "prefill_range_tps",
+          "value": 1077.0,
           "unit": "token/s"
         }
       ],
