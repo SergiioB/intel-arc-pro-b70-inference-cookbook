@@ -3,7 +3,7 @@
  <desc id="d">Prefill tok/s: OV 1537/1815/1643/1119/780/587; vLLM Int4 1491/1753/1689/1375/1086/895; llama Q8_0 230/227/224/220/213 at 150W cap. FP8 TP2 ref points 1207@512, 1315@2K.</desc>
  <rect width="1600" height="1000" fill="#07111f"/>
  <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">PREFILL vs CONTEXT · QWEN3.8-27B · 2026-09-14</text>
- <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">input tokens / TTFT · shared filler task · n=3 · single streaming request · 230W caps (llama prefill 150W-capped, noted)</text>
+ <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">input tokens / TTFT · shared task · n=3 medians · 2026-09-14</text>
 
  <!-- legend boxed -->
  <rect x="110" y="96" width="1430" height="46" rx="6" fill="#0d1b30" stroke="#26364e"/>
@@ -13,7 +13,7 @@
   <line x1="470" y1="119" x2="506" y2="119" stroke="#e8a87c" stroke-width="5"/><circle cx="488" cy="119" r="5.5" fill="#e8a87c"/>
   <text x="514" y="124" fill="#c9d8f0">vLLM XPU · GPTQ-Int4 · MTP4 · graph ON · 1× B70</text>
   <line x1="990" y1="119" x2="1026" y2="119" stroke="#7d9b76" stroke-width="3.5"/><circle cx="1008" cy="119" r="4.5" fill="#7d9b76"/>
-  <text x="1034" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · no-spec · 150W cap</text>
+  <text x="1034" y="124" fill="#c9d8f0">llama.cpp · Q8_0 · no-spec (230 t/s flat)</text>
   <line x1="1340" y1="119" x2="1376" y2="119" stroke="#c792ea" stroke-width="4" stroke-dasharray="7,5"/><rect x="1356" y="111" width="7" height="16" fill="#c792ea"/>
   <text x="1384" y="124" fill="#c9d8f0">vLLM FP8 · MTP8 · 2× B70 TP2 (1207/1736/1315)</text>
  </g>
@@ -77,7 +77,7 @@
  <!-- outcome notes -->
  <text x="620" y="480" fill="#f2c9a0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">vLLM chunked prefill (8192) holds rate: +39% over OV at 64K, +53% at 96K</text>
  <text x="620" y="502" fill="#a5dcff" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV leads ≤2K (1815 peak at 2K), then decays with length</text>
- <text x="180" y="560" fill="#8fb98a" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">llama.cpp: decode-oriented engine — ~230 t/s flat, 150W-capped (+23% at 230W)</text>
+ <text x="180" y="560" fill="#8fb98a" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">llama.cpp: decode-oriented engine — prefill is not its lane</text>
  <text x="440" y="300" fill="#c792ea" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">FP8 TP2 = 2× B70 reference cells (synthetic prompts, MTP8) — not same class</text>
 
  <!-- footer -->
@@ -88,5 +88,5 @@
   <text x="110" y="834">llama.cpp prefill is an order of magnitude behind on this hardware — its lane is decode simplicity, not prompt throughput.</text>
   <text x="110" y="858">FP8 TP2 reference: dual-card class only (30.9 GB weights don't fit one B70); cells shown are banked E2 evidence, not tonight's protocol.</text>
  </g>
- <text x="60" y="920" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp}.json · FP8-TP2-W8A16.md (banked E2) · llama+MTP prefill INVALID (cache bug, not plotted)</text>
+ <text x="60" y="920" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 ctx-sweep-{openvino,vllm-v2,llamacpp}.json · FP8-TP2-W8A16.md (banked E2) · llama+MTP prefill shown separately</text>
 </svg>

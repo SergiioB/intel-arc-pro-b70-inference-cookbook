@@ -3,7 +3,7 @@
  <desc id="d">vLLM GPTQ-Int4 MTP4 graph-on: 75.6 71.6 61.2 52.4 49.8. OV int8 MTP5: 62.1 56.5 50.8 41.3 25.0. llama Q8_0 draft-MTP: 52.0 51.2 49.6 44.0 38.3. llama no-spec: 14.0 flat. Y 0-80.</desc>
  <rect width="1600" height="1460" fill="#07111f"/>
  <text x="60" y="50" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">DECODE vs CONTEXT · QWEN3.8-27B · 1× ARC PRO B70 PER ENGINE · 2026-09-14</text>
- <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · shared filler task · n=3 · single-stream timing · 230W caps · weight formats LABELED per curve</text>
+ <text x="60" y="76" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · shared filler task · n=3 · weight formats labeled per curve</text>
 
  <!-- LEGEND boxed, quant in name -->
  <rect x="110" y="84" width="1430" height="74" rx="6" fill="#0d1b30" stroke="#26364e"/>
@@ -93,49 +93,31 @@
   <text x="128" y="754" fill="#f2c9a0" font-size="14.5" font-weight="600">vLLM XPU — wins every length</text>
   <text x="128" y="776" fill="#8fa3c0" font-size="12.5">75.6 → 49.8 tok/s · Int4 weights (19 GB) — lightest model,</text>
   <text x="128" y="794" fill="#8fa3c0" font-size="12.5">NOT int8: fp8 KV + graph capture (+8.7% @512 vs off)</text>
-  <text x="128" y="812" fill="#8fa3c0" font-size="12.5">cold start ≈3 min (compile + capture) · 194–229 W</text>
+  <text x="128" y="812" fill="#8fa3c0" font-size="12.5">cold start ≈3 min (compile + graph capture)</text>
   <text x="128" y="830" fill="#8fa3c0" font-size="12.5">config ceiling 100K</text>
 
   <rect x="580" y="728" width="440" height="118" rx="8" fill="#0d1b30" stroke="#81c9ff" stroke-opacity="0.6"/>
   <text x="598" y="754" fill="#a5dcff" font-size="14.5" font-weight="600">OpenVINO GenAI — fastest int8 path</text>
   <text x="598" y="776" fill="#8fa3c0" font-size="12.5">62.1 → 25.0 (MTP+f16) · int8 weights (25.8 GB)</text>
   <text x="598" y="794" fill="#8fa3c0" font-size="12.5">decode collapses vs the other two from 32K: 41.3 → 25.0</text>
-  <text x="598" y="812" fill="#8fa3c0" font-size="12.5">load 60–70 s · 202–211 W · ceiling 96K on one card</text>
+  <text x="598" y="812" fill="#8fa3c0" font-size="12.5">load 60–70 s · ceiling 96K on one card</text>
   <text x="598" y="830" fill="#8fa3c0" font-size="12.5">mixed-KV fix (main u8 / draft f16) needed at 64K</text>
 
   <rect x="1050" y="728" width="490" height="118" rx="8" fill="#0d1b30" stroke="#b8e09a" stroke-opacity="0.6"/>
   <text x="1068" y="754" fill="#d4f0b8" font-size="14.5" font-weight="600">llama.cpp + draft-MTP — passes OV from 32K</text>
   <text x="1068" y="776" fill="#8fa3c0" font-size="12.5">52.0 → 38.3 tok/s vs flat 14.0 no-spec: native MTP tensors</text>
   <text x="1068" y="794" fill="#8fa3c0" font-size="12.5">in the SAME Q8_0 file, --spec-type draft-mtp (2.7–3.7x)</text>
-  <text x="1068" y="812" fill="#8fa3c0" font-size="12.5">41 s cold start · 99–103 W — efficiency pick</text>
+  <text x="1068" y="812" fill="#8fa3c0" font-size="12.5">41 s cold start — simplest ops</text>
   <text x="1068" y="830" fill="#8fa3c0" font-size="12.5">beats OV where OV's KV/MTP ceiling bites: 44.0 vs 41.3 @32K,</text>
   <text x="1068" y="848" fill="#8fa3c0" font-size="12.5">38.3 vs 25.0 @64K</text>
  </g>
 
  <!-- MEASUREMENT LEDGER -->
- <text x="60" y="896" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">MEASUREMENT LEDGER — 5 defects found and fixed during the audit</text>
+ <text x="60" y="1172" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">CONTEXT CEILINGS AND WEIGHT FORMATS</text>
  <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="922">1. vLLM decode was tokens/wall incl. TTFT → true 75.6 (not 58.1) @512; the "context collapse" was this bug — v2 rerun, single streaming request</text>
-  <text x="110" y="946">2. Power counters read the idle card on vLLM/llama arms → corrected PCI per card; true load draws 99–229 W</text>
-  <text x="110" y="970">3. Cap asymmetry (vLLM/llama at 150W default vs OV 230W) → all arms rerun at 230 W</text>
-  <text x="110" y="994">4. Stale v1 numbers in doc/chart/catalog → pinned to archived v2 JSONs; 30/30 doc numbers trace to raw files</text>
-  <text x="110" y="1018">5. llama+MTP prefill column cache-poisoned (prompt reuse) → marked INVALID; decode rows clean; cold-prefill rerun queued</text>
- </g>
-
- <!-- POWER -->
- <text x="60" y="1070" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">POWER (steady-state energy counter, 230 W caps)</text>
- <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="1096">vLLM 194–229 W · OpenVINO 202–211 W · llama+draft-MTP 99–103 W · llama no-spec 149.5 W (at its 150W cap; decode cap-insensitive)</text>
-  <text x="110" y="1120">Efficiency pick: llama+MTP — lowest watts per token (38–52 tok/s at ~100 W)</text>
- </g>
-
- <!-- ASYMMETRIES -->
- <text x="60" y="1172" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">REMAINING ASYMMETRIES (labeled, not hidden)</text>
- <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
-  <text x="110" y="1198">Weights differ by design: vLLM GPTQ-Int4 19 GB · OV int8 25.8 GB · llama Q8_0 27 GB — int8-vLLM rerun pending (weights downloading)</text>
-  <text x="110" y="1222">llama+MTP: prefill unmeasured (cache bug), 96K untested, acceptance measured on counting task</text>
-  <text x="110" y="1246">OV 64K/96K points are n=1–2 ceiling probes (provisional); all other points n=3</text>
-  <text x="110" y="1270">Context ceilings: vLLM config 100K · OV 96K (131K blocked: VRAM f16 / compressed-KV decode defect) · llama 128K init-crash</text>
+  <text x="110" y="1198">Weights differ by design: vLLM GPTQ-Int4 19 GB · OV int8 25.8 GB · llama Q8_0 27 GB — int8/FP8 weights exceed one 32GB card — measured, not assumed</text>
+  <text x="110" y="1222" fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">llama+MTP: 96K untested; prefill measured separately (see prefill chart)</text>
+   <text x="110" y="1270">Context ceilings: vLLM config 100K · OV 96K (131K blocked: VRAM f16 / compressed-KV decode defect) · llama 128K init-crash</text>
  </g>
 
  <text x="60" y="1330" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Setup recipes (exact commands, cold-start times, graph-capture notes): ENGINE-SETUP-RECIPES.md</text>
