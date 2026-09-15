@@ -119,8 +119,11 @@ u8 + MTP prefills but decode breaks >32K. Full guide: OPENVINO-B70-TUNING.md.
 
 ## Next targets
 
-1. Export an MTP draft unit for `SergiioB/Qwen3.8-27B-int4-gdn8-ov` (the fixed
-   INT4) — INT4 weights + MTP is the real size/speed target. No draft unit exists yet.
+1. ~~Export an MTP draft unit for INT4-GDN8~~ — DONE 2026-09-15: the Hub
+   `OpenVINO/Qwen3.8-27B-int4-ov` `openvino_mtp_model.{xml,bin}` (263 MB) grafts
+   into the GDN8 dir and loads as `draft_model`. Result: decode 22.4 → 79.5 t/s
+   @512 (+3.55×), 64K survives (29.1, no-draft crashed), ceiling 98K (GPU event
+   error). Validate with `validate_mtp_graft.py` / `ctx_sweep_ov_int4_mtp5.py`.
 2. llama.cpp reference: single-head MTP, n_max=3 default, top_k=10 draft sampling,
    ~0.93 acceptance / ~3.2 tok per step on this family — nat5 beating it suggests
    the OpenVINO verifier window batches better on Xe2.
