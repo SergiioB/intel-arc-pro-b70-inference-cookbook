@@ -31,7 +31,7 @@
  <g fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
   <text x="100" y="645">0</text><text x="100" y="581">10</text><text x="100" y="517">20</text>
   <text x="100" y="453">30</text><text x="100" y="389">40</text><text x="100" y="325">50</text>
-  <text x="100" y="261">60</text><text x="100" y="205">70</text><text x="100" y="240">—</text>
+  <text x="100" y="261">60</text><text x="100" y="205">70</text>
  </g>
  <text x="44" y="430" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif" transform="rotate(-90 44 430)" text-anchor="middle">decode — tokens / second</text>
  <g stroke="#3a4c68" stroke-width="2">
