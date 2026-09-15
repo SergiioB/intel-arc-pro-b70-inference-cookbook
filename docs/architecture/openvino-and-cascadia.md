@@ -6,7 +6,7 @@ llama.cpp SYCL). This page is architecture and claim-boundary, not a
 speed leaderboard.
 
 Qwen3.8-27B measurements are on
-[docs/qwen38-27/OPENVINO-CASCADIA.md](../qwen38-27/OPENVINO-CASCADIA.md).
+[docs/qwen38-27b/OPENVINO-CASCADIA.md](../qwen38-27b/OPENVINO-CASCADIA.md).
 Do not copy them into catalog rankings. Hub
 `OpenVINO/Qwen3.8-27B-int4-ov` still collapses; the working mixed INT4 is
 [`SergiioB/Qwen3.8-27B-int4-gdn8-ov`](https://huggingface.co/SergiioB/Qwen3.8-27B-int4-gdn8-ov).

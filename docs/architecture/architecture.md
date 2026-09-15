@@ -113,7 +113,7 @@ table only routes you there; do not copy values from it into recipes.
 | Serving image, Qwen3.8 champion stack | `vllm/vllm-openai-xpu@sha256:f01e24f6…` (vLLM 0.27.2rc1.dev77, vllm-xpu-kernels 0.1.12.3) | [IMAGE-AND-PATCH-MATRIX.md](../IMAGE-AND-PATCH-MATRIX.md) |
 | Model checkpoint, Qwen3.8-27B | HF Hub `SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16`, revision `9d189a60…` | [FULL-SETUP-COMMANDS.md §11](../FULL-SETUP-COMMANDS.md) |
 | Upstream wedge reports | intel/compute-runtime#948, vllm-project/vllm#41663, intel/llm-scaler#594 | [RELIABILITY-REPORT.md](../RELIABILITY-REPORT.md), [watchdog/README.md](../../watchdog/README.md) |
-| Researched overlays that did not win | open vLLM PR #52816 with DFlash 2 (spec acceptance 0/574) | [QWEN38-VLLM-XPU.md §13](../qwen38-27/QWEN38-VLLM-XPU.md) |
+| Researched overlays that did not win | open vLLM PR #52816 with DFlash 2 (spec acceptance 0/574) | [QWEN38-VLLM-XPU.md §13](../qwen38-27b/QWEN38-VLLM-XPU.md) |
 
 Ordered patch stacks per image are owned by
 [IMAGE-AND-PATCH-MATRIX.md](../IMAGE-AND-PATCH-MATRIX.md) and hash-pinned

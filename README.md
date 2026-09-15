@@ -28,14 +28,14 @@ Nemotron DFlash.
 | Family | Engine | What is proven | Headline | Page |
 |---|---|---|---|---|
 | **Qwen3.6-35B-A3B** | vLLM XPU (Pi digest) | Native MTP 1/2/4, 128K | MTP4 p512/g128 **170.91** client post-first n=5 | [QWEN36-MOE-VLLM-XPU](docs/qwen36-35a3/QWEN36-MOE-VLLM-XPU.md) |
-| **Qwen3.8-27B** | vLLM XPU (nightly digest) | Dense GPTQ-INT4 + MTP4; optional draft-INT4; concurrent serving via mixed-split v5; separate dual-B70 FP8 TP2 research route | C1 **106.7** n=5 current GPTQ stack (LMX `cmt03mj040eh8ms01trjvhm75`); cache-off 112.65 (`cmszpqy000e8fms014ty6i5x3`), BF16-draft 83.7 (`cmsur82fz06svms01ga1f0z83`). Concurrent (v5 + draft-INT4, prefix on): **C5 realistic 127.4** Σ-streams / 25.5 per-user (`cmt03mjo60ehbms0117c5i745`), short-prompt **C5 203.8 / C32 224.2** (lmx harness), C32 Σ-streams 903. **Prefix reuse largely fails at C5 on this build** (0–38% hits vs 91% at C1) — warm-session TTFT at Cn is an open issue. FP8 TP2 values remain on their dedicated E2 page/catalog records. | [Family hub](docs/qwen38-27/README.md) · [GPTQ recipe](docs/qwen38-27/QWEN38-VLLM-XPU.md) · [FP8 TP2](docs/qwen38-27/FP8-TP2-W8A16.md) · [Windows 11](docs/qwen38-27/WINDOWS-STANDALONE.md) |
+| **Qwen3.8-27B** | vLLM XPU (nightly digest) | Dense GPTQ-INT4 + MTP4; optional draft-INT4; concurrent serving via mixed-split v5; separate dual-B70 FP8 TP2 research route | C1 **106.7** n=5 current GPTQ stack (LMX `cmt03mj040eh8ms01trjvhm75`); cache-off 112.65 (`cmszpqy000e8fms014ty6i5x3`), BF16-draft 83.7 (`cmsur82fz06svms01ga1f0z83`). Concurrent (v5 + draft-INT4, prefix on): **C5 realistic 127.4** Σ-streams / 25.5 per-user (`cmt03mjo60ehbms0117c5i745`), short-prompt **C5 203.8 / C32 224.2** (lmx harness), C32 Σ-streams 903. **Prefix reuse largely fails at C5 on this build** (0–38% hits vs 91% at C1) — warm-session TTFT at Cn is an open issue. FP8 TP2 values remain on their dedicated E2 page/catalog records. | [Family hub](docs/qwen38-27b/README.md) · [GPTQ recipe](docs/qwen38-27b/QWEN38-VLLM-XPU.md) · [FP8 TP2](docs/qwen38-27b/FP8-TP2-W8A16.md) · [Windows 11](docs/qwen38-27b/WINDOWS-STANDALONE.md) |
 | **Qwen3.6-27B** | vLLM XPU (same Pi digest) | Dense GPTQ-INT4 + MTP, fp8 KV | MTP4 p512/g128 **69.30** n=5 | [QWEN36-DENSE-VLLM-XPU](docs/qwen36-27/QWEN36-DENSE-VLLM-XPU.md) |
 | **Nemotron-3.5-Lightning-30B-A3B** | vLLM XPU (**newer** digest) | DFlash n=7; native MTP **0%** | **186.61** C1 client post-first at p2048/g128 n=5; **cold input 7160** (prompt/TTFT) at p8192/g1 | [NEMOTRON-DFLASH-B70](docs/nemotron35-30a3/NEMOTRON-DFLASH-B70.md) |
 | **Muse-Glimmer-30B** | llama.cpp SYCL | Vision + DFlash n2; vLLM still experimental | **26.8** engine t/s at p512/g128 **128K** n=5 | [MUSE-GLIMMER-B70](docs/muse-glimmer/MUSE-GLIMMER-B70.md) |
 | **Qwen3.8-Flash-Next** | llama.cpp SYCL (two B70s, C1) | MTP + fused multi-token `MUL_MAT_ID` kernel. 8K/16K/128K are context windows. FP32 and F16 are separate compile-time binaries. | C1 n=5: FP32 **33.25** tok/s p512/g128 at 8K (+42%); F16 cold input **585.9** at p9096/g128, 16K. | [Recipe](docs/qwen38-flash-next/QWEN38-FLASH-NEXT-LLAMACPP.md) |
 | **Ornith-1.5-35B-A3B** | vLLM XPU (Qwen3.8 nightly digest) | Local GPTQ-INT4 MixedCal-v2, **MTP1 + DraftINT4 default**; 262K C1; 150↔230 W prefill A/B | Self-reported E2: combined 230 W LMX `tokSOut` **108.4** / `tokSPrefill` **9073** (`cmt2tdx5q0hy0mv01koh4xwpw`); host p512/g128 **106.64**. BF16-draft MTP1 150 W **96.43**. No-spec 230 W prefill **9780** (`cmt2sr6gq0himmv01ogieh0c8`) | [ORNITH-VLLM-XPU](docs/ornith15-35a3/ORNITH-VLLM-XPU.md) |
 | **Ornith-1.5-35B-A3B** (converters) | vLLM XPU (nightly digest) | GPTQ→AutoRound converter head-to-head; MTP1; **reference logprob parity vs BF16** | MTP1 96.4 t/s n=5 @150 W; AutoRound equal-or-best parity (self-report, E2) | [AUTOROUND-VS-GPTQ](docs/ornith15-35a3/AUTOROUND-VS-GPTQ.md) |
-| **Qwen3.8-27B** | OpenVINO GenAI & Cascadia | Native INT4 VLM, NNCF surgery, Paged Attention (`--cb`) | 15.8 tok/s OpenVINO 230 W (single-user limit) vs 4.95 Cascadia. Fast pipeline-parallel but bottlenecked by GDN. | [OpenVINO vs Cascadia](docs/qwen38-27/OPENVINO-CASCADIA-REPORT.md) · [Architecture Guide](docs/architecture/openvino-and-cascadia.md) |
+| **Qwen3.8-27B** | OpenVINO GenAI & Cascadia | Native INT4 VLM, NNCF surgery, Paged Attention (`--cb`) | 15.8 tok/s OpenVINO 230 W (single-user limit) vs 4.95 Cascadia. Fast pipeline-parallel but bottlenecked by GDN. | [OpenVINO vs Cascadia](docs/qwen38-27b/OPENVINO-CASCADIA-REPORT.md) · [Architecture Guide](docs/architecture/openvino-and-cascadia.md) |
 
 Image + patch pin: [IMAGE-AND-PATCH-MATRIX.md](docs/IMAGE-AND-PATCH-MATRIX.md).
 
@@ -141,7 +141,7 @@ from the same 32 GB card. Image **2026.08.19** adds draft-INT4 S+M1 and
 turns **prefix cache on** for real sessions. If you already have the
 18 August kit: `.\Upgrade-Qwen38-Docker.ps1` — do not re-download the
 model. Guide:
-**[docs/qwen38-27/WINDOWS-STANDALONE.md](docs/qwen38-27/WINDOWS-STANDALONE.md)** (kits in [`windows/`](windows/)).
+**[docs/qwen38-27b/WINDOWS-STANDALONE.md](docs/qwen38-27b/WINDOWS-STANDALONE.md)** (kits in [`windows/`](windows/)).
 
 ### Connecting Pi / omp / Hermes
 
@@ -188,7 +188,7 @@ Every model has its own dedicated recipe and benchmarks in `docs/<family>/`:
 
 1. **[Qwen3.6-35B-A3B (MoE)](docs/qwen36-35a3/QWEN36-MOE-VLLM-XPU.md):** Native MTP 1/2/4, 128K context, 170.9 tok/s peak decode.
 2. **[Qwen3.6-27B (Dense)](docs/qwen36-27/QWEN36-DENSE-VLLM-XPU.md):** Dense GPTQ-INT4 + MTP4, FP8 KV cache required, 69.3 tok/s decode.
-3. **[Qwen3.8-27B family hub](docs/qwen38-27/README.md):** choose the single-B70 GPTQ/MTP route, the separate dual-B70 FP8 TP2 research route, Windows packaging, or Pi agent integration without mixing their patch lists or numeric authorities.
+3. **[Qwen3.8-27B family hub](docs/qwen38-27b/README.md):** choose the single-B70 GPTQ/MTP route, the separate dual-B70 FP8 TP2 research route, Windows packaging, or Pi agent integration without mixing their patch lists or numeric authorities.
 4. **[Nemotron-3.5-Lightning-30B-A3B](docs/nemotron35-30a3/NEMOTRON-DFLASH-B70.md):** DFlash $n=7$ speculative decoding, 186.6 tok/s decode, 7160 tok/s cold prefill.
 5. **[Ornith-1.5-35B-A3B](docs/ornith15-35a3/ORNITH-VLLM-XPU.md):** MixedCal-v2 local GPTQ-INT4, default MTP1 + DraftINT4, 108.4 tok/s decode.
 6. **[Muse-Glimmer-30B](docs/muse-glimmer/MUSE-GLIMMER-B70.md):** llama.cpp SYCL vision + reasoning, DFlash $n=2$, 26.8 tok/s decode.
@@ -266,7 +266,7 @@ benchmarks/
   nemotron35-30a3/   Nemotron DFlash + no-spec graph launchers
   ornith15-35a3/     Ornith-1.5 MixedCal-v2 MTP1 launcher
   <root>             shared: matrix runner, harness, monitor, prompt generation, compiler, renderers
-windows/             Windows 11 standalone kits (WSLC + Docker Desktop) — see docs/qwen38-27/WINDOWS-STANDALONE.md
+windows/             Windows 11 standalone kits (WSLC + Docker Desktop) — see docs/qwen38-27b/WINDOWS-STANDALONE.md
 patches/             family-tagged patches — see IMAGE-AND-PATCH-MATRIX.md
 docs/
   qwen36-35a3/       MoE-specific reference (QUANTIZATION-QUALITY.md)

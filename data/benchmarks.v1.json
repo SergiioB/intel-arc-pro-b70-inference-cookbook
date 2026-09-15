@@ -91,7 +91,7 @@
       },
       "evidence": {
         "commit": "a4ba875413728bd787a2a01a2fc0cac46b035701",
-        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/qwen38-27/QWEN38-VLLM-XPU.md"
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a4ba875413728bd787a2a01a2fc0cac46b035701/docs/qwen38-27b/QWEN38-VLLM-XPU.md"
       }
     },
     {
@@ -354,7 +354,7 @@
       },
       "evidence": {
         "commit": "8c69e5f5143aff60f0bc1cabc97c2fcc364697b2",
-        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8c69e5f5143aff60f0bc1cabc97c2fcc364697b2/docs/qwen38-27/FP8-TP2-W8A16.md"
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8c69e5f5143aff60f0bc1cabc97c2fcc364697b2/docs/qwen38-27b/FP8-TP2-W8A16.md"
       }
     },
     {
@@ -393,7 +393,7 @@
       },
       "evidence": {
         "commit": "8c69e5f5143aff60f0bc1cabc97c2fcc364697b2",
-        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8c69e5f5143aff60f0bc1cabc97c2fcc364697b2/docs/qwen38-27/FP8-TP2-W8A16.md"
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8c69e5f5143aff60f0bc1cabc97c2fcc364697b2/docs/qwen38-27b/FP8-TP2-W8A16.md"
       }
     },
     {
@@ -1156,7 +1156,7 @@
       },
       "evidence": {
         "commit": "cef107d0bf821e48da3773afa08a65d731af017c",
-        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/cef107d0bf821e48da3773afa08a65d731af017c/docs/qwen38-27/ENGINE-COMPARISON-CTX-20260914.md"
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/cef107d0bf821e48da3773afa08a65d731af017c/docs/qwen38-27b/ENGINE-COMPARISON-CTX-20260914.md"
       }
     }
   ]
