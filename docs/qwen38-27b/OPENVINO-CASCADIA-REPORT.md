@@ -1,5 +1,11 @@
 # Qwen3.8-27B OpenVINO vs Cascadia — full report (2026-09-12)
 
+> **SUPERSEDED NUMBERS (2026-09-15):** the 15.79 t/s rows below are the
+> pre-MTP-graft baseline. With the grafted MTP5 draft head, OpenVino runs
+> 79 t/s @512 (single-card short-ctx champion) and a composite curve to
+> 128K — see [ENGINE-COMPARISON-CTX](ENGINE-COMPARISON-CTX-20260914.md).
+> Cascadia numbers stand as measured.
+
 Research, not a catalog ranking. Working IR:
 [`SergiioB/Qwen3.8-27B-int4-gdn8-ov`](https://huggingface.co/SergiioB/Qwen3.8-27B-int4-gdn8-ov).
 Hub `OpenVINO/Qwen3.8-27B-int4-ov` is still broken

@@ -75,7 +75,7 @@ What it does not offer on one B70 for Qwen3.8-27B:
 
 - A working `ov-genai` load of this VLM IR (stock 0.2.3 = OpenVINO 2026.2
   SIGSEGV; 2026.3.1 rebuild still dies in `Tokenizer::setup_tokenizer`)
-- Tok/s matching Python `VLMPipeline` (15.79 vs 4.95 at 230 W P512/G128).
+- Tok/s matching Python `VLMPipeline` (15.79 pre-MTP-graft baseline vs 4.95 at 230 W P512/G128; the Python side has since reached 79 t/s @512 with the grafted MTP5 head, while Cascadia's `qwen35` has not changed).
   `qwen35` is a host-side greedy loop around a surgery IR, not fused GenAI
 - A paged-attention GDN decode that fits 32 GB with a ~21 GB mixed-INT4 graph
 - Future optimization: **If Intel implements a fused INT4 `CascadiaInt4Gemv` equivalent for GatedDeltaNet**, OpenVINO performance on Qwen3.8 could dramatically increase, bringing it closer to vLLM's speeds. Currently, GDN layers must be evaluated in FP16 to avoid garbage output, which creates a catastrophic VRAM bandwidth bottleneck.
@@ -129,8 +129,28 @@ The Reddit post [arc_pro_b70_bench_test_to_compare_ovms_vs_vllm](https://www.red
 
 **The catch:** those numbers were generated on **Qwen3.6** (standard attention), measuring **Continuous Batching (multi-user concurrency)** where the GPU is saturated by serving 10+ users simultaneously. 
 
-For **Qwen3.8-27B** (GatedDeltaNet) at **single-user latency** (greedy, batch=1):
+For **Qwen3.8-27B** (GatedDeltaNet), single-user latency, greedy single-stream
+(all numbers 2026-09-15, evidence in
+[ENGINE-COMPARISON-CTX](../qwen38-27b/ENGINE-COMPARISON-CTX-20260914.md)):
 
-- **Use vLLM XPU + MTP:** (69 t/s) — Absolute fastest single-user decode, provided you have enough VRAM for the dense model and apply the FP8 KV cache patch.
-- **Use llama.cpp SYCL:** (18.5 t/s) — Lowest VRAM footprint, highest quantized compatibility, runs on bare metal with zero dependencies.
-- **Use OpenVINO GenAI / Cascadia:** (15.8 t/s) — Use only for model architectures without GDN (like Qwen3.6) where OpenVINO has fused INT4 kernels, or when you are building a multi-user API endpoint relying on `--cb` (Paged Attention). Avoid for Qwen3.8 until the Xe2 GDN kernel is fixed.
+- **Use OpenVINO GenAI** (INT4-GDN8 + grafted MTP5 draft): **79 t/s @512** —
+  the single-card short-context champion. The draft head is grafted from the
+  Hub int4-ov repo; the old "15.8 t/s, avoid for Qwen3.8" guidance predates
+  that graft. Draft off ≥98K (crashes u8 / runs 3× slower), full-protocol
+  ceiling 128K, capacity probes to 256K
+  ([openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483)).
+- **Use vLLM XPU + MTP4** (GPTQ-Int4): **75.6 t/s @512**, slowest decay of
+  the INT4 arms (45.7 @98K, 34.5 @196K) — the serving leader at recommended
+  sampling (102.6 t/s p512/g128) and the pragmatic default.
+- **Use llama.cpp SYCL** (Q4_K_M + draft): **37.8 t/s @512 → 16.0 @256K** —
+  the only engine serving the full 262K under the full protocol, lowest
+  VRAM footprint, zero dependencies.
+- **Use Cascadia** (`qwen35` surgery, batch=1): **~5 t/s** measured on this
+  host — a separate engine from OpenVINO GenAI (Rust server + IR surgery,
+  not the GenAI Python API). Today it is the research path for multi-node
+  pipeline parallelism, not a B70 speed path; its `ov-genai` engine cannot
+  load this VLM IR yet (tokenizer SIGSEGV). If a fused INT4 GDN GEMV lands
+  in either stack, revisit.
+
+Numbers refresh from the campaign evidence JSONs via the committed chart
+renderer — do not hand-copy between pages (that is how the stale 15.8 spread).

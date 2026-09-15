@@ -1,5 +1,10 @@
 # Qwen3.8-27B — OpenVINO GenAI and Cascadia (research)
 
+> **SUPERSEDED NUMBERS (2026-09-15):** the 15.79 t/s rows are the
+> pre-MTP-graft baseline; OpenVINO now runs 79 t/s @512 with the grafted
+> MTP5 head — see [ENGINE-COMPARISON-CTX](ENGINE-COMPARISON-CTX-20260914.md).
+> Cascadia rows stand as measured.
+
 Not a production catalog row. Architecture:
 [OpenVINO and Cascadia](../architecture/openvino-and-cascadia.md).
 Do not mix with GPTQ vLLM on [QWEN38-VLLM-XPU.md](QWEN38-VLLM-XPU.md).
