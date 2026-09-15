@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1460" width="1600" height="1460" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1420" width="1600" height="1420" role="img" aria-labelledby="t d">
  <title id="t">Qwen3.8-27B decode vs context on one B70 per engine — final ranking, weights labeled, all points in-frame</title>
  <desc id="d">vLLM GPTQ-Int4 MTP4 graph-on: 75.6 71.6 61.2 52.4 49.8. OV int8 MTP5: 62.1 56.5 50.8 41.3 25.0. llama Q8_0 draft-MTP: 52.0 51.2 49.6 44.0 38.3. llama no-spec: 14.0 flat. Y 0-80.</desc>
  <rect width="1600" height="1460" fill="#07111f"/>
@@ -129,5 +129,6 @@
  </g>
 
  <text x="60" y="1330" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Setup recipes (exact commands, cold-start times, graph-capture notes): ENGINE-SETUP-RECIPES.md</text>
- <text x="60" y="1350" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 · ctx-sweep-vllm-v2.json · ctx-sweep-llamacpp-mtp.json · ctx-sweep-openvino.json · ENGINE-COMPARISON-CTX-20260914.md</text>
+ <text x="60" y="1372" fill="#c792ea" font-size="12.5" font-family="Segoe UI, Inter, sans-serif">vLLM FP8 MTP8 TP2 (2× B70) reference, banked E2 cells: decode 53.4 @p512, 60.1 @p1024 (max 71.1), 33.5 @p2048 hybrid — dual-card class, not comparable to the 1-card arms above.</text>
+<text x="60" y="1390" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 · ctx-sweep-vllm-v2.json · ctx-sweep-llamacpp-mtp.json · ctx-sweep-openvino.json · ENGINE-COMPARISON-CTX-20260914.md</text>
 </svg>
