@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.2](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.1...v1.2.2) (2026-09-15)
+
+
+### Bug Fixes
+
+* **ci:** repair BENCHMARK-CATALOG link + add FP8 TP2 measured sweep as pinned record (26 rows) ([83fbdb2](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/83fbdb270746c9b9c95fc8551332f66770883f95))
+* **ov:** correct 256K overclaim — full-protocol ceiling 128K; capacity probes labeled ([4583e84](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/4583e84e192b25467f75afd9d4b1619cca4499f9))
+* **ov:** correct 256K overclaim — full-protocol ceiling is 128K; 196K-256K are 40-token capacity probes ([9b34742](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/9b347420b132da1e15e755d35467d4b65f591009))
+* shorten FP8 TP2 catalog record wording for mobile rendering ([472cb40](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/472cb40c13a222233a0d791c93d7d4863c6e4b1c))
+
 ## [1.2.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.0...v1.2.1) (2026-09-15)
 
 
