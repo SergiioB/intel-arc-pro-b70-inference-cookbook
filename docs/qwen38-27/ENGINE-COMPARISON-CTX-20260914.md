@@ -107,6 +107,8 @@ NOT a graph artifact (both arms collapse identically).
 > shared Eiffel-filler task for cross-engine comparability; acceptance rates
 > differ by task. Same-protocol comparisons use this table only.
 
+![Final ranking](../assets/b70-qwen38-engine-final-ranking.svg)
+
 ## llama.cpp + draft-MTP (the untested lever, now measured)
 
 Same Q8_0 GGUF has native MTP tensors; `llama-server --spec-type draft-mtp`.

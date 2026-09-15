@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1240" width="1600" height="1240" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B one B70 per engine: final decode ranking with llama.cpp draft-MTP enabled</title>
+ <desc id="d">Decode tok/s: vLLM Int4-MTP4 75.6/71.6/61.2/52.4/49.8/51.1; OV int8-MTP5 62.1/56.5/50.8/41.3/25.0/13.3; llama Q8_0+draftMTP 52.0/51.2/49.6/44.0/38.3; llama no-spec flat 14</desc>
+ <rect width="1600" height="1240" fill="#07111f"/>
+ <text x="60" y="52" fill="#68a7ff" font-size="22" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">FINAL ENGINE RANKING · QWEN3.8-27B · 1× ARC PRO B70 · ALL LEVERS ON · 2026-09-14</text>
+ <text x="60" y="78" fill="#8fa3c0" font-size="14" font-family="Segoe UI, Inter, sans-serif">greedy · C1 · shared filler task · n=3 · single-stream timing · 230W caps · spec decoding enabled where the engine supports it</text>
+
+ <!-- DECODE panel -->
+ <text x="60" y="120" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">DECODE tok/s — best config per engine</text>
+ <line x1="110" y1="560" x2="1540" y2="560" stroke="#26364e" stroke-width="2"/>
+ <line x1="110" y1="150" x2="110" y2="560" stroke="#26364e" stroke-width="2"/>
+ <g stroke="#1a2740" stroke-width="1">
+  <line x1="110" y1="495" x2="1540" y2="495"/><line x1="110" y1="430" x2="1540" y2="430"/>
+  <line x1="110" y1="365" x2="1540" y2="365"/><line x1="110" y1="300" x2="1540" y2="300"/>
+  <line x1="110" y1="235" x2="1540" y2="235"/><line x1="110" y1="170" x2="1540" y2="170"/>
+ </g>
+ <g fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">
+  <text x="98" y="565">0</text><text x="98" y="500">10</text><text x="98" y="435">20</text>
+  <text x="98" y="370">30</text><text x="98" y="305">40</text><text x="98" y="240">50</text><text x="98" y="175">60</text>
+ </g>
+ <!-- x 512,2K,8K,32K,64K at 280,560,840,1120,1400 ; y=560-tps*6.0 -->
+ <!-- vLLM: 75.6 71.6 61.2 52.4 49.8 -->
+ <polyline points="280,106.4 560,130.4 840,192.8 1120,245.6 1400,261.2" fill="none" stroke="#e8a87c" stroke-width="5"/>
+ <!-- OV: 62.1 56.5 50.8 41.3 25.0 -->
+ <polyline points="280,187.4 560,221 840,255.2 1120,312.2 1400,410" fill="none" stroke="#81c9ff" stroke-width="4"/>
+ <!-- llama+MTP: 52.0 51.2 49.6 44.0 38.3 -->
+ <polyline points="280,248 560,252.8 840,262.4 1120,296 1400,330.2" fill="none" stroke="#b8e09a" stroke-width="4.5"/>
+ <!-- llama no-spec flat 14 -->
+ <polyline points="280,476 560,476 840,476 1120,476 1400,476" fill="none" stroke="#7d9b76" stroke-width="3" stroke-dasharray="8,6" opacity="0.8"/>
+ <g fill="#e8a87c"><circle cx="280" cy="106.4" r="6.5"/><circle cx="560" cy="130.4" r="6.5"/><circle cx="840" cy="192.8" r="6.5"/><circle cx="1120" cy="245.6" r="6.5"/><circle cx="1400" cy="261.2" r="6.5"/></g>
+ <g fill="#81c9ff"><circle cx="280" cy="187.4" r="5.5"/><circle cx="560" cy="221" r="5.5"/><circle cx="840" cy="255.2" r="5.5"/><circle cx="1120" cy="312.2" r="5.5"/><circle cx="1400" cy="410" r="5.5"/></g>
+ <g fill="#b8e09a"><circle cx="280" cy="248" r="5.5"/><circle cx="560" cy="252.8" r="5.5"/><circle cx="840" cy="262.4" r="5.5"/><circle cx="1120" cy="296" r="5.5"/><circle cx="1400" cy="330.2" r="5.5"/></g>
+ <g fill="#f2c9a0" font-size="16" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="90">75.6</text><text x="560" y="114">71.6</text><text x="840" y="176">61.2</text>
+  <text x="1120" y="229">52.4</text><text x="1400" y="245">49.8</text>
+ </g>
+ <g fill="#a5dcff" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="172">62.1</text><text x="560" y="206">56.5</text><text x="840" y="240">50.8</text>
+  <text x="1120" y="297">41.3</text><text x="1400" y="394">25.0</text>
+ </g>
+ <g fill="#d4f0b8" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="270">52.0</text><text x="560" y="275">51.2</text><text x="840" y="285">49.6</text>
+  <text x="1120" y="318">44.0</text><text x="1400" y="352">38.3</text>
+ </g>
+ <g fill="#7d9b76" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="460">14.0 no-spec</text><text x="1120" y="460">14.0</text><text x="1400" y="460">14.0</text>
+ </g>
+ <g fill="#8fa3c0" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">
+  <text x="280" y="588">512</text><text x="560" y="588">2K</text><text x="840" y="588">8K</text>
+  <text x="1120" y="588">32K</text><text x="1400" y="588">64K</text>
+ </g>
+ <text x="840" y="122" fill="#e8a87c" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">vLLM leads every length</text>
+ <text x="1400" y="440" fill="#d4f0b8" font-size="13" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">llama+MTP passes OV from 32K</text>
+
+ <!-- ranking strip -->
+ <text x="60" y="660" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">WHO WINS WHERE (decode)</text>
+ <g font-size="14" font-family="Segoe UI, Inter, sans-serif">
+  <rect x="110" y="680" width="14" height="14" fill="#e8a87c"/><text x="132" y="692" fill="#c9d8f0">vLLM Int4-MTP4 — every length (75.6 → 49.8)</text>
+  <rect x="620" y="680" width="14" height="14" fill="#81c9ff"/><text x="642" y="692" fill="#c9d8f0">OV int8-MTP5 — 2nd ≤8K</text>
+  <rect x="1010" y="680" width="14" height="14" fill="#b8e09a"/><text x="1032" y="692" fill="#c9d8f0">llama Q8_0+draftMTP — 2nd ≥32K</text>
+  <rect x="1410" y="680" width="14" height="14" fill="#7d9b76"/><text x="1432" y="692" fill="#c9d8f0">llama no-spec — floor</text>
+ </g>
+ <text x="110" y="724" fill="#8fa3c0" font-size="13" font-family="Segoe UI, Inter, sans-serif">llama.cpp's "flat 14" was a config choice, not an engine limit: native MTP tensors in the same Q8_0 file give 2.7-3.7x. The earlier all-lengths ranking stands, with llama-MTP now ahead of OV from 32K.</text>
+
+ <!-- what changed / caveats -->
+ <text x="60" y="780" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">MEASUREMENT LEDGER (what the audit fixed tonight)</text>
+ <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
+  <text x="110" y="806">1. vLLM decode was tokens/wall including TTFT → real decode 75.6 not 58.1 @512; the "context collapse" was the bug (fixed, v2 rerun)</text>
+  <text x="110" y="830">2. Power counters read the idle card for vLLM/llama arms → true draws 149-229W under load (fixed, correct PCI per card)</text>
+  <text x="110" y="854">3. Cap asymmetry: vLLM/llama first ran at 150W default while OV had 230W → all arms rerun at 230W (fixed)</text>
+  <text x="110" y="878">4. Doc/chart/catalog stale numbers (v1 "3.4 @32K", "78.2 @512") → pinned to archived v2 JSONs; llama JSON watt rows labeled known-bad</text>
+  <text x="110" y="902">5. llama+MTP prefill column INVALID (server prompt-cache hits, 88K t/s artifacts) → decode-only until cold-prefill rerun; llama no-spec prefill was 150W-capped (+23% at 230W)</text>
+ </g>
+
+ <!-- power -->
+ <text x="60" y="960" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">POWER (steady-state energy counter, 230W caps)</text>
+ <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
+  <text x="110" y="986">vLLM 194–229 W · OV 202–211 W · llama+MTP 99–103 W · llama no-spec 149.5 W @150W cap</text>
+  <text x="110" y="1010">llama+MTP is the efficiency pick: ~100 W for 38-52 tok/s — lowest watts per token of all four configs</text>
+ </g>
+
+ <!-- remaining asymmetries -->
+ <text x="60" y="1060" fill="#c9d8f0" font-size="17" font-weight="600" font-family="Segoe UI, Inter, sans-serif">REMAINING ASYMMETRIES (honest)</text>
+ <g fill="#8fa3c0" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">
+  <text x="110" y="1086">Weights: OV int8 (25.8 GB) vs vLLM GPTQ-Int4 (19 GB) vs llama Q8_0 (27 GB) — same-family model, different compression; int8-vLLM rerun pending</text>
+  <text x="110" y="1110">llama+MTP: prefill unmeasured (cache-hit bug in this run); 96K untested; acceptance on prose tasks may differ from counting task</text>
+  <text x="110" y="1134">OV 64K/96K points are n=1-2 ceiling probes (marked provisional in doc); llama+MTP 512-64K are n=3</text>
+ </g>
+ <text x="110" y="1180" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70-DOCS qw38-ov-mtp-20260914 · ctx-sweep-vllm-v2.json · ctx-sweep-llamacpp-mtp.json · cookbook ENGINE-COMPARISON-CTX-20260914.md @ 8527273</text>
+</svg>
