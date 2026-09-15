@@ -89,9 +89,12 @@ Measure, don't assume — see §7 for what u8 did to our ceiling and speed.
 
 ## 5. Scheduler budget rules (or: how to OOM at load)
 
-- **Never set `SchedulerConfig.cache_size` when weights are ~26 GB.** The
-  budget check (`budget_in_bytes <= total_available_memory`,
+- **Never set `SchedulerConfig.cache_size` to a large value when weights are
+  ~26 GB.** The budget check (`budget_in_bytes <= total_available_memory`,
   cache_orchestrator.hpp) fails the whole load. Defaults fit.
+- **`cache_size = 0` (lazy KV) is the long-context unlock**: with 0, u8 KV on
+  INT4-GDN8 reaches 196K (30.5 GB used, 11.4 tok/s decode) and 224K OOMs. The
+  default preallocation is what faked the 64K wall (measured 2026-09-15).
 - `max_num_seqs=1` for latency benchmarks; raise only for throughput work.
 - `num_linear_attention_blocks` must cover live rows + speculative window;
   undersizing silently defers verify windows, then drops requests.
@@ -123,6 +126,8 @@ if __name__ != '__main__':
 
 ## 7b. Long-context recipe (which config per length, 1× B70 32GB)
 
+**int8-ov (26 GB weights, ~219 layers):**
+
 | Context | Config | Decode |
 |---|---|---|
 | ≤32K | MTP nat5, main KV u8 or f16, draft f16 | 41.8 tok/s @32K |
@@ -130,13 +135,38 @@ if __name__ != '__main__':
 | 48–~80K | **MTP nat5, main=u8 draft=f16 (mixed)** | **25.0 tok/s @64K** |
 | >~80K | NO MTP + u8 KV everywhere | 15.2 tok/s @64K-class; prefill reaches 128K |
 
-**The mixed-KV rule:** when passing `KV_CACHE_PRECISION='u8'`, pass it to the
+**INT4-GDN8 + grafted MTP5 head (21 GB, 2026-09-15 measurement):**
+
+| Context | Config | Decode |
+|---|---|---|
+| 512 | MTP5, u8 KV all, cache_size=0 | **79.5 tok/s** |
+| 2K | same | 73.0 tok/s |
+| 8K | same | 45.8 tok/s |
+| 32K | same | 47.7 tok/s |
+| 64K | same | 29.1 tok/s — survives (no-draft crashed here) |
+| 98K | MTP5 | decode collapses to ~4.7 tok/s (verifier window) |
+| 128K | MTP5 | CL_OUT_OF_RESOURCES (draft f16 KV eats the margin) |
+| ≤196K | **NO MTP + u8, cache_size=0** | 11.4 tok/s @196K — 224K OOMs. True one-card ceiling |
+
+**The two 2026-09-15 corrections to earlier int8-ov findings:**
+1. `cache_size=0` (lazy KV) removes the fake 64K wall — no-MTP u8 fits 196K
+   on INT4-GDN8. The old ~64–80K ceiling was default KV preallocation + draft
+   resident, not a real memory limit of the card.
+2. u8 draft KV **works** on INT4-GDN8 (correct output ≤64K, 40/28 tok/s) —
+   the int8-ov "u8-on-draft corruption >32K" defect did not reproduce here.
+   It does NOT extend the MTP ceiling though: 128K still OOMs because the
+   draft's f16 weights+KV dominate the remaining budget (98K → 30.2 GB used).
+
+**The mixed-KV rule (int8-ov only):** when passing `KV_CACHE_PRECISION='u8'`, pass it to the
 MAIN pipeline only — `og.draft_model(MODEL, 'GPU.1')` with NO precision prop.
-u8 on the draft's own KV corrupts its attention at >32K (garbage drafts ->
-verifier rejects -> `gen_tokens==1`, empty text). With draft at f16 the main
-model still gets the full u8 memory saving; 96K then dies on true VRAM
-exhaustion (CL_OUT_OF_RESOURCES), not on the defect — mixed config ceiling is
-~64-80K on one 32GB card.
+u8 on the draft's own KV corrupts its attention at >32K on the int8-ov export
+(garbage drafts -> verifier rejects -> `gen_tokens==1`, empty text). With draft
+at f16 the main model still gets the full u8 memory saving; 96K then dies on
+true VRAM exhaustion (CL_OUT_OF_RESOURCES), not on the defect — mixed config
+ceiling is ~64-80K on one 32GB card. **This defect did NOT reproduce on
+INT4-GDN8** (see correction 2 above); on that model u8 draft KV decodes
+correctly ≤64K but still doesn't buy ceiling because the draft's f16 weights
+dominate the remaining budget.
 
 File-able upstream signature (u8-on-draft defect): genai 2026.5.0.0-3412,
 Qwen3.8-27B-int8-ov, u8 KV on draft+main, nat5, >32K input, TTFT normal,
