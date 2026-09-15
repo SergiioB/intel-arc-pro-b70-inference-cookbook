@@ -218,3 +218,33 @@ leadership tracks weight bytes more than engine quality.
 - 128K on one card: no config fits. vLLM config max 100K; OV blocked >96K
   (compressed-KV decode defect / f16 VRAM); llama Q8_0 init-crash
   (weights+KV > 32GB); FP8 weights physically exceed one card.
+
+## INT4-class matrix (2026-09-15) — same weight class, 8-bit KV
+
+One card each, same v2 protocol (single stream, median post-first-token),
+8-bit KV on all arms (vLLM fp8 / llama q8_0 / OV u8). The honest same-class
+comparison: every engine runs an Int4/Q4 artifact.
+
+![INT4-class decode](../assets/b70-qwen38-int4-class-decode-20260915.svg)
+
+| Context | vLLM GPTQ-Int4 (19 GB) | llama UD-Q4_K_M+MTP (16.5 GB) | OV INT4-GDN8 (21 GB, no draft) |
+|---|---:|---:|---:|
+| 512 | 75.6 | 37.8 | 22.4 |
+| 2K | 71.6 | 38.4 | 22.1 |
+| 8K | 61.2 | 37.3 | 21.7 |
+| 32K | 52.4 | 33.4 | 19.6 |
+| 64K | 49.8 | 29.2 | CL_OUT_OF_RESOURCES — wall |
+| 98K | 45.7 | 25.8 | — |
+| 128K | 32.6 | 23.0 | — |
+| 196K | 34.5 | 18.9 | — |
+| 256K | not in KV budget | 15.9 | — |
+
+Key measured facts:
+- vLLM's single-card KV budget caps at ≈204K: 256K needs 9.33 GiB KV vs 7.47 GiB
+  free after 19 GB weights at util 0.94 (measured error message).
+- llama Q4 is the only engine that holds the full 256K on one card
+  (37.8 → 15.9, 2.4× decay), at ~155 W.
+- OV INT4-GDN8 needs an MTP draft export before it can compete in this class;
+  no-draft ~20-22 tok/s and a hard u8-KV wall at 64K.
+- Raw: `ctx-sweep-{llamacpp-q4km-mtp,ov-int4-gdn8,vllm-int4-262k-probe}.json`
+  in `results/qw38-ov-mtp-20260914/`.

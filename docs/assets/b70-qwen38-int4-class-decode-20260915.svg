@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1480" width="1600" height="1480" role="img" aria-labelledby="t d">
+ <title id="t">Qwen3.8-27B INT4-class decode vs context — ARC Pro B70, same weight class, 8-bit KV</title>
+ <desc id="d">Decode tokens per second against context length for the three engines on the same Int4/Q4 weight class, one card each, 8-bit KV cache.</desc>
+ <style>
+  .ax{stroke:#334155;stroke-width:1.5} .tick{stroke:#475569;stroke-width:1}
+  .lbl{fill:#94a3b8;font-family:Geist Mono,ui-monospace,monospace;font-size:14px;text-anchor:middle}
+  .vt{fill:#f1f5f9;font-family:Geist Mono,ui-monospace,monospace;font-size:17px;font-weight:600;text-anchor:end}
+  .val{fill:#e2e8f0;font-family:Geist Mono,ui-monospace,monospace;font-size:14px;text-anchor:middle}
+  .cap{fill:#64748b;font-family:Geist Mono,ui-monospace,monospace;font-size:13px;text-anchor:start}
+  .title{fill:#f8fafc;font-family:Segoe UI,Inter,sans-serif;font-size:30px;font-weight:600}
+  .sub{fill:#94a3b8;font-family:Segoe UI,Inter,sans-serif;font-size:16px}
+  .h{fill:#e2e8f0;font-family:Segoe UI,Inter,sans-serif;font-size:17px;font-weight:600}
+  .body{fill:#cbd5e1;font-family:Segoe UI,Inter,sans-serif;font-size:15px}
+  .lg{fill:#cbd5e1;font-family:Segoe UI,Inter,sans-serif;font-size:13.5px}
+  .warn{fill:#fbbf24}
+ </style>
+
+ <text x="45" y="62" class="title">Qwen3.8-27B · INT4 class decode vs context</text>
+ <text x="45" y="92" class="sub">Same weight class on one Intel Arc Pro B70 each · 8-bit KV (vLLM fp8 / llama q8_0 / OV u8) · single-stream, median post-first-token</text>
+
+ <g>
+  <rect x="45" y="112" width="1510" height="60" fill="#0f172a" stroke="#334155"/>
+  <text x="60" y="134" class="body">⏱ TIME TO SERVE (cold start): vLLM ≈3 min (graph capture)  ·  llama.cpp ≈40 s  ·  OpenVINO ≈90 s</text>
+  <text x="60" y="159" class="body">Weights: vLLM GPTQ-Int4 sym-G128 19 GB · llama UD-Q4_K_M 16.5 GB · OV INT4-GDN8 21 GB (GDN float). OV has no MTP draft unit yet.</text>
+ </g>
+
+ <g>
+  <line x1="140" y1="920" x2="1560" y2="920" class="ax"/>
+  <line x1="140" y1="920" x2="140" y2="220" class="ax"/>
+  <text x="132" y="225" class="vt">80</text><line x1="135" y1="220" x2="140" y2="220" class="tick"/>
+  <text x="132" y="400" class="vt">60</text><line x1="135" y1="395" x2="140" y2="395" class="tick"/>
+  <text x="132" y="575" class="vt">40</text><line x1="135" y1="570" x2="140" y2="570" class="tick"/>
+  <text x="132" y="750" class="vt">20</text><line x1="135" y1="745" x2="140" y2="745" class="tick"/>
+  <text x="140" y="920" class="vt">0</text>
+  <text x="45" y="570" class="lbl" transform="rotate(-90 45 570)">decode tok/s (median)</text>
+
+  <text x="140" y="958" class="lbl">512</text>
+  <text x="450" y="958" class="lbl">2K</text>
+  <text x="766" y="958" class="lbl">8K</text>
+  <text x="1087" y="958" class="lbl">32K</text>
+  <text x="1245" y="958" class="lbl">64K</text>
+  <text x="1339" y="958" class="lbl">98K</text>
+  <text x="1402" y="958" class="lbl">128K</text>
+  <text x="1497" y="958" class="lbl">196K</text>
+  <text x="1560" y="958" class="lbl">256K</text>
+  <line x1="140" y1="920" x2="140" y2="925" class="tick"/>
+  <line x1="450" y1="920" x2="450" y2="925" class="tick"/>
+  <line x1="766" y1="920" x2="766" y2="925" class="tick"/>
+  <line x1="1087" y1="920" x2="1087" y2="925" class="tick"/>
+  <line x1="1245" y1="920" x2="1245" y2="925" class="tick"/>
+  <line x1="1339" y1="920" x2="1339" y2="925" class="tick"/>
+  <line x1="1402" y1="920" x2="1402" y2="925" class="tick"/>
+  <line x1="1497" y1="920" x2="1497" y2="925" class="tick"/>
+  <line x1="1560" y1="920" x2="1560" y2="925" class="tick"/>
+
+  <!-- vLLM GPTQ-Int4: 75.6 / 71.6 / 61.2 / 52.4 / 49.8 / 45.7@98K / 32.6@128K / 34.5@196K ; ceiling ~204K -->
+  <polyline fill="none" stroke="#fb923c" stroke-width="3.5" stroke-linejoin="round"
+   points="140,258 450,293 766,385 1087,461 1245,484 1339,520 1402,635 1497,618"/>
+  <circle cx="140" cy="258" r="5.5" fill="#fb923c"/>
+  <circle cx="450" cy="293" r="5.5" fill="#fb923c"/>
+  <circle cx="766" cy="385" r="5.5" fill="#fb923c"/>
+  <circle cx="1087" cy="461" r="5.5" fill="#fb923c"/>
+  <circle cx="1245" cy="484" r="5.5" fill="#fb923c"/>
+  <circle cx="1339" cy="520" r="5.5" fill="#fb923c"/>
+  <circle cx="1402" cy="635" r="5.5" fill="#fb923c"/>
+  <circle cx="1497" cy="618" r="5.5" fill="#fb923c"/>
+  <text x="140" y="239" class="val" fill="#fdba74">75.6</text>
+  <text x="450" y="274" class="val" fill="#fdba74">71.6</text>
+  <text x="766" y="366" class="val" fill="#fdba74">61.2</text>
+  <text x="1087" y="442" class="val" fill="#fdba74">52.4</text>
+  <text x="1245" y="465" class="val" fill="#fdba74">49.8</text>
+  <text x="1346" y="501" class="val" fill="#fdba74">45.7</text>
+  <text x="1410" y="616" class="val" fill="#fdba74">32.6</text>
+  <text x="1505" y="599" class="val" fill="#fdba74">34.5</text>
+  <text x="1215" y="400" class="warn" font-family="Geist Mono,ui-monospace,monospace" font-size="13px" text-anchor="start">KV ceiling ≈204K (9.33 GiB needed for 256K, 7.47 GiB free)</text>
+
+  <!-- llama Q4_K_M + MTP: 37.8 / 38.4 / 37.3 / 33.4 / 29.2 / 25.8 / 23.0 / 18.9 / 15.9@256K -->
+  <polyline fill="none" stroke="#34d399" stroke-width="3.5" stroke-linejoin="round"
+   points="140,589 450,584 766,594 1087,628 1245,664 1339,694 1402,719 1497,755 1560,781"/>
+  <circle cx="140" cy="589" r="5.5" fill="#34d399"/>
+  <circle cx="450" cy="584" r="5.5" fill="#34d399"/>
+  <circle cx="766" cy="594" r="5.5" fill="#34d399"/>
+  <circle cx="1087" cy="628" r="5.5" fill="#34d399"/>
+  <circle cx="1245" cy="664" r="5.5" fill="#34d399"/>
+  <circle cx="1339" cy="694" r="5.5" fill="#34d399"/>
+  <circle cx="1402" cy="719" r="5.5" fill="#34d399"/>
+  <circle cx="1497" cy="755" r="5.5" fill="#34d399"/>
+  <circle cx="1560" cy="781" r="5.5" fill="#34d399"/>
+  <text x="140" y="570" class="val" fill="#6ee7b7">37.8</text>
+  <text x="450" y="565" class="val" fill="#6ee7b7">38.4</text>
+  <text x="766" y="575" class="val" fill="#6ee7b7">37.3</text>
+  <text x="1087" y="609" class="val" fill="#6ee7b7">33.4</text>
+  <text x="1245" y="645" class="val" fill="#6ee7b7">29.2</text>
+  <text x="1346" y="675" class="val" fill="#6ee7b7">25.8</text>
+  <text x="1410" y="700" class="val" fill="#6ee7b7">23.0</text>
+  <text x="1505" y="736" class="val" fill="#6ee7b7">18.9</text>
+  <text x="1562" y="762" class="val" fill="#6ee7b7">15.9</text>
+
+  <!-- OV INT4-GDN8: 22.4 / 22.1 / 21.7 / 19.6, stops at 64K (CL_OUT_OF_RESOURCES) -->
+  <polyline fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linejoin="round" stroke-dasharray="7 4"
+   points="140,724 450,727 766,730 1087,748"/>
+  <circle cx="140" cy="724" r="5.5" fill="#38bdf8"/>
+  <circle cx="450" cy="727" r="5.5" fill="#38bdf8"/>
+  <circle cx="766" cy="730" r="5.5" fill="#38bdf8"/>
+  <circle cx="1087" cy="748" r="5.5" fill="#38bdf8"/>
+  <text x="140" y="705" class="val" fill="#7dd3fc">22.4</text>
+  <text x="450" y="708" class="val" fill="#7dd3fc">22.1</text>
+  <text x="766" y="711" class="val" fill="#7dd3fc">21.7</text>
+  <text x="1087" y="729" class="val" fill="#7dd3fc">19.6</text>
+  <text x="1120" y="700" class="warn" font-family="Geist Mono,ui-monospace,monospace" font-size="13px" text-anchor="start">64K: CL_OUT_OF_RESOURCES — measured wall (u8 KV, no draft)</text>
+ </g>
+
+ <g transform="translate(45,1000)">
+  <rect x="0" y="0" width="740" height="176" fill="#0f172a" stroke="#334155"/>
+  <rect x="14" y="14" width="22" height="6" fill="#fb923c"/>
+  <text x="44" y="22" class="lg">vLLM XPU · GPTQ-Int4 sym-G128 · 19 GB · 1× B70 · MTP4 · fp8 KV</text>
+  <text x="44" y="44" class="lg">Leads at every length; 75.6 @512 drops to 34.5 @196K. KV-budget ceiling</text>
+  <text x="44" y="64" class="lg">at ≈204K on one card (256K would need 9.33 GiB KV vs 7.47 GiB free).</text>
+  <rect x="14" y="82" width="22" height="6" fill="#34d399"/>
+  <text x="44" y="90" class="lg">llama.cpp SYCL · UD-Q4_K_M · 16.5 GB · 1× B70 · native draft-MTP · q8_0 KV</text>
+  <text x="44" y="112" class="lg">Only engine to hold the full 256K: 37.8 → 15.9 (2.4× decay). Best long-context</text>
+  <text x="44" y="132" class="lg">shape; ~155 W draw. Heaviest practical INT4-class setup wins at the edge.</text>
+  <rect x="14" y="150" width="22" height="6" fill="#38bdf8"/>
+  <text x="44" y="158" class="lg">OpenVINO GenAI · INT4-GDN8 · 21 GB · 1× B70 · no draft · u8 KV</text>
+ </g>
+
+ <g transform="translate(810,1000)">
+  <rect x="0" y="0" width="745" height="176" fill="#0f172a" stroke="#334155"/>
+  <text x="14" y="24" class="h">READING</text>
+  <text x="14" y="52" class="body">· Same weight class now: vLLM 2.0× llama, llama 1.7× OV at 512.</text>
+  <text x="14" y="80" class="body">· llama decays 2.4× over 512→256K; vLLM falls harder past 64K once the</text>
+  <text x="14" y="106" class="body">  KV budget and graph capture start to bite (75.6 → 32.6 @128K).</text>
+  <text x="14" y="134" class="body">· OV INT4-GDN8: ~22-20 tok/s flat to 32K, then the u8-KV resource wall.</text>
+  <text x="14" y="160" class="body">  An MTP draft export is the known headroom (documented next target).</text>
+ </g>
+
+ <text x="45" y="1420" class="cap">INT4-class single-card comparison · 8-bit KV on all arms · n=3 to 64K, n=1 probes beyond · raw JSONs in results/qw38-ov-mtp-20260914/</text>
+</svg>
