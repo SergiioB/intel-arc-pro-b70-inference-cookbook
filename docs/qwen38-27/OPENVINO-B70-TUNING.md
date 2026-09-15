@@ -147,13 +147,16 @@ if __name__ != '__main__':
 | 98K | MTP5 | decode collapses to ~4.7 tok/s (verifier window) |
 | 128K | MTP5 | CL_OUT_OF_RESOURCES (draft f16 KV eats the margin) |
 | 98K | NO MTP + u8, cache_size=0 | 14.96 tok/s |
-| 196K | NO MTP + u8, cache_size=0 | 11.39 tok/s |
-| 128K–256K | **NO MTP + u4 (**`KV_CACHE_PRECISION='u4'`**), cache_size=0** | **14.72 @128K · 12.78 @196K · 12.13 @224K · 11.28 @256K — OV HOLDS 256K** (28.8 GB, correct output) |
+| 196K | NO MTP + u8, cache_size=0 | 11.39 tok/s (40-tok probe) |
+| 128K–256K | **NO MTP + u4 (**`KV_CACHE_PRECISION='u4'`**), cache_size=0** | **14.72 @128K · 12.78 @196K · 12.13 @224K · 11.28 @256K** — all **40-token capacity probes** (28.8 GB, correct output). Full-protocol requests (128-token output) run to **128K** and fail ≥196K with `CL_OUT_OF_RESOURCES` — [openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483) |
 
-**The two 2026-09-15 corrections to earlier int8-ov findings:**
-1. `cache_size=0` (lazy KV) removes the fake 64K wall — no-MTP u8 fits 196K
-   on INT4-GDN8. The old ~64–80K ceiling was default KV preallocation + draft
-   resident, not a real memory limit of the card.
+**The 2026-09-15 corrections to earlier int8-ov findings:**
+1. `cache_size=0` (lazy KV) removes the fake 64K preallocation wall — no-MTP
+   u8 reaches 196K in light probes. But the honest ceiling splits by
+   **request weight**: 40-token probes reach u4 256K; full-protocol
+   (128-token) requests hit request-workspace `CL_OUT_OF_RESOURCES` at ≥196K
+   (~33 GB in use). Not a card limit, not resident-KV exhaustion — filed
+   upstream ([openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483)).
 2. u8 draft KV **works** on INT4-GDN8 (correct output ≤64K, 40/28 tok/s) —
    the int8-ov "u8-on-draft corruption >32K" defect did not reproduce here.
    It does NOT extend the MTP ceiling though: 128K still OOMs because the

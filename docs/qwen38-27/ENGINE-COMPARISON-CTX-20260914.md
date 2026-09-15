@@ -236,11 +236,11 @@ comparison: every engine runs an Int4/Q4 artifact.
 | 8K | 61.2 | 37.3 | 45.8 |
 | 32K | 52.4 | 33.4 | 47.7 |
 | 64K | 49.8 | 29.2 | 29.1 (no-draft crashed here) |
-| 98K | 45.7 | 25.8 | ~4.7 (MTP collapses; 196K no-MTP fits) |
-| 128K | 32.6 | 23.0 | 14.7 (no-MTP u4) |
-| 196K | 34.5 | 18.9 | 12.8 (no-MTP u4) |
-| 224K | — | — | 12.1 (no-MTP u4) |
-| 256K | not in KV budget | 15.9 | **11.3 (no-MTP u4) — OV holds 256K** |
+| 98K | 45.7 | 25.8 | ~4.7 (MTP collapses; 196K u4 = 40-tok probe only) |
+| 128K | 32.6 | 23.0 | 14.7 (no-MTP u4, 40-tok probe) |
+| 196K | 34.5 | 18.9 | 12.8 (no-MTP u4, 40-tok probe) |
+| 224K | — | — | 12.1 (no-MTP u4, 40-tok probe) |
+| 256K | not in KV budget | 15.9 | 11.3 (no-MTP u4) — **40-tok capacity probe only; full-protocol requests fail** `CL_OUT_OF_RESOURCES` (upstream [openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483)) |
 
 Prefill (input tok/s, cold):
 
@@ -257,16 +257,21 @@ Key measured facts:
   to 79.5 @512 (+3.55×) with the Hub `OpenVINO/Qwen3.8-27B-int4-ov`
   `openvino_mtp_model.*` grafted into the GDN8 dir. Output correctness verified
   (numeric sequence intact). Without an MTP head OV cannot compete in this class.
-- **OV max context unlocked with u4 KV + cache_size=0**: holds the FULL 256K
-  (11.3 t/s, 28.8 GB) — joins llama at 256K. u8 no-MTP caps at 196-224K; the
-  old 64K/98K limits were KV precision + default `cache_size` preallocation,
-  not the card. MTP5 stays the speed arm ≤64K (79.5 @512) but collapses at 98K.
-- llama Q4 is the only engine that holds the full 256K on one card (37.8 →
-  15.9, 2.4× decay) at ~155 W.
+- **OV long-context ceiling, honestly split by protocol**: with u4 KV +
+  `cache_size=0`, full-protocol requests (128-token output, warmup + measured)
+  run to **128K** (15.9 t/s) and fail at ≥196K with `CL_OUT_OF_RESOURCES`
+  (~33 GB in use during prefill) — filed upstream as
+  [openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483).
+  The 196K/224K/256K rows above are **40-token capacity probes** (11.3 t/s,
+  28.8 GB at 256K) — proof the KV fits at rest, not a serving cell. u8 KV
+  crashes earlier (-14 at 98K with MTP). The old 64K wall was cache
+  preallocation, not the card; the ≥196K wall is request workspace pressure.
+- llama Q4 is the only engine that holds the full 256K on one card under the
+  full protocol (37.8 → 15.9, 2.4× decay) at ~155 W.
 - vLLM's single-card KV budget caps at ≈204K: 256K needs 9.33 GiB KV vs 7.47
   GiB free after 19 GB weights at util 0.94 (measured error message).
 - llama Q4 prefill is flat 210-250 t/s measured COLD (--no-cache-prompt); the
   earlier 28K-113K sweep TTFTs were prompt-cache hits and are excluded.
 - Raw: `ctx-sweep-{llamacpp-q4km-mtp,ov-int4-gdn8,ov-int4-gdn8-mtp5,vllm-v2}.json`,
   `vllm-int4-262k-probe.json`, `llama-q4km-cold-prefill.json`,
-  `mtp-graft-validate.json` in `results/qw38-ov-mtp-20260914/`.
+  `mtp-graft-validate.json` in `results/2026/09/qw38-ov-mtp-20260914/`.
