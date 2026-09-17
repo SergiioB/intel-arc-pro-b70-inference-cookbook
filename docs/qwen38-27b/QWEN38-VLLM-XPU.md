@@ -554,3 +554,177 @@ condition: a drafter trained on the quantized target's own hidden states with
 ≥1.5× the native head's acceptance on held-out text — not another port of a
 BF16-trained artifact.
 
+## 14. Field validation — combined stack in a live container (2026-09-07)
+
+Field report contributed by
+[duncanmcqueen](https://github.com/duncanmcqueen/intel-arc-pro-b70-inference-cookbook)
+(fork, ported here with §-numbering adapted to this file).
+
+Not a LocalMaxxing/harness campaign: one operator, one long-running
+container (`qw38speed`), informal n=3–5 spot checks with client wall-clock
+timing (prefill + decode together, not the harness's client-post-first
+decode-only isolation). Confirms the full stack works end-to-end together
+outside an isolated benchmark run; **do not merge these numbers into the
+harness tables above** — different prompt content, different timing
+methodology, not a predeclared window.
+
+**Stack:** same champion image `f01e24f6`, MTP4, fp8 KV, MBT 8192,
+`--max-num-seqs 64`, cache off. Patch order: `patch_mtp_nightly.py` →
+`patch_mtp_boundary.py` → `patch_gdn_mixed_split_v5.py` →
+`patch_draft_lmhead_int4.py` → `patch_draft_mtp_int4.py`. Env:
+`B70_MTP_BF16_DRAFT=1 B70_DRAFT_LMHEAD_INT4=1 B70_DRAFT_MTP_INT4=1`. Plus
+`--enable-auto-tool-choice --tool-call-parser qwen3_xml`.
+
+**Speed, own prompt (668 input tokens, repetitive filler + instruction,
+g128, greedy, client wall-clock incl. TTFT — not p512/g128 harness cell,
+do not compare directly to §7/§12):**
+
+| Stack | tok/s (n, first cold rep excluded) |
+|---|---|
+| Cookbook default (BF16 draft, MTP4) | 44.5–44.7 (n=3) |
+| + Draft-INT4 S+M1 | 56.7–59.1 (n=4) |
+| + GDN mixed-split v5 | 56.7–58.0 (n=3) — v5 confirmed speed-flat on C1, matches §11 |
+
+**Concurrency smoke, cache off:** 3 waves of one long-prefill request
+(4,461 prompt tokens, g64) fired concurrently with three short-decode
+requests (668 prompt tokens, g128 each) — 12/12 completed, zero
+crashes/tracebacks. Independent confirmation that the v5 mixed-batch fix
+holds with prefix caching **off**; the existing §11 mixed-row validation
+(81.37 vs 81.20 tok/s, 10/10) was measured cache-**on**.
+
+**Tool-call parser, same stack:** `--tool-call-parser hermes` does **not**
+parse this model's tool-call output — Qwen3.8 emits
+`<tool_call><function=name><parameter=x>val</parameter></function></tool_call>`,
+which leaks unparsed into `content` under `hermes` (`tool_calls: null`,
+`finish_reason: "stop"`). `qwen3_xml` parses the same output correctly into
+structured `tool_calls` (`finish_reason: "tool_calls"`), confirmed here on
+top of the full MTP4 + draft-INT4 + v5 stack, not just the base recipe in
+§10. Do not use `hermes` for this model family.
+
+> **Correction, same day (see §15):** this exact combined stack —
+> `VLLM_XPU_ENABLE_XPU_GRAPH=1` (implicit default here, not shown above but
+> in effect) + draft-INT4 S+M1 + GDN v5 — later OOM-crashed twice under real
+> (non-smoke-test) traffic despite the 12/12 concurrency smoke passing. The
+> smoke test above did not exercise the request shape that tipped it over.
+> **Do not treat the 12/12 result as a stability guarantee for this exact
+> config; see §15 for the fix.**
+
+## 15. OOM crash + fix — CUDAGraph memory is not utilization-accounted (2026-09-07)
+
+Same contributor and container as §14.
+
+**Symptom, in production** (single long-running `qw38speed` container, same
+stack as §14, `VLLM_XPU_ENABLE_XPU_GRAPH=1`, `--gpu-memory-utilization 0.88`,
+mid-testing, no config change from a prior working session):
+
+```
+torch.OutOfMemoryError: XPU out of memory. Tried to allocate 272.00 MiB.
+GPU 0 has a total capacity of 31.89 GiB of which 871.27 MiB is free.
+Of the allocated memory 24.73 GiB is allocated by PyTorch...
+```
+
+EngineCore crashed cleanly (no hardware fault — `xpu-smi discovery` reported
+"survivability mode" from *inside* the container immediately after, but that
+reads as a read-only-`/dev/dri`-mount artifact: the container reloaded and
+served correctly seconds later, which a real firmware fault would not
+allow). Docker's `--restart unless-stopped` relaunched it; the relaunch
+crashed again in **3 seconds** (before any client request), then the third
+attempt held.
+
+**Root cause: `gpu_memory_utilization` does not bound `CUDAGraph` capture
+memory on this XPU build.** Three back-to-back boots of the identical
+config, `gpu_worker.py` startup profile:
+
+| Boot | Weights | Peak activation | CUDAGraph | Auto KV cache | Real total / 30.3 GiB |
+|---|---:|---:|---:|---:|---:|
+| 1 (ran 13.5 min, then OOM'd) | 17.7 GiB | 2.8 GiB | 5.31 GiB | 6.15 GiB | 31.96 GiB |
+| 2 (OOM'd in 3 s) | 17.7 GiB | 1.16 GiB | 3.91 GiB | 7.8 GiB | 30.57 GiB |
+| 3 (held) | 17.7 GiB | 1.16 GiB | 3.91 GiB | 7.8 GiB | 30.57 GiB |
+
+`peak activation + CUDAGraph` swung **~3 GiB** (8.11 vs 5.07 GiB) across
+identical restarts, and the auto KV-cache sizer used whatever the profiler
+under-measured as "spare" to size an *even bigger* pool — the utilization
+target (26.66 GiB at 0.88) was never actually enforced as a ceiling once
+CUDAGraph memory is in play. Real total usage sat at 30.57–31.96 GiB out
+of ~30.3–31.89 GiB physical either way: 0.3–1.3 GiB of luck, not a computed
+margin. This is the mechanism behind the razor-thin free-VRAM numbers
+already noted in §12/DRAFT-INT4-S-M1.md ("research-class reserve, not a
+serving-capacity guarantee") — now with a reproduced crash and a root cause,
+not just a low-free-memory observation.
+
+**First attempt — did not work:** dropping `--gpu-memory-utilization` to
+`0.82` alone. First restart at that setting *refused to start*:
+
+```
+ValueError: To serve at least one request with the model's max seq len
+(131072), (5.07 GiB KV cache is needed, which is larger than the available
+KV cache memory (4.34 GiB)...
+```
+
+Docker retried, landed on a luckier profile (5.98 GiB available, just over
+the 5.07 GiB floor) and ran — but real total usage was still ~30.15/30.3
+GiB. Lowering the utilization number mostly just shrank the auto-sized KV
+cache a little; the actual variable consumer (CUDAGraph) was untouched.
+Do not use this as the fix.
+
+**Working fix:** `VLLM_XPU_ENABLE_XPU_GRAPH=0`, `--gpu-memory-utilization
+0.85`. Confirmed **deterministic across 3 consecutive clean boots**
+(`RestartCount: 0` every time): weights 17.7 + activation 2.8 + CUDAGraph
+**0.0** + KV cache 5.24 = 25.74 GiB against a 25.75 GiB budget — matches to
+within rounding. Real computed free margin: **~4.6 GiB**, not an observed
+lucky reading.
+
+| Metric | Graph on (crashed) | Graph off (fixed) |
+|---|---:|---:|
+| Real free margin | 0.3–1.3 GiB (unreliable) | ~4.6 GiB (deterministic) |
+| Speed, own prompt (668 in, g128, wall-clock, n=3-4) | 56.7–59.1 tok/s | 52.5–52.9 tok/s |
+| Max concurrency at max-model-len 131072 | 1.17–1.53x | 1.03x (still ≥1.0x) |
+| Boot-to-boot KV cache variance | 6.15–7.8 GiB | 5.24 GiB, exact, every boot |
+
+~9–10% slower than graph-on, still well above the 44.5–44.7 tok/s
+BF16-draft-only baseline in §14. Re-ran the 12-request mixed-batch
+concurrency smoke and the reasoning-parser tests below on this fixed
+config — both pass. **Recommend `VLLM_XPU_ENABLE_XPU_GRAPH=0` as the
+default for this draft-INT4 + v5 stack** until the upstream profiler
+accounts for CUDAGraph memory correctly, or until `--kv-cache-memory` is
+pinned explicitly (untried here; would need a matching `--max-model-len`
+cut since a small fixed KV pool fails the same startup floor check above).
+
+## 16. Reasoning parser (2026-09-07)
+
+Same contributor, verified on the graph-off fixed stack from §15.
+
+`--reasoning-parser qwen3` is registered in this vLLM build
+(`vllm/reasoning/__init__.py` → `qwen3_engine_reasoning_parser.Qwen3ParserReasoningAdapter`)
+and is generated from the **same** `Qwen3Parser` engine
+(`vllm/parser/qwen3.py`, shared `<think>`/`</think>` + `<tool_call>`
+grammar) as the `qwen3_xml` tool-call parser via `make_adapters()` — they
+are a matched pair for this model family, not independent options.
+
+Without it: raw `<think>...</think>` tags leak unparsed into `content`,
+mixed with the actual answer (visible in earlier §14 tool-call output:
+`"...set to \"Paris\".\n</think>\n\n<tool_call>..."`).
+
+With `--enable-auto-tool-choice --tool-call-parser qwen3_xml
+--reasoning-parser qwen3` together, verified on the graph-off fixed stack
+(§15):
+
+- Plain chat: reasoning cleanly separated from `content`. Field name is
+  **`reasoning`**, not `reasoning_content` — this vLLM build
+  (`entrypoints/openai/chat_completion/protocol.py`) renamed it; requests
+  using the old `reasoning_content` name are still auto-aliased.
+- Reasoning + tool call together: three-way split confirmed —
+  `reasoning` (thinking text), `content: null`, structured `tool_calls`
+  with `finish_reason: "tool_calls"`.
+- Streaming: `delta.reasoning` arrives incrementally, `delta.content`
+  starts cleanly once reasoning ends. No leaked tags in either mode.
+- No regression on the graph-off fixed stack: 45.5–51.6 tok/s (n=3, same
+  wall-clock method as §15, within noise of the 52.5–52.9 tok/s baseline
+  without this flag), 8/8 concurrent mixed-batch requests still succeed,
+  clean boot (`RestartCount: 0`).
+
+Recommend `--reasoning-parser qwen3` as required alongside
+`--tool-call-parser qwen3_xml` for this model family — omitting it is not
+a smaller/simpler config, it's a client-facing parsing bug (raw markup in
+`content`).
+
