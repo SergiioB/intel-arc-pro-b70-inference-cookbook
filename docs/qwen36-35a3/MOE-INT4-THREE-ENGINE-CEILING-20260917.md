@@ -43,6 +43,23 @@ OV prefill cells are engine-side timings, not client TTFT-matched, so they are
 withheld (—) rather than mixed into a client-timed column. vLLM 131K prefill
 3178 t/s is client input/TTFT.
 
+## Golden-vs-ceiling: same engine, short prompt vs loaded context
+
+Short-prompt goldens measured 2026-09-16 on this card, same models
+(`GOLDEN.json`, `SUMMARY.json`, `ov-genai.json` on the B70):
+
+| Engine | Short prompt (p512) | 131K-loaded | Drop |
+|---|---|---|---|
+| llama Q4_K_XL no-MTP | 70.6 t/s | 9.08 t/s | 7.8× |
+| vLLM GPTQ-Int4 (MTP4-tagged lane) | ~97 t/s | 13.60 t/s | 7.1× |
+| OpenVINO INT4 | ~38–40 t/s | 35.03 t/s | ~flat |
+
+Caveats: the Sep-16 vLLM "MTP4" lane measured ~97 t/s, i.e. no-spec level —
+speculation likely did not engage in that lane, so treat ~97 as the no-spec
+short baseline, not 170.9. The 170.9 MTP4 figure stands from the earlier
+pinned session, different day. OV short cells used 6-token completions
+(reasoning tags included); loaded cells used 32.
+
 ## Findings
 
 1. OpenVINO INT4 is the decode leader at every length: 35.0 → 31.9 → 26.6 t/s,
