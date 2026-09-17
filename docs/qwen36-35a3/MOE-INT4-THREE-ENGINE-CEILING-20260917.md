@@ -60,6 +60,47 @@ short baseline, not 170.9. The 170.9 MTP4 figure stands from the earlier
 pinned session, different day. OV short cells used 6-token completions
 (reasoning tags included); loaded cells used 32.
 
+## Proper short-prompt sweep (2026-09-17 night, `PROPER.json`)
+
+All five lanes, one engine at a time, caps read back 180/230W (the intended
+165W write did not apply — sudo non-interactive; decode-class results stand,
+watt comparisons do not). Short cells: warmup discarded, n=5 medians, gen 128.
+OV: 3 runs, first is cold (20.0), median of usable runs.
+
+![MoE INT4 proper short-prompt decode](../assets/b70-moe-int4-proper-decode-20260917.svg)
+
+| Engine | p512 decode | p8192 decode | p512 prefill | p8192 prefill |
+|---|---|---|---|---|
+| vLLM MTP4 (spec verified in server log) | 97.3 | 95.2 | 3931 | 8327 |
+| vLLM no-spec control | 96.0 | 90.1 | 5307 | 8935 |
+| llama Q4_K_XL no-MTP | 70.8 | 53.2 | 668 | 856 |
+| llama Q4_K_XL draft-mtp (Q8 head) | 50.3 | 48.5 | 640 | 808 |
+| OpenVINO INT4 (GPU.1) | ~38.6 | ~39.7 | — | — |
+
+Runs (decode): MTP4 p512 [97.3, 92.5, 99.5, 108.0, 96.0]; no-spec p512 five
+runs all 96.0; llama no-MTP p512 [71.0–70.7]; llama-MTP p512 [43.1–51.0];
+OV p512 [20.0 cold, 39.7, 38.6].
+
+## Speculation verdict: engaged, zero gain, one net loss
+
+- vLLM MTP4 config is proven engaged (EngineCore init logs
+  `SpeculativeConfig(method='mtp', num_spec_tokens=4)`), yet median decode
+  equals no-spec (97.3 vs 96.0) with noisier runs. Mechanism is in the
+  server's own log: `speculative.py` warns num_speculative_tokens > 1
+  multi-forwards the same MTP layer, lowering acceptance. No-spec prefill is
+  also faster (5307 vs 3931 at p512) — spec overhead leaks into prefill.
+- llama draft-mtp is a net loss at short prompts (50.3 vs 70.8, acceptance
+  0.41, mean len 2.2): the Q8 MTP head on the Q4_K_XL base costs more
+  verification than it saves. Same draft wins at 131K-loaded (26.2 vs 9.1)
+  where base decode is bandwidth-starved — speculation helps only when the
+  base is slow.
+- The historic 170.9 MTP4 figure does not reproduce on this pin/build
+  (two attempts: Sep-16 golden ~97, tonight 97.3). It stays attributed to
+  its original session, not this stack state. Do not quote it next to
+  these cells.
+- Only MoE on disk in full is Qwen3.6-35B-A3B (GPTQ + Q4_K_XL + OV INT4).
+  Nemotron exists only as a DFlash draft artifact — no second MoE was run.
+
 ## Findings
 
 1. OpenVINO INT4 is the decode leader at every length: 35.0 → 31.9 → 26.6 t/s,
@@ -99,8 +140,10 @@ record), `rerun_fix.sh` (vLLM 196/262 + llama-MTP 196), `phase2.sh`
 
 ## Open
 
-- n=1 per cell: medians of 5 needed before any headline leaves the lab.
-- Power/thermal columns missing; recapture with steady-state energy sampling.
+- Ceiling cells still n=1: medians of 5 needed before any loaded-context
+  headline leaves the lab. Short-prompt cells are n=5 medians (done).
+- Power/thermal columns missing; recapture with steady-state energy sampling
+  at an applied-and-verified cap (tonight's 165W write silently failed).
 - vLLM MTP4 at 131K+ long context (golden covers short-prompt MTP4 only).
 - OV prefill in client-timed units for a fair prefill column.
 

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img">
+<title>MoE INT4 proper short-prompt decode</title>
+<rect width="1600" height="900" fill="#07111f"/><style>text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="64" fill="#55d6be" font-size="18" font-weight="800">QWEN3.6-35B-A3B MOE INT4 · 1xB70 PROPER · n=5 MEDIANS</text>
+<text x="58" y="112" fill="#f5f8fc" font-size="39" font-weight="750">Short-prompt decode, all engines</text>
+<text x="58" y="148" fill="#9caec4" font-size="19">gen 128 · warmup discarded · caps 180/230W (165W write failed) · 2026-09-17</text>
+<rect x="48" y="180" width="1504" height="672" rx="28" fill="#0f1d30"/>
+<line x1="120" y1="730.0" x2="1540" y2="730.0" stroke="#263a53"/>
+<text x="106" y="736.0" fill="#9caec4" font-size="17" text-anchor="end">0</text>
+<line x1="120" y1="624.0" x2="1540" y2="624.0" stroke="#263a53"/>
+<text x="106" y="630.0" fill="#9caec4" font-size="17" text-anchor="end">22</text>
+<line x1="120" y1="518.0" x2="1540" y2="518.0" stroke="#263a53"/>
+<text x="106" y="524.0" fill="#9caec4" font-size="17" text-anchor="end">44</text>
+<line x1="120" y1="412.0" x2="1540" y2="412.0" stroke="#263a53"/>
+<text x="106" y="418.0" fill="#9caec4" font-size="17" text-anchor="end">65</text>
+<line x1="120" y1="306.0" x2="1540" y2="306.0" stroke="#263a53"/>
+<text x="106" y="312.0" fill="#9caec4" font-size="17" text-anchor="end">87</text>
+<line x1="120" y1="200.0" x2="1540" y2="200.0" stroke="#263a53"/>
+<text x="106" y="206.0" fill="#9caec4" font-size="17" text-anchor="end">109</text>
+<text x="475.0" y="774" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">p512 / g128</text>
+<rect x="206.0" y="256.78571428571433" width="98" height="473.21428571428567" rx="10" fill="#ffb45c"/>
+<text x="255.0" y="244.78571428571433" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">97.3</text>
+<rect x="316.0" y="263.10820731170173" width="98" height="466.89179268829827" rx="10" fill="#c98a2e"/>
+<text x="365.0" y="251.10820731170173" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">96.0</text>
+<rect x="426.0" y="385.66730289238" width="98" height="344.33269710762" rx="10" fill="#aeb9c7"/>
+<text x="475.0" y="373.66730289238" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">70.8</text>
+<rect x="536.0" y="485.368154456027" width="98" height="244.63184554397296" rx="10" fill="#68a7ff"/>
+<text x="585.0" y="473.368154456027" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">50.3</text>
+<rect x="646.0" y="542.2705916899134" width="98" height="187.7294083100866" rx="10" fill="#55d6be"/>
+<text x="695.0" y="530.2705916899134" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">38.6</text>
+<text x="1185.0" y="774" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">p8192 / g128</text>
+<rect x="916.0" y="266.99897225077086" width="98" height="463.00102774922914" rx="10" fill="#ffb45c"/>
+<text x="965.0" y="254.99897225077086" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">95.2</text>
+<rect x="1026.0" y="291.8025987373367" width="98" height="438.1974012626633" rx="10" fill="#c98a2e"/>
+<text x="1075.0" y="279.8025987373367" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">90.1</text>
+<rect x="1136.0" y="471.26413155190136" width="98" height="258.73586844809864" rx="10" fill="#aeb9c7"/>
+<text x="1185.0" y="459.26413155190136" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">53.2</text>
+<rect x="1246.0" y="494.1223755689326" width="98" height="235.87762443106737" rx="10" fill="#68a7ff"/>
+<text x="1295.0" y="482.1223755689326" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">48.5</text>
+<rect x="1356.0" y="536.9207898986933" width="98" height="193.0792101013067" rx="10" fill="#55d6be"/>
+<text x="1405.0" y="524.9207898986933" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">39.7</text>
+<circle cx="120" cy="816" r="7" fill="#ffb45c"/>
+<text x="138" y="823" fill="#f5f8fc" font-size="18">vLLM GPTQ MTP4 (spec verified)</text>
+<circle cx="450" cy="816" r="7" fill="#c98a2e"/>
+<text x="468" y="823" fill="#f5f8fc" font-size="18">vLLM GPTQ no-spec</text>
+<circle cx="780" cy="816" r="7" fill="#aeb9c7"/>
+<text x="798" y="823" fill="#f5f8fc" font-size="18">llama Q4_K_XL no-spec</text>
+<circle cx="1110" cy="816" r="7" fill="#68a7ff"/>
+<text x="1128" y="823" fill="#f5f8fc" font-size="18">llama Q4_K_XL draft-mtp</text>
+<circle cx="1440" cy="816" r="7" fill="#55d6be"/>
+<text x="1458" y="823" fill="#f5f8fc" font-size="18">OpenVINO INT4</text>
+<text x="120" y="858" fill="#9caec4" font-size="17">MTP4 engaged per server log, zero median gain · llama draft-mtp net loss (accept 0.41)</text>
+</svg>
