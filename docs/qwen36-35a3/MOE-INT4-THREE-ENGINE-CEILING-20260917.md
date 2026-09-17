@@ -86,3 +86,37 @@ record), `rerun_fix.sh` (vLLM 196/262 + llama-MTP 196), `phase2.sh`
 - Power/thermal columns missing; recapture with steady-state energy sampling.
 - vLLM MTP4 at 131K+ long context (golden covers short-prompt MTP4 only).
 - OV prefill in client-timed units for a fair prefill column.
+
+## Regime note (2026-09-17 — read before comparing with dense tables)
+
+These decode numbers look low next to the cookbook's dense headlines (MoE MTP4
+~170 t/s, dense ~50-69 t/s) because they measure a different regime, not a
+slower model. Headline tables use short prompts (p512/g128): tiny KV, cheap
+attention, speculation at full effect. This page measures decode with 131K–262K
+of context already loaded: every generated token attends over the full KV,
+so decode turns KV-bandwidth/compute bound and drops (llama Q4_K_XL: ~64 t/s
+short-prompt vs 9.1 t/s context-loaded — same weights, same card).
+
+Rule (extends the class-match rule): a decode number without its loaded-context
+length is unusable. Short-prompt decode and context-loaded decode must never
+share one ranking. MoE's active-param advantage also shrinks under huge KV
+because the bottleneck shifts from weight-read to KV-read; the hybrid
+linear-attention layers (10/40 full-attn on this model) are what keep the
+ceiling high instead — context fit is the MoE win here, not loaded decode.
+
+## Vendor reference: Intel technology guide 928489 (2026-09-15)
+
+Intel published an official reference architecture for B70 inference two days
+before this run: OpenStack PCI passthrough → guest K8s → llm-d 0.9.0 +
+vLLM 0.26.0, validated on Llama 3.1 8B BF16 (functional validation, no perf
+numbers — nothing to reconcile against). What it confirms and changes:
+
+- Our pinned vLLM (0.26.1rc1 XPU, V2 runner, Flash Attention backend) tracks
+  Intel's validated serving path. No stack change needed.
+- Intel's validated envelope stops at 8B BF16. This 35B-MoE ceiling work is
+  outside their published envelope — cite the guide as the floor, not a limit.
+- Adopted from the guide: TTFT/TPOT terminology, explicit GiB-vs-GB labeling
+  (Intel quotes decimal, vLLM reports binary), and their methodology line as
+  cookbook policy: no performance claim without finalized methodology,
+  workload, and full configuration disclosure.
+- Gap noted, not started: K8s/DRA deployment path for B70 serving.
