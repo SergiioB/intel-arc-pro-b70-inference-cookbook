@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="860" viewBox="0 0 1600 860" role="img">
+<title>MoE INT4 prefill vs context</title>
+<rect width="1600" height="860" fill="#07111f"/><style>text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}</style>
+<text x="58" y="64" fill="#55d6be" font-size="18" font-weight="800">QWEN3.6-35B-A3B MOE INT4 · 1xB70 CEILING</text>
+<text x="58" y="112" fill="#f5f8fc" font-size="39" font-weight="750">MoE INT4 prefill vs context</text>
+<text x="58" y="148" fill="#9caec4" font-size="19">client input/TTFT · OV withheld (engine-side units, not comparable) · 2026-09-17</text>
+<rect x="48" y="180" width="1504" height="632" rx="28" fill="#0f1d30"/>
+<line x1="120" y1="740.0" x2="1540" y2="740.0" stroke="#263a53" stroke-width="1"/>
+<text x="106" y="746.0" fill="#9caec4" font-size="17" text-anchor="end">0</text>
+<line x1="120" y1="632.0" x2="1540" y2="632.0" stroke="#263a53" stroke-width="1"/>
+<text x="106" y="638.0" fill="#9caec4" font-size="17" text-anchor="end">712</text>
+<line x1="120" y1="524.0" x2="1540" y2="524.0" stroke="#263a53" stroke-width="1"/>
+<text x="106" y="530.0" fill="#9caec4" font-size="17" text-anchor="end">1,424</text>
+<line x1="120" y1="416.0" x2="1540" y2="416.0" stroke="#263a53" stroke-width="1"/>
+<text x="106" y="422.0" fill="#9caec4" font-size="17" text-anchor="end">2,136</text>
+<line x1="120" y1="308.0" x2="1540" y2="308.0" stroke="#263a53" stroke-width="1"/>
+<text x="106" y="314.0" fill="#9caec4" font-size="17" text-anchor="end">2,847</text>
+<line x1="120" y1="200.0" x2="1540" y2="200.0" stroke="#263a53" stroke-width="1"/>
+<text x="106" y="206.0" fill="#9caec4" font-size="17" text-anchor="end">3,559</text>
+<text x="356.66666666666663" y="784" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">131K</text>
+<rect x="156.0" y="625.0017980760587" width="91.33333333333333" height="114.99820192394138" rx="10" fill="#aeb9c7"/>
+<text x="201.66666666666666" y="613.0017980760587" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">758</text>
+<rect x="259.3333333333333" y="638.5042254787378" width="91.33333333333333" height="101.49577452126225" rx="10" fill="#68a7ff"/>
+<text x="305.0" y="626.5042254787378" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">669</text>
+<text x="408.3333333333333" y="726" fill="#9caec4" font-size="20" font-weight="700" text-anchor="middle">FAIL</text>
+<rect x="466.0" y="257.8571428571429" width="91.33333333333333" height="482.1428571428571" rx="10" fill="#ffb45c"/>
+<text x="511.6666666666667" y="245.8571428571429" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">3,178</text>
+<text x="829.9999999999999" y="784" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">196K</text>
+<rect x="629.3333333333333" y="636.531960801942" width="91.33333333333333" height="103.46803919805808" rx="10" fill="#aeb9c7"/>
+<text x="674.9999999999999" y="624.531960801942" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">682</text>
+<rect x="732.6666666666666" y="649.7309628697294" width="91.33333333333333" height="90.2690371302706" rx="10" fill="#68a7ff"/>
+<text x="778.3333333333333" y="637.7309628697294" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">595</text>
+<text x="881.6666666666665" y="726" fill="#9caec4" font-size="20" font-weight="700" text-anchor="middle">FAIL</text>
+<text x="984.9999999999999" y="726" fill="#9caec4" font-size="20" font-weight="700" text-anchor="middle">FAIL</text>
+<text x="1303.3333333333333" y="784" fill="#f5f8fc" font-size="22" font-weight="700" text-anchor="middle">262K</text>
+<rect x="1102.6666666666665" y="646.0898588510294" width="91.33333333333333" height="93.9101411489706" rx="10" fill="#aeb9c7"/>
+<text x="1148.3333333333333" y="634.0898588510294" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">619</text>
+<rect x="1205.9999999999998" y="657.6200215769127" width="91.33333333333333" height="82.3799784230873" rx="10" fill="#68a7ff"/>
+<text x="1251.6666666666665" y="645.6200215769127" fill="#f5f8fc" font-size="20" font-weight="700" text-anchor="middle">543</text>
+<text x="1355.0" y="726" fill="#9caec4" font-size="20" font-weight="700" text-anchor="middle">FAIL</text>
+<text x="1458.3333333333333" y="726" fill="#9caec4" font-size="20" font-weight="700" text-anchor="middle">FAIL</text>
+<circle cx="120" cy="822" r="7" fill="#aeb9c7"/>
+<text x="138" y="829" fill="#f5f8fc" font-size="19">llama.cpp Q4_K_XL no-spec</text>
+<circle cx="524" cy="822" r="7" fill="#68a7ff"/>
+<text x="542" y="829" fill="#f5f8fc" font-size="19">llama.cpp Q4_K_XL draft-mtp</text>
+<circle cx="947" cy="822" r="7" fill="#55d6be"/>
+<text x="965" y="829" fill="#f5f8fc" font-size="19">OpenVINO INT4</text>
+<circle cx="1237" cy="822" r="7" fill="#ffb45c"/>
+<text x="1255" y="829" fill="#f5f8fc" font-size="19">vLLM GPTQ-Int4 no-spec</text>
+</svg>
