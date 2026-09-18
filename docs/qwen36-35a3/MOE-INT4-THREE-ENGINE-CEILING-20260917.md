@@ -85,10 +85,15 @@ OV p512 [20.0 cold, 39.7, 38.6].
 
 - vLLM MTP4 config is proven engaged (EngineCore init logs
   `SpeculativeConfig(method='mtp', num_spec_tokens=4)`), yet median decode
-  equals no-spec (97.3 vs 96.0) with noisier runs. Mechanism is in the
-  server's own log: `speculative.py` warns num_speculative_tokens > 1
-  multi-forwards the same MTP layer, lowering acceptance. No-spec prefill is
-  also faster (5307 vs 3931 at p512) — spec overhead leaks into prefill.
+  equals no-spec (97.3 vs 96.0) with noisier runs. Mechanism closed
+  2026-09-18 via `/metrics`: 408 draft tokens, 282 accepted = 69% acceptance.
+  Speculation fires and accepts decently, but each step multi-forwards the
+  same MTP layer (the server's own `speculative.py` warning), so verification
+  costs what the drafts save — net ~1x. No-spec prefill is also faster
+  (5307 vs 3931 at p512): spec overhead leaks into prefill.
+- Without `patch_mtp_ptr_wrap.py` the same MTP4 server answers HTTP 500 on
+  every request (mamba `state.data_ptr()` overflow → EngineDead). The ptr
+  patch is load-bearing, not cosmetic: no ptr wrap, no serving at all.
 - llama draft-mtp is a net loss at short prompts (50.3 vs 70.8, acceptance
   0.41, mean len 2.2): the Q8 MTP head on the Q4_K_XL base costs more
   verification than it saves. Same draft wins at 131K-loaded (26.2 vs 9.1)
