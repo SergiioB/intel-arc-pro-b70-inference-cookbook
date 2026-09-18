@@ -39,9 +39,11 @@ vLLM patches in order: `patch_mtp_nightly.py`, `patch_mtp_boundary.py`,
 | OpenVINO INT4 | 35.03 \| — | 31.89 \| — | 26.58 \| — |
 | vLLM GPTQ-Int4 | 13.60 \| 3178 | FAIL (empty, 1 token) ×3 | FAIL (EngineCore 500) |
 
-OV prefill cells are engine-side timings, not client TTFT-matched, so they are
-withheld (—) rather than mixed into a client-timed column. vLLM 131K prefill
-3178 t/s is client input/TTFT.
+OV prefill (cold first run per cell, client input/TTFT): p512 966 · 2K 3,494 ·
+8K 3,821 · 32K 1,412 · 64K 1,211 tok/s — it collapses at long context, not
+skyrockets. Warm-run 43k/66k/94k figures were OpenVINO prefix-cache artifacts
+(same prompt, TTFT 81.2 s cold → 1.05 s warm at 64K: the cache served the
+prompt) and are quarantined. vLLM 131K prefill 3178 t/s is client input/TTFT.
 
 ## Golden-vs-ceiling: same engine, short prompt vs loaded context
 
