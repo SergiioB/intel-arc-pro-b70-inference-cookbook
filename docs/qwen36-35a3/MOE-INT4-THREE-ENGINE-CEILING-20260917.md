@@ -123,6 +123,18 @@ OV p512 [20.0 cold, 39.7, 38.6].
    reference (`f01e24f6c7ff:latest`, local digest mistaken for a repo tag).
    Fixed to the golden digest; the two reruns after the fix are real
    measurement failures, not harness bugs.
+6. Ladder sweep (2026-09-18, `LADDER.json`, 2K/32K/64K per engine): llama-MTP
+   accelerates with context (43.2 → 44.3 → 53.4, 3× over no-spec at 64K);
+   llama no-spec collapses after 2K (29.5 → 18.9); vLLM holds 95.8 → 81.0 →
+   69.7 before its 131K+ collapse; OV decode stays ~29-30 at 32K+.
+7. OpenVINO 131K is a kernel-level FAIL, not a KV-cache size problem:
+   baseline, `KV_CACHE_PRECISION=u8`, and `u4` all die with
+   CL_OUT_OF_RESOURCES inside a oneDNN prefill primitive, and a 98K/114K/131K
+   boundary probe with u8 never completed its first cell. KV cache at 131K is
+   only ~0.1 GiB (u8) — the ceiling is OV's oneDNN prefill allocation path.
+8. OV prefill is now client-timed (exact tokenizer count) and joins the
+   prefill chart: 44k/72k/93k tok/s at 8K/32K/64K, off the 9.5k axis —
+   clamped at axis top with true values labeled (chart e2ba597).
 
 ## Reproduce
 

@@ -30,5 +30,6 @@
 <text x="60" y="770" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">p512: n=5 medians, gen 128 · 2K/32K/64K: n=1 ladder, gen 32 · 131/196/262K: n=1 ceiling probes, gen 32</text>
 <text x="60" y="794" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV p512 median of usable warm runs (20.0 cold discarded) · OV 2K q-fail kept: speed valid, Paris answer missed</text>
 <text x="60" y="818" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">vLLM 196K empty x3, 262K EngineCore crash · llama-MTP wins loaded 3x (53.4 @64K vs 18.9 no-spec)</text>
-<text x="60" y="862" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70 /mnt/models/moe-int4-20260916 LADDER.json + PROPER.json + CEILING.json · cookbook docs/qwen36-35a3/MOE-INT4-THREE-ENGINE-CEILING-20260917.md</text>
+<text x="60" y="842" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">OV 131K FAIL x3 configs: baseline, KV u8, KV u4 — oneDNN prefill CL_OUT_OF_RESOURCES, not KV size (u8 KV = 0.1 GiB)</text>
+<text x="60" y="886" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: B70 /mnt/models/moe-int4-20260916 LADDER.json + PROPER.json + CEILING.json · cookbook docs/qwen36-35a3/MOE-INT4-THREE-ENGINE-CEILING-20260917.md</text>
 </svg>
