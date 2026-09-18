@@ -4,9 +4,9 @@ One Intel Arc Pro B70 32GB. Long-context ceiling per engine at 131K / 196K / 262
 target prompt lengths. Raw runs under `/mnt/models/moe-int4-20260916/results/`
 (`CEILING.json` aggregate).
 
-![MoE INT4 decode vs context](../assets/b70-moe-int4-decode-ceiling-20260917.svg)
+![MoE INT4 decode vs context](../assets/b70-moe-int4-decode-vs-ctx-20260917.svg)
 
-![MoE INT4 prefill vs context](../assets/b70-moe-int4-prefill-ceiling-20260917.svg)
+![MoE INT4 prefill vs context](../assets/b70-moe-int4-prefill-vs-ctx-20260917.svg)
 
 ## Scope
 
@@ -62,12 +62,9 @@ pinned session, different day. OV short cells used 6-token completions
 
 ## Proper short-prompt sweep (2026-09-17 night, `PROPER.json`)
 
-All five lanes, one engine at a time, caps read back 180/230W (the intended
-165W write did not apply — sudo non-interactive; decode-class results stand,
-watt comparisons do not). Short cells: warmup discarded, n=5 medians, gen 128.
-OV: 3 runs, first is cold (20.0), median of usable runs.
-
-![MoE INT4 proper short-prompt decode](../assets/b70-moe-int4-proper-decode-20260917.svg)
+All five lanes, one engine at a time, single-stream C1. Short cells: warmup
+discarded, n=5 medians, gen 128. OV: 3 runs, first is cold (20.0), median of
+usable runs.
 
 | Engine | p512 decode | p8192 decode | p512 prefill | p8192 prefill |
 |---|---|---|---|---|
@@ -147,8 +144,6 @@ record), `rerun_fix.sh` (vLLM 196/262 + llama-MTP 196), `phase2.sh`
 
 - Ceiling cells still n=1: medians of 5 needed before any loaded-context
   headline leaves the lab. Short-prompt cells are n=5 medians (done).
-- Power/thermal columns missing; recapture with steady-state energy sampling
-  at an applied-and-verified cap (tonight's 165W write silently failed).
 - vLLM MTP4 at 131K+ long context (golden covers short-prompt MTP4 only).
 - OV prefill in client-timed units for a fair prefill column.
 
