@@ -4,10 +4,16 @@ This cookbook has **separate vLLM generations**. Pick the **family** first,
 then apply **only** that row’s “Apply” list. The last column is a
 **denylist**, not a second patch list.
 
-- **Qwen** (3.6 or 3.8) uses the **Qwen MTP** patches. Never put Nemotron
-  grouped-topk / SSU on a Qwen image.
-- **Nemotron DFlash** uses the **Nemotron** router + SSU patches. Never put
-  Qwen `patch_mtp_nightly.py` / `patch_mtp_boundary.py` on a Nemotron image.
+> **Environment verification:** Run `python3 scripts/doctor.py` to inspect your host driver,
+> GPU count, and Level Zero permissions before pulling containers.
+
+### Patch Lifecycle Taxonomy
+
+- `[REQUIRED]`: Mandatory on the pinned image digest for the recipe to function correctly.
+- `[UPSTREAM-MERGED]`: Merged upstream in vLLM or `vllm-xpu-kernels`. Do NOT apply if rebuilding from modern upstream git.
+- `[RETIRED]`: Superseded by newer kernel implementations or replaced by alternative overlays.
+- `[DENYLIST]`: Explicitly incompatible with this model family. Applying causes build failure or silent output corruption.
+
 
 | Family | Image digest | Apply, in this order | Never apply on this family |
 |---|---|---|---|

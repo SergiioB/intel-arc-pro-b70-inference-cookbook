@@ -62,6 +62,15 @@ case "$CACHE" in
     ;;
 esac
 
+if [ "$CACHE" = "on" ] && [ "$MODE" != "no-spec" ]; then
+  if [ "${ALLOW_UNSTABLE_APC_MTP:-0}" != "1" ]; then
+    echo "ERROR: Combining prefix caching ('on') with MTP ('$MODE') causes silent token corruption on this build (see docs/RELIABILITY-REPORT.md §1)." >&2
+    echo "To override and accept this risk, set: ALLOW_UNSTABLE_APC_MTP=1" >&2
+    exit 3
+  fi
+fi
+
+
 sudo docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
 RENDER_GID=$(stat -c '%g' /dev/dri/render* | sort -u | sed -n '1p')
 

@@ -1,0 +1,70 @@
+name: "Recipe Confirmation / Benchmark Reproduction"
+description: "Submit reproduction evidence or verified benchmark numbers for an existing recipe"
+title: "[Reproduction] "
+labels: ["community-reproduction", "benchmark"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to confirm an existing recipe on your Intel Arc Pro B60/B70 system.
+        You can generate machine-readable diagnostics using `python3 scripts/doctor.py --json`
+        and verify output correctness using `python3 scripts/canary.py --json`.
+
+  - type: input
+    id: recipe_name
+    attributes:
+      label: "Recipe Name or Document"
+      placeholder: "e.g. Qwen3.8-27B GPTQ-INT4 single-card (docs/qwen38-27b/QWEN38-VLLM-XPU.md)"
+    validations: { required: true }
+
+  - type: dropdown
+    id: gpu_model
+    attributes:
+      label: "GPU Model"
+      options: ["Arc Pro B70 (32 GiB)", "Arc Pro B60 (24 GiB)", "Arc Pro B65 (32 GiB)", "Arc Pro B50 (16 GiB)"]
+      default: 0
+    validations: { required: true }
+
+  - type: dropdown
+    id: gpu_count
+    attributes:
+      label: "Card Count"
+      options: ["1", "2", "4"]
+      default: 0
+    validations: { required: true }
+
+  - type: input
+    id: power_cap
+    attributes:
+      label: "Power Cap (Watts)"
+      placeholder: "e.g. 150W or 230W"
+    validations: { required: true }
+
+  - type: input
+    id: measured_speed
+    attributes:
+      label: "Observed Speed & Workload"
+      placeholder: "e.g. 106.5 tok/s decode @ p512/g128 C1 cache-zero"
+    validations: { required: true }
+
+  - type: textarea
+    id: doctor_output
+    attributes:
+      label: "System Doctor Output (doctor.json)"
+      description: "Paste output of 'python3 scripts/doctor.py --json'"
+      render: json
+    validations: { required: true }
+
+  - type: textarea
+    id: canary_output
+    attributes:
+      label: "Golden Canary Output (canary.json)"
+      description: "Paste output of 'python3 scripts/canary.py --json'"
+      render: json
+    validations: { required: false }
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Additional Observations"
+      placeholder: "Motherboard model, PCIe link generation (Gen4 vs Gen5), thermals, or host-specific notes."

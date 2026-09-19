@@ -6,7 +6,7 @@
   "intents": {
     "read": {
       "start": "README.md",
-      "then": ["docs/AGENT-SYSTEM.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md"]
+      "then": ["START.md", "docs/AGENT-SYSTEM.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md"]
     },
     "setup": {
       "start": "docs/FULL-SETUP-COMMANDS.md",
@@ -30,7 +30,7 @@
     },
     "publish": {
       "start": "docs/ADDING-A-RECIPE.md",
-      "then": ["docs/BENCHMARK-FORMAT.md", "data/benchmarks.v1.json"]
+      "then": ["docs/CONFIRM-A-RECIPE.md", "docs/BENCHMARK-FORMAT.md", "data/benchmarks.v1.json"]
     },
     "triage": {
       "start": "docs/MAINTAINER-PRECHECKS.md",
@@ -50,16 +50,17 @@
     "watchdog_operations": "watchdog/README.md",
     "reliability_ownership": "docs/RELIABILITY-REPORT.md",
     "contribution_workflow": "docs/ADDING-A-RECIPE.md",
+    "confirmation_workflow": "docs/CONFIRM-A-RECIPE.md",
     "reporter_prechecks": "docs/MAINTAINER-PRECHECKS.md",
     "architecture_reference": "docs/architecture/architecture.md",
     "feature_flags_registry": "docs/FEATURE-FLAGS.md"
   },
   "layers": [
     {"id": "L0", "name": "control", "contains": ["AGENTS.md", "data/system-map.v1.json"]},
-    {"id": "L1", "name": "contracts", "contains": ["docs/BENCHMARK-FORMAT.md", "docs/IMAGE-AND-PATCH-MATRIX.md", "docs/RELIABILITY-REPORT.md"]},
+    {"id": "L1", "name": "contracts", "contains": ["docs/BENCHMARK-FORMAT.md", "docs/IMAGE-AND-PATCH-MATRIX.md", "docs/RELIABILITY-REPORT.md", "docs/CONFIRM-A-RECIPE.md"]},
     {"id": "L2", "name": "family recipes", "contains": ["docs/<family>/", "benchmarks/<family>/"]},
     {"id": "L3", "name": "evidence", "contains": ["results/", "data/benchmarks.v1.json"]},
-    {"id": "L4", "name": "views", "contains": ["README.md", "docs/BENCHMARK-CATALOG.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md", "docs/assets/"]}
+    {"id": "L4", "name": "views", "contains": ["README.md", "START.md", "docs/BENCHMARK-CATALOG.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md", "docs/assets/"]}
   ],
   "invariants": [
     "Generated views are never edited as authorities.",
