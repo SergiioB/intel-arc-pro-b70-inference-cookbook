@@ -126,7 +126,9 @@ OV p512 [20.0 cold, 39.7, 38.6].
    Fixed to the golden digest; the two reruns after the fix are real
    measurement failures, not harness bugs.
 6. Ladder sweep (2026-09-18, `LADDER.json`, 2K/32K/64K per engine): llama-MTP
-   accelerates with context (43.2 → 44.3 → 53.4, 3× over no-spec at 64K);
+   accelerates with context (43.2 → 42.0 → 53.4, 3× over no-spec at 64K;
+   the original 21.4 at 32K was a short-window outlier — gen-256 recheck
+   `mtp32-settle.json` gives 42.0, quality pass);
    llama no-spec collapses after 2K (29.5 → 18.9); vLLM holds 95.8 → 81.0 →
    69.7 before its 131K+ collapse; OV decode stays ~29-30 at 32K+.
 7. OpenVINO 131K is a kernel-level FAIL, not a KV-cache size problem:
