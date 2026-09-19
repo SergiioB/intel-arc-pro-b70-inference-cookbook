@@ -10,7 +10,6 @@ import os
 import platform
 import re
 import subprocess
-import sys
 from typing import Any
 
 
@@ -36,7 +35,10 @@ def check_render_nodes() -> dict[str, Any]:
     user_groups: list[str] = []
     try:
         import grp
-        user_groups = [g.gr_name for g in grp.getgrall() if os.getlogin() in g.gr_mem]
+        import pwd
+
+        username = pwd.getpwuid(os.getuid()).pw_name
+        user_groups = [g.gr_name for g in grp.getgrall() if username in g.gr_mem]
         current_gid = os.getgid()
         user_groups.append(grp.getgrgid(current_gid).gr_name)
         user_groups = sorted(set(user_groups))
@@ -60,38 +62,43 @@ def check_intel_gpus() -> dict[str, Any]:
         device_file = os.path.join(dev, "device")
         if os.path.isfile(vendor_file) and os.path.isfile(device_file):
             try:
-                with open(vendor_file, "r") as f:
+                with open(vendor_file) as f:
                     vendor = f.read().strip().lower()
-                with open(device_file, "r") as f:
+                with open(device_file) as f:
                     device_id = f.read().strip().lower()
                 if vendor == "0x8086":
-                    # Intel display/compute controller
                     class_file = os.path.join(dev, "class")
                     dev_class = ""
                     if os.path.isfile(class_file):
-                        with open(class_file, "r") as f:
+                        with open(class_file) as f:
                             dev_class = f.read().strip().lower()
-                    if dev_class.startswith("0x03"):  # Display / 3D controller
+                    if dev_class.startswith("0x03"):
                         driver_link = os.path.join(dev, "driver")
-                        driver = os.path.basename(os.readlink(driver_link)) if os.path.islink(driver_link) else "none"
+                        driver = (
+                            os.path.basename(os.readlink(driver_link))
+                            if os.path.islink(driver_link)
+                            else "none"
+                        )
                         max_link_speed = ""
                         max_link_width = ""
                         speed_file = os.path.join(dev, "max_link_speed")
                         width_file = os.path.join(dev, "max_link_width")
                         if os.path.isfile(speed_file):
-                            with open(speed_file, "r") as f:
+                            with open(speed_file) as f:
                                 max_link_speed = f.read().strip()
                         if os.path.isfile(width_file):
-                            with open(width_file, "r") as f:
+                            with open(width_file) as f:
                                 max_link_width = f.read().strip()
 
-                        gpus.append({
-                            "pci_slot": os.path.basename(dev),
-                            "device_id": device_id,
-                            "driver": driver,
-                            "max_link_speed": max_link_speed,
-                            "max_link_width": max_link_width,
-                        })
+                        gpus.append(
+                            {
+                                "pci_slot": os.path.basename(dev),
+                                "device_id": device_id,
+                                "driver": driver,
+                                "max_link_speed": max_link_speed,
+                                "max_link_width": max_link_width,
+                            }
+                        )
             except (OSError, UnicodeDecodeError):
                 continue
     return {
@@ -114,7 +121,8 @@ def check_driver_hangs() -> dict[str, Any]:
         if completed.returncode == 0:
             lines = completed.stdout.splitlines()
             for line in lines[-200:]:
-                if re.search(r"\b(xe|i915)\b.*(wedged|ring hang|GPU HANG|GT reset|resetting)", line, re.IGNORECASE):
+                pattern = r"\b(xe|i915)\b.*(wedged|ring hang|GPU HANG|GT reset|resetting)"
+                if re.search(pattern, line, re.IGNORECASE):
                     wedged_events.append(line.strip())
     except (FileNotFoundError, PermissionError):
         pass
@@ -163,13 +171,11 @@ def print_report(diag: dict[str, Any]) -> int:
     print("=== Intel Arc Pro B60/B70 System Doctor ===\n")
     all_ok = True
 
-    # OS Check
     os_info = diag["os"]
     print(f"OS: {os_info['system']} {os_info['release']} ({os_info['arch']})")
     if not os_info["is_linux"]:
         print("  [WARN] Native Linux kernel recommended for optimal vLLM XPU performance.")
 
-    # GPU Check
     gpus = diag["gpus"]
     print(f"\nIntel GPUs Detected: {gpus['count']}")
     if gpus["count"] == 0:
@@ -177,23 +183,28 @@ def print_report(diag: dict[str, Any]) -> int:
         all_ok = False
     else:
         for idx, g in enumerate(gpus["devices"]):
-            print(f"  GPU #{idx}: PCI {g['pci_slot']} (ID: {g['device_id']}) Driver: {g['driver']} PCIe: {g['max_link_speed']} x{g['max_link_width']}")
-            if g["driver"] != "xe":
-                print(f"    [WARN] Driver is '{g['driver']}' (recommend 'xe' driver for Battlemage B60/B70).")
+            slot = g["pci_slot"]
+            dev_id = g["device_id"]
+            driver = g["driver"]
+            link = f"{g['max_link_speed']} x{g['max_link_width']}"
+            print(f"  GPU #{idx}: PCI {slot} (ID: {dev_id}) Driver: {driver} PCIe: {link}")
+            if driver != "xe":
+                print(f"    [WARN] Driver is '{driver}' (recommend 'xe' for Battlemage).")
 
-    # Render Node Access
     render = diag["render"]
-    print(f"\nRender Nodes: {len(render['render_nodes'])} found, {len(render['accessible_render_nodes'])} accessible by user")
+    r_count = len(render["render_nodes"])
+    a_count = len(render["accessible_render_nodes"])
+    print(f"\nRender Nodes: {r_count} found, {a_count} accessible by user")
     if not render["can_access_render"]:
-        print("  [FAIL] Current user cannot write to /dev/dri/renderD*. Add user to render group: sudo usermod -aG render $USER")
+        print("  [FAIL] Cannot write to /dev/dri/renderD*.")
+        print("         Add user to render group: sudo usermod -aG render $USER")
         all_ok = False
     else:
         print("  [PASS] Render node access verified.")
 
-    # Multi-GPU Topology Warning
     if gpus["is_dual_or_more"]:
         print("\nMulti-GPU Topology (Dual-Card Detected):")
-        print("  [INFO] For dual-B70 TP2 on desktop motherboards without P2P, ensure these oneCCL variables are set:")
+        print("  [INFO] For dual-B70 TP2 on desktop boards without P2P, set oneCCL thresholds:")
         print("         -e CCL_SYCL_ALLREDUCE_SIMPLE_THRESHOLD=4294967296")
         print("         -e CCL_SYCL_REDUCE_SCATTER_SIMPLE_THRESHOLD=4294967296")
         print("         -e CCL_SYCL_ALLGATHERV_SIMPLE_THRESHOLD=4294967296")
@@ -201,21 +212,18 @@ def print_report(diag: dict[str, Any]) -> int:
         print("         --cap-add SYS_PTRACE --ipc=host")
         print("         See docs/DUAL-B70-TP2.md for topology details.")
 
-    # Driver Wedged Check
     drv = diag["driver_status"]
     if drv["has_wedged_event"]:
         print("\n  [FAIL] Xe driver wedge or GPU hang detected in dmesg!")
         for ev in drv["recent_events"]:
             print(f"    {ev}")
         print("\n  RECOVERY INSTRUCTIONS:")
-        print("  1. Reset card via sysfs or reboot the machine:")
-        print("     sudo reboot")
+        print("  1. Reset card via sysfs or reboot the machine: sudo reboot")
         print("  2. See docs/RELIABILITY-REPORT.md for ring wedge diagnosis.")
         all_ok = False
     else:
         print("\nDriver Health: [PASS] No recent Xe wedge events detected in dmesg buffer.")
 
-    # Tools Check
     tools = diag["tools"]
     print("\nTools & Runtimes:")
     if tools["docker_running"]:
@@ -238,15 +246,16 @@ def print_report(diag: dict[str, Any]) -> int:
     if all_ok:
         print("Status: READY. System is primed for Intel Arc Pro B60/B70 inference.")
         return 0
-    else:
-        print("Status: ATTENTION REQUIRED. Resolve highlighted issues before running.")
-        return 1
+    print("Status: ATTENTION REQUIRED. Resolve highlighted issues before running.")
+    return 1
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true", help="Output machine-readable JSON")
-    parser.add_argument("--recover", action="store_true", help="Print recovery instructions for wedged cards")
+    parser.add_argument(
+        "--recover", action="store_true", help="Print recovery instructions for wedged cards"
+    )
     args = parser.parse_args()
 
     if args.recover:

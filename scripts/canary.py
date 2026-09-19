@@ -6,38 +6,15 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 import time
 import urllib.error
 import urllib.request
+from collections.abc import Callable
 from typing import Any
 
-CANARIES = [
-    {
-        "id": "arithmetic",
-        "name": "Arithmetic & Determinism",
-        "prompt": "Calculate 47 + 53. Output only the final number.",
-        "validator": lambda resp: "100" in resp,
-    },
-    {
-        "id": "json",
-        "name": "JSON Schema Conformance",
-        "prompt": "Output a valid JSON object with key 'status' set to 'ok' and key 'device' set to 'b70'. Output only JSON.",
-        "validator": lambda resp: _validate_json_canary(resp),
-    },
-    {
-        "id": "code",
-        "name": "Code Generation Syntax",
-        "prompt": "Write a python function named 'add' that takes two parameters 'a' and 'b' and returns their sum. Output code only.",
-        "validator": lambda resp: bool(re.search(r"def\s+add\s*\(\s*a\s*,\s*b\s*\)\s*:", resp) and "return" in resp),
-    },
-    {
-        "id": "prose",
-        "name": "Instruction Following & English Prose",
-        "prompt": "Write exactly one sentence describing why high memory bandwidth matters for LLM decoding.",
-        "validator": lambda resp: len(resp.split()) >= 4 and ("bandwidth" in resp.lower() or "memory" in resp.lower()),
-    },
-]
+
+def _validate_arithmetic(resp: str) -> bool:
+    return "100" in resp
 
 
 def _validate_json_canary(text: str) -> bool:
@@ -47,9 +24,56 @@ def _validate_json_canary(text: str) -> bool:
         cleaned = match.group(0)
     try:
         data = json.loads(cleaned)
-        return data.get("status") == "ok" and data.get("device") == "b70"
+        return bool(data.get("status") == "ok" and data.get("device") == "b70")
     except Exception:
         return False
+
+
+def _validate_code(resp: str) -> bool:
+    has_def = bool(re.search(r"def\s+add\s*\(\s*a\s*,\s*b\s*\)\s*:", resp))
+    return has_def and ("return" in resp)
+
+
+def _validate_prose(resp: str) -> bool:
+    words = resp.split()
+    lower = resp.lower()
+    return len(words) >= 4 and ("bandwidth" in lower or "memory" in lower)
+
+
+CANARIES: list[dict[str, Any]] = [
+    {
+        "id": "arithmetic",
+        "name": "Arithmetic & Determinism",
+        "prompt": "Calculate 47 + 53. Output only the final number.",
+        "validator": _validate_arithmetic,
+    },
+    {
+        "id": "json",
+        "name": "JSON Schema Conformance",
+        "prompt": (
+            "Output a valid JSON object with key 'status' set to 'ok' and key "
+            "'device' set to 'b70'. Output only JSON."
+        ),
+        "validator": _validate_json_canary,
+    },
+    {
+        "id": "code",
+        "name": "Code Generation Syntax",
+        "prompt": (
+            "Write a python function named 'add' that takes parameters 'a' "
+            "and 'b' and returns their sum. Output code only."
+        ),
+        "validator": _validate_code,
+    },
+    {
+        "id": "prose",
+        "name": "Instruction Following & English Prose",
+        "prompt": (
+            "Write exactly one sentence describing why memory bandwidth matters for LLM decoding."
+        ),
+        "validator": _validate_prose,
+    },
+]
 
 
 def query_endpoint(
@@ -78,8 +102,8 @@ def query_endpoint(
         choices = data.get("choices", [])
         content = choices[0].get("message", {}).get("content", "") if choices else ""
         usage = data.get("usage", {})
-        completion_tokens = usage.get("completion_tokens", len(content.split()))
-        return content, duration, completion_tokens
+        completion_tokens = int(usage.get("completion_tokens", len(content.split())))
+        return str(content), duration, completion_tokens
 
 
 def run_canaries(
@@ -92,17 +116,21 @@ def run_canaries(
     results: list[dict[str, Any]] = []
 
     if mock:
-        # Dry run for CI/testing without GPU
         for canary in CANARIES:
-            results.append({
-                "id": canary["id"],
-                "name": canary["name"],
-                "passed": True,
-                "duration_s": 0.05,
-                "tokens": 15,
-                "tok_per_sec": 300.0,
-                "response": "mock response 100 {'status':'ok','device':'b70'} def add(a, b): return a + b memory bandwidth",
-            })
+            results.append(
+                {
+                    "id": canary["id"],
+                    "name": canary["name"],
+                    "passed": True,
+                    "duration_s": 0.05,
+                    "tokens": 15,
+                    "tok_per_sec": 300.0,
+                    "response": (
+                        "mock 100 {'status':'ok','device':'b70'} "
+                        "def add(a, b): return a + b memory bandwidth"
+                    ),
+                }
+            )
         return {
             "endpoint": endpoint,
             "model": model,
@@ -111,27 +139,33 @@ def run_canaries(
         }
 
     for canary in CANARIES:
-        canary_id = canary["id"]
+        canary_id = str(canary["id"])
+        validator: Callable[[str], bool] = canary["validator"]
+        prompt = str(canary["prompt"])
         try:
-            content, duration, tokens = query_endpoint(endpoint, model, canary["prompt"])
-            passed = canary["validator"](content)
+            content, duration, tokens = query_endpoint(endpoint, model, prompt)
+            passed = validator(content)
             tok_s = round(tokens / duration, 2) if duration > 0 else 0.0
-            results.append({
-                "id": canary_id,
-                "name": canary["name"],
-                "passed": passed,
-                "duration_s": round(duration, 3),
-                "tokens": tokens,
-                "tok_per_sec": tok_s,
-                "response": content.strip()[:100],
-            })
+            results.append(
+                {
+                    "id": canary_id,
+                    "name": canary["name"],
+                    "passed": passed,
+                    "duration_s": round(duration, 3),
+                    "tokens": tokens,
+                    "tok_per_sec": tok_s,
+                    "response": content.strip()[:100],
+                }
+            )
         except Exception as exc:
-            results.append({
-                "id": canary_id,
-                "name": canary["name"],
-                "passed": False,
-                "error": str(exc),
-            })
+            results.append(
+                {
+                    "id": canary_id,
+                    "name": canary["name"],
+                    "passed": False,
+                    "error": str(exc),
+                }
+            )
 
     all_passed = all(r.get("passed", False) for r in results)
     return {
@@ -147,7 +181,9 @@ def main() -> int:
     parser.add_argument("--host", default="127.0.0.1", help="Server host")
     parser.add_argument("--port", type=int, default=8000, help="Server port")
     parser.add_argument("--model", default="qwen38", help="Served model name")
-    parser.add_argument("--mock", action="store_true", help="Run in mock mode without active server")
+    parser.add_argument(
+        "--mock", action="store_true", help="Run in mock mode without active server"
+    )
     parser.add_argument("--json", action="store_true", help="Output JSON")
     args = parser.parse_args()
 
@@ -159,7 +195,11 @@ def main() -> int:
     print(f"=== Golden Canary Verification: {data['model']} on {data['endpoint']} ===")
     for r in data["results"]:
         status = "[PASS]" if r.get("passed") else "[FAIL]"
-        speed = f"({r.get('tok_per_sec', 0)} tok/s, {r.get('duration_s', 0)}s)" if "tok_per_sec" in r else ""
+        speed = (
+            f"({r.get('tok_per_sec', 0)} tok/s, {r.get('duration_s', 0)}s)"
+            if "tok_per_sec" in r
+            else ""
+        )
         print(f"{status} {r['name']} {speed}")
         if not r.get("passed"):
             if "error" in r:
@@ -168,11 +208,12 @@ def main() -> int:
                 print(f"       Failed response: {r.get('response')}")
 
     if data["all_passed"]:
-        print("\nResult: ALL CANARIES PASSED. Model output adheres to exact correctness requirements.")
+        print(
+            "\nResult: ALL CANARIES PASSED. Model output adheres to exact correctness requirements."
+        )
         return 0
-    else:
-        print("\nResult: CANARY FAILURES DETECTED. Check model configuration or MTP cache flags.")
-        return 1
+    print("\nResult: CANARY FAILURES DETECTED. Check model configuration or MTP cache flags.")
+    return 1
 
 
 if __name__ == "__main__":
