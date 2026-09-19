@@ -36,8 +36,15 @@ vLLM patches in order: `patch_mtp_nightly.py`, `patch_mtp_boundary.py`,
 |---|---|---|---|
 | llama no-MTP | 9.08 \| 758 | 7.72 \| 682 | 5.94 \| 619 |
 | llama draft-mtp | 26.18 \| 669 | 12.81 \| 595 | 10.54 \| 543 |
-| OpenVINO INT4 | 35.03 \| — | 31.89 \| — | 26.58 \| — |
+| OpenVINO INT4 (ceiling run) | 35.03 \| — | 31.89 \| — | 26.58 \| — |
 | vLLM GPTQ-Int4 | 13.60 \| 3178 | FAIL (empty, 1 token) ×3 | FAIL (EngineCore 500) |
+
+Note the OV split: the ceiling run above measured OV decode passing quality
+at 131K/196K/262K on 2026-09-17, but the later ladder sweep (2026-09-18,
+`LADDER.json`, different probe harness) hit the oneDNN prefill failure at
+131K and OV only charts through 64K there. Both datasets are real; the
+difference is under investigation upstream — see Findings #1 and #7 and
+openvino.genai#4505.
 
 OV prefill (cold first run per cell, client input/TTFT): p512 966 · 2K 3,494 ·
 8K 3,821 · 32K 1,412 · 64K 1,211 tok/s — it collapses at long context, not
@@ -110,8 +117,13 @@ OV p512 [20.0 cold, 39.7, 38.6].
 
 ## Findings
 
-1. OpenVINO INT4 is the decode leader at every length: 35.0 → 31.9 → 26.6 t/s,
-   3–4× over llama no-MTP, and holds quality at 262K.
+1. Ceiling table only: OpenVINO INT4 decode at loaded ceiling contexts runs
+   35.0 → 31.9 → 26.6 t/s (131K/196K/262K), 3–4× over llama no-MTP, quality
+   passing at 262K. These cells predate the ladder sweep and used the
+   working LLMPipeline path — see Finding #7 for the separate ladder fact:
+   via the same path, the 131K ladder probe fails in the oneDNN prefill, so
+   the ladder chart shows OV only through 64K. Do not mix the two datasets
+   in one ranking.
 2. llama draft-mtp beats no-MTP 1.7–2.9× (26.2 vs 9.1 at 131K; 12.8 vs 7.7 at
    196K; 10.5 vs 5.9 at 262K). Draft acceptance at 196K was 0.47, mean len
    2.31 — the Q8 head on a Q4 base accepts poorly but still pays off.
@@ -176,8 +188,11 @@ record), `rerun_fix.sh` (vLLM 196/262 + llama-MTP 196), `phase2.sh`
 - vLLM MTP4 at 131K+ long context (golden covers short-prompt MTP4 only).
 - OV prefill re-harness: the fresh-prompt lane lives in a standalone probe;
   fold unique-prompt-per-rep into the standard ladder for the next sweep.
-- Upstream OpenVINO issue for the 131K oneDNN prefill CL_OUT_OF_RESOURCES
-  (repro evidence ready: `ov-fresh-prefill.json`, fail logs, KV-u8/u4 configs).
+- Upstream OpenVINO issue for the 131K oneDNN prefill CL_OUT_OF_RESOURCES:
+  FILED as openvino.genai#4505 (also covers the CBP
+  `budget_in_bytes <= total_available_memory` construction assert that
+  ignores KV_CACHE_PRECISION). Related, also open: #4483 (MTP spec-decode
+  CL errors beyond 64K on Xe2).
 - MTP ladder re-run at gen 256 for uniform methodology (only 32K settled).
 
 ## Regime note (2026-09-17 — read before comparing with dense tables)
