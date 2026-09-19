@@ -41,9 +41,12 @@ vLLM patches in order: `patch_mtp_nightly.py`, `patch_mtp_boundary.py`,
 
 OV prefill (cold first run per cell, client input/TTFT): p512 966 · 2K 3,494 ·
 8K 3,821 · 32K 1,412 · 64K 1,211 tok/s — it collapses at long context, not
-skyrockets. Warm-run 43k/66k/94k figures were OpenVINO prefix-cache artifacts
-(same prompt, TTFT 81.2 s cold → 1.05 s warm at 64K: the cache served the
-prompt) and are quarantined. vLLM 131K prefill 3178 t/s is client input/TTFT.
+skyrockets. Warm-run 43k/66k/94k figures were an OpenVINO warm-TTFT metric
+artifact, not prefix cache: a unique-prompt recheck (no cache hits possible)
+still showed the same warm collapse, and roofline math rules the figures out
+(see Findings #8). Quarantined. vLLM 131K prefill 3178 t/s is client
+input/TTFT. Ladder decode medians (gen-256 recheck where flagged):
+llama-MTP 32K = 42.0 (was 21.4, short-window outlier).
 
 ## Golden-vs-ceiling: same engine, short prompt vs loaded context
 
@@ -136,9 +139,19 @@ OV p512 [20.0 cold, 39.7, 38.6].
    CL_OUT_OF_RESOURCES inside a oneDNN prefill primitive, and a 98K/114K/131K
    boundary probe with u8 never completed its first cell. KV cache at 131K is
    only ~0.1 GiB (u8) — the ceiling is OV's oneDNN prefill allocation path.
-8. OV prefill is now client-timed (exact tokenizer count) and joins the
-   prefill chart: 44k/72k/93k tok/s at 8K/32K/64K, off the 9.5k axis —
-   clamped at axis top with true values labeled (chart e2ba597).
+8. OV prefill measurement incident (2026-09-19, closed): warm-run figures of
+   43k/66k/94k tok/s at 8K/32K/64K were invalid, not engine performance.
+   Two independent proofs: (a) roofline — 94k tok/s of a 3.3B-active MoE
+   needs ~620 TFLOP/s, far above the B70's ceiling; (b) fresh-prompt recheck
+   (`ov-fresh-prefill.json`, unique random prompt per rep, so no prefix cache)
+   still showed warm TTFT collapsing 3.20 s → 0.20 s at 8K with quality
+   passing — OpenVINO's warm-run TTFT metric under-reports the prefill.
+   Published OV prefill = cold first run only: 966 (p512) · 3,494 (2K) ·
+   3,821 (8K) · 1,412 (32K) · 1,211 (64K). Prefill collapses with context.
+9. llama-MTP 32K ladder cell was a short-window outlier: 21.4 t/s (gen 32)
+   did not reproduce. Gen-256 recheck (`mtp32-settle.json`, quality pass)
+   gives 42.0 t/s, consistent with neighbors (43.2 @ 2K, 53.4 @ 64K).
+   Rule: decode t/s computed over a ~0.25 s window is not quotable.
 
 ## Reproduce
 
@@ -161,7 +174,11 @@ record), `rerun_fix.sh` (vLLM 196/262 + llama-MTP 196), `phase2.sh`
 - Ceiling cells still n=1: medians of 5 needed before any loaded-context
   headline leaves the lab. Short-prompt cells are n=5 medians (done).
 - vLLM MTP4 at 131K+ long context (golden covers short-prompt MTP4 only).
-- OV prefill in client-timed units for a fair prefill column.
+- OV prefill re-harness: the fresh-prompt lane lives in a standalone probe;
+  fold unique-prompt-per-rep into the standard ladder for the next sweep.
+- Upstream OpenVINO issue for the 131K oneDNN prefill CL_OUT_OF_RESOURCES
+  (repro evidence ready: `ov-fresh-prefill.json`, fail logs, KV-u8/u4 configs).
+- MTP ladder re-run at gen 256 for uniform methodology (only 32K settled).
 
 ## Regime note (2026-09-17 — read before comparing with dense tables)
 
