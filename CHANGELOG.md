@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.4...v1.3.0) (2026-09-19)
+
+
+### Features
+
+* **ux:** product overhaul with human START.md, inverted README, stack doctor, canary probes, and APC+MTP guards ([e91d2c3](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/e91d2c328a3270c368a385ba255654dfa38085d0))
+
+
+### Bug Fixes
+
+* **lint:** format, mypy types, and line lengths for doctor and canary scripts ([b24d260](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/b24d2601fd6bba576b4a93e9fc2c99b302865cdc))
+
 ## [1.2.4](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.3...v1.2.4) (2026-09-15)
 
 
