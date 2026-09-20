@@ -294,8 +294,12 @@ docker run -d --name qw38speed -p 8000:8000 --device /dev/dri --group-add "$REND
   -e B70_MTP_BF16_DRAFT=1 -e VLLM_XPU_ENABLE_XPU_GRAPH=1 \
   -e PYTORCH_ALLOC_CONF=expandable_segments:True \
   --entrypoint bash "$IMAGE" -lc \
-  'set -e; python /patch_mtp.py; python /patch_boundary.py; exec vllm serve /model --quantization gptq --dtype float16 --max-model-len 131072 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 --max-num-seqs 64 --max-num-batched-tokens 8192 --no-enable-prefix-caching --served-model-name qwen38 --language-model-only --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
+  'set -e; python /patch_mtp.py; python /patch_boundary.py; exec vllm serve /model --quantization gptq --dtype float16 --max-model-len 131072 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 --max-num-seqs 64 --max-num-batched-tokens 8192 --no-enable-prefix-caching --served-model-name qwen38 --language-model-only --enable-auto-tool-choice --tool-call-parser qwen3_xml --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
 ```
+
+The two tool flags are no-ops for plain completions but required for agent
+clients that send `tool_choice: "auto"`; Qwen3.8's verified parser is
+`qwen3_xml` (see [qwen38-27b/PI-AGENT-BACKEND.md](qwen38-27b/PI-AGENT-BACKEND.md)).
 
 ### Optional mixed-batch overlay (v5) — correctness, not C1 speed
 

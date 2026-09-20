@@ -86,6 +86,13 @@ flags — restart it with the cookbook launchers (they include them), or add
 `--enable-auto-tool-choice --tool-call-parser qwen3_coder` to the serve
 command.
 
+Parser choice is per model family: `qwen3_coder` matches the Qwen3.6
+MTP-preserved launcher models this page was written against. The
+Qwen3.8-27B champion emits the same `<tool_call><function=…>` XML format,
+but its verified parser is `qwen3_xml` — use that when serving Qwen3.8-27B
+(`hermes` leaves its calls unparsed inside `content`; see
+[qwen38-27b/PI-AGENT-BACKEND.md](qwen38-27b/PI-AGENT-BACKEND.md)).
+
 ## Sanity check
 
 ```bash
