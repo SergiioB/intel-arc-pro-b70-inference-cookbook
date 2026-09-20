@@ -61,6 +61,14 @@ docker run -d --name qw38 -p 8000:8000 \
 curl -f http://127.0.0.1:8000/health
 ```
 
+> [!TIP]
+> **Agent / tool-calling clients** (pi, omp, ZCode) need two extra serve
+> flags: `--enable-auto-tool-choice --tool-call-parser qwen3_xml`. They are
+> no-ops for plain completions and are not part of this benchmark recipe —
+> the recorded sweep numbers were measured without them. For the dedicated
+> agent-serving variant (no speculative config, prefix caching on), see
+> [PI-AGENT-BACKEND.md](PI-AGENT-BACKEND.md).
+
 What a working setup looks like:
 - Cold start (patches + first compile + graph capture): about 3 minutes
   (170–190 s observed).
