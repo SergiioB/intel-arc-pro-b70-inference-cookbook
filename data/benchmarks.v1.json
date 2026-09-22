@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-09-15T09:25:00Z",
+  "updated_at": "2026-09-23T00:00:00Z",
   "source": {
     "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
     "branch": "master"
@@ -1157,6 +1157,202 @@
       "evidence": {
         "commit": "cef107d0bf821e48da3773afa08a65d731af017c",
         "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/cef107d0bf821e48da3773afa08a65d731af017c/docs/qwen38-27b/ENGINE-COMPARISON-CTX-20260914.md"
+      }
+    },
+    {
+      "id": "qwen38-27b-draft-int4-cold-p8192-g128-c1",
+      "kind": "benchmark",
+      "title": "Qwen3.8-27B Draft INT4 (cold prefix)",
+      "summary": "Draft-side INT4 pair (draft LM head + MTP body W4A16 g128; 27B target untouched) on MTP4 with XPU graph capture: 72.55 vs 48.81 tok/s for the BF16-drafter arm in the same run = 1.49x (matched_with_tokenizer_delta; arms differ 4/8194 prompt tokens). All 640/640 outputs finished_reason=length. Greedy output byte-identical to the unquantized draft. 230 W configured cap; measured average draw 229.50 W patched / 228.74 W baseline (xe energy counter over the measured window; window includes 5 requests' prefill) -> +9.6% measured tokens/J. NOT the same configuration as the 106.7 tok/s cache-on row. Approved self-reported submission on LocalMaxxing (run cmud9viep0avulq01364r8cyo), not independently reproduced.",
+      "evidence_status": "official-lab",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vllm",
+        "version": "0.27.2rc1.dev77+gac7509e2b"
+      },
+      "model": {
+        "id": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+        "quantization": "GPTQ-INT4",
+        "speculation": "MTP4"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 8194,
+        "output_tokens": 128,
+        "context_limit_tokens": 16384,
+        "cache": "disabled-zero-hit (cold unique entropy-nonce prompts; prefix caching disabled)"
+      },
+      "metrics": [
+        {
+          "name": "client_post_first_output_tps",
+          "value": 72.55,
+          "unit": "token/s"
+        },
+        {
+          "name": "client_ttft_ms",
+          "value": 4791.6,
+          "unit": "ms"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 5
+      },
+      "evidence": {
+        "commit": "67310e00246d690558d2d8baed839fc2abcb88e6",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/67310e00246d690558d2d8baed839fc2abcb88e6/docs/qwen38-27b/DRAFT-INT4-S-M1.md"
+      }
+    },
+    {
+      "id": "qwen38-27b-baseline-bf16-draft-cold-p8192-g128-c1",
+      "kind": "benchmark",
+      "title": "Qwen3.8-27B baseline BF16 drafter (cold prefix)",
+      "summary": "Baseline arm of the matched A/B above: GPTQ-INT4 g128 target + BF16 MTP4 drafter, same image/overlay/graph-capture/sampling, no draft quantization. 48.81 tok/s client post-first median n=5 at 8190 actual prompt tokens. Spec acceptance 0.4873 measured-window (864 draft / 421 accepted) - low tail of the run-variable band; the paired 1.49x is the high end of the reproduced +37.2/+44.4/+48.6% range. 230 W configured cap; measured draw 228.74 W. Approved self-reported submission on LocalMaxxing (run cmud9wwv10avxlq01saixkle6).",
+      "evidence_status": "official-lab",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vllm",
+        "version": "0.27.2rc1.dev77+gac7509e2b"
+      },
+      "model": {
+        "id": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+        "quantization": "GPTQ-INT4",
+        "speculation": "MTP4"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 8190,
+        "output_tokens": 128,
+        "context_limit_tokens": 16384,
+        "cache": "disabled-zero-hit (cold unique entropy-nonce prompts; prefix caching disabled)"
+      },
+      "metrics": [
+        {
+          "name": "client_post_first_output_tps",
+          "value": 48.81,
+          "unit": "token/s"
+        },
+        {
+          "name": "client_ttft_ms",
+          "value": 4738.1,
+          "unit": "ms"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 5
+      },
+      "evidence": {
+        "commit": "67310e00246d690558d2d8baed839fc2abcb88e6",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/67310e00246d690558d2d8baed839fc2abcb88e6/docs/qwen38-27b/DRAFT-INT4-S-M1.md"
+      }
+    },
+    {
+      "id": "qwen38-27b-draft-int4-cold-p512-g128-c1",
+      "kind": "benchmark",
+      "title": "Qwen3.8-27B Draft INT4 (cold prefix)",
+      "summary": "Draft-side INT4 pair at the short-prompt cell: 73.43 vs 52.61 tok/s for the BF16-drafter arm = 1.40x (matched_with_tokenizer_delta; arms differ 1/517 prompt tokens). All 640/640 outputs finished_reason=length. TTFT improves too (352.0 vs 383.2 ms). 230 W configured cap; measured draw 228.60 W patched / 224.53 W baseline -> +31.4% measured tokens/J. NOT the same configuration as the 106.7 tok/s cache-on row (different prompt content class and cache state). Approved self-reported submission on LocalMaxxing (run cmud9ybo00aw0lq01ql01bhqn).",
+      "evidence_status": "official-lab",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vllm",
+        "version": "0.27.2rc1.dev77+gac7509e2b"
+      },
+      "model": {
+        "id": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+        "quantization": "GPTQ-INT4",
+        "speculation": "MTP4"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 517,
+        "output_tokens": 128,
+        "context_limit_tokens": 16384,
+        "cache": "disabled-zero-hit (cold unique entropy-nonce prompts; prefix caching disabled)"
+      },
+      "metrics": [
+        {
+          "name": "client_post_first_output_tps",
+          "value": 73.43,
+          "unit": "token/s"
+        },
+        {
+          "name": "client_ttft_ms",
+          "value": 352.0,
+          "unit": "ms"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 5
+      },
+      "evidence": {
+        "commit": "67310e00246d690558d2d8baed839fc2abcb88e6",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/67310e00246d690558d2d8baed839fc2abcb88e6/docs/qwen38-27b/DRAFT-INT4-S-M1.md"
+      }
+    },
+    {
+      "id": "qwen38-27b-baseline-bf16-draft-cold-p512-g128-c1",
+      "kind": "benchmark",
+      "title": "Qwen3.8-27B baseline BF16 drafter (cold prefix)",
+      "summary": "Baseline arm of the short-prompt A/B: GPTQ-INT4 g128 target + BF16 MTP4 drafter, no draft quantization. 52.61 tok/s client post-first median n=5 at 516 actual prompt tokens. Spec acceptance 0.5435 measured-window (804 draft / 437 accepted). 230 W configured cap; measured draw 224.53 W. Approved self-reported submission on LocalMaxxing (run cmud9zqjp0aw3lq0160e0i44v).",
+      "evidence_status": "official-lab",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vllm",
+        "version": "0.27.2rc1.dev77+gac7509e2b"
+      },
+      "model": {
+        "id": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+        "quantization": "GPTQ-INT4",
+        "speculation": "MTP4"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 516,
+        "output_tokens": 128,
+        "context_limit_tokens": 16384,
+        "cache": "disabled-zero-hit (cold unique entropy-nonce prompts; prefix caching disabled)"
+      },
+      "metrics": [
+        {
+          "name": "client_post_first_output_tps",
+          "value": 52.61,
+          "unit": "token/s"
+        },
+        {
+          "name": "client_ttft_ms",
+          "value": 383.2,
+          "unit": "ms"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 5
+      },
+      "evidence": {
+        "commit": "67310e00246d690558d2d8baed839fc2abcb88e6",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/67310e00246d690558d2d8baed839fc2abcb88e6/docs/qwen38-27b/DRAFT-INT4-S-M1.md"
       }
     }
   ]
