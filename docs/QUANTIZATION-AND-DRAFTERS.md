@@ -30,6 +30,20 @@ Rules that generalize:
 - Quality claims on hybrid linear-attention (GDN) models need logit parity,
   not perplexity — PPL is non-monotonic in precision on this class
   ([llama.cpp#28879](https://github.com/ggml-org/llama.cpp/issues/28879)).
+- **AWQ is a name, not a format, for this model family (2026-09-21).** Five
+  community checkpoints published as "AWQ INT4" for Qwen3.8-27B
+  (`cyankiwi/Qwen3.8-27B-AWQ-INT4` and `…-AWQ-BF16-INT4`, `philbert440/…-W4A16-AWQ`,
+  `TheUnderscore/Swift-…-W4A16-AWQ`, `ulkaa/…-AWQ-INT4`, `abihsoro/…-AWQ-INT4`) all
+  declare `quant_method=compressed-tensors` in their `config.json` — **none declares
+  `awq`**. The engine therefore takes the compressed-tensors path (which serves
+  correctly on this stack), and AWQ-format tooling is not what these artifacts need.
+  Read a checkpoint's `quantization_config`, never its repository name. An
+  AWQ-format comparison at iso-bytes would need a local conversion from BF16 with a
+  declared group size, not another download.
+- **Concurrency multiplies aggregate throughput on this stack**: on the MTP4 route,
+  B=1 → B=4 gave **+139 %** aggregate (48.45 → 115.70 tok/s) and B=32 reached
+  **172.48 tok/s**, with per-request rate falling 72 → ~29 tok/s and TTFT rising to
+  ~2 s. Aggregate rates are never comparable to single-stream cells.
 
 ## 2. Drafters — the native MTP head wins on quantized single-card serving
 

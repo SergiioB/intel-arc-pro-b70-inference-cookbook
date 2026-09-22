@@ -22,10 +22,13 @@ it knows nothing about topology, so it does not protect TP>1.
 | Target / verify LM head | still FP16/BF16 |
 | Draft LM head copy | runtime INT4 g128 RTN |
 | Draft MTP 5 linears | runtime INT4 g128 RTN |
+| Emitted sequence, **greedy** decode | **byte-identical** to the un-quantized draft (measured 2026-09-21) |
 
 Single-card C1 only: the target still verifies. Draft **logits are not**
 identical. Acceptance can drop. This is a **speed** keep, not a
-quality-parity claim.
+quality-parity claim. What is measured (2026-09-21) is narrower and
+stronger: under greedy decoding both arms emit the **same tokens**, so the
+quantized draft changes what is *proposed*, never what is *accepted*.
 
 ## Same-image n=5 (2026-08-18)
 
@@ -56,6 +59,61 @@ list, MBT, and cache mode (`not_comparable`).
 
 The n=3 chat-harness screen (59.1 → 83.9) used ~p530 filler, not exact
 p512. It is superseded.
+
+## Independent reproduction, the graph-capture enabler, and the output boundary (2026-09-21)
+
+PROVISIONAL — NOT FOR PUBLIC HEADLINE. An independent four-run ABBA campaign
+(B70-DOCS improvement roadmap P4) on this same champion image reproduced the
+keep on the **Qwen-recommended non-thinking** preset, and measured two things
+the tables above do not state.
+
+All figures below are **client post-first rates** (not engine throughput),
+measured with XPU graph capture **on** — capture off renders the pair inert
+(≤1.5 %).
+
+| Cell (recommended sampling, champion image, C1) | BF16 draft | Draft INT4 pair | Δ | n |
+|---|---:|---:|---:|---:|
+| p8192/g128, prompt calibrated to 8,189 of 8,192 tokens | 55.61 tok/s post-first | **80.32** | **+44.4 %** | 5 |
+| p8192/g128 (first measurement of the campaign), actual 6993 endpoint tokens (uncalibrated) | 52.99 | **72.68** | **+37.2 %** | 5 |
+| p512/g128, actual 447 endpoint tokens (word-count client, uncalibrated — n=3 screen only) | 52.83 | **77.14** | **+46.0 %** | 3 |
+| p8192/g128, **both arms patched** (repeatability control) | 80.61 / 78.27 | — | — | 5+5 |
+
+TTFT is not unchanged at p512: 308–315 → 281–290 ms (claims audit).
+
+1. **XPU graph capture is the enabler, not a detail.** With
+   `VLLM_XPU_ENABLE_XPU_GRAPH=0` the identical two patches measured **≤1.5 %**
+   (inert) in the same campaign — host overhead hides the weight traffic the
+   patches remove. Graph capture alone is ~1.68× at that cell. Report any
+   effect size together with the capture setting it was measured under.
+   **Upstream caution:** vLLM issue
+   [#54785](https://github.com/vllm-project/vllm/issues/54785) (2026-09-01,
+   `intel-gpu`) reports that XPU graph capture with MTP
+   `num_speculative_tokens=4` can produce non-deterministic wrong logits at
+   `temperature=0` (k≤3 reported clean). Our matched A/B is internally
+   consistent — both arms ran with capture on — but anyone reproducing with
+   graph capture + MTP4 should validate greedy output determinism for their
+   own case.
+2. **Output boundary (greedy):** three fixed prompts × two repeats with
+   identical nonces produced **byte-identical** text between the quantized and
+   un-quantized draft (same sha256, deterministic within each arm). Six
+   open-ended prompts × 30 seeded draws per arm gave the **same modal emitted
+   class on every prompt**; that is consistency, not a distribution-equivalence
+   proof. The draft's **accept rate** is run-variable in this configuration
+   (0.55–0.69 across runs versus 0.53–0.58 without the patches) while
+   throughput is not — treat acceptance as a diagnostic, never as a headline
+   number for this keep.
+3. **Serving throughput (aggregate, not single-stream):** the same server
+   scales ~2.4× by B=4 and ~2.8× by B=32 (61.86 → 140.30 → 172.48 tok/s
+   aggregate) with per-request rate falling 72 → ~29 tok/s. Aggregate numbers
+   are never comparable to this doc's single-stream cells.
+4. **Upstream path:** the same change now exists as a reviewable vLLM tree
+   patch (`VLLM_DRAFT_INT4=1`, head + MTP body, fails closed on TP>1) with a
+   contribution draft at
+   `B70-DOCS/research/2026/qwen38-draft-side-int4-upstream-20260921.md`. These
+   two cookbook patches remain the validated, measured implementation; the tree
+   patch still owes its own wiring validation and speed reproduction.
+
+Evidence: champion-image A/B campaign, September 2026 (narrative: improvement-roadmap P4 worklog §11–§19).
 
 ## Generation curve + isolated C1 128K (2026-08-19, Run 42)
 
@@ -201,3 +259,45 @@ Optional recipe keep on this champion image. Speed **and** this 15-task
 `task_quality_tested` A/B: no draft-INT4 regression vs BF16 draft. Prefix-on
 agentic also wins vs cookbook MTP4 (Run 43). Not token or KL parity. Not
 the default 83.7 LMX row.
+
+## Published self-report — LocalMaxxing (2026-09-22)
+
+Four leaderboard records now publish this A/B (canonical IDs — cite these):
+
+| Record | Cell | tokSOut (client post-first median, n=5) | LocalMaxxing run |
+|---|---|---:|---|
+| Draft-INT4 pair (this recipe) | C1 p8192/g128, 8194 actual prompt tokens | **72.55** | [`cmud9viep0avulq01364r8cyo`](https://www.localmaxxing.com/runs/cmud9viep0avulq01364r8cyo) |
+| Baseline (BF16 drafter) | C1 p8192/g128, 8190 actual prompt tokens | 48.81 | [`cmud9wwv10avxlq01saixkle6`](https://www.localmaxxing.com/runs/cmud9wwv10avxlq01saixkle6) |
+| Draft-INT4 pair (this recipe) | C1 p512/g128, 517 actual prompt tokens | **73.43** | [`cmud9ybo00aw0lq01ql01bhqn`](https://www.localmaxxing.com/runs/cmud9ybo00aw0lq01ql01bhqn) |
+| Baseline (BF16 drafter) | C1 p512/g128, 516 actual prompt tokens | 52.61 | [`cmud9zqjp0aw3lq0160e0i44v`](https://www.localmaxxing.com/runs/cmud9zqjp0aw3lq0160e0i44v) |
+
+Same-run matched A/B: **1.49× at p8192** (72.55/48.81) and **1.40× at p512** (73.43/52.61)
+(class `matched_with_tokenizer_delta`; the arms' prompts differ 4/8194 and 1/517 tokens).
+Every sample returned exactly 128 tokens with `finish_reason=length`; one same-shape warmup
+discarded per arm; recommended non-thinking sampling (temp 0.7, top_p 0.8, top_k 20,
+presence_penalty 1.5); MTP4 speculative decoding on in both arms; **prefix caching disabled**
+(cold unique entropy-nonce prompts, zero cache-hit delta).
+
+**Not the same configuration as the 106.7 tok/s catalog row** (`qwen38-27-draft-int4-p512-g128-c1`):
+that row is a calibrated Pi prompt with prefix caching **enabled** at a 131072 context; these
+records are synthetic cold prompts with caching **off** at 16384 context. Never present 106.7 and
+73.43 as the same configuration.
+
+Power: 230 W **configured cap**; measured average card draw 228.7–229.5 W (xe `energy1_input`
+counter over the measured window). At iso-draw the pair does more work, so measured tokens/J
+improves **+9.6 % at p8192** and **+31.4 % at p512** (window includes the 5 requests' prefill).
+
+Correctness scope: greedy emitted sequences byte-identical to the BF16-drafter arm (3 prompts × 2
+repeats, same sha256); 30 seeded draws × 6 open-ended prompts give the same modal emitted class on
+every prompt. Not token or KL parity.
+
+Enabler: XPU graph capture is **required** (`VLLM_XPU_ENABLE_XPU_GRAPH=1`; with capture off the
+same pair measures ≤1.5 %). Upstream issue
+[#54785](https://github.com/vllm-project/vllm/issues/54785) reports capture + MTP k=4 can give
+non-deterministic wrong greedy logits; both arms ran capture-on so the A/B is consistent, but
+reproducers should run a greedy determinism check on their own stack.
+
+`APPROVED` means **accepted self-reported submission** into LocalMaxxing's dataset — never
+"independently verified". Duplicate-set note: a pre-fix first set of the same four measurements
+(`cmud9n4fp0…` family) also exists on the platform (no delete path); the IDs above carry the final
+wording and are canonical.

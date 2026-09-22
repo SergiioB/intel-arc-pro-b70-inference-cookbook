@@ -50,7 +50,7 @@ A local rebuild forwards them. Defaults on GPU if unset:
 `--ov-inference-precision f32` / `--ov-execution-mode ACCURACY` still break
 the MoE fused gemm on Arc. Dense 3.8 accepts f16.
 
-Measured P512/G128 n=5 median at 230 W, same INT4-GDN8 1-stage shard:
+Measured P512/G128 n=5 median at 230 W cap, same INT4-GDN8 1-stage shard:
 
 | Compile | median tok/s | package W | Tmax |
 |---|---|---|---|
@@ -84,7 +84,7 @@ cascadia worker --rank 0 --total 1 --engine qwen35 --device GPU.0 \
 | 512 | 64 | 5 | 12.45 | PASS |
 | 512 | 256 | 5 | 20.52 | PASS |
 
-150 W cap, same P512/G128: 14.65 tok/s at 150 W / 73 °C. Dense 27B scales
+150 W cap, same P512/G128: 14.65 tok/s at 150 W cap / 73 °C. Dense 27B scales
 with the cap (~8%). Headline shape: **P512/G128 C1 n=5 median**.
 
 G64 vs G256 is TTFT amortization, not a faster kernel.
