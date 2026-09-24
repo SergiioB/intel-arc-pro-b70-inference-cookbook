@@ -20,6 +20,16 @@ benchmark catalog.
 For two independent single-card servers, do not use TP2 or PP2. Run one engine
 per card, with `ZE_AFFINITY_MASK=0` and `ZE_AFFINITY_MASK=1` respectively.
 
+Each independent engine also needs its own compile cache. The cookbook
+container layout keeps the vLLM and inductor caches inside each container,
+which satisfies this by default. Mounting one shared cache directory into both
+servers is the known-bad layout: a community dual-B65 deployment (vLLM 0.29.0
+XPU, two TP=1 workers sharing one vLLM cache) reported the second worker
+loading the model and then segfaulting while restoring compiled artifacts;
+separate `VLLM_CACHE_ROOT` and `TORCHINDUCTOR_CACHE_DIR` per worker fixed it.
+Not reproduced on the cookbook dual-B70 hosts; recorded as a community report
+that the default per-container layout already avoids.
+
 ## Infrastructure status
 
 Spawn-time worker affinity is validated on the author's dual-B70 host. The four
