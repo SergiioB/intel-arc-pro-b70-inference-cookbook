@@ -201,3 +201,42 @@ Optional recipe keep on this champion image. Speed **and** this 15-task
 `task_quality_tested` A/B: no draft-INT4 regression vs BF16 draft. Prefix-on
 agentic also wins vs cookbook MTP4 (Run 43). Not token or KL parity. Not
 the default 83.7 LMX row.
+
+---
+
+## Publication-grade re-measure (2026-09-22/23) — the recommended-sampling A/B
+
+Fresh n=5 per arm per cell, same champion image (`f01e24f6…`) with the overlay, XPU
+graphs on, **prefix caching off with zero hit delta**, **Qwen-recommended non-thinking
+sampling** (temp 0.7 / top_p 0.80 / top_k 20 / presence 1.5), C1, 230 W configured cap.
+Metric: **client post-first output tok/s, median of 5**; all requests completed at the
+requested 128 tokens (`finish_reason=length`).
+
+| Cell (calibrated actual tokens) | BF16-drafter baseline | Draft INT4 S+M1 | Δ |
+|---|---:|---:|---:|
+| p8192/g128 (8194 / 8190 tok) | 48.81 | **72.55** | **+48.6 %** |
+| p512/g128 (517 / 516 tok) | 52.61 | **73.43** | **+39.6 %** |
+
+Across all six recorded runs of this lever the delta spans **+37.2 % … +48.6 %**;
+reproduced with both arms patched (80.61 / 78.27) — not acceptance luck. Comparison
+class: `matched_with_tokenizer_delta` (arm prompts differ 4/8194 and 1/517 tokens).
+
+**Iso-power efficiency (measured energy, xe card-domain counter over the measured
+window; window includes the prefill of the 5 requests per arm):** draw is unchanged
+while work rises — 228.7 vs 229.5 W (p8192), 224.5 vs 228.6 W (p512) — so measured
+tokens/J improve **+9.6 %** at p8192 (0.0596 → 0.0654) and **+31.4 %** at p512
+(0.1952 → 0.2566).
+
+**Output preservation (scope-stated):** greedy outputs are **byte-identical across
+baseline and draft-INT4 arms at both cells** (fixed-nonce sha256 match, reproduced in
+the publication runs themselves); six open-ended prompts × 30 seeded draws per arm gave
+the same modal emitted class on every prompt. This is deterministic-greedy parity plus
+distribution-level support, not a proof over all inputs. Greedy determinism holds at
+MTP k=4 under graph capture on this stack (an upstream non-determinism report at k=4
+exists and does not reproduce here; disclose when citing).
+
+Self-reported to LocalMaxxing 2026-09-22 (four APPROVED records = accepted self-report,
+**not** independent reproduction). Audit authority: private lab campaign records
+(2026-09-21/22). The greedy tables earlier in this doc are diagnostic maxima under
+greedy sampling and a different same-image lineage — read them as upper-bound context,
+never as the representative number; the rows above are the representative cells.
