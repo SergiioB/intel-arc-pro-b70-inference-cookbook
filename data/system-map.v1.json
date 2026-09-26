@@ -6,7 +6,7 @@
   "intents": {
     "read": {
       "start": "README.md",
-      "then": ["START.md", "docs/AGENT-SYSTEM.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md"]
+      "then": ["docs/WHAT-WORKED.md", "START.md", "docs/AGENT-SYSTEM.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md"]
     },
     "setup": {
       "start": "docs/FULL-SETUP-COMMANDS.md",
@@ -43,6 +43,7 @@
     "generated_numeric_view": "docs/BENCHMARK-CATALOG.md",
     "benchmark_contract": "docs/BENCHMARK-FORMAT.md",
     "image_patch_compatibility": "docs/IMAGE-AND-PATCH-MATRIX.md",
+    "outcome_decisions": "docs/WHAT-WORKED.md",
     "full_setup": "docs/FULL-SETUP-COMMANDS.md",
     "client_connections": "docs/CONNECTING-CLIENTS.md",
     "power_policy": "docs/POWER-SWEET-SPOTS.md",

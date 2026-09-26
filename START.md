@@ -5,23 +5,22 @@
 
 ---
 
-## 1. The 30-Second Chooser
+## 1. Choose by task, not by a peak number
 
-Choose the route matching your hardware, OS, and deployment goal:
+| Setup | Start here | Limitation |
+|---|---|---|
+| One B70, GPTQ serving and agents | [Qwen3.8-27B](docs/qwen38-27b/QWEN38-VLLM-XPU.md) | The command below uses the BF16 drafter, not the separate [draft-INT4 speed experiment](docs/qwen38-27b/DRAFT-INT4-S-M1.md). Verify answer quality on your own tasks. |
+| One B70, GGUF or vision | [Muse-Glimmer llama.cpp](docs/muse-glimmer/MUSE-GLIMMER-B70.md) | Its engine decode metric cannot be ranked against vLLM client timing without a matched test. |
+| MoE or long context | [Qwen3.6-35B-A3B](docs/qwen36-35a3/QWEN36-MOE-VLLM-XPU.md) | The historical MTP4 peak did not reproduce on a [later stack](docs/qwen36-35a3/MOE-INT4-THREE-ENGINE-CEILING-20260917.md). |
+| Two B70s | [Independent servers](docs/DUAL-B70-TP2.md) | TP2 is research, not the default single-request speed route. |
 
-| Your Setup | Goal | Recommended Recipe | Headline Speed | Guide |
-|---|---|---|---|---|
-| **1× B70 (32 GB)** | Chat, agent tools, maximum speed | **Qwen3.8-27B GPTQ-INT4** (vLLM XPU) | **106.7 tok/s** decode (C1, cache-zero) | [Recipe](docs/qwen38-27b/QWEN38-VLLM-XPU.md) |
-| **1× B70 (32 GB)** | GGUF quants, zero Docker, rock-solid stability | **Muse-Glimmer-30B** (llama.cpp SYCL) | **26.8 tok/s** decode (C1, 128K ctx) | [Recipe](docs/muse-glimmer/MUSE-GLIMMER-B70.md) |
-| **1× B70 (32 GB)** | Highest raw MoE throughput trophy | **Qwen3.6-35B-A3B** (vLLM XPU, Pi digest) | **170.9 tok/s** decode (C1, MTP4) | [Recipe](docs/qwen36-35a3/QWEN36-MOE-VLLM-XPU.md) |
-| **2× B70 (64 GB)** | Serve dense FP8 / large models across 2 cards | **Dual-B70 TP2** (vLLM XPU + oneCCL) | **~108 tok/s** decode (TP2 W8A16) | [Recipe](docs/DUAL-B70-TP2.md) |
-| **Windows 11** | Desktop-attached display on single B70 | **Qwen3.8-27B** (Docker Desktop kit) | **~70–84 tok/s** decode (util 0.75) | [Windows Guide](docs/qwen38-27b/WINDOWS-STANDALONE.md) |
+See [what worked, what lost, and the next test](docs/WHAT-WORKED.md) before tuning. Exact image, patch, model, cache, and timing definitions matter.
 
 ---
 
-## 2. 30-Minute Fast Path: Qwen3.8-27B on Single B70 (Linux)
+## 2. Single-B70 fast path: Qwen3.8-27B (Linux)
 
-This is the recommended daily driver. It provides 106+ tokens/sec, full OpenAI-compatible API serving, tool calling support (`tool_choice: "auto"`), and 100K–128K context.
+This pinned BF16-drafter route serves an OpenAI-compatible API with native MTP. Its measured rates depend on prompt, sampling, cache, and workload; it does **not** run the optional draft-INT4 overlay or guarantee a headline speed. Tool calling needs the parser flags in the command below. A passing four-canary smoke is not an exact-answer quality assessment.
 
 ### Prerequisites Check (30 seconds)
 Verify that your card is detected and your user belongs to the `render` group:
@@ -73,7 +72,8 @@ docker run -d --name b70-qwen38 -p 8000:8000 \
    --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 \
    --max-num-seqs 1 --max-num-batched-tokens 8192 \
    --no-enable-prefix-caching --served-model-name qwen38 \
-   --language-model-only --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
+   --language-model-only --enable-auto-tool-choice --tool-call-parser qwen3_xml \
+   --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
 ```
 
 ---
@@ -97,7 +97,7 @@ curl -s http://127.0.0.1:8000/v1/chat/completions \
   }' | python3 -m json.tool
 ```
 
-### Run the 4 golden canaries (code, JSON, prose, tool-call)
+### Run the four basic canaries (arithmetic, JSON, code syntax, prose)
 ```bash
 python3 scripts/canary.py --port 8000 --model qwen38
 ```

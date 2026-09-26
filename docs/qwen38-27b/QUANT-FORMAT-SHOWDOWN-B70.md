@@ -52,6 +52,26 @@ Readings:
   +10.7 % bytes bought −5.8 % decode and no measurable quality gain. The Q4_K_M
   preset's own tensor mixture already allocates precision well on this architecture.
 
+### Decode dispatch at occupied depth (screen, 2026-09-26)
+
+The matrix above is measured at short occupied depth. At long depth the quantized-KV
+attention scan dominates, and llama.cpp [#26689](https://github.com/ggml-org/llama.cpp/pull/26689)
+(merged 2026-08-28, **after** the pinned `1692f9e50` build) matters: on Xe2/BMG it
+dispatches quantized-KV single-token decode to the TILE kernel instead of VEC.
+
+Twin builds of `1692f9e50` differing only in that 6-line hunk, `llama-bench -n 128
+-d 32768` (tg at occupied 32K), ABAB interleaved n=3/arm on one B70:
+
+| Build | tg128 @ depth 32K |
+|---|---:|
+| pinned dispatch (VEC) | 11.57 tok/s median |
+| #26689 dispatch (TILE) | **13.07 tok/s median (+13.0 %)** |
+
+Every interleaved pair positive (+8.8/+13.3/+15.9 %). Lab screen (see
+[WHAT-WORKED](../WHAT-WORKED.md)); external ~2x figures were measured on Q4_0-K cells.
+Unchecked before this becomes the pinned recipe: MTP/speculative serving, where
+verification was already TILE upstream and one external full-serving test saw ~0 %.
+
 ## vLLM GPTQ-INT4 route (client-side, C1, clean-host canonical set)
 
 | Cell | Spec-off | + MTP-4 | Multiplier |

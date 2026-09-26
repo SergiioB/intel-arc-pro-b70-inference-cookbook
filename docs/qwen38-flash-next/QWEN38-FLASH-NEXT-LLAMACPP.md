@@ -393,6 +393,29 @@ JSON: [`n3-context-map.json`](../../results/qwen38-flash-next-dual-b70-c1/n3-con
 
 Receipts: [`localmaxxing-receipts.json`](../../results/qwen38-flash-next-dual-b70-c1/localmaxxing-receipts.json).
 
+## Sparse attention for the QSA layers (screen, 2026-09-26)
+
+Upstream llama.cpp [#28796](https://github.com/ggml-org/llama.cpp/pull/28796) (merged
+2026-09-25) adds an opt-in sparse path for single-token decode: instead of scanning the
+whole KV of the full-attention layers, it gathers only the rows the QSA top-k mask
+leaves finite (~2,051 of 28,928 at 28K occupied context on this model).
+
+- Enable: `GGML_SYCL_SPARSE_FA=1` (plus `GGML_SYCL_SPARSE_FA_DEBUG=1` to log gather
+  counts). Default off upstream.
+- **Prerequisite the pinned build lacks:** the feature reads the FA node's `n_kv_max`
+  op-parameter, which only graph builders after the `ggml_flash_attn_ext_set_n_kv_max`
+  plumbing set it. Our pinned `9723942` tree leaves it at 0, so the path never engages
+  there. Verify engagement by the `[FA-SPARSE]` debug lines before believing any number.
+- Measured on this recipe's placement (32K ctx, heavier CPU expert offload, C-S-C
+  counterbalanced, n=3/arm, lab screen — see
+[WHAT-WORKED](../WHAT-WORKED.md)): **+7–9 % decode at occupied 28K**, prefill
+  unchanged, correctness trio clean, no mask overflow. The gain is bounded by this
+  placement's CPU-resident experts; a lighter placement or deeper context should show
+  more. Upstream's author measured +52 % at 28.6K on a full-GPU single-card placement.
+
+Not yet part of the pinned recipe: rebasing the pinned tree past the `n_kv_max`
+plumbing and a deeper-cell confirmation are the remaining steps.
+
 ## Limits
 
 - Layer split across two cards, not vLLM tensor parallel.
