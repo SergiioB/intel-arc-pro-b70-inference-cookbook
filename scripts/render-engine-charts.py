@@ -59,6 +59,7 @@ ENGINE_COLORS = {
     "reference": "#8a97a8",
     "cascadia": "#55d6be",
     "ovms": "#c792ea",
+    "exl3xpu": "#f0b429",
 }
 DASH_BY_STYLE = {
     "solid": "",

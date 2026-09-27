@@ -25,11 +25,15 @@ It is NOT the mainline vLLM image — treat it as its own engine.
 |---|---|
 | Exact-answer battery (greedy, thinking off) | **6/6 clean** — `sum(i*i for i in range(4))` = 14 twice, 9×7−3 = 60 |
 | Host-executed task battery (5 bugfix + 5 codegen, cache ON) | 8/10 |
-| Decode, sustained chunk-rate median n=3 | p512/g128: 17.8 @150 W → 24.6 @230 W · p8192/g128: 16.6 → 23.6 |
+| Decode, sustained chunk-rate median n=3 | p512/g128: 18.4 @150 W → 24.6 @230 W · p8192/g128: 16.6 → 23.6 |
 | Cap sensitivity | **+38–42 % at 230 W** — most power-limited arm measured |
 | Context on ONE card | **full native 262,144** (fp8 KV pool 287,040 @ util 0.94); 131,098-token completion proven |
 | Prefix cache (10,546-token shared prefix, n=5) | 8.11 s cold → ~1.5 s cached = **5.4×** |
 | Effective decode bandwidth | ~240 GB/s @150 W → ~355 GB/s @230 W |
+
+![EXL3 decode vs prompt length, paired caps](../assets/b70-qwen38-exl3xpu-decode-ctx-20260927.svg)
+
+![W4A16 arms decode vs prompt length — closed class](../assets/b70-qwen38-vllm-w4a16-decode-ctx-20260927.svg)
 
 Numbers you must not mix: the decode figures are MTP chunk-rates (accepted
 steps — they undercount generated tokens); compare within the campaign's

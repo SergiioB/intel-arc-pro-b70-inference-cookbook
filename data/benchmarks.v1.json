@@ -1247,7 +1247,7 @@
    "id": "qwen38-27-exl3xpu-p512-g128-c1",
    "kind": "benchmark",
    "title": "Qwen3.8-27B EXL3 (exl3xpu) MTP3 decode",
-   "summary": "Single B70, EXL3 trellis 4bpw + native MTP3 + fp8 KV on the exl3xpu engine (vLLM-XPU fork). Sustained chunk-rate median n=3 paired caps: 24.6 tok/s at 230 W vs 17.8 at 150 W (+38%, most cap-sensitive arm measured - ESIMD trellis decode is power-limited, not byte-floor-bound; ~355 GB/s effective at 230 W). Chunk-rate counts accepted steps under MTP - not directly comparable to post-first client rates. The only measured route that fits native 262,144 context on one card (fp8 KV pool 287,040 tokens at util 0.94) and the only W4A16-class contestant that answers 14 on the code_execution canary (the whole GPTQ/AutoRound family answers 30).",
+   "summary": "Single B70, EXL3 trellis 4bpw + native MTP3 + fp8 KV on the exl3xpu engine (vLLM-XPU fork). Sustained chunk-rate median n=3 paired caps: 24.6 tok/s at 230 W vs 18.4 at 150 W (+38%, most cap-sensitive arm measured - ESIMD trellis decode is power-limited, not byte-floor-bound; ~355 GB/s effective at 230 W). Chunk-rate counts accepted steps under MTP - not directly comparable to post-first client rates. The only measured route that fits native 262,144 context on one card (fp8 KV pool 287,040 tokens at util 0.94) and the only W4A16-class contestant that answers 14 on the code_execution canary (the whole GPTQ/AutoRound family answers 30).",
    "evidence_status": "official-lab",
    "hardware": {
     "gpu_model": "Intel Arc Pro B70",
