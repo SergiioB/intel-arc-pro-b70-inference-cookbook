@@ -53,7 +53,7 @@
     }
   },
   "conclusions": [
-    "EXL3 is the primary single-card route: only arm at native 262144, clean correctness, +33-42% at 230W (paired medians), best cache speedup",
+    "EXL3 is the primary single-card route: only arm proven at native 262144 (261,920-token needle completion), clean correctness, +33-42% at 230W (paired medians), best cache speedup",
     "W4A16/GPTQ-family symmetric-int4 is closed for this model: 3 independent exports reproduce the 30-answer defect; ~4.9x slower than removed champion; 256K-unreachable",
     "bf16 base is correct - defect is induced by W4A16 export, not the model",
     "EXL3 decode is power-limited (ESIMD trellis ALU-bound), not bus-bound: ~240-355 GB/s effective vs OV ~414 GB/s - wins route on correctness + capacity + footprint, not bandwidth",
