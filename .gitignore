@@ -24,3 +24,4 @@ Thumbs.db
 .coverage
 htmlcov/
 jscpd-report*
+brag-output/

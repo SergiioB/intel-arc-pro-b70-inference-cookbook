@@ -1,1 +1,0 @@
-170.91 tok/s on one Intel Arc Pro B70 — measured, median of five, conditions attached. The record that didn't reproduce is published too.
