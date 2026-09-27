@@ -1230,7 +1230,7 @@
    },
    "engine": {
     "name": "llama.cpp SYCL",
-    "version": "qwen4exp-capable icx/icpx 2026.1.1 build (sha256 7c2d6adc\u2026)"
+    "version": "qwen4exp-capable icx/icpx 2026.1.1 build (sha256 7c2d6adc…)"
    },
    "model": {
     "id": "Signal-3.8-Flash-Next",
@@ -1296,7 +1296,7 @@
    "id": "qwen38-27-exl3xpu-v1",
    "kind": "capability",
    "title": "Qwen3.8-27B EXL3 route (one B70): correctness, 262144 context, prefix cache",
-   "summary": "Primary single-card Qwen3.8-27B route since the 2026-09-26/27 re-measure campaign (CAM-2026-AUTOROUND-VS-EXL3). Correctness: 6/6 exact-answer battery incl. code_execution 14/14 twice and clean replay - the only quantized arm to pass alongside OpenVINO int4. Context: the only arm reaching native 262,144 on one card (fp8 KV pool 287,040 tokens, gmu 0.94; 131,098-token completion proven in 149 s). Host-executed task battery (cache ON): 8/10 on 5 bugfix + 5 codegen cases. Prefix cache: 10,546-token shared prefix 8.11 s cold -> ~1.5 s cached (5.4x, best of all arms). KV dtype is fp8-only (bf16 rejected by reshape_and_cache_flash). Effective decode bandwidth ~240-355 GB/s (150->230 W) - below OV int4's ~414 GB/s roofline band because trellis dequant is ALU-bound on Xe2; wins on correctness + capacity + footprint (15.7 GiB weights) instead.",
+   "summary": "Primary single-card Qwen3.8-27B route since the 2026-09-26/27 re-measure campaign (CAM-2026-AUTOROUND-VS-EXL3). Correctness: 6/6 exact-answer battery incl. code_execution 14/14 twice and clean replay - the only quantized arm to pass alongside OpenVINO int4. Context: the only arm reaching native 262,144 on one card (fp8 KV pool 287,040 tokens, gmu 0.94; 131,098-token completion proven in 149 s). Host-executed task battery (cache ON): 8/10 on 5 bugfix + 5 codegen cases. Prefix cache: 10,546-token shared prefix 8.11 s cold -> ~1.5 s cached (5.4x, best of all arms). KV dtype is fp8-only (bf16 rejected by reshape_and_cache_flash). Effective decode bandwidth ~240-355 GB/s (150->230 W) - below OV int4's ~414 GB/s roofline band consistent with compute-bound trellis dequant on Xe2 (upstream hypothesis, unproven locally); EXL3 wins on correctness + capacity + footprint (15.7 GiB weights) instead.",
    "evidence_status": "official-lab",
    "hardware": {
     "gpu_model": "Intel Arc Pro B70",
@@ -1322,7 +1322,7 @@
    "id": "qwen38-27-autoround-w4a16-v1",
    "kind": "capability",
    "title": "Qwen3.8-27B W4A16/GPTQ-family closure (defective class)",
-   "summary": "Closed class for this hybrid model (CAM-2026-AUTOROUND-VS-EXL3). Three independent W4A16 exports all reproduce the exact same in-head-arithmetic defect (sum(i*i for i in range(4)) -> '30' instead of 14, deterministic): GPTQModel export (removed SergiioB checkpoint), dbirks AutoRound compressed-tensors, and a local AutoRound 0.14.2 auto_gptq artifact calibrated on a code-heavy corpus (128x1536, 200 iters). The BF16 base model is proven CORRECT via TP2 control (14/14 twice) - the defect is induced by symmetric-int4 W4A16 export, not the source weights. Measured speed is also the worst of the pack (~15-16.5 tok/s chunk-rate vs EXL3 ~24.6 and OV ~28.5) and 262,144 context is unreachable on one card (fp8 KV max ~211K, bf16 ~106K). Nuance: the defect is narrow - the local AutoRound arm scored 9/10 on host-executed real code tasks, so 'W4A16 is defective' does not mean 'broken for code authoring'.",
+   "summary": "Closed class for this hybrid model (CAM-2026-AUTOROUND-VS-EXL3). Three independent W4A16 exports all reproduce the exact same in-head-arithmetic defect (sum(i*i for i in range(4)) -> '30' instead of 14, deterministic): GPTQModel export (removed SergiioB checkpoint), dbirks AutoRound compressed-tensors, and a local AutoRound 0.14.2 auto_gptq artifact calibrated on a code-heavy corpus (128x1536, 200 iters). The BF16 base model is proven CORRECT via TP2 control (14/14 twice) - the defect is reproduced across all three tested W4A16 export paths, not the source weights (OpenVINO int4 is a different, unaffected quantization route). Measured speed is also the worst of the pack (~15-16.5 tok/s chunk-rate vs EXL3 ~24.6 and OV ~28.5) and 262,144 context is unreachable on one card (fp8 KV max ~211K, bf16 ~106K). Nuance: the defect is narrow - the local AutoRound arm scored 9/10 on host-executed real code tasks, so 'W4A16 is defective' does not mean 'broken for code authoring'.",
    "evidence_status": "official-lab",
    "hardware": {
     "gpu_model": "Intel Arc Pro B70",

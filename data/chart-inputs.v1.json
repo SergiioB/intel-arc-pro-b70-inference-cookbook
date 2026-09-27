@@ -34,9 +34,9 @@
    "output": "docs/assets/b70-qwen38-openvino-genai-decode-ctx-20260923.svg",
    "engine": "OpenVINO GenAI",
    "engine_color": "openvino",
-   "eyebrow": "INTEL ARC PRO B70 \u00b7 OPENVINO GENAI \u00b7 ONE CARD \u00b7 230 W CAP \u00b7 2026-09-15/21",
-   "title": "Decode vs context \u2014 Qwen3.8-27B, OpenVINO GenAI INT4-GDN8",
-   "subtitle": "single stream \u00b7 greedy diagnostic \u00b7 128-token outputs \u00b7 composite: grafted MTP5 (u8 KV) to 64K, draft OFF from 98K (u4 KV, cache_size=0) \u00b7 PROVISIONAL \u2014 NOT FOR PUBLIC HEADLINE",
+   "eyebrow": "INTEL ARC PRO B70 · OPENVINO GENAI · ONE CARD · 230 W CAP · 2026-09-15/21",
+   "title": "Decode vs context — Qwen3.8-27B, OpenVINO GenAI INT4-GDN8",
+   "subtitle": "single stream · greedy diagnostic · 128-token outputs · composite: grafted MTP5 (u8 KV) to 64K, draft OFF from 98K (u4 KV, cache_size=0) · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
    "y_label": "decode tok/s (median)",
    "x_label": "context length (tokens, log scale)",
    "x_axis": {
@@ -118,9 +118,9 @@
    "output": "docs/assets/b70-qwen38-openvino-genai-prefill-ctx-20260923.svg",
    "engine": "OpenVINO GenAI",
    "engine_color": "openvino",
-   "eyebrow": "INTEL ARC PRO B70 \u00b7 OPENVINO GENAI \u00b7 ONE CARD \u00b7 230 W CAP \u00b7 2026-09-15/21",
-   "title": "Cold prefill vs context \u2014 Qwen3.8-27B, OpenVINO GenAI INT4-GDN8",
-   "subtitle": "single stream \u00b7 cold input \u00b7 same composite arms as the decode chart \u00b7 PROVISIONAL \u2014 NOT FOR PUBLIC HEADLINE",
+   "eyebrow": "INTEL ARC PRO B70 · OPENVINO GENAI · ONE CARD · 230 W CAP · 2026-09-15/21",
+   "title": "Cold prefill vs context — Qwen3.8-27B, OpenVINO GenAI INT4-GDN8",
+   "subtitle": "single stream · cold input · same composite arms as the decode chart · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
    "y_label": "cold prefill tok/s (median)",
    "x_label": "context length (tokens, log scale)",
    "x_axis": {
@@ -202,9 +202,9 @@
    "output": "docs/assets/b70-qwen38-cascadia-decode-grid-20260923.svg",
    "engine": "Cascadia",
    "engine_color": "cascadia",
-   "eyebrow": "INTEL ARC PRO B70 \u00b7 CASCADIA qwen35 (SEPARATE ENGINE) \u00b7 ONE CARD \u00b7 230 W CAP \u00b7 2026-09-11",
-   "title": "Decode vs prompt length \u2014 Qwen3.8-27B, Cascadia qwen35",
-   "subtitle": "greedy \u00b7 batch=1 \u00b7 wall decode \u00b7 INT4-GDN8 1-stage shard \u00b7 n=5 median \u00b7 PROVISIONAL \u2014 NOT FOR PUBLIC HEADLINE",
+   "eyebrow": "INTEL ARC PRO B70 · CASCADIA qwen35 (SEPARATE ENGINE) · ONE CARD · 230 W CAP · 2026-09-11",
+   "title": "Decode vs prompt length — Qwen3.8-27B, Cascadia qwen35",
+   "subtitle": "greedy · batch=1 · wall decode · INT4-GDN8 1-stage shard · n=5 median · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
    "y_label": "decode tok/s (median wall, n=5)",
    "x_label": "prompt length (tokens, log scale)",
    "x_axis": {
@@ -258,9 +258,9 @@
    "output": "docs/assets/b70-qwen38-exl3xpu-decode-ctx-20260927.svg",
    "engine": "EXL3-XPU",
    "engine_color": "exl3xpu",
-   "eyebrow": "INTEL ARC PRO B70 \u00b7 EXL3-XPU ENGINE \u00b7 ONE CARD \u00b7 PAIRED POWER CAPS \u00b7 2026-09-26/27",
-   "title": "Decode vs prompt length \u2014 Qwen3.8-27B, EXL3 trellis 4bpw + MTP3",
-   "subtitle": "single stream \u00b7 g128 outputs \u00b7 request-side post-first rate (MTP chunk-undercount caveat) \u00b7 fp8 KV \u00b7 PROVISIONAL \u2014 NOT FOR PUBLIC HEADLINE",
+   "eyebrow": "INTEL ARC PRO B70 · EXL3-XPU ENGINE · ONE CARD · PAIRED POWER CAPS · 2026-09-26/27",
+   "title": "Decode vs prompt length — Qwen3.8-27B, EXL3 trellis 4bpw + MTP3",
+   "subtitle": "single stream · g128 outputs · request-side post-first rate (MTP chunk-undercount caveat) · fp8 KV · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
    "y_label": "decode tok/s (median)",
    "x_label": "prompt length (tokens, log scale)",
    "x_axis": {
@@ -320,11 +320,11 @@
   {
    "id": "qwen38-27b-vllm-w4a16-decode-ctx-20260927",
    "output": "docs/assets/b70-qwen38-vllm-w4a16-decode-ctx-20260927.svg",
-   "engine": "vLLM XPU (W4A16 class \u2014 closed)",
+   "engine": "vLLM XPU (W4A16 class — closed)",
    "engine_color": "vllm",
-   "eyebrow": "INTEL ARC PRO B70 \u00b7 VLLM XPU \u00b7 ONE CARD \u00b7 W4A16 ARMS (CORRECTNESS-DEFECTIVE) \u00b7 2026-09-26",
-   "title": "Decode vs prompt length \u2014 W4A16 arms (AutoRound, two exports)",
-   "subtitle": "single stream \u00b7 g128 outputs \u00b7 request-side post-first rate \u00b7 both arms answer 30 on the canary \u2014 closed class \u00b7 PROVISIONAL \u2014 NOT FOR PUBLIC HEADLINE",
+   "eyebrow": "INTEL ARC PRO B70 · VLLM XPU · ONE CARD · W4A16 ARMS (CORRECTNESS-DEFECTIVE) · 2026-09-26",
+   "title": "Decode vs prompt length — W4A16 arms (AutoRound, two exports)",
+   "subtitle": "single stream · g128 outputs · request-side post-first rate · both arms answer 30 on the canary — closed route · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
    "y_label": "decode tok/s (median)",
    "x_label": "prompt length (tokens, log scale)",
    "x_axis": {
@@ -390,9 +390,9 @@
     }
    ],
    "notes": [
-    "Class closed for this model: all W4A16 exports fail in-head arithmetic deterministically (RL-087 equivalent).",
+    "All three tested W4A16 export paths fail in-head arithmetic deterministically (RL-087 equivalent).",
     "256K unreachable on one card: fp8 KV max ~211K, bf16 ~106K.",
-    "Defect is narrow \u2014 local AutoRound scored 9/10 on host-executed code tasks."
+    "Defect is narrow — local AutoRound scored 9/10 on host-executed code tasks."
    ]
   }
  ]
