@@ -29,7 +29,8 @@ It is NOT the mainline vLLM image — treat it as its own engine.
 | Cap sensitivity | **+33–42 % at 230 W (paired medians)** — most power-limited arm measured |
 | Context on ONE card | **native 262,144 boundary proven** — 261,920-token prompt answered correctly (pool 287,040 @fp8 KV, util 0.94); cold 258K prompt 389 s |
 | Prefix cache (10,546-token shared prefix, n=5) | 8.11 s cold → ~1.5 s cached = **5.4×** |
-| Interactive-HTML battery (3 math-viz prompts, functional-verified ×3 reruns) | fluid 0/4 · parametric 1/4 · orbits 4/4 — codegen variance, no infra faults |
+| Interactive-HTML battery r3 (3 math-viz prompts ×4 runs, real-time functional verify) | fluid 0/4 · parametric 1/4 · orbits 3/4 clean (1 partial) — codegen variance |
+| Interactive-HTML battery r4 (harder prompts incl. raw WebGL2, card sampling + thinking=low) | **2/3** — fluid-sim with obstacles ✅ · strange-attractor explorer ✅ · 3D flow-field ✗ (GLSL syntax error) |
 | Effective decode bandwidth | ~240 GB/s @150 W → ~355 GB/s @230 W |
 
 ![EXL3 decode vs prompt length, paired caps](../assets/b70-qwen38-exl3xpu-decode-ctx-20260927.svg)
@@ -94,9 +95,10 @@ GPTQModel, AutoRound→compressed-tensors, and local AutoRound→auto_gptq all
 return `30` on the arithmetic canary while the BF16 base answers 14 via TP2
 control. They are also the slowest arms (~15–16.5 chunk-rate) and cannot fit
 256K (fp8 max ~211K). Narrow defect: in-head numeric evaluation only — the
-local AutoRound still scored 9/10 on host-executed code tasks, and its HTML
-battery output is comparable to EXL3's (functional: fluid 2/2, parametric 1/2,
-orbits 2/3 across clean runs).
+local AutoRound still scored 9/10 on host-executed code tasks. On the harder
+round-4 HTML battery (raw WebGL2 included, card sampling, thinking=low) it
+managed **1/3** — a `seg` ReferenceError and a duplicate-`const` SyntaxError on
+the two WebGL cases.
 
 **New defect found on this stack: W4A16 × prefix-cache corruption.** With
 `--enable-prefix-caching` on the vLLM-XPU compressed-tensors route, repeated
