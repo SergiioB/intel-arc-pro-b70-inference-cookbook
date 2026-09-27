@@ -29,6 +29,7 @@ It is NOT the mainline vLLM image — treat it as its own engine.
 | Cap sensitivity | **+33–42 % at 230 W (paired medians)** — most power-limited arm measured |
 | Context on ONE card | **native 262,144 boundary proven** — 261,920-token prompt answered correctly (pool 287,040 @fp8 KV, util 0.94); cold 258K prompt 389 s |
 | Prefix cache (10,546-token shared prefix, n=5) | 8.11 s cold → ~1.5 s cached = **5.4×** |
+| Interactive-HTML battery (3 math-viz prompts, functional-verified ×3 reruns) | fluid 0/4 · parametric 1/4 · orbits 4/4 — codegen variance, no infra faults |
 | Effective decode bandwidth | ~240 GB/s @150 W → ~355 GB/s @230 W |
 
 ![EXL3 decode vs prompt length, paired caps](../assets/b70-qwen38-exl3xpu-decode-ctx-20260927.svg)
@@ -93,7 +94,17 @@ GPTQModel, AutoRound→compressed-tensors, and local AutoRound→auto_gptq all
 return `30` on the arithmetic canary while the BF16 base answers 14 via TP2
 control. They are also the slowest arms (~15–16.5 chunk-rate) and cannot fit
 256K (fp8 max ~211K). Narrow defect: in-head numeric evaluation only — the
-local AutoRound still scored 9/10 on host-executed code tasks.
+local AutoRound still scored 9/10 on host-executed code tasks, and its HTML
+battery output is comparable to EXL3's (functional: fluid 2/2, parametric 1/2,
+orbits 2/3 across clean runs).
+
+**New defect found on this stack: W4A16 × prefix-cache corruption.** With
+`--enable-prefix-caching` on the vLLM-XPU compressed-tensors route, repeated
+shared-prefix prompts degenerate into token salad mid-generation (8/9 cases
+across a 3-run battery). Same server and prompts with prefix caching OFF
+produce complete coherent output every time. Until this is isolated upstream,
+run W4A16 exports on this stack with prefix caching disabled — and note this
+is additive to the known arithmetic defect, independent of it.
 
 ## Alternate route
 
