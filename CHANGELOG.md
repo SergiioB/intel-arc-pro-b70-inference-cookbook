@@ -6,6 +6,22 @@
 - Qualify historical MoE and TP2 headlines, distinguish the quick-start BF16 drafter from the draft-INT4 result, and add required tool-call parser flags to `START.md`.
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 
+## [1.4.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.3.0...v1.4.0) (2026-09-27)
+
+
+### Features
+
+* **assets:** commit rendered comparison SVGs ([d71532f](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/d71532f2c9aab19a2b3ae99ae456d03ae8d5f2a1))
+* **catalog:** EXL3 route records + OpenVINO GenAI envelope + Cascadia capability; exl3/autoround-vs-exl3 campaign evidence; regenerate catalog ([deac5c5](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/deac5c561156bac8d74dd52169d933b4f3fc85c8))
+* **catalog:** EXL3 route records for CAM-2026-AUTOROUND-VS-EXL3 ([55eefea](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/55eefeaeaa1e47b9e34b2fd20f55ffc1a8125c6c))
+* **catalog:** OpenVINO GenAI envelope + Cascadia capability records (uncommitted prior work landed); fix evidence pins ([59aa043](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/59aa043cc2f617d66b1caa45a13ce6bbfac8c06f))
+* **charts:** exl3xpu decode-ctx + vllm-w4a16 decode-ctx SVGs (rendered from chart-inputs, vision-QA pass); EXL3-XPU doc embeds; 150W cappair median corrected 17.8-&gt;18.4 ([76b2c92](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/76b2c92afeec2e45568f2aa5e5ac6a6aef2258d2))
+
+
+### Bug Fixes
+
+* untrack stray brag-output/ work dir committed accidentally (exceeds 1MiB file gate) ([4a128a1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/4a128a1d2f18e571321fe0c46f8bc7fada31ba48))
+
 ## [1.3.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.2.4...v1.3.0) (2026-09-20)
 
 
