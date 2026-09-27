@@ -1,8 +1,9 @@
 # EXL3 on one B70 — first evaluation (2026-09-26, screen; not a recipe)
 
-> Status: external route evaluated locally once. No pinned image in this cookbook's
-> matrix, no benchmark catalog record, no reproduction contract yet. Outcome decisions
-> live in [WHAT-WORKED](WHAT-WORKED.md).
+> Status: SUPERSEDED 2026-09-27 — the follow-up campaign closed every gate this
+> screen listed. EXL3 is now the primary single-card route: see
+> [the recipe](qwen38-27b/EXL3-XPU.md) and catalog records `qwen38-27-exl3xpu-*`.
+> This page is kept as the dated first-evaluation record.
 
 ## What it is
 
