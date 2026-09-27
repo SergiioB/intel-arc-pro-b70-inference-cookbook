@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "campaign": "CAM-2026-AUTOROUND-VS-EXL3",
+  "date": "2026-09-26/27",
+  "host": "Intel Arc Pro B70 (single card, 32 GiB)",
+  "status": "official-lab self-report",
+  "question": "EXL3 vs AutoRound vs OpenVINO int4 vs BF16 control on Qwen3.8-27B: best quality/speed route and the origin of the W4A16 correctness defect",
+  "arms": {
+    "exl3": {
+      "artifact": "turboderp Qwen3.8-27B EXL3 4.00bpw @113cf7ab (~15.7 GiB)",
+      "engine": "exl3xpu (vLLM-XPU fork 0.26.1.dev0+g568afb3a1, ExLlamaV3 trellis + qwen3_5_mtp n=3)",
+      "kv_cache": "fp8 (only supported dtype)",
+      "exact_answer_battery": "6/6 clean (code_execution 14/14 twice)",
+      "exec_scored_tasks_10": 8,
+      "chunk_rate_p512_g128_toks": {"150w": 17.8, "230w": 24.6, "note": "MTP chunk-rate undercounts; n=3 paired caps"},
+      "chunk_rate_p8192_g128_toks": {"150w": 16.6, "230w": 23.6},
+      "context_tokens_max": 262144,
+      "context_proven_completion": 131098,
+      "prefix_cache_speedup_10k": 5.4,
+      "effective_bandwidth_gbs": {"150w": 240, "230w": 355}
+    },
+    "autoround_external": {
+      "artifact": "dbirks/Qwen3.8-27B-AutoRound-4bit-sym-gptq (compressed-tensors)",
+      "engine": "vllm-xpu f01e24f6",
+      "exact_answer_battery": "code_execution answers 30 (defect) x2",
+      "chunk_rate_p512_g128_toks": {"230w": 16.5},
+      "chunk_rate_p8192_g128_toks": {"230w": 15.2},
+      "context_tokens_max_fp8": 211000,
+      "context_proven_completion": 131103
+    },
+    "autoround_local": {
+      "artifact": "local AutoRound 0.14.2, auto_gptq packing, code-heavy corpus 128x1536 iters=200 (in-session artifact; disk loss reported)",
+      "exact_answer_battery": "code_execution answers 30 (defect) x2",
+      "exec_scored_tasks_10": 9,
+      "prefix_cache_speedup_10k": 4.3,
+      "note": "9/10 authored-code quality proves the W4A16 defect is narrow (in-head arithmetic), not general code"
+    },
+    "openvino_int4": {
+      "artifact": "SergiioB/Qwen3.8-27B-int4-ov (INT4-GDN8 + MTP5 graft)",
+      "engine": "OpenVINO GenAI 2026.5 VLMPipeline GPU.0",
+      "exact_answer_battery": "clean (14/14 in thinking mode)",
+      "exec_scored_tasks_10": 4,
+      "task_battery_note": "5/6 fails = thinking-mode budget exhaustion (no thinking-off switch); 1 real code miss",
+      "chunk_rate_p512_g128_toks": {"150w": 28.5},
+      "context_tokens_max": 131072,
+      "prefix_cache_speedup_10k": 2.9,
+      "effective_bandwidth_gbs": 414
+    },
+    "bf16_tp2_control": {
+      "artifact": "official BF16 source via vLLM TP2 graphs-off",
+      "exact_answer_battery": "14/14 twice, replay 3/3 - base model is correct",
+      "role": "control proving W4A16 defect is export-induced, not base-model"
+    }
+  },
+  "conclusions": [
+    "EXL3 is the primary single-card route: only arm at native 262144, clean correctness, +38-42% at 230W, best cache speedup",
+    "W4A16/GPTQ-family symmetric-int4 is closed for this model: 3 independent exports reproduce the 30-answer defect; ~4.9x slower than removed champion; 256K-unreachable",
+    "bf16 base is correct - defect is induced by W4A16 export, not the model",
+    "EXL3 decode is power-limited (ESIMD trellis ALU-bound), not bus-bound: ~240-355 GB/s effective vs OV ~414 GB/s - wins route on correctness + capacity + footprint, not bandwidth",
+    "OV int4 = best 150W decode but thinking-mode budget handicap on long structured tasks"
+  ]
+}

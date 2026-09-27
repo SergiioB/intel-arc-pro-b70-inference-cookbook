@@ -8,7 +8,8 @@ not share a numeric authority or an interchangeable patch list.
 
 | Route | Hardware | Artifact and serving goal | Start here |
 |---|---|---|---|
-| GPTQ-INT4 + native MTP | One B70 | General single-card Linux serving, long context, optional draft-INT4, and the established Pi/agent path | [QWEN38-VLLM-XPU.md](QWEN38-VLLM-XPU.md) |
+| EXL3 (exl3xpu engine) | One B70 | **Primary route:** trellis 4bpw + native MTP3 + fp8 KV; only route at full 262,144 context; clean correctness | [EXL3-XPU.md](EXL3-XPU.md) |
+| GPTQ-INT4 + native MTP | One B70 | General single-card Linux serving, long context, optional draft-INT4, and the established Pi/agent path — **legacy/reference: the W4A16 class fails the exact-answer battery on this model (all exports answer 30); prefer EXL3** | [QWEN38-VLLM-XPU.md](QWEN38-VLLM-XPU.md) |
 | FP8 W8A16 + native MTP8 | Two B70 cards in TP2 | Research recipe for the Xe2 FP8 small-M kernel path; C1 evidence only, self-reported E2 | [FP8-TP2-W8A16.md](FP8-TP2-W8A16.md) |
 | Windows standalone | One display-attached B70 | Docker Desktop and experimental WSLC packaging with display-safe VRAM budgets | [WINDOWS-STANDALONE.md](WINDOWS-STANDALONE.md) |
 | Pi agent backend | Qwen3.8 server | Tool calling, provider configuration, and recommended thinking/non-thinking sampling | [PI-AGENT-BACKEND.md](PI-AGENT-BACKEND.md) |
@@ -30,6 +31,9 @@ not share a numeric authority or an interchangeable patch list.
 - [Benchmark catalog](../BENCHMARK-CATALOG.md) is generated from
   [`data/benchmarks.v1.json`](../../data/benchmarks.v1.json), the public numeric
   catalog authority.
+- [Re-measure tasks](RE-MEASURE-TASKS.md) names the pending like-for-like
+  re-measurements that gate ranking reuse and benchmark-class promotion
+  (P10 decisions, 2026-09-23).
 
 ## Evidence and claim boundary
 
