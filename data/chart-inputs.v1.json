@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-09-23T00:00:00Z",
+  "description": "Chart inputs for scripts/render-engine-charts.py. One engine per chart (chart standard: OpenVINO GenAI, Cascadia, OVMS, llama.cpp and vLLM are separate engines, never merged). Point values are medians transcribed verbatim from the private lab campaign evidence; the renderer invents no numbers and has no hardcoded series data.",
+  "provenance": {
+    "transcribed": "2026-09-23 by the P10 chart-renderer task (decision 3, 2026-09-23)",
+    "evidence": [
+      "OpenVINO GenAI decode/prefill context sweep, 2026-09-15: MTP5 arm medians n=3 through 65,536 (prefill medians computed from the raw runs because the stored median objects omit prefill); no-MTP u4-KV arm n=1 cells at 98,304 and 131,072.",
+      "OpenVINO GenAI verified-envelope ladder, 2026-09-21: full-protocol run at 163,840 (111 generated tokens, TTFT 395.006 s, decode 14.34 tok/s; cold prefill 163840/395.006 = 414.8 tok/s).",
+      "Cascadia n=5 grid, 2026-09-11, 230 W cap: median wall decode at G128 across P128/P512/P1024, generation-length variants G64/G256 at P512, package power and Tmax per cell, quality PASS every cell."
+    ],
+    "public_carrying_pages": [
+      "docs/qwen38-27b/ENGINE-COMPARISON-CTX-20260914.md",
+      "docs/qwen38-27b/OPENVINO-CASCADIA.md",
+      "docs/qwen38-27b/OPENVINO-CASCADIA-REPORT.md"
+    ],
+    "catalog_records": [
+      "qwen38-27-openvino-genai-int4gdn8-v1",
+      "qwen38-27-cascadia-v1"
+    ],
+    "supersedes_assets": [
+      "docs/assets/b70-qwen38-ov-cascadia-headtohead.svg",
+      "docs/assets/b70-qwen38-ov-cascadia-n5.svg",
+      "docs/assets/b70-qwen38-ov-cascadia-hints.svg"
+    ],
+    "supersede_reason": "the 2026-09-12 boards merged three engines on one canvas, which violates the 2026-09-15 chart standard (one engine per chart series); the old files stay in docs/assets/ as evidence and the embedding pages carry SUPERSEDED notes"
+  },
+  "charts": [
+    {
+      "id": "qwen38-27b-openvino-genai-decode-ctx-20260923",
+      "output": "docs/assets/b70-qwen38-openvino-genai-decode-ctx-20260923.svg",
+      "engine": "OpenVINO GenAI",
+      "engine_color": "openvino",
+      "eyebrow": "INTEL ARC PRO B70 · OPENVINO GENAI · ONE CARD · 230 W CAP · 2026-09-15/21",
+      "title": "Decode vs context — Qwen3.8-27B, OpenVINO GenAI INT4-GDN8",
+      "subtitle": "single stream · greedy diagnostic · 128-token outputs · composite: grafted MTP5 (u8 KV) to 64K, draft OFF from 98K (u4 KV, cache_size=0) · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
+      "y_label": "decode tok/s (median)",
+      "x_label": "context length (tokens, log scale)",
+      "x_axis": { "min": 512, "max": 163840 },
+      "x_ticks": [
+        { "value": 512, "label": "512" },
+        { "value": 2048, "label": "2K" },
+        { "value": 8192, "label": "8K" },
+        { "value": 32768, "label": "32K" },
+        { "value": 65536, "label": "64K" },
+        { "value": 98304, "label": "98K" },
+        { "value": 131072, "label": "128K" },
+        { "value": 163840, "label": "160K" }
+      ],
+      "series": [
+        {
+          "label": "OpenVINO composite: MTP5 <=64K (solid) -> u4 no-MTP >=98K (dashed)",
+          "color": "openvino",
+          "label_pos": "above",
+          "segments": [
+            {
+              "style": "solid",
+              "protocol": "full protocol n=3, MTP5 graft, u8 KV",
+              "points": { "512": 79.53, "2048": 72.98, "8192": 45.83, "32768": 47.72, "65536": 29.09 }
+            },
+            {
+              "style": "dashed",
+              "protocol": "full-protocol n=1 ladder, no-MTP u4 KV",
+              "labels": "ends",
+              "points": { "98304": 17.16, "131072": 15.9, "163840": 14.34 }
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "WARN: composite switching rule: MTP5 draft OFF from 98,304 (u8 KV crashes -14 at 98K with MTP and runs 3.1x slower than no-MTP there) - the style change carries the boundary, not a wall line.",
+        "WARN: full-protocol requests fail at >=196,608 (CL_OUT_OF_RESOURCES, per-generation growth, openvino.genai#4483); the 196K-256K points elsewhere are 40-token capacity probes only."
+      ],
+      "evidence_note": "Medians from the private OV context sweep (2026-09-15) and the verified-envelope ladder (2026-09-21). Rendered by scripts/render-engine-charts.py from data/chart-inputs.v1.json."
+    },
+    {
+      "id": "qwen38-27b-openvino-genai-prefill-ctx-20260923",
+      "output": "docs/assets/b70-qwen38-openvino-genai-prefill-ctx-20260923.svg",
+      "engine": "OpenVINO GenAI",
+      "engine_color": "openvino",
+      "eyebrow": "INTEL ARC PRO B70 · OPENVINO GENAI · ONE CARD · 230 W CAP · 2026-09-15/21",
+      "title": "Cold prefill vs context — Qwen3.8-27B, OpenVINO GenAI INT4-GDN8",
+      "subtitle": "single stream · cold input · same composite arms as the decode chart · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
+      "y_label": "cold prefill tok/s (median)",
+      "x_label": "context length (tokens, log scale)",
+      "x_axis": { "min": 512, "max": 163840 },
+      "x_ticks": [
+        { "value": 512, "label": "512" },
+        { "value": 2048, "label": "2K" },
+        { "value": 8192, "label": "8K" },
+        { "value": 32768, "label": "32K" },
+        { "value": 65536, "label": "64K" },
+        { "value": 98304, "label": "98K" },
+        { "value": 131072, "label": "128K" },
+        { "value": 163840, "label": "160K" }
+      ],
+      "series": [
+        {
+          "label": "OpenVINO composite: MTP5 <=64K (solid) -> u4 no-MTP >=98K (dashed)",
+          "color": "openvino",
+          "label_pos": "above",
+          "segments": [
+            {
+              "style": "solid",
+              "protocol": "full protocol n=3, MTP5 graft, u8 KV (prefill medians computed from raw runs)",
+              "points": { "512": 1266.8, "2048": 1592.1, "8192": 1471.9, "32768": 1082.8, "65536": 775.3 }
+            },
+            {
+              "style": "dashed",
+              "protocol": "full-protocol n=1 ladder, no-MTP u4 KV",
+              "labels": "ends",
+              "points": { "98304": 597.6, "131072": 492.9, "163840": 414.8 }
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "WARN: composite switching rule as in the decode chart: MTP5 draft OFF from 98,304; the style change carries the protocol boundary.",
+        "WARN: the 163,840 prefill point is derived from the 2026-09-21 verified-envelope run (TTFT 395.006 s: 163840/395.006 = 414.8 tok/s)."
+      ],
+      "evidence_note": "Medians from the private OV context sweep (2026-09-15); MTP5-arm prefill medians computed from raw runs. Rendered by scripts/render-engine-charts.py from data/chart-inputs.v1.json."
+    },
+    {
+      "id": "qwen38-27b-cascadia-decode-grid-20260923",
+      "output": "docs/assets/b70-qwen38-cascadia-decode-grid-20260923.svg",
+      "engine": "Cascadia",
+      "engine_color": "cascadia",
+      "eyebrow": "INTEL ARC PRO B70 · CASCADIA qwen35 (SEPARATE ENGINE) · ONE CARD · 230 W CAP · 2026-09-11",
+      "title": "Decode vs prompt length — Qwen3.8-27B, Cascadia qwen35",
+      "subtitle": "greedy · batch=1 · wall decode · INT4-GDN8 1-stage shard · n=5 median · PROVISIONAL — NOT FOR PUBLIC HEADLINE",
+      "y_label": "decode tok/s (median wall, n=5)",
+      "x_label": "prompt length (tokens, log scale)",
+      "x_axis": { "min": 128, "max": 1024 },
+      "x_ticks": [
+        { "value": 128, "label": "128" },
+        { "value": 256, "label": "256" },
+        { "value": 512, "label": "512" },
+        { "value": 1024, "label": "1K" }
+      ],
+      "series": [
+        {
+          "label": "Cascadia qwen35 wall decode, G128, full protocol n=5",
+          "color": "cascadia",
+          "label_pos": "above",
+          "segments": [
+            {
+              "style": "solid",
+              "protocol": "P128/P512/P1024 at G128, n=5, 230 W cap",
+              "points": { "128": 4.97, "512": 4.95, "1024": 4.92 }
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "WARN: generation-length variants at P512: G64 4.77, G256 5.04 - TTFT amortization, not a faster kernel.",
+        "WARN: host-loop bound: package power flat near 102 W at the 230 W cap (host embed + f32 logits copy + host argmax); Tmax about 66 C, quality PASS every cell."
+      ],
+      "evidence_note": "Medians from the private Cascadia n=5 grid (2026-09-11, 230 W cap). Cascadia is a separate engine, never merged with OpenVINO GenAI in tables or charts. Rendered from data/chart-inputs.v1.json."
+    }
+  ]
+}

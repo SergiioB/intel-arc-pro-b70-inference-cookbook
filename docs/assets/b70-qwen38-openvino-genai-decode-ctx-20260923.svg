@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="938" viewBox="0 0 1560 938" role="img" aria-labelledby="t d">
+<title id="t">Decode vs context — Qwen3.8-27B, OpenVINO GenAI INT4-GDN8</title>
+<desc id="d">single stream · greedy diagnostic · 128-token outputs · composite: grafted MTP5 (u8 KV) to 64K, draft OFF from 98K (u4 KV, cache_size=0) · PROVISIONAL — NOT FOR PUBLIC HEADLINE</desc>
+<rect width="1560" height="938" fill="#07111f"/>
+<text x="150" y="46" fill="#9caec4" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">INTEL ARC PRO B70 · OPENVINO GENAI · ONE CARD · 230 W CAP · 2026-09-15/21</text>
+<text x="150" y="88" fill="#f5f8fc" font-size="29" font-weight="700" font-family="Segoe UI, Inter, sans-serif">Decode vs context — Qwen3.8-27B, OpenVINO GenAI INT4-GDN8</text>
+<text x="150" y="116" fill="#ffd23f" font-size="15.5" font-family="Segoe UI, Inter, sans-serif">single stream · greedy diagnostic · 128-token outputs · composite: grafted MTP5 (u8 KV) to 64K, draft OFF from 98K (u4 KV, cache_size=0) · PROVISIONAL — NOT FOR PUBLIC HEADLINE</text>
+<line x1="150.0" y1="150" x2="150.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="150.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">512</text>
+<line x1="472.0" y1="150" x2="472.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="472.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">2K</text>
+<line x1="794.1" y1="150" x2="794.1" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="794.1" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">8K</text>
+<line x1="1116.1" y1="150" x2="1116.1" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1116.1" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">32K</text>
+<line x1="1277.1" y1="150" x2="1277.1" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1277.1" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">64K</text>
+<line x1="1371.3" y1="150" x2="1371.3" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1371.3" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">98K</text>
+<line x1="1438.2" y1="150" x2="1438.2" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1438.2" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">128K</text>
+<line x1="1490.0" y1="150" x2="1490.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1490.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">160K</text>
+<line x1="150" y1="640.0" x2="1490" y2="640.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="645.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">0</text>
+<line x1="150" y1="517.5" x2="1490" y2="517.5" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="522.5" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">25</text>
+<line x1="150" y1="395.0" x2="1490" y2="395.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="400.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">50</text>
+<line x1="150" y1="272.5" x2="1490" y2="272.5" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="277.5" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">75</text>
+<line x1="150" y1="150.0" x2="1490" y2="150.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="155.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">100</text>
+<text x="34" y="395.0" fill="#f5f8fc" font-size="17" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle" transform="rotate(-90 34 395.0)">decode tok/s (median)</text>
+<text x="820" y="692" fill="#9caec4" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">context length (tokens, log scale)</text>
+<polyline points="150.0,250.3 472.0,282.4 794.1,415.4 1116.1,406.2 1277.1,497.5" fill="none" stroke="#68a7ff" stroke-width="3.5"/>
+<circle cx="150.0" cy="250.3" r="4.5" fill="#68a7ff"/>
+<circle cx="472.0" cy="282.4" r="4.5" fill="#68a7ff"/>
+<circle cx="794.1" cy="415.4" r="4.5" fill="#68a7ff"/>
+<circle cx="1116.1" cy="406.2" r="4.5" fill="#68a7ff"/>
+<circle cx="1277.1" cy="497.5" r="4.5" fill="#68a7ff"/>
+<text x="156.0" y="234.3" fill="#68a7ff" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="start">79.5</text>
+<text x="472.0" y="266.4" fill="#68a7ff" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">73.0</text>
+<text x="1116.1" y="390.2" fill="#68a7ff" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">47.7</text>
+<text x="1277.1" y="481.5" fill="#68a7ff" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">29.1</text>
+<polyline points="1371.3,555.9 1438.2,562.1 1490.0,569.7" fill="none" stroke="#68a7ff" stroke-width="2.5" stroke-dasharray="9,7"/>
+<circle cx="1371.3" cy="555.9" r="3.5" fill="#68a7ff"/>
+<circle cx="1438.2" cy="562.1" r="3.5" fill="#68a7ff"/>
+<circle cx="1490.0" cy="569.7" r="3.5" fill="#68a7ff"/>
+<text x="1371.3" y="539.9" fill="#68a7ff" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">17.2</text>
+<text x="1484.0" y="553.7" fill="#68a7ff" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">14.3</text>
+<rect x="60" y="706" width="1440" height="208" rx="16" fill="#0f1d30"/>
+<text x="86" y="740" fill="#55d6be" font-size="15" font-weight="700" font-family="Segoe UI, Inter, sans-serif">SERIES (points, last context)</text>
+<line x1="86" y1="762" x2="146" y2="762" stroke="#68a7ff" stroke-width="3"/>
+<text x="160" y="767" fill="#68a7ff" font-size="15" font-family="Segoe UI, Inter, sans-serif">OpenVINO composite: MTP5 &lt;=64K (solid) -&gt; u4 no-MTP &gt;=98K (dashed) · full protocol n=3, MTP5 graft, u8 KV · 5 pts → 64K</text>
+<line x1="86" y1="789" x2="146" y2="789" stroke="#68a7ff" stroke-width="3" stroke-dasharray="9,7"/>
+<text x="160" y="794" fill="#68a7ff" font-size="15" font-family="Segoe UI, Inter, sans-serif">↳ composite continuation · full-protocol n=1 ladder, no-MTP u4 KV · 3 pts → 160K</text>
+<text x="86" y="827" fill="#ffd23f" font-size="14.5" font-family="Segoe UI, Inter, sans-serif">WARN: composite switching rule: MTP5 draft OFF from 98,304 (u8 KV crashes -14 at 98K with MTP and runs 3.1x slower than no-MTP there) - the style change carries the boundary, not a wall line.</text>
+<text x="86" y="855" fill="#ffd23f" font-size="14.5" font-family="Segoe UI, Inter, sans-serif">WARN: full-protocol requests fail at &gt;=196,608 (CL_OUT_OF_RESOURCES, per-generation growth, openvino.genai#4483); the 196K-256K points elsewhere are 40-token capacity probes only.</text>
+<text x="86" y="881" fill="#9caec4" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">Medians from the private OV context sweep (2026-09-15) and the verified-envelope ladder (2026-09-21). Rendered by scripts/render-engine-charts.py from data/chart-inputs.v1.json.</text>
+</svg>

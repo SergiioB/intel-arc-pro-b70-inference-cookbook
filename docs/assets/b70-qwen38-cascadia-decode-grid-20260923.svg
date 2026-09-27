@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="911" viewBox="0 0 1560 911" role="img" aria-labelledby="t d">
+<title id="t">Decode vs prompt length — Qwen3.8-27B, Cascadia qwen35</title>
+<desc id="d">greedy · batch=1 · wall decode · INT4-GDN8 1-stage shard · n=5 median · PROVISIONAL — NOT FOR PUBLIC HEADLINE</desc>
+<rect width="1560" height="911" fill="#07111f"/>
+<text x="150" y="46" fill="#9caec4" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">INTEL ARC PRO B70 · CASCADIA qwen35 (SEPARATE ENGINE) · ONE CARD · 230 W CAP · 2026-09-11</text>
+<text x="150" y="88" fill="#f5f8fc" font-size="29" font-weight="700" font-family="Segoe UI, Inter, sans-serif">Decode vs prompt length — Qwen3.8-27B, Cascadia qwen35</text>
+<text x="150" y="116" fill="#ffd23f" font-size="15.5" font-family="Segoe UI, Inter, sans-serif">greedy · batch=1 · wall decode · INT4-GDN8 1-stage shard · n=5 median · PROVISIONAL — NOT FOR PUBLIC HEADLINE</text>
+<line x1="150.0" y1="150" x2="150.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="150.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">128</text>
+<line x1="596.7" y1="150" x2="596.7" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="596.7" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">256</text>
+<line x1="1043.3" y1="150" x2="1043.3" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1043.3" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">512</text>
+<line x1="1490.0" y1="150" x2="1490.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1490.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">1K</text>
+<line x1="150" y1="640.0" x2="1490" y2="640.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="645.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">0</text>
+<line x1="150" y1="517.5" x2="1490" y2="517.5" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="522.5" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">1.50</text>
+<line x1="150" y1="395.0" x2="1490" y2="395.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="400.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">3</text>
+<line x1="150" y1="272.5" x2="1490" y2="272.5" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="277.5" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">4.50</text>
+<line x1="150" y1="150.0" x2="1490" y2="150.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="155.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">6</text>
+<text x="34" y="395.0" fill="#f5f8fc" font-size="17" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle" transform="rotate(-90 34 395.0)">decode tok/s (median wall, n=5)</text>
+<text x="820" y="692" fill="#9caec4" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">prompt length (tokens, log scale)</text>
+<polyline points="150.0,234.1 1043.3,235.7 1490.0,238.2" fill="none" stroke="#55d6be" stroke-width="3.5"/>
+<circle cx="150.0" cy="234.1" r="4.5" fill="#55d6be"/>
+<circle cx="1043.3" cy="235.7" r="4.5" fill="#55d6be"/>
+<circle cx="1490.0" cy="238.2" r="4.5" fill="#55d6be"/>
+<text x="156.0" y="218.1" fill="#55d6be" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="start">4.97</text>
+<text x="1043.3" y="219.7" fill="#55d6be" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">4.95</text>
+<text x="1484.0" y="222.2" fill="#55d6be" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">4.92</text>
+<rect x="60" y="706" width="1440" height="181" rx="16" fill="#0f1d30"/>
+<text x="86" y="740" fill="#55d6be" font-size="15" font-weight="700" font-family="Segoe UI, Inter, sans-serif">SERIES (points, last context)</text>
+<line x1="86" y1="762" x2="146" y2="762" stroke="#55d6be" stroke-width="3"/>
+<text x="160" y="767" fill="#55d6be" font-size="15" font-family="Segoe UI, Inter, sans-serif">Cascadia qwen35 wall decode, G128, full protocol n=5 · P128/P512/P1024 at G128, n=5, 230 W cap · 3 pts → 1K</text>
+<text x="86" y="800" fill="#ffd23f" font-size="14.5" font-family="Segoe UI, Inter, sans-serif">WARN: generation-length variants at P512: G64 4.77, G256 5.04 - TTFT amortization, not a faster kernel.</text>
+<text x="86" y="828" fill="#ffd23f" font-size="14.5" font-family="Segoe UI, Inter, sans-serif">WARN: host-loop bound: package power flat near 102 W at the 230 W cap (host embed + f32 logits copy + host argmax); Tmax about 66 C, quality PASS every cell.</text>
+<text x="86" y="854" fill="#9caec4" font-size="13.5" font-family="Segoe UI, Inter, sans-serif">Medians from the private Cascadia n=5 grid (2026-09-11, 230 W cap). Cascadia is a separate engine, never merged with OpenVINO GenAI in tables or charts. Rendered from data/chart-inputs.v1.json.</text>
+</svg>

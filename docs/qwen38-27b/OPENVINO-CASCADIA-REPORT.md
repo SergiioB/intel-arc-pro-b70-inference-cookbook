@@ -11,9 +11,19 @@ Research, not a catalog ranking. Working IR:
 Hub `OpenVINO/Qwen3.8-27B-int4-ov` is still broken
 ([openvino.genai#4467](https://github.com/openvinotoolkit/openvino.genai/issues/4467)).
 
-![Head-to-head](../assets/b70-qwen38-ov-cascadia-headtohead.svg)
-![N5 lengths](../assets/b70-qwen38-ov-cascadia-n5.svg)
-![Hint A/B](../assets/b70-qwen38-ov-cascadia-hints.svg)
+> **CHARTS SUPERSEDED (2026-09-23):** the merged 2026-09-12 boards
+> (`b70-qwen38-ov-cascadia-headtohead.svg`, `-n5`, `-hints`; kept in
+> `docs/assets/` as evidence) put three engines on one canvas, which the
+> 2026-09-15 chart standard forbids: OpenVINO GenAI, Cascadia, OVMS,
+> llama.cpp and vLLM are separate engines, never merged in one table or
+> chart series. The per-engine replacements below are generated
+> by `scripts/render-engine-charts.py` from `data/chart-inputs.v1.json`.
+
+![OpenVINO GenAI decode vs context](../assets/b70-qwen38-openvino-genai-decode-ctx-20260923.svg)
+
+![OpenVINO GenAI cold prefill vs context](../assets/b70-qwen38-openvino-genai-prefill-ctx-20260923.svg)
+
+![Cascadia decode vs prompt length](../assets/b70-qwen38-cascadia-decode-grid-20260923.svg)
 
 ## How the campaign went
 
@@ -54,13 +64,25 @@ Cascadia `qwen35` (local rebuild vs OpenVINO 2026.3.1):
 
 ## Head-to-head
 
-Same mixed INT4 IR except llama.cpp (GGUF).
+Same mixed INT4 IR except llama.cpp (GGUF). Per-engine tables (chart
+standard: separate engines are never merged in one table or chart series);
+the llama.cpp row is a cross-artifact reference, not a merged comparison.
+
+OpenVINO GenAI 2026.5 (INT4-GDN8 VLM):
 
 | Backend | Artifact | Best decode | Package W | Tmax | Quality |
 |---|---|---|---|---|---|
 | OpenVINO GenAI 2026.5 | INT4-GDN8 VLM | **15.79** P512/G128 n=5 | 183 | 79 °C | PASS |
-| Cascadia qwen35 | 1-stage surgery of that IR | **4.95** same row | 102 | 66 °C | PASS |
-| llama.cpp SYCL | Q4_K_M GGUF | **18.58** tg128 | 150 W run | — | PASS |
+
+Cascadia qwen35 (1-stage surgery of that IR):
+
+| Backend | Artifact | Best decode | Package W | Tmax | Quality |
+|---|---|---|---|---|---|
+| Cascadia qwen35 | 1-stage surgery of that IR | **4.95** P512/G128 n=5 | 102 | 66 °C | PASS |
+
+Reference point, different engine and artifact: llama.cpp SYCL Q4_K_M GGUF
+measured **18.58** tg128 (engine-native llama-bench metric) in a 150 W run,
+quality PASS.
 
 OpenVINO is **3.2×** Cascadia on the same weights. llama.cpp is a
 different quant path.

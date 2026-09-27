@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>B70 Inference Cookbook — brag</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/music/audio-data.js"></script>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-latin-500-normal.woff2") format("woff2");
+        font-weight: 500;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2");
+        font-weight: 700;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-latin-800-normal.woff2") format("woff2");
+        font-weight: 800;
+      }
+      :root {
+        --bg: #07111f;
+        --card: #0f1d30;
+        --card2: #12243a;
+        --well: #0b1829;
+        --grid: #263a53;
+        --teal: #55d6be;
+        --blue: #68a7ff;
+        --amber: #ffb45c;
+        --gray: #aeb9c7;
+        --text: #f5f8fc;
+        --muted: #9caec4;
+        --fail: #ff6f61;
+        --rms: 0;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background:
+          radial-gradient(1100px 620px at 50% 46%, rgb(85 214 190 / calc(0.045 + var(--rms) * 0.05)), transparent 70%),
+          var(--bg);
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+      .inner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .eyebrow {
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        color: var(--teal);
+        text-transform: uppercase;
+      }
+      /* ---------- scene 1 ---------- */
+      #s1 .inner { gap: 0; }
+      #s1-eyebrow { opacity: 0; margin-bottom: 40px; }
+      #s1-numwrap { display: flex; align-items: baseline; gap: 28px; opacity: 0; }
+      #bignum {
+        font-size: 300px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+      #s1-unit { font-size: 72px; font-weight: 700; color: var(--muted); }
+      #s1-cond1 { opacity: 0; margin-top: 52px; font-size: 30px; font-weight: 500; color: var(--muted); }
+      #s1-cond2 { opacity: 0; margin-top: 14px; font-size: 24px; font-weight: 500; color: var(--muted); }
+      /* ---------- scene 2 ---------- */
+      #s2 .inner { justify-content: center; }
+      #s2-card {
+        width: 1240px;
+        background: var(--card);
+        border-radius: 28px;
+        padding: 56px 64px 48px;
+        opacity: 0;
+        box-shadow: 0 40px 120px rgb(0 0 0 / 45%);
+      }
+      #s2-eyebrow { font-size: 22px; font-weight: 800; letter-spacing: 0.2em; color: var(--teal); }
+      #s2-sub { margin-top: 12px; font-size: 22px; font-weight: 500; color: var(--muted); }
+      #s2-head {
+        margin-top: 34px;
+        display: flex;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        border-bottom: 1px solid var(--grid);
+        padding-bottom: 18px;
+      }
+      #s2-head .mode { width: 340px; }
+      #s2-head .val { flex: 1; text-align: right; }
+      .s2-row {
+        display: flex;
+        align-items: center;
+        padding: 22px 0;
+        font-size: 34px;
+        font-weight: 700;
+        opacity: 0;
+      }
+      .s2-row.alt { background: var(--card2); margin: 0 -64px; padding-left: 64px; padding-right: 64px; }
+      .s2-row .dot { width: 16px; height: 16px; border-radius: 50%; margin-right: 26px; }
+      .s2-row .mode { width: 298px; }
+      .s2-row .val { flex: 1; text-align: right; font-variant-numeric: tabular-nums; }
+      .s2-row .val small { font-size: 22px; font-weight: 500; color: var(--muted); margin-left: 12px; }
+      #s2-cap { margin-top: 26px; font-size: 20px; font-weight: 500; color: var(--muted); text-align: right; opacity: 0; }
+      /* ---------- scene 3 ---------- */
+      #s3 .inner { justify-content: flex-start; padding-top: 150px; }
+      #s3-l1 { font-size: 62px; font-weight: 700; opacity: 0; }
+      #s3-l2 { font-size: 62px; font-weight: 700; margin-top: 30px; opacity: 0; }
+      #s3-l3 { font-size: 34px; font-weight: 700; color: var(--teal); margin-top: 34px; opacity: 0; }
+      #s3-card {
+        margin-top: 74px;
+        width: 1080px;
+        background: var(--well);
+        border: 1px solid var(--grid);
+        border-radius: 20px;
+        padding: 34px 44px;
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        gap: 40px;
+      }
+      #s3-card .gate {
+        font-size: 19px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        color: var(--muted);
+        text-transform: uppercase;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+      }
+      #s3-card .body { flex: 1; }
+      #s3-code { font-family: monospace; font-size: 30px; color: var(--text); }
+      #s3-ansrow { display: flex; align-items: baseline; gap: 30px; margin-top: 18px; }
+      #s3-ans { font-size: 64px; font-weight: 800; color: var(--fail); opacity: 0; font-variant-numeric: tabular-nums; }
+      #s3-correct { font-size: 24px; font-weight: 500; color: var(--muted); opacity: 0; }
+      #s3-failchip {
+        margin-left: auto;
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        color: var(--fail);
+        border: 2px solid var(--fail);
+        border-radius: 10px;
+        padding: 8px 18px;
+        opacity: 0;
+      }
+      /* ---------- scene 4 ---------- */
+      #s4 .inner { gap: 0; }
+      #s4-name { font-size: 118px; font-weight: 800; letter-spacing: -0.01em; opacity: 0; }
+      #s4-name2 { font-size: 64px; font-weight: 500; color: var(--teal); margin-top: 6px; opacity: 0; }
+      #s4-tag { margin-top: 72px; font-size: 32px; font-weight: 500; color: var(--text); opacity: 0; }
+      #s4-url { margin-top: 40px; font-family: monospace; font-size: 24px; color: var(--muted); opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-zbn9" id="root" data-composition-id="brag" data-width="1920" data-height="1080" data-duration="20" data-start="0">
+      <!-- Scene 1: the number -->
+      <section data-hf-id="hf-a62j" id="s1" class="clip" data-start="0" data-duration="5.0" data-track-index="0">
+        <div data-hf-id="hf-efo9" class="inner" id="s1-inner">
+          <div data-hf-id="hf-a2pr" class="eyebrow" id="s1-eyebrow">Client post-first decode · C1 · median n=5</div>
+          <div data-hf-id="hf-5o72" id="s1-numwrap">
+            <span data-hf-id="hf-mgvq" id="bignum">0.00</span>
+            <span data-hf-id="hf-o7ub" id="s1-unit">tok/s</span>
+          </div>
+          <div data-hf-id="hf-qgja" id="s1-cond1">Qwen3.6-35B-A3B · GPTQ-INT4 · MTP4</div>
+          <div data-hf-id="hf-7glr" id="s1-cond2">one Arc Pro B70 · 165 W · cache zero-hit</div>
+        </div>
+      </section>
+
+      <!-- Scene 2: the receipts -->
+      <section data-hf-id="hf-u17d" id="s2" class="clip" data-start="5.0" data-duration="5.4" data-track-index="0">
+        <div data-hf-id="hf-0mm6" class="inner" id="s2-inner">
+          <div data-hf-id="hf-s77h" id="s2-card">
+            <div data-hf-id="hf-j9ar" id="s2-eyebrow">Every number ships with its stack</div>
+            <div data-hf-id="hf-0h67" id="s2-sub">Qwen3.8-27B GPTQ-INT4 · vLLM XPU · client post-first decode</div>
+            <div data-hf-id="hf-f9ll" id="s2-head"><span data-hf-id="hf-43qj" class="mode">Mode</span><span data-hf-id="hf-bb3k" class="val">p512/g128 · tok/s</span></div>
+            <div data-hf-id="hf-3yc9" class="s2-row" id="s2-r1"><span data-hf-id="hf-zden" class="dot" style="background: var(--gray)"></span><span data-hf-id="hf-nfm6" class="mode">No spec</span><span data-hf-id="hf-u8u2" class="val">32.9<small data-hf-id="hf-wp30">tok/s</small></span></div>
+            <div data-hf-id="hf-u1fl" class="s2-row alt" id="s2-r2"><span data-hf-id="hf-n9ey" class="dot" style="background: var(--teal)"></span><span data-hf-id="hf-4b9y" class="mode">MTP1</span><span data-hf-id="hf-l73k" class="val">52.1<small data-hf-id="hf-j8fo">tok/s</small></span></div>
+            <div data-hf-id="hf-e263" class="s2-row" id="s2-r3"><span data-hf-id="hf-ba0w" class="dot" style="background: var(--blue)"></span><span data-hf-id="hf-4pkz" class="mode">MTP2</span><span data-hf-id="hf-nx1x" class="val">65.8<small data-hf-id="hf-i1il">tok/s</small></span></div>
+            <div data-hf-id="hf-pbnr" class="s2-row alt" id="s2-r4"><span data-hf-id="hf-9e6d" class="dot" style="background: var(--amber)"></span><span data-hf-id="hf-2bqt" class="mode">MTP4</span><span data-hf-id="hf-1n9g" class="val">83.7<small data-hf-id="hf-iftm">tok/s</small></span></div>
+            <div data-hf-id="hf-yi6j" id="s2-cap">median n=5 · pinned image + patch stack · 230 W</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 3: the published failure + the gate -->
+      <section data-hf-id="hf-vzuo" id="s3" class="clip" data-start="10.4" data-duration="5.0" data-track-index="0">
+        <div data-hf-id="hf-k7gj" class="inner" id="s3-inner">
+          <div data-hf-id="hf-rmyd" id="s3-l1">We tried to reproduce that record on a later stack.</div>
+          <div data-hf-id="hf-i1gi" id="s3-l2">It did not reproduce.</div>
+          <div data-hf-id="hf-9tum" id="s3-l3">We published that too.</div>
+          <div data-hf-id="hf-xtu2" id="s3-card">
+            <div data-hf-id="hf-1a34" class="gate">Exact-answer gate</div>
+            <div data-hf-id="hf-2t3w" class="body">
+              <div data-hf-id="hf-2cm4" id="s3-code">sum(i*i for i in range(4))</div>
+              <div data-hf-id="hf-d6eo" id="s3-ansrow">
+                <span data-hf-id="hf-tfr8" id="s3-ans">30</span>
+                <span data-hf-id="hf-m496" id="s3-correct">correct: 14 · deterministic ×2</span>
+                <span data-hf-id="hf-gldj" id="s3-failchip">FAIL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 4: outro -->
+      <section data-hf-id="hf-ruex" id="s4" class="clip" data-start="15.4" data-duration="4.6" data-track-index="0">
+        <div data-hf-id="hf-0u5s" class="inner" id="s4-inner">
+          <div data-hf-id="hf-zus2" id="s4-name">Intel Arc Pro B70</div>
+          <div data-hf-id="hf-u6xi" id="s4-name2">Inference Cookbook</div>
+          <div data-hf-id="hf-encx" id="s4-tag">Pinned recipes. Measured numbers. Published failures.</div>
+          <div data-hf-id="hf-eylj" id="s4-url">github.com/SergiioB/intel-arc-pro-b70-inference-cookbook</div>
+        </div>
+      </section>
+
+      <!-- Audio -->
+      <audio data-hf-id="hf-nr3z" id="bgm" src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3" data-start="0" data-duration="20" data-track-index="10" data-volume="0.15" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.8,&quot;v&quot;:0.15},{&quot;t&quot;:18.4,&quot;v&quot;:0.15},{&quot;t&quot;:20,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-akxh" id="sfx-settle" src="assets/sfx/interface/drop_001.ogg" data-start="3.45" data-duration="0.2" data-track-index="11" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-uftu" id="sfx-fail" src="assets/sfx/impact/impactSoft_medium_001.ogg" data-start="13.58" data-duration="0.25" data-track-index="12" data-volume="0.55"></audio>
+      <audio data-hf-id="hf-62oq" id="sfx-logo" src="assets/sfx/interface/bong_001.ogg" data-start="15.9" data-duration="0.2" data-track-index="13" data-volume="0.4"></audio>
+    </div>
+
+    <script>
+      document.fonts.ready.then(function () {
+        var tl = gsap.timeline({ paused: true });
+        var D = 20;
+
+        /* ---------- audio-reactive glow (subtle, bass band) ---------- */
+        var numEl = document.getElementById("bignum");
+        var cardEl = document.getElementById("s2-card");
+        var rmsProxy = { t: 0 };
+        tl.to(
+          rmsProxy,
+          {
+            t: D,
+            duration: D,
+            ease: "none",
+            onUpdate: function () {
+              var f = Math.min(AUDIO_DATA.totalFrames - 1, Math.floor(rmsProxy.t * AUDIO_DATA.fps));
+              var rms = AUDIO_DATA.frames[f].bands[0];
+              numEl.style.textShadow =
+                "0 0 " + (30 + rms * 50).toFixed(1) + "px rgb(85 214 190 / " + (0.10 + rms * 0.16).toFixed(3) + ")";
+              cardEl.style.boxShadow =
+                "0 40px 120px rgb(0 0 0 / 45%), 0 0 " + (rms * 36).toFixed(1) + "px rgb(85 214 190 / " + (rms * 0.10).toFixed(3) + ")";
+            },
+          },
+          0,
+        );
+
+        /* ---------- scene 1 (0 - 5.0) ---------- */
+        var counter = { v: 0 };
+        tl.fromTo("#s1-eyebrow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.4);
+        tl.fromTo("#s1-numwrap", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none" }, 0.95);
+        tl.to(
+          counter,
+          {
+            v: 170.91,
+            duration: 2.6,
+            ease: "power2.out",
+            onUpdate: function () {
+              numEl.textContent = counter.v.toFixed(2);
+            },
+          },
+          0.95,
+        ); // settle lands ~3.55, on the beat grid
+        tl.fromTo("#s1-cond1", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 3.7);
+        tl.fromTo("#s1-cond2", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 3.95);
+        tl.to("#s1-inner", { opacity: 0, duration: 0.5, ease: "power1.inOut" }, 4.45);
+
+        /* ---------- scene 2 (5.0 - 10.4) ---------- */
+        tl.fromTo("#s2-card", { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 5.15);
+        // beat-grid: rows snap to every other beat (~1.09s apart) — 6.00, 7.09, 8.19, 9.29
+        ["#s2-r1", "#s2-r2", "#s2-r3", "#s2-r4"].forEach(function (sel, i) {
+          var t = [6.0, 7.09, 8.19, 9.29][i];
+          tl.fromTo(sel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, t);
+        });
+        tl.fromTo("#s2-cap", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 9.5);
+        tl.to("#s2-inner", { opacity: 0, duration: 0.5, ease: "power1.inOut" }, 9.85);
+
+        /* ---------- scene 3 (10.4 - 15.4) ---------- */
+        tl.fromTo("#s3-l1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }, 10.55);
+        tl.fromTo("#s3-l2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }, 11.6);
+        tl.fromTo("#s3-l3", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 12.5);
+        tl.fromTo("#s3-card", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 12.8);
+        // beat-locked: red "30" lands at 13.64 (nearest strong grid point to the card settle)
+        tl.fromTo("#s3-ans", { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.8)" }, 13.64);
+        tl.fromTo("#s3-correct", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "none" }, 14.05);
+        tl.fromTo("#s3-failchip", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 14.15);
+        tl.to("#s3-inner", { opacity: 0, duration: 0.5, ease: "power1.inOut" }, 14.85);
+
+        /* ---------- scene 4 (15.4 - 20) ---------- */
+        tl.fromTo("#s4-name", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 15.55);
+        tl.fromTo("#s4-name2", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 16.05);
+        // beat-locked: tag lands on the 17.47 strong cue
+        tl.fromTo("#s4-tag", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 17.47);
+        tl.fromTo("#s4-url", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 18.3);
+        tl.to("#s4-inner", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 19.35);
+
+        window.__timelines["brag"] = tl;
+        if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+      });
+    </script>
+  </body>
+</html>
