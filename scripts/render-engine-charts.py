@@ -122,7 +122,7 @@ def load_inputs(path: pathlib.Path) -> list[dict]:
     return charts
 
 
-def validate_chart(chart: dict, index: int) -> None:
+def validate_chart(chart: dict, index: int) -> None:  # noqa: C901
     """Fail closed on malformed chart entries before anything is rendered."""
     where = f"charts[{index}]"
     for field in (
@@ -216,7 +216,7 @@ def svg_height(chart: dict) -> int:
     return legend_top + panel_h + SVG_BOTTOM_MARGIN
 
 
-def render_chart(chart: dict) -> str:
+def render_chart(chart: dict) -> str:  # noqa: C901
     lo = chart["x_axis"]["min"]
     hi = chart["x_axis"]["max"]
     log_lo, log_hi = math.log2(lo), math.log2(hi)
@@ -235,7 +235,6 @@ def render_chart(chart: dict) -> str:
     def ly(value: float) -> float:
         return PLOT_BOTTOM - value / ymax * (PLOT_BOTTOM - PLOT_TOP)
 
-    color = ENGINE_COLORS[chart["engine_color"]]
     height = svg_height(chart)
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{height}" '
@@ -261,7 +260,7 @@ def render_chart(chart: dict) -> str:
         out.append(
             f'<text x="{position:.1f}" y="{PLOT_BOTTOM + 26}" fill="{PALETTE["muted"]}" '
             f'font-size="14" font-family="{FONT}" text-anchor="middle">'
-            f'{escape(str(tick["label"]))}</text>'
+            f"{escape(str(tick['label']))}</text>"
         )
     # Horizontal gridlines: four intervals across the y axis.
     for step in range(5):
@@ -274,7 +273,7 @@ def render_chart(chart: dict) -> str:
         out.append(
             f'<text x="{X0 - 12}" y="{position + 5:.1f}" fill="{PALETTE["muted"]}" '
             f'font-size="14" font-family="{FONT}" text-anchor="end">'
-            f'{format_number(value)}</text>'
+            f"{format_number(value)}</text>"
         )
     y_mid = (PLOT_TOP + PLOT_BOTTOM) / 2
     out.append(
@@ -285,7 +284,7 @@ def render_chart(chart: dict) -> str:
     out.append(
         f'<text x="{(X0 + X1) / 2:.0f}" y="{PLOT_BOTTOM + 52}" fill="{PALETTE["muted"]}" '
         f'font-size="15" font-family="{FONT}" text-anchor="middle">'
-        f'{escape(chart["x_label"])}</text>'
+        f"{escape(chart['x_label'])}</text>"
     )
 
     # Series: polyline segments with protocol dash styles, point markers, and
@@ -351,9 +350,9 @@ def render_chart(chart: dict) -> str:
             )
             last_tick = tick_labels.get(points[-1][0], str(points[-1][0]))
             if position == 0:
-                legend_label = f'{series["label"]} · {segment["protocol"]}'
+                legend_label = f"{series['label']} · {segment['protocol']}"
             else:
-                legend_label = f'↳ composite continuation · {segment["protocol"]}'
+                legend_label = f"↳ composite continuation · {segment['protocol']}"
             legend_label += f" · {len(points)} pts → {last_tick}"
             out.append(
                 f'<text x="160" y="{row_y}" fill="{series_color}" font-size="15" '
@@ -413,7 +412,9 @@ def check_charts(charts: list[dict]) -> int:
     return 0
 
 
-def render_pngs(written: list[pathlib.Path], rsvg: str, png_dir: pathlib.Path | None) -> pathlib.Path:
+def render_pngs(
+    written: list[pathlib.Path], rsvg: str, png_dir: pathlib.Path | None
+) -> pathlib.Path:
     directory = png_dir or pathlib.Path(tempfile.mkdtemp(prefix="engine-charts-png-"))
     directory.mkdir(parents=True, exist_ok=True)
     for svg_path in written:

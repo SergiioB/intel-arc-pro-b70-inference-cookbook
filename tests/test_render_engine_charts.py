@@ -1,5 +1,6 @@
 """Tests for scripts/render-engine-charts.py — renders committed SVGs from
 data/chart-inputs.v1.json; --check verifies they match."""
+
 import importlib.util
 import json
 import pathlib
@@ -33,15 +34,20 @@ def base_chart():
         "x_label": "x",
         "x_axis": {"min": 512, "max": 8192},
         "x_ticks": [{"value": 512, "label": "512"}, {"value": 8192, "label": "8K"}],
-        "series": [{"label": "s1", "color": "vllm",
-                    "segments": [{"style": "solid", "protocol": "p",
-                                  "points": {"512": 20.0, "8192": 18.0}}]}],
+        "series": [
+            {
+                "label": "s1",
+                "color": "vllm",
+                "segments": [
+                    {"style": "solid", "protocol": "p", "points": {"512": 20.0, "8192": 18.0}}
+                ],
+            }
+        ],
     }
 
 
 def run_cli(args):
-    return subprocess.run(
-        [sys.executable, str(SCRIPT)] + args, capture_output=True, text=True)
+    return subprocess.run([sys.executable, str(SCRIPT)] + args, capture_output=True, text=True)
 
 
 class LoadAndValidateTests(unittest.TestCase):
@@ -59,8 +65,17 @@ class LoadAndValidateTests(unittest.TestCase):
         rc.validate_chart(base_chart(), 0)
 
     def test_validate_requires_fields(self):
-        for field in ("id", "output", "engine", "engine_color", "eyebrow",
-                      "title", "subtitle", "y_label", "x_label"):
+        for field in (
+            "id",
+            "output",
+            "engine",
+            "engine_color",
+            "eyebrow",
+            "title",
+            "subtitle",
+            "y_label",
+            "x_label",
+        ):
             with self.subTest(field=field):
                 c = base_chart()
                 del c[field]
@@ -101,8 +116,11 @@ class LoadAndValidateTests(unittest.TestCase):
 class RenderTests(unittest.TestCase):
     def test_render_chart_emits_valid_svg(self):
         c = base_chart()
-        c["x_ticks"] = [{"value": 512, "label": "512"}, {"value": 2048, "label": "2K"},
-                        {"value": 8192, "label": "8K"}]
+        c["x_ticks"] = [
+            {"value": 512, "label": "512"},
+            {"value": 2048, "label": "2K"},
+            {"value": 8192, "label": "8K"},
+        ]
         svg = rc.render_chart(c)
         self.assertIn("<svg", svg[:200])
         self.assertIn("20.0", svg)
