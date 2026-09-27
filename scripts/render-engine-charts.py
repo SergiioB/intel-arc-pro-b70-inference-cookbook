@@ -30,6 +30,7 @@ import pathlib
 import subprocess
 import sys
 import tempfile
+from typing import Any, NoReturn
 from xml.etree import ElementTree
 from xml.sax.saxutils import escape
 
@@ -82,7 +83,7 @@ LEGEND_BOTTOM_PAD = 16
 SVG_BOTTOM_MARGIN = 24
 
 
-def fail(message: str) -> None:
+def fail(message: str) -> NoReturn:
     print(f"ERROR: {message}", file=sys.stderr)
     raise SystemExit(1)
 
@@ -95,8 +96,8 @@ def nice_ymax(peak: float) -> float:
             step = mantissa * (10**exponent)
             intervals = math.ceil(target / step)
             if 0 < intervals <= 4:
-                return intervals * step
-    return target
+                return float(intervals * step)
+    return float(target)
 
 
 def format_number(value: float) -> str:
@@ -107,7 +108,7 @@ def format_number(value: float) -> str:
     return f"{value:.1f}"
 
 
-def load_inputs(path: pathlib.Path) -> list[dict]:
+def load_inputs(path: pathlib.Path) -> list[dict[str, Any]]:
     try:
         catalog = json.loads(path.read_text())
     except FileNotFoundError:
@@ -119,10 +120,10 @@ def load_inputs(path: pathlib.Path) -> list[dict]:
     charts = catalog.get("charts")
     if not isinstance(charts, list) or not charts:
         fail("chart-inputs must carry a non-empty charts array")
-    return charts
+    return list(charts)
 
 
-def validate_chart(chart: dict, index: int) -> None:  # noqa: C901
+def validate_chart(chart: dict[str, Any], index: int) -> None:  # noqa: C901
     """Fail closed on malformed chart entries before anything is rendered."""
     where = f"charts[{index}]"
     for field in (
@@ -142,9 +143,11 @@ def validate_chart(chart: dict, index: int) -> None:  # noqa: C901
     lo, hi = axis.get("min"), axis.get("max")
     if not isinstance(lo, (int, float)) or not isinstance(hi, (int, float)) or not 0 < lo < hi:
         fail(f"{where}.x_axis must set 0 < min < max")
+    assert isinstance(lo, (int, float)) and isinstance(hi, (int, float))
     ticks = chart.get("x_ticks")
     if not isinstance(ticks, list) or len(ticks) < 2:
         fail(f"{where}.x_ticks needs at least two ticks")
+    assert isinstance(ticks, list)
     for tick in ticks:
         if not isinstance(tick.get("value"), (int, float)) or not tick.get("label"):
             fail(f"{where}.x_ticks entries need a numeric value and a label")
@@ -153,6 +156,7 @@ def validate_chart(chart: dict, index: int) -> None:  # noqa: C901
     series_list = chart.get("series")
     if not isinstance(series_list, list) or not series_list:
         fail(f"{where}.series must be non-empty")
+    assert isinstance(series_list, list)
     for position, series in enumerate(series_list):
         spot = f"{where}.series[{position}]"
         if not series.get("label"):
@@ -181,7 +185,7 @@ def validate_chart(chart: dict, index: int) -> None:  # noqa: C901
                     fail(f"{spot} point {key} lies outside the x axis [{lo}, {hi}]")
 
 
-def sorted_points(segment: dict) -> list[tuple[int, float]]:
+def sorted_points(segment: dict[str, Any]) -> list[tuple[int, float]]:
     return sorted((int(key), float(value)) for key, value in segment["points"].items())
 
 
@@ -200,11 +204,11 @@ def sparse_label_set(points: list[tuple[int, float]], lo: float, hi: float, mode
     return chosen
 
 
-def legend_segment_rows(charts_chart: dict) -> int:
+def legend_segment_rows(charts_chart: dict[str, Any]) -> int:
     return sum(len(series["segments"]) for series in charts_chart["series"])
 
 
-def svg_height(chart: dict) -> int:
+def svg_height(chart: dict[str, Any]) -> int:
     legend_top = PLOT_BOTTOM + LEGEND_TOP_GAP
     panel_h = (
         LEGEND_HEADER
@@ -216,7 +220,7 @@ def svg_height(chart: dict) -> int:
     return legend_top + panel_h + SVG_BOTTOM_MARGIN
 
 
-def render_chart(chart: dict) -> str:  # noqa: C901
+def render_chart(chart: dict[str, Any]) -> str:  # noqa: C901
     lo = chart["x_axis"]["min"]
     hi = chart["x_axis"]["max"]
     log_lo, log_hi = math.log2(lo), math.log2(hi)
@@ -375,7 +379,7 @@ def render_chart(chart: dict) -> str:  # noqa: C901
     return "\n".join(out) + "\n"
 
 
-def write_charts(charts: list[dict]) -> list[pathlib.Path]:
+def write_charts(charts: list[dict[str, Any]]) -> list[pathlib.Path]:
     written: list[pathlib.Path] = []
     for index, chart in enumerate(charts):
         validate_chart(chart, index)
@@ -391,7 +395,7 @@ def write_charts(charts: list[dict]) -> list[pathlib.Path]:
     return written
 
 
-def check_charts(charts: list[dict]) -> int:
+def check_charts(charts: list[dict[str, Any]]) -> int:
     stale = False
     for index, chart in enumerate(charts):
         validate_chart(chart, index)
