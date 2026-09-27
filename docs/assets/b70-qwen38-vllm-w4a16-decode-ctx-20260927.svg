@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="993" viewBox="0 0 1560 993" role="img" aria-labelledby="t d">
+<title id="t">Decode vs prompt length — W4A16 arms (AutoRound, two exports)</title>
+<desc id="d">single stream · g128 outputs · request-side post-first rate · both arms answer 30 on the canary — closed class · PROVISIONAL — NOT FOR PUBLIC HEADLINE</desc>
+<rect width="1560" height="993" fill="#07111f"/>
+<text x="150" y="46" fill="#9caec4" font-size="20" font-weight="600" font-family="Segoe UI, Inter, sans-serif" letter-spacing="2">INTEL ARC PRO B70 · VLLM XPU · ONE CARD · W4A16 ARMS (CORRECTNESS-DEFECTIVE) · 2026-09-26</text>
+<text x="150" y="88" fill="#f5f8fc" font-size="29" font-weight="700" font-family="Segoe UI, Inter, sans-serif">Decode vs prompt length — W4A16 arms (AutoRound, two exports)</text>
+<text x="150" y="116" fill="#ffd23f" font-size="15.5" font-family="Segoe UI, Inter, sans-serif">single stream · g128 outputs · request-side post-first rate · both arms answer 30 on the canary — closed class · PROVISIONAL — NOT FOR PUBLIC HEADLINE</text>
+<line x1="150.0" y1="150" x2="150.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="150.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">512</text>
+<line x1="820.0" y1="150" x2="820.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="820.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">2K</text>
+<line x1="1490.0" y1="150" x2="1490.0" y2="640" stroke="#22364e" stroke-width="1"/>
+<text x="1490.0" y="666" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">8K</text>
+<line x1="150" y1="640.0" x2="1490" y2="640.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="645.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">0</text>
+<line x1="150" y1="517.5" x2="1490" y2="517.5" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="522.5" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">5</text>
+<line x1="150" y1="395.0" x2="1490" y2="395.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="400.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">10</text>
+<line x1="150" y1="272.5" x2="1490" y2="272.5" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="277.5" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">15</text>
+<line x1="150" y1="150.0" x2="1490" y2="150.0" stroke="#22364e" stroke-width="1"/>
+<text x="138" y="155.0" fill="#9caec4" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">20</text>
+<text x="34" y="395.0" fill="#f5f8fc" font-size="17" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle" transform="rotate(-90 34 395.0)">decode tok/s (median)</text>
+<text x="820" y="692" fill="#9caec4" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">prompt length (tokens, log scale)</text>
+<polyline points="150.0,233.1 1490.0,252.2" fill="none" stroke="#ff8a7a" stroke-width="3.5"/>
+<circle cx="150.0" cy="233.1" r="4.5" fill="#ff8a7a"/>
+<circle cx="1490.0" cy="252.2" r="4.5" fill="#ff8a7a"/>
+<text x="156.0" y="217.1" fill="#ff8a7a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="start">16.6</text>
+<text x="1484.0" y="236.2" fill="#ff8a7a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">15.8</text>
+<polyline points="150.0,268.1 1490.0,284.0" fill="none" stroke="#ff8a7a" stroke-width="2.5" stroke-dasharray="9,7"/>
+<circle cx="150.0" cy="268.1" r="3.5" fill="#ff8a7a"/>
+<circle cx="1490.0" cy="284.0" r="3.5" fill="#ff8a7a"/>
+<text x="156.0" y="252.1" fill="#ff8a7a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="start">15.2</text>
+<text x="1484.0" y="268.0" fill="#ff8a7a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">14.5</text>
+<polyline points="150.0,270.8 1490.0,286.5" fill="none" stroke="#ff8a7a" stroke-width="2.5" stroke-dasharray="9,7"/>
+<circle cx="150.0" cy="270.8" r="3.5" fill="#ff8a7a"/>
+<circle cx="1490.0" cy="286.5" r="3.5" fill="#ff8a7a"/>
+<text x="156.0" y="254.8" fill="#ff8a7a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="start">15.1</text>
+<text x="1484.0" y="270.5" fill="#ff8a7a" font-size="13.5" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">14.4</text>
+<rect x="60" y="706" width="1440" height="263" rx="16" fill="#0f1d30"/>
+<text x="86" y="740" fill="#55d6be" font-size="15" font-weight="700" font-family="Segoe UI, Inter, sans-serif">SERIES (points, last context)</text>
+<line x1="86" y1="762" x2="146" y2="762" stroke="#ff8a7a" stroke-width="3"/>
+<text x="160" y="767" fill="#ff8a7a" font-size="15" font-family="Segoe UI, Inter, sans-serif">AutoRound-ext (compressed-tensors) 230 W · n=3 paired · 2 pts → 8K</text>
+<line x1="86" y1="789" x2="146" y2="789" stroke="#ff8a7a" stroke-width="3" stroke-dasharray="9,7"/>
+<text x="160" y="794" fill="#ff8a7a" font-size="15" font-family="Segoe UI, Inter, sans-serif">AutoRound-ext 150 W · n=4 paired · 2 pts → 8K</text>
+<line x1="86" y1="816" x2="146" y2="816" stroke="#ff8a7a" stroke-width="3" stroke-dasharray="9,7"/>
+<text x="160" y="821" fill="#ff8a7a" font-size="15" font-family="Segoe UI, Inter, sans-serif">AutoRound-local (auto_gptq, code-heavy calib) 150 W · n=6 base run · 2 pts → 8K</text>
+<text x="86" y="854" fill="#ffd23f" font-size="14.5" font-family="Segoe UI, Inter, sans-serif">Class closed for this model: all W4A16 exports fail in-head arithmetic deterministically (RL-087 equivalent).</text>
+<text x="86" y="882" fill="#ffd23f" font-size="14.5" font-family="Segoe UI, Inter, sans-serif">256K unreachable on one card: fp8 KV max ~211K, bf16 ~106K.</text>
+<text x="86" y="910" fill="#ffd23f" font-size="14.5" font-family="Segoe UI, Inter, sans-serif">Defect is narrow — local AutoRound scored 9/10 on host-executed code tasks.</text>
+<text x="86" y="936" fill="#9caec4" font-size="13.5" font-family="Segoe UI, Inter, sans-serif"></text>
+</svg>
