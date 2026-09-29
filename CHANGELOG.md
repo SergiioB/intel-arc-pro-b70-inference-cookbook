@@ -6,6 +6,14 @@
 - Qualify historical MoE and TP2 headlines, distinguish the quick-start BF16 drafter from the draft-INT4 result, and add required tool-call parser flags to `START.md`.
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 
+## [1.4.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.4.0...v1.4.1) (2026-09-27)
+
+
+### Bug Fixes
+
+* **claims:** +33-42% paired-median cap scaling (was +38-42 on stale 17.8 baseline); ALU-bound -&gt; unproven upstream hypothesis; W4A16 closure narrowed to tested export paths; 262K = capacity vs 131K proven completion ([8217736](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/82177369801f15c6749c2b2865babbbafa99010c))
+* **evidence:** EXL3 262K claim upgraded — real 261,920-token completion w/ needle retrieval (was capacity-only) ([732efc0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/732efc0949c4b95418a002f4df7a8f818bfdeb9a))
+
 ## [1.4.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.3.0...v1.4.0) (2026-09-27)
 
 
