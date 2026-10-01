@@ -381,6 +381,22 @@ Two rules fall out of this, and both contradict the obvious instinct:
 2. **Do not shrink the window when acceptance is low.** If a workload shows poor acceptance,
    the fix is not a shallower window — the optimum stays at 7 regardless of context.
 
+### Evidence-file provenance correction
+
+`results/2026/10/ladder-230w.json` is the raw ladder output. Its `image`, `vllm`, `max_model_len` and
+`max_num_seqs` fields were **wrong when first written**: `ladder.py` hardcoded them (image `2c427ef4`,
+vLLM `0.26.1rc1.dev457`, `max_model_len 16384`, `max_num_seqs 16`) and did not update them when run
+with `LADDER_NO_LAUNCH=1` against an already-running server. The stale values were internally
+impossible — the file records a successful 250,000-token decode, which a `max_model_len` of 16384
+cannot serve.
+
+The four fields are corrected to the verified running configuration (v0.30.0, image digest
+`sha256:fc0e112a…`, `max_model_len 262144`, `max_num_seqs 1`), taken from the container spec
+(`--max-model-len 262144 --max-num-seqs 1 --no-enable-prefix-caching`, DFlash n7, gmu 0.90), the
+served `/v1/models` response, and the image digest read back from docker. **The measured numbers were
+not altered.** The original values are preserved under `provenance_corrected_from` in the same file,
+and `ladder.py` now reads provenance back from the live server instead of asserting it.
+
 ### Recomputation note
 
 `--async-scheduling` remains neutral, values here are `max_num_seqs=1` (C1), prefix cache off,

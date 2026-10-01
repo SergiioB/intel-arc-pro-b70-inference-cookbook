@@ -1,0 +1,430 @@
+{
+ "watts": 230,
+ "config_name": "base-n7",
+ "config": [
+  "base-n7",
+  7,
+  null,
+  "1",
+  true,
+  8192,
+  16,
+  true,
+  {}
+ ],
+ "image": "vllm/vllm-openai-xpu@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d",
+ "vllm": "0.30.0",
+ "method": "chat completions, model chat template, thinking off, greedy (temp 0, top_p 1.0), wikitext-103 anchors",
+ "max_model_len": 262144,
+ "max_num_seqs": 1,
+ "wikitext_chunk_sha256": [
+  "08ef9d542bf24fbb1e22dc4b96d6651c0a3622be974c71566d32a397f2eafeca",
+  "ff9a7f1c709f7de62f669c18b553e24fd539ddeb9a22378ccc675329cb4e12ce",
+  "b0669be564c7f0d2603db297af25f6daf086c4190cdae86d9bc81984ad50e27b",
+  "168ceca51c82b79101e3254481d2a529e51852216b40c8b861a7b352d86a7ab3",
+  "db48f4709ac4cf6784a5a950c1fea68678c4c80bd97fbfb6625778b3e474ca12",
+  "582c8f294b5fb1ef2ee17227a4c2cf78a971c9031fbb428e6425378503ce14d8",
+  "e7503b2012956162ed3d476dcc72cffeea9ae43611023307c5af0c967d57a116",
+  "13fde47a2940b5ca29cdbea51f78f4f1aecadf414f0e03cc841c66a2ab4c81a7",
+  "96b880fbf972950687b4560e3cb58c6b4bff03abc0831be64c4311d08b6bcf33",
+  "4b7c27bfc851cefc7ce5530749ffbd901d54d7365295d5b1c7ed81890657f8f9",
+  "649968dd695f9b0c524392f3ea23daeb6effe2ffca0f5d078e464eab791d19a2",
+  "3de4afed8bc80317095f241931046172ee9bb6d949593d84b2f3327edab1acf3",
+  "d472c43bf4b541ef400ec4e822d5ebddaf5b69c31376a5ccdf6f4056b14e79b2",
+  "5afcdb9289371c4ef588f56d4801b1e08c0b25782527ec5b2ef3cb159bff48c0",
+  "1a523a053ccd66cb395b2691880d6f4214c6afd100e59f29b62bd5518371b96f",
+  "4611e298013e9ec31725b5b6f9ecb8e4e258ab0b1999400f1f66ee913eebefb7",
+  "cc95f5cc45fb08453ef82469e43941a71308e10e73636806f8bca496b7bcaa26",
+  "d8337bf8d0873129b3fb386cdd656c533f27fc765cf6e52558be13ee4e420f6e",
+  "f969652b6f870998053504bbeb67cbea52ddaf6c7f9d4cc8bd45e454d5ef5772",
+  "15dfdb3e793b1a8423190e725766a7bd64c6af7adaed231d67600389da68e657",
+  "747761155847773c4d3a06d13fe75eb0fc699fa6bcc0d9f89cd2750f602f8a51",
+  "b04176f7ac9f74c83d30fc02a4fac0312d93ae2b0b1476dc2e810431501eca54",
+  "ad1e02272f1be765e07e64e5b166d9f7d7768327d5f95ee9c227eeb2b35d24c7",
+  "67a1c031fbb894589a724e208eb1b088c6629fd1432fcf1e8015ebcff2fa116b",
+  "54f8ec902a9ce7b88687488861be916753298ffef4aaa5b21e5599342cfcdece",
+  "7445891ca6d87db15834ddc9bc69418abc9a1177f428af58f6d3dd5c0fbc678d",
+  "1914402e2536658b607dc7c6f017fffe573a0a314e45e32915ce1701eff23cd4",
+  "668328b104946c1100e077a52f2b0196370dcb200d4e58e47793a7c609e13a58",
+  "dc845f59e0847632fb829aae347187836e38393c09461184cf356ebade6b8b89",
+  "2ce3c713e07f54be2d26ef584c2535dc5ca22b55e57c2ed3ea1ba1b2f3e491c1",
+  "e41ed86f472ff01c713d6c0fa989555abd8cc706cb17a63e7f4c575d2f645904",
+  "f6a1ad2537ee3e534aaba5778e937f3b0ed180e5c7e4e1a68504b52dad2a9cbe",
+  "a39581dd795ab2f822a3cb64baf59bb40c60c1768cfc69acdcf1ff6c133dad67",
+  "318d1f09aacdf1e31c66e480a927d38c38437a532a94a1ad3f7548c7a228a7b6",
+  "9ac1a842531942a783e7e50f71e850aab648c75df240d3d2a3ac54ae89e01995",
+  "4d7b2aff87b43567a30e9746b7491c637cdc0191ae0122bfcdc0148c4fd8bb0e",
+  "a94a9207e17e871573ed42a202590e0d98ca6190ed0af7e4569215650beaa886",
+  "28b1eeaa2a53d56935d77cde3d3410c2a093e823b9b9b9d01988a9aa88739f87",
+  "4abd912aa05c6cf070719dcf41281b42f55e0020395c00448581d6f21ed987ae",
+  "b565349233c2cdfa01a2d8e3c832e1ce13f0485ab113bca965e49c0bdf2e319c",
+  "d39c599a212fb3b8d2cb5b3420b9637d845b147684bc93cf10bb329e69508c98",
+  "07520df22769c9d9d662d567cfc268d8a2d15a4d4003ee2ac5cb5838fe97c44d",
+  "5b3587787062b42bdcd775ced4a307fb84844d7344ff341a4a32e83cffa059e7",
+  "5b3ba0c5687305eeaa349c7c05e5106780efc3bb7653d4091543d504dd7b7ea6",
+  "c1037b6d7a65edb5f7a461833718fa70810757887b4699eb656d9742a19e58d5"
+ ],
+ "anchors_content_tokens": {
+  "512": 512,
+  "2048": 2048,
+  "32768": 32768,
+  "131072": 131072,
+  "250000": 250000
+ },
+ "decode": {
+  "512": {
+   "n": 3,
+   "decode": {
+    "median": 228.34197397990275,
+    "min": 228.28718670068415,
+    "max": 228.5273675698538
+   },
+   "decode_engine": {
+    "median": 229.18801759479962,
+    "min": 229.14788219185183,
+    "max": 229.38978934466812
+   },
+   "prefill": {
+    "median": 5338.787147094485,
+    "min": 5263.0690234625645,
+    "max": 5341.320171497062
+   },
+   "ttft": {
+    "median": 0.1049955390044488,
+    "min": 0.10413242402137257,
+    "max": 0.10627033599303104
+   },
+   "accept": {
+    "median": 60.349854227405245,
+    "min": 60.349854227405245,
+    "max": 60.349854227405245
+   },
+   "prompt_tokens": {
+    "median": 528,
+    "min": 528,
+    "max": 528
+   },
+   "hashes": 1
+  },
+  "2048": {
+   "n": 3,
+   "decode": {
+    "median": 200.75462197884252,
+    "min": 197.27090067269128,
+    "max": 201.04742745140302
+   },
+   "decode_engine": {
+    "median": 201.407327090215,
+    "min": 197.95492611047743,
+    "max": 201.689433734853
+   },
+   "prefill": {
+    "median": 9199.489157848548,
+    "min": 9164.715323264378,
+    "max": 9204.60555123895
+   },
+   "ttft": {
+    "median": 0.23126087998389266,
+    "min": 0.23074431798886508,
+    "max": 0.23145547200692818
+   },
+   "accept": {
+    "median": 53.17460317460318,
+    "min": 51.94805194805195,
+    "max": 53.17460317460318
+   },
+   "prompt_tokens": {
+    "median": 2064,
+    "min": 2064,
+    "max": 2064
+   },
+   "hashes": 1
+  },
+  "32768": {
+   "n": 3,
+   "decode": {
+    "median": 74.82407034439439,
+    "min": 74.8187405541488,
+    "max": 74.83131131848776
+   },
+   "decode_engine": {
+    "median": 74.8350057883728,
+    "min": 74.83489334613003,
+    "max": 74.84558640697581
+   },
+   "prefill": {
+    "median": 9023.547390364907,
+    "min": 8997.424746521358,
+    "max": 9037.24306751787
+   },
+   "ttft": {
+    "median": 3.6912730479962192,
+    "min": 3.6871348049899098,
+    "max": 3.700764587993035
+   },
+   "accept": {
+    "median": 26.80577849117175,
+    "min": 26.80577849117175,
+    "max": 26.80577849117175
+   },
+   "prompt_tokens": {
+    "median": 32784,
+    "min": 32784,
+    "max": 32784
+   },
+   "hashes": 1
+  },
+  "131072": {
+   "n": 3,
+   "decode": {
+    "median": 25.970788676561718,
+    "min": 25.96284458409292,
+    "max": 25.974164717190824
+   },
+   "decode_engine": {
+    "median": 25.95064705822579,
+    "min": 25.94679066302427,
+    "max": 25.95228885717867
+   },
+   "prefill": {
+    "median": 5612.800428106514,
+    "min": 5602.509261092492,
+    "max": 5642.1475085763705
+   },
+   "ttft": {
+    "median": 23.56130536700948,
+    "min": 23.438611424004193,
+    "max": 23.60324689099798
+   },
+   "accept": {
+    "median": 17.51552795031056,
+    "min": 17.51552795031056,
+    "max": 17.63975155279503
+   },
+   "prompt_tokens": {
+    "median": 131088,
+    "min": 131088,
+    "max": 131088
+   },
+   "hashes": 2
+  },
+  "250000": {
+   "n": 3,
+   "decode": {
+    "median": 22.263905758198465,
+    "min": 21.931970576764915,
+    "max": 22.263907235501122
+   },
+   "decode_engine": {
+    "median": 22.195001551786525,
+    "min": 21.866711940134042,
+    "max": 22.198152020237107
+   },
+   "prefill": {
+    "median": 3824.813123384628,
+    "min": 3822.795501769135,
+    "max": 3825.7626163807804
+   },
+   "ttft": {
+    "median": 65.78215700399596,
+    "min": 65.77181834902149,
+    "max": 65.82473729099729
+   },
+   "accept": {
+    "median": 31.25,
+    "min": 30.662020905923345,
+    "max": 31.25
+   },
+   "prompt_tokens": {
+    "median": 250016,
+    "min": 250016,
+    "max": 250016
+   },
+   "hashes": 1
+  }
+ },
+ "prefill": {
+  "512": {
+   "n": 3,
+   "decode": {
+    "median": 168.46348615577165,
+    "min": 167.8391751995781,
+    "max": 169.42412916782075
+   },
+   "decode_engine": {
+    "median": 190.42040645405316,
+    "min": 190.39698082061153,
+    "max": 191.4905341501861
+   },
+   "prefill": {
+    "median": 5152.890807196127,
+    "min": 2919.399816794796,
+    "max": 5224.021630485927
+   },
+   "ttft": {
+    "median": 0.10614459501812235,
+    "min": 0.10431943499133922,
+    "max": 0.18853596301050857
+   },
+   "accept": {
+    "median": 50.0,
+    "min": 50.0,
+    "max": 50.0
+   },
+   "prompt_tokens": {
+    "median": 528,
+    "min": 528,
+    "max": 528
+   },
+   "hashes": 1
+  },
+  "2048": {
+   "n": 3,
+   "decode": {
+    "median": 109.3639251945765,
+    "min": 109.27731459537033,
+    "max": 109.48374815342125
+   },
+   "decode_engine": {
+    "median": 122.84235838480926,
+    "min": 122.81101644615644,
+    "max": 123.24773301671912
+   },
+   "prefill": {
+    "median": 9197.70135611248,
+    "min": 9178.01873249587,
+    "max": 9211.842849440813
+   },
+   "ttft": {
+    "median": 0.23056871598237194,
+    "min": 0.23002617398742586,
+    "max": 0.23087144800228998
+   },
+   "accept": {
+    "median": 33.333333333333336,
+    "min": 33.333333333333336,
+    "max": 33.333333333333336
+   },
+   "prompt_tokens": {
+    "median": 2064,
+    "min": 2064,
+    "max": 2064
+   },
+   "hashes": 1
+  },
+  "32768": {
+   "n": 3,
+   "decode": {
+    "median": 57.10994222646867,
+    "min": 57.09819330860328,
+    "max": 57.17931094051812
+   },
+   "decode_engine": {
+    "median": 59.12415837742024,
+    "min": 59.10014416240578,
+    "max": 59.15813434623723
+   },
+   "prefill": {
+    "median": 8892.118556423588,
+    "min": 8882.274010298643,
+    "max": 8898.443581222078
+   },
+   "ttft": {
+    "median": 3.743658005987527,
+    "min": 3.7407057999807876,
+    "max": 3.747968399024103
+   },
+   "accept": {
+    "median": 10.714285714285714,
+    "min": 10.714285714285714,
+    "max": 10.714285714285714
+   },
+   "prompt_tokens": {
+    "median": 32784,
+    "min": 32784,
+    "max": 32784
+   },
+   "hashes": 1
+  },
+  "131072": {
+   "n": 3,
+   "decode": {
+    "median": 21.6955307057123,
+    "min": 21.683924173821268,
+    "max": 21.728688247735857
+   },
+   "decode_engine": {
+    "median": 21.734697973994894,
+    "min": 21.706230102386666,
+    "max": 21.74513179625188
+   },
+   "prefill": {
+    "median": 5585.036268806975,
+    "min": 5583.999002665852,
+    "max": 5586.745221019019
+   },
+   "ttft": {
+    "median": 23.676198739005486,
+    "min": 23.67397777599399,
+    "max": 23.679438305000076
+   },
+   "accept": {
+    "median": 5.714285714285714,
+    "min": 5.714285714285714,
+    "max": 5.714285714285714
+   },
+   "prompt_tokens": {
+    "median": 131088,
+    "min": 131088,
+    "max": 131088
+   },
+   "hashes": 1
+  },
+  "250000": {
+   "n": 3,
+   "decode": {
+    "median": 14.116319375436744,
+    "min": 14.104043271228846,
+    "max": 14.13752206743031
+   },
+   "decode_engine": {
+    "median": 13.922355305918037,
+    "min": 13.918527910763444,
+    "max": 13.925107318767944
+   },
+   "prefill": {
+    "median": 3816.9295973873677,
+    "min": 3816.6459735939316,
+    "max": 3818.101510024859
+   },
+   "ttft": {
+    "median": 65.91588724599569,
+    "min": 65.90463582600933,
+    "max": 65.92238967999583
+   },
+   "accept": {
+    "median": 10.714285714285714,
+    "min": 10.714285714285714,
+    "max": 10.714285714285714
+   },
+   "prompt_tokens": {
+    "median": 250016,
+    "min": 250016,
+    "max": 250016
+   },
+   "hashes": 1
+  }
+ },
+ "utc": "2026-10-01T12:18:27Z",
+ "container": "b70-v030-keep (vllm/vllm-openai-xpu:v0.30.0) + patch_xpu_grouped_topk_native_v2.py",
+ "kv_cache_dtype": "fp16 (float16)",
+ "prefix_caching": false,
+ "speculative": "dflash, num_speculative_tokens=7",
+ "provenance_correction": "The image, vllm, max_model_len and max_num_seqs fields were corrected after measurement. ladder.py hardcoded them at line 188 (image 2c427ef4, vllm 0.26.1rc1.dev457, max_model_len 16384, max_num_seqs 16) and never updated them when run with LADDER_NO_LAUNCH=1 against an already-live server. The four stale values were internally impossible: this file records a successful 250,000-token decode, which a max_model_len of 16384 cannot serve. True provenance taken from the running container spec (/tmp/imgtest-serve.sh: --max-model-len 262144 --max-num-seqs 1 --no-enable-prefix-caching --speculative-config dflash n7 --gpu-memory-utilization 0.90), from the served /v1/models response (max_model_len 262144), and from the image digest read back out of docker. The measured numbers were not altered by this correction.",
+ "provenance_corrected_from": {
+  "image": "vllm/vllm-openai-xpu@sha256:2c427ef477da092eb6f2cdbbbd24950b5fa171565b916db69d4c7bb10e68ca97",
+  "vllm": "0.26.1rc1.dev457+gc810e5ee9",
+  "max_model_len": 16384,
+  "max_num_seqs": 16
+ }
+}
