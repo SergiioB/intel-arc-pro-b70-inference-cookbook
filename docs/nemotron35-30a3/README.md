@@ -6,6 +6,7 @@ Family index. Keep Qwen and Muse numbers on their own pages.
 |---|---|---|
 | [NEMOTRON-DFLASH-B70.md](NEMOTRON-DFLASH-B70.md) | Working speculative recipe (`method=dflash` n=7) | Isolated n=5 |
 | [NEMOTRON-B70.md](NEMOTRON-B70.md) | No-spec XPU-graph floor | n=5 decode; graph determinism caveat |
+| [NEMOTRON-DFLASH-B70-VERIFIED-2C427EF4.md](NEMOTRON-DFLASH-B70-VERIFIED-2C427EF4.md) | Re-verified recipe on image `2c427ef4`, 150/200/230 W, 22-config knob sweep, engine prefill, context ceiling | n=3, 2026-10-01 |
 | [CLAIMS.md](CLAIMS.md) | Observed numbers only — copy from here | Source of truth for this family |
 | `benchmarks/nemotron35-30a3/launch-nemotron-dflash.sh` | DFlash launcher | Public digest + runtime patches |
 | `benchmarks/nemotron35-30a3/launch-nemotron-graph.sh` | No-spec launcher | Same digest; no spec config |
