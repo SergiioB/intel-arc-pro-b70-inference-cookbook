@@ -277,3 +277,112 @@ same effect. Therefore:
   (300+ t/s) is usually a **repetition loop**, not a fast model — check the output text.
 - With `enable_thinking` on (the template default) many generations hit the 2048-token cap
   (`finish_reason=length`). Those cells are cap-truncated, not natural EOS; keep them separate.
+
+## Update — full 262,144 context verified, and the acceptance question settled
+
+Added 2026-10-01, after the tables above. New image and new measurements. All numbers below are
+measured; the raw JSON lives under `results/2026/10/` on the bench host.
+
+### Full 256K works — on v0.30.0 **with** the router patch
+
+| Item | Value |
+|---|---|
+| Image | `vllm/vllm-openai-xpu:v0.30.0` (`sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d`) |
+| Router patch | `patch_xpu_grouped_topk_native_v2.py` — applies cleanly, anchors unchanged since 0.26 |
+| Served `max_model_len` | **262,144** |
+| KV pool (DFlash draft, fp16 KV, gmu 0.90, `max_num_seqs=1`) | **348,249 tokens → 1.33× a full 262K request** |
+| KV pool (no draft, same gmu) | 1,318,604 tokens → 5.03× |
+
+**Functional proof, not just a boot.** Needle-in-a-haystack at **250,044 prompt tokens**, unique
+fact planted at 10% / 50% / 90% depth, greedy:
+
+```
+depth 10%: prompt=250,044 tok  returned=True   output=' ZQ10X-4417'
+depth 50%: prompt=250,044 tok  returned=True   output=' ZQ50X-4417'
+depth 90%: prompt=250,044 tok  returned=True   output=' ZQ90X-4417'
+failures: []   all_passed: true
+```
+
+### The unpatched build cannot do long context at all
+
+On image `2c427ef4`, without the patch, **both** `--max-model-len 131072` and `262144` die during
+engine init:
+
+```
+Assertion `index out of bounds: 0 <= tmp0 < 128` failed
+RuntimeError: Engine core initialization failed.
+```
+
+`128` is `n_routed_experts`. The weights load fine (16.91 GiB) and it fails before any KV cache
+is allocated. So the patch is required for **long context**, not only for determinism — it is
+not a patch you can drop for a quick 16% on any workload that needs range.
+
+### Acceptance does NOT collapse with context length
+
+This one is worth stating loudly, because an uncontrolled ladder leads to the wrong conclusion.
+Measuring with a **constant instruction and only the haystack length varying**:
+
+| Context (tokens) | window acceptance | decode tok/s |
+|---:|---:|---:|
+| 512 | 62.5% | 232.9 |
+| 8,192 | 25.9% | 114.7 |
+| 32,768 | 63.5% | 141.9 |
+| 131,072 | **60.3%** | 60.6 |
+| 250,000 | **62.5%** | 37.0 |
+
+**Acceptance is flat at ~60% from 512 to 250,000 tokens.** There is no drafter degradation at
+long context and nothing to fix in the draft model.
+
+An earlier ladder that changed the prompt *together with* the length reported 17.5% at 131K and
+26.8% at 32K — that is **content variance, not a length effect**. Speculative acceptance is
+content-dependent at every length (25%–63% here for the same config), so it must never be read
+off a ladder whose prompts vary with the length.
+
+### Throughput vs context — the real curve
+
+![decode vs context](../assets/b70-nemotron-dflash-262k-decode-vs-ctx.svg)
+
+![prefill vs context](../assets/b70-nemotron-dflash-262k-prefill-vs-ctx.svg)
+
+| Context | decode (real workload) | decode (constant task) | prefill (isolated engine) |
+|---:|---:|---:|---:|
+| 512 | 228.3 | 232.9 | 5,153 |
+| 2,048 | 200.8 | — | 9,198 |
+| 8,192 | — | 114.7 | — |
+| 32,768 | 74.8 | 141.9 | 8,892 |
+| 131,072 | 26.0 | 60.6 | 5,585 |
+| 250,000 | 22.3 | 37.0 | 3,817 |
+
+**Decode falls ~6× from 512 to 250K and prefill is non-monotonic**, peaking around 2–33K
+(8.9–9.2K tok/s) before declining at 131K/250K. This is the per-step attentional cost of a long
+KV — an inherent property of the workload, not a tuning failure. At 131K a step costs roughly
+87 ms, so at 250K a single token takes ~27–45 ms depending on content.
+
+### Draft-window optimum is context-independent
+
+![draft window vs context](../assets/b70-nemotron-dflash-262k-draft-window.svg)
+
+Constant task, three draft windows, same server build:
+
+| Context | n=3 | **n=7** | n=15 |
+|---:|---:|---:|---:|
+| 512 | 175.5 (77.9%) | **232.9 (62.5%)** | 132.2 (18.7%) |
+| 131,072 | 39.8 (73.8%) | **60.6 (60.3%)** | 33.9 (15.3%) |
+| 250,000 | 23.5 (73.3%) | **37.0 (62.5%)** | 21.8 (16.4%) |
+
+**`n=7` wins at every context** — +33%/+52%/+57% over `n=3` and +76%/+79%/+70% over `n=15` at
+512/131K/250K.
+
+Two rules fall out of this, and both contradict the obvious instinct:
+
+1. **Higher acceptance is not faster.** `n=3` accepts 74–78% versus `n=7` at 60–63%, and is
+   still slower everywhere. A step costs the same whether it carries 3 draft tokens or 7, so
+   **tokens-per-step** sets throughput, not hit rate.
+2. **Do not shrink the window when acceptance is low.** If a workload shows poor acceptance,
+   the fix is not a shallower window — the optimum stays at 7 regardless of context.
+
+### Recomputation note
+
+`--async-scheduling` remains neutral, values here are `max_num_seqs=1` (C1), prefix cache off,
+fp16 KV, 230 W configured cap. The 150 W tables above remain the card's base envelope; these
+long-context numbers are all at **230 W** and must be labelled as such.

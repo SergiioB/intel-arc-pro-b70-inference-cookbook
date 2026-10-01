@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<rect width="1600" height="900" fill="#07111f"/>
+<text x="60" y="40" fill="#e8f1ff" font-size="26" font-weight="700" font-family="Segoe UI, Inter, sans-serif">Nemotron-3.5-Lightning — speculative window vs context</text>
+<text x="60" y="66" fill="#8fa3c8" font-size="15" font-family="Segoe UI, Inter, sans-serif">DRAFT WINDOW vs CONTEXT · CONSTANT TASK · LOG-LOG · vLLM 0.30.0 + PATCH · 230 W · 2026-10-01</text>
+<line x1="100" y1="700.0" x2="1540" y2="700.0" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="705.0" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">10</text>
+<line x1="100" y1="601.8" x2="1540" y2="601.8" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="472.0" x2="1540" y2="472.0" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="373.8" x2="1540" y2="373.8" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="378.8" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">100</text>
+<line x1="100" y1="275.6" x2="1540" y2="275.6" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="145.8" x2="1540" y2="145.8" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="120" x2="100" y2="700" stroke="#26364e" stroke-width="2"/>
+<line x1="100" y1="700" x2="1540" y2="700" stroke="#26364e" stroke-width="2"/>
+<text x="153.17863276187822" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">512</text>
+<text x="1347.7215389713806" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">131K</text>
+<text x="1486.8213672381216" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">250K</text>
+<text x="40" y="410.0" fill="#5c7099" font-size="15" font-family="Segoe UI, Inter, sans-serif" transform="rotate(-90 40 410.0)" text-anchor="middle">decode tok/s (log)</text>
+<text x="820" y="762" fill="#5c7099" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
+<polyline points="153.17863276187822,254.1 1347.7215389713806,444.8 1486.8213672381216,514.6" fill="none" stroke="#81c9ff" stroke-width="4"/>
+<g fill="#81c9ff"><circle cx="153.17863276187822" cy="254.1" r="6"/><circle cx="1347.7215389713806" cy="444.8" r="6"/><circle cx="1486.8213672381216" cy="514.6" r="6"/></g>
+<g text-anchor="middle"><text x="153.17863276187822" y="240.1" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">233</text><text x="1347.7215389713806" y="430.8" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">61</text><text x="1486.8213672381216" y="500.6" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">37</text></g>
+<polyline points="153.17863276187822,294.1 1347.7215389713806,504.3 1486.8213672381216,579.0" fill="none" stroke="#e8a87c" stroke-width="4"/>
+<g fill="#e8a87c"><circle cx="153.17863276187822" cy="294.1" r="6"/><circle cx="1347.7215389713806" cy="504.3" r="6"/><circle cx="1486.8213672381216" cy="579.0" r="6"/></g>
+<g text-anchor="middle"><text x="153.17863276187822" y="280.1" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">176</text><text x="1347.7215389713806" y="490.3" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">40</text><text x="1486.8213672381216" y="565.0" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">23</text></g>
+<polyline points="153.17863276187822,334.3 1347.7215389713806,528.1 1486.8213672381216,591.7" fill="none" stroke="#7d9b76" stroke-width="4"/>
+<g fill="#7d9b76"><circle cx="153.17863276187822" cy="334.3" r="6"/><circle cx="1347.7215389713806" cy="528.1" r="6"/><circle cx="1486.8213672381216" cy="591.7" r="6"/></g>
+<g text-anchor="middle"><text x="153.17863276187822" y="320.3" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">132</text><text x="1347.7215389713806" y="514.1" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">34</text><text x="1486.8213672381216" y="577.7" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">21</text></g>
+<g>
+<rect x="130" y="86" width="14" height="14" fill="#81c9ff"/>
+<text x="152" y="98" fill="#c9d8f0" font-size="15" font-family="Segoe UI, Inter, sans-serif">n=7 draft tokens  (acceptance 60-63%)</text>
+<rect x="500.8" y="86" width="14" height="14" fill="#e8a87c"/>
+<text x="522.8" y="98" fill="#c9d8f0" font-size="15" font-family="Segoe UI, Inter, sans-serif">n=3 draft tokens  (acceptance 73-78%)</text>
+<rect x="871.6" y="86" width="14" height="14" fill="#7d9b76"/>
+<text x="893.6" y="98" fill="#c9d8f0" font-size="15" font-family="Segoe UI, Inter, sans-serif">n=15 draft tokens  (acceptance 15-19%)</text>
+</g>
+<text x="60" y="800" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">n=7 wins at EVERY context: +33%/+52%/+57% over n=3 and +76%/+79%/+70% over n=15 at 512/131K/250K</text>
+<text x="60" y="824" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">Higher acceptance is NOT faster: n=3 accepts 74-78% vs n=7 at 60-63%, yet n=7 is 33-57% faster</text>
+<text x="60" y="848" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">The window optimum does NOT shift with context length - n=7 is correct at 512 and at 250K alike</text>
+<text x="60" y="872" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">A step costs the same whether it carries 3 drafts or 7, so tokens-per-step (not hit rate) sets throughput</text>
+<text x="60" y="896" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">The n=7 advantage GROWS with context (+33% at 512 -&gt; +52% at 131K -&gt; +57% at 250K): expensive steps make a deeper window more valuable</text>
+<text x="60" y="920" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: SBP70:/home/sergio/B70-DOCS/results/2026/10/ · ladder-230w.json (real wikitext workload) · specdiag-spec-on.json / specdiag-spec-n3.json (constant-task control) · needle-result.json (250,044-token retrieval, 3/3 pass)</text>
+</svg>

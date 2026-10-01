@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<rect width="1600" height="900" fill="#07111f"/>
+<text x="60" y="40" fill="#e8f1ff" font-size="26" font-weight="700" font-family="Segoe UI, Inter, sans-serif">Nemotron-3.5-Lightning DFlash prefill vs context</text>
+<text x="60" y="66" fill="#8fa3c8" font-size="15" font-family="Segoe UI, Inter, sans-serif">PREFILL vs CONTEXT · LOG-LOG · 1x ARC PRO B70 · vLLM 0.30.0 + ROUTER PATCH · DFLASH n=7 · 230 W · 2026-10-01</text>
+<line x1="100" y1="700.0" x2="1540" y2="700.0" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="705.0" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">100</text>
+<line x1="100" y1="641.8" x2="1540" y2="641.8" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="564.9" x2="1540" y2="564.9" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="506.7" x2="1540" y2="506.7" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="511.7" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">1,000</text>
+<line x1="100" y1="448.5" x2="1540" y2="448.5" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="371.5" x2="1540" y2="371.5" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="313.3" x2="1540" y2="313.3" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="318.3" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">10,000</text>
+<line x1="100" y1="255.1" x2="1540" y2="255.1" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="178.2" x2="1540" y2="178.2" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="120.0" x2="1540" y2="120.0" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="125.0" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">100,000</text>
+<line x1="100" y1="120" x2="100" y2="700" stroke="#26364e" stroke-width="2"/>
+<line x1="100" y1="700" x2="1540" y2="700" stroke="#26364e" stroke-width="2"/>
+<text x="153.17863276187822" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">512</text>
+<text x="451.8143593142539" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">2K</text>
+<text x="750.4500858666294" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">8K</text>
+<text x="1049.085812419005" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">32K</text>
+<text x="1347.7215389713806" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">131K</text>
+<text x="1486.8213672381216" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">250K</text>
+<text x="40" y="410.0" fill="#5c7099" font-size="15" font-family="Segoe UI, Inter, sans-serif" transform="rotate(-90 40 410.0)" text-anchor="middle">prefill tok/s (log)</text>
+<text x="820" y="762" fill="#5c7099" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
+<polyline points="153.17863276187822,369.0 451.8143593142539,320.4 1049.085812419005,323.2 1347.7215389713806,362.2 1486.8213672381216,394.2" fill="none" stroke="#81c9ff" stroke-width="4"/>
+<g fill="#81c9ff"><circle cx="153.17863276187822" cy="369.0" r="6"/><circle cx="451.8143593142539" cy="320.4" r="6"/><circle cx="1049.085812419005" cy="323.2" r="6"/><circle cx="1347.7215389713806" cy="362.2" r="6"/><circle cx="1486.8213672381216" cy="394.2" r="6"/></g>
+<g text-anchor="middle"><text x="153.17863276187822" y="355.0" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">5,153</text><text x="451.8143593142539" y="306.4" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">9,198</text><text x="1049.085812419005" y="309.2" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">8,892</text><text x="1347.7215389713806" y="348.2" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">5,585</text><text x="1486.8213672381216" y="380.2" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">3,817</text></g>
+<polyline points="153.17863276187822,372.0 451.8143593142539,322.6 1049.085812419005,324.5 1347.7215389713806,363.0 1486.8213672381216,394.7" fill="none" stroke="#7d9b76" stroke-width="4"/>
+<g fill="#7d9b76"><circle cx="153.17863276187822" cy="372.0" r="6"/><circle cx="451.8143593142539" cy="322.6" r="6"/><circle cx="1049.085812419005" cy="324.5" r="6"/><circle cx="1347.7215389713806" cy="363.0" r="6"/><circle cx="1486.8213672381216" cy="394.7" r="6"/></g>
+<g text-anchor="middle"><text x="153.17863276187822" y="358.0" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">4,974</text><text x="451.8143593142539" y="308.6" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">8,952</text><text x="1049.085812419005" y="310.5" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">8,757</text><text x="1347.7215389713806" y="349.0" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">5,537</text><text x="1486.8213672381216" y="380.7" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">3,793</text></g>
+<g>
+<rect x="130" y="86" width="14" height="14" fill="#81c9ff"/>
+<text x="152" y="98" fill="#c9d8f0" font-size="15" font-family="Segoe UI, Inter, sans-serif">isolated engine prefill</text>
+<rect x="383.20000000000005" y="86" width="14" height="14" fill="#7d9b76"/>
+<text x="405.20000000000005" y="98" fill="#c9d8f0" font-size="15" font-family="Segoe UI, Inter, sans-serif">cold-input proxy (prompt/TTFT)</text>
+</g>
+<text x="60" y="800" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">isolated engine prefill = vllm:request_prefill_time_seconds delta - NOT prompt_tokens/TTFT</text>
+<text x="60" y="824" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">The cold-input proxy is shown only to make the gap visible; it is not the prefill rate</text>
+<text x="60" y="848" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">Prefill peaks around 2-33K (8.9-9.2K tok/s) and declines at 131K/250K (5.6K/3.8K) - long prompts cost more per token</text>
+<text x="60" y="872" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: SBP70:/home/sergio/B70-DOCS/results/2026/10/ · ladder-230w.json (real wikitext workload) · specdiag-spec-on.json / specdiag-spec-n3.json (constant-task control) · needle-result.json (250,044-token retrieval, 3/3 pass)</text>
+</svg>

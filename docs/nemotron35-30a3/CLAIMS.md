@@ -94,6 +94,24 @@ n=5 matrix above, and do not restate them as that matrix.
 - Do not claim 230 W as the card default. The documented base envelope stays 150 W.
 
 
+## 2026-10-01 (later) — full 262,144 context on v0.30.0 + router patch
+
+| Claim | Exact wording allowed |
+|---|---|
+| Full 256K context | **262,144** served on `vllm/vllm-openai-xpu:v0.30.0` **with** `patch_xpu_grouped_topk_native_v2.py`; KV pool **348,249 tokens = 1.33x** at gmu 0.90 with the DFlash draft |
+| 256K functional proof | needle-in-haystack at **250,044 prompt tokens**, depths 10/50/90%, **3/3 retrieved** |
+| Unpatched long context | **impossible**: 131072 and 262144 both die at init with `Assertion index out of bounds: 0 <= tmp0 < 128` |
+| Acceptance vs context | **flat ~60% from 512 to 250,000 tokens** (constant-task control). No drafter collapse |
+| Decode vs context @230 W | 232.9 (512) / 60.6 (131K) / 37.0 (250K) tok/s, constant task |
+| Draft window | **n=7 wins at every context**: +52% over n=3 and +79% over n=15 at 131K |
+| Higher acceptance is not faster | n=3 accepts 74-78% vs n=7 at 60-63% and is still 33-57% slower |
+
+**Forbidden for these rows**
+
+- Do not read acceptance off a ladder whose prompt changes with the length; that measured content, not context.
+- Do not claim the draft model degrades at long context. It does not.
+- Do not quote these as 150 W numbers; they are all 230 W.
+
 ## HF ids (keep)
 
 - `SergiioB/Nemotron-3.5-Lightning-30B-A3B-GPTQ-INT4-G64-sym`

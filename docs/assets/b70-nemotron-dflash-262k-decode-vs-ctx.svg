@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<rect width="1600" height="900" fill="#07111f"/>
+<text x="60" y="40" fill="#e8f1ff" font-size="26" font-weight="700" font-family="Segoe UI, Inter, sans-serif">Nemotron-3.5-Lightning DFlash decode vs context</text>
+<text x="60" y="66" fill="#8fa3c8" font-size="15" font-family="Segoe UI, Inter, sans-serif">DECODE vs CONTEXT · LOG-LOG · 1x ARC PRO B70 · vLLM 0.30.0 + ROUTER PATCH · DFLASH n=7 · 230 W · 2026-10-01</text>
+<line x1="100" y1="700.0" x2="1540" y2="700.0" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="705.0" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">10</text>
+<line x1="100" y1="601.8" x2="1540" y2="601.8" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="472.0" x2="1540" y2="472.0" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="373.8" x2="1540" y2="373.8" stroke="#1a2740" stroke-width="1"/>
+<text x="98" y="378.8" fill="#5c7099" font-size="14" font-family="Segoe UI, Inter, sans-serif" text-anchor="end">100</text>
+<line x1="100" y1="275.6" x2="1540" y2="275.6" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="145.8" x2="1540" y2="145.8" stroke="#1a2740" stroke-width="0.5" stroke-dasharray="2,4"/>
+<line x1="100" y1="120" x2="100" y2="700" stroke="#26364e" stroke-width="2"/>
+<line x1="100" y1="700" x2="1540" y2="700" stroke="#26364e" stroke-width="2"/>
+<text x="153.17863276187822" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">512</text>
+<text x="451.8143593142539" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">2K</text>
+<text x="750.4500858666294" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">8K</text>
+<text x="1049.085812419005" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">32K</text>
+<text x="1347.7215389713806" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">131K</text>
+<text x="1486.8213672381216" y="732" fill="#8fa3c8" font-size="16" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">250K</text>
+<text x="40" y="410.0" fill="#5c7099" font-size="15" font-family="Segoe UI, Inter, sans-serif" transform="rotate(-90 40 410.0)" text-anchor="middle">decode tok/s (log)</text>
+<text x="820" y="762" fill="#5c7099" font-size="15" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">input context length (tokens)</text>
+<polyline points="153.17863276187822,256.9 451.8143593142539,275.1 1049.085812419005,414.9 1347.7215389713806,564.8 1486.8213672381216,586.6" fill="none" stroke="#81c9ff" stroke-width="4"/>
+<g fill="#81c9ff"><circle cx="153.17863276187822" cy="256.9" r="6"/><circle cx="451.8143593142539" cy="275.1" r="6"/><circle cx="1049.085812419005" cy="414.9" r="6"/><circle cx="1347.7215389713806" cy="564.8" r="6"/><circle cx="1486.8213672381216" cy="586.6" r="6"/></g>
+<g text-anchor="middle"><text x="153.17863276187822" y="242.9" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">228</text><text x="451.8143593142539" y="261.1" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">201</text><text x="1049.085812419005" y="400.9" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">75</text><text x="1347.7215389713806" y="550.8" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">26</text><text x="1486.8213672381216" y="572.6" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">22</text></g>
+<polyline points="153.17863276187822,254.1 750.4500858666294,354.3 1049.085812419005,324.2 1347.7215389713806,444.8 1486.8213672381216,514.6" fill="none" stroke="#e8a87c" stroke-width="4"/>
+<g fill="#e8a87c"><circle cx="153.17863276187822" cy="254.1" r="6"/><circle cx="750.4500858666294" cy="354.3" r="6"/><circle cx="1049.085812419005" cy="324.2" r="6"/><circle cx="1347.7215389713806" cy="444.8" r="6"/><circle cx="1486.8213672381216" cy="514.6" r="6"/></g>
+<g text-anchor="middle"><text x="153.17863276187822" y="240.1" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">233</text><text x="750.4500858666294" y="340.3" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">115</text><text x="1049.085812419005" y="310.2" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">142</text><text x="1347.7215389713806" y="430.8" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">61</text><text x="1486.8213672381216" y="500.6" fill="#e8f1ff" font-size="15" font-weight="600" font-family="Segoe UI, Inter, sans-serif" text-anchor="middle">37</text></g>
+<g>
+<rect x="130" y="86" width="14" height="14" fill="#81c9ff"/>
+<text x="152" y="98" fill="#c9d8f0" font-size="15" font-family="Segoe UI, Inter, sans-serif">real workload (varying prompt)</text>
+<rect x="442.0" y="86" width="14" height="14" fill="#e8a87c"/>
+<text x="464.0" y="98" fill="#c9d8f0" font-size="15" font-family="Segoe UI, Inter, sans-serif">constant task (controlled)</text>
+</g>
+<text x="60" y="800" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">C1 greedy, (completion_tokens-1)/(last-first), wikitext-103 prefixes, prefix cache off, fp16 KV, max_model_len 262144</text>
+<text x="60" y="824" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">Controlled curve holds the task constant and only varies haystack length: acceptance stays flat (60-63%) from 512 to 250K tokens</text>
+<text x="60" y="848" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">The apparent acceptance 'collapse' in the real-workload curve is content variance, not a length effect: acceptance ranged 17.5-63% at the SAME length</text>
+<text x="60" y="872" fill="#5c7099" font-size="13" font-family="Segoe UI, Inter, sans-serif">250,044-token needle test passed 3/3 depths on this stack · decode at 250K is 22-37 tok/s depending on content</text>
+<text x="60" y="896" fill="#5c7099" font-size="12" font-family="Segoe UI, Inter, sans-serif">Source: SBP70:/home/sergio/B70-DOCS/results/2026/10/ · ladder-230w.json (real wikitext workload) · specdiag-spec-on.json / specdiag-spec-n3.json (constant-task control) · needle-result.json (250,044-token retrieval, 3/3 pass)</text>
+</svg>
