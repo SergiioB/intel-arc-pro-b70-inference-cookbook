@@ -20,6 +20,15 @@ speculator.
 
 ## Stack (do not substitute)
 
+> **2026-10 launcher refresh:** the launcher now ships
+> `vllm/vllm-openai-xpu:v0.31.0@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7`
+> for this recipe — `dflash` is a native speculative method there and the
+> grouped-topk patch anchors are unchanged (`is_cuda()` gate still present).
+> The measured numbers below are the `1da0a954` generation; v0.31.0
+> performance is pending re-measurement. See
+> [IMAGE-AND-PATCH-MATRIX.md](../IMAGE-AND-PATCH-MATRIX.md) → "2026-10 runtime
+> refresh".
+
 | Component | Exact tested value |
 |---|---|
 | Public image digest | `vllm/vllm-openai-xpu@sha256:1da0a95485455f08588c11080b9718992fd7d434c6a965d74654903a9d999c57` |

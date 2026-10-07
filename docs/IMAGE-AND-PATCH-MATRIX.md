@@ -26,6 +26,36 @@ then apply **only** that row’s “Apply” list. The last column is a
 | Qwen3.8-Flash-Next no-spec fallback (llama.cpp SYCL, two B70s, C1) | llama.cpp `9723942adc518b43c4b95dc4dce6906903eb5e09` (not a vLLM image) | `patches/llamacpp-sycl/flashnext-arch-overlay.patch`, then `sycl-fused-mmvq-and-gpu-group.patch`. Pick one `GGML_SYCL_F16` binary. [Recipe](qwen38-flash-next/QWEN38-FLASH-NEXT-LLAMACPP.md). | All vLLM Qwen MTP / FP8 / Nemotron / Ornith patches. Do not apply the older split SYCL files on top of the combined kernel patch. Do not apply the `52d4268` MTP/MT pair on this pin. 8K/16K/128K are context, not concurrency. |
 | Qwen3.8-Flash-Next MTP + fused multi-token MoE kernel (leader) | llama.cpp `52d42686560a9e8f441f9b9780c8890c37d2802d` (not a vLLM image) | `patches/llamacpp-sycl/qwen4exp-mtp-draft-head.patch`, then `sycl-fused-mmvq-mt.patch` (`mul_mat_vec_q_moe_mt`, M=2..8). IQ3_S/IQ4_NL fused MMVQ is already in this pin. Kill-switch `GGML_SYCL_MT_OFF=1`. [Recipe](qwen38-flash-next/QWEN38-FLASH-NEXT-LLAMACPP.md) §MTP. | The `9723942` pair (`flashnext-arch-overlay.patch`, `sycl-fused-mmvq-and-gpu-group.patch`). All vLLM Qwen MTP / FP8 / Nemotron / Ornith patches. |
 
+## 2026-10 runtime refresh (launcher-pinned generation)
+
+The B70 Launcher recipes and custom-artifact templates moved off the
+Aug/Sep pinned digests to current upstream releases. These pins are
+**registry-verified** (digest resolves to the named tag) and **source-compat
+verified** (each bundled patch was applied against the matching upstream
+source tree, GPU-free). Runtime performance on the new images is a **new
+measurement generation** — do not cite the tables below for these images.
+
+| Runtime | Pinned reference | Notes |
+|---|---|---|
+| vLLM XPU (Qwen MTP / DFlash / generic / TP2) | `vllm/vllm-openai-xpu:v0.31.0@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7` | `dflash` is a native speculative method in v0.31.0. The grouped-topk router patch still applies: vLLM `main`/v0.31.0 still gates the fused op behind `is_cuda()` and `native_grouped_topk` is not upstreamed. SSU B8/W4 tuning unchanged. |
+| OpenVINO Model Server | `openvino/model_server:2026.4.1-gpu@sha256:a928903fe429f1e3e27107cc45932d30d95febfd2d1159dc50869c3eac76fc58` | GPU.0/GPU.N device targeting; `cache_interval_multiplier` long-ctx path unchanged. |
+| llama.cpp SYCL server | `ghcr.io/ggml-org/llama.cpp:server-intel-b11429@sha256:3353d968ed8987612b7859828d14d205413567baafed00a90d71d0c23e63d7ba` | Replaces the floating `server-intel` tag. `draft-dflash`, `draft-mtp`, `ngram-*` spec types present. |
+| Intel llm-scaler vLLM (AutoRound route) | `intel/llm-scaler-vllm:0.26.0-b2@sha256:52218ad85513ab6686d4c090c83c2bd8c5b02423c63aa4dabd41837fe641fe3b` | Generic launcher path; no local patch scripts mounted. |
+| EXL3 XPU | `ghcr.io/0xsero/exl3xpu:0.1.0@sha256:21412bdd7535e9c653eeb3d099dce3bc79a83d440def2cd9556111c79c870fa8` | Unchanged — `0.1.0` already resolves to the pinned digest. |
+
+Host driver/runtime baseline for this generation: Intel compute-runtime
+**26.35** (Level Zero), xpu-smi **2.1.0** (note: 2.x renamed several
+subcommands/metrics vs 1.x), oneAPI 2026.x toolchain for native SYCL builds.
+
+Patch apply-compat on `vllm-openai-xpu:v0.31.0` (source-tree test): the Qwen
+MTP pair, worker-affinity, and champion-stack overlays apply cleanly;
+`patch_xpu_grouped_topk_native_v2.py` targets are intact (`is_cuda()` gate
+unchanged). A clean source apply proves anchor compatibility only — it does
+not prove runtime correctness, stability, or speed. Re-measure before citing.
+
+The generations below remain the **benchmarked** evidence; the refresh above
+is the **shipping default** pending new measurements.
+
 The **Windows 11 standalone kits** ([qwen38-27b/WINDOWS-STANDALONE.md](qwen38-27b/WINDOWS-STANDALONE.md),
 [`windows/`](../windows/)) are not a new generation: they build from the same
 Qwen3.8 `f01e24f6` digest. Image tag **2026.08.19** applies the Qwen MTP pair
