@@ -1,0 +1,8 @@
+[setup] ack="We need answer user's request. User" prompt_tokens=15311
+[turn2] prompt=15353 cached=-1 completion=96 ok=True
+  ans: 'We need answer user\'s question: "What frequency does the Kestrel-9 beacon broadcast on, and what is its callsign?" Context: repeated field notes say calibration beacon at site Kestrel-9 broadcasts on '
+[turn3] prompt=15482 cached=-1 completion=93 ok=True
+  ans: 'We need answer user\'s question: "If the beacon fails twice, which relay is used and who is notified within how many minutes?" Context: repeated field notes say Backup protocol: if the beacon fails twi'
+[turn4] prompt=15600 cached=-1 completion=81 ok=True
+  ans: 'We need answer user\'s question: "Who is the chief engineer and what drift did they log?" Context: repeated field notes say Chief engineer Dr. Mira Okonkwo logged drift of 0.003 arcsec/hour. Need answe'
+MULTITURN PASS
