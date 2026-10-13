@@ -97,22 +97,26 @@ quality for ~0.89× the decode speed.
 
 - Weights (pinned): `turboderp/Qwen3.8-27B-exl3` @
   `dfe2f4fd71bf9a1994051d4d47e6460fa96dd723` (~20 GB), branch `SC_5.00bpw_H6`.
-- Image (pinned): `ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab3a8ba559b4d3af7fb1fa5eeff324c4f4274847e3079ec2d57c698ba4`
+- Image (pinned): `ghcr.io/sergiiob/exl3xpu-mixedk:20261014@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a`
   — the 0xSero `0.1.0` base above plus the mixed-K patch set. Patches and
   image source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk),
   built at patch commit `244f57e5c220a5ea6e438869fa996c5b7e96ca75`. Same
   `serve.py` entrypoint and the same serve_config
   `models/qwen3.8-27b-exl3-4.00bpw` — the SC5 model dir is passed via
   `--model-path` exactly as in the recipe above.
+- Same layers: `ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab3a8ba559b4d3af7fb1fa5eeff324c4f4274847e3079ec2d57c698ba4`.
+  `20261014` changes only the OCI labels; all 21 filesystem layers are
+  identical, so the `20261013` checks below apply to it.
 - Prior pin: `ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cfed8a35da8f4db0034338d8dbe5f53731253d96ea8f1db2b5bddd4a40`.
-  Same behavior on one B70: 46/46 kernel checks, 6/6 canaries, 3/3 long
+  Same behavior on one B70 as `20261013`: 46/46 kernel checks, 6/6 canaries, 3/3 long
   prompts, greedy p512/g128 MTP3 median 70.32 vs 70.29 tok/s
   (`qwen38-27-exl3xpu-sc5-image-20261013`,
   [evidence](../../results/qwen38-27b/sc5-image-20261013-check/README.md)).
   The A/B and launcher-smoke rows below were measured on `20261012c`.
 
 One command, with [b70-launcher](https://github.com/SergiioB/b70-launcher)
-0.6.2 or newer (its `qwen38-27b-sc5` recipe pins the `20261013` digest):
+0.6.3 or newer (its `qwen38-27b-sc5` recipe pins the `20261014` digest;
+0.6.2 pins `20261013`, the same layers):
 
 ```bash
 curl -fsSL https://xecores.com/downloads/get.sh | sh   # install or update the launcher
@@ -173,7 +177,7 @@ turboderp's `SC_5.00bpw_H6_V6` branch (@ `f33f26d9`) quantizes only the
 vision tower (fp16 921 MB → EXL3 K=6 570 MB). All 2,093 language-model
 tensors (18,979,263,076 B, MTP head included) are byte-identical to
 `SC_5.00bpw_H6`, so text output and speed do not change. It does not load
-on `exl3xpu-mixedk:20261013`: weight loading fails on the vision keys
+on `exl3xpu-mixedk:20261013` (same layers as `20261014`): weight loading fails on the vision keys
 (`blocks.0.attn.k_proj` in `Qwen3_VisionTransformer`). Keep serving
 `SC_5.00bpw_H6`. Record `qwen38-27-exl3xpu-sc5-v6-check`;
 [evidence](../../results/qwen38-27b/sc5-v6-check-20261013/README.md).

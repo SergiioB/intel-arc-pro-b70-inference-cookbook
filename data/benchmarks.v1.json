@@ -1493,8 +1493,8 @@
   {
    "id": "qwen38-27-exl3xpu-sc5-image-20261013",
    "kind": "capability",
-   "title": "Qwen3.8-27B SC_5.00bpw_H6 on exl3xpu-mixedk:20261013 (one B70): image built from public source",
-   "summary": "New SC5 image pin ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab3a8ba559b4d3af7fb1fa5eeff324c4f4274847e3079ec2d57c698ba4, built from the public mixed-K patch source at commit 244f57e5 (patches and image source: github.com/SergiioB/exl3xpu-mixedk); 20261013 adds OCI labels only. Same behavior as the prior 20261012c pin: 46/46 mixed-K kernel checks on real SC5 tensors, 6/6 exact-answer canaries greedy, 3/3 long prompts (8,161-8,162 tokens), greedy p512/g128 MTP3 post-first median 70.32 vs 70.29 tok/s on 20261012c (n=3 each, 1 warmup; greedy regression screen, not comparable with the recipe-sampling A/B). 230 W cap. One-command route: b70-launcher 0.6.2 recipe qwen38-27b-sc5 pins this digest (b70 launch qwen38-27b-sc5).",
+   "title": "Qwen3.8-27B SC_5.00bpw_H6 on exl3xpu-mixedk:20261014 (= 20261013 layers, one B70): image built from public source",
+   "summary": "SC5 image pin ghcr.io/sergiiob/exl3xpu-mixedk:20261014@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a, built from the public mixed-K patch source at commit 244f57e5 (patches and image source: github.com/SergiioB/exl3xpu-mixedk). 20261014 has the same 21 filesystem layers as 20261013@sha256:5e2d1fab3a8ba559b4d3af7fb1fa5eeff324c4f4274847e3079ec2d57c698ba4 and changes only the OCI labels; both are label-only over the checked build. Same behavior as the prior 20261012c pin, measured on the 20261013 build: 46/46 mixed-K kernel checks on real SC5 tensors, 6/6 exact-answer canaries greedy, 3/3 long prompts (8,161-8,162 tokens), greedy p512/g128 MTP3 post-first median 70.32 vs 70.29 tok/s on 20261012c (n=3 each, 1 warmup; greedy regression screen, not comparable with the recipe-sampling A/B). 230 W cap. One-command route: b70 launch qwen38-27b-sc5 (b70-launcher 0.6.3+ pins 20261014; 0.6.2 pins 20261013).",
    "evidence_status": "official-lab",
    "hardware": {
     "gpu_model": "Intel Arc Pro B70",
@@ -1504,7 +1504,7 @@
    },
    "engine": {
     "name": "exl3xpu",
-    "version": "vLLM 0.26.1.dev0+g568afb3a1 + mixed-K patches (ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab...)"
+    "version": "vLLM 0.26.1.dev0+g568afb3a1 + mixed-K patches (ghcr.io/sergiiob/exl3xpu-mixedk:20261014@sha256:933eda54..., same layers as 20261013@sha256:5e2d1fab...)"
    },
    "model": {
     "id": "turboderp/Qwen3.8-27B-exl3 @ SC_5.00bpw_H6 rev dfe2f4fd",
