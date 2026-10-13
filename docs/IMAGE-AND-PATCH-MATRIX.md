@@ -42,6 +42,7 @@ measurement generation** — do not cite the tables below for these images.
 | llama.cpp SYCL server | `ghcr.io/ggml-org/llama.cpp:server-intel-b11429@sha256:3353d968ed8987612b7859828d14d205413567baafed00a90d71d0c23e63d7ba` | Replaces the floating `server-intel` tag. `draft-dflash`, `draft-mtp`, `ngram-*` spec types present. |
 | Intel llm-scaler vLLM (AutoRound route) | `intel/llm-scaler-vllm:0.26.0-b2@sha256:52218ad85513ab6686d4c090c83c2bd8c5b02423c63aa4dabd41837fe641fe3b` | Generic launcher path; no local patch scripts mounted. |
 | EXL3 XPU | `ghcr.io/0xsero/exl3xpu:0.1.0@sha256:21412bdd7535e9c653eeb3d099dce3bc79a83d440def2cd9556111c79c870fa8` | Unchanged — `0.1.0` already resolves to the pinned digest. |
+| EXL3 XPU mixed-K (SC_5.00bpw_H6 route) | `ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cfed8a35da8f4db0034338d8dbe5f53731253d96ea8f1db2b5bddd4a40` | Built from the `0.1.0` base above plus the mixed-K patch set at `SergiioB/exllamav3` commit `244f57e5c220a5ea6e438869fa996c5b7e96ca75` (`b70/` — README lists every check). Same serve.py contract as the 4.00bpw recipe. [Recipe](qwen38-27b/EXL3-XPU.md#mixed-bit-sc_500bpw_h6-quality-pick). |
 
 Host driver/runtime baseline for this generation: Intel compute-runtime
 **26.35** (Level Zero), xpu-smi **2.1.0** (note: 2.x renamed several

@@ -88,6 +88,40 @@ Traps already priced in:
 - **Prefix caching is ON by default** — do not benchmark cold cells without
   the entropy-guard protocol.
 
+## Mixed-bit SC_5.00bpw_H6 (quality pick)
+
+Same engine, different weights and a patched image: turboderp's
+[SC_5.00bpw_H6](https://huggingface.co/turboderp/Qwen3.8-27B-exl3/tree/SC_5.00bpw_H6)
+branch mixes trellis rates K=4–7 instead of flat 4.00 bpw — higher effective
+quality for ~0.89× the decode speed.
+
+- Weights (pinned): `turboderp/Qwen3.8-27B-exl3` @
+  `dfe2f4fd71bf9a1994051d4d47e6460fa96dd723` (~20 GB), branch `SC_5.00bpw_H6`.
+- Image (pinned): `ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cfed8a35da8f4db0034338d8dbe5f53731253d96ea8f1db2b5bddd4a40`
+  — the 0xSero `0.1.0` base above plus the mixed-K patch set published at
+  [`SergiioB/exllamav3` `b70/`](https://github.com/SergiioB/exllamav3/tree/244f57e5c220a5ea6e438869fa996c5b7e96ca75/b70);
+  that README lists every kernel check. Same `serve.py` entrypoint and the
+  same serve_config `models/qwen3.8-27b-exl3-4.00bpw` — the SC5 model dir is
+  passed via `--model-path` exactly as in the recipe above.
+- Launcher recipe: `qwen38-27b-sc5` (engine `exl3`).
+
+Measured on one B70 (mixed-K image, 230 W cap, ~230 W measured draw):
+
+| Axis | Result |
+|---|---|
+| Mixed-K kernel checks | **46/46** — the fork README enumerates them |
+| Exact-answer canaries (greedy) | **6/6**, plus **3/3** long prompts (8,161–8,162 tokens) |
+| Configured context | `max_model_len` 65,536 at `gpu_memory_utilization` 0.90, MTP3, FULL_DECODE_ONLY graphs, fp8 KV |
+| Matched A/B vs plain 4.00bpw — n=5 per arm, ABBA, recipe sampling (temp 0.7 / top_p 0.8 / top_k 20 / presence 1.5), MTP3, C1, g128 | p524/g128: **56.62** vs 63.56 tok/s median (0.89×) · p8124/g128: **56.82** vs 64.34 (0.88×) |
+| Quality vs bf16 | **lower KL divergence than plain 4.00bpw** per turboderp's published chart on the [model card](https://huggingface.co/turboderp/Qwen3.8-27B-exl3) |
+
+Do not mix these decode figures with the chunk-rate table above: this A/B was
+measured at client tok/s under recipe sampling, not MTP chunk-rate.
+
+Not yet proven on SC5: a full `b70 launch` through the launcher itself,
+prompts beyond ~8.2K tokens, and prefix-cache multi-turn (that check ran on
+the SC_4.00bpw_H5 sibling).
+
 ## The closed alternative (verdict, not recipe)
 
 The W4A16/GPTQ family (symmetric int4 g128) is **closed for this model**:
