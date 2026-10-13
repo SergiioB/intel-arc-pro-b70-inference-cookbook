@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-09-15T09:25:00Z",
+ "updated_at": "2026-10-13T00:00:00Z",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -1316,6 +1316,154 @@
    "evidence": {
     "commit": "55eefeaeaa1e47b9e34b2fd20f55ffc1a8125c6c",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/55eefeaeaa1e47b9e34b2fd20f55ffc1a8125c6c/docs/qwen38-27b/EXL3-XPU.md"
+   }
+  },
+  {
+   "id": "qwen38-27-exl3xpu-sc5-p524-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B EXL3 SC_5.00bpw_H6 (exl3xpu-mixedk) MTP3 decode, short prompt",
+   "summary": "Mixed-bit quality arm vs plain 4.00bpw: 56.62 vs 63.56 tok/s median (0.891x). Paired A/B vs the plain-4.00bpw route of record (published 0xsero/exl3xpu:0.1.0 image, rev 113cf7ab): n=5 per arm, ABBA interleave over 4 server loads, C1, g128, MTP3 + FULL_DECODE_ONLY + fp8 KV + gmu 0.90 both arms, 230 W cap (~230 W measured draw), prefix caching on with cold unique-entropy prompts (hit delta 0). Metric is client post-first output rate under MTP3 - do not mix with MTP chunk-rate records. Correctness same session: 46/46 mixed-K kernel checks, 6/6 exact-answer canaries + 3/3 long prompts.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "exl3xpu",
+    "version": "vLLM 0.26.1.dev0+g568afb3a1 + mixed-K patches (ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cf...)"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 @ SC_5.00bpw_H6 rev dfe2f4fd",
+    "quantization": "EXL3 trellis mixed-bit K=4..7 (~5.00bpw H6)",
+    "speculation": "native MTP3 (qwen3_5_mtp)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 524,
+    "output_tokens": 128,
+    "context_limit_tokens": 65536,
+    "cache": "prefix caching ON; cold unique-entropy prompts (hit delta 0)"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 56.62,
+     "unit": "token/s"
+    },
+    {
+     "name": "paired_plain_4bpw_tps",
+     "value": 63.56,
+     "unit": "token/s"
+    },
+    {
+     "name": "sc5_over_plain_ratio",
+     "value": 0.891,
+     "unit": "x"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "note": "Qwen-recommended non-thinking recipe, ignore_eos, thinking off"
+   },
+   "evidence": {
+    "commit": "c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7/results/qwen38-27b/sc5-mixedk-ab-20261012/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-27-exl3xpu-sc5-p8124-g128-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B EXL3 SC_5.00bpw_H6 (exl3xpu-mixedk) MTP3 decode, 8K prompt",
+   "summary": "Mixed-bit quality arm vs plain 4.00bpw: 56.82 vs 64.34 tok/s median (0.883x) - ratio holds at the largest prompt tested. Paired A/B vs the plain-4.00bpw route of record (published 0xsero/exl3xpu:0.1.0 image, rev 113cf7ab): n=5 per arm, ABBA interleave over 4 server loads, C1, g128, MTP3 + FULL_DECODE_ONLY + fp8 KV + gmu 0.90 both arms, 230 W cap (~230 W measured draw), prefix caching on with cold unique-entropy prompts (hit delta 0). Metric is client post-first output rate under MTP3 - do not mix with MTP chunk-rate records. Longest proven SC5 prompts are the 8,161-8,162-token canaries; nothing beyond ~8.2K measured.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "exl3xpu",
+    "version": "vLLM 0.26.1.dev0+g568afb3a1 + mixed-K patches (ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cf...)"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 @ SC_5.00bpw_H6 rev dfe2f4fd",
+    "quantization": "EXL3 trellis mixed-bit K=4..7 (~5.00bpw H6)",
+    "speculation": "native MTP3 (qwen3_5_mtp)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 8124,
+    "output_tokens": 128,
+    "context_limit_tokens": 65536,
+    "cache": "prefix caching ON; cold unique-entropy prompts (hit delta 0)"
+   },
+   "metrics": [
+    {
+     "name": "client_post_first_output_tps",
+     "value": 56.82,
+     "unit": "token/s"
+    },
+    {
+     "name": "paired_plain_4bpw_tps",
+     "value": 64.34,
+     "unit": "token/s"
+    },
+    {
+     "name": "sc5_over_plain_ratio",
+     "value": 0.883,
+     "unit": "x"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "presence_penalty": 1.5,
+    "note": "Qwen-recommended non-thinking recipe, ignore_eos, thinking off"
+   },
+   "evidence": {
+    "commit": "c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7/results/qwen38-27b/sc5-mixedk-ab-20261012/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-27-exl3xpu-sc5-v1",
+   "kind": "capability",
+   "title": "Qwen3.8-27B EXL3 SC_5.00bpw_H6 route (one B70): mixed-K correctness + quality pick",
+   "summary": "turboderp SC_5.00bpw_H6 (mixed trellis K=4..7) served on the exl3xpu-mixedk image (0xsero 0.1.0 + mixed-K patches, SergiioB/exllamav3 b70/ @244f57e5). Kernel level: 46/46 mixed-K checks pass (fp16+int8 linear paths K=4..7, M=1..512, fused-mixed qkv[5,7,7]). Serve level: 6/6 exact-answer canaries greedy + 3/3 long prompts (8,161-8,162 tokens) on MTP3, FULL_DECODE_ONLY, fp8 KV, gmu 0.90, max_model_len 65,536, 230 W cap. Quality: lower KL divergence than plain 4.00bpw per turboderp published chart - the quality pick at ~0.88-0.89x speed. Caveats: prefix-cache multi-turn was validated on the SC_4.00bpw_H5 sibling branch, not SC5; prompts beyond ~8.2K and a full b70-launcher run are untested.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "exl3xpu",
+    "version": "vLLM 0.26.1.dev0+g568afb3a1 + mixed-K patches (ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cf...)"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 @ SC_5.00bpw_H6 rev dfe2f4fd",
+    "quantization": "EXL3 trellis mixed-bit K=4..7 (~5.00bpw H6)",
+    "speculation": "native MTP3 (qwen3_5_mtp)"
+   },
+   "evidence": {
+    "commit": "c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7/results/qwen38-27b/sc5-mixedk-ab-20261012/README.md"
    }
   },
   {

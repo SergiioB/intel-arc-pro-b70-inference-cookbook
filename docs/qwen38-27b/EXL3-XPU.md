@@ -105,22 +105,43 @@ quality for ~0.89× the decode speed.
   passed via `--model-path` exactly as in the recipe above.
 - Launcher recipe: `qwen38-27b-sc5` (engine `exl3`).
 
-Measured on one B70 (mixed-K image, 230 W cap, ~230 W measured draw):
+Measured on one B70 (mixed-K image, 230 W cap, ~230 W measured draw). Every
+number below traces to a record in
+[`data/benchmarks.v1.json`](../../data/benchmarks.v1.json) backed by the
+[`sc5-mixedk-ab-20261012`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/)
+evidence generation.
 
-| Axis | Result |
-|---|---|
-| Mixed-K kernel checks | **46/46** — the fork README enumerates them |
-| Exact-answer canaries (greedy) | **6/6**, plus **3/3** long prompts (8,161–8,162 tokens) |
-| Configured context | `max_model_len` 65,536 at `gpu_memory_utilization` 0.90, MTP3, FULL_DECODE_ONLY graphs, fp8 KV |
-| Matched A/B vs plain 4.00bpw — n=5 per arm, ABBA, recipe sampling (temp 0.7 / top_p 0.8 / top_k 20 / presence 1.5), MTP3, C1, g128 | p524/g128: **56.62** vs 63.56 tok/s median (0.89×) · p8124/g128: **56.82** vs 64.34 (0.88×) |
-| Quality vs bf16 | **lower KL divergence than plain 4.00bpw** per turboderp's published chart on the [model card](https://huggingface.co/turboderp/Qwen3.8-27B-exl3) |
+| Axis | Result | Record |
+|---|---|---|
+| Mixed-K kernel checks | **46/46** — the fork README enumerates them | `qwen38-27-exl3xpu-sc5-v1` |
+| Exact-answer canaries (greedy) | **6/6**, plus **3/3** long prompts (8,161–8,162 tokens) | `qwen38-27-exl3xpu-sc5-v1` |
+| Configured context | `max_model_len` 65,536 at `gpu_memory_utilization` 0.90, MTP3, FULL_DECODE_ONLY graphs, fp8 KV | `qwen38-27-exl3xpu-sc5-v1` |
+| Matched A/B vs plain 4.00bpw — n=5 per arm, ABBA, recipe sampling (temp 0.7 / top_p 0.8 / top_k 20 / presence 1.5), MTP3, C1, g128, cold prefix cache | p524/g128: **56.62** vs 63.56 tok/s median (0.891×) | `qwen38-27-exl3xpu-sc5-p524-g128-c1` |
+| Same protocol, 8K prompt | p8124/g128: **56.82** vs 64.34 tok/s median (0.883×) | `qwen38-27-exl3xpu-sc5-p8124-g128-c1` |
+| Quality vs bf16 | **lower KL divergence than plain 4.00bpw** per turboderp's published chart on the [model card](https://huggingface.co/turboderp/Qwen3.8-27B-exl3) | qualitative, `qwen38-27-exl3xpu-sc5-v1` |
 
-Do not mix these decode figures with the chunk-rate table above: this A/B was
-measured at client tok/s under recipe sampling, not MTP chunk-rate.
+The A/B compares each quant on its route-of-record stack: the plain-4.00bpw
+arm ran the published upstream `0xsero/exl3xpu:0.1.0` image, the SC5 arm the
+mixed-K patched image. Do not mix these decode figures with the chunk-rate
+table above: this A/B was measured at client post-first tok/s under recipe
+sampling, not MTP chunk-rate.
 
 Not yet proven on SC5: a full `b70 launch` through the launcher itself,
 prompts beyond ~8.2K tokens, and prefix-cache multi-turn (that check ran on
 the SC_4.00bpw_H5 sibling).
+
+Public evidence:
+
+- Compiled canonical numbers (per-arm medians, MTP acceptance, power,
+  correctness, protocol):
+  [`summary.json`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/summary.json)
+- Sanitized per-sample rows (token counts, timing, spec-decode deltas,
+  energy-derived W):
+  [`recipe-ab-samples.jsonl`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/recipe-ab-samples.jsonl)
+- Generation manifest and arm identities:
+  [`README.md`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/README.md)
+- Public catalog authority:
+  [`data/benchmarks.v1.json`](../../data/benchmarks.v1.json)
 
 ## The closed alternative (verdict, not recipe)
 
