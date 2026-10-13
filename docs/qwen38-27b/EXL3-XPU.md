@@ -97,28 +97,43 @@ quality for ~0.89× the decode speed.
 
 - Weights (pinned): `turboderp/Qwen3.8-27B-exl3` @
   `dfe2f4fd71bf9a1994051d4d47e6460fa96dd723` (~20 GB), branch `SC_5.00bpw_H6`.
-- Image (pinned): `ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cfed8a35da8f4db0034338d8dbe5f53731253d96ea8f1db2b5bddd4a40`
-  — the 0xSero `0.1.0` base above plus the mixed-K patch set published at
-  [`SergiioB/exllamav3` `b70/`](https://github.com/SergiioB/exllamav3/tree/244f57e5c220a5ea6e438869fa996c5b7e96ca75/b70);
-  that README lists every kernel check. Same `serve.py` entrypoint and the
-  same serve_config `models/qwen3.8-27b-exl3-4.00bpw` — the SC5 model dir is
-  passed via `--model-path` exactly as in the recipe above.
-- Launcher recipe: `qwen38-27b-sc5` (engine `exl3`).
+- Image (pinned): `ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab3a8ba559b4d3af7fb1fa5eeff324c4f4274847e3079ec2d57c698ba4`
+  — the 0xSero `0.1.0` base above plus the mixed-K patch set. Patches and
+  image source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk),
+  built at patch commit `244f57e5c220a5ea6e438869fa996c5b7e96ca75`. Same
+  `serve.py` entrypoint and the same serve_config
+  `models/qwen3.8-27b-exl3-4.00bpw` — the SC5 model dir is passed via
+  `--model-path` exactly as in the recipe above.
+- Prior pin: `ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cfed8a35da8f4db0034338d8dbe5f53731253d96ea8f1db2b5bddd4a40`.
+  Same behavior on one B70: 46/46 kernel checks, 6/6 canaries, 3/3 long
+  prompts, greedy p512/g128 MTP3 median 70.32 vs 70.29 tok/s
+  (`qwen38-27-exl3xpu-sc5-image-20261013`,
+  [evidence](../../results/qwen38-27b/sc5-image-20261013-check/README.md)).
+  The A/B and launcher-smoke rows below were measured on `20261012c`.
 
-Measured on one B70 (mixed-K image, 230 W cap, ~230 W measured draw). Every
+One command, with [b70-launcher](https://github.com/SergiioB/b70-launcher)
+0.6.2 or newer (its `qwen38-27b-sc5` recipe pins the `20261013` digest):
+
+```bash
+curl -fsSL https://xecores.com/downloads/get.sh | sh   # install or update the launcher
+b70 launch qwen38-27b-sc5
+```
+
+Serving rows were measured on one B70 (mixed-K image, 230 W cap, ~230 W
+measured draw); the quality row is the KL screen below. Every
 number below traces to a record in
 [`data/benchmarks.v1.json`](../../data/benchmarks.v1.json) backed by the
-[`sc5-mixedk-ab-20261012`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/)
-evidence generation.
+evidence folders listed under *Public evidence*; the speed rows come from
+[`sc5-mixedk-ab-20261012`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/).
 
 | Axis | Result | Record |
 |---|---|---|
-| Mixed-K kernel checks | **46/46** — the fork README enumerates them | `qwen38-27-exl3xpu-sc5-v1` |
+| Mixed-K kernel checks | **46/46** — the [exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk) README enumerates them | `qwen38-27-exl3xpu-sc5-v1` |
 | Exact-answer canaries (greedy) | **6/6**, plus **3/3** long prompts (8,161–8,162 tokens) | `qwen38-27-exl3xpu-sc5-v1` |
 | Configured context | `max_model_len` 65,536 at `gpu_memory_utilization` 0.90, MTP3, FULL_DECODE_ONLY graphs, fp8 KV | `qwen38-27-exl3xpu-sc5-v1` |
 | Matched A/B vs plain 4.00bpw — n=5 per arm, ABBA, recipe sampling (temp 0.7 / top_p 0.8 / top_k 20 / presence 1.5), MTP3, C1, g128, cold prefix cache | p524/g128: **56.62** vs 63.56 tok/s median (0.891×) | `qwen38-27-exl3xpu-sc5-p524-g128-c1` |
 | Same protocol, 8K prompt | p8124/g128: **56.82** vs 64.34 tok/s median (0.883×) | `qwen38-27-exl3xpu-sc5-p8124-g128-c1` |
-| Quality vs bf16 | **lower KL divergence than plain 4.00bpw** per turboderp's published chart on the [model card](https://huggingface.co/turboderp/Qwen3.8-27B-exl3) | qualitative, `qwen38-27-exl3xpu-sc5-v1` |
+| Quality vs bf16 | final-logit KL **0.418×** (wikitext) and **0.161×** (held-out chat) of plain 4.00bpw — table below | `qwen38-27-exl3xpu-sc5-kl-screen` |
 
 The A/B compares each quant on its route-of-record stack: the plain-4.00bpw
 arm ran the published upstream `0xsero/exl3xpu:0.1.0` image, the SC5 arm the
@@ -131,6 +146,38 @@ Launcher smoke on SC5 (2026-10-13, `b70 launch qwen38-27b-sc5`): 6/6 canaries,
 ([evidence](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/tree/026b2a559626b4f957d5ac52a5844c9c7590c733/results/qwen38-27b/sc5-launcher-smoke-20261013)).
 Not yet proven on SC5: sessions longer than ~15.6K tokens.
 
+### KL screen vs BF16
+
+One run on one B70 (2026-10-12). Mean final-logit KL(P_bf16 ‖ P_quant) and
+top-1 agreement with the native BF16 model over all 64 layers in FP32, each
+quant with its own quantized head. Eval A is a frozen wikitext-2 test slice
+(1,664 scored positions). Eval B is turboderp's held-out chat trace, response
+positions only (1,531), not used for calibration. Record
+`qwen38-27-exl3xpu-sc5-kl-screen`;
+[method, scoring script and raw files](../../results/qwen38-27b/sc5-kl-screen-20261012/README.md).
+
+| Quant | KL A (wikitext) | KL B (held-out chat) | Top-1 A | Top-1 B |
+|---|---:|---:|---:|---:|
+| plain 4.00bpw | 0.01391 | 0.00876 | 94.65 % | 96.41 % |
+| SC_4.00bpw_H5 | 0.01602 | 0.00653 | 94.29 % | 96.80 % |
+| SC_5.00bpw_H6 | **0.00582** | **0.00141** | **96.57 %** | **98.11 %** |
+
+SC5 has 0.418× (A) and 0.161× (B) the KL of plain 4.00bpw. SC4 is worse
+than plain on wikitext and better on chat. This screen decodes the weights
+with a bit-exact reference in PyTorch. It does not cover the served engine,
+fp8 KV or MTP, and it is not a task benchmark.
+
+### SC_5.00bpw_H6_V6 is not a text upgrade
+
+turboderp's `SC_5.00bpw_H6_V6` branch (@ `f33f26d9`) quantizes only the
+vision tower (fp16 921 MB → EXL3 K=6 570 MB). All 2,093 language-model
+tensors (18,979,263,076 B, MTP head included) are byte-identical to
+`SC_5.00bpw_H6`, so text output and speed do not change. It does not load
+on `exl3xpu-mixedk:20261013`: weight loading fails on the vision keys
+(`blocks.0.attn.k_proj` in `Qwen3_VisionTransformer`). Keep serving
+`SC_5.00bpw_H6`. Record `qwen38-27-exl3xpu-sc5-v6-check`;
+[evidence](../../results/qwen38-27b/sc5-v6-check-20261013/README.md).
+
 Public evidence:
 
 - Compiled canonical numbers (per-arm medians, MTP acceptance, power,
@@ -141,6 +188,10 @@ Public evidence:
   [`recipe-ab-samples.jsonl`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/recipe-ab-samples.jsonl)
 - Generation manifest and arm identities:
   [`README.md`](../../results/qwen38-27b/sc5-mixedk-ab-20261012/README.md)
+- KL screen, V6 check and image check:
+  [`sc5-kl-screen-20261012`](../../results/qwen38-27b/sc5-kl-screen-20261012/README.md),
+  [`sc5-v6-check-20261013`](../../results/qwen38-27b/sc5-v6-check-20261013/README.md),
+  [`sc5-image-20261013-check`](../../results/qwen38-27b/sc5-image-20261013-check/README.md)
 - Public catalog authority:
   [`data/benchmarks.v1.json`](../../data/benchmarks.v1.json)
 

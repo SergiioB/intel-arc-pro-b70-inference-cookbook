@@ -1467,6 +1467,80 @@
    }
   },
   {
+   "id": "qwen38-27-exl3xpu-sc5-kl-screen",
+   "kind": "capability",
+   "title": "Qwen3.8-27B EXL3 KL screen vs BF16 (one B70): SC_5.00bpw_H6 vs SC_4.00bpw_H5 vs plain 4.00bpw",
+   "summary": "Weight-level quality screen, one run on one B70 (2026-10-12): mean final-logit KL(P_bf16 || P_quant) and top-1 agreement vs the native BF16 model, all 64 layers, FP32 math, each quant with its own quantized head, EXL3 weights decoded bit-exactly by the exl3xpu ref.py reference. Eval A = frozen wikitext-2 test slice, 1,664 scored positions; eval B = turboderp held-out chat trace (response positions only, not used for calibration), 1,531 positions. KL A / KL B: plain 4.00bpw 0.01391 / 0.00876; SC_4.00bpw_H5 0.01602 / 0.00653; SC_5.00bpw_H6 0.00582 / 0.00141 (0.418x / 0.161x plain). Top-1 A / B: plain 94.65% / 96.41%; SC4 94.29% / 96.80%; SC5 96.57% / 98.11%. Shared-BF16-head diagnostic moves each KL by about 6% at most. Not measured through the served engine, fp8 KV or MTP; two small eval sets; not a task benchmark.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32
+   },
+   "engine": {
+    "name": "pytorch-xpu reference harness",
+    "version": "torch 2.13.0+xpu, transformers 5.16.1 in vllm/vllm-openai-xpu:v0.30.0@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d; harness sha256 f4d915df"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 @ SC_5.00bpw_H6 rev dfe2f4fd; SC_4.00bpw_H5 rev 4acd9ad5; plain 4.00bpw",
+    "quantization": "EXL3 trellis (plain 4.00bpw, SC_4.00bpw_H5, SC_5.00bpw_H6) vs BF16 reference"
+   },
+   "evidence": {
+    "commit": "24df27ee1dca5a428dd0d7d693eb3810ad06c45f",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/24df27ee1dca5a428dd0d7d693eb3810ad06c45f/results/qwen38-27b/sc5-kl-screen-20261012/README.md"
+   }
+  },
+  {
+   "id": "qwen38-27-exl3xpu-sc5-image-20261013",
+   "kind": "capability",
+   "title": "Qwen3.8-27B SC_5.00bpw_H6 on exl3xpu-mixedk:20261013 (one B70): image built from public source",
+   "summary": "New SC5 image pin ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab3a8ba559b4d3af7fb1fa5eeff324c4f4274847e3079ec2d57c698ba4, built from the public mixed-K patch source at commit 244f57e5 (patches and image source: github.com/SergiioB/exl3xpu-mixedk); 20261013 adds OCI labels only. Same behavior as the prior 20261012c pin: 46/46 mixed-K kernel checks on real SC5 tensors, 6/6 exact-answer canaries greedy, 3/3 long prompts (8,161-8,162 tokens), greedy p512/g128 MTP3 post-first median 70.32 vs 70.29 tok/s on 20261012c (n=3 each, 1 warmup; greedy regression screen, not comparable with the recipe-sampling A/B). 230 W cap. One-command route: b70-launcher 0.6.2 recipe qwen38-27b-sc5 pins this digest (b70 launch qwen38-27b-sc5).",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "exl3xpu",
+    "version": "vLLM 0.26.1.dev0+g568afb3a1 + mixed-K patches (ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab...)"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 @ SC_5.00bpw_H6 rev dfe2f4fd",
+    "quantization": "EXL3 trellis mixed-bit K=4..7 (~5.00bpw H6)",
+    "speculation": "native MTP3 (qwen3_5_mtp)"
+   },
+   "evidence": {
+    "commit": "24df27ee1dca5a428dd0d7d693eb3810ad06c45f",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/24df27ee1dca5a428dd0d7d693eb3810ad06c45f/results/qwen38-27b/sc5-image-20261013-check/README.md"
+   }
+  },
+  {
+   "id": "qwen38-27-exl3xpu-sc5-v6-check",
+   "kind": "capability",
+   "title": "Qwen3.8-27B SC_5.00bpw_H6_V6 (vision-quantized repack): text-identical, does not load on exl3xpu-mixedk",
+   "summary": "turboderp SC_5.00bpw_H6_V6 @ f33f26d9 vs the served SC_5.00bpw_H6 @ dfe2f4fd, every safetensors tensor hashed: all 2,093 language-model tensors (18,979,263,076 B, incl. MTP head) are byte-identical, as are quantization_config.json and the calibration trace. Only the vision tower changed: fp16 921 MB -> EXL3 K=6 linears 570 MB. Text output and speed are identical by construction; V6 saves about 350 MB of weights. Load on ghcr.io/sergiiob/exl3xpu-mixedk:20261013 (source github.com/SergiioB/exl3xpu-mixedk) fails at weight loading: no module or parameter 'blocks.0.attn.k_proj' in Qwen3_VisionTransformer (the vLLM plugin keeps vision unquantized). Not adopted; keep serving SC_5.00bpw_H6.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32
+   },
+   "engine": {
+    "name": "exl3xpu",
+    "version": "vLLM 0.26.1.dev0+g568afb3a1 + mixed-K patches (ghcr.io/sergiiob/exl3xpu-mixedk:20261013@sha256:5e2d1fab...)"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 @ SC_5.00bpw_H6_V6 rev f33f26d9",
+    "quantization": "EXL3 trellis mixed-bit K=4..7 (~5.00bpw H6) + vision tower EXL3 K=6"
+   },
+   "evidence": {
+    "commit": "24df27ee1dca5a428dd0d7d693eb3810ad06c45f",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/24df27ee1dca5a428dd0d7d693eb3810ad06c45f/results/qwen38-27b/sc5-v6-check-20261013/README.md"
+   }
+  },
+  {
    "id": "qwen38-27-autoround-w4a16-v1",
    "kind": "capability",
    "title": "Qwen3.8-27B W4A16/GPTQ-family closure (defective class)",
