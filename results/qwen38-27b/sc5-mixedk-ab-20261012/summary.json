@@ -1,0 +1,232 @@
+{
+ "generation_id": "sc5-mixedk-ab-20261012",
+ "recorded_utc": "2026-10-12",
+ "title": "Qwen3.8-27B EXL3 mixed-bit SC_5.00bpw_H6 vs plain 4.00bpw \u2014 paired A/B on one Intel Arc Pro B70",
+ "protocol": {
+  "design": "paired ABBA interleave, 4 server loads A B B A; block1 reps 1-3 (A then B), block2 reps 4-5 (B then A); pair i = same prompt index on both arms",
+  "measured_reps_per_cell": 5,
+  "warmups_per_cell": "1 discarded per arm+cell",
+  "concurrency": "C1 (one active request, none queued)",
+  "timing": "client-side; token_rate_tps = completion_tokens / decode window (first-token to end); wall_tps includes TTFT",
+  "prefix_cache": "enabled (production state); every measured cell cold \u2014 prefix_cache_hits_total delta 0 required",
+  "safety": "xe-event guard + VRAM guard clean between every load; measured draw via hwmon energy1_input deltas"
+ },
+ "sampling": {
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "top_k": 20,
+  "presence_penalty": 1.5,
+  "ignore_eos": true,
+  "thinking": "off",
+  "note": "Qwen-recommended non-thinking recipe; plus one greedy p512/g128 smoke cell per arm (n=1)"
+ },
+ "hardware": {
+  "gpu": "Intel Arc Pro B70 32 GiB",
+  "gpu_count": 1,
+  "power_cap_w": 230,
+  "measured_draw": "~230 W (median per-cell energy delta)"
+ },
+ "serve_config": {
+  "speculation": "native MTP3",
+  "cuda_graphs": "FULL_DECODE_ONLY",
+  "kv_dtype": "fp8",
+  "gpu_memory_utilization": 0.9,
+  "max_model_len": 65536,
+  "prefix_caching": true
+ },
+ "arms": {
+  "A": {
+   "name": "plain 4.00bpw",
+   "model": "turboderp/Qwen3.8-27B-exl3",
+   "revision": "113cf7ab",
+   "quantization": "EXL3 trellis 4.00bpw",
+   "image": "ghcr.io/0xsero/exl3xpu:0.1.0@sha256:21412bdd7535e9c653eeb3d099dce3bc79a83d440def2cd9556111c79c870fa8"
+  },
+  "B": {
+   "name": "SC_5.00bpw_H6 (mixed K=4..7)",
+   "model": "turboderp/Qwen3.8-27B-exl3",
+   "branch": "SC_5.00bpw_H6",
+   "revision": "dfe2f4fd71bf9a1994051d4d47e6460fa96dd723",
+   "quantization": "EXL3 trellis mixed-bit ~5.00bpw H6",
+   "image": "ghcr.io/sergiiob/exl3xpu-mixedk:20261012c@sha256:7bb0c5cfed8a35da8f4db0034338d8dbe5f53731253d96ea8f1db2b5bddd4a40",
+   "image_note": "0xsero/exl3xpu 0.1.0 + mixed-K patch set, SergiioB/exllamav3 b70/ @244f57e5c220a5ea6e438869fa996c5b7e96ca75"
+  }
+ },
+ "cells": {
+  "p512/g128 (recipe sampling)": {
+   "A": {
+    "measured_reps": 5,
+    "discarded_warmups": 2,
+    "prompt_tokens_observed": [
+     524
+    ],
+    "completion_tokens": [
+     128
+    ],
+    "finish_reasons": [
+     "length"
+    ],
+    "token_rate_tps_median": 63.56,
+    "token_rate_tps_all": [
+     77.49,
+     57.76,
+     63.56,
+     63.33,
+     65.9
+    ],
+    "wall_tps_median": 54.83,
+    "ttft_s_median": 0.32,
+    "avg_power_w_median": 230.4,
+    "mtp_accepted_tokens_median": 80.0,
+    "mtp_draft_tokens_median": 150.0,
+    "prefix_cache_hit_delta_max": 0
+   },
+   "B": {
+    "measured_reps": 5,
+    "discarded_warmups": 2,
+    "prompt_tokens_observed": [
+     524
+    ],
+    "completion_tokens": [
+     128
+    ],
+    "finish_reasons": [
+     "length"
+    ],
+    "token_rate_tps_median": 56.62,
+    "token_rate_tps_all": [
+     56.62,
+     59.15,
+     52.17,
+     59.58,
+     52.43
+    ],
+    "wall_tps_median": 48.4,
+    "ttft_s_median": 0.384,
+    "avg_power_w_median": 230.1,
+    "mtp_accepted_tokens_median": 81.0,
+    "mtp_draft_tokens_median": 141.0,
+    "prefix_cache_hit_delta_max": 0
+   }
+  },
+  "p8192/g128 (recipe sampling)": {
+   "A": {
+    "measured_reps": 5,
+    "discarded_warmups": 2,
+    "prompt_tokens_observed": [
+     8124
+    ],
+    "completion_tokens": [
+     128
+    ],
+    "finish_reasons": [
+     "length"
+    ],
+    "token_rate_tps_median": 64.34,
+    "token_rate_tps_all": [
+     63.1,
+     64.34,
+     59.12,
+     65.39,
+     68.45
+    ],
+    "wall_tps_median": 25.23,
+    "ttft_s_median": 3.095,
+    "avg_power_w_median": 230.1,
+    "mtp_accepted_tokens_median": 83.0,
+    "mtp_draft_tokens_median": 141.0,
+    "prefix_cache_hit_delta_max": 0
+   },
+   "B": {
+    "measured_reps": 5,
+    "discarded_warmups": 2,
+    "prompt_tokens_observed": [
+     8124
+    ],
+    "completion_tokens": [
+     128
+    ],
+    "finish_reasons": [
+     "length"
+    ],
+    "token_rate_tps_median": 56.82,
+    "token_rate_tps_all": [
+     53.29,
+     58.08,
+     56.72,
+     57.02,
+     56.82
+    ],
+    "wall_tps_median": 23.29,
+    "ttft_s_median": 3.242,
+    "avg_power_w_median": 230.0,
+    "mtp_accepted_tokens_median": 82.0,
+    "mtp_draft_tokens_median": 135.0,
+    "prefix_cache_hit_delta_max": 0
+   }
+  },
+  "p512/g128-greedy (n=1 smoke)": {
+   "A": {
+    "measured_reps": 1,
+    "discarded_warmups": 1,
+    "prompt_tokens_observed": [
+     524
+    ],
+    "completion_tokens": [
+     128
+    ],
+    "finish_reasons": [
+     "length"
+    ],
+    "token_rate_tps_median": 85.4,
+    "token_rate_tps_all": [
+     85.4
+    ],
+    "wall_tps_median": 69.75,
+    "ttft_s_median": 0.336,
+    "avg_power_w_median": 230.0,
+    "mtp_accepted_tokens_median": 89.0,
+    "mtp_draft_tokens_median": 114.0,
+    "prefix_cache_hit_delta_max": 0
+   },
+   "B": {
+    "measured_reps": 1,
+    "discarded_warmups": 1,
+    "prompt_tokens_observed": [
+     524
+    ],
+    "completion_tokens": [
+     128
+    ],
+    "finish_reasons": [
+     "length"
+    ],
+    "token_rate_tps_median": 58.05,
+    "token_rate_tps_all": [
+     58.05
+    ],
+    "wall_tps_median": 49.44,
+    "ttft_s_median": 0.384,
+    "avg_power_w_median": 230.0,
+    "mtp_accepted_tokens_median": 82.0,
+    "mtp_draft_tokens_median": 141.0,
+    "prefix_cache_hit_delta_max": 0
+   }
+  }
+ },
+ "derived": {
+  "p524_g128_B_over_A": 0.891,
+  "p8124_g128_B_over_A": 0.883
+ },
+ "correctness": {
+  "mixedk_kernel_checks": "46/46 pass (fp16 and int8 linear paths K=4..7, M=1..512, fused-mixed qkv[5,7,7])",
+  "exact_answer_canary": "6/6 pass greedy (arith/capital/token/sumsq/logic/json)",
+  "long_prompts": "3/3 pass, 8,161-8,162-token prompts, exact answers"
+ },
+ "exclusions_and_caveats": [
+  "Arm A ran the published upstream 0xsero/exl3xpu:0.1.0 image; arm B ran the mixed-K patched image. The A/B compares each quant on its route-of-record stack, not an image-isolated quant delta.",
+  "token_rate_tps is a client post-first output rate under MTP3 and recipe sampling \u2014 do not mix with MTP chunk-rate or engine-native decode figures from other campaigns.",
+  "Prefix-cache multi-turn was validated on the SC_4.00bpw_H5 sibling branch, not on SC_5.00bpw_H6.",
+  "Prompts beyond ~8.2K tokens and a full launcher-driven run are untested on SC5."
+ ]
+}
