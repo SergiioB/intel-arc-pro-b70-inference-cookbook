@@ -1,0 +1,27 @@
+{
+  "kl_mean": 0.0,
+  "kl_p99": 0.0,
+  "top1_vs_bf16": 1.0,
+  "eval_next_token_nll": 2.2656657695770264,
+  "canary_margins_step0": {
+    "r01": 0.13492202758789062,
+    "h03": 0.3481464385986328,
+    "n01": 7.125862121582031,
+    "n02": 3.426961898803711,
+    "n03": 0.6926765441894531
+  },
+  "canary_greedy_first_token": {
+    "r01": 16,
+    "h03": 23,
+    "n01": 18,
+    "n02": 23,
+    "n03": 20
+  },
+  "mean_rel_fro": null,
+  "heldout_response_slice": {
+    "kl_mean": 0.0,
+    "top1_vs_bf16": 0.9999999403953552,
+    "positions": 1531
+  },
+  "head_scope": "common BF16 reference head"
+}

@@ -1,0 +1,10 @@
+[PASS] batt-arith expect=last_integer:703 prompt_tokens=73 (file 22+template) finish=stop out='\n\n703'
+[PASS] batt-capital expect=last_line_equals:paris prompt_tokens=71 (file 20+template) finish=stop out='\n\nParis'
+[PASS] batt-token expect=contains:B70-FLASH-OK prompt_tokens=73 (file 22+template) finish=stop out='\n\nB70-FLASH-OK'
+[PASS] batt-sumsq expect=last_integer:14 prompt_tokens=79 (file 28+template) finish=stop out='nge(4)` gives `0, 1, 2, 3`, and:\n\n```python\n0*0 + 1*1 + 2*2 + 3*3 = 0 + 1 + 4 + 9 = 14\n```'
+[PASS] batt-logic expect=last_line_first_word:no prompt_tokens=82 (file 31+template) finish=stop out='\n\nNo'
+[PASS] batt-json expect=last_json_equals:{'status': 'ok', 'count': 3} prompt_tokens=77 (file 26+template) finish=stop out='\n\n{"status": "ok", "count": 3}'
+[PASS] long-0 expect=last_integer:43 prompt_tokens=8161 completion=79 finish=stop out='\n\n43'
+[PASS] long-1 expect=last_line_first_word:measurement prompt_tokens=8161 completion=54 finish=stop out='\n\nMeasurement'
+[PASS] long-2 expect=last_integer:42 prompt_tokens=8162 completion=53 finish=stop out='\n\n42'
+canary/long summary: 0 failures

@@ -1,0 +1,26 @@
+[
+  {
+    "K": 3,
+    "integer_torch_equal": true,
+    "weight_torch_equal": true,
+    "scope": "synthetic128x128 mul1; actual artifacts checked separately"
+  },
+  {
+    "K": 5,
+    "integer_torch_equal": true,
+    "weight_torch_equal": true,
+    "scope": "synthetic128x128 mul1; actual artifacts checked separately"
+  },
+  {
+    "K": 6,
+    "integer_torch_equal": true,
+    "weight_torch_equal": true,
+    "scope": "synthetic128x128 mul1; actual artifacts checked separately"
+  },
+  {
+    "K": 7,
+    "integer_torch_equal": true,
+    "weight_torch_equal": true,
+    "scope": "synthetic128x128 mul1; actual artifacts checked separately"
+  }
+]

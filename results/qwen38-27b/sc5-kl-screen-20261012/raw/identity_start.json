@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-12T08:00:03.492545+00:00",
+  "host": "ba669556ad07",
+  "gpu": "Intel(R) Arc(TM) Pro B70 Graphics",
+  "torch": "2.13.0+xpu",
+  "python": "3.12.3",
+  "repo_head": "",
+  "selector": "level_zero:1",
+  "smoke": false,
+  "harness_sha256": "f4d915df8c22a8ee22ba5f70f6ab03a1f566992fee0a33ec51f90a6cef051aaa",
+  "launcher_sha256": "2499ff606d5df9d487be5915aa41c3e575a73f4c3ef589cb755700daa9a70d92",
+  "codec_sha256": "31ef91a07c5add8782a71bcab3b6a69ad582cd0034bbccfef4d3dacce826f245",
+  "exl3_artifacts": {
+    "exl3": {
+      "root": "/exl3",
+      "manifest_sha256": "891525064bf25ff6771ab403183c8fa555679b9144b0ea93467469afa5c60f77",
+      "revision": null
+    },
+    "exl3_sc4": {
+      "root": "/exl3_sc4",
+      "manifest_sha256": "4f41009b4ee4a3ab19efcae68115a0ec81da8491c5ca5c75fbfe73c9cbc5f249",
+      "revision": "repo: turboderp/Qwen3.8-27B-exl3\nbranch: SC_4.00bpw_H5\ncommit: 4acd9ad5af224ec9e8815a54d71a033f378a7e9d\ndownloaded_utc: 2026-10-12T07:24:54Z\ntool: hf download (huggingface_hub 1.27.0)\n"
+    },
+    "exl3_sc5": {
+      "root": "/exl3_sc5",
+      "manifest_sha256": "f235ee07c11c00803486cf4e85f8dcdc9ee3bb28cdcd240d24c684e30c0eb6ec",
+      "revision": "repo: turboderp/Qwen3.8-27B-exl3\nbranch: SC_5.00bpw_H6\ncommit: dfe2f4fd71bf9a1994051d4d47e6460fa96dd723\ndownloaded_utc: 2026-10-12T07:25:30Z\ntool: hf download (huggingface_hub 1.27.0)\n"
+    }
+  }
+}

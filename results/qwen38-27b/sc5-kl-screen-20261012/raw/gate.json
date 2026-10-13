@@ -1,0 +1,14 @@
+{
+  "evaluated": false,
+  "passed": false,
+  "reason": "reference artifact evaluation only; no format adoption gate",
+  "sc_kl_ratios": {
+    "exl3_sc4": 1.152270924349309,
+    "exl3_sc5": 0.4181686269798507
+  },
+  "head_scope": "primary native artifact heads; diagnostic common BF16 head",
+  "sc_bf16head_kl_ratios": {
+    "exl3_sc4": 1.1111397795278986,
+    "exl3_sc5": 0.4091195768272214
+  }
+}

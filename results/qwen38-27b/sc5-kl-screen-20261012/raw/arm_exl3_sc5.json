@@ -1,0 +1,27 @@
+{
+  "kl_mean": 0.00581558421254158,
+  "kl_p99": 0.06163113936781883,
+  "top1_vs_bf16": 0.965745210647583,
+  "eval_next_token_nll": 2.26313853263855,
+  "canary_margins_step0": {
+    "r01": 0.11023712158203125,
+    "h03": 0.7597465515136719,
+    "n01": 7.483173370361328,
+    "n02": 3.449251174926758,
+    "n03": 0.04154396057128906
+  },
+  "canary_greedy_first_token": {
+    "r01": 16,
+    "h03": 23,
+    "n01": 18,
+    "n02": 23,
+    "n03": 20
+  },
+  "mean_rel_fro": null,
+  "heldout_response_slice": {
+    "kl_mean": 0.0014131235657259822,
+    "top1_vs_bf16": 0.9810581207275391,
+    "positions": 1531
+  },
+  "head_scope": "artifact quantized head, decoded to BF16 weights then FP32 matmul"
+}

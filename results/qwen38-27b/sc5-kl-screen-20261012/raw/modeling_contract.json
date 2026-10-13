@@ -1,0 +1,16 @@
+{
+  "transformers": "5.16.1",
+  "modeling_file": "/opt/venv/lib/python3.12/site-packages/transformers/models/qwen3_5/modeling_qwen3_5.py",
+  "residual_adds": 2,
+  "norm_gain": "1.0 + self.weight",
+  "linears": [
+    "linear_attn.in_proj_a",
+    "linear_attn.in_proj_b",
+    "linear_attn.in_proj_qkv",
+    "linear_attn.in_proj_z",
+    "linear_attn.out_proj",
+    "mlp.down_proj",
+    "mlp.gate_proj",
+    "mlp.up_proj"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "s1_fold_exact": {
+    "definition": "s1: the fp32 fold-exactness probe on every quantized layer has rel L2 <= 1e-4 (fold exact); r4_fp (bf16 storage, quantization off) KL and top-1 vs bf16 are reported, not gated, because the same bf16 storage noise is inside every R4 arm's gated metric.",
+    "pass": true,
+    "max_fold_rel_l2": null,
+    "mean_fold_rel_l2": null,
+    "n_layers_probed": 0
+  },
+  "s1_r4fp_reported_not_gated": {
+    "not_run": true
+  },
+  "s2_gptq_plain_defect": {
+    "not_run": true,
+    "note": "defect control omitted because gptq_plain is not an active arm"
+  },
+  "s3_exl3_r01_correct": {
+    "r01_margin": 1.2237739562988281,
+    "pass": true
+  },
+  "bf16_r01_margin_reference": 0.13492202758789062,
+  "all_passed": true
+}

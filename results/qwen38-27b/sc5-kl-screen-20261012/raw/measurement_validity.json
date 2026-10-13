@@ -1,0 +1,171 @@
+{
+  "data": {
+    "corpus_sha256": "5f1bea067869d04849c0f975a2b29c4ff47d867f484f5010ea5e861eab246d91",
+    "tokens_total": 297054,
+    "calib_starts": [
+      0,
+      2820,
+      5641,
+      8462,
+      11283,
+      14104,
+      16925,
+      19746,
+      22567,
+      25388,
+      28209,
+      31030,
+      33851,
+      36672,
+      39493,
+      42314,
+      45135,
+      47956,
+      50777,
+      53598,
+      56419,
+      59240,
+      62060,
+      64881,
+      67702,
+      70523,
+      73344,
+      76165,
+      78986,
+      81807,
+      84628,
+      87449,
+      90270,
+      93091,
+      95912,
+      98733,
+      101554,
+      104375,
+      107196,
+      110017,
+      112838,
+      115659,
+      118480,
+      121300,
+      124121,
+      126942,
+      129763,
+      132584,
+      135405,
+      138226,
+      141047,
+      143868,
+      146689,
+      149510,
+      152331,
+      155152,
+      157973,
+      160794,
+      163615,
+      166436,
+      169257,
+      172078,
+      174899,
+      177720
+    ],
+    "eval_shape": [
+      4,
+      832
+    ],
+    "r01_prompt_tokens": 36,
+    "canaries": [
+      {
+        "id": "r01",
+        "n_prompt": 36,
+        "exp_first": 16,
+        "foil_first": 18
+      },
+      {
+        "id": "h03",
+        "n_prompt": 38,
+        "exp_first": 23,
+        "foil_first": 24
+      },
+      {
+        "id": "n01",
+        "n_prompt": 34,
+        "exp_first": 18,
+        "foil_first": 19
+      },
+      {
+        "id": "n02",
+        "n_prompt": 38,
+        "exp_first": 23,
+        "foil_first": 24
+      },
+      {
+        "id": "n03",
+        "n_prompt": 36,
+        "exp_first": 20,
+        "foil_first": 16
+      }
+    ],
+    "heldout_trace": {
+      "path": "/exl3_sc4/qbench_prompts_gen.json",
+      "sha256": "6070481d810633355e264a618f8a3727af0fc135b3c3671c917928dc6dc215ed",
+      "template_vars": {
+        "enable_thinking": true,
+        "reasoning_effort": "medium"
+      },
+      "selection": [
+        {
+          "source_row": 0,
+          "prompt_tokens": 84,
+          "response_tokens": 748,
+          "conversation": 0,
+          "turn": 0
+        },
+        {
+          "source_row": 1,
+          "prompt_tokens": 49,
+          "response_tokens": 783,
+          "conversation": 1,
+          "turn": 0
+        }
+      ],
+      "scored_response_positions": 1531,
+      "rendering": "stored input_ids already include model chat template; no retokenization"
+    }
+  },
+  "identity": {
+    "utc": "2026-10-12T08:00:03.492545+00:00",
+    "host": "ba669556ad07",
+    "gpu": "Intel(R) Arc(TM) Pro B70 Graphics",
+    "torch": "2.13.0+xpu",
+    "python": "3.12.3",
+    "repo_head": "",
+    "selector": "level_zero:1",
+    "smoke": false,
+    "harness_sha256": "f4d915df8c22a8ee22ba5f70f6ab03a1f566992fee0a33ec51f90a6cef051aaa",
+    "launcher_sha256": "2499ff606d5df9d487be5915aa41c3e575a73f4c3ef589cb755700daa9a70d92",
+    "codec_sha256": "31ef91a07c5add8782a71bcab3b6a69ad582cd0034bbccfef4d3dacce826f245",
+    "exl3_artifacts": {
+      "exl3": {
+        "root": "/exl3",
+        "manifest_sha256": "891525064bf25ff6771ab403183c8fa555679b9144b0ea93467469afa5c60f77",
+        "revision": null
+      },
+      "exl3_sc4": {
+        "root": "/exl3_sc4",
+        "manifest_sha256": "4f41009b4ee4a3ab19efcae68115a0ec81da8491c5ca5c75fbfe73c9cbc5f249",
+        "revision": "repo: turboderp/Qwen3.8-27B-exl3\nbranch: SC_4.00bpw_H5\ncommit: 4acd9ad5af224ec9e8815a54d71a033f378a7e9d\ndownloaded_utc: 2026-10-12T07:24:54Z\ntool: hf download (huggingface_hub 1.27.0)\n"
+      },
+      "exl3_sc5": {
+        "root": "/exl3_sc5",
+        "manifest_sha256": "f235ee07c11c00803486cf4e85f8dcdc9ee3bb28cdcd240d24c684e30c0eb6ec",
+        "revision": "repo: turboderp/Qwen3.8-27B-exl3\nbranch: SC_5.00bpw_H6\ncommit: dfe2f4fd71bf9a1994051d4d47e6460fa96dd723\ndownloaded_utc: 2026-10-12T07:25:30Z\ntool: hf download (huggingface_hub 1.27.0)\n"
+      }
+    },
+    "ref_py_sha256": "3f614b7c91510d8520202e85dd0a08255370349a4d5ae4e7601edfa6897d1780",
+    "ref_git_head": "15ded2f3add148c4db3c900cba7de878238f53bc (host-verified by launcher preflight)"
+  },
+  "streams": "4 arms layer-streamed",
+  "n_layers": 64,
+  "chunk_logits": 256,
+  "notes": "r01 rendered with the /bf16 chat template enable_thinking=False; corpus sha matched corpus_meta.json; farms fail-closed manifest-verified"
+}

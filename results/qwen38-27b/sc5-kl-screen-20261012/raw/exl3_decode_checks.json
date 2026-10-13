@@ -1,0 +1,72 @@
+[
+  {
+    "root": "/exl3",
+    "K": 4,
+    "tensor": "model.language_model.layers.0.linear_attn.in_proj_qkv",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc4",
+    "K": 5,
+    "tensor": "model.language_model.layers.0.linear_attn.in_proj_qkv",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc4",
+    "K": 3,
+    "tensor": "model.language_model.layers.0.mlp.gate_proj",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc5",
+    "K": 5,
+    "tensor": "model.language_model.layers.0.linear_attn.in_proj_qkv",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc5",
+    "K": 4,
+    "tensor": "model.language_model.layers.0.mlp.gate_proj",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc4",
+    "K": 4,
+    "tensor": "model.language_model.layers.1.linear_attn.in_proj_qkv",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc5",
+    "K": 6,
+    "tensor": "model.language_model.layers.2.linear_attn.out_proj",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc4",
+    "K": 6,
+    "tensor": "model.language_model.layers.15.self_attn.k_proj",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3_sc5",
+    "K": 7,
+    "tensor": "model.language_model.layers.15.self_attn.k_proj",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  },
+  {
+    "root": "/exl3",
+    "K": 6,
+    "tensor": "lm_head",
+    "integer_torch_equal": true,
+    "weight_torch_equal": true
+  }
+]
