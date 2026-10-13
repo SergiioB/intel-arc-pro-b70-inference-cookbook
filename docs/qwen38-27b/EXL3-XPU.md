@@ -126,9 +126,10 @@ mixed-K patched image. Do not mix these decode figures with the chunk-rate
 table above: this A/B was measured at client post-first tok/s under recipe
 sampling, not MTP chunk-rate.
 
-Not yet proven on SC5: a full `b70 launch` through the launcher itself,
-prompts beyond ~8.2K tokens, and prefix-cache multi-turn (that check ran on
-the SC_4.00bpw_H5 sibling).
+Launcher smoke on SC5 (2026-10-13, `b70 launch qwen38-27b-sc5`): 6/6 canaries,
+3/3 long prompts and a 4-turn prefix-cache session up to 15,600 tokens passed
+([evidence](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/tree/026b2a559626b4f957d5ac52a5844c9c7590c733/results/qwen38-27b/sc5-launcher-smoke-20261013)).
+Not yet proven on SC5: sessions longer than ~15.6K tokens.
 
 Public evidence:
 
