@@ -9,22 +9,26 @@ Record: `qwen38-27-exl3xpu-sc5-ctx-capacity-20261014`.
 
 ## Headline
 
-- **Safe validated: context 131,072** — stage 130,872 occupied (cold prompts
-  130,829 / 130,798 tokens + real outputs + warm `CODE=/WORD=` follow-up), exact
-  needle retrieval at depths 0.5 and 0.9, exact multi-turn answers; **2,327 MiB
-  free** under sustained load at `gpu_memory_utilization` 0.90 (≥2 GiB class).
-- **Observed (capacity observation only, NOT a recommendation):** 196,438
-  occupied at `gmu 0.94` — 1,069 MiB free (<2 GiB); all five rungs 16K / 32K /
-  64K / 131K / 196K passed retrieval + multi-turn + exact checks.
-- **Engine budget (adjudicated by the engine, not a validation):** max seq len
-  **168,000** at gmu 0.90 (6.23 GiB KV), **206,400** at gmu 0.94 (7.5 GiB),
-  ~235K at 0.965 (derived). The 168,000 top cell was **not completed** (two
+- **190K+ achievable for pure inference / headless use — tested:** 196,438
+  occupied tokens at the 196,608 stage (gmu 0.94, fp8 KV, native MTP3, single
+  client, 1,069 MiB free), with exact needle retrieval at both depths (0.5 and
+  0.9) and exact warm multi-turn answers (`CODE=/WORD=`); every stage
+  16K / 32K / 64K / 131K / 196K passed the same checks. Operator preference is
+  196K (launcher profile in progress) — 190K+ is supported, not untested.
+- **Higher-reserve alternate: 131,072** — 130,872 occupied (cold prompts
+  130,829 / 130,798 tokens + real outputs + warm `CODE=/WORD=` follow-up) with
+  **2,327 MiB free** at `gmu 0.90`. Not an engine cap. Headroom at 196K is low
+  (1,069 MiB free): a low-headroom observation — fine for pure inference /
+  headless work, **not a general production recommendation**.
+- **Engine budget (a budget figure, NOT a completion):** exact max seq len
+  **206,400** at gmu 0.94 (7.5 GiB KV), **168,000** at gmu 0.90 (6.23 GiB),
+  ~235K at 0.965 (derived). The top budget cell was **not completed** (two
   client-side harness timeouts, retained). 245,760+ would require gmu ≈ 0.982
-  (~600 MiB free) — below any operating floor; **240K / 262K / 270K are
-  unreachable on SC5** (270K also exceeds the 262,144 model limit). The
-  FP8 KV pool is one shared token budget (`max_num_seqs` 16): pool capacity is
-  not context. Plain 4.00bpw (14.9 GiB vs SC5's 20.09 GiB) is a separate route
-  that reaches native 262,144 — do not merge the two.
+  (~600 MiB free) — below any operating floor; **240K+ is beyond the SC5
+  budget** (270K also exceeds the 262,144 model limit). The FP8 KV pool is one
+  shared token budget (`max_num_seqs` 16): pool capacity is not context. Plain
+  4.00bpw (14.9 GiB vs SC5's 20.09 GiB) is a separate route that reaches native
+  262,144 — do not merge the two.
 
 ## What this is not
 
