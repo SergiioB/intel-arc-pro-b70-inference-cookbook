@@ -23,6 +23,12 @@ Pinned vLLM XPU and llama.cpp SYCL recipes, failure notes, and measurement recor
 
 More routes: [Nemotron DFlash](docs/nemotron35-30a3/README.md), [Flash-Next](docs/qwen38-flash-next/README.md), [Windows](docs/qwen38-27b/WINDOWS-STANDALONE.md), and [family-specific research](docs/WHAT-WORKED.md). Research routes are not interchangeable with the first-run recipe.
 
+## Request or add a recipe
+
+Need a model or configuration not yet covered? Submit a [recipe request](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/issues/new?template=recipe-request.yml) with your target Hugging Face model and hardware setup.
+
+To contribute a recipe directly to the B70 Launcher catalog, follow the [recipe format specification](https://github.com/SergiioB/b70-launcher/blob/main/docs/recipe-format.md) to edit `recipes.json`, verify with `python3 -m unittest tests.test_recipes`, and open a pull request.
+
 ## For contributors and agents
 
 Use [`data/system-map.v1.json`](data/system-map.v1.json) to select an intent. [`docs/AGENT-SYSTEM.md`](docs/AGENT-SYSTEM.md) explains the authority layers; [`docs/ADDING-A-RECIPE.md`](docs/ADDING-A-RECIPE.md) explains publication. Keep historical evidence intact. Validate changes with `python3 scripts/check-repo.py`.

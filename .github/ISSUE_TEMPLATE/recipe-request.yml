@@ -1,0 +1,75 @@
+name: "Recipe Request"
+description: "Request a new model recipe for B70 Launcher or Intel Arc Pro B70"
+title: "[Recipe Request]: "
+labels: ["recipe-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request a new model recipe for B70 Launcher and the Intel Arc Pro B70 cookbook.
+        Please check existing [recipes](docs/BENCHMARK-CATALOG.md) and [tested configurations](docs/WHAT-WORKED.md) first.
+
+  - type: input
+    id: model
+    attributes:
+      label: "Model"
+      description: "Hugging Face model repository URL"
+      placeholder: "https://huggingface.co/org/model-name"
+    validations: { required: true }
+
+  - type: dropdown
+    id: engine
+    attributes:
+      label: "Engine wanted"
+      description: "Target inference runtime engine"
+      options:
+        - "vLLM XPU"
+        - "llama.cpp SYCL"
+        - "OpenVINO"
+        - "EXL3"
+        - "any"
+      default: 0
+    validations: { required: true }
+
+  - type: dropdown
+    id: b70_cards
+    attributes:
+      label: "Number of B70 cards"
+      options:
+        - "1"
+        - "2"
+        - "more"
+      default: 0
+    validations: { required: true }
+
+  - type: input
+    id: pcie_link
+    attributes:
+      label: "PCIe link per card"
+      description: "Trained PCIe generation and lane width per card"
+      placeholder: "Gen4 x8 + Gen4 x8"
+    validations: { required: false }
+
+  - type: input
+    id: context_length
+    attributes:
+      label: "Context you need"
+      description: "Required context window length (e.g. 8k, 32k, 128k, 262k)"
+      placeholder: "e.g. 32k"
+    validations: { required: false }
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: "What you'll use it for"
+      description: "Workload, tooling, agents, or target latency/throughput requirements"
+      placeholder: "e.g. Coding agent in VS Code, document analysis, local chat endpoint..."
+    validations: { required: false }
+
+  - type: input
+    id: launcher_version
+    attributes:
+      label: "Launcher version"
+      description: "B70 Launcher version or commit hash (shown in UI footer or /api/version)"
+      placeholder: "e.g. 2026-10-14"
+    validations: { required: false }
