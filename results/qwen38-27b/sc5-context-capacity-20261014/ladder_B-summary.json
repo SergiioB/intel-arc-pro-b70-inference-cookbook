@@ -1,0 +1,35 @@
+[
+ {
+  "stage": 131072,
+  "occupied_context_max": 130872,
+  "prompt_tokens": [
+   130829,
+   130798,
+   130858
+  ],
+  "completion_tokens": [
+   6,
+   6,
+   14
+  ],
+  "needle_hits": [
+   true,
+   true
+  ],
+  "cold_cache_deltas": [
+   null,
+   null
+  ],
+  "ttft_s": {
+   "needle-cold-0.5": 103.35632821399486,
+   "needle-cold-0.9": 100.5108996600029,
+   "multiturn-warm-0.9": 3.4485252000158653
+  },
+  "vram_free_mib": [
+   2327
+  ],
+  "stage_pass": true,
+  "warm_detail": "code=True word=True cache_hit=True ttft_ratio=0.034",
+  "errors": []
+ }
+]

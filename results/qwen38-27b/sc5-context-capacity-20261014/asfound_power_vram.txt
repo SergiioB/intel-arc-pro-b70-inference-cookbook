@@ -1,0 +1,31 @@
+2026-10-13T21:53:05Z
+card0 hwmon5 cap=180000000
+card1 hwmon6 cap=230000000
+visible_avail: 32615MiB
+visible_size: 32656MiB
+chunk_size: 4KiB, total: 32656MiB, free: 32615MiB, clear_free: 0MiB
+order-22 free:    16384 MiB, blocks: 1
+order-21 free:     8192 MiB, blocks: 1
+order-20 free:     4096 MiB, blocks: 1
+order-19 free:     2048 MiB, blocks: 1
+order-18 free:     1024 MiB, blocks: 1
+order-17 free:      512 MiB, blocks: 1
+order-16 free:      256 MiB, blocks: 1
+order-15 free:        0 KiB, blocks: 0
+order-14 free:       64 MiB, blocks: 1
+order-13 free:        0 KiB, blocks: 0
+order-12 free:       16 MiB, blocks: 1
+order-11 free:        8 MiB, blocks: 1
+order-10 free:        8 MiB, blocks: 2
+order- 9 free:        4 MiB, blocks: 2
+order- 8 free:        1 MiB, blocks: 1
+order- 7 free:      512 KiB, blocks: 1
+order- 6 free:        1 MiB, blocks: 4
+order- 5 free:      896 KiB, blocks: 7
+order- 4 free:      320 KiB, blocks: 5
+order- 3 free:      192 KiB, blocks: 6
+order- 2 free:       64 KiB, blocks: 4
+order- 1 free:        0 KiB, blocks: 0
+order- 0 free:        8 KiB, blocks: 2
+visible_avail: 31534MiB
+MemAvailable_MiB 37782

@@ -1,0 +1,50 @@
+**** Xe Device Coredump ****
+Reason: Timedout job - seqno=709, lrc_seqno=709, guc_id=6, flags=0x20
+kernel: 7.0.0-28-generic
+module: xe
+Snapshot time: 1791935373.616407738
+Uptime: 347931.700436628
+Process: python3 [3945039]
+PCI ID: 0xe223
+PCI revision: 0x00
+GT id: 0
+	Tile: 0
+	Type: main
+	IP ver: 20.2.0
+	CS reference clock: 19200000
+GT id: 1
+	Tile: 0
+	Type: media
+	IP ver: 13.1.2
+	CS reference clock: 19200000
+
+**** GT #0 ****
+	Tile: 0
+
+**** GuC Log ****
+GuC log snapshot not allocated!
+
+**** GuC CT ****
+H2G CTB (all sizes in DW):
+	size: 1024
+	resv_space: 0
+	head: 1004
+	tail: 869
+	space: 134
+	broken: 0
+	head (memory): 869
+	tail (memory): 869
+	status (memory): 0x0
+G2H CTB (all sizes in DW):
+	size: 32768
+	resv_space: 16384
+	head: 6786
+	tail: 0
+	space: 16383
+	broken: 0
+	head (memory): 6786
+	tail (memory): 6786
+	status (memory): 0x0
+	g2h outstanding: 0
+[CTB].length: 0x22000
+[CTB].data: !!!+4!!!+4zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz!!!ph!!!phzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz_PmM?+96?\!!`]QJ,fQM!!!dAC]FG8!!%0C!!!!-_Q!S@+96?\!!`]RJ,fQM!!!dAC]FG8

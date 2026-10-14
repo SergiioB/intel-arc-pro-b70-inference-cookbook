@@ -134,7 +134,8 @@ evidence folders listed under *Public evidence*; the speed rows come from
 |---|---|---|
 | Mixed-K kernel checks | **46/46** — the [exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk) README enumerates them | `qwen38-27-exl3xpu-sc5-v1` |
 | Exact-answer canaries (greedy) | **6/6**, plus **3/3** long prompts (8,161–8,162 tokens) | `qwen38-27-exl3xpu-sc5-v1` |
-| Configured context | `max_model_len` 65,536 at `gpu_memory_utilization` 0.90, MTP3, FULL_DECODE_ONLY graphs, fp8 KV | `qwen38-27-exl3xpu-sc5-v1` |
+| Configured context | `max_model_len` 131,072 at `gpu_memory_utilization` 0.90, MTP3, FULL_DECODE_ONLY graphs, fp8 KV | `qwen38-27-exl3xpu-sc5-ctx-capacity-20261014` |
+| Context capacity (staged real prompt+output, greedy) | **131,072 safe / validated** — 130,872 occupied (prompt 130,829 + real outputs + warm follow-up), exact retrieval at needle depths 0.5/0.9, exact multi-turn answers, **2,327 MiB free** at gmu 0.90. Observed **196,438 occupied** at gmu 0.94 (1,069 MiB free — capacity observation class, not a recommendation). Engine budget max seq 168,000 @ 0.90 / 206,400 @ 0.94; top budget cell not completed; 240K+ unreachable on SC5 | `qwen38-27-exl3xpu-sc5-ctx-capacity-20261014` |
 | Matched A/B vs plain 4.00bpw — n=5 per arm, ABBA, recipe sampling (temp 0.7 / top_p 0.8 / top_k 20 / presence 1.5), MTP3, C1, g128, cold prefix cache | p524/g128: **56.62** vs 63.56 tok/s median (0.891×) | `qwen38-27-exl3xpu-sc5-p524-g128-c1` |
 | Same protocol, 8K prompt | p8124/g128: **56.82** vs 64.34 tok/s median (0.883×) | `qwen38-27-exl3xpu-sc5-p8124-g128-c1` |
 | Quality vs bf16 | final-logit KL **0.418×** (wikitext) and **0.161×** (held-out chat) of plain 4.00bpw — table below | `qwen38-27-exl3xpu-sc5-kl-screen` |
@@ -148,7 +149,23 @@ sampling, not MTP chunk-rate.
 Launcher smoke on SC5 (2026-10-13, `b70 launch qwen38-27b-sc5`): 6/6 canaries,
 3/3 long prompts and a 4-turn prefix-cache session up to 15,600 tokens passed
 ([evidence](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/tree/026b2a559626b4f957d5ac52a5844c9c7590c733/results/qwen38-27b/sc5-launcher-smoke-20261013)).
-Not yet proven on SC5: sessions longer than ~15.6K tokens.
+
+Context is no longer a ~15.6K-token limit on SC5: the 2026-10-14 staged
+context-capacity ladder validated **128K-class use safely** — 16K / 32K / 64K /
+131K / 196K stages of real prompt + real output, each with exact needle
+retrieval (depths 0.5 and 0.9) and exact warm multi-turn answers
+(`CODE=/WORD=`), on fp8 KV + native MTP3 with sampling frozen greedy
+(temperature 0, top_p 1.0, thinking off, max_tokens 256) — distinct from the
+recipe sampling (temp 0.7 / top_p 0.8 / top_k 20 / presence 1.5) used by the
+speed rows above. Safe validated context is **131,072** (130,872 occupied,
+2,327 MiB free at `gpu_memory_utilization` 0.90); 196,438 occupied is observed
+at gmu 0.94 with only 1,069 MiB free (capacity observation class, not a
+recommendation). Engine budget is max seq 168,000 at gmu 0.90 and 206,400 at
+gmu 0.94 (fp8 KV pool is one shared token budget, `max_num_seqs` 16 — pool
+capacity is not context); the top budget cell was not completed, and 240K+ is
+unreachable on SC5. This image exposes no prefix-cache counters, so the ladder's
+cold cells are zero-hit by construction only. Capacity result only — not
+performance. [Evidence](../../results/qwen38-27b/sc5-context-capacity-20261014/).
 
 ### KL screen vs BF16
 

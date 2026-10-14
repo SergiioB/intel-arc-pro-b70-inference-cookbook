@@ -1,0 +1,12 @@
+721:[334172.643609] xe 0000:0f:00.0: [drm] Xe device coredump has been created
+722:[334172.643614] xe 0000:0f:00.0: [drm] Check your /sys/class/drm/card1/device/devcoredump/data
+955:[337941.036676] xe 0000:0f:00.0: [drm] Xe device coredump has been deleted.
+1392:[347931.025050] xe 0000:0f:00.0: [drm] Tile0: GT0: 
+1400:[347931.025062] xe 0000:0f:00.0: [drm] Tile0: GT0: Fault response: Unsuccessful -ENOENT
+1401:[347931.025104] xe 0000:0f:00.0: [drm] Tile0: GT0: Engine memory CAT error [18]: class=bcs, logical_mask: 0x1, guc_id=6
+1402:[347931.025352] xe 0000:0f:00.0: [drm] Tile0: GT0: Engine reset: engine_class=bcs, logical_mask: 0x1, guc_id=6, state=0x249
+1403:[347931.025370] xe 0000:0f:00.0: [drm] Tile0: GT0: Timedout job: seqno=709, lrc_seqno=709, guc_id=6, flags=0x20 in python3 [3945039]
+1429:[347931.025759]  devcoredump_snapshot+0xfb/0x190 [xe]
+1430:[347931.025829]  xe_devcoredump+0x124/0x140 [xe]
+1477:[347931.031186] xe 0000:0f:00.0: [drm] Xe device coredump has been created
+1478:[347931.031190] xe 0000:0f:00.0: [drm] Check your /sys/class/drm/card1/device/devcoredump/data
