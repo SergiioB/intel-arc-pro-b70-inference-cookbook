@@ -188,7 +188,44 @@ positions only (1,531), not used for calibration. Record
 SC5 has 0.418× (A) and 0.161× (B) the KL of plain 4.00bpw. SC4 is worse
 than plain on wikitext and better on chat. This screen decodes the weights
 with a bit-exact reference in PyTorch. It does not cover the served engine,
-fp8 KV or MTP, and it is not a task benchmark.
+fp8 KV or MTP, and it is not a task benchmark. The served engine's int8
+prefill is measured separately below.
+
+### Prefill mode: int8 (default) or fp16 (max quality)
+
+The exl3xpu serve config reads prompts with W8A8 int8 GEMMs
+(`EXL3_INT8_PREFILL=1`). Measured as served on SC5 (2026-10-14):
+- **Quality:** on 18 held-out chat rows (44,473 positions, two passes), int8 prefill moves the
+  next-token distribution by a KL of 0.00099 [0.00092, 0.00107] from fp16 prefill. That is about 70 %
+  of SC5's whole weight-quantization KL to BF16 (0.00141). The fp16 repeat floor is 0.00004.
+- **Cost of fp16:** cold prompts read 1.63× slower at 8K, 1.54× at 32K, 1.34× at 131K and 1.28× at
+  190K.
+- **Unchanged:** generation speed is the same, and the 190K profile still completes.
+- **Default:** the predeclared rule (fp16 default only if ≤ 1.40× at 32K) keeps int8.
+
+| Prompt tokens | int8 TTFT (s) | fp16 TTFT (s) | fp16 / int8 |
+|---:|---:|---:|---:|
+| 8,192 | 2.92 | 4.77 | 1.63 |
+| 32,768 | 13.87 | 21.35 | 1.54 |
+| 131,072 | 88.6 | 118.8 | 1.34 |
+| 190,000 (one observation) | 158.2 | 202.1 | 1.28 |
+
+Medians over two interleaved loads per arm. Cold prompts, prefix caching off, launcher SC5 profile
+(196,608 context, gmu 0.94, MTP3, fp8 KV), 230 W. Records:
+- `qwen38-27-exl3xpu-sc5-int8-prefill-kl-20261014`
+  ([evidence](../../results/qwen38-27b/sc5-int8-prefill-kl-20261014/README.md));
+- `qwen38-27-exl3xpu-sc5-prefill-ttft-20261014`
+  ([evidence](../../results/qwen38-27b/sc5-prefill-ttft-20261014/README.md)).
+
+Choose fp16 when output fidelity matters more than time to first token, for example in long
+single-shot analyses or evaluations. b70-launcher 0.6.10 or newer:
+
+```bash
+b70 launch qwen38-27b-sc5 --prefill fp16   # UI: Prefill → "fp16 — max quality"
+```
+
+Without the launcher, add `--set env.EXL3_INT8_PREFILL=0` to the `serve.py` command.
+`docker run -e EXL3_INT8_PREFILL=0` does not work: the serve config's `env:` block overrides it.
 
 ### SC_5.00bpw_H6_V6 is not a text upgrade
 

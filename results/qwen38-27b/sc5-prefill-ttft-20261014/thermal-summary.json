@@ -1,0 +1,33 @@
+{
+ "energy_domain": "xe hwmon energy1_input (card)",
+ "cap_uW": 230000000,
+ "loads_avg_card_w": [
+  {
+   "window": "pre-cells A b1..post-cells A b1",
+   "seconds": 334,
+   "avg_card_w": 229
+  },
+  {
+   "window": "pre-cells B b1..post-cells B b1",
+   "seconds": 461,
+   "avg_card_w": 230
+  },
+  {
+   "window": "pre-cells A b2..post-cells A b2",
+   "seconds": 498,
+   "avg_card_w": 227
+  },
+  {
+   "window": "pre-cells B b2..post-cells B b2",
+   "seconds": 694,
+   "avg_card_w": 228
+  }
+ ],
+ "pkg_temp": {
+  "coverage": "B-b1 post-cells onward (thermal.log temp1_input does not exist on xe; fine poller covered the last three loads)",
+  "temp_file": "temp2_input (label pkg)",
+  "min_C": 55,
+  "max_C": 82,
+  "samples": 102
+ }
+}

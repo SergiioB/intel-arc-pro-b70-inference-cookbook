@@ -1,0 +1,39 @@
+{
+ "arm": "sc5_int8",
+ "rep": 2,
+ "cache_before": {
+  "prefix_cache_queries": 0.0,
+  "prefix_cache_hits": 0.0
+ },
+ "rows": [
+  {
+   "row": "wiki0",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 4.54
+  },
+  {
+   "row": "wiki1",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 4.65
+  },
+  {
+   "row": "wiki2",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 4.6
+  },
+  {
+   "row": "wiki3",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 4.48
+  }
+ ],
+ "cache_after": {
+  "prefix_cache_queries": 0.0,
+  "prefix_cache_hits": 0.0
+ },
+ "cache_hit_delta": 0.0
+}

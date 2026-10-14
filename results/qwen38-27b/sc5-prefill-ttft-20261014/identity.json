@@ -1,0 +1,9 @@
+{
+ "utc": "2026-10-14T10:54:53Z",
+ "kernel": "7.0.0-28-generic",
+ "image": "ghcr.io/sergiiob/exl3xpu-mixedk:20261014",
+ "image_digest": "ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a",
+ "model": "qwen38-27b-exl3-SC_5.00bpw_H6",
+ "served_model_name": "Qwen3.8-27B SC5",
+ "port": 8031
+}

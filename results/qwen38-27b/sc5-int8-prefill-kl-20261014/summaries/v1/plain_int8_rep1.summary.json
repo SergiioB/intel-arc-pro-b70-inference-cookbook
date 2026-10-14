@@ -1,0 +1,69 @@
+{
+ "arm": "plain_int8",
+ "rep": 1,
+ "cache_before": {
+  "prefix_cache_queries": 0.0,
+  "prefix_cache_hits": 0.0
+ },
+ "rows": [
+  {
+   "row": "wiki0",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 5.49
+  },
+  {
+   "row": "wiki1",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 4.42
+  },
+  {
+   "row": "wiki2",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 4.4
+  },
+  {
+   "row": "wiki3",
+   "n_prompt": 2048,
+   "scored": 2047,
+   "seconds": 4.56
+  },
+  {
+   "row": "chat0",
+   "n_prompt": 2643,
+   "scored": 2559,
+   "seconds": 5.93
+  },
+  {
+   "row": "chat1",
+   "n_prompt": 2608,
+   "scored": 2559,
+   "seconds": 5.8
+  },
+  {
+   "row": "chat2",
+   "n_prompt": 2595,
+   "scored": 2559,
+   "seconds": 6.04
+  },
+  {
+   "row": "chat4",
+   "n_prompt": 2619,
+   "scored": 2559,
+   "seconds": 6.32
+  },
+  {
+   "row": "long0",
+   "n_prompt": 16384,
+   "scored": 16383,
+   "seconds": 16.99
+  }
+ ],
+ "cache_after": {
+  "prefix_cache_queries": 0.0,
+  "prefix_cache_hits": 0.0
+ },
+ "cache_hit_delta": 0.0
+}
