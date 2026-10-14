@@ -1,0 +1,2 @@
+# device: Intel(R) Graphics [0xe223]
+RESULT,mode=correct,RC=1,K=17408,N=5120,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=734f140d,plane_chk=d8df1861

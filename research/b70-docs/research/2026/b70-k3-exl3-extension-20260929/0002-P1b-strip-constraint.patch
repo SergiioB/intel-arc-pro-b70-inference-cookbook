@@ -1,0 +1,37 @@
+Subject: [P1b] Repair K3 and K5 MR8 tile pairing
+Base-commit: 15ded2f3add148c4db3c900cba7de878238f53bc
+Status: local-only draft; PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Anchor: csrc/exl3_ops.sycl:181-195; exl3_esimd.h:464-467.
+D1 derivation: G=8 -> TP=32/G=4 -> NT%TP must be zero. NT=2 at MR8
+fails for BOTH K3 and K5, unconditionally instantiated by dispatch_mr.
+Choose minimum legal NT=4; MR itself stays 8. This is a template repair,
+not empirical tuning and not a measured speed improvement.
+Capture-safety: constexpr geometry only; no new allocation/sync. Whole-op D3 HOLD.
+
+diff --git a/csrc/exl3_ops.sycl b/csrc/exl3_ops.sycl
+--- a/csrc/exl3_ops.sycl
++++ b/csrc/exl3_ops.sycl
+@@ -174,18 +174,21 @@
+ // Split-K sizing: threads to aim for when choosing the number of K splits. Measured on B70 (all linears,
+ // graph-captured): 1024 beats 4096 by 10-20% for M=1..32 (fewer fp32 partials for had_out to reduce, and the
+ // 256-GRF DPAS kernels only hold ~1024 resident threads); MB=64 prefers 2048 (77 vs 88 ms).
+ static int g_target_threads = 1024;          // vector GEMV (M<=2) and DPAS MB=32
+ static int g_target_threads_mb16 = 1408;     // DPAS MB=8/16: plateau 1280-1536 (M=4 35.1->32.2 ms, M=16 38.7->36.0), cliff at 1664
+ static int g_target_threads_mb64 = 2048;
+ 
+ // Column-strip width (tiles per thread) per case, from bench sweeps on B70:
+-// K=4 M=1 -> 8 (longer contiguous reads), K=4 M=2..4 -> 4, K=6 -> 4 (two 32-lane tile pairs), M=8 -> 2.
+-constexpr int nt_of(int K, int MR) { return MR == 8 ? 2 : (K <= 4 ? (MR == 1 ? 8 : 4) : 4); }
++// K=4 M=1 -> 8, K=4 M=2..4 -> 4, K=6 -> 4; M=8 -> 2 except K=3/5.
++// Geo<3/5>::G=8 => TP=4: every instantiated MR needs NT % TP == 0.
++constexpr int nt_of(int K, int MR) {
++    return MR == 8 ? ((K == 3 || K == 5) ? 4 : 2) : (K <= 4 ? (MR == 1 ? 8 : 4) : 4);
++}
+ static int nt_for(int K, int MR) { return nt_of(K, MR); }
+ 
+ template <int K, int CB>
+ static bool dispatch_mr(int MR, const at::Tensor& xh, const at::Tensor& tr, const at::Tensor& shard,
+                         at::Tensor& part, int M, int Kdim, int N, int P, int rps, sycl::queue& q) {
+     switch (MR) {
+         case 1: launch_gemv<K, CB, 1, nt_of(K, 1)>(xh, tr, shard, part, M, Kdim, N, P, rps, q); return true;
+         case 2: launch_gemv<K, CB, 2, nt_of(K, 2)>(xh, tr, shard, part, M, Kdim, N, P, rps, q); return true;

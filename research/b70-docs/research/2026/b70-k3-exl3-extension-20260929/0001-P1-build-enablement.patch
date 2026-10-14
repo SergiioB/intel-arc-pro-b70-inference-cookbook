@@ -1,0 +1,60 @@
+Subject: [P1] Parameterize optional codebooks; propagate compiler failure
+Base-commit: 15ded2f3add148c4db3c900cba7de878238f53bc
+Status: local-only draft; PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Anchors: scripts/build_ext.sh:14-19; docker/Dockerfile:11.
+D2: remove the filtering/swallowing pipeline altogether; set -e now propagates
+compiler failure even if an older output .so exists. Retain full diagnostics.
+EXL3_ALL_CODEBOOKS=1 appends the define through EXL3_FLAGS; default remains 0.
+Capture-safety: build-only change; no runtime allocation/sync added. D3 HOLD
+remains; this is not authorization to build. Apply P1b before ALL_CODEBOOKS.
+
+diff --git a/scripts/build_ext.sh b/scripts/build_ext.sh
+--- a/scripts/build_ext.sh
++++ b/scripts/build_ext.sh
+@@ -1,19 +1,25 @@
+ #!/usr/bin/env bash
+ # Build exl3xpu/_C.so (SYCL/ESIMD torch op library). JIT (spir64) device code: the kernels are
+ # finalised by the Level Zero driver's IGC on first launch and cached.
+ source /opt/intel/oneapi/setvars.sh --force >/dev/null 2>&1
+ set -euo pipefail
+ cd "$(dirname "$0")/.."
++# Optional codebooks are opt-in; preserve the K4/K6-only default.
++case "${EXL3_ALL_CODEBOOKS:-0}" in
++  0) ;;
++  1) EXL3_FLAGS="${EXL3_FLAGS:-} -DEXL3_ALL_CODEBOOKS" ;;
++  *) printf '%s\n' 'EXL3_ALL_CODEBOOKS must be 0 or 1' >&2; exit 2 ;;
++esac
+ T=$(python3 -c "import torch,os;print(os.path.dirname(torch.__file__))")
+ # oneDNN (oneAPI) for the fused-scale int8 prefill GEMM, when present
+ D=/opt/intel/oneapi/dnnl/latest
+ DNNL_FLAGS=""; DNNL_LIBS=""
+ if [ -f $D/include/oneapi/dnnl/dnnl_sycl.hpp ] && [ -z "${EXL3_NO_DNNL:-}" ]; then
+   DNNL_FLAGS="-DEXL3_DNNL -I$D/include"; DNNL_LIBS="-L$D/lib -Wl,-rpath,$D/lib -ldnnl"
+ fi
+ icpx -fsycl -fsycl-targets=spir64 -O3 -ffast-math -fPIC -std=c++17 -shared \
+   -fsycl-device-code-split=per_kernel -D_GLIBCXX_USE_CXX11_ABI=1 ${EXL3_FLAGS:-} $DNNL_FLAGS \
+   -I csrc -I$T/include -I$T/include/torch/csrc/api/include \
+   -x c++ csrc/exl3_ops.sycl -x none -o ${EXL3_OUT:-exl3xpu/_C.so} \
+-  -L$T/lib -Wl,-rpath,$T/lib -lc10 -ltorch -ltorch_cpu -lc10_xpu -ltorch_xpu $DNNL_LIBS 2>&1 | grep -E "error" || true
++  -L$T/lib -Wl,-rpath,$T/lib -lc10 -ltorch -ltorch_cpu -lc10_xpu -ltorch_xpu $DNNL_LIBS
+ ls -la ${EXL3_OUT:-exl3xpu/_C.so}
+diff --git a/docker/Dockerfile b/docker/Dockerfile
+--- a/docker/Dockerfile
++++ b/docker/Dockerfile
+@@ -3,13 +3,15 @@
+ WORKDIR /opt/exl3xpu
+ COPY pyproject.toml ./
+ COPY exl3xpu ./exl3xpu
+ COPY csrc ./csrc
+ COPY scripts ./scripts
+ COPY models ./models
+ COPY bench ./bench
+ COPY tests ./tests
+-RUN bash scripts/build_ext.sh && pip install --no-deps --no-build-isolation -e . \
++ARG EXL3_ALL_CODEBOOKS=0
++ARG EXL3_FLAGS=""
++RUN EXL3_ALL_CODEBOOKS="$EXL3_ALL_CODEBOOKS" EXL3_FLAGS="$EXL3_FLAGS" bash scripts/build_ext.sh && pip install --no-deps --no-build-isolation -e . \
+  && python3 -c "from importlib.metadata import entry_points as e; assert any(x.name=='exl3xpu' for x in e(group='vllm.general_plugins'))"
+ ENV MODELS_DIR=/models
+ ENTRYPOINT ["python3", "scripts/serve.py"]
+ CMD ["models/qwen3.8-27b-exl3-4.00bpw", "--gpu", "0"]

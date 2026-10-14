@@ -1,0 +1,18 @@
+---
+title: "Fused MTP Draft Step Kernel (Track 2)"
+type: research
+date: 2026-09-05
+status: final
+---
+
+> QUARANTINED — INVALID, UNIMPLEMENTED PROTOTYPE. No compilation, parity, or performance result exists. See QUARANTINE.md.
+
+# Fused MTP Draft Step Kernel (Track 2)
+
+This directory tracks the development of the `fused_mtp_step_xpu` kernel for Qwen3.8-27B.
+
+**Objective:**
+Fuse `RMSNorm` -> `Gemv MTP Layer` -> `Sampling Argmax` into a single SYCL kernel.
+
+**Roadmap Reference:** `megakernel-implementation-roadmap-20260829.md`
+

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "transfer": {
+    "bytes_per_step": 266000000,
+    "bandwidth_gbps": 11.5,
+    "collective_count": 0,
+    "latency_us": 0,
+    "provenance": {
+      "kind": "assumption",
+      "references": [
+        "research/references/strata-intel-20261008/sha256-020c512a0da61e6bbf433ecaaabd139986c3c2468ea8f57d6827c3e169e467b9/content",
+        "hypothesis:RQ-14"
+      ],
+      "note": "Sensitivity example, not measured: 266 MB expert-miss stream per decode round (135 missing experts x 1.97 MB, external claim size). Per-round miss count and MoE-layer count are unrecorded in captured sources; the matched screen must collect cache-miss counters per cell. Bandwidth 11.5 GB/s local class assumption as in research/references/strata-prefill-chunk-price.json. Not a claim about any decode rate."
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "amdahl": {
+    "wall_fraction": 0.50592,
+    "local_speedup": 2,
+    "provenance": {
+      "kind": "measured",
+      "references": [
+        "results/2026/10/rq14-strata-matched-screen-20261009/raw/prefill-2k/base.log",
+        "research/references/rq22-int8-prompt-gemm-price.json",
+        "research/2026/flashnext-strata-source-math-20261009.md",
+        "hypothesis:RQ-22"
+      ],
+      "note": "SENSITIVITY VARIANT, not the primary price: same measured stage table as rq22-int8-prompt-gemm-price.json (base.log line 45, GPU timeline 9207 ms) but the wall_fraction additionally includes the separate 'dequant' phase (1224 ms, 13.3%), i.e. (970+2464+1224)/9207 = 4658/9207. This is the case where an s8 prompt datapath absorbs dequantization into the GEMM kernel itself - the upstream #136 fused-int8 pattern (flashnext-strata-source-math-20261009.md section 2 item 4 measured that fused kernel at 0.22x of the separate dequant+GEMM pair on the vendor's card, E0), which requires weights dequantized to s8 inside the kernel and is the expensive kernel port RQ-22's economic_gate names. local_speedup=2 on the whole dequant+GEMM block is deliberately conservative versus that 0.22x-class precedent. Answers one predeclared question only: can the registered '>= 1.3x 8K prefill' success gate be reached at a 2x local speedup at all? Gemm-swap-only (primary input) caps at 1.229x and cannot."
+    }
+  }
+}

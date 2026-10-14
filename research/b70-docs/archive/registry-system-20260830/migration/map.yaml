@@ -1,0 +1,2228 @@
+{
+  "schema_version": 1,
+  "generated": {
+    "mode": "inventory-subordinate-to-approved-moves",
+    "source_set": "current-markdown-at-generation",
+    "approved_moves_path": "registry/migration/approved-moves.yaml",
+    "entry_count": 201
+  },
+  "entries": [
+    {
+      "source_path": "AGENTS.md",
+      "registry_id": "doc-agents",
+      "disposition": "register-in-place",
+      "target_path": "AGENTS.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "DOCUMENT-MAP.md",
+      "registry_id": "DOC-ROOT-DOCUMENT-MAP",
+      "disposition": "register-in-place",
+      "target_path": "DOCUMENT-MAP.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move.",
+      "approved_move_entry": 4
+    },
+    {
+      "source_path": "README.md",
+      "registry_id": "DOC-ROOT-README",
+      "disposition": "register-in-place",
+      "target_path": "README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "archive/README.md",
+      "registry_id": "DOC-ARCHIVE-INDEX",
+      "disposition": "register-in-place",
+      "target_path": "archive/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "archive/docs/pre-migration-20260819/AGENTS.md",
+      "registry_id": "doc-archive-docs-pre-migration-20260819-agents",
+      "disposition": "register-in-place",
+      "target_path": "archive/docs/pre-migration-20260819/AGENTS.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "archive/docs/pre-migration-20260819/benchmark-history.md",
+      "registry_id": "doc-archive-docs-pre-migration-20260819-benchmark-history",
+      "disposition": "register-in-place",
+      "target_path": "archive/docs/pre-migration-20260819/benchmark-history.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "archive/docs/pre-migration-20260819/launcher-guide.md",
+      "registry_id": "doc-archive-docs-pre-migration-20260819-launcher-guide",
+      "disposition": "register-in-place",
+      "target_path": "archive/docs/pre-migration-20260819/launcher-guide.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "archive/docs/pre-migration-20260819/lvm-and-storage.md",
+      "registry_id": "doc-archive-docs-pre-migration-20260819-lvm-and-storage",
+      "disposition": "register-in-place",
+      "target_path": "archive/docs/pre-migration-20260819/lvm-and-storage.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "archive/docs/pre-migration-20260819/recommended-configs.md",
+      "registry_id": "doc-archive-docs-pre-migration-20260819-recommended-configs",
+      "disposition": "register-in-place",
+      "target_path": "archive/docs/pre-migration-20260819/recommended-configs.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "benchmarks/b9853-vs-b10222-qwen35b-q4-moe-2026-08-03.md",
+      "registry_id": "doc-benchmarks-b9853-vs-b10222-qwen35b-q4-moe-2026-08-03",
+      "disposition": "register-in-place",
+      "target_path": "benchmarks/b9853-vs-b10222-qwen35b-q4-moe-2026-08-03.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "benchmarks/boundary-sweep-2026-08-03.md",
+      "registry_id": "doc-benchmarks-boundary-sweep-2026-08-03",
+      "disposition": "register-in-place",
+      "target_path": "benchmarks/boundary-sweep-2026-08-03.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "benchmarks/ovms-vs-llamacpp-qwen35b-moe-2026-08-04.md",
+      "registry_id": "doc-benchmarks-ovms-vs-llamacpp-qwen35b-moe-2026-08-04",
+      "disposition": "register-in-place",
+      "target_path": "benchmarks/ovms-vs-llamacpp-qwen35b-moe-2026-08-04.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "benchmarks/vllm-pi-realworld-and-long-context-2026-08-08.md",
+      "registry_id": "doc-benchmarks-vllm-pi-realworld-and-long-context-2026-08-08",
+      "disposition": "register-in-place",
+      "target_path": "benchmarks/vllm-pi-realworld-and-long-context-2026-08-08.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "campaigns/2026/muse-glimmer-q4kxl-dflash/README.md",
+      "registry_id": "DOC-CAM-2026-MUSE-GLIMMER-Q4KXL-DFLASH",
+      "disposition": "register-in-place",
+      "target_path": "campaigns/2026/muse-glimmer-q4kxl-dflash/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "campaigns/2026/nemotron-dflash-n7-n5/README.md",
+      "registry_id": "DOC-CAM-2026-NEMOTRON-DFLASH-N7-N5",
+      "disposition": "register-in-place",
+      "target_path": "campaigns/2026/nemotron-dflash-n7-n5/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "campaigns/2026/ornith15-day0-mtp-screen/README.md",
+      "registry_id": "DOC-CAM-2026-ORNITH15-DAY0-MTP-SCREEN",
+      "disposition": "register-in-place",
+      "target_path": "campaigns/2026/ornith15-day0-mtp-screen/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "campaigns/2026/ornith15-mixedcal-v2/README.md",
+      "registry_id": "DOC-CAM-2026-ORNITH15-MIXEDCAL-V2",
+      "disposition": "register-in-place",
+      "target_path": "campaigns/2026/ornith15-mixedcal-v2/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "campaigns/2026/qwen36-pi-128k-matched/README.md",
+      "registry_id": "DOC-CAM-2026-QWEN36-PI-128K-MATCHED",
+      "disposition": "register-in-place",
+      "target_path": "campaigns/2026/qwen36-pi-128k-matched/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "campaigns/2026/qwen38-4mode-230w/README.md",
+      "registry_id": "DOC-CAM-2026-QWEN38-4MODE-230W",
+      "disposition": "register-in-place",
+      "target_path": "campaigns/2026/qwen38-4mode-230w/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "campaigns/2026/qwen38-dflash2-objective/README.md",
+      "registry_id": "DOC-CAM-2026-QWEN38-DFLASH2-OBJECTIVE",
+      "disposition": "register-in-place",
+      "target_path": "campaigns/2026/qwen38-dflash2-objective/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0001-llamacpp-kv-fleet-default.md",
+      "registry_id": "b70-ref-adr-0001-llamacpp-kv-fleet-default",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0001-llamacpp-kv-fleet-default.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0002-nemotron-dflash-serving-default.md",
+      "registry_id": "b70-ref-adr-0002-nemotron-dflash-serving-default",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0002-nemotron-dflash-serving-default.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0003-ornith-provisional-mtp1.md",
+      "registry_id": "b70-ref-adr-0003-ornith-provisional-mtp1",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0003-ornith-provisional-mtp1.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0004-qwen38-mixed-gdn-v5-concurrency.md",
+      "registry_id": "b70-ref-adr-0004-qwen38-mixed-gdn-v5-concurrency",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0004-qwen38-mixed-gdn-v5-concurrency.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0005-gptq-practical-vllm-path.md",
+      "registry_id": "b70-ref-adr-0005-gptq-practical-vllm-path",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0005-gptq-practical-vllm-path.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0006-sub-1gib-vram-reserve.md",
+      "registry_id": "b70-ref-adr-0006-sub-1gib-vram-reserve",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0006-sub-1gib-vram-reserve.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0007-ornith-autoround-w4a16-candidate.md",
+      "registry_id": "b70-ref-adr-0007-ornith-autoround-w4a16-candidate",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0007-ornith-autoround-w4a16-candidate.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0008-dual-b70-independent-default.md",
+      "registry_id": "b70-ref-adr-0008-dual-b70-independent-default",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0008-dual-b70-independent-default.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/adr-0009-xe2-megakernel-and-persistent-fusion-policy.md",
+      "registry_id": "b70-ref-adr-0009-xe2-megakernel-and-persistent-fusion-policy",
+      "disposition": "register-in-place",
+      "target_path": "decisions/adr-0009-xe2-megakernel-and-persistent-fusion-policy.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "decisions/corrections-and-supersessions-2026-08-19.md",
+      "registry_id": "b70-report-corrections-and-supersessions-2026-08-19",
+      "disposition": "register-in-place",
+      "target_path": "decisions/corrections-and-supersessions-2026-08-19.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/archive/B70-SYCL-INFERENCE-GUIDE.md",
+      "registry_id": "doc-docs-archive-b70-sycl-inference-guide",
+      "disposition": "register-in-place",
+      "target_path": "docs/archive/B70-SYCL-INFERENCE-GUIDE.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/archive/b70-benchmark-findings-july-2026.md",
+      "registry_id": "doc-docs-archive-b70-benchmark-findings-july-2026",
+      "disposition": "register-in-place",
+      "target_path": "docs/archive/b70-benchmark-findings-july-2026.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/archive/mtp-power-sweep-raw-results.md",
+      "registry_id": "doc-docs-archive-mtp-power-sweep-raw-results",
+      "disposition": "register-in-place",
+      "target_path": "docs/archive/mtp-power-sweep-raw-results.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/archive/raw-results-master-v2.md",
+      "registry_id": "doc-docs-archive-raw-results-master-v2",
+      "disposition": "register-in-place",
+      "target_path": "docs/archive/raw-results-master-v2.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/archive/verification-results-2026-07-01.md",
+      "registry_id": "doc-docs-archive-verification-results-2026-07-01",
+      "disposition": "register-in-place",
+      "target_path": "docs/archive/verification-results-2026-07-01.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/archive/vision-results.md",
+      "registry_id": "doc-docs-archive-vision-results",
+      "disposition": "register-in-place",
+      "target_path": "docs/archive/vision-results.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/b70-engine-sweep-results-2026-07-05.md",
+      "registry_id": "doc-docs-b70-engine-sweep-results-2026-07-05",
+      "disposition": "register-in-place",
+      "target_path": "docs/b70-engine-sweep-results-2026-07-05.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/b70-evidence-led-improvement-plan-2026-07-05.md",
+      "registry_id": "doc-docs-b70-evidence-led-improvement-plan-2026-07-05",
+      "disposition": "register-in-place",
+      "target_path": "docs/b70-evidence-led-improvement-plan-2026-07-05.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/b70-optimization-sweep-plan.md",
+      "registry_id": "doc-docs-b70-optimization-sweep-plan",
+      "disposition": "register-in-place",
+      "target_path": "docs/b70-optimization-sweep-plan.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/b70-reddit-sweep-2026-07-05.md",
+      "registry_id": "doc-docs-b70-reddit-sweep-2026-07-05",
+      "disposition": "register-in-place",
+      "target_path": "docs/b70-reddit-sweep-2026-07-05.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/benchmark-guide.md",
+      "registry_id": "doc-docs-benchmark-guide",
+      "disposition": "register-in-place",
+      "target_path": "docs/benchmark-guide.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/benchmark-history.md",
+      "registry_id": "DOC-COMPAT-BENCHMARK-HISTORY",
+      "disposition": "register-in-place",
+      "target_path": "docs/benchmark-history.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move.",
+      "approved_move_entry": 10
+    },
+    {
+      "source_path": "docs/benchmark-protocol.md",
+      "registry_id": "doc-docs-benchmark-protocol",
+      "disposition": "register-in-place",
+      "target_path": "docs/benchmark-protocol.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/benchmark-standards-audit-2026-08-08.md",
+      "registry_id": "doc-docs-benchmark-standards-audit-2026-08-08",
+      "disposition": "register-in-place",
+      "target_path": "docs/benchmark-standards-audit-2026-08-08.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/cross-engine-comparison-2026-08-06.md",
+      "registry_id": "doc-docs-cross-engine-comparison-2026-08-06",
+      "disposition": "register-in-place",
+      "target_path": "docs/cross-engine-comparison-2026-08-06.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/current/recommended-configs.md",
+      "registry_id": "DOC-CURRENT-RECOMMENDED-CONFIGS",
+      "disposition": "register-in-place",
+      "target_path": "docs/current/recommended-configs.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/experiments/live-exact-baseline-20260718.md",
+      "registry_id": "doc-docs-experiments-live-exact-baseline-20260718",
+      "disposition": "register-in-place",
+      "target_path": "docs/experiments/live-exact-baseline-20260718.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/experiments/protocol-live-exact-baseline-20260718.md",
+      "registry_id": "doc-docs-experiments-protocol-live-exact-baseline-20260718",
+      "disposition": "register-in-place",
+      "target_path": "docs/experiments/protocol-live-exact-baseline-20260718.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/experiments/qwen27-reasoning-candidate-discovery-20260719.md",
+      "registry_id": "doc-docs-experiments-qwen27-reasoning-candidate-discovery-20260719",
+      "disposition": "register-in-place",
+      "target_path": "docs/experiments/qwen27-reasoning-candidate-discovery-20260719.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/experiments/qwen27-thinkingcap-ab-20260719.md",
+      "registry_id": "doc-docs-experiments-qwen27-thinkingcap-ab-20260719",
+      "disposition": "register-in-place",
+      "target_path": "docs/experiments/qwen27-thinkingcap-ab-20260719.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/governance/authority-map.md",
+      "registry_id": "b70-gov-authority-map",
+      "disposition": "register-in-place",
+      "target_path": "docs/governance/authority-map.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/governance/documentation-standard.md",
+      "registry_id": "b70-gov-documentation-standard",
+      "disposition": "register-in-place",
+      "target_path": "docs/governance/documentation-standard.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/governance/evidence-lifecycle.md",
+      "registry_id": "b70-gov-evidence-lifecycle",
+      "disposition": "register-in-place",
+      "target_path": "docs/governance/evidence-lifecycle.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/governance/metadata-and-id-schema.md",
+      "registry_id": "b70-gov-metadata-and-id-schema",
+      "disposition": "register-in-place",
+      "target_path": "docs/governance/metadata-and-id-schema.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/governance/public-benchmark-publication.md",
+      "registry_id": "GOV-PUBLIC-BENCHMARK-PUBLICATION",
+      "disposition": "register-in-place",
+      "target_path": "docs/governance/public-benchmark-publication.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/indexes/archive-index.md",
+      "registry_id": "doc-docs-indexes-archive-index",
+      "disposition": "register-in-place",
+      "target_path": "docs/indexes/archive-index.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/indexes/artifact-index.md",
+      "registry_id": "doc-docs-indexes-artifact-index",
+      "disposition": "register-in-place",
+      "target_path": "docs/indexes/artifact-index.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/indexes/campaign-index.md",
+      "registry_id": "doc-docs-indexes-campaign-index",
+      "disposition": "register-in-place",
+      "target_path": "docs/indexes/campaign-index.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/indexes/decision-index.md",
+      "registry_id": "doc-docs-indexes-decision-index",
+      "disposition": "register-in-place",
+      "target_path": "docs/indexes/decision-index.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/indexes/research-index.md",
+      "registry_id": "doc-docs-indexes-research-index",
+      "disposition": "register-in-place",
+      "target_path": "docs/indexes/research-index.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/kv-cache-quantization.md",
+      "registry_id": "doc-docs-kv-cache-quantization",
+      "disposition": "register-in-place",
+      "target_path": "docs/kv-cache-quantization.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/launcher-guide.md",
+      "registry_id": "DOC-COMPAT-LAUNCHER-GUIDE",
+      "disposition": "register-in-place",
+      "target_path": "docs/launcher-guide.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move.",
+      "approved_move_entry": 1
+    },
+    {
+      "source_path": "docs/lvm-and-storage.md",
+      "registry_id": "DOC-COMPAT-LVM-AND-STORAGE",
+      "disposition": "register-in-place",
+      "target_path": "docs/lvm-and-storage.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move.",
+      "approved_move_entry": 0
+    },
+    {
+      "source_path": "docs/methods/architecture-diagnostic-playbook.md",
+      "registry_id": "b70-method-architecture-diagnostic-playbook",
+      "disposition": "register-in-place",
+      "target_path": "docs/methods/architecture-diagnostic-playbook.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/methods/benchmark-protocol.md",
+      "registry_id": "DOC-METHOD-BENCHMARK-PROTOCOL",
+      "disposition": "register-in-place",
+      "target_path": "docs/methods/benchmark-protocol.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/methods/correctness-validation.md",
+      "registry_id": "b70-method-correctness-validation",
+      "disposition": "register-in-place",
+      "target_path": "docs/methods/correctness-validation.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/methods/observability-standard.md",
+      "registry_id": "b70-method-observability-standard",
+      "disposition": "register-in-place",
+      "target_path": "docs/methods/observability-standard.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/methods/quantization-evaluation.md",
+      "registry_id": "b70-method-quantization-evaluation",
+      "disposition": "register-in-place",
+      "target_path": "docs/methods/quantization-evaluation.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/muse-code-glm.md",
+      "registry_id": "doc-docs-muse-code-glm",
+      "disposition": "register-in-place",
+      "target_path": "docs/muse-code-glm.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/operations/current-host-state.md",
+      "registry_id": "DOC-OPS-CURRENT-HOST-STATE",
+      "disposition": "register-in-place",
+      "target_path": "docs/operations/current-host-state.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/operations/incident-and-cleanup.md",
+      "registry_id": "DOC-OPS-INCIDENT-CLEANUP",
+      "disposition": "register-in-place",
+      "target_path": "docs/operations/incident-and-cleanup.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/operations/launcher-guide.md",
+      "registry_id": "DOC-OPS-LAUNCHER-GUIDE",
+      "disposition": "register-in-place",
+      "target_path": "docs/operations/launcher-guide.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/operations/storage-and-vram-safety.md",
+      "registry_id": "DOC-OPS-STORAGE-VRAM-SAFETY",
+      "disposition": "register-in-place",
+      "target_path": "docs/operations/storage-and-vram-safety.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/production-audit/architecture-audit-2026-07-18.md",
+      "registry_id": "doc-docs-production-audit-architecture-audit-2026-07-18",
+      "disposition": "register-in-place",
+      "target_path": "docs/production-audit/architecture-audit-2026-07-18.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/recommended-configs.md",
+      "registry_id": "DOC-COMPAT-RECOMMENDED-CONFIGS",
+      "disposition": "register-in-place",
+      "target_path": "docs/recommended-configs.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/reference/engine-support-matrix.md",
+      "registry_id": "b70-ref-engine-support-matrix",
+      "disposition": "register-in-place",
+      "target_path": "docs/reference/engine-support-matrix.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/reference/hardware-software-stack.md",
+      "registry_id": "b70-ref-hardware-software-stack",
+      "disposition": "register-in-place",
+      "target_path": "docs/reference/hardware-software-stack.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/reference/kv-cache-reference.md",
+      "registry_id": "DOC-REF-KV-CACHE",
+      "disposition": "register-in-place",
+      "target_path": "docs/reference/kv-cache-reference.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/reference/megakernel-comprehensive-reference.md",
+      "registry_id": "b70-ref-megakernel-comprehensive-reference",
+      "disposition": "register-in-place",
+      "target_path": "docs/reference/megakernel-comprehensive-reference.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/reference/quantization-decision-record.md",
+      "registry_id": "b70-ref-quantization-decision-record",
+      "disposition": "register-in-place",
+      "target_path": "docs/reference/quantization-decision-record.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/reproducibility/production-b9853-20260718T224645+0200.md",
+      "registry_id": "doc-docs-reproducibility-production-b9853-20260718t224645-0200",
+      "disposition": "register-in-place",
+      "target_path": "docs/reproducibility/production-b9853-20260718T224645+0200.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/session-2026-08-03-longcat-llamacpp-lvm.md",
+      "registry_id": "doc-docs-session-2026-08-03-longcat-llamacpp-lvm",
+      "disposition": "register-in-place",
+      "target_path": "docs/session-2026-08-03-longcat-llamacpp-lvm.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "docs/speculative-decoding-on-b70.md",
+      "registry_id": "doc-docs-speculative-decoding-on-b70",
+      "disposition": "register-in-place",
+      "target_path": "docs/speculative-decoding-on-b70.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/muse/muse-glimmer-30b/README.md",
+      "registry_id": "doc-models-muse-muse-glimmer-30b-readme",
+      "disposition": "register-in-place",
+      "target_path": "models/muse/muse-glimmer-30b/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/muse/muse-glimmer-30b/adoption.md",
+      "registry_id": "doc-models-muse-muse-glimmer-30b-adoption",
+      "disposition": "register-in-place",
+      "target_path": "models/muse/muse-glimmer-30b/adoption.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/muse/muse-glimmer-30b/artifacts.md",
+      "registry_id": "doc-models-muse-muse-glimmer-30b-artifacts",
+      "disposition": "register-in-place",
+      "target_path": "models/muse/muse-glimmer-30b/artifacts.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/muse/muse-glimmer-30b/quality.md",
+      "registry_id": "doc-models-muse-muse-glimmer-30b-quality",
+      "disposition": "register-in-place",
+      "target_path": "models/muse/muse-glimmer-30b/quality.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/muse/muse-glimmer-30b/serving.md",
+      "registry_id": "doc-models-muse-muse-glimmer-30b-serving",
+      "disposition": "register-in-place",
+      "target_path": "models/muse/muse-glimmer-30b/serving.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/muse/muse-glimmer-30b/timeline.md",
+      "registry_id": "doc-models-muse-muse-glimmer-30b-timeline",
+      "disposition": "register-in-place",
+      "target_path": "models/muse/muse-glimmer-30b/timeline.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/README.md",
+      "registry_id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-readme",
+      "disposition": "register-in-place",
+      "target_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/adoption.md",
+      "registry_id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-adoption",
+      "disposition": "register-in-place",
+      "target_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/adoption.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md",
+      "registry_id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-artifacts",
+      "disposition": "register-in-place",
+      "target_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/quality.md",
+      "registry_id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-quality",
+      "disposition": "register-in-place",
+      "target_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/quality.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/serving.md",
+      "registry_id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-serving",
+      "disposition": "register-in-place",
+      "target_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/serving.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/timeline.md",
+      "registry_id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-timeline",
+      "disposition": "register-in-place",
+      "target_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/timeline.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/ornith/ornith-1.5-35b-a3b/README.md",
+      "registry_id": "doc-models-ornith-ornith-1-5-35b-a3b-readme",
+      "disposition": "register-in-place",
+      "target_path": "models/ornith/ornith-1.5-35b-a3b/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/ornith/ornith-1.5-35b-a3b/adoption.md",
+      "registry_id": "doc-models-ornith-ornith-1-5-35b-a3b-adoption",
+      "disposition": "register-in-place",
+      "target_path": "models/ornith/ornith-1.5-35b-a3b/adoption.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/ornith/ornith-1.5-35b-a3b/artifacts.md",
+      "registry_id": "doc-models-ornith-ornith-1-5-35b-a3b-artifacts",
+      "disposition": "register-in-place",
+      "target_path": "models/ornith/ornith-1.5-35b-a3b/artifacts.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/ornith/ornith-1.5-35b-a3b/mixedcal-v2-conversion.md",
+      "registry_id": "doc-models-ornith-ornith-1-5-35b-a3b-mixedcal-v2-conversion",
+      "disposition": "register-in-place",
+      "target_path": "models/ornith/ornith-1.5-35b-a3b/mixedcal-v2-conversion.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/ornith/ornith-1.5-35b-a3b/quality.md",
+      "registry_id": "doc-models-ornith-ornith-1-5-35b-a3b-quality",
+      "disposition": "register-in-place",
+      "target_path": "models/ornith/ornith-1.5-35b-a3b/quality.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/ornith/ornith-1.5-35b-a3b/serving.md",
+      "registry_id": "doc-models-ornith-ornith-1-5-35b-a3b-serving",
+      "disposition": "register-in-place",
+      "target_path": "models/ornith/ornith-1.5-35b-a3b/serving.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/ornith/ornith-1.5-35b-a3b/timeline.md",
+      "registry_id": "doc-models-ornith-ornith-1-5-35b-a3b-timeline",
+      "disposition": "register-in-place",
+      "target_path": "models/ornith/ornith-1.5-35b-a3b/timeline.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.6-35b-a3b/README.md",
+      "registry_id": "doc-models-qwen-qwen3-6-35b-a3b-readme",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.6-35b-a3b/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.6-35b-a3b/adoption.md",
+      "registry_id": "doc-models-qwen-qwen3-6-35b-a3b-adoption",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.6-35b-a3b/adoption.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.6-35b-a3b/artifacts.md",
+      "registry_id": "doc-models-qwen-qwen3-6-35b-a3b-artifacts",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.6-35b-a3b/artifacts.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.6-35b-a3b/quality.md",
+      "registry_id": "doc-models-qwen-qwen3-6-35b-a3b-quality",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.6-35b-a3b/quality.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.6-35b-a3b/serving.md",
+      "registry_id": "doc-models-qwen-qwen3-6-35b-a3b-serving",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.6-35b-a3b/serving.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.6-35b-a3b/timeline.md",
+      "registry_id": "doc-models-qwen-qwen3-6-35b-a3b-timeline",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.6-35b-a3b/timeline.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.8-27b/README.md",
+      "registry_id": "doc-models-qwen-qwen3-8-27b-readme",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.8-27b/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.8-27b/adoption.md",
+      "registry_id": "doc-models-qwen-qwen3-8-27b-adoption",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.8-27b/adoption.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.8-27b/artifacts.md",
+      "registry_id": "doc-models-qwen-qwen3-8-27b-artifacts",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.8-27b/artifacts.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.8-27b/quality.md",
+      "registry_id": "doc-models-qwen-qwen3-8-27b-quality",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.8-27b/quality.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.8-27b/serving.md",
+      "registry_id": "doc-models-qwen-qwen3-8-27b-serving",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.8-27b/serving.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "models/qwen/qwen3.8-27b/timeline.md",
+      "registry_id": "doc-models-qwen-qwen3-8-27b-timeline",
+      "disposition": "register-in-place",
+      "target_path": "models/qwen/qwen3.8-27b/timeline.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/README.md",
+      "registry_id": "DOC-COMPAT-RESEARCH-INDEX",
+      "disposition": "register-in-place",
+      "target_path": "research/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move.",
+      "approved_move_entry": 3
+    },
+    {
+      "source_path": "research/archive/high-context-validation.md",
+      "registry_id": "doc-research-archive-high-context-validation",
+      "disposition": "register-in-place",
+      "target_path": "research/archive/high-context-validation.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/archive/optimization-roadmap.md",
+      "registry_id": "doc-research-archive-optimization-roadmap",
+      "disposition": "register-in-place",
+      "target_path": "research/archive/optimization-roadmap.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/archive/power-scaling-corrected.md",
+      "registry_id": "doc-research-archive-power-scaling-corrected",
+      "disposition": "register-in-place",
+      "target_path": "research/archive/power-scaling-corrected.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/b450f-dual-b70-pcie-topology-20260824.md",
+      "registry_id": "doc-research-b450f-dual-b70-pcie-topology-20260824",
+      "disposition": "register-in-place",
+      "target_path": "research/b450f-dual-b70-pcie-topology-20260824.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/b70-patch-candidates-20260807.md",
+      "registry_id": "doc-research-b70-patch-candidates-20260807",
+      "disposition": "register-in-place",
+      "target_path": "research/b70-patch-candidates-20260807.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/b70-vllm-muse-int4/PLAN.md",
+      "registry_id": "doc-research-b70-vllm-muse-int4-plan",
+      "disposition": "register-in-place",
+      "target_path": "research/b70-vllm-muse-int4/PLAN.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/b70-xe2-architecture-prefill-analysis-20260807.md",
+      "registry_id": "doc-research-b70-xe2-architecture-prefill-analysis-20260807",
+      "disposition": "register-in-place",
+      "target_path": "research/b70-xe2-architecture-prefill-analysis-20260807.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/dsv4-k216-buun-moe-cache-20260825.md",
+      "registry_id": "doc-research-dsv4-k216-buun-moe-cache-20260825",
+      "disposition": "register-in-place",
+      "target_path": "research/dsv4-k216-buun-moe-cache-20260825.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/dsv4-k216-dspark-and-public-numbers-20260825.md",
+      "registry_id": "doc-research-dsv4-k216-dspark-and-public-numbers-20260825",
+      "disposition": "register-in-place",
+      "target_path": "research/dsv4-k216-dspark-and-public-numbers-20260825.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/dsv4-k216-prefill-ubatch-20260825.md",
+      "registry_id": "doc-research-dsv4-k216-prefill-ubatch-20260825",
+      "disposition": "register-in-place",
+      "target_path": "research/dsv4-k216-prefill-ubatch-20260825.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/dsv4-k216-request-to-output-pipeline-20260825.md",
+      "registry_id": "doc-research-dsv4-k216-request-to-output-pipeline-20260825",
+      "disposition": "register-in-place",
+      "target_path": "research/dsv4-k216-request-to-output-pipeline-20260825.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/dual-b70-stack-research-20260824.md",
+      "registry_id": "doc-research-dual-b70-stack-research-20260824",
+      "disposition": "register-in-place",
+      "target_path": "research/dual-b70-stack-research-20260824.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/humble-b70-llm-dual-tp2-20260824.md",
+      "registry_id": "b70-research-humble-b70-llm-dual-tp2-20260824",
+      "disposition": "register-in-place",
+      "target_path": "research/humble-b70-llm-dual-tp2-20260824.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/intel-outreach/PLAYBOOK.md",
+      "registry_id": "doc-research-intel-outreach-playbook",
+      "disposition": "register-in-place",
+      "target_path": "research/intel-outreach/PLAYBOOK.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/intel-outreach/email-oneapi-innovator.md",
+      "registry_id": "doc-research-intel-outreach-email-oneapi-innovator",
+      "disposition": "register-in-place",
+      "target_path": "research/intel-outreach/email-oneapi-innovator.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/intel-outreach/internal-checklist.md",
+      "registry_id": "doc-research-intel-outreach-internal-checklist",
+      "disposition": "register-in-place",
+      "target_path": "research/intel-outreach/internal-checklist.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/intel-outreach/linkedin-dm.md",
+      "registry_id": "doc-research-intel-outreach-linkedin-dm",
+      "disposition": "register-in-place",
+      "target_path": "research/intel-outreach/linkedin-dm.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/intel-outreach/one-pager.md",
+      "registry_id": "doc-research-intel-outreach-one-pager",
+      "disposition": "register-in-place",
+      "target_path": "research/intel-outreach/one-pager.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/intel-vllm-xpu-skills-vs-b70-observations-20260822.md",
+      "registry_id": "b70-research-intel-skills-vs-observations",
+      "disposition": "register-in-place",
+      "target_path": "research/intel-vllm-xpu-skills-vs-b70-observations-20260822.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/kv-cache-quantization-analysis.md",
+      "registry_id": "doc-research-kv-cache-quantization-analysis",
+      "disposition": "register-in-place",
+      "target_path": "research/kv-cache-quantization-analysis.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/kv-cache-validation-results.md",
+      "registry_id": "doc-research-kv-cache-validation-results",
+      "disposition": "register-in-place",
+      "target_path": "research/kv-cache-validation-results.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/megakernel-implementation-roadmap-20260829.md",
+      "registry_id": "doc-research-megakernel-implementation-roadmap-20260829",
+      "disposition": "register-in-place",
+      "target_path": "research/megakernel-implementation-roadmap-20260829.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/megakernel-xe2-xmx-architecture-guide-20260829.md",
+      "registry_id": "doc-research-megakernel-xe2-xmx-architecture-guide-20260829",
+      "disposition": "register-in-place",
+      "target_path": "research/megakernel-xe2-xmx-architecture-guide-20260829.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/minimax-h3-comfy-xpu-20260814.md",
+      "registry_id": "doc-research-minimax-h3-comfy-xpu-20260814",
+      "disposition": "register-in-place",
+      "target_path": "research/minimax-h3-comfy-xpu-20260814.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/minimax-h3-dual-b70-20260825.md",
+      "registry_id": "doc-research-minimax-h3-dual-b70-20260825",
+      "disposition": "register-in-place",
+      "target_path": "research/minimax-h3-dual-b70-20260825.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/minimax-h3-workflows/README.md",
+      "registry_id": "doc-research-minimax-h3-workflows-readme",
+      "disposition": "register-in-place",
+      "target_path": "research/minimax-h3-workflows/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-cold-input-vs-10k.md",
+      "registry_id": "doc-research-nemotron-cold-input-vs-10k",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-cold-input-vs-10k.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-dflash-xpu-first-proof-20260813.md",
+      "registry_id": "doc-research-nemotron-dflash-xpu-first-proof-20260813",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-dflash-xpu-first-proof-20260813.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-impact-vs-nvidia-cards-20260813.md",
+      "registry_id": "doc-research-nemotron-impact-vs-nvidia-cards-20260813",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-impact-vs-nvidia-cards-20260813.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/01-architecture-analysis.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-01-architectu-fa1df449",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/01-architecture-analysis.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/02-root-cause-bottleneck.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-02-root-cause-94f3b586",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/02-root-cause-bottleneck.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/03-kernel-fusion-implementation.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-03-kernel-fus-eee312c8",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/03-kernel-fusion-implementation.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/04-spec-decoding-comparison.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-04-spec-decod-1982125e",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/04-spec-decoding-comparison.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/05-mmq-xmx-dispatch-fix.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-05-mmq-xmx-di-0d70e1e3",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/05-mmq-xmx-dispatch-fix.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/06-architect-subagent-report.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-06-architect-aee4b0c5",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/06-architect-subagent-report.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/07-path-to-75-tps.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-07-path-to-75-tps",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/07-path-to-75-tps.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/08-q4_0-breakthrough.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-08-q4-0-breakthrough",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/08-q4_0-breakthrough.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/09-conversion-and-download-status-20260812.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-09-conversion-9ea9ec67",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/09-conversion-and-download-status-20260812.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/10-vllm-gptq-readiness-20260812.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-10-vllm-gptq-d9b5b7ea",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/10-vllm-gptq-readiness-20260812.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/11-session-log-20260812.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-11-session-lo-777358a1",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/11-session-log-20260812.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/README.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-readme",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-lightning-optimization-20260811/evidence/STATUS.md",
+      "registry_id": "doc-research-nemotron-lightning-optimization-20260811-evidence-status",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-lightning-optimization-20260811/evidence/STATUS.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/nemotron-session-summary-20260813.md",
+      "registry_id": "doc-research-nemotron-session-summary-20260813",
+      "disposition": "register-in-place",
+      "target_path": "research/nemotron-session-summary-20260813.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/next-model-adaptation-playbook.md",
+      "registry_id": "doc-research-next-model-adaptation-playbook",
+      "disposition": "register-in-place",
+      "target_path": "research/next-model-adaptation-playbook.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/ornith15-35b-a3b-adoption-20260819.md",
+      "registry_id": "doc-research-ornith15-35b-a3b-adoption-20260819",
+      "disposition": "register-in-place",
+      "target_path": "research/ornith15-35b-a3b-adoption-20260819.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/ornith15-autoround-vs-gptq-20260822.md",
+      "registry_id": "doc-research-ornith15-autoround-vs-gptq-20260822",
+      "disposition": "register-in-place",
+      "target_path": "research/ornith15-autoround-vs-gptq-20260822.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/prs/20260813-README.md",
+      "registry_id": "doc-research-prs-20260813-readme",
+      "disposition": "register-in-place",
+      "target_path": "research/prs/20260813-README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/prs/20260813-vllm-xpu-grouped-topk-graph-safe/PR.md",
+      "registry_id": "doc-research-prs-20260813-vllm-xpu-grouped-topk-graph-safe-pr",
+      "disposition": "register-in-place",
+      "target_path": "research/prs/20260813-vllm-xpu-grouped-topk-graph-safe/PR.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/prs/20260813-vllm-xpu-kernels-atomic-zeros-and-muse-tuple/PR.md",
+      "registry_id": "doc-research-prs-20260813-vllm-xpu-kernels-atomic-zeros-and-muse-tuple-pr",
+      "disposition": "register-in-place",
+      "target_path": "research/prs/20260813-vllm-xpu-kernels-atomic-zeros-and-muse-tuple/PR.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/quantization-format-strategy.md",
+      "registry_id": "doc-research-quantization-format-strategy",
+      "disposition": "register-in-place",
+      "target_path": "research/quantization-format-strategy.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move.",
+      "approved_move_entry": 2
+    },
+    {
+      "source_path": "research/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md",
+      "registry_id": "doc-research-qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827",
+      "disposition": "register-in-place",
+      "target_path": "research/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-27b-day0-adoption-20260814.md",
+      "registry_id": "doc-research-qwen38-27b-day0-adoption-20260814",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-27b-day0-adoption-20260814.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-27b-drafter-campaign-20260817.md",
+      "registry_id": "doc-research-qwen38-27b-drafter-campaign-20260817",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-27b-drafter-campaign-20260817.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-agentic-128k-20260819.md",
+      "registry_id": "doc-research-qwen38-agentic-128k-20260819",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-agentic-128k-20260819.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-agentic-cacheon-20260819.md",
+      "registry_id": "doc-research-qwen38-agentic-cacheon-20260819",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-agentic-cacheon-20260819.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-cookbook-pr1-pr2-review-20260818.md",
+      "registry_id": "doc-research-qwen38-cookbook-pr1-pr2-review-20260818",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-cookbook-pr1-pr2-review-20260818.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-dflash2-objective-campaign-20260830.md",
+      "registry_id": "DOC-RESEARCH-QWEN38-DFLASH2-OBJECTIVE-20260830",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-dflash2-objective-campaign-20260830.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-dflash2-smoke-20260819.md",
+      "registry_id": "doc-research-qwen38-dflash2-smoke-20260819",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-dflash2-smoke-20260819.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-flash-next-b70-adoption-20260826.md",
+      "registry_id": "doc-research-qwen38-flash-next-b70-adoption-20260826",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-flash-next-b70-adoption-20260826.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-fp8-tp2-mtp4-w8a16-cliff-note.md",
+      "registry_id": "doc-research-qwen38-fp8-tp2-mtp4-w8a16-cliff-note",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-fp8-tp2-mtp4-w8a16-cliff-note.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-fp8-tp2-speed-attack-and-ceilings-20260829.md",
+      "registry_id": "doc-research-qwen38-fp8-tp2-speed-attack-and-ceilings-20260829",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-fp8-tp2-speed-attack-and-ceilings-20260829.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-fp8-tp2-speed-attack-consolidated-20260830.md",
+      "registry_id": "doc-research-qwen38-fp8-tp2-speed-attack-consolidated-20260830",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-fp8-tp2-speed-attack-consolidated-20260830.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-gdn-mixed-split-v5-20260818.md",
+      "registry_id": "doc-research-qwen38-gdn-mixed-split-v5-20260818",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-gdn-mixed-split-v5-20260818.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-pi-agent-backend-20260816.md",
+      "registry_id": "doc-research-qwen38-pi-agent-backend-20260816",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-pi-agent-backend-20260816.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-pi-agent-loop-20260816.md",
+      "registry_id": "doc-research-qwen38-pi-agent-loop-20260816",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-pi-agent-loop-20260816.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/qwen38-sm1-ctx-gen-20260819.md",
+      "registry_id": "doc-research-qwen38-sm1-ctx-gen-20260819",
+      "disposition": "register-in-place",
+      "target_path": "research/qwen38-sm1-ctx-gen-20260819.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/references/2026-08-11-hikari-memory-bandwidth-vs-flops.md",
+      "registry_id": "doc-research-references-2026-08-11-hikari-memory-bandwidth-vs-flops",
+      "disposition": "register-in-place",
+      "target_path": "research/references/2026-08-11-hikari-memory-bandwidth-vs-flops.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/references/deleted-model-artifacts-20260813/invalid-conv1d/README.md",
+      "registry_id": "doc-research-references-deleted-model-artifacts-20260813-invalid-co-7ef719ae",
+      "disposition": "register-in-place",
+      "target_path": "research/references/deleted-model-artifacts-20260813/invalid-conv1d/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/references/deleted-model-artifacts-20260813/invalid-embed/README.md",
+      "registry_id": "doc-research-references-deleted-model-artifacts-20260813-invalid-em-6847abf2",
+      "disposition": "register-in-place",
+      "target_path": "research/references/deleted-model-artifacts-20260813/invalid-embed/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/references/deleted-model-artifacts-20260813/muse-redhat-partial/README.md",
+      "registry_id": "doc-research-references-deleted-model-artifacts-20260813-muse-redha-ff5c5bae",
+      "disposition": "register-in-place",
+      "target_path": "research/references/deleted-model-artifacts-20260813/muse-redhat-partial/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/sglang-xe2-dense-e1-and-n256-tile-20260817.md",
+      "registry_id": "doc-research-sglang-xe2-dense-e1-and-n256-tile-20260817",
+      "disposition": "register-in-place",
+      "target_path": "research/sglang-xe2-dense-e1-and-n256-tile-20260817.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/sources.md",
+      "registry_id": "doc-research-sources",
+      "disposition": "register-in-place",
+      "target_path": "research/sources.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/upstream-filings-20260827.md",
+      "registry_id": "doc-research-upstream-filings-20260827",
+      "disposition": "register-in-place",
+      "target_path": "research/upstream-filings-20260827.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/vllm-021-campaign-20260806.md",
+      "registry_id": "doc-research-vllm-021-campaign-20260806",
+      "disposition": "register-in-place",
+      "target_path": "research/vllm-021-campaign-20260806.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/vllm-mtp-xpu-issue.md",
+      "registry_id": "doc-research-vllm-mtp-xpu-issue",
+      "disposition": "register-in-place",
+      "target_path": "research/vllm-mtp-xpu-issue.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/vllm-xpu-kernel-customizations-technical-reference.md",
+      "registry_id": "doc-research-vllm-xpu-kernel-customizations-technical-reference",
+      "disposition": "register-in-place",
+      "target_path": "research/vllm-xpu-kernel-customizations-technical-reference.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/vllm-xpu-mtp-agentic-crash-pr-20260816.md",
+      "registry_id": "doc-research-vllm-xpu-mtp-agentic-crash-pr-20260816",
+      "disposition": "register-in-place",
+      "target_path": "research/vllm-xpu-mtp-agentic-crash-pr-20260816.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/vllm-xpu-pr-readiness-20260813.md",
+      "registry_id": "doc-research-vllm-xpu-pr-readiness-20260813",
+      "disposition": "register-in-place",
+      "target_path": "research/vllm-xpu-pr-readiness-20260813.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/vram-budget-model.md",
+      "registry_id": "doc-research-vram-budget-model",
+      "disposition": "register-in-place",
+      "target_path": "research/vram-budget-model.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/weight-quantization-quality.md",
+      "registry_id": "doc-research-weight-quantization-quality",
+      "disposition": "register-in-place",
+      "target_path": "research/weight-quantization-quality.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/x570f-dual-b70-pcie-topology-20260830.md",
+      "registry_id": "doc-research-x570f-dual-b70-pcie-topology-20260830",
+      "disposition": "register-in-place",
+      "target_path": "research/x570f-dual-b70-pcie-topology-20260830.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/xe2-esimd-launch-bounds-2026-08.md",
+      "registry_id": "doc-research-xe2-esimd-launch-bounds-2026-08",
+      "disposition": "register-in-place",
+      "target_path": "research/xe2-esimd-launch-bounds-2026-08.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "research/xemaxxing-overnight-prompt.md",
+      "registry_id": "doc-research-xemaxxing-overnight-prompt",
+      "disposition": "register-in-place",
+      "target_path": "research/xemaxxing-overnight-prompt.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "studies/quantization/README.md",
+      "registry_id": "DOC-STUDY-QUANTIZATION-INDEX",
+      "disposition": "register-in-place",
+      "target_path": "studies/quantization/README.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "studies/quantization/historical/quantization-format-strategy-20260807.md",
+      "registry_id": "doc-studies-quantization-historical-quantization-format-strategy-20260807",
+      "disposition": "register-in-place",
+      "target_path": "studies/quantization/historical/quantization-format-strategy-20260807.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    },
+    {
+      "source_path": "studies/quantization/historical/weight-quantization-quality-202607.md",
+      "registry_id": "doc-studies-quantization-historical-weight-quantization-quality-202607",
+      "disposition": "register-in-place",
+      "target_path": "studies/quantization/historical/weight-quantization-quality-202607.md",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Generated inventory entry records the current Markdown path without authorizing a move."
+      },
+      "notes": "Generated inventory subordinate to registry/migration/approved-moves.yaml; this map never authorizes or replaces a manual approved move."
+    }
+  ]
+}

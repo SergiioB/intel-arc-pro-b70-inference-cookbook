@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://huggingface.co/turboderp/Qwen3.8-27B-exl3/resolve/SC_3.00bpw_H4/quantization_config.json",
+  "final_url": "https://huggingface.co/api/resolve-cache/models/turboderp/Qwen3.8-27B-exl3/86b95530f9d365d90dd24d01a997a8de0cdf6c55/quantization_config.json?%2Fturboderp%2FQwen3.8-27B-exl3%2Fresolve%2FSC_3.00bpw_H4%2Fquantization_config.json=&etag=%22b8007f13bdb524f849cc870ce90d375a304a9980%22",
+  "fetched_at": "2026-10-12T05:10:30.068002Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "e7c692d6330f098f6e5c4f002e88e686cbd7500df5ab5cbf48d44583b194133c",
+  "size_bytes": 629042,
+  "claim": "Per-tensor K map of turboderp Qwen3.8-27B-exl3 SC_3.00bpw_H4",
+  "relevance": "Determines which trellis K values and mixed-K fused modules the B70 serving kernel must support",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

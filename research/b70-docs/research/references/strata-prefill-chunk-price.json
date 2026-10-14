@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "transfer": {
+    "bytes_per_step": 26600000000,
+    "bandwidth_gbps": 11.5,
+    "collective_count": 0,
+    "latency_us": 0,
+    "provenance": {
+      "kind": "assumption",
+      "references": [
+        "research/references/strata-intel-20261008/sha256-020c512a0da61e6bbf433ecaaabd139986c3c2468ea8f57d6827c3e169e467b9/content",
+        "docs/methods/architecture-diagnostic-playbook.md"
+      ],
+      "note": "RQ-14 prefill expert-miss stream for one 4K prompt chunk: 13.5k missing experts x 1.97 MB = 26.6 GB decimal (external claim, pinned INTEL.md at d5ea713). Bandwidth 11.5 GB/s is the local class assumption from the retained direct-peer copy probe (11-12 GB/s); local host-to-device PCIe is unmeasured; their B70 VM measured 13.3 GB/s H2D (external claim). Single-card route, zero collectives. Bound only, not a measured local rate."
+    }
+  }
+}

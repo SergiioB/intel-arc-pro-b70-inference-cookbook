@@ -1,0 +1,242 @@
+{
+ "schema_version": 1,
+ "updated": "2026-10-13",
+ "authority": "docs/operations/storage-layout.md",
+ "role_dirs": [
+  "models",
+  "engines",
+  "docker",
+  "cache",
+  "work",
+  "archive"
+ ],
+ "role_meaning": {
+  "models": "model artifacts, one folder or file per artifact, original artifact names kept",
+  "engines": "engine source trees, builds, venvs and self-contained engine installs (e.g. strata with its model)",
+  "docker": "private docker/containerd data roots (EXL3 daemon)",
+  "cache": "re-creatable caches: Hugging Face hub, OpenVINO and compile caches",
+  "work": "active campaign scratch; delete or move to archive when the campaign closes",
+  "archive": "kept but inactive: backups, old home folders, bulky evidence moved out of B70-DOCS"
+ },
+ "disks": [
+  {
+   "name": "nvme",
+   "mount": "/data/nvme",
+   "uuid": "5c4bf8da-9f09-409b-a3f9-4b2a87acdb08",
+   "device": "WD_BLACK SN770 NVMe 500 GB (nvme1n1p1)",
+   "use": "fastest disk: served models, EXL3 docker root"
+  },
+  {
+   "name": "sata1",
+   "mount": "/data/sata1",
+   "uuid": "881eb944-f0e5-48a7-9ac3-6e5d8bdc01f4",
+   "device": "T-FORCE SATA 500 GB (sdb2)",
+   "use": "model library, Strata install"
+  },
+  {
+   "name": "sata2",
+   "mount": "/data/sata2",
+   "uuid": "385efe34-6b3e-42d2-b48b-ace80d59b74e",
+   "device": "WD Blue SATA 500 GB, partition on the system disk (sda3)",
+   "use": "caches, archive, small models",
+   "extra_top_level": [
+    "comfyui"
+   ]
+  }
+ ],
+ "optional_mounts": [
+  {
+   "name": "seagate",
+   "mount": "/data/<other-disk>",
+   "uuid": "3EF29561F2951E69",
+   "device": "external 1 TB NTFS, external, usually absent (nofail)"
+  }
+ ],
+ "mount_aliases": {
+  "/mnt/<models-disk>": "/mnt/<sata-disk>",
+  "/mnt/<models-disk>": "/mnt/<sata-disk>",
+  "/mnt/<other-disk>": "/mnt/<sata-disk>",
+  "/mnt/<nvme-disk>": "/mnt/<nvme-disk>"
+ },
+ "mount_map": {
+  "/mnt/<nvme-disk>": "/data/nvme",
+  "/mnt/<sata-disk>": "/data/sata1",
+  "/mnt/<sata-disk>": "/data/sata2",
+  "/mnt/<sata-disk>": "/data/<other-disk>"
+ },
+ "path_map": [
+  [
+   "/data/nvme/b70-exl3-qwen38-4bpw-20260926",
+   "/data/nvme/models/b70-exl3-qwen38-4bpw-20260926"
+  ],
+  [
+   "/data/nvme/b70-bf16-qwen38-20260926",
+   "/data/nvme/models/b70-bf16-qwen38-20260926"
+  ],
+  [
+   "/data/nvme/models-ov/Muse-Glimmer-30B-int4-ov",
+   "/data/nvme/models/Muse-Glimmer-30B-int4-ov"
+  ],
+  [
+   "/data/nvme/models-ov/Qwen3.8-27B-int4-ov",
+   "/data/nvme/models/Qwen3.8-27B-int4-ov"
+  ],
+  [
+   "/data/nvme/models-ov/gemma-4-26b-a4b-int4-ov",
+   "/data/nvme/models/gemma-4-26b-a4b-int4-ov"
+  ],
+  [
+   "/data/nvme/mtp-draft/Qwen3.8-Flash-Next-MTP-Q4_K_M.gguf",
+   "/data/nvme/models/Qwen3.8-Flash-Next-MTP-Q4_K_M.gguf"
+  ],
+  [
+   "/data/nvme/qwen36-single-gpu-gate",
+   "/data/nvme/models/cascadia-qwen36-single-gpu-gate"
+  ],
+  [
+   "/data/nvme/qwen38-shards",
+   "/data/nvme/models/cascadia-qwen38-shards"
+  ],
+  [
+   "/data/nvme/qwen38-shards-2stage",
+   "/data/nvme/models/cascadia-qwen38-shards-2stage"
+  ],
+  [
+   "/data/nvme/models/.cache/huggingface",
+   "/data/nvme/cache/huggingface"
+  ],
+  [
+   "/data/nvme/<exl3-dockerd>",
+   "/data/nvme/docker/exl3-docker"
+  ],
+  [
+   "/data/nvme/builds/pti-gpu-build",
+   "/data/nvme/engines/pti-gpu-build"
+  ],
+  [
+   "/data/nvme/src/exllamav3-b70",
+   "/data/nvme/engines/exllamav3-b70"
+  ],
+  [
+   "/data/nvme/src/exllamav3-xpu",
+   "/data/nvme/engines/exllamav3-xpu"
+  ],
+  [
+   "/data/nvme/src/xpu_build_test",
+   "/data/nvme/engines/xpu_build_test"
+  ],
+  [
+   "/data/sata1/Qwen3.8-27B-FP8",
+   "/data/sata1/models/Qwen3.8-27B-FP8"
+  ],
+  [
+   "/data/sata1/Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "/data/sata1/models/Qwen3.8-27B-UD-Q4_K_M.gguf"
+  ],
+  [
+   "/data/sata1/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16",
+   "/data/sata1/models/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16"
+  ],
+  [
+   "/data/sata1/models-exl3-sc/qwen38-27b-exl3-SC_5.00bpw_H6",
+   "/data/sata1/models/qwen38-27b-exl3-SC_5.00bpw_H6"
+  ],
+  [
+   "/data/sata1/models-exl3-sc",
+   "/data/sata1/archive/models-exl3-sc-download-logs"
+  ],
+  [
+   "/data/sata1/strata",
+   "/data/sata1/engines/strata"
+  ],
+  [
+   "/data/sata1/b70-backups",
+   "/data/sata1/archive/b70-backups"
+  ],
+  [
+   "/data/sata1/quant-showdown-20260913",
+   "/data/sata1/archive/quant-showdown-20260913"
+  ],
+  [
+   "/data/sata2/huggingface",
+   "/data/sata2/cache/huggingface"
+  ],
+  [
+   "/data/sata2/OpenVINO/Qwen3.6-35B-A3B-int4-ov",
+   "/data/sata2/models/Qwen3.6-35B-A3B-int4-ov"
+  ],
+  [
+   "/data/sata2/OpenVINO/qwen15-moe-a27b-int4-ov",
+   "/data/sata2/models/qwen15-moe-a27b-int4-ov"
+  ],
+  [
+   "/data/sata2/nemotron-lightning-gptq-sym64-20260812",
+   "/data/sata2/models/nemotron-lightning-gptq-sym64-20260812"
+  ],
+  [
+   "/data/sata2/qwenflash-llama-pinned-9723942",
+   "/data/sata2/engines/qwenflash-llama-pinned-9723942"
+  ],
+  [
+   "/data/sata2/results",
+   "/data/sata2/archive/results-20260812"
+  ],
+  [
+   "~/cascadia",
+   "/data/sata2/archive/home-sergio-20261013/cascadia"
+  ],
+  [
+   "~/cascadia-venv",
+   "/data/sata2/archive/home-sergio-20261013/cascadia-venv"
+  ],
+  [
+   "~/b70-lab",
+   "/data/sata2/archive/home-sergio-20261013/b70-lab"
+  ],
+  [
+   "~/llama.cpp-muse",
+   "/data/sata2/archive/home-sergio-20261013/llama.cpp-muse"
+  ]
+ ],
+ "deletions": [
+  {
+   "date": "2026-10-13",
+   "list": "results/2026/10/storage-cleanup-20261013/tierA.txt",
+   "record": "results/2026/10/storage-cleanup-20261013/deleted.tsv"
+  }
+ ],
+ "retired_paths": [
+  {
+   "old": "/mnt/<models-disk>",
+   "retired": "2026-10-13"
+  },
+  {
+   "old": "/mnt/<models-disk>",
+   "retired": "2026-10-13"
+  },
+  {
+   "old": "/mnt/<nvme-disk>",
+   "retired": "2026-10-13"
+  },
+  {
+   "old": "/mnt/<other-disk>",
+   "retired": "2026-10-13"
+  },
+  {
+   "old": "/mnt/<nvme-disk>",
+   "retired": "2026-10-13"
+  },
+  {
+   "old": "/mnt/<sata-disk>",
+   "retired": "2026-10-13"
+  },
+  {
+   "old": "/mnt/<sata-disk>",
+   "retired": "2026-10-13"
+  },
+  {
+   "old": "/mnt/<sata-disk>",
+   "retired": "2026-10-13"
+  }
+ ]
+}

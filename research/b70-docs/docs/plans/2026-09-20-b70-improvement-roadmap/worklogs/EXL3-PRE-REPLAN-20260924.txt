@@ -1,0 +1,193 @@
+---
+title: "EXL3 vs AutoRound/GPTQ on B70 & Future Inference Levers — 2026-09-24"
+status: final
+type: research
+date: 2026-09-24
+---
+
+---
+id: b70-research-exl3-autoround-and-next-levers-20260924
+title: EXL3 vs AutoRound/GPTQ on B70 & Next Inference Levers — 2026-09-24
+document_type: research
+status: complete
+authority: docs/methods/benchmark-protocol.md
+scope: Analysis of 0xSero/Claude EXL3 prototype claims on Intel Arc Pro B70; comparison against AutoRound and champion GPTQ+draft-INT4 recipes; step budgets and arithmetic vs bandwidth limits; formal definition of the 4 open research frontiers (FastMTP, verify-head pruning, rotated low-bit, dual-GPU interconnect).
+truth_verdict: VALIDATED
+evidence_tier: E2
+publication_gate: PROVISIONAL_NOT_FOR_PUBLIC_HEADLINE
+observed_at: 2026-09-24
+---
+
+# EXL3 vs AutoRound/GPTQ on B70 & Next Inference Levers
+
+## 1. Executive Summary & Context
+
+On 2026-09-24, public discussion originated around a benchmark claim posted by `@0xSero`:
+> *"Claude took an Intel GPU, and built kernels that got within 8% of the memory bandwidth ceiling (555 / 608 GB/s). Incredible technology..."*
+
+The post included a screenshot of technical measurements on an Intel Arc Pro B70 running a custom EXL3 prototype kernel on **Qwen3.8-27B** with Multi-Token Prediction (MTP).
+
+This document records the exact physical deconstruction of that claim, validates the arithmetic against our existing fleet research, compares the results against production AutoRound and champion GPTQ recipes, and establishes the **four active research frontiers** required to push Intel Arc B70 inference throughput beyond the current ~100 tok/s envelope.
+
+---
+
+## 2. Deconstruction of the EXL3 Screenshot Claim
+
+### 2.1 The 555 GB/s Figure
+* **Isolated `lm_head` pass only:** The $555\text{ GB/s}$ metric ($91.3\%$ of the $608\text{ GB/s}$ rated GDDR6 ceiling) represents an unquantized linear GEMV streaming microbenchmark on the output vocabulary projection (`lm_head`), not full-model decode.
+* **Realistic practical ceiling:** The document correctly notes that $\sim 560\text{ GB/s}$ is the realistic practical ceiling for memory streaming on this hardware die (accounting for DRAM page breaks, refresh cycles, and controller overhead).
+
+### 2.2 Full Step Budget Breakdown (Qwen3.8-27B)
+The screenshot measures a single speculative decode step composed of:
+
+| Component | Size (GB) | Description |
+|---|---:|---|
+| **Main-model weights** | 13.1 GB | EXL3 4-bit body with 6-bit `lm_head` |
+| **MTP draft** | ~1.6 GB | 3 speculative draft passes + pruned draft head |
+| **Recurrent (GDN) state** | ~0.3 GB | Read + write of linear attention state per user |
+| **Attention KV** | Negligible | Short context cache traffic |
+| **Total bytes streamed per step** | **~15.0 GB** | |
+
+### 2.3 Measured Step & Effective Bandwidth
+* **Measured step latency:** $\sim 37.5\text{ ms}$ at $3.42$ accepted tokens per step $\implies \mathbf{91\text{ tok/s}}$ ($26.6\text{ steps/s}$).
+* **Effective memory bandwidth achieved:**
+  $$\text{Effective Bandwidth} = \frac{15.0\text{ GB}}{0.0375\text{ s}} \approx \mathbf{400.0\text{ GB/s}}$$
+  This is **$65.8\%$ of theoretical peak** ($608\text{ GB/s}$) and **$71.4\%$ of the practical ceiling** ($560\text{ GB/s}$).
+* **The Bandwidth-Bound Floor:** If the $15\text{ GB}$ step could stream at the practical $560\text{ GB/s}$ limit, step latency would be $26.8\text{ ms}$, unlocking $\mathbf{127.6\text{ tok/s}}$ at the same acceptance rate.
+
+### 2.4 Root Cause: The Integer-ALU Bottleneck
+The author correctly attributes the gap:
+> *"The gap is decode arithmetic, not memory. Unpacking the EXL3 trellis costs about 10 vector ops per 32 weights, so the 4-token verify runs at 415 GB/s (31.7 ms, where bandwidth alone would allow about 23 ms). I've measured that loop as integer-ALU-bound, within 10-20% of what the ALUs can do."*
+
+This empirically confirms the architectural warning recorded in our roadmap ([`docs/plans/2026-09-20-b70-improvement-roadmap/DEFERRED-AND-TRACKED.md`](file://~/B70-DOCS/docs/plans/2026-09-20-b70-improvement-roadmap/DEFERRED-AND-TRACKED.md)):
+1. **Xe2 has no native trellis codebook execution:** Sub-8-bit trellis codes cannot be fed directly into XMX matrix engines; they must be expanded in vector registers or shared local memory (SLM).
+2. **ALU saturation:** Burning $\sim 10$ vector ALU instructions per 32 weights saturates the integer ALUs, preventing the memory controllers from running at line rate. The kernel is compute-bound during dequantization, capping verification at $415\text{ GB/s}$.
+
+---
+
+## 3. Head-to-Head Comparison: EXL3 vs AutoRound vs Champion GPTQ
+
+| Metric / Attribute | EXL3 Prototype (Claude / 0xSero) | AutoRound INT4 (humble-b70-llm) | Champion GPTQ-INT4 + Draft-INT4 (Ours) |
+|---|---|---|---|
+| **Quantization Format** | EXL3 4-bit (trellis) + 6-bit head | AutoRound INT4 g128 + INT8 head | GPTQ INT4 g128 + Draft-side INT4 |
+| **Model Weight Footprint** | **13.1 GB** | $\sim 18.0\text{ GB}$ | $20.0\text{ GB}$ ($15.2\text{ GB}$ body) |
+| **Step Bytes Read** | **~15.0 GB** | $\sim 21.5\text{ GB}$ | $21.44\text{ GB}$ |
+| **Step Latency** | $\sim 37.5\text{ ms}$ | $\sim 42.0\text{ ms}$ | **39.8 ms** (calibrated) |
+| **Effective Bandwidth** | **400 GB/s** (66% peak) | **~480 GB/s** (79% peak) | **538.7 GB/s** (**88.6% peak / 96.2% practical**) |
+| **Limiting Bottleneck** | **Integer ALU bound** (Trellis unpack) | Memory bandwidth | **Memory bandwidth** ($96.2\%$ of practical limit) |
+| **Speculative Architecture** | MTP (3 draft passes) | MTP3 | MTP4 + draft-side INT4 body & head |
+| **Tokens Accepted / Step** | $3.42$ | $\sim 2.8\text{--}3.0$ | $3.2\text{--}3.76$ |
+| **Decode Throughput (C1)** | $\sim 91\text{ tok/s}$ | $66.8\text{ cold} / 97.8\text{ warm}$ | **$73.4\text{ cold calibrated} / 102.6\text{ warm} / 106.7\text{ greedy}$** |
+| **Runtime Availability** | None (private CUDA/Xe2 prototype) | Public GitHub repo (`JP-devv`) | **Validated in repo & production serving** |
+
+### Key Insight:
+* **EXL3 wins on footprint:** Compresses Qwen3.8-27B to 13.1 GB, allowing greater headroom for KV cache at long context.
+* **Standard INT4 (AutoRound / GPTQ) wins on hardware memory utilization:** Because shift/mask/scale dequantization is lightweight on vector ALUs, the memory bus runs near saturation (**$539\text{ GB/s}$**, or $96.2\%$ of the practical ceiling).
+
+---
+
+## 4. Current State of the B70 Single-Card Decode Roofline
+
+Our champion stack step budget on Qwen3.8-27B reads:
+```text
+Target body INT4:           15.20 GB
+Target verify LM head (F16): 2.54 GB
+Draft side INT4 (4 passes):  3.40 GB  (4 × [0.636 GB head + 0.212 GB body])
+KV + Recurrent GDN state:    0.30 GB
+--------------------------------------
+Total bytes read per step:  21.44 GB
+```
+
+At $39.8\text{ ms}$ per step:
+$$\text{Measured Effective Bandwidth} = \frac{21.44\text{ GB}}{0.0398\text{ s}} = \mathbf{538.7\text{ GB/s}}$$
+
+At a practical physical ceiling of $560\text{ GB/s}$, the absolute theoretical minimum latency to stream these bytes is:
+$$\text{Physical Floor} = \frac{21.44\text{ GB}}{560\text{ GB/s}} = \mathbf{38.28\text{ ms}}$$
+
+**Conclusion:** Traditional single-card kernel tuning on the target body has reached diminishing returns ($<4\%$ headroom remaining). To advance B70 throughput from $\sim 100\text{ tok/s}$ into the $140\text{--}180+\text{ tok/s}$ regime, research must address structural and algorithmic levers.
+
+---
+
+## 5. The Four Active Research Frontiers
+
+```text
+CURRENT ROOFLINE: 539 GB/s Memory Saturation @ 39.8 ms step -> ~102 tok/s
+ │
+ ├── 1. THE ACCEPTANCE FRONTIER (FastMTP Retraining — D11)
+ │      Same 39.8 ms step, but tokens/step jumps 3.4 -> 4.8 tokens
+ │      ==> Pushes throughput from ~102 tok/s to ~130–145 tok/s (Zero VRAM penalty)
+ │
+ ├── 2. THE 5th VERIFY HEAD PASS (D8 Refined — REJECTED under screen gates 2026-09-24)
+ │      Block-FP8 (93.4%) & INT4 (72.1%) fail synthetic top-1 gate; slicing alters distribution.
+ │      ==> Baseline verify pass retains unquantized 2.54 GB FP16/BF16 head.
+ ├── 3. SUB-4-BIT WITHOUT THE ALU PENALTY (Rotated-GPTQ / QuaRot — P8)
+ │      EXL3 compressed to 13.1 GB but choked Xe2 ALUs to 400 GB/s.
+ │      ==> Hadamard-rotated INT3/INT4 streams at full 540 GB/s ==> ~135 tok/s base
+ │
+ └── 4. ZERO-COPY DUAL-CARD SCALING (True TP2 Interconnect — H4)
+        Bypassing host CPU staging on dual B70s to pool memory bandwidth
+        ==> 1.0+ TB/s aggregated bandwidth ==> 160–190+ tok/s
+```
+
+### Frontier 1: The Acceptance Rate (α) Frontier (FastMTP Retraining — D11) — EXECUTED & REJECTED
+* **Hypothesis:** Fine-tuning the native shipped MTP head using position-shared recursive unrolling (FastMTP arXiv:2509.18362) would flatten position decay (positions 2/3) and lift aggregate acceptance $\alpha$ by $\ge +0.08$.
+* **Execution & Measurement (2026-09-24):** 
+  - Trained on 1,350 balanced on-policy non-thinking samples + 150 val on Intel Arc Pro B70 GPU 1 (torch 2.13.0+xpu, AdamW, $\beta=0.6$, unrolled 4 steps, val loss 0.9431).
+  - Stitched into `Qwen3.8-27B-GPTQ-Int4-sym-G128-FastMTP1500-BF16` (swap safety verified).
+  - Measured against same-day matched baseline (`d11-baseline-decay-probe-20260924T142540Z`):
+    - **Stock MTP baseline:** pos_0 **98.0%**, pos_1 **97.5%**, pos_2 **12.4%**, pos_3 **8.9%** ($\alpha = \mathbf{0.5421}$, $\text{tps} = \mathbf{73.68\text{ tok/s}}$).
+    - **FastMTP-1500:** pos_0 **83.2%** ($-14.8\text{ pts}$ regressed), pos_1 **68.7%** ($-28.8\text{ pts}$ regressed), pos_2 **28.0%** ($+15.6\text{ pts}$ flatter), pos_3 **21.0%** ($+12.1\text{ pts}$ flatter) ($\alpha = \mathbf{0.5023}$, $\Delta\alpha = \mathbf{-0.0398}$; $\text{tps} = \mathbf{71.83\text{ tok/s}}$, $\mathbf{-2.5\%}$ to $\mathbf{-7.0\%}$). Both canaries PASS.
+* **Root Cause & Architectural Rule:**
+  Fine-tuning on small on-policy corpora with position sharing severely damages the foundation model's near-ceiling shallow token calibration (positions 0 and 1). Because speculative decoding strictly requires position 0 to accept before position 1 is even evaluated, collapsing early accuracy destroys the entire unroll sequence. The marginal lift in deep positions cannot compensate.
+* **Verdict:** **CLOSED / REJECTED.** Light consumer fine-tuning of pre-trained MTP foundation draft heads is an **anti-pattern / banned lever**. Stock Alibaba pre-trained MTP weights remain champion.
+
+### Frontier 2: Eliminating the 5th Verify LM Head Penalty (D8 Refined) — EXECUTED & REJECTED
+In MTP4, the LM head is evaluated 5 times per step:
+* Draft passes 1–4 read the draft-side INT4 head ($0.66\text{ GB}$).
+* The final verify pass reads the full **$2.54\text{ GB}$ FP16 head** ($248,320 \times 5,120$), costing **$4.18\text{ ms/step}$** ($\sim 10\%$ of step latency).
+* **Why naive INT4 failed (D8):** Offline divergence screening showed top-1 token agreement fell to $72.07\%$, causing unacceptable modal flips (median divergence 2–3 tokens).
+* **Synthetic Numerical Screen of Block-FP8 (2026-09-24):** Measured directly on the real `outside.safetensors` head ($248,320 \times 5,120$) using `scripts/tmp/screen_verify_head_fp8_divergence.py` over $N=4,096$ synthetic i.i.d. Gaussian hidden states ($\mathcal{N}(0,1)$, RMS $\approx 1$, matching the post-final-norm scale):
+  - **Block-FP8 (E4M3fn g128):** Top-1 agreement **$93.41\%$** (gate: $\ge 99\%$), first disagreement at synthetic state index **$32$**, implied geometric median first divergence **$10.5$ steps** under i.i.d. assumption (gate: $>2000$). **VERDICT: REJECT under D8 gate**.
+  - **Per-Row FP8 (E4M3fn):** Top-1 agreement **$93.33\%$**, implied geometric median first divergence **$10.4$ steps**. **VERDICT: REJECT under D8 gate**.
+  - **Existing FP16 matmul baseline:** Top-1 agreement **$99.58\%$**, top-32 overlap **$99.82\%$**.
+* **Candidate Vocabulary Slicing (Mathematical Constraint):** Slicing $lm\_head$ projection strictly to proposed candidates is **not output-preserving**: greedy verification requires the global $\text{argmax}$ across the entire vocabulary, and sampled verification requires the exact partition function $\sum_{v \in V} \exp(z_v/T)$ and residual bonus sampling. Without an exact full-vocabulary fallback, slicing alters the output distribution.
+* **Verdict on Frontier 2 (Verify-Head Direct Quantization):** **REJECTED UNDER SCREEN GATES.** Weight-only INT4 and uniform Block-FP8/Per-Row FP8 both fall well below the $\ge 99\%$ top-1 agreement threshold on synthetic states. The baseline verify pass retains the unquantized FP16/BF16 head ($2.54\text{ GB}$).
+
+### Frontier 3: Sub-4bpw Formats Without the ALU Trap (Rotated-GPTQ / QuaRot — P8) — ACTIVE (P0)
+EXL3 demonstrated that 27B parameters can fit in $13.1\text{ GB}$, but its procedural codebook decompression choked the vector ALUs.
+* **The Lever:** **Rotated Quantization (QuaRot / SpinQuant):**
+  * Apply randomized orthogonal Hadamard transformations to weights and activations offline.
+  * Eliminates activation outliers mathematically, allowing uniform INT3/INT4 quantization.
+  * Dequantization requires only standard bit-shift and mask operations (1 cycle), bypassing codebook lookups entirely.
+* **Impact:** Enables streaming $13.1\text{ GB}$ of weights at the full **$540\text{ GB/s}$** rate:
+  $$\text{Step Latency} = \frac{13.1\text{ GB}}{540\text{ GB/s}} \approx \mathbf{24.2\text{ ms}}$$
+  At $3.42$ accepted tokens/step, this produces **$141\text{ tok/s}$** on a single card.
+
+### Frontier 4: Zero-Copy Dual-B70 Interconnect (Hardware-Optimized TP2 — H4) — ACTIVE (P1)
+Dual B70 setups currently operate as independent stacks (ADR-0008) because consumer PCIe topology lacks native GPU-to-GPU P2P support (`zeMemOpenIpcHandle` fails).
+* **The Problem with Stock TP2:** AutoRound (`humble-b70-llm`) relied on host-staged collectives (copying activations GPU $\to$ System RAM $\to$ GPU over PCIe x8), introducing high transfer latency.
+* **The Lever:** **Level Zero Direct IPC / Ring-Buffer Collectives:**
+  * Implement pinned host-bypass ring buffers optimized for dual-slot CPU-attached PCIe links (measured H2D $\approx 8.9\text{ GB/s}$).
+  * Splitting Qwen3.8-27B across both B70 cards pools memory bandwidth to **$>1,000\text{ GB/s}$**, cutting per-card step weight from $15\text{ GB} \to 7.5\text{ GB}$.
+* **Impact:** Projects dual-card decode throughput to **$160\text{--}190+\text{ tok/s}$**.
+
+---
+
+## 6. Execution Priority Matrix (Re-Adjusted)
+
+| Priority | Frontier / Project | Primary Artifact / Code | Feasibility / Effort | Target Payoff | Status |
+|---|---|---|---|---|---|
+| **CLOSED** | **FastMTP Head Retrain (D11)** | Speculators 0.8.0 / Qwen MTP | **REJECTED (2026-09-24)** | $\Delta\alpha = -0.04$, $-2.5\%$ to $-7.0\%$ tps; early positions damaged | **BANNED ANTI-PATTERN** |
+| **CLOSED** | **Block-FP8 / Pruned Verify Head (D8)** | Screened on real head (`screen_verify_head_fp8_divergence.py`) | **REJECTED (2026-09-24)** | $93.4\%$ top-1 fails $\ge 99\%$ gate; unquantized FP16 head retained | **CLOSED** |
+| **P0** | **Rotated-GPTQ / QuaRot (P8)** | Hadamard offline transform + INT3/INT4 | Medium (Conversion script + standard W4A16 loader) | **+20% to +30%** (Drops step to $\sim 25\text{ ms}$) | **ACTIVE** |
+| **P1** | **P-3b Prefill Kernel Rollout** | IQ3_XXS tile-local reconstruct (`#29245`) | Medium (Rollout of proven 3.60× operator win e2e) | **1.5× to 2.0× e2e prefill** | **ACTIVE** |
+| **P2** | **Zero-Copy Dual TP2 (H4)** | oneCCL / Level Zero IPC pipeline | High (Custom collective transport layer) | **+50% to +70%** (Unlocks $>160\text{ tok/s}$ across 2 cards) | **ACTIVE** |
+---
+
+## 7. References & Linked Documentation
+* **Outcome Ledger:** [`docs/plans/2026-09-20-b70-improvement-roadmap/OUTCOMES.md`](file://~/B70-DOCS/docs/plans/2026-09-20-b70-improvement-roadmap/OUTCOMES.md)
+* **Every Measured Lever:** [`docs/plans/2026-09-20-b70-improvement-roadmap/LEVERS.md`](file://~/B70-DOCS/docs/plans/2026-09-20-b70-improvement-roadmap/LEVERS.md)
+* **Deferred EXL3 Evaluation:** [`docs/plans/2026-09-20-b70-improvement-roadmap/DEFERRED-AND-TRACKED.md`](file://~/B70-DOCS/docs/plans/2026-09-20-b70-improvement-roadmap/DEFERRED-AND-TRACKED.md)
+* **Draft-side INT4 Upstream Note:** [`research/2026/qwen38-draft-side-int4-upstream-20260921.md`](file://~/B70-DOCS/research/2026/qwen38-draft-side-int4-upstream-20260921.md)
+* **AutoRound B70 Dual TP2 Capture:** [`research/2026/humble-b70-llm-dual-tp2-20260824.md`](file://~/B70-DOCS/research/2026/humble-b70-llm-dual-tp2-20260824.md)
+* **Qwen3.8-27B Serving Dossier:** [`models/qwen/qwen3.8-27b/serving.md`](file://~/B70-DOCS/models/qwen/qwen3.8-27b/serving.md)

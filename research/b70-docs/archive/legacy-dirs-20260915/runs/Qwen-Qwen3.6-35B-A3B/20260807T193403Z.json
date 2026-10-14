@@ -1,0 +1,136 @@
+{
+  "agentFeedback": {
+    "attachHardwareCommand": "lmx speed-test add-hardware runs/Qwen-Qwen3.6-35B-A3B/20260807T193403Z.json --hardware hardware.json",
+    "benchmarkStatus": "completed",
+    "canApiValidate": false,
+    "canSubmit": false,
+    "engine": "vllm",
+    "hardwareCommand": "lmx hardware --out hardware.json",
+    "message": "Benchmark completed successfully. Submission is not yet ready: server hardware metadata is missing. Generate it on the endpoint host, then attach it without rerunning.",
+    "mode": "remote",
+    "nextCommand": "lmx hardware --out hardware.json",
+    "outputPath": "runs/Qwen-Qwen3.6-35B-A3B/20260807T193403Z.json",
+    "outputPathAbsolute": "~/B70-DOCS/runs/Qwen-Qwen3.6-35B-A3B/20260807T193403Z.json",
+    "requiresHardware": true,
+    "requiresMetrics": false,
+    "runPersisted": true,
+    "savedRunPathAbsolute": "~/B70-DOCS/runs/Qwen-Qwen3.6-35B-A3B/20260807T193403Z.json",
+    "savedRunPathRelative": "runs/Qwen-Qwen3.6-35B-A3B/20260807T193403Z.json",
+    "status": "needs_remote_hardware",
+    "submissionStatus": "needs_remote_hardware"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "contextLength": 16384,
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8001",
+    "concurrency": 1,
+    "iterations": 3,
+    "maxTokens": 256,
+    "mode": "remote",
+    "servedModel": "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "servedModelSource": "explicit",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "hardwareSource": "missing_remote",
+  "hfId": "Qwen/Qwen3.6-35B-A3B",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "hfId": "Qwen/Qwen3.6-35B-A3B",
+    "searchCommand": "lmx model search Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "searchError": "Could not reach https://www.localmaxxing.com/api/models/search?q=Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4\u0026limit=5: Get \"https://www.localmaxxing.com/api/models/search?q=Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4\u0026limit=5\": dial tcp: lookup www.localmaxxing.com on 127.0.0.53:53: read udp 127.0.0.1:56873-\u003e127.0.0.53:53: i/o timeout",
+    "searchQuery": "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "searchQuerySource": "served_model",
+    "servedModel": "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "servedModelSource": "explicit",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "outputText": "Here's a thinking process:\n\n1.  **Understand User Query:** The user asks to explain why local inference benchmarks should report three specific metrics: prompt prefill throughput, decode throughput, and time to first token (TTFT).\n\n2.  **Deconstruct the Metrics:**\n   - *Prompt Prefill Throughput:* Measures how fast the model processes the input prompt (tokens) before generating output. Usually measured in tokens per second (or tokens per second per GPU).\n   - *Decode Throughput:* Measures how fast the model generates output tokens one by one. Also tokens per second.\n   - *Time to First Token (TTFT):* Measures the latency from sending the prompt to receiving the first output token.\n\n3.  **Identify the Core Reason:** These metrics capture different phases of the inference process, which have distinct computational characteristics, bottlenecks, and user experience implications. Reporting all three gives a complete picture of model performance for local deployment.\n\n4.  **Analyze Each Metric's Importance:**\n   - *Prefill Throughput:* \n     - Handles the initial prompt processing (attention computation over all tokens).\n     - Critical for long-context applications.\n     - Bounded by memory bandwidth and compute efficiency",
+  "outputTokens": 256,
+  "prompt": "Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.",
+  "promptTokens": 32,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-07T19:34:03Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "GPTQ-Int4",
+  "quantizationResolution": {
+    "cli": "GPTQ-Int4",
+    "status": "matched",
+    "trusted": "GPTQ-Int4",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 3,
+      "max": 136.3,
+      "mean": 136.2,
+      "min": 136.1,
+      "p50": 136.2,
+      "stddev": 0.1
+    },
+    "tokSTotal": {
+      "count": 3,
+      "max": 148.5,
+      "mean": 148.4,
+      "min": 148.3,
+      "p50": 148.4,
+      "stddev": 0.1
+    },
+    "ttftMs": {
+      "count": 3,
+      "max": 68.49,
+      "mean": 68.31,
+      "min": 68.12,
+      "p50": 68.32,
+      "stddev": 0.18
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 136.2,
+      "tokSPrefill": 467.3,
+      "ttftMs": 68.49
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 136.1,
+      "tokSPrefill": 468.4,
+      "ttftMs": 68.32
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 136.3,
+      "tokSPrefill": 469.7,
+      "ttftMs": 68.12
+    }
+  ],
+  "timingSource": "client_observed_http",
+  "tokSOut": 136.2,
+  "tokSOutSource": "inter_token",
+  "tokSPrefill": 468.4,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 148.4,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 68.32,
+  "ttftSource": "stream_first_token"
+}

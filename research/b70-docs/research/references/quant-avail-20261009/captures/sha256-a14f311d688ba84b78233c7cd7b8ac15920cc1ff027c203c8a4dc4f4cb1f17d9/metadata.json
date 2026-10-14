@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://github.com/vllm-project/vllm-xpu-kernels/pull/553",
+  "final_url": "https://github.com/vllm-project/vllm-xpu-kernels/pull/553",
+  "fetched_at": "2026-10-09T16:39:59.942148Z",
+  "content_type": "text/html; charset=utf-8",
+  "sha256": "a14f311d688ba84b78233c7cd7b8ac15920cc1ff027c203c8a4dc4f4cb1f17d9",
+  "size_bytes": 312217,
+  "claim": "Open PR: NVFP4 (E2M1+E4M3 g16) B-dtype for Xe2 grouped MoE GEMM; NVFP4 checkpoints on Xe2 today require requant to MXFP4 (lossier scales)",
+  "relevance": "The concrete Xe2 kernel horizon for NVFP4 MoE on vLLM",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

@@ -1,0 +1,3 @@
+NO_RESULT rc=139
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=05977e63,plane_chk=71911e4f rc=1
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=9614303e,plane_chk=71911e4f rc_values_relmax=1.303e-05 wrap_bitwise=True gemm_bitwise=False values_ok=True

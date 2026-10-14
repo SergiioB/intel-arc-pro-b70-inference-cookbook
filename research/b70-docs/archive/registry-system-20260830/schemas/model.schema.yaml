@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/model.schema.yaml",
+  "title": "B70 canonical model registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "models"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "models": {"type": "array", "items": {"$ref": "#/$defs/model"}}
+  },
+  "$defs": {
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "hf_model_id", "slug", "name", "dossier_path", "status", "as_of"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^MODEL-[A-Z0-9][A-Z0-9.-]*$"},
+        "hf_model_id": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+        "slug": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$"},
+        "name": {"type": "string", "minLength": 1},
+        "dossier_path": {"type": "string", "pattern": "^models/.+/README\\.md$"},
+        "status": {"enum": ["experimental", "provisional", "validated_internal"]},
+        "as_of": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "aliases": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}

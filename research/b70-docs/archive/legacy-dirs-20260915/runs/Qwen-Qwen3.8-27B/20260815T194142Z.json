@@ -1,0 +1,145 @@
+{
+  "agentFeedback": {
+    "benchmarkStatus": "completed",
+    "canApiValidate": true,
+    "canSubmit": true,
+    "engine": "vllm",
+    "message": "Speed-test payload is ready for API validation.",
+    "mode": "remote",
+    "nextCommand": "lmx speed-test dry-run /tmp/qwen38-lmx-mt128.json",
+    "outputPath": "/tmp/qwen38-lmx-mt128.json",
+    "outputPathAbsolute": "/tmp/qwen38-lmx-mt128.json",
+    "requiresMetrics": false,
+    "runPersisted": true,
+    "savedRunPath": "runs/Qwen-Qwen3.8-27B/20260815T194142Z.json",
+    "savedRunPathAbsolute": "~/B70-DOCS/runs/Qwen-Qwen3.8-27B/20260815T194142Z.json",
+    "savedRunPathRelative": "runs/Qwen-Qwen3.8-27B/20260815T194142Z.json",
+    "status": "ready_for_api_validation",
+    "submissionStatus": "ready",
+    "submitCommand": "lmx speed-test submit /tmp/qwen38-lmx-mt128.json"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8000",
+    "concurrency": 1,
+    "iterations": 3,
+    "maxTokens": 128,
+    "mode": "remote",
+    "servedModel": "qwen38",
+    "servedModelSource": "v1_models",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 5700X3D 8-Core Processor",
+    "cpuThreads": 8,
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "linux",
+    "powerWatts": 150,
+    "ramGb": 30,
+    "vramGb": 32
+  },
+  "hardwareSource": "file",
+  "hfId": "Qwen/Qwen3.8-27B",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "candidates": [],
+    "hfId": "Qwen/Qwen3.8-27B",
+    "searchCommand": "lmx model search qwen38",
+    "searchQuery": "qwen38",
+    "searchQuerySource": "served_model",
+    "servedModel": "qwen38",
+    "servedModelSource": "v1_models",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "outputText": "We need answer user: \"Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.\" Need provide explanation. Need final answer. Need likely discuss LLM inference phases: prefill/prompt processing vs decode token generation. Local benchmarks need these metrics because they capture different bottlenecks: prefill throughput (tokens/s for prompt) measures how fast model can process input context, KV cache build, attention over prompt, batched prompt, memory bandwidth/compute, affects latency for long contexts and RAG. Decode throughput (tokens/s generated) measures autoregressive generation speed, often memory-bandwidth",
+  "outputTokens": 128,
+  "prompt": "Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.",
+  "promptTokens": 74,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-15T19:41:42Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "GPTQ-Int4",
+  "quantizationResolution": {
+    "cli": "GPTQ-Int4",
+    "status": "matched",
+    "trusted": "GPTQ-Int4",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 3,
+      "max": 45.8,
+      "mean": 45.8,
+      "min": 45.8,
+      "p50": 45.8,
+      "stddev": 0
+    },
+    "tokSTotal": {
+      "count": 3,
+      "max": 68.1,
+      "mean": 68.1,
+      "min": 68.1,
+      "p50": 68.1,
+      "stddev": 0
+    },
+    "ttftMs": {
+      "count": 3,
+      "max": 192.61,
+      "mean": 192.44,
+      "min": 192.32,
+      "p50": 192.4,
+      "stddev": 0.15
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 45.8,
+      "tokSPrefill": 384.8,
+      "ttftMs": 192.32
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 45.8,
+      "tokSPrefill": 384.2,
+      "ttftMs": 192.61
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 45.8,
+      "tokSPrefill": 384.6,
+      "ttftMs": 192.4
+    }
+  ],
+  "timingSource": "client_observed_http",
+  "tokSOut": 45.8,
+  "tokSOutSource": "inter_token",
+  "tokSPrefill": 384.6,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 68.1,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 192.4,
+  "ttftSource": "stream_first_token"
+}

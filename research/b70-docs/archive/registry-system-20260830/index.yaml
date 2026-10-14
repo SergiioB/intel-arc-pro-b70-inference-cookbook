@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "catalogs": {
+    "models": {
+      "path": "registry/models.yaml",
+      "schema": "registry/schemas/model.schema.yaml",
+      "entries": 5,
+      "mode": "canonical-manual-input"
+    },
+    "artifacts": {
+      "path": "registry/artifacts.yaml",
+      "schema": "registry/schemas/artifact.schema.yaml",
+      "entries": 8,
+      "mode": "canonical-manual-input"
+    },
+    "campaigns": {
+      "path": "registry/campaigns.yaml",
+      "schema": "registry/schemas/campaign.schema.yaml",
+      "entries": 7,
+      "mode": "canonical-manual-input"
+    },
+    "decisions": {
+      "path": "registry/decisions.yaml",
+      "schema": "registry/schemas/decision.schema.yaml",
+      "entries": 8,
+      "mode": "canonical-manual-input"
+    },
+    "supersessions": {
+      "path": "registry/supersessions.yaml",
+      "schema": "registry/schemas/supersession.schema.yaml",
+      "entries": 5,
+      "mode": "canonical-manual-input"
+    },
+    "documents": {
+      "path": "registry/documents.yaml",
+      "schema": "registry/schemas/document.schema.yaml",
+      "entries": 201,
+      "mode": "generated-inventory"
+    },
+    "legacy_results": {
+      "path": "registry/legacy-results.yaml",
+      "schema": "registry/schemas/result.schema.yaml",
+      "entries": 655,
+      "mode": "generated-read-only-inventory"
+    },
+    "migration_map": {
+      "path": "registry/migration/map.yaml",
+      "schema": "registry/schemas/migration.schema.yaml",
+      "entries": 201,
+      "mode": "generated-inventory-subordinate-to-approved-moves"
+    },
+    "approved_moves": {
+      "path": "registry/migration/approved-moves.yaml",
+      "schema": null,
+      "entries": 11,
+      "mode": "canonical-manual-input"
+    }
+  },
+  "views": {
+    "research": {
+      "path": "docs/indexes/research-index.md",
+      "mode": "generated-navigation-only"
+    },
+    "campaign": {
+      "path": "docs/indexes/campaign-index.md",
+      "mode": "generated-navigation-only"
+    },
+    "artifact": {
+      "path": "docs/indexes/artifact-index.md",
+      "mode": "generated-navigation-only"
+    },
+    "decision": {
+      "path": "docs/indexes/decision-index.md",
+      "mode": "generated-navigation-only"
+    },
+    "archive": {
+      "path": "docs/indexes/archive-index.md",
+      "mode": "generated-navigation-only"
+    }
+  },
+  "summaries": {
+    "canonical_models": 5,
+    "canonical_artifacts": 8,
+    "canonical_campaigns": 7,
+    "canonical_decisions": 8,
+    "canonical_supersessions": 5,
+    "documents": 201,
+    "legacy_results": 655
+  }
+}

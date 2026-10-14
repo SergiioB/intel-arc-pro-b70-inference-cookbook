@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://huggingface.co/turboderp/Qwen3.8-27B-exl3/raw/main/README.md",
+  "final_url": "https://huggingface.co/turboderp/Qwen3.8-27B-exl3/raw/main/README.md",
+  "fetched_at": "2026-10-12T05:10:25.931299Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "617ea914cb54e3b5e28189061fad70ebcb44e8d7d416564e731cdded0463c0e4",
+  "size_bytes": 3481,
+  "claim": "turboderp publishes self-calibrated (SC) EXL3 quants of Qwen3.8-27B at 1.4-6.0 bpw alongside plain quants; plain 4.00bpw is revision 113cf7ab (our adopted artifact)",
+  "relevance": "SC_4.00bpw_H5 and SC_5.00bpw_H6 are drop-in candidates to the adopted EXL3 route",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

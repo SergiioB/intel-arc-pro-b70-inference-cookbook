@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/campaign.schema.yaml",
+  "title": "B70 canonical campaign registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "campaigns"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "campaigns": {"type": "array", "items": {"$ref": "#/$defs/campaign"}}
+  },
+  "$defs": {
+    "campaign": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "model_id", "artifact_ids", "evidence_root", "record_path", "observed_at", "status", "evidence_tier", "publication_state", "limits"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^CAM-2026-[A-Z0-9][A-Z0-9.-]*$"},
+        "title": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "pattern": "^MODEL-[A-Z0-9][A-Z0-9.-]*$"},
+        "artifact_ids": {"type": "array", "items": {"type": "string", "pattern": "^ART-[A-Z0-9][A-Z0-9.-]*$"}, "minItems": 1, "uniqueItems": true},
+        "decision_ids": {"type": "array", "items": {"type": "string", "pattern": "^ADR-000[1-6]$"}, "uniqueItems": true},
+        "evidence_root": {"type": "string", "pattern": "^(results|b70-bench-results|runs)/.+$"},
+        "record_path": {"type": "string", "pattern": "^campaigns/2026/.+/README\\.md$"},
+        "observed_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "status": {"enum": ["provisional", "validated_internal", "historical_evidence"]},
+        "evidence_tier": {"enum": ["E2"]},
+        "publication_state": {"enum": ["not_for_public_headline", "self_reported_not_independently_reproduced", "qualified_capacity_observation", "historical_evidence_only"]},
+        "limits": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}
+      }
+    }
+  }
+}

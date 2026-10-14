@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "question_id": "RQ-11",
+  "predeclared_at": "2026-10-10",
+  "purpose": "Predeclared RQ-11 v0.30.0 Nemotron re-anchor workload (battery and canary first, then n=5 paired anchor cells at p512/g128 and p2048/g128). Frozen before any run exists; no cell may be added, removed or re-keyed after results are seen. Scorers live in scripts/tmp/rq11_anchor_20261010.py keyed by scorer kind. This is a re-anchor of the already-validated Nemotron GPTQ-INT4 G64 + DFlash n7 route on the pinned v0.30.0 image: a new baseline, never compared to the historical 186.6 tok/s row (different 2026-08-13 harness generation).",
+  "sampling": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "note": "greedy everywhere; measured anchor cells add ignore_eos=true and require finish_reason=length with completion_tokens exactly equal to the requested generation length"
+  },
+  "canary_channel_rule": "Nemotron-3.5-Lightning is a reasoning-hybrid model; its chat template may place text in message.content and/or message.reasoning_content. The scored channel is message.content when non-empty, otherwise message.reasoning_content. Both channels are retained verbatim in raw evidence and the channel actually scored is recorded per cell. This rule was fixed here, before any run exists.",
+  "warmup": {
+    "battery": "one discarded warmup of the first measured battery shape (batt-arith user text, max_tokens 64) before canary run A; up to 3 attempts with health re-poll, all attempts retained",
+    "anchor": "one discarded same-shape warmup per anchor shape (p512/g128 then p2048/g128) before the first measured anchor sample, each with its own unique prefix"
+  },
+  "canaries": {
+    "source": "prompt texts inherited verbatim from the six adoption canaries of campaigns/2026/rq17-flashnext-quality/tasks.json (decoded from /mnt/<sata-disk>/strata/prompts/batt-*.txt); the batt token-file id counts (22/20/22/28/31/26) are Qwen-tokenizer facts and are NOT asserted here - actual rendered prompt_tokens are recorded from endpoint usage instead",
+    "runs": 2,
+    "run_labels": ["A", "B"],
+    "max_tokens": 64,
+    "transport": "/v1/chat/completions, non-streaming",
+    "order": ["batt-arith", "batt-capital", "batt-token", "batt-sumsq", "batt-logic", "batt-json"],
+    "cells": [
+      {
+        "id": "batt-arith",
+        "prompt": "Calculate 37 * 19. Give only the integer.",
+        "expect": {"kind": "last_integer", "value": 703},
+        "note": "37*19; adoption canary (RL-125)"
+      },
+      {
+        "id": "batt-capital",
+        "prompt": "Name the capital of France. Give only the city name.",
+        "expect": {"kind": "last_line_equals", "value": "paris"},
+        "note": "capital of France; adoption canary (RL-125)"
+      },
+      {
+        "id": "batt-token",
+        "prompt": "Reply with exactly B70-FLASH-OK and nothing else.",
+        "expect": {"kind": "contains", "value": "B70-FLASH-OK"},
+        "note": "verbatim token string; adoption canary (RL-125)"
+      },
+      {
+        "id": "batt-sumsq",
+        "prompt": "def f():\n    return sum(i*i for i in range(4))\nprint(f())",
+        "expect": {"kind": "last_integer", "value": 14},
+        "note": "sum(i*i for i in range(4)) = 0+1+4+9 = 14. The 14-vs-30 in-head arithmetic class: the fluent wrong answer 30 (summing 1..4) is the historical RL-087 defect and the precommitted stop-rule trigger"
+      },
+      {
+        "id": "batt-logic",
+        "prompt": "Alice is taller than Bob. Bob is taller than Charlie. Is Charlie taller than Alice? Answer Yes or No.",
+        "expect": {"kind": "last_line_first_word", "value": "no"},
+        "note": "Alice>Bob>Charlie transitive chain; multi-hop logic, answer No"
+      },
+      {
+        "id": "batt-json",
+        "prompt": "Output the exact JSON object: {\"status\": \"ok\", \"count\": 3}",
+        "expect": {"kind": "last_json_equals", "value": {"status": "ok", "count": 3}},
+        "note": "strict JSON object emission"
+      }
+    ]
+  },
+  "tasks": {
+    "source": "inherited verbatim (prompts, scorers, expected values, tolerances) from campaigns/2026/rq17-flashnext-quality/tasks.json, predeclared 2026-10-10; model-agnostic English prompts, re-keyed here for the Nemotron route",
+    "max_tokens": 256,
+    "transport": "/v1/chat/completions, non-streaming",
+    "gate": "at least 8 of 10 tasks pass",
+    "cells": [
+      {
+        "id": "t1-extract",
+        "scorer": "last_line_equals",
+        "expected": "cache-03",
+        "prompt": "From the following table rows, extract the hostname of the server in rack R12 and reply with only the hostname.\nR08 web-07 10.0.8.31\nR09 db-primary 10.0.8.44\nR12 cache-03 10.0.9.12\nR14 mail-01 10.0.7.5"
+      },
+      {
+        "id": "t2-math-word",
+        "scorer": "last_integer",
+        "expected": 320,
+        "prompt": "A warehouse had 480 crates. It shipped 145 crates on Monday and 95 crates on Tuesday, then received 2 boxes of 40 crates each. How many crates does the warehouse hold now? Reply with only the integer."
+      },
+      {
+        "id": "t3-arith-chain",
+        "scorer": "last_integer",
+        "expected": 50,
+        "prompt": "Compute ((18 * 25) - 150) / 6. Reply with only the integer."
+      },
+      {
+        "id": "t4-json-tool",
+        "scorer": "last_json_equals",
+        "expected": {"target_c": 21, "mode": "heat", "hold_minutes": 90},
+        "prompt": "You are calling the set_thermostat tool. Emit only the JSON argument object with exactly these keys: target_c (number), mode (string), hold_minutes (number). Setpoint 21 degrees Celsius, mode heat, hold for 90 minutes."
+      },
+      {
+        "id": "t5-code-output",
+        "scorer": "last_two_integers",
+        "expected": [12, 39],
+        "prompt": "What does this Python program print to stdout? Reply with only the program's output.\nvals = [3, 8, 15, 4, 42]\nprint(sum(v for v in vals if v % 2 == 0))\nprint(max(vals) - min(vals))"
+      },
+      {
+        "id": "t6-long-input-qa",
+        "scorer": "last_token_pair",
+        "expected": ["S-7", "98.7"],
+        "prompt": "Below is a facility sensor log.\n\n--- LOG BEGIN ---\n2026-10-09T06:00 sensor S-1 reading 20.1\n2026-10-09T06:05 sensor S-2 reading 21.3\n2026-10-09T06:10 sensor S-3 reading 19.8\n2026-10-09T06:15 sensor S-1 reading 20.4\n2026-10-09T06:20 sensor S-2 reading 21.9\n2026-10-09T06:25 sensor S-3 reading 20.0\n2026-10-09T06:30 sensor S-1 reading 20.2\n2026-10-09T06:35 sensor S-2 reading 22.1\n2026-10-09T06:40 sensor S-3 reading 19.9\n2026-10-09T06:45 sensor S-1 reading 20.6\n2026-10-09T06:50 sensor S-2 reading 21.7\n2026-10-09T06:55 sensor S-3 reading 20.3\n2026-10-09T07:00 sensor S-1 reading 20.9\n2026-10-09T07:05 sensor S-2 reading 21.5\n2026-10-09T07:10 sensor S-3 reading 20.2\n2026-10-09T07:15 sensor S-1 reading 20.3\n2026-10-09T07:20 sensor S-2 reading 21.8\n2026-10-09T07:25 sensor S-3 reading 19.7\n2026-10-09T07:30 sensor S-1 reading 20.5\n2026-10-09T07:35 sensor S-2 reading 22.0\n2026-10-09T07:40 sensor S-3 reading 20.1\n2026-10-09T07:45 sensor S-1 reading 20.8\n2026-10-09T07:50 sensor S-2 reading 21.4\n2026-10-09T07:55 sensor S-3 reading 20.6\n2026-10-09T08:00 sensor S-1 reading 20.1\n2026-10-09T08:05 sensor S-2 reading 21.2\n2026-10-09T08:10 sensor S-3 reading 19.6\n2026-10-09T08:15 sensor S-1 reading 20.7\n2026-10-09T08:20 sensor S-2 reading 21.6\n2026-10-09T08:25 sensor S-3 reading 20.4\n2026-10-09T08:30 sensor S-1 reading 20.0\n2026-10-09T08:35 sensor S-2 reading 21.1\n2026-10-09T08:40 sensor S-7 reading CRITICAL 98.7\n2026-10-09T08:45 sensor S-1 reading 20.9\n2026-10-09T08:50 sensor S-2 reading 21.9\n2026-10-09T08:55 sensor S-3 reading 20.5\n2026-10-09T09:00 sensor S-1 reading 20.2\n2026-10-09T09:05 sensor S-2 reading 21.3\n2026-10-09T09:10 sensor S-3 reading 19.9\n2026-10-09T09:15 sensor S-1 reading 20.4\n2026-10-09T09:20 sensor S-2 reading 21.7\n2026-10-09T09:25 sensor S-3 reading 20.8\n--- LOG END ---\n\nWhich sensor reported a CRITICAL reading, and what value did it report? Answer as: <sensor> <value>"
+      },
+      {
+        "id": "t7-sort",
+        "scorer": "word_list_equals",
+        "expected": ["apple", "bread", "grape", "kettle", "mango", "night", "olive", "zebra"],
+        "prompt": "Sort these words alphabetically and reply with only the comma-separated sorted list: kettle, apple, zebra, mango, bread, olive, grape, night"
+      },
+      {
+        "id": "t8-count",
+        "scorer": "last_integer",
+        "expected": 14,
+        "prompt": "How many words does this sentence contain? Reply with only the integer.\nSentence: The quick brown warehouse robot carried twelve fragile tiles across the noisy loading platform"
+      },
+      {
+        "id": "t9-convert",
+        "scorer": "last_float_near",
+        "expected": 22.22222222222222,
+        "tolerance": 0.05,
+        "prompt": "Convert 72 degrees Fahrenheit to Celsius. Round to one decimal place. Reply with only the number."
+      },
+      {
+        "id": "t10-constraint",
+        "scorer": "three_alphabetic_words",
+        "expected": null,
+        "prompt": "Reply with exactly three words and no punctuation, describing typical summer weather."
+      }
+    ]
+  },
+  "two_turn_8k": {
+    "purpose": "8K two-turn KV-edge check on the re-anchored stack: long occupied context carried across a conversation turn (AGENTS.md section 7 cache-times-speculation shared-risk axis; prefix cache stays OFF, so both turns must record zero cache-hit delta).",
+    "turn1_prompt_source": "anchors[\"8192\"] from results/2026/10/b70-sweep-canary/prompts.json (sha256 566691fae65c6ce40aa31b19614fc40ae8adf1a286a7b33737cf9dbe4f328db9; 8192-token wikitext corpus cut with this model's served tokenizer during the 2026-10-01 v030 sweep), sent bare without a unique tag",
+    "turn1_question": "\n\nSeparately from the text above: what is 17 + 26? Reply with only the integer.",
+    "turn1_expect": {"kind": "last_integer", "value": 43},
+    "turn2_question": "Now, going back to the long text above: what is its very first word? Reply with only that word.",
+    "turn2_expect": {"kind": "first_alnum_word", "value": "robert"},
+    "turn2_expect_note": "predeclared against the retained corpus before any run: the 8192-token anchor text begins with the line ' = Robert Boulter = ', so the first word carrying an alphanumeric character is 'Robert' (compared lowercased); the leading '=' tokens are not words",
+    "max_tokens_per_turn": 64,
+    "validity_rule": "usage.prompt_tokens of turn 1 must be >= 8100 (the full 8K corpus text plus template must actually be rendered) and turn-2 occupied context (turn-2 prompt_tokens) must be >= turn-1 prompt_tokens + turn-1 completion_tokens; otherwise the cell fails measurement_validity"
+  },
+  "replay": {
+    "purpose": "deterministic replay smoke (correctness-validation.md deterministic_replay_smoke_tested) on the re-anchored stack; the repeated identical prompts also serve as the cache-off behavioral proof: with --no-enable-prefix-caching the /metrics prefix-cache queries and hits deltas across each replay group must both be zero",
+    "prompts": ["batt-arith", "batt-logic", "batt-json"],
+    "repetitions": 3,
+    "gen_tokens": 128,
+    "transport": "/v1/chat/completions, non-streaming, identical request body repeated",
+    "gate": "all three repetitions of each prompt produce the identical scored-channel text (sha256 compare, rep 1 is the reference); any mismatch is replay drift",
+    "cache_gate": "prefix-cache hits delta == 0 and queries delta == 0 across each 3-repetition group"
+  },
+  "anchor": {
+    "purpose": "RQ-11 re-anchor cells: n=5 paired samples at p512/g128 (the assessed A/A cell) and n=5 single-arm samples at p2048/g128 (secondary cell, recorded not assessed). New baseline; never compared to the historical 186.6 tok/s row.",
+    "transport": "/v1/completions (raw prompt, no chat template), streaming with stream_options.include_usage for client-side token timestamps",
+    "cells": [
+      {"id": "p512_g128", "prompt_tokens": 512, "gen_tokens": 128, "arms": ["A", "B"], "pairs": 5,
+       "role": "assessed primary cell (A/A interleaved arms)"},
+      {"id": "p2048_g128", "prompt_tokens": 2048, "gen_tokens": 128, "arms": ["single"], "samples": 5,
+       "role": "secondary cell, recorded in the anchor summary, not numerically assessed"}
+    ],
+    "order": "one discarded p512-shape warmup, one discarded p2048-shape warmup, then for i in 1..5: p512-A-i, p512-B-i, p2048-i (interleaved, one client, sequential)",
+    "unique_prefix_rule": "every measured or warmup anchor prompt begins with a fresh uuid4 16-hex-character tag followed by a newline (entropy-first, >= 64 chars of entropy when combined with the corpus head); tags are generated at run time and retained in raw evidence; no two requests share a prefix",
+    "exact_length_rule": "prompt text = tag + newline + corpus[:n]; n is found by binary search over /tokenize counts to hit the exact declared prompt_tokens (512 or 2048) of the full rendered prompt, then re-verified once; each measured request additionally requires usage.prompt_tokens == the declared target exactly",
+    "corpus": {
+      "path": "results/2026/10/b70-sweep-canary/prompts.json",
+      "sha256": "566691fae65c6ce40aa31b19614fc40ae8adf1a286a7b33737cf9dbe4f328db9",
+      "keys": {"p512": "512", "p2048": "2048", "p8192": "8192"},
+      "provenance": "retained wikitext-103 anchor corpus cut to exact token counts with this model's served tokenizer during the 2026-10-01 v0.30.0 sweep (results/2026/10/b70-sweep-canary/)"
+    },
+    "metrics_bracket": "every request is bracketed by /metrics snapshots; recorded deltas: prefix_cache_queries, prefix_cache_hits, spec_decode drafts/accepted, num_preemptions, request_prefill/decode_time sum+count",
+    "timing_boundary": "client post-first tok/s = (completion_tokens - 1) / (last - first content-delta monotonic timestamps); TTFT = first - send; TPOT = (last - first) / (completion_tokens - 1); engine-side decode rate from request_decode_time deltas retained separately as corroboration, never mixed into one column",
+    "validity_rule": "a measured anchor sample is valid iff: no transport error; finish_reason == length; usage.prompt_tokens == declared target exactly; usage.completion_tokens == 128; prefix_cache_hits delta == 0; num_preemptions delta == 0. A p512 pair is valid iff both its A and B samples are valid."
+  },
+  "cache_policy": "prefix caching OFF for the whole campaign (--no-enable-prefix-caching per AGENTS.md 7 / standing-rules 1.4 on the vLLM-XPU W4A16 + speculative stack); zero-hit deltas enforced per request; the replay groups double as the resident/repeated-prefix cache-off proof",
+  "acceptance_role": "DFlash acceptance counters (accepted/drafted per cell, mean accepted per round = 1 + accepted/drafted) are diagnostic only; ranking never uses them"
+}

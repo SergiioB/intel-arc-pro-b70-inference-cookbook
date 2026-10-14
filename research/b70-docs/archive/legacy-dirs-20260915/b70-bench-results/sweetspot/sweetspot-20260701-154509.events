@@ -1,0 +1,28 @@
+=== PHASE 1: Power sweep at stock freq ===
+RUN Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=130W gt0=2800 gt1=1500 idle_temp=54.0
+DONE Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=130W status=failure pp= tg= temps=54.4	60.0	53.0
+COOLDOWN 30s...
+RUN Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=110W gt0=2800 gt1=1500 idle_temp=60.0
+DONE Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=110W status=failure pp= tg= temps=55.9	60.0	55.0
+COOLDOWN 30s...
+=== PHASE 2: Freq cap sweep ===
+RUN Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=130W gt0=2400 gt1=1300 idle_temp=60.0
+DONE Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=130W status=failure pp= tg= temps=57.4	62.0	56.0
+COOLDOWN 30s...
+RUN Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=130W gt0=2000 gt1=1000 idle_temp=62.0
+DONE Qwen3.6-35B-A3B-UD-Q4_K_XL ctx=65536 cap=130W status=failure pp= tg= temps=57.4	62.0	56.0
+COOLDOWN 30s...
+=== PHASE 3: All models at sweet spot ===
+RUN ornith-1.0-35b-Q4_K_M ctx=65536 cap=130W gt0=2400 gt1=1300 idle_temp=60.0
+DONE ornith-1.0-35b-Q4_K_M ctx=65536 cap=130W status=failure pp= tg= temps=58.4	62.0	58.0
+COOLDOWN 30s...
+RUN Agents-A1-Q4_K_M ctx=65536 cap=130W gt0=2400 gt1=1300 idle_temp=58.0
+DONE Agents-A1-Q4_K_M ctx=65536 cap=130W status=failure pp= tg= temps=56.8	62.0	56.0
+COOLDOWN 30s...
+RUN gemma-4-26B-A4B-it-UD-Q4_K_M ctx=65536 cap=130W gt0=2400 gt1=1300 idle_temp=62.0
+DONE gemma-4-26B-A4B-it-UD-Q4_K_M ctx=65536 cap=130W status=failure pp= tg= temps=56.8	62.0	56.0
+COOLDOWN 30s...
+RUN Qwen3.6-27B-Q5_K_M ctx=65536 cap=130W gt0=2400 gt1=1300 idle_temp=62.0
+DONE Qwen3.6-27B-Q5_K_M ctx=65536 cap=130W status=failure pp= tg= temps=59.0	68.0	56.0
+COOLDOWN 30s...
+=== COMPLETE ===

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://cdn-uploads.huggingface.co/production/uploads/6383dc174c48969dcf1b4fce/tzoh6Fsq0xycqEM7U65mQ.png",
+  "final_url": "https://cdn-uploads.huggingface.co/production/uploads/6383dc174c48969dcf1b4fce/tzoh6Fsq0xycqEM7U65mQ.png",
+  "fetched_at": "2026-10-12T05:10:26.811484Z",
+  "content_type": "image/png",
+  "sha256": "f875ef638baf9135526fdd9429fe1f11351cdf3cf2870ce5967a7e32716aef13",
+  "size_bytes": 277472,
+  "claim": "Qwen3.8-27B in-domain trace (19,016 input + 45,930 output tokens) mean KLD vs FP: EXL3 plain 4.00bpw 0.0082 (~12.3 GiB), EXL3-SC 4.00bpw H5 0.0062, SC 3.00 H4 0.0257, plain 5.00 0.0023, SC 5.00 H6 0.0016, plain 6.00 0.0009, SC 6.00 H6 0.0006, Qwen FP8 0.0022 (~25 GiB), NVFP4 (Unsloth) 0.0092, UD-Q4_K_XL 0.0051, IQ4_XS 0.0101; noise floor 0.00045",
+  "relevance": "External (E0) quality ranking of formats on our exact model; SC 5.0 beats FP8 at 60 % of its bytes",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

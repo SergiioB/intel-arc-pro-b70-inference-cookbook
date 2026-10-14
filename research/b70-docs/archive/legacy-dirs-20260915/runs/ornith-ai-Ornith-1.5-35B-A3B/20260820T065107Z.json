@@ -1,0 +1,144 @@
+{
+  "agentFeedback": {
+    "benchmarkStatus": "completed",
+    "canApiValidate": true,
+    "canSubmit": true,
+    "engine": "vllm",
+    "message": "Speed-test payload is ready for API validation.",
+    "mode": "remote",
+    "nextCommand": "lmx speed-test dry-run ~/B70-DOCS/results/ornith15-35b-20260819T1630Z/lmx-mtp1-c1.json",
+    "outputPath": "~/B70-DOCS/results/ornith15-35b-20260819T1630Z/lmx-mtp1-c1.json",
+    "outputPathAbsolute": "~/B70-DOCS/results/ornith15-35b-20260819T1630Z/lmx-mtp1-c1.json",
+    "requiresMetrics": false,
+    "runPersisted": true,
+    "savedRunPath": "runs/ornith-ai-Ornith-1.5-35B-A3B/20260820T065107Z.json",
+    "savedRunPathAbsolute": "~/B70-DOCS/runs/ornith-ai-Ornith-1.5-35B-A3B/20260820T065107Z.json",
+    "savedRunPathRelative": "runs/ornith-ai-Ornith-1.5-35B-A3B/20260820T065107Z.json",
+    "status": "ready_for_api_validation",
+    "submissionStatus": "ready",
+    "submitCommand": "lmx speed-test submit ~/B70-DOCS/results/ornith15-35b-20260819T1630Z/lmx-mtp1-c1.json"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8000",
+    "concurrency": 1,
+    "iterations": 3,
+    "maxTokens": 256,
+    "mode": "remote",
+    "servedModel": "ornith15",
+    "servedModelSource": "explicit",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 5700X3D (8 threads)",
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "powerWatts": 230,
+    "ramGb": 30,
+    "vramGb": 32
+  },
+  "hardwareSource": "file",
+  "hfId": "ornith-ai/Ornith-1.5-35B-A3B",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "candidates": [],
+    "hfId": "ornith-ai/Ornith-1.5-35B-A3B",
+    "searchCommand": "lmx model search ornith15",
+    "searchQuery": "ornith15",
+    "searchQuerySource": "served_model",
+    "servedModel": "ornith15",
+    "servedModelSource": "explicit",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "outputText": "The user is asking me to explain why local inference benchmarks should report three specific metrics:\n1. Prompt prefill throughput\n2. Decode throughput\n3. Time to first token (TTFT)\n\nThis is a technical question about LLM inference performance measurement. Let me think deeply about what each of these means and why they matter, especially in a local (consumer/desktop) inference context.\n\nLet me break down the concepts:\n\n**Prefill vs Decode phases**\n\nModern LLM inference happens in two distinct phases:\n\n1. **Prefill phase**: When you send a prompt (input), the model processes all the tokens in the prompt simultaneously (in parallel) to compute the key-value (KV) cache. This is highly parallelizable work. The prompt is \"prefilled\" into the KV cache.\n\n2. **Decode phase**: The model generates output tokens one at a time. Each new token requires a forward pass through the model using the previous token. This is inherently sequential and memory-bandwidth-bound (the weights are loaded once per token generated).\n\n**Prompt Prefill Throughput**\n\nThis measures how fast the model can process the input prompt - typically measured in tokens per second (tok/s) for the input. \n\nWhy it matters:",
+  "outputTokens": 256,
+  "prompt": "Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.",
+  "promptTokens": 32,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-20T06:51:07Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "GPTQ-Int4",
+  "quantizationResolution": {
+    "cli": "GPTQ-Int4",
+    "status": "matched",
+    "trusted": "GPTQ-Int4",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 3,
+      "max": 83.9,
+      "mean": 83.87,
+      "min": 83.8,
+      "p50": 83.9,
+      "stddev": 0.06
+    },
+    "tokSTotal": {
+      "count": 3,
+      "max": 93.2,
+      "mean": 92.67,
+      "min": 91.7,
+      "p50": 93.1,
+      "stddev": 0.84
+    },
+    "ttftMs": {
+      "count": 3,
+      "max": 101.78,
+      "mean": 67.46,
+      "min": 50.12,
+      "p50": 50.47,
+      "stddev": 29.73
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 83.9,
+      "tokSPrefill": 314.4,
+      "ttftMs": 101.78
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 83.8,
+      "tokSPrefill": 634,
+      "ttftMs": 50.47
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 83.9,
+      "tokSPrefill": 638.5,
+      "ttftMs": 50.12
+    }
+  ],
+  "timingSource": "client_observed_http",
+  "tokSOut": 83.9,
+  "tokSOutSource": "inter_token",
+  "tokSPrefill": 634,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 93.1,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 50.47,
+  "ttftSource": "stream_first_token"
+}

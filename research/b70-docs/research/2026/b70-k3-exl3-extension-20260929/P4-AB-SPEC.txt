@@ -1,0 +1,128 @@
+P4 — matched A/B acceptance specification (NO execution authorized here)
+PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Base: 15ded2f3add148c4db3c900cba7de878238f53bc + ordered patch hashes.
+Classification: local-only experiment specification; no measured kernel claim.
+Capture status: spec only, changes no runtime; D3 HOLD before ANY image build.
+
+Question and kill gates
+Does real 3bpw K3 ESIMD retain quality and deliver >=10% faster corrected C1
+p512/g128 token rate than the 4bpw ESIMD incumbent, without >5% prefill regression?
+Quality is a standing kill gate, not a tradeoff: repeat the trial's exact-answer
+6/6 battery twice (including code_execution=14), spec canary, and deterministic
+replay; rerun the 10 host-executed tasks (require >=9/10 with no regression on the
+exact-answer cases). Inspect every failure before timing. The earlier Triton
+quality GO does not establish correctness of these new kernels.
+
+Inherited context, not matched acceptance data
+- Trial evidence: ~/B70-DOCS/results/2026/09/b70-3bpw-trial-20260929/.
+  K3 Triton p512/g128 n=3 diagnostic corrected-token-rate glance = 10.25 tok/s,
+  configured cap 230 W; ledger RL-094 reports 147.9 W draw. This does not establish
+  a general power-scaling law. MTP3 marginal survivals 0.882/0.811/0.337,
+  mean accepted length 3.03; diagnostics only, not the selection objective.
+- Incumbent reference supplied by operator: 63.25 tok/s, ESIMD 4bpw corrected
+  metric. Exact statistic/build/cache/duration coordinates must be recovered from
+  ~/B70-DOCS/results/2026/09/b70-probe1-exl3-rate-20260929/ before use;
+  unspecified coordinates remain UNKNOWN, not inferred from a filename.
+- Arithmetic planning threshold only: 1.10*63.25 = 69.575 tok/s. No current
+  performance result is asserted. Never compare either rate to historical SSE
+  chunk-rate (the former 24.6 was not token throughput).
+
+Arms and attribution
+A: 4bpw incumbent, immutable artifact/image/library identity, ESIMD.
+B: real 3bpw artifact, patched all-codebooks ESIMD, default backend auto.
+C: SAME 3bpw bytes and software source as B, EXL3_BACKEND=triton;
+   EXL3_INT8_PREFILL=0. C isolates backend speed from quantization changes.
+Optional A': 4bpw on the same patched all-codebooks library as B, to distinguish
+build/codebook-enablement regression from quantization. Required if A and B
+otherwise differ in base image/dependencies. Do not call A-vs-B kernel-only.
+B-vs-C can be matched_exact except the named backend; A-vs-B is at best
+matched_except_quant after software alignment. Inherited rates are directional
+until all coordinates are matched. Retain original incumbent as control; never
+silently replace it with a slower baseline.
+
+Locked setup
+One B70, one engine, one harness, one active C1 request, no queued/platform client.
+XPU graphs ON, verified in logs and replay trace. Native MTP3, greedy drafting,
+fp8 KV, artifact's head6/MTP4 precision, presence_penalty=1.5; identical scheduler,
+context and prompt content classes. Declare context >= actual p8192+g128 with
+measured reserve before load; do not invent the incumbent context setting.
+Default target sampling: non-thinking temp=0.7, top_p=0.8, top_k=20. Separate
+matched greedy diagnostic cells when reproducing historical greedy references;
+never merge sampled/greedy samples or call greedy synthetic representative.
+Cache explicitly OFF in all arms, retain enable_prefix_caching:false and a
+repeated-prefix negative control. Every cold request starts with >=64 unique
+entropy characters within exact token budget; record actual rendered/endpoint
+counts and zero prefix-hit delta. Missing cache counters => invalid, not zero.
+Keep EXL3_INT8_PREFILL=0 for the kernel-only comparison. If A's adopted recipe
+has it ON, ALSO compare the real incumbent ON versus B: int8 prefill remains
+K4/K6-only at base exl3_ops.sycl:661. Do not disable A's advantage to pass the
+<=5% prefill gate; report both the matched-fp16 axis and adopted-recipe axis.
+
+Metric audit first
+Use server-reported generated token IDs/counts; retain raw SSE chunks, completion
+usage and monotonic timestamps. Let N be actual completion tokens and n_first the
+number of tokens carried by the FIRST nonempty emitted batch, verified from
+server emission instrumentation. Correct client post-first token rate is
+(N-n_first)/(t_last_token_batch-t_first_token_batch), not chunks/seconds and not
+blindly (N-1) when speculative output batches multiple tokens. If n_first cannot
+be recovered, STOP that metric; report N/request_wall separately and instrument
+the server before comparison. Reconcile counts with usage, strip empty/control
+chunks, and never retokenize individual SSE fragments as a token oracle.
+Use the identical audited definition for A/B/C. If the historical 63.25/10.25
+uses a different numerator/window, retain it as reference_only and remeasure.
+Engine token/engine decode duration, if available, is a SEPARATE named metric.
+Require g128 exactly, ignore_eos=true, finish_reason=length; retain early-EOS
+samples as excluded with reason and never score them as forced-length wins.
+
+Protocol and sustained window
+1. D3 architect disposition -> assigned build window -> clean build validation ->
+   P3 numerical gates -> exact-answer/spec canary -> isolated-op sweep winner.
+   One-op win with end-to-end loss is reported, not shipped.
+2. C1 p512/g128 and p8192/g128 screens n=3 per arm, one full same-shape warmup
+   discarded. Fresh finalists n=5, counterbalanced A/B/C order across blocks;
+   fresh prompts with matched natural-content families and seeds. Thermal gate
+   <=55C package before comparable blocks; record actual per-card caps and use
+   the same declared 230 W cap only under an authorized window, restore as found.
+3. For the requested SUSTAINED p512/g128 claim: five fresh blocks per arm, each
+   20 consecutive serial p512/g128 requests after warmup, no cooldown within a
+   block. Count rate over SUM of the audited post-first decode windows:
+   sum(N-n_first)/sum(t_last-t_first). Label 'sustained serial-C1 post-first
+   token rate, 20 requests/block'; separately report sum(N)/full-block wall
+   (includes prompts and client gaps, never compare that to post-first rates).
+   Cool before blocks, retain thermal variation and slow valid samples. The n=3
+   glance cannot supply this claim. Report median across five block rates,
+   max, range, each sample, full window length, TTFT and post-first latency.
+4. Gate B >=1.10*A on fresh matched sustained median AND >=69.575 tok/s only
+   when 63.25 shares the audited metric/protocol; otherwise the historical numeric
+   threshold is reference_only and fresh A is decisive (explain the discrepancy).
+   B >=1.10*C as minimum backend efficacy gate; report ratios vs both fresh C and
+   inherited 10.25, labeling the latter directional only. A noisy threshold overlap
+   is inconclusive, not PASS. Report p8192 results; >5% decode loss there escalates.
+5. Prefill axis: cold p2048/g1 and p8192/g1 n=3 screen, fresh n=5 finalists.
+   Server-isolated prefill latency B/A <=1.05 at BOTH anchors; if only TTFT is
+   available, call it cold-input/TTFT regression (B/A<=1.05) and mark isolated
+   prefill unmeasured. Input/TTFT is NOT isolated prefill tok/s. Require <=5% on
+   both matched-fp16 and adopted-incumbent int8 axis if applicable; failure means
+   no adoption, even if decode wins.
+
+Execution ownership / evidence / stop
+b70-bench-engineer owns runs; b70-profiler owns replay dispatch/allocation traces.
+Before every build/load: live storage, source/library/image identities, empty-GPU
+and ownership gates, static budget then observed VRAM (>=2 GiB post-load target).
+Do not run alongside another campaign or pull the ~32GB image to root storage.
+Smallest falsifier: one-family op correctness + one exact-answer/spec canary,
+then n=3 p512/g128 screen. Declare estimated total requests/time from that probe;
+full sustained plan is 5*20*3=300 measured requests plus screens/warmups/prefill,
+not an unattended expansion. Operator assigns deadline before execution.
+Per request timeout 180s, startup/JIT timeout 300s, per sustained block 1h maximum;
+no progress, OOM, exception, nonfinite output, missing counters, token mismatch,
+quality failure, capture-off or unintended Triton fallback => STOP and preserve
+failure. No silent retry. Thermal timeout 10min => stop for a new window.
+Evidence: one UTC root, all raw samples and exclusions, prompts/hashes, exact
+artifact/index/payload identities, source+patch+library hashes, build and server
+logs, actual input/output tokens and timing formulas, cache/spec snapshots,
+replay dispatch traces, energy1_input deltas and monotonic interval, resolved
+hwmon/BDF, observed caps/temperature/VRAM, timeout and cleanup records. Acceptance
+survivals remain marginal; do not use MTP4's 1+4*alpha formula for MTP3.
+Cleanup only owned PIDs/container; restore each card's observed cap, verify empty
+GPU, no production restart or publication without separate authorization.

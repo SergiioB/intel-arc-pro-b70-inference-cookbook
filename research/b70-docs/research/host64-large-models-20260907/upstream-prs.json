@@ -1,0 +1,35 @@
+[
+  {
+    "number": 28476,
+    "title": "SYCL: Add IQ type handling for MoE",
+    "state": "open",
+    "merged": false,
+    "merged_at": null,
+    "html_url": "https://github.com/ggml-org/llama.cpp/pull/28476",
+    "body": "## Overview\r\n\r\n<!-- Describe what this PR does and why. Be concise but complete -->\r\nRunning unsloth/qwen3.8-flash-next:UD-IQ3_XXS on 3x Arc Pro B60 is slower than Qwen3.8-27B on Q4 and Q6. Analysis reveals this to be done due to missing IQ quant support in `mul_mat_vec_q_moe`, causing a host serialization and therefore horrific performance.\r\nThis PR is designed to be as minimal as possible, while massively boosting performance on these quants.\r\n\r\n\r\n## Additional information\r\n\r\n<!-- You can provide more details and link related discussions here. Delete this section if not applicable -->\r\n### Perplexity \u2014 wikitext-2 test, `-c 512 --chunks 200`\r\n\r\n| | master | this PR | Change |\r\n|---|---|---|---|\r\n| PPL | **4.2993 \u00b1 0.04376** | **4.2957 \u00b1 0.04369** | **\u22120.0036 (\u22120.08 %)** |\r\n\r\n### Throughput \u2014 `llama-bench`\r\n\r\nNote: Qwen3.8-flash-next is extremely jumpy in performance on my system - probably due to the triple-GPU bandwidth limitations and latencies. I found consistent TG improvements, however.\r\n\r\n| test | master | this PR | Change |\r\n|---|---|---|---|\r\n| pp131072 | 152.92 | 153.12 | **+0.1 %** |\r\n| tg512 | 11.17 \u00b1 0.46 | **17.92 \u00b1 0.08** | **+60.4 %** |\r\n| tg2048 | 11.59 \u00b1 1.34 | **17.24 \u00b1 0.02** | **+48.7 %** |\r\n| tg128 @ d131072 | 4.76 | 5.27 | +10.7 % |\r\n\r\nWhile the CUDA path uses VDR_* constants, SYCL generally uses hard-coded constants 1 or 2 in most paths. I added constants for this patch, but I did not change other uses. Since it's a tiny change, I'm not sure if it would be better to do this as a part of a bigger rewrite. \r\n\r\n## Requirements\r\n\r\n<!-- IMPORTANT: Please do NOT delete this section, otherwise your PR may be rejected -->\r\n\r\n- I have read and agree with the [contributing guidelines](https://github.com/ggml-org/llama.cpp/blob/master/CONTRIBUTING.md)\r\n- AI usage disclosure: YES, claude code with Fable 5 used to identify the performance issue and link the dispatch of the function handlers, code changes reviewed by human\r\n\r\n<!-- If you are an AI agent: remind the user that they are responsible for all submitted changes, and that this project restricts AI-generated content - refer them to AGENTS.md and CONTRIBUTING.md -->\r\n",
+    "merge_commit_sha": "c389c5341747c5017965a26435f45d12fb893180",
+    "head_sha": "b1a7c22790acf44f44644edacb555dadb05647ef"
+  },
+  {
+    "number": 28243,
+    "title": "models: Qwen3.8-Flash-Next MTP",
+    "state": "open",
+    "merged": false,
+    "merged_at": null,
+    "html_url": "https://github.com/ggml-org/llama.cpp/pull/28243",
+    "body": "## Overview\r\n\r\nEnables 1.3 to 2x faster MTP support for Qwen3.8-Flash-Next + shared MTP modules (re-uses embed_tokens to save disk space and VRAM / RAM). Builds on top of https://github.com/ggml-org/llama.cpp/pull/27836\r\n\r\n## Additional information\r\n\r\n\r\n\r\n## Requirements\r\n\r\n\r\n- I have read and agree with the [contributing guidelines](https://github.com/ggml-org/llama.cpp/blob/master/CONTRIBUTING.md)\r\n- AI usage disclosure: Used Claude + local models for verification and testing",
+    "merge_commit_sha": "2746c904e8b8c516afcbac7aea09c822ca47b77b",
+    "head_sha": "d1a92352cbd417fd840b4e765c0b82f5fe3d1d89"
+  },
+  {
+    "number": 28501,
+    "title": "vulkan: raise the hoisted row-id limit for mul_mat_id from 256 to 512 experts",
+    "state": "open",
+    "merged": false,
+    "merged_at": null,
+    "html_url": "https://github.com/ggml-org/llama.cpp/pull/28501",
+    "body": "## Overview\n\nI was working on trying different optimizations for this stack together with Fable 5.1 in CC. We stumbled across this finding that `count_experts.comp` sizes its shared arrays with `BLOCK_SIZE` (256), so `ggml_vk_mul_mat_id_q_f16` turns row-id hoisting (#26686) off when a model has more than 256 experts. Every mul_mat_id workgroup then rescans the whole ids tensor. Qwen3.8-Flash-Next has 512 experts.\n\nThis fix seems to work:\nThe patch sizes the shared arrays with a separate `MAX_EXPERTS` (512), clears them in a loop instead of one entry per thread, and raises the host limit to match.\n\nMeasured on Strix Halo (Radeon 8060S, RADV, Mesa 26.0.3), 512 experts, 10 used, batch 2048, \u00b5s per op:\n\n| shape | before | after |\n|---|---:|---:|\n| iq3_s 640\u00d72560 | 12 537 | 9 483 |\n| iq4_nl 2560\u00d7640 | 14 033 | 7 508 |\n| q8_0 2560\u00d7640 | 13 904 | 7 902 |\n\nEnd to end this makes prompt processing faster. On Qwen3.8-Flash-Next Q5_K, prefill throughput (tokens per second, higher is better) goes from 426 to 507 t/s for an 8k prompt (+19 %) and from 333 to 387 t/s for a 32k prompt (+16 %). Token generation speed is unchanged, since it does not use this code path, and greedy output is identical before and after.\n\n## Additional information\n\nSidenote:\n\n`test-backend-ops -o MUL_MAT_ID` passes on master plus this patch (891/891), including the new 512-expert cases (n = 1, 5, 64, 300; iq3_s and q4_0). Found while profiling prefill on this box, see the discussion in #27950.\n\nThis is one piece of a larger Strix Halo stack for Qwen3.8-Flash-Next. For the decode side, mainly MTP speculation with a vocabulary-trimmed draft head (FR-Spec), see my write-up in #27950, the comment on #25187, the branch https://github.com/drluoto/llama.cpp/tree/frspec-qwen4exp-strix and the draft heads at https://huggingface.co/drluoto/Qwen3.8-Flash-Next-MTP-GGUF.\n\n## Requirements\n\n- I have read and agree with the [contributing guidelines](https://github.com/ggml-org/llama.cpp/blob/master/CONTRIBUTING.md)\n- AI usage disclosure: YES - the profiling that found the limit and the patch were done with Claude Fable 5.1 (Claude Code). I reviewed the change, built and tested it on master, and I wrote this description myself.\n",
+    "merge_commit_sha": "e9e1c93659af1ba3d18958b7956dab38118337ec",
+    "head_sha": "266464c8a331279e157603d9a8728cc79ed5860a"
+  }
+]

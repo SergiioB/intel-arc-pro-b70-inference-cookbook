@@ -1,0 +1,17 @@
+model	ctx	kv	fa	power_cap_w	pp512	tg32	temp_avg_c	temp_max_c	temp_min_c	exit_code	log
+Qwen3.6-35B-A3B-UD-Q4_K_XL	262144	q8_0/q8_0	on	150			63.0	73.0	60.0	0
+~/b70-bench-results/sweeps/Qwen3.6-35B-A3B-UD-Q4_K_XL-ctx262144-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				
+Qwen3.6-35B-A3B-UD-Q5_K_M	65536	q8_0/q8_0	on	150			58.6	61.0	57.0	1
+~/b70-bench-results/sweeps/Qwen3.6-35B-A3B-UD-Q5_K_M-ctx65536-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				
+Qwen3.6-35B-A3B-UD-Q5_K_M	131072	q8_0/q8_0	on	150			57.1	59.0	56.0	1
+~/b70-bench-results/sweeps/Qwen3.6-35B-A3B-UD-Q5_K_M-ctx131072-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				
+Qwen3.6-35B-A3B-UD-Q5_K_M	262144	q8_0/q8_0	on	150			61.1	69.0	56.0	0
+~/b70-bench-results/sweeps/Qwen3.6-35B-A3B-UD-Q5_K_M-ctx262144-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				
+ornith-1.0-35b-Q4_K_M	65536	q8_0/q8_0	on	150			58.3	64.0	57.0	0
+~/b70-bench-results/sweeps/ornith-1.0-35b-Q4_K_M-ctx65536-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				
+ornith-1.0-35b-Q4_K_M	131072	q8_0/q8_0	on	150			58.8	65.0	57.0	1
+~/b70-bench-results/sweeps/ornith-1.0-35b-Q4_K_M-ctx131072-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				
+ornith-1.0-35b-Q4_K_M	262144	q8_0/q8_0	on	150			59.1	64.0	57.0	0
+~/b70-bench-results/sweeps/ornith-1.0-35b-Q4_K_M-ctx262144-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				
+Agents-A1-Q4_K_M	65536	q8_0/q8_0	on	150			57.9	60.0	57.0	134
+~/b70-bench-results/sweeps/Agents-A1-Q4_K_M-ctx65536-kq8-vq8-faon-cap150-fast-20260701-143728.log		q8_0/q8_0	on	150				

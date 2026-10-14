@@ -1,0 +1,143 @@
+{
+  "agentFeedback": {
+    "benchmarkStatus": "completed",
+    "canApiValidate": true,
+    "canSubmit": true,
+    "engine": "vllm",
+    "message": "Benchmark payload is ready for API validation.",
+    "mode": "remote",
+    "nextCommand": "lmx benchmark dry-run runs/Qwen-Qwen3.6-35B-A3B/20260806T145738Z.json",
+    "outputPath": "runs/Qwen-Qwen3.6-35B-A3B/20260806T145738Z.json",
+    "requiresMetrics": false,
+    "status": "ready_for_api_validation",
+    "submissionStatus": "ready",
+    "submitCommand": "lmx benchmark submit runs/Qwen-Qwen3.6-35B-A3B/20260806T145738Z.json"
+  },
+  "backend": "xpu",
+  "benchmarkMode": "remote",
+  "contextLength": 16384,
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8001",
+    "concurrency": 1,
+    "iterations": 3,
+    "maxTokens": 256,
+    "mode": "remote",
+    "servedModel": "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "servedModelSource": "v1_models",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "engineVersion": "0.21.1.dev18+gec426505f XPU",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 5700X3D 8-Core Processor",
+    "cpuThreads": 8,
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "linux",
+    "powerWatts": 150,
+    "ramGb": 30,
+    "vramGb": 32
+  },
+  "hardwareSource": "file",
+  "hfId": "Qwen/Qwen3.6-35B-A3B",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "candidates": [],
+    "hfId": "Qwen/Qwen3.6-35B-A3B",
+    "searchCommand": "lmx model search Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "searchQuery": "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "searchQuerySource": "served_model",
+    "servedModel": "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+    "servedModelSource": "v1_models",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "notes": "Single-stream. vLLM 0.21 XPU + 4 in-container patches (github.com/SergiioB/intel-arc-pro-b70-inference-cookbook): native int4 dtype (uint8-\u003eint8), BF16 MTP draft, XpuFusedMoe kwarg strip, GDN spec assert-\u003ewarning. MTP speculative 1 layer num_spec=1. --max-num-batched-tokens 8192 to clear chunking cap. Model: llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-GPTQ-Int4. FLASH_ATTN PIECEWISE. 150W. tokSOut=short/g32 best (controlled grid, warmup discarded, 2 reps); tokSPrefill=p8k (7545-token prompt) best. Byte-identical greedy replays verified; KL audit vs eager pending. Measured 2026-08-06 Run 20.",
+  "outputText": "Here's a thinking process:\n\n1.  **Understand User Query:** The user asks to explain why local inference benchmarks should report three specific metrics: prompt prefill throughput, decode throughput, and time to first token (TTFT).\n\n2.  **Deconstruct the Metrics:**\n   - *Prompt Prefill Throughput:* Measures how fast the model processes the input prompt (tokens) before generating any output. Usually measured in tokens per second (or tokens per second per GPU).\n   - *Decode Throughput:* Measures how fast the model generates output tokens one by one after the prompt is processed. Also in tokens per second.\n   - *Time to First Token (TTFT):* Measures the latency from when the request is submitted to when the first output token is generated. Usually in milliseconds.\n\n3.  **Identify the Core Reason:** These metrics capture different phases of the inference pipeline, which have distinct computational characteristics, bottlenecks, and user experience implications. Reporting all three gives a complete picture of model performance for local deployment.\n\n4.  **Analyze Each Metric's Importance:**\n   - *Prefill Throughput:* \n     - Handles the initial prompt processing (attention computation over all prompt tokens).\n     - Critical",
+  "outputTokens": 256,
+  "prompt": "Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.",
+  "promptTokens": 32,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-06T14:57:38Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "GPTQ-Int4",
+  "quantizationResolution": {
+    "cli": "GPTQ-Int4",
+    "status": "matched",
+    "trusted": "GPTQ-Int4",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 3,
+      "max": 105.1,
+      "mean": 102.5,
+      "min": 100.4,
+      "p50": 102,
+      "stddev": 2.39
+    },
+    "tokSTotal": {
+      "count": 3,
+      "max": 114.9,
+      "mean": 112.8,
+      "min": 110.9,
+      "p50": 112.6,
+      "stddev": 2.01
+    },
+    "ttftMs": {
+      "count": 3,
+      "max": 80.35,
+      "mean": 64.75,
+      "min": 56.49,
+      "p50": 57.4,
+      "stddev": 13.52
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "tokSOut": 105.1,
+      "tokSPrefill": 398.3,
+      "tokSTotal": 114.9,
+      "ttftMs": 80.35
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "tokSOut": 102,
+      "tokSPrefill": 566.4,
+      "tokSTotal": 112.6,
+      "ttftMs": 56.49
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "tokSOut": 100.4,
+      "tokSPrefill": 557.5,
+      "tokSTotal": 110.9,
+      "ttftMs": 57.4
+    }
+  ],
+  "timingSource": "client_observed_http",
+  "tokSOut": 132.9,
+  "tokSOutSource": "inter_token",
+  "tokSPrefill": 8718,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 112.6,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 57.4,
+  "ttftSource": "stream_first_token"
+}

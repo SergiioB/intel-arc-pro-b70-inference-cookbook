@@ -1,0 +1,67 @@
+{
+  "question_id": "RQ-11",
+  "hypothesis": "MoE active bytes per token, not raw bandwidth, decide the B70's best class; the missing pieces are on-device routing and a fused grouped dequant GEMM (the K216 25x grouped-op gap and 84+ host waits are the measured failure modes).",
+  "changed_variable": "expert dispatch placement (router and grouped GEMM on device), one mechanism at a time",
+  "resource": "gpu",
+  "stage": "screen",
+  "timeout_s": 1800,
+  "command": [
+    "python3",
+    "scripts/tmp/rq11_anchor_20261010.py",
+    "anchor"
+  ],
+  "preflight_command": [
+    "python3",
+    "scripts/tmp/rq11_anchor_20261010.py",
+    "preflight"
+  ],
+  "cleanup_command": [
+    "python3",
+    "scripts/tmp/rq11_anchor_20261010.py",
+    "cleanup"
+  ],
+  "identities": {
+    "baseline": {
+      "host": "b70-host",
+      "engine_revision": "vllm/vllm-openai-xpu:v0.30.0@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d (vllm 0.30.0+xpu, commit gced6857af; torch 2.13.0+xpu inside the image; entrypoint 'vllm serve'; VLLM_TARGET_DEVICE=xpu and VLLM_WORKER_MULTIPROC_METHOD=spawn baked into the image), served on the isolated daemon unix:///run/<exl3-docker>.sock; image identity per research/2026/v0300-nemotron-gptq64-dflash-n7-serve-source-20261010.md section 1",
+      "model_revision": "target NVIDIA-Nemotron-3.5-Lightning-30B-A3B GPTQ-INT4 symmetric group-64 at /mnt/<sata-disk>/nemotron-lightning-gptq-sym64-20260812 (NemotronHForCausalLM / nemotron_h, 128 routed experts, 6 per token, quant gptq bits=4 group_size=64 sym=true desc_act=false; config.json sha256 recorded in preflight evidence) + DFlash BF16 drafter at /mnt/<sata-disk>/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16 (DFlashDraftModel, dtype bfloat16, has_lm_head=false; config.json sha256 recorded in preflight evidence); anchor repetition A"
+    },
+    "candidate": {
+      "host": "b70-host",
+      "engine_revision": "vllm/vllm-openai-xpu:v0.30.0@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d (vllm 0.30.0+xpu, commit gced6857af; torch 2.13.0+xpu inside the image; entrypoint 'vllm serve'; VLLM_TARGET_DEVICE=xpu and VLLM_WORKER_MULTIPROC_METHOD=spawn baked into the image), served on the isolated daemon unix:///run/<exl3-docker>.sock; image identity per research/2026/v0300-nemotron-gptq64-dflash-n7-serve-source-20261010.md section 1",
+      "model_revision": "target NVIDIA-Nemotron-3.5-Lightning-30B-A3B GPTQ-INT4 symmetric group-64 at /mnt/<sata-disk>/nemotron-lightning-gptq-sym64-20260812 (NemotronHForCausalLM / nemotron_h, 128 routed experts, 6 per token, quant gptq bits=4 group_size=64 sym=true desc_act=false; config.json sha256 recorded in preflight evidence) + DFlash BF16 drafter at /mnt/<sata-disk>/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16 (DFlashDraftModel, dtype bfloat16, has_lm_head=false; config.json sha256 recorded in preflight evidence); anchor repetition B"
+    }
+  },
+  "controlled": {
+    "workload": {
+      "definition": "campaigns/2026/rq11-nemotron-v030-anchor/workload.json (sha256 d5d794d59bfe0b7615a206f6042c51362b2d667317fa9c0887f8f477a51ee914, predeclared 2026-10-10 and frozen before any run exists; the preflight records its hash and the hash of the anchor corpus results/2026/10/b70-sweep-canary/prompts.json = 566691fae65c6ce40aa31b19614fc40ae8adf1a286a7b33737cf9dbe4f328db9)",
+      "cells": "battery and canary FIRST (standing-rules 1.3): one discarded same-shape chat warmup, then 6 canaries run A (greedy gen 64), 10 representative tasks (greedy gen 256), 8K two-turn KV-edge check (2 turns, gen 64/turn), 6 canaries run B, deterministic replay 3x3 (batt-arith/batt-logic/batt-json, gen 128, scored-channel sha256 identity); THEN the anchor cells: one discarded same-shape warmup per shape, then for i in 1..5 the interleaved sequence p512-A-i, p512-B-i, p2048-i",
+      "anchor_coordinates": "p512/g128 with occupied context 512+128 (10 measured requests = 5 A/B pairs) and p2048/g128 with occupied context 2048+128 (5 measured requests); greedy, ignore_eos, finish_reason must be length, completion_tokens must equal 128 exactly",
+      "unique_prefixes": "every measured/warmup anchor prompt starts with a fresh uuid4 16-hex tag + newline (entropy-first); exact rendered lengths (512/2048) hit by /tokenize binary search and re-verified against usage.prompt_tokens; battery cells use their bare predeclared texts (cache is off, zero-hit deltas still enforced per request)",
+      "sampling": "greedy (temperature 0, top_p 1) everywhere",
+      "client": "single sequential client (the adapter); one request in flight at a time; C1 only",
+      "cache_state": "prefix caching OFF (--no-enable-prefix-caching; AGENTS.md 7 / standing-rules 1.4 on the vLLM-XPU W4A16 + speculative stack); /metrics prefix_cache_hits delta must be 0 for every request; the replay groups double as the repeated-prefix cache-off behavioral proof",
+      "metric_naming": "client post-first tok/s = (completion_tokens - 1) / (last - first content-delta monotonic timestamps), named per benchmark-protocol 9; engine-side decode rate from /metrics request_decode_time deltas kept as a separate corroborating column; DFlash acceptance counters diagnostic only"
+    },
+    "config": {
+      "card": "GPU1 only, identified live by PCI 0000:0f:00.0 in preflight (never a remembered index); the render node is resolved live via /dev/dri/by-path/pci-0000:0f:00.0-render and that single node is the container's only --device, so the display card 0000:0b:00.0 receives no container device attachment",
+      "engine_image": "vllm/vllm-openai-xpu@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d, verified present on the isolated daemon by `docker -H unix:///run/<exl3-docker>.sock images --digests` (read live 2026-10-10); the adapter never pulls",
+      "engine_argv": "serve /models/target --dtype float16 --quantization gptq --speculative-config {\"method\":\"dflash\",\"model\":\"/models/draft\",\"num_speculative_tokens\":7} --async-scheduling --max-model-len 16384 --max-num-seqs 16 --max-num-batched-tokens 8192 --gpu-memory-utilization <clamped> --no-enable-prefix-caching --served-model-name nemotron-gptq64-dflash7 --host 127.0.0.1 --port 8015; flags per the pinned note research/2026/v0300-nemotron-gptq64-dflash-n7-serve-source-20261010.md section 3 (no --enforce-eager anywhere); --served-model-name/--host/--port are deployment wraps that change no engine behavior and are declared here",
+      "engine_env": "VLLM_XPU_ENABLE_XPU_GRAPH=1 (required for XPU graph capture, standing-rules 1.1; capture-on is verified in the boot log evidence) and ZE_AFFINITY_MASK=level_zero:0 (the single render node visible in the container); VLLM_WORKER_MULTIPROC_METHOD=spawn is baked into the image",
+      "container": "isolated daemon socket unix:///run/<exl3-docker>.sock, image by digest, --network=host, --device=<resolved render node>, --group-add=<live gid of that node>, read-only mounts of the target and drafter model directories, container name under rq11-anchor-v030-",
+      "vram_budget": "serve budget = pinned --gpu-memory-utilization 0.90 clamped DOWN at launch to min(0.90, (live visible_avail MiB - 4096) / visible_size MiB) so allocation stays inside live free VRAM minus 4 GiB (standing-rules 1.13, workflow-prompt 5.3, RQ-17 plan precedent); the pinned 0.90 cannot satisfy the reserve on this card (0.90 x 32656 MiB = 29390 > 32615 - 4096 = 28519 at the 2026-10-10 live reading), so the declared effective value at authoring time is 0.873; the clamp arithmetic and both readings are recorded in preflight and battery evidence",
+      "power_thermal": "as-found caps recorded at preflight (2026-10-10 live: 180 W on 0000:0b:00.0, 230 W on 0000:0f:00.0) and restored at cleanup; zero cap writes during the campaign; sustained thermal regime declared per standing-rules 1.12 (the <=55 C cooldown is unreachable, RL-065/069); card draw from energy1_input deltas on the serving card's PCI-verified hwmon over the measured anchor window only, average W labeled, counter domain uJ recorded; temperatures start/peak/end per named sensor on the same device",
+      "isolation": "preflight fails on: any foreign compute client on dri/0 or dri/1 (the RL-137/RL-139 cause), any vllm/llama-server/llama-bench/strata/sglang process, any Up inference container on either daemon, any leftover rq11-anchor-v030- container, any listener on 8015; the exited nemotron-hermes container and the foreign main-daemon containers are recorded and never touched",
+      "daemon": "the isolated daemon is used as-found when running (documented argv verified live 2026-10-10); if the socket is absent the adapter starts it with the documented systemd-run argv and recreates bridge <exl3-bridge> (172.31.77.1/24) if missing, recording ownership so cleanup stops/removes only what this campaign created",
+      "port": 8015
+    }
+  },
+  "comparison": {
+    "metric": "anchor_pair_valid_fraction",
+    "unit": "add_one_smoothed_pair_valid_fraction",
+    "direction": "higher",
+    "min_relative_gain": 0.0
+  },
+  "evidence_rationale": "This run is RQ-11's smallest_probe re-anchor, verbatim from the registry: 'Re-measure Nemotron's GPTQ-INT4 + DFlash route on today's harness and metric rules (one n=5 anchor pair)', executed at n=5 over two anchor cells on the pinned v0.30.0 stack (flags per research/2026/v0300-nemotron-gptq64-dflash-n7-serve-source-20261010.md; capture on; prefix cache off per AGENTS.md 7). The result is a NEW baseline: it must never be compared to the historical 186.6 tok/s row (a 2026-08-13 client-post-first n=5 number on a different harness generation). The baseline/candidate comparison schema cannot honestly express a re-anchor because nothing is changed between arms: the question's changed_variable (expert dispatch placement) is this campaign's future lever, not a variable this probe varies. Following the runner-accepted RQ-17 precedent (frozen plan results/2026/10/RQ-17-20261010T171539823866Z-f31436becd/plan.json), the numeric arms are therefore an explicit A/A: baseline = anchor repetition A, candidate = anchor repetition B, same stack, interleaved at the p512/g128 cell, and the assessed metric is per-pair measurement validity, (1 + valid)/2 in each arm, strictly positive so an invalid pair assesses rejected rather than blocked. min_relative_gain is 0.0 (the question's own minimum_relative_gain). The REAL gates live in the four evidence-backed checks: canaries 6/6 correct in both runs, tasks >= 8/10, 8K two-turn correct (quality); replay 3x3 token-identical plus zero cache-hit deltas on every request (correctness); card/daemon/port isolation (isolation); exact token counts, finish=length on all measured cells, capture-on and prefix-cache-off boot evidence, VRAM reserve honored (measurement_validity). The anchor deliverables - per-cell client-post-first medians with range, TTFT/TPOT, DFlash acceptance, measured energy and thermals - are recorded in measurements.json under 'anchor' and raw/anchor_rates.json, and per the ask's declared fallback the ledger registration intended for this run is a SCOPED MANUAL ROW carrying those values; the run's own verdict asserts measurement validity in scope, never a speedup. Attempt accounting: no research.py run has ever executed for RQ-11 (RL-135 and RL-139 were preflight blocks with no run root; the RL-139 cause, a foreign arm.sh/llama-stream loop holding both render nodes, is resolved - dri clients were re-read live 2026-10-10 and list desktop sessions only, and the isolated daemon is up with the pinned digest present), so this plan is the question's first screen attempt with execution_budget.max_attempts=2 intact. Budget: one card (GPU1), one owned container, inside the question's screen_timeout_s=1800 with an internal 1700 s deadline; 34 battery requests + 2 anchor warmups + 15 measured requests plus ~190 /tokenize calibration probes; stop rule: any battery quality failure, replay drift, cache-hit delta, capture-off evidence or VRAM-reserve violation fails its check and the run registers accordingly - no gate is lowered after results.",
+  "measurements_note": "The adapter reads the frozen plan.json from B70_RUN_DIR and copies metric/unit/identities/controlled verbatim into measurements.json. baseline and candidate are arrays of {pair, value} over the five p512/g128 A/B pairs, value = (1 + valid)/2 per arm (add-one smoothed, strictly positive). The p2048/g128 single-arm samples, per-cell rates, acceptance, energy and thermal coverage are recorded under the 'anchor' key and in raw/anchor_rates.json plus raw/requests.jsonl. checks carry quality, correctness, isolation and measurement_validity, each with a relative evidence file under the run root. The numeric verdict must be read as measurement validity only; the anchor values are the deliverable and are intended for a scoped manual ledger row, not a gain comparison."
+}

@@ -1,0 +1,1110 @@
+[
+  {
+    "repo": "unsloth/Qwen3.8-Flash-Next-GGUF",
+    "revision": "38bb39ee97821de2c9009abb7e93950eec396e66",
+    "groups": {
+      "BF16": {
+        "bytes": 354029930496,
+        "files": [
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00001-of-00008.gguf",
+            "size": 10946368,
+            "sha256": "348986b2568af284eb16a0be0ccd17aa4cf0bc823de4a1c9da8e5a24365e3fd9"
+          },
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00002-of-00008.gguf",
+            "size": 10447201664,
+            "sha256": "905f21f256847501da84872c526791539a660328b85b701049d859a1c3dfa1cd"
+          },
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00003-of-00008.gguf",
+            "size": 102400491712,
+            "sha256": "fd6926a9142df95273cb92623b151f09d260f85b7c02e9469a1b610b552c6d0e"
+          },
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00004-of-00008.gguf",
+            "size": 48394236672,
+            "sha256": "e4ca944e85c400a5fecb6fd7b0ae0358b67e9bb39ded38a9a8596f8850e7e6dc"
+          },
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00005-of-00008.gguf",
+            "size": 48367899040,
+            "sha256": "c110361d1bbe8064e15c58c456cc35f0fe3d1b1329869e51b067909f83b95e6e"
+          },
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00006-of-00008.gguf",
+            "size": 48615233984,
+            "sha256": "cbce912e81f2d983e0a302ceb48554a45ecade9b083f4827d53fc8191af3aeb6"
+          },
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00007-of-00008.gguf",
+            "size": 48367899040,
+            "sha256": "23fbbbef0920c451c2fa4d9cf96d3dd167ed38c1cead608457464812d8930bc8"
+          },
+          {
+            "name": "BF16/Qwen3.8-Flash-Next-BF16-00008-of-00008.gguf",
+            "size": 47426022016,
+            "sha256": "b6e4e5c646f8f708bd471e922004aa752acbcdac1d3abb27c9d42037630916f7"
+          }
+        ]
+      },
+      "MTP": {
+        "bytes": 24616077888,
+        "files": [
+          {
+            "name": "MTP/mtp-Qwen3.8-Flash-Next-BF16.gguf",
+            "size": 7770760320,
+            "sha256": "8ac04a65440ade36c4001c432f5dba256028e047bbaa71ff6161f91fe149a99c"
+          },
+          {
+            "name": "MTP/mtp-Qwen3.8-Flash-Next-Q4_K_M.gguf",
+            "size": 2786204800,
+            "sha256": "b646ef60eaae2a9ed849e75f15f399629ca22633555e99e809959e95f22a1575"
+          },
+          {
+            "name": "MTP/mtp-Qwen3.8-Flash-Next-Q8_0.gguf",
+            "size": 4137429120,
+            "sha256": "cd87e5d1a4dadaeed63e35929f3b2f28d13e081b4cd32e00f2835095ec09351e"
+          },
+          {
+            "name": "MTP/mtp-Qwen3.8-Flash-Next-shared-BF16.gguf",
+            "size": 5227963456,
+            "sha256": "32473fa74e8ed0f0026219b09b43d303f52f328c0f8b0caf4b24bf8834cc596b"
+          },
+          {
+            "name": "MTP/mtp-Qwen3.8-Flash-Next-shared-Q4_K_M.gguf",
+            "size": 1907151936,
+            "sha256": "f521868a9e143718bef513772f6e04d9642551e362cf2439636d2abdbd149dfc"
+          },
+          {
+            "name": "MTP/mtp-Qwen3.8-Flash-Next-shared-Q8_0.gguf",
+            "size": 2786568256,
+            "sha256": "5ff54097406a905cf3a724c709124ceb0e3e10235ee862298969e91c96fa96e6"
+          }
+        ]
+      },
+      "Q8_0": {
+        "bytes": 188225033248,
+        "files": [
+          {
+            "name": "Q8_0/Qwen3.8-Flash-Next-Q8_0-00001-of-00006.gguf",
+            "size": 10946624,
+            "sha256": "2dabcbb53ca537a7947bc7d20414fd464eeaf4d66d43021b5b2556cc87544ad2"
+          },
+          {
+            "name": "Q8_0/Qwen3.8-Flash-Next-Q8_0-00002-of-00006.gguf",
+            "size": 682434912,
+            "sha256": "494ca4ed3dbf97bc28da88af3890b8877b9032f909812d00c0526a9ca5e91d2e"
+          },
+          {
+            "name": "Q8_0/Qwen3.8-Flash-Next-Q8_0-00003-of-00006.gguf",
+            "size": 54400261312,
+            "sha256": "34efd79a80a1ce540a517a5d56171924b66ce1c38b04c904f17ad6d8ef17cf20"
+          },
+          {
+            "name": "Q8_0/Qwen3.8-Flash-Next-Q8_0-00004-of-00006.gguf",
+            "size": 49446841216,
+            "sha256": "bfa634025fabbd2658bf7694bc80b90e571699c768723f844c934c7ef06c691a"
+          },
+          {
+            "name": "Q8_0/Qwen3.8-Flash-Next-Q8_0-00005-of-00006.gguf",
+            "size": 49668930400,
+            "sha256": "232a8f14cc0fa4262e7efe8593774b136fe40909e39c7a020342ddaa27259a97"
+          },
+          {
+            "name": "Q8_0/Qwen3.8-Flash-Next-Q8_0-00006-of-00006.gguf",
+            "size": 34015618784,
+            "sha256": "538a93bca918064983409a41187ad4c68640f9aced6f29564da8f551bf86d7a5"
+          }
+        ]
+      },
+      "UD-IQ1_M": {
+        "bytes": 74538755776,
+        "files": [
+          {
+            "name": "UD-IQ1_M/Qwen3.8-Flash-Next-UD-IQ1_M-00001-of-00003.gguf",
+            "size": 10946624,
+            "sha256": "6584f289c808a486ac33aef20906774bcf6616785535c03b842072951e5112d2"
+          },
+          {
+            "name": "UD-IQ1_M/Qwen3.8-Flash-Next-UD-IQ1_M-00002-of-00003.gguf",
+            "size": 49988981792,
+            "sha256": "a7cbafba2cbc1ccde484ed05e1bbeaef4d67e0924ef51cc8b8de18e62edb5586"
+          },
+          {
+            "name": "UD-IQ1_M/Qwen3.8-Flash-Next-UD-IQ1_M-00003-of-00003.gguf",
+            "size": 24538827360,
+            "sha256": "ae757ff9347651adacc7746f137d8c29b51f25cf6bb27cd49086ef45bd8cc203"
+          }
+        ]
+      },
+      "UD-IQ1_S": {
+        "bytes": 72546461344,
+        "files": [
+          {
+            "name": "UD-IQ1_S/Qwen3.8-Flash-Next-UD-IQ1_S-00001-of-00003.gguf",
+            "size": 10946624,
+            "sha256": "88a1420825a9304063e882ada29d438263617f51ac8923d438d927496693bafd"
+          },
+          {
+            "name": "UD-IQ1_S/Qwen3.8-Flash-Next-UD-IQ1_S-00002-of-00003.gguf",
+            "size": 49990818368,
+            "sha256": "3a62e35bbf9add4733bd1438ebd3a67649d5edd6cb0e72bb78e33c913992b2b6"
+          },
+          {
+            "name": "UD-IQ1_S/Qwen3.8-Flash-Next-UD-IQ1_S-00003-of-00003.gguf",
+            "size": 22544696352,
+            "sha256": "0e25ceaeb89b8a80aa973c6c0c7448943682f7408c2855b2ebd016b7643a861a"
+          }
+        ]
+      },
+      "UD-IQ3_XXS": {
+        "bytes": 81961823936,
+        "files": [
+          {
+            "name": "UD-IQ3_XXS/Qwen3.8-Flash-Next-UD-IQ3_XXS-00001-of-00003.gguf",
+            "size": 10946624,
+            "sha256": "268f81fdedf3149a538f252308927a4d5d1f6e062c178568a51e3b519744f8a8"
+          },
+          {
+            "name": "UD-IQ3_XXS/Qwen3.8-Flash-Next-UD-IQ3_XXS-00002-of-00003.gguf",
+            "size": 49567921344,
+            "sha256": "cfe600b236b88c7fad1613a5ca5e83b9f2beb63cbd44c32b2be50a44747c695f"
+          },
+          {
+            "name": "UD-IQ3_XXS/Qwen3.8-Flash-Next-UD-IQ3_XXS-00003-of-00003.gguf",
+            "size": 32382955968,
+            "sha256": "f1912ba34c79427d2295a58dcb2b732b5931af5bef7a373c60557a57d9ee7250"
+          }
+        ]
+      },
+      "UD-IQ4_XS": {
+        "bytes": 93682584224,
+        "files": [
+          {
+            "name": "UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+            "size": 10946624,
+            "sha256": "5ce89370720f8bf90890f439361282104c1aa1482d4013bb9a50923e758e71a4"
+          },
+          {
+            "name": "UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00002-of-00003.gguf",
+            "size": 49835229856,
+            "sha256": "577a38a2392b40ca2193cea502e1d92f60b8cd370675d308e0ec21885d9daaa7"
+          },
+          {
+            "name": "UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00003-of-00003.gguf",
+            "size": 43836407744,
+            "sha256": "d4634e6d84f0ebb0940be15c90d3790bf6464e3dea3a1cddc567dc0e83ad8833"
+          }
+        ]
+      },
+      "UD-Q2_K_XL": {
+        "bytes": 78869128864,
+        "files": [
+          {
+            "name": "UD-Q2_K_XL/Qwen3.8-Flash-Next-UD-Q2_K_XL-00001-of-00003.gguf",
+            "size": 10946624,
+            "sha256": "a4f3b21e77353999829f2f767e9ac21ce9c71d29a74f2cc9eda48c9bf23c8b86"
+          },
+          {
+            "name": "UD-Q2_K_XL/Qwen3.8-Flash-Next-UD-Q2_K_XL-00002-of-00003.gguf",
+            "size": 49979779296,
+            "sha256": "2e3bf1ee7d2a04e261e9f342a2d968f696cce5941d082b0e434deb9b1edc12c6"
+          },
+          {
+            "name": "UD-Q2_K_XL/Qwen3.8-Flash-Next-UD-Q2_K_XL-00003-of-00003.gguf",
+            "size": 28878402944,
+            "sha256": "ec8c106759fdf4f463039c34c0707718d7d8908d53d892bd4f002e71620803f9"
+          }
+        ]
+      },
+      "UD-Q3_K_XL": {
+        "bytes": 89986353824,
+        "files": [
+          {
+            "name": "UD-Q3_K_XL/Qwen3.8-Flash-Next-UD-Q3_K_XL-00001-of-00003.gguf",
+            "size": 10946624,
+            "sha256": "f2ef4328929d8b8c8930e2856eef52128dd4ce3425302f04bc3c657431cc4c49"
+          },
+          {
+            "name": "UD-Q3_K_XL/Qwen3.8-Flash-Next-UD-Q3_K_XL-00002-of-00003.gguf",
+            "size": 49983253824,
+            "sha256": "7d230e7c9421d868b89eebaf23033af0ea1a4e046956df00fb156814fb62346e"
+          },
+          {
+            "name": "UD-Q3_K_XL/Qwen3.8-Flash-Next-UD-Q3_K_XL-00003-of-00003.gguf",
+            "size": 39992153376,
+            "sha256": "21d4f90f9cd7b7c3a1582667c20cb22f7b03de895b88a23bb20aaeaa44f2c199"
+          }
+        ]
+      },
+      "UD-Q4_K_XL": {
+        "bytes": 111334654784,
+        "files": [
+          {
+            "name": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf",
+            "size": 10946624,
+            "sha256": "4448186216b3af4cc558bbce2c3213f01608f8f8b2e5267a9767971dd3ec8082"
+          },
+          {
+            "name": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf",
+            "size": 49859583136,
+            "sha256": "3f342f1c1580473f1ee94ddd5b28206e8c07a70fa1a366f59d1d6c922919a6c9"
+          },
+          {
+            "name": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf",
+            "size": 49376141504,
+            "sha256": "56758f40269cad5cd9b0d3d6fbae0f40f6d5be6de49e4ab392dbe83157d9cbd3"
+          },
+          {
+            "name": "UD-Q4_K_XL/Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf",
+            "size": 12087983520,
+            "sha256": "753bda48b98ba4f1636134a90a967de1b2d3908a236c026e464777342e53510a"
+          }
+        ]
+      },
+      "UD-Q5_K_XL": {
+        "bytes": 158286406650,
+        "files": [
+          {
+            "name": "UD-Q5_K_XL/Qwen3.8-Flash-Next-UD-Q5_K_XL-00001-of-00006.gguf",
+            "size": 10946618,
+            "sha256": "610922cdb1afe1094e95d7a3e86b12ee33317ebbf7320ac9344e21b6ae4bb69f"
+          },
+          {
+            "name": "UD-Q5_K_XL/Qwen3.8-Flash-Next-UD-Q5_K_XL-00002-of-00006.gguf",
+            "size": 682434912,
+            "sha256": "494ca4ed3dbf97bc28da88af3890b8877b9032f909812d00c0526a9ca5e91d2e"
+          },
+          {
+            "name": "UD-Q5_K_XL/Qwen3.8-Flash-Next-UD-Q5_K_XL-00003-of-00006.gguf",
+            "size": 54400261312,
+            "sha256": "34efd79a80a1ce540a517a5d56171924b66ce1c38b04c904f17ad6d8ef17cf20"
+          },
+          {
+            "name": "UD-Q5_K_XL/Qwen3.8-Flash-Next-UD-Q5_K_XL-00004-of-00006.gguf",
+            "size": 49990245824,
+            "sha256": "9ee6bbe462e6830864382d629101490625b1c95afa15492b7ad550c7bed2dd13"
+          },
+          {
+            "name": "UD-Q5_K_XL/Qwen3.8-Flash-Next-UD-Q5_K_XL-00005-of-00006.gguf",
+            "size": 49882416192,
+            "sha256": "0b2437f661f584030cb5aeb8fb1bb70f6422518a6746bfcc0304167c7b6b8beb"
+          },
+          {
+            "name": "UD-Q5_K_XL/Qwen3.8-Flash-Next-UD-Q5_K_XL-00006-of-00006.gguf",
+            "size": 3320101792,
+            "sha256": "55dd96c5ad0863b06b6393151b9ad0ac727b8d58a62e02a296ca5d5ddbfee4a3"
+          }
+        ]
+      },
+      "UD-Q6_K_XL": {
+        "bytes": 169165382688,
+        "files": [
+          {
+            "name": "UD-Q6_K_XL/Qwen3.8-Flash-Next-UD-Q6_K_XL-00001-of-00006.gguf",
+            "size": 10946624,
+            "sha256": "8bdc6bad55b6699f46f60708829932ff4018d7ac9bd309c388534fa31753bdb7"
+          },
+          {
+            "name": "UD-Q6_K_XL/Qwen3.8-Flash-Next-UD-Q6_K_XL-00002-of-00006.gguf",
+            "size": 682434912,
+            "sha256": "494ca4ed3dbf97bc28da88af3890b8877b9032f909812d00c0526a9ca5e91d2e"
+          },
+          {
+            "name": "UD-Q6_K_XL/Qwen3.8-Flash-Next-UD-Q6_K_XL-00003-of-00006.gguf",
+            "size": 54400261312,
+            "sha256": "34efd79a80a1ce540a517a5d56171924b66ce1c38b04c904f17ad6d8ef17cf20"
+          },
+          {
+            "name": "UD-Q6_K_XL/Qwen3.8-Flash-Next-UD-Q6_K_XL-00004-of-00006.gguf",
+            "size": 49814108512,
+            "sha256": "0ea4b599880a5a52fcd9c188ba1443f646c69c96571904ddbd6a79246a01a997"
+          },
+          {
+            "name": "UD-Q6_K_XL/Qwen3.8-Flash-Next-UD-Q6_K_XL-00005-of-00006.gguf",
+            "size": 49419317344,
+            "sha256": "9948e81ae8368144b135a7403d8c0f2cf9a6c2f9f692313865855b2832e696c9"
+          },
+          {
+            "name": "UD-Q6_K_XL/Qwen3.8-Flash-Next-UD-Q6_K_XL-00006-of-00006.gguf",
+            "size": 14838313984,
+            "sha256": "e4ae255234f42b18012f6d6eec5bf615b57479b7e0a0233c47436a321ffeec3f"
+          }
+        ]
+      },
+      "mmproj-BF16.gguf": {
+        "bytes": 907542944,
+        "files": [
+          {
+            "name": "mmproj-BF16.gguf",
+            "size": 907542944,
+            "sha256": "2e788f8c511d8093c7b43cb87b2fd7e14228340318057f8fb20c86df2efe2355"
+          }
+        ]
+      },
+      "mmproj-F16.gguf": {
+        "bytes": 904004000,
+        "files": [
+          {
+            "name": "mmproj-F16.gguf",
+            "size": 904004000,
+            "sha256": "1f7b7f0b984cf065c604360c29c8098362ed61b290db0ff12c6f360bb1a8a980"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "repo": "unsloth/GLM-5.3-Flash-GGUF",
+    "revision": "621d456e93e926e4b52f85cff5f634358c1828f9",
+    "groups": {
+      "BF16": {
+        "bytes": 641641064192,
+        "files": [
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00001-of-00014.gguf",
+            "size": 9429632,
+            "sha256": "a5cd1a7a1f4d2997403578df1700519b5b0c490a78bb7cc4f2579311bfe9c731"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00002-of-00014.gguf",
+            "size": 48155668736,
+            "sha256": "9cc585be519911723528aee146812057663d062eac6d7bae6e06cdaec6e989aa"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00003-of-00014.gguf",
+            "size": 49289812544,
+            "sha256": "2e2042b9ced18a23ea1debba8d77a16f654459260aa979911750e5ac069cf002"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00004-of-00014.gguf",
+            "size": 49315393792,
+            "sha256": "9ee483074b94e2a2a36205f01bb681a0537c7a44baf52e6fba32ec82e3fe1ac8"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00005-of-00014.gguf",
+            "size": 49998245760,
+            "sha256": "df779fcbd5c7e58dfdda6769c60a9bf86fd038b290d19df1841e7138c30a5831"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00006-of-00014.gguf",
+            "size": 49492991520,
+            "sha256": "06c35b31c602a1f1f113cd009a139570972b7a2143aff5aef27247a8a9242a34"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00007-of-00014.gguf",
+            "size": 49289812544,
+            "sha256": "48d497ce1bbb5f72967d2e560528e79d72db60c34b57194bfc711ae9b6ceb4b0"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00008-of-00014.gguf",
+            "size": 49596568192,
+            "sha256": "219e96d774f81042dfdc9a1742b43fe0f6ce888d2db1cda1c2f8950f81921815"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00009-of-00014.gguf",
+            "size": 49315393792,
+            "sha256": "01deeaa4f6cdbdfa3be4aa414dff46a001956ef2fd027d22e0ae8c31ed500962"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00010-of-00014.gguf",
+            "size": 49289812544,
+            "sha256": "8ae81821be0cdec5ae7fe952fdade3617a6e476eda47c013fa6dc66d7b514868"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00011-of-00014.gguf",
+            "size": 49622149440,
+            "sha256": "bae93e277539b6a2f8fae2bedfe45e943d51eec3a8533203203f6359ed829ec8"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00012-of-00014.gguf",
+            "size": 49289812544,
+            "sha256": "4d3cb10c7daa4be17ed9ecc866bb0ff482f210de6061f67193e9a1acd5410f94"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00013-of-00014.gguf",
+            "size": 49355397280,
+            "sha256": "fbf5c3a84f5eda926235e9aca02873d555e1eefee4a8eacdd92c18179211012d"
+          },
+          {
+            "name": "BF16/GLM-5.3-Flash-BF16-00014-of-00014.gguf",
+            "size": 49620575872,
+            "sha256": "15e05268e702f6539dd7b0fc592242b5c0b3c2122dc40c5821d92ba16c6fb795"
+          }
+        ]
+      },
+      "Q8_0": {
+        "bytes": 340981966112,
+        "files": [
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00001-of-00008.gguf",
+            "size": 9429888,
+            "sha256": "0b21d951c7d14562c479c6a7342c71166d222b21ac2e9c1e32b529a9e017a2df"
+          },
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00002-of-00008.gguf",
+            "size": 49665857344,
+            "sha256": "8aabbbc0a92c551894f62a0737b433c9fad60a94baaa61e669f96329bb1d88a6"
+          },
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00003-of-00008.gguf",
+            "size": 49822821280,
+            "sha256": "7b50941b404fed3413be4e0ca52af43e79113e4b3e2c940d1f4cdf74e95ebb39"
+          },
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00004-of-00008.gguf",
+            "size": 49849652064,
+            "sha256": "ff27fb4536d524cae687c4fb88dfa1b43a8ee0b4256e55304f95dc1aa38e8b81"
+          },
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00005-of-00008.gguf",
+            "size": 49974608352,
+            "sha256": "c088636854c5da312e44a7be4195cd765dd9eb6339d7b014d1da4192851a9b5b"
+          },
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00006-of-00008.gguf",
+            "size": 49840638624,
+            "sha256": "4bece55cb9e98720f3ef2e1e9683983aeced77434dbcd54584c0b7c80a2e95cb"
+          },
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00007-of-00008.gguf",
+            "size": 49831834720,
+            "sha256": "a9f792204b0b58155e6092f9a4160a0659fcdc98a1c126e563ecc3cd02ad68ad"
+          },
+          {
+            "name": "Q8_0/GLM-5.3-Flash-Q8_0-00008-of-00008.gguf",
+            "size": 41987123840,
+            "sha256": "a6cb6887c0047653f08c0ab6e564972451d9511322202970f7052e36052aefd6"
+          }
+        ]
+      },
+      "UD-IQ1_M": {
+        "bytes": 97579344547,
+        "files": [
+          {
+            "name": "UD-IQ1_M/GLM-5.3-Flash-UD-IQ1_M-00001-of-00003.gguf",
+            "size": 9429859,
+            "sha256": "f70f09b89b9e457743934f27daea09aca6b84957a6d55cbbf276e5c3175ab866"
+          },
+          {
+            "name": "UD-IQ1_M/GLM-5.3-Flash-UD-IQ1_M-00002-of-00003.gguf",
+            "size": 49996246592,
+            "sha256": "6bcfc2210cced11cede6cd6ce4ac3368c0b1ab52d6fc3e40f2a3f310f0614001"
+          },
+          {
+            "name": "UD-IQ1_M/GLM-5.3-Flash-UD-IQ1_M-00003-of-00003.gguf",
+            "size": 47573668096,
+            "sha256": "07e252723e988154340414ebd6857051179f69eb25112ad75122d4230ccfc6f7"
+          }
+        ]
+      },
+      "UD-IQ1_S": {
+        "bytes": 93087244963,
+        "files": [
+          {
+            "name": "UD-IQ1_S/GLM-5.3-Flash-UD-IQ1_S-00001-of-00003.gguf",
+            "size": 9429859,
+            "sha256": "e0e7133e1075232471cd6c7cb392fac4c841e051cd1f7015ed9e04d811e0efd6"
+          },
+          {
+            "name": "UD-IQ1_S/GLM-5.3-Flash-UD-IQ1_S-00002-of-00003.gguf",
+            "size": 49621122496,
+            "sha256": "b99c4dd929601884ff95d9ddeb581a5ef93fd281c37c162e48b2981bf23c0830"
+          },
+          {
+            "name": "UD-IQ1_S/GLM-5.3-Flash-UD-IQ1_S-00003-of-00003.gguf",
+            "size": 43456692608,
+            "sha256": "9bb0ff754968d588793d795c715cc2a7d5292280ff9d0df46b7e1edd57da34a1"
+          }
+        ]
+      },
+      "UD-IQ2_XXS": {
+        "bytes": 101844951808,
+        "files": [
+          {
+            "name": "UD-IQ2_XXS/GLM-5.3-Flash-UD-IQ2_XXS-00001-of-00004.gguf",
+            "size": 9429888,
+            "sha256": "d9605eec5aa2c14fc9ccff1ba3341a1e9a1476b08714d41cd43d0e10a4db3f7a"
+          },
+          {
+            "name": "UD-IQ2_XXS/GLM-5.3-Flash-UD-IQ2_XXS-00002-of-00004.gguf",
+            "size": 49896298080,
+            "sha256": "d51a3d9ca05022d53e71753df75ee64ed5fd4e47655650ae023e9717b3ec158d"
+          },
+          {
+            "name": "UD-IQ2_XXS/GLM-5.3-Flash-UD-IQ2_XXS-00003-of-00004.gguf",
+            "size": 49248507840,
+            "sha256": "89180f13784dc1128586b98adf1ca876279881a20bc4f01747703ce352563372"
+          },
+          {
+            "name": "UD-IQ2_XXS/GLM-5.3-Flash-UD-IQ2_XXS-00004-of-00004.gguf",
+            "size": 2690716000,
+            "sha256": "9e0ef47daa1fdffce3cf2ac1594ce4634d176ad018be6e692729757f38d5fbf6"
+          }
+        ]
+      },
+      "UD-IQ3_XXS": {
+        "bytes": 120367571715,
+        "files": [
+          {
+            "name": "UD-IQ3_XXS/GLM-5.3-Flash-UD-IQ3_XXS-00001-of-00004.gguf",
+            "size": 9429859,
+            "sha256": "b3282af0711eec07a0462a6126dc75b32bc14b698a39efec1b3b34d3c4217dc5"
+          },
+          {
+            "name": "UD-IQ3_XXS/GLM-5.3-Flash-UD-IQ3_XXS-00002-of-00004.gguf",
+            "size": 49261511584,
+            "sha256": "a4dba331fe92ffbd71317839cc1452c57f0b5b3f971a9e96ee5107f9a615cdac"
+          },
+          {
+            "name": "UD-IQ3_XXS/GLM-5.3-Flash-UD-IQ3_XXS-00003-of-00004.gguf",
+            "size": 49075832480,
+            "sha256": "5b728b5b263c662201ef4a4a2b12fb509fe230d012418d0ed37c220a8a5aa230"
+          },
+          {
+            "name": "UD-IQ3_XXS/GLM-5.3-Flash-UD-IQ3_XXS-00004-of-00004.gguf",
+            "size": 22020797792,
+            "sha256": "4b6d16e0d1381e1b4b7eeb6c9799671bf98153a995be12e75e3da93cd97981d2"
+          }
+        ]
+      },
+      "UD-IQ4_XS": {
+        "bytes": 156822111075,
+        "files": [
+          {
+            "name": "UD-IQ4_XS/GLM-5.3-Flash-UD-IQ4_XS-00001-of-00005.gguf",
+            "size": 9429859,
+            "sha256": "eec97673e9acb38f8682250e778f88991e731771bab8d3c0b787985949aacefa"
+          },
+          {
+            "name": "UD-IQ4_XS/GLM-5.3-Flash-UD-IQ4_XS-00002-of-00005.gguf",
+            "size": 49989334176,
+            "sha256": "7d64cf0395672c4322012841abec502ea7e20518299bb5e3069003f06f9e6de9"
+          },
+          {
+            "name": "UD-IQ4_XS/GLM-5.3-Flash-UD-IQ4_XS-00003-of-00005.gguf",
+            "size": 49607025280,
+            "sha256": "7c2c63c9c30f8060428fdf2ac935dbf2ee9ad8f771d62b6ae47a7f7f2c1520e7"
+          },
+          {
+            "name": "UD-IQ4_XS/GLM-5.3-Flash-UD-IQ4_XS-00004-of-00005.gguf",
+            "size": 49486530144,
+            "sha256": "06c90f191871317c92dd9d25a353b687aed44c50f3ac6c713e9fe410bc2d26dd"
+          },
+          {
+            "name": "UD-IQ4_XS/GLM-5.3-Flash-UD-IQ4_XS-00005-of-00005.gguf",
+            "size": 7729791616,
+            "sha256": "66ebf9ec85e04d3f44af674ae4f694acbc89cc53db75e42f2f4d3646bf321c0d"
+          }
+        ]
+      },
+      "UD-Q2_K_XL": {
+        "bytes": 108720071427,
+        "files": [
+          {
+            "name": "UD-Q2_K_XL/GLM-5.3-Flash-UD-Q2_K_XL-00001-of-00004.gguf",
+            "size": 9429859,
+            "sha256": "b2aaab111a0f93f04b0627270691fe430b6bb14b17c0d62f9c0f1ac75e7efef4"
+          },
+          {
+            "name": "UD-Q2_K_XL/GLM-5.3-Flash-UD-Q2_K_XL-00002-of-00004.gguf",
+            "size": 49294975936,
+            "sha256": "f4a9e1ab13d5d9620f5590c9a4aba4c169e6707a1554f3be3fe3112f80a66825"
+          },
+          {
+            "name": "UD-Q2_K_XL/GLM-5.3-Flash-UD-Q2_K_XL-00003-of-00004.gguf",
+            "size": 49949266048,
+            "sha256": "330a8ad76c787b3ab6df062dd30abea7aafe6a0e3d5860e8720dfa4abb2434a5"
+          },
+          {
+            "name": "UD-Q2_K_XL/GLM-5.3-Flash-UD-Q2_K_XL-00004-of-00004.gguf",
+            "size": 9466399584,
+            "sha256": "5c294f42edc5d69cf00a79ab444e61f0742e9933105fc5c85f97da54dab8946f"
+          }
+        ]
+      },
+      "UD-Q3_K_XL": {
+        "bytes": 147535921955,
+        "files": [
+          {
+            "name": "UD-Q3_K_XL/GLM-5.3-Flash-UD-Q3_K_XL-00001-of-00004.gguf",
+            "size": 9429859,
+            "sha256": "d72a357e8ccb0091d451866044b485bd3f562515c3f283b27775234bd0bccb77"
+          },
+          {
+            "name": "UD-Q3_K_XL/GLM-5.3-Flash-UD-Q3_K_XL-00002-of-00004.gguf",
+            "size": 49609243584,
+            "sha256": "310b5bef056c5cc61d98e1845feac97e35d0a5aa412fca354b6cd597d66b486e"
+          },
+          {
+            "name": "UD-Q3_K_XL/GLM-5.3-Flash-UD-Q3_K_XL-00003-of-00004.gguf",
+            "size": 49623486016,
+            "sha256": "eacaab11505a25f00e78b4dce64795cc38bc25839372ec586745af0261673a0c"
+          },
+          {
+            "name": "UD-Q3_K_XL/GLM-5.3-Flash-UD-Q3_K_XL-00004-of-00004.gguf",
+            "size": 48293762496,
+            "sha256": "c650640c9f94f5f1662ac84b803405db3265ee9fc24ffe56670bb0eafd632d00"
+          }
+        ]
+      },
+      "UD-Q4_K_XL": {
+        "bytes": 199707321347,
+        "files": [
+          {
+            "name": "UD-Q4_K_XL/GLM-5.3-Flash-UD-Q4_K_XL-00001-of-00006.gguf",
+            "size": 9429859,
+            "sha256": "00dceaf3ed08781b1e44513a44ebb19e96248d01ba2a80b17f675a2b6fa9a1ee"
+          },
+          {
+            "name": "UD-Q4_K_XL/GLM-5.3-Flash-UD-Q4_K_XL-00002-of-00006.gguf",
+            "size": 49198039200,
+            "sha256": "d3ecb6ff3957a99878f9a0352676a0913748a431a9a4a1b1ffa5ade9b8947a74"
+          },
+          {
+            "name": "UD-Q4_K_XL/GLM-5.3-Flash-UD-Q4_K_XL-00003-of-00006.gguf",
+            "size": 49988626304,
+            "sha256": "328073c004e7c5395b208247feed26089db247b94dd8fa4ab0f2569d86c1d770"
+          },
+          {
+            "name": "UD-Q4_K_XL/GLM-5.3-Flash-UD-Q4_K_XL-00004-of-00006.gguf",
+            "size": 48700701344,
+            "sha256": "6803ab7effa6da4a0b02c9c7865952fdd6c5b2e10e53903348da369e90bd13f9"
+          },
+          {
+            "name": "UD-Q4_K_XL/GLM-5.3-Flash-UD-Q4_K_XL-00005-of-00006.gguf",
+            "size": 49026026752,
+            "sha256": "852f3df9dacde3d196796f9fe738468e80c8701555ff0a8c30bc010fb8974dd8"
+          },
+          {
+            "name": "UD-Q4_K_XL/GLM-5.3-Flash-UD-Q4_K_XL-00006-of-00006.gguf",
+            "size": 2784497888,
+            "sha256": "c6ba510fafc1e12cc0addbc361a329c0c592ab96980098e7e25e107d8faa983e"
+          }
+        ]
+      },
+      "UD-Q5_K_XL": {
+        "bytes": 240306086912,
+        "files": [
+          {
+            "name": "UD-Q5_K_XL/GLM-5.3-Flash-UD-Q5_K_XL-00001-of-00006.gguf",
+            "size": 9429888,
+            "sha256": "aac3e7087c7897e755bc46744475372ecd197dd8dccfb4af9752a83dc03e7619"
+          },
+          {
+            "name": "UD-Q5_K_XL/GLM-5.3-Flash-UD-Q5_K_XL-00002-of-00006.gguf",
+            "size": 48806959328,
+            "sha256": "fd2a37a8d00ad2ab9b8e8691f8d16f4e9991d1eab2aaca14ec4b97568803aa87"
+          },
+          {
+            "name": "UD-Q5_K_XL/GLM-5.3-Flash-UD-Q5_K_XL-00003-of-00006.gguf",
+            "size": 48557435712,
+            "sha256": "298edf5776b962f63643654bd85ed3ed91777b9a592dc3950b9002b08e320892"
+          },
+          {
+            "name": "UD-Q5_K_XL/GLM-5.3-Flash-UD-Q5_K_XL-00004-of-00006.gguf",
+            "size": 49317045120,
+            "sha256": "97b097efd8c135246eb620d22438d17c57ad1fff19a0e5340ca9c9232f5f1de9"
+          },
+          {
+            "name": "UD-Q5_K_XL/GLM-5.3-Flash-UD-Q5_K_XL-00005-of-00006.gguf",
+            "size": 49317045120,
+            "sha256": "17a5ef81a355d1cc4e771bedc7e2d688dab25892cf05bf26c2ddb5ae8230ffab"
+          },
+          {
+            "name": "UD-Q5_K_XL/GLM-5.3-Flash-UD-Q5_K_XL-00006-of-00006.gguf",
+            "size": 44298171744,
+            "sha256": "47435d0287b2f5f023715ceff78b036d0ab63698708f0be54e3a8f30b76bc57d"
+          }
+        ]
+      },
+      "UD-Q6_K_XL": {
+        "bytes": 291833111712,
+        "files": [
+          {
+            "name": "UD-Q6_K_XL/GLM-5.3-Flash-UD-Q6_K_XL-00001-of-00007.gguf",
+            "size": 9429888,
+            "sha256": "26a4c647133979b9318f2c0a332dac70a3730b374360f590ff125390a556120b"
+          },
+          {
+            "name": "UD-Q6_K_XL/GLM-5.3-Flash-UD-Q6_K_XL-00002-of-00007.gguf",
+            "size": 49354106688,
+            "sha256": "c65caeffd822aab9810bf1049369f56e7b61c38217fa3c12f3dab2d21c0fd855"
+          },
+          {
+            "name": "UD-Q6_K_XL/GLM-5.3-Flash-UD-Q6_K_XL-00003-of-00007.gguf",
+            "size": 48109732704,
+            "sha256": "491f13fb641ecf27c30107e34a045b8cd00306b43559f3d0273687c47a154559"
+          },
+          {
+            "name": "UD-Q6_K_XL/GLM-5.3-Flash-UD-Q6_K_XL-00004-of-00007.gguf",
+            "size": 49515348992,
+            "sha256": "1db71efa40ba5f9ea017d12d744a8addf4025d3fd256f09e253967327a156270"
+          },
+          {
+            "name": "UD-Q6_K_XL/GLM-5.3-Flash-UD-Q6_K_XL-00005-of-00007.gguf",
+            "size": 48930700352,
+            "sha256": "41acb75b5105d49d89a21c3760d14c458f1e0c2b4e4fff08310c7cb2d5c3fff5"
+          },
+          {
+            "name": "UD-Q6_K_XL/GLM-5.3-Flash-UD-Q6_K_XL-00006-of-00007.gguf",
+            "size": 49077752288,
+            "sha256": "3f669d880bfce522063c677ddddd19f8b066f0d71701d2e123131f239b7fbf6b"
+          },
+          {
+            "name": "UD-Q6_K_XL/GLM-5.3-Flash-UD-Q6_K_XL-00007-of-00007.gguf",
+            "size": 46836040800,
+            "sha256": "3623f4af825ea01d7cd65706c496ac2c11cb585dfa1a27189320b5790a535b00"
+          }
+        ]
+      },
+      "mmproj-BF16.gguf": {
+        "bytes": 1164010080,
+        "files": [
+          {
+            "name": "mmproj-BF16.gguf",
+            "size": 1164010080,
+            "sha256": "513c9bfc55898998186543caefc01626fb28e378b92f391018e1c3dd6655b113"
+          }
+        ]
+      },
+      "mmproj-F16.gguf": {
+        "bytes": 1128047200,
+        "files": [
+          {
+            "name": "mmproj-F16.gguf",
+            "size": 1128047200,
+            "sha256": "96ccc182997646ad4405385a1987b1ac1e6adccd2669de43c3ea39692699ed27"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "repo": "6block/GLM-5.3-Flash-GGUF",
+    "revision": "ecc6c5303921d0a67c698aee7faf2f3577386347",
+    "groups": {
+      "GLM-5.3-Flash-IQ1_M": {
+        "bytes": 70679933792,
+        "files": [
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00001-of-00015.gguf",
+            "size": 6083136672,
+            "sha256": "8c95fbc39294bb1a12c683fa0d1213bcd7dfd1945263e39294fdee6f1204c6e2"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00002-of-00015.gguf",
+            "size": 4928852128,
+            "sha256": "f1885fe759fa6e12af09e08d96a0d7ac84942a7f2755f18724d6f93cd26528ce"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00003-of-00015.gguf",
+            "size": 4914709248,
+            "sha256": "55727ffd6fa5190a9ba8a452e26e67d159e83d3739fbf314776e14b4f05552c4"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00004-of-00015.gguf",
+            "size": 4466535616,
+            "sha256": "dd00100239ab9cfbb9d387f82d70875b29135a7fbf0bc7053d895827b17ec41a"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00005-of-00015.gguf",
+            "size": 4914709248,
+            "sha256": "7cd25416139a4280bf316e8285206eb8f7310c1f4dc05ca794eeead39fabb66f"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00006-of-00015.gguf",
+            "size": 4928852128,
+            "sha256": "4cd6f8a60caa36d125e204e3aa9258eadef28068bdc671b204afff4413efc0f2"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00007-of-00015.gguf",
+            "size": 4914709248,
+            "sha256": "31afe7147973291422780a6716425f1610c5237cd4b733c7befe9b70da565161"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00008-of-00015.gguf",
+            "size": 4900566368,
+            "sha256": "094795fbc51891114ae7492cda0c5ee6180403cb9c2fed5cdfb25982e070177b"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00009-of-00015.gguf",
+            "size": 4928852128,
+            "sha256": "d13eb5bb671104ebc1097912657505ca45b6f3fdf81344084f7a6345250969c9"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00010-of-00015.gguf",
+            "size": 4914709248,
+            "sha256": "0ffea121e18b62278171c8322c1f5076fcb5e9a995243d0fa9d4304d2e3e8b27"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00011-of-00015.gguf",
+            "size": 4914709216,
+            "sha256": "8a0b27e559aada61e2d44cb0cc4df181e040e4ae65b09a2eec02690898d60caf"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00012-of-00015.gguf",
+            "size": 4928852128,
+            "sha256": "51d56a3ffc12beb7d7f9f4c8eba00c487db8f56f04c458cff4682dd6b5c0f5a4"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00013-of-00015.gguf",
+            "size": 4914709216,
+            "sha256": "fda5d98aaa55dd283acc57efd76db7ec8443545beb2cbca8d3e3b15c4acebc15"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00014-of-00015.gguf",
+            "size": 4914709152,
+            "sha256": "e94ac94e47616aed600dc4f4ef5c628988045c002c4567fa37acc4ab8ee944a5"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ1_M-00015-of-00015.gguf",
+            "size": 1111322048,
+            "sha256": "d5f324d2bd400976adc2989c5ae325216bc51eecd824f80fa4f94a4e9028c0c6"
+          }
+        ]
+      },
+      "GLM-5.3-Flash-IQ2_XS": {
+        "bytes": 92109221728,
+        "files": [
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00001-of-00015.gguf",
+            "size": 7143196832,
+            "sha256": "5c1884f76c61dbf3a2933289b9637de7c63712d95b1f782494a1cd171ff2284d"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00002-of-00015.gguf",
+            "size": 6480562336,
+            "sha256": "972d0cc4e2a31542b329942dd17261f547b3a67c54a1ddf3e38beafcf484c278"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00003-of-00015.gguf",
+            "size": 6466721536,
+            "sha256": "aa3d54e09187ae7199e9cb33c15c82f85cc649f66644c93b9394b24765ccfa07"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00004-of-00015.gguf",
+            "size": 5865154752,
+            "sha256": "054bfd94c42932651d274fb9a42995169b4c6d878687fa83063e77d32cbd5032"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00005-of-00015.gguf",
+            "size": 6466721536,
+            "sha256": "dac27c366c7e3a7aefc4c9f26cddda2bd5873ca9d4ed1ff3206dcf1bc0b3c84d"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00006-of-00015.gguf",
+            "size": 6480562336,
+            "sha256": "d33ac0914b89ff9867d6a51b29ce2c7a3820bb50a6f00f1057ec52a48a2bef0d"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00007-of-00015.gguf",
+            "size": 6466721536,
+            "sha256": "39846011922b0b6ec6d17577264ce092da66785eef73f6b6a6b004bad78c1551"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00008-of-00015.gguf",
+            "size": 6452880736,
+            "sha256": "a333538f8dfd86a13944afeb5822d47f7c311bcf3b668ada1ace4a7b59b1bf86"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00009-of-00015.gguf",
+            "size": 6480562336,
+            "sha256": "f287483d6d075f9bcf846cbc126dfcf3a6c822266f9971a5286bcf6cf8d70389"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00010-of-00015.gguf",
+            "size": 6466721536,
+            "sha256": "39ed83e4c533dfdeef69140059c256ea229ea7f4d4943b64ae643ee683722bb4"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00011-of-00015.gguf",
+            "size": 6466721504,
+            "sha256": "2d35e7ba23e795c0c456b8d5d2710857f160d8a4bcc7f247e76c7bcb7e1f2782"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00012-of-00015.gguf",
+            "size": 6480562336,
+            "sha256": "3581df799283e72805a2a6be760363fd6b8c2ada0c3677d168a596d61c0dd982"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00013-of-00015.gguf",
+            "size": 6466721504,
+            "sha256": "88373f2a519738b5c92d1edbe19e3cc06bd1723eed8109e954dd51f42e59adac"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00014-of-00015.gguf",
+            "size": 6466721440,
+            "sha256": "63537fd855c3fe1952b9da9fe06d1d4ba912daf228d98231abb8eeff917c7336"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ2_XS-00015-of-00015.gguf",
+            "size": 1458689472,
+            "sha256": "cbdcd8656e8679a6cdcb23af0712e228f28da937d9dec70f7d4754e36bf4e94d"
+          }
+        ]
+      },
+      "GLM-5.3-Flash-IQ3_XXS": {
+        "bytes": 120994791264,
+        "files": [
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00001-of-00015.gguf",
+            "size": 8830802080,
+            "sha256": "7d47fae69cba6af9cf18ecdf2001eab1054da2e4d5d9597b0b3d61b9d3becc23"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00002-of-00015.gguf",
+            "size": 8546887840,
+            "sha256": "42e0b42c865a94dc95241b5c4911d92554e468e76e1399ed5ec66b6d06e8ceb3"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00003-of-00015.gguf",
+            "size": 8540931840,
+            "sha256": "fa1f30c89499b4ae2bfafaa6a44b6ba04f2dc45347dd62e0f7a5b59903c38526"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00004-of-00015.gguf",
+            "size": 7733967040,
+            "sha256": "6dea5fd7afef6ab5c4e32b090896026df699fef3314c81988012f2926ac62df8"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00005-of-00015.gguf",
+            "size": 8540931840,
+            "sha256": "4b30d5dd76f33c876f0afd0af376cc3f22cd90cec8142fb266d789aa5c5f34e7"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00006-of-00015.gguf",
+            "size": 8546887840,
+            "sha256": "35794c8099c861e2737aa02a535d601bda16782ffc92d0dbb6537d50c94bf9aa"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00007-of-00015.gguf",
+            "size": 8540931840,
+            "sha256": "80dac3484d7d7555db69a4352e01bfa082faa0020a992a02d2068bac181b4d3b"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00008-of-00015.gguf",
+            "size": 8534975840,
+            "sha256": "5045aaaa5a6ff307658909fa593b7cb053be4fb180d41de1ea7f378f5fa5319f"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00009-of-00015.gguf",
+            "size": 8546887840,
+            "sha256": "16bbd35089037d5695e6488c5afa9cf9615d5f4701aa7f77ecfbf4f8e815ad72"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00010-of-00015.gguf",
+            "size": 8540931840,
+            "sha256": "343dbe23712f220c43e9cc1167600f3782680d57796e8511c1767f1ca225ce22"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00011-of-00015.gguf",
+            "size": 8540931808,
+            "sha256": "ae5453264e881185669715bed6077671583f3acd2019c628494752b3ff2541fc"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00012-of-00015.gguf",
+            "size": 8546887840,
+            "sha256": "96d0e0908f747273de8d4d508b6250590dfe27442b7ce3eef008030b2e36638a"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00013-of-00015.gguf",
+            "size": 8540931808,
+            "sha256": "f08349a3c240252304134333aead41e194ec3bed3009868e95fa246326e7c326"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00014-of-00015.gguf",
+            "size": 8540931744,
+            "sha256": "b67f14e7f0a02620037aae7411dff49732b4a5d8cdee9593b86dd21258ddd1a1"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ3_XXS-00015-of-00015.gguf",
+            "size": 1920972224,
+            "sha256": "35e9872e0e1e74c0aba095fcf8d98a7174bac2f922849dd4fc1c859f2eb3061a"
+          }
+        ]
+      },
+      "GLM-5.3-Flash-IQ4_XS": {
+        "bytes": 167320261472,
+        "files": [
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00001-of-00015.gguf",
+            "size": 11833289888,
+            "sha256": "13c88399c740b5adffe491788cf0510aba89a60ef4396de5a342fc29ff24f722"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00002-of-00015.gguf",
+            "size": 11851468960,
+            "sha256": "d3018660bb3d4161a832bfbe092710ae9727bfdfd498abb38236a6f9b4891b40"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00003-of-00015.gguf",
+            "size": 11838989056,
+            "sha256": "753d2e49d8e065594e57d818db829032939413b14b92d4a792cf92978da73af1"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00004-of-00015.gguf",
+            "size": 10717777088,
+            "sha256": "740587d9d86d3bc9a4a30c430921e774ac105072f872af46f54b7085ea568c7f"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00005-of-00015.gguf",
+            "size": 11838989056,
+            "sha256": "2ab2a88f70b38bb25c899ab385778831f1e9abffb2eaabcb0efd8ab20334c5d7"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00006-of-00015.gguf",
+            "size": 11851468960,
+            "sha256": "26a2e06375bc891df8da01f1f069de0d5553b7488dff683b8bc8b2fec56ccb04"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00007-of-00015.gguf",
+            "size": 11838989056,
+            "sha256": "ff23a5f9701bce18ce957340e665c7bf63d8bb91c8320bac5dda127384c7480f"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00008-of-00015.gguf",
+            "size": 11826509152,
+            "sha256": "9ff830ffeb80f751a12af817530d5f42dcda160bd7f19442508cfdddb63f1a97"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00009-of-00015.gguf",
+            "size": 11851468960,
+            "sha256": "1343d0c07b568c3d39b3c459f827266d4c4d3fbedbcab5967b119ff20201b246"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00010-of-00015.gguf",
+            "size": 11838989056,
+            "sha256": "6995a5cd2a531cd7c6d1fb027d43fb15b350a1af13621f3195562b21a9de3a95"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00011-of-00015.gguf",
+            "size": 11838989024,
+            "sha256": "c05c2ee3210aa752e5e97b4c8785ac559b625a39f7eddf2e556986873d14cfd5"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00012-of-00015.gguf",
+            "size": 11851468960,
+            "sha256": "05be08165abacb69569233c9e667ae90a32d6aaeffabc4e91375d5cf1d4ec9c4"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00013-of-00015.gguf",
+            "size": 11838989024,
+            "sha256": "21fe3ff484122d76ed19e3a7eb4f141c05413a8f25eaa8e028ff3ce57f18d5e9"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00014-of-00015.gguf",
+            "size": 11838988960,
+            "sha256": "44af6467ea0586189ae5e3334c6bde50b8c044295f02592cfb82704676a78b7a"
+          },
+          {
+            "name": "GLM-5.3-Flash-IQ4_XS-00015-of-00015.gguf",
+            "size": 2663886272,
+            "sha256": "e65a75709274e26328ad005318bc1689e90309d243bdd3a389d0ee9d88953979"
+          }
+        ]
+      }
+    }
+  }
+]

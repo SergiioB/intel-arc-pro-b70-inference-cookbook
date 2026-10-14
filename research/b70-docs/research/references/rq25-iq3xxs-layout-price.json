@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "amdahl": {
+    "wall_fraction": 0.38,
+    "local_speedup": 2.0,
+    "provenance": {
+      "kind": "assumption",
+      "references": [
+        "research/2026/b70-quant-format-lever-audit-20261009.md",
+        "research/references/levers-synthesis-20261009/sha256-a394b896a24582227dad7fbd971771d6a6467ad3e4c8f89ab3361d6a0c625e8a/content",
+        "hypothesis:RQ-25"
+      ],
+      "note": "Upper-bound sketch, not measured. Strata IQ3_XXS blocks are 98 bytes (2-byte aligned); the MMVQ path loads qs with 16-bit get_int_b2 reads and one 256-entry grid lookup per 4 weights (native_mmvq/iq_kernels source, Strata 0.1.40.3). Strata measured 2.3-4.7x kernel speedup from aligned loads on 210-byte Q6_K blocks (INTEL.md). Assumed expert-kernel share of a resident round ~0.38 (resident compute ~63% of the round per the lever audit, ~60% of that in routed-expert MMVQ). local_speedup 2.0 is an assumed result of a structure-of-arrays repack (qs plane 16-byte aligned, signs/scales plane separate; zero extra bytes). Share grows if RQ-18 removes the miss stream."
+    }
+  }
+}

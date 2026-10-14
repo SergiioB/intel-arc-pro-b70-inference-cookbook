@@ -1,0 +1,4 @@
+{"candidate": "all", "engine": "intel-llm-scaler-vllm", "reason": "no docker/podman runtime and no HF/safetensors model path prepared yet", "status": "rejected", "ts": 1783261766.4279435}
+{"candidate": "all", "engine": "vanilla-vllm-xpu", "reason": "no python3.12/uv environment and no HF/safetensors model path prepared yet", "status": "rejected", "ts": 1783261766.4279444}
+{"candidate": "all", "engine": "sglang-xpu", "reason": "no python3.12/uv environment and no HF/safetensors model path prepared yet", "status": "rejected", "ts": 1783261766.427945}
+{"candidate": "qwen27-mtp-256k", "engine": "llama.cpp-sycl", "reason": "known unsafe by local VRAM budget; test 128K and 200K instead", "status": "rejected", "ts": 1783261766.4279451}

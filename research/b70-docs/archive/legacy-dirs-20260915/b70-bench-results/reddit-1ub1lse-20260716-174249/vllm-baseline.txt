@@ -1,0 +1,9 @@
+llama-benchy (0.4.0)
+Date: 2026-07-16 17:45:09
+Benchmarking model: Qwen3.6-35B-A3B-GPTQ-Int4 at http://127.0.0.1:8000/v1
+Concurrency levels: [1]
+Downloading book from https://www.gutenberg.org/files/1661/1661-0.txt...
+Saved text to cache: ~/.cache/llama-benchy/cc6a0b5782734ee3b9069aa3b64cc62c.txt
+Total tokens available in text corpus: 144494
+Warming up...
+Warmup failed: HTTP 404: {"error":{"message":"The model `Qwen3.6-35B-A3B-GPTQ-Int4` does not exist.","type":"NotFoundError","param":"model","code":404}}

@@ -1,0 +1,128 @@
+{
+ "schema_version": 1,
+ "matrix_path": "models/STATUS.md",
+ "default_dual_policy": "independent-stacks-per-adr-0008",
+ "models": [
+  {
+   "family": "Qwen3.8-27B",
+   "hf_model_id": "Qwen/Qwen3.8-27B",
+   "artifact": "turboderp EXL3 4bpw @113cf7ab (/data/nvme/models/b70-exl3-qwen38-4bpw-20260926); prior SergiioB GPTQ artifact REMOVED \u2014 quality-defective",
+   "engine": "exl3xpu",
+   "quant": "EXL3 trellis 4.00bpw + native MTP3; fp8 KV (only dtype)",
+   "best_tok_s": 63.25,
+   "cell": "p512/g128 usage-token-rate n=5 @230W, all gates PASS (probe 1, 2026-09-29: results/2026/09/b70-probe1-exl3-rate-20260929/) — 150W arms 49.22/49.00; p8192 61.12 @230W; superseded figure '24.6' was an SSE chunk-rate (chunks = MTP3 rounds, ~3.05-3.15 tok/chunk); depth-flat 2K→16K; power-limited +24.7-28.7% 150→230W; attribution: ccs0 ~88% busy, 57-63% of pin floor lost INSIDE kernels (B6 conditional GO)",
+   "sampling": "greedy diagnostic battery + recommended non-thinking verified",
+   "tp2_status": "blocked/research — 2026-09-29 decision: stock TP2 impossible at load (exl3xpu plugin guard vllm_plugin.py:157-162 + xccl-only transport = RL-075 class); custom TP2 conditional — representation gate PASS 38/38 on the sampled 2-tensor class only (RL-104; mixed-head/MTP families unsampled) but sharded loaders + captured copy-only ≤60 µs collective unproven/absent (RL-103..RL-105, b70-exl3-tp-decision-20260929.md)",
+   "pp2_status": "blocked",
+   "open_gate": "2026-09-27 ROUTE CHANGE (ADR-0010, CAM-2026-AUTOROUND-VS-EXL3): EXL3 is the primary one-card route \u2014 only arm reaching native 262144 (fp8 KV pool 287,040), clean 6/6 battery, 8/10 host-executed tasks, +38-42% @230W, cache 5.4x. W4A16/GPTQ-family CLOSED for this model: 30-defect on in-head arithmetic across GPTQModel + 2x AutoRound exports (RL-087); ~4.9x slower than removed champion; 256K-unreachable. OV int4 = alternate (28.5 t/s @150W roofline, clean, thinking-mode handicap on long tasks). bf16 base verified CORRECT via TP2 (answers 14).",
+   "dossier": "models/qwen/qwen3.8-27b/README.md"
+  },
+  {
+   "family": "Qwen3.8-27B-FP8",
+   "hf_model_id": "Qwen/Qwen3.8-27B-FP8",
+   "artifact": "native block-FP8",
+   "engine": "vllm-xpu",
+   "quant": "block-FP8 W8A16",
+   "best_tok_s": 48.08,
+   "cell": "p1024/g128",
+   "sampling": "greedy diagnostic",
+   "tp2_status": "research",
+   "pp2_status": "blocked",
+   "open_gate": "small-M kernel + DFlash2 selector/conv",
+   "dossier": "models/qwen/qwen3.8-27b/serving.md"
+  },
+  {
+   "family": "Qwen3.6-35B-A3B",
+   "hf_model_id": "Qwen/Qwen3.6-35B-A3B",
+   "artifact": "GPTQ-INT4 G128 + BF16 MTP",
+   "engine": "vllm-xpu",
+   "quant": "GPTQ INT4 G128",
+   "best_tok_s": null,
+   "cell": "p130944/g128=131072 exact",
+   "sampling": "capacity observation",
+   "tp2_status": "provisional",
+   "pp2_status": "blocked",
+   "open_gate": "causal_conv1d mixed-load fix",
+   "dossier": "models/qwen/qwen3.6-35b-a3b/README.md"
+  },
+  {
+   "family": "Nemotron-3.5-Lightning-30B-A3B",
+   "hf_model_id": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B",
+   "artifact": "GPTQ-INT4 G64 + BF16 DFlash n7",
+   "engine": "vllm-xpu",
+   "quant": "GPTQ INT4 G64 + DFlash",
+   "best_tok_s": 186.61,
+   "cell": "p2048/g128",
+   "sampling": "n=5 client post-first 150W",
+   "tp2_status": "blocked",
+   "pp2_status": "blocked",
+   "open_gate": "Fused Mamba2 SSD WITHDRAWN 2026-09-21 (P2; fusable family 8% of device time vs 73% MoE+GEMM) \u2014 reassigned to small-M/grouped-GEMM (P5 folded into P3)",
+   "dossier": "models/nemotron/nemotron-3.5-lightning-30b-a3b/README.md"
+  },
+  {
+   "family": "Ornith-1.5-35B-A3B",
+   "hf_model_id": "ornith-ai/Ornith-1.5-35B-A3B",
+   "artifact": "GPTQ-INT4 G128 + BF16 MTP1",
+   "engine": "vllm-xpu",
+   "quant": "GPTQ INT4 G128",
+   "best_tok_s": 94.3,
+   "cell": "p512/g128",
+   "sampling": "n=3 greedy provisional",
+   "tp2_status": "blocked",
+   "pp2_status": "blocked",
+   "open_gate": "closed-quality-rejected 2026-08-24",
+   "dossier": "models/ornith/ornith-1.5-35b-a3b/README.md"
+  },
+  {
+   "family": "Muse-Glimmer-30B",
+   "hf_model_id": "facebook/Muse-Glimmer-30B",
+   "artifact": "Q4_K_XL + mmproj + DFlash n2",
+   "engine": "llama.cpp-sycl",
+   "quant": "Q4_K_XL GGML_SYCL_F16=ON",
+   "best_tok_s": 26.8,
+   "cell": "p512/g128 @128K",
+   "sampling": "n=5 DFlash n2",
+   "tp2_status": "blocked",
+   "pp2_status": "blocked",
+   "open_gate": "projector + reasoning budget",
+   "dossier": "models/muse/muse-glimmer-30b/README.md"
+  },
+  {
+   "family": "Qwen3.8-Flash-Next",
+   "hf_model_id": "Signal-3.8-Flash-Next",
+   "artifact": "Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS GGUF (47,039,860,096 + 28,800,138,432 B, sha256 219ea929...95856d15 / 316b46f3...61e113) + native pack iq3xxs + mtp-rt",
+   "engine": "Strata v0.1.40.3 SYCL (engine 0.1.41, revision class d5ea713), one B70, --stream-experts --expert-cache auto, MTP --spec 4 --spec-min-p 0.5",
+   "quant": "IQ3_XXS GSQ-RCO, KV int8, --prefill 4096, --max-context 10240, --vram-reserve-mib 256, profile cache 14,544 resident + pinned host mirror",
+   "best_tok_s": 48.03,
+   "cell": "p512/g128 engine decode-wall median n=5 (2026-10-09, RL-125, range 47.77-48.12); 8K prefill 989.11 tok/s median (984.95-990.22)",
+   "sampling": "greedy (screen/confirm cells); MTP --spec 4 --spec-min-p 0.5; R4 hit path ON",
+   "tp2_status": "n/a (one card; two-card expert-cache arm slower, host-staged)",
+   "pp2_status": "n/a",
+   "open_gate": "ADOPTED 2026-10-09 (operator route change, ADR-0011): Strata IQ3_XXS one card replaces the llama.cpp AP-Q4_K_XL dual-split placement (2.22x decode / 5.1-5.3x 8K prefill vs the RL-070 anchors, battery 3/3 exact). OPEN secondary gates: representative task quality, long/multi-turn, replay drift (3 exact-answer cases only at adoption); any quality failure reopens ADR-0011. Ops: restore as-found caps 180/230 W at cleanup; discard one warmup request on a cold engine. HISTORY: RL-070 (2026-09-26) measured the dual-split at 21.6 engine tg (21.3-21.9) / 185-195 cold input - 'capacity route, not a speed route as placed'; calibration VERIFIED, never redo. RL-121 scoped that verdict to the placement. Evidence: results/2026/10/rq14-strata-matched-screen-20261009/.",
+   "dossier": "results/2026/10/rq14-strata-matched-screen-20261009/RESULTS.md"
+  }
+ ],
+ "external_crosschecks": [
+  {
+   "date": "2026-08-31",
+   "source": "neural.download + b70-optimization-lab@cabc9d4 (scoreboard 2026-08-27)",
+   "state": "B70-verified-external until X570-F repro; source analysis was host-side and never committed, so the record is ledger RL-020",
+   "use": "candidate levers and external ceiling references only — never merged into local numbers (different lab, host, engine, quant)",
+   "doc": "registry/research-ledger.json"
+  },
+  {
+   "date": "2026-09-26",
+   "source": "neural.download refresh (scoreboard reviewed 2026-09-13) + local screens RL-074/RL-075",
+   "state": "E1 shortlist FINAL_LOSS at fresh n=5; TP2 screen failed on this topology (xccl/host-staged class); external TP2 rows stay external",
+   "use": "gap map for the program (registry/research-program.json RQ-05/RQ-06); do not cite pre-2026-09-13 external headlines",
+   "doc": "research/2026/external-lever-sweep-20260926.md"
+  },
+  {
+   "date": "2026-10-07",
+   "source": "Niko1221/Strata v0.1.40.2 (released 2026-10-07) + sybil-solutions/qwen38-flash-next-b70-offload (measured 2026-10-06)",
+   "state": "E0 external. Strata: official Arc/B70 SYCL support, B70 IQ3_S 31/41 tok/s decode and ~1000 tok/s 4K prefill (single-run class). sybil: single-B70 Flash-Next tier build 24.0 tok/s C1 / 1056-1260 tok/s prefill on the exact default path, which has a KNOWN write-back corruption race; the 34.5-76.3 tok/s no-write-back arm is approximate output (quality gate pending).",
+   "use": "Assessment RL-121 and program RQ-14/RQ-15/RQ-16; never cite as local numbers; their hosts (EPYC + 26 GB/s RAID0; consumer NVIDIA/AMD) are not this host",
+   "doc": "research/2026/flashnext-external-routes-assessment-20261007.md"
+  }
+ ]
+}

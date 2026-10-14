@@ -1,0 +1,1 @@
+launch_reverify_ok gpu1_visible_avail_MiB=32615 at 2026-10-10T16:57:38Z

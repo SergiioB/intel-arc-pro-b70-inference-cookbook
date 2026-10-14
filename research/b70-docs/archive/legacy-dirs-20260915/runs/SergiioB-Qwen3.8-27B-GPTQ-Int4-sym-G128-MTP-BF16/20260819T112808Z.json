@@ -1,0 +1,893 @@
+{
+  "agentFeedback": {
+    "benchmarkStatus": "completed",
+    "canApiValidate": true,
+    "canSubmit": true,
+    "engine": "vllm",
+    "message": "Speed-test payload is ready for API validation.",
+    "mode": "remote",
+    "nextCommand": "lmx speed-test dry-run ~/B70-DOCS/results/qwen38-concurrency-20260819T110843Z/lmx/c32.json",
+    "outputPath": "~/B70-DOCS/results/qwen38-concurrency-20260819T110843Z/lmx/c32.json",
+    "outputPathAbsolute": "~/B70-DOCS/results/qwen38-concurrency-20260819T110843Z/lmx/c32.json",
+    "requiresMetrics": false,
+    "runPersisted": true,
+    "savedRunPath": "runs/SergiioB-Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16/20260819T112808Z.json",
+    "savedRunPathAbsolute": "~/B70-DOCS/runs/SergiioB-Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16/20260819T112808Z.json",
+    "savedRunPathRelative": "runs/SergiioB-Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16/20260819T112808Z.json",
+    "status": "ready_for_api_validation",
+    "submissionId": "cmt00i0eb0eflms012anb0yau",
+    "submissionStatus": "approved",
+    "submitCommand": "lmx speed-test submit ~/B70-DOCS/results/qwen38-concurrency-20260819T110843Z/lmx/c32.json"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8000",
+    "concurrency": 32,
+    "iterations": 3,
+    "maxTokens": 256,
+    "mode": "remote",
+    "servedModel": "qwen38",
+    "servedModelSource": "explicit",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 5700X3D (8 threads)",
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "powerWatts": 230,
+    "ramGb": 30,
+    "vramGb": 32
+  },
+  "hardwareSource": "file",
+  "hfId": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+  "id": "cmt00i0eb0eflms012anb0yau",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "candidates": [],
+    "hfId": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+    "searchCommand": "lmx model search qwen38",
+    "searchQuery": "qwen38",
+    "searchQuerySource": "served_model",
+    "servedModel": "qwen38",
+    "servedModelSource": "explicit",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "outputText": "We need answer user: \"Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.\" Need provide explanation. Need final answer. Need likely discuss LLM inference phases: prefill/prompt processing vs decode token generation. Local benchmarks need these metrics because they capture different bottlenecks: prefill throughput (tokens/s for prompt) measures how fast model can process input context, KV cache build, attention over prompt, batched prompt, memory bandwidth/compute, affects latency for long contexts and RAG. Decode throughput (tokens/s generated) measures autoregressive generation speed, often memory-bandwidth bound, affects sustained output speed, batch size, quantization, KV cache. Time to first token (TTFT) measures user-perceived latency from request to first generated token, includes prompt prefill, scheduling, loading, overhead; important for interactive use. Reporting all three avoids misleading single throughput number: high prefill throughput doesn't imply fast generation; high decode throughput doesn't imply low initial latency; TTFT can be dominated by prefill for long prompts, while decode throughput dominates long outputs. Also local inference specifics: hardware constraints, batch size, context length, quantization, CPU/GPU, memory, thermal, OS overhead.",
+  "outputTokens": 256,
+  "prompt": "Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.",
+  "promptTokens": 74,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-19T11:28:08Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "GPTQ-Int4",
+  "quantizationResolution": {
+    "cli": "GPTQ-Int4",
+    "status": "matched",
+    "trusted": "GPTQ-Int4",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 3,
+      "max": 225.8,
+      "mean": 224.4,
+      "min": 223.2,
+      "p50": 224.2,
+      "stddev": 1.31
+    },
+    "tokSTotal": {
+      "count": 3,
+      "max": 287.7,
+      "mean": 285.83,
+      "min": 284.1,
+      "p50": 285.7,
+      "stddev": 1.8
+    },
+    "ttftMs": {
+      "count": 96,
+      "max": 31498.72,
+      "mean": 14236.32,
+      "min": 419.39,
+      "p50": 15418.91,
+      "stddev": 10200.62
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 33.6,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23187.59
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 2,
+      "tokSOut": 33.8,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7935.13
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 3,
+      "tokSOut": 43.2,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30616.61
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 4,
+      "tokSOut": 36,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15419.07
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 5,
+      "tokSOut": 35,
+      "tokSPrefill": 152.2,
+      "ttftMs": 486.15
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 6,
+      "tokSOut": 34.1,
+      "tokSPrefill": 3.1,
+      "ttftMs": 23697.4
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 7,
+      "tokSOut": 36.2,
+      "tokSPrefill": 152.3,
+      "ttftMs": 486.04
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 8,
+      "tokSOut": 35.5,
+      "tokSPrefill": 4.7,
+      "ttftMs": 15691.84
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 9,
+      "tokSOut": 35.1,
+      "tokSPrefill": 9.2,
+      "ttftMs": 8000.97
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 10,
+      "tokSOut": 35,
+      "tokSPrefill": 152.2,
+      "ttftMs": 486.17
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 11,
+      "tokSOut": 34.1,
+      "tokSPrefill": 9.2,
+      "ttftMs": 8001.38
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 12,
+      "tokSOut": 35.9,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7935.51
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 13,
+      "tokSOut": 34.8,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7935.06
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 14,
+      "tokSOut": 31.9,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15474.44
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 15,
+      "tokSOut": 36,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15418.93
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 16,
+      "tokSOut": 35.2,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15418.89
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 17,
+      "tokSOut": 34.7,
+      "tokSPrefill": 4.7,
+      "ttftMs": 15691.98
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 18,
+      "tokSOut": 34.5,
+      "tokSPrefill": 3.2,
+      "ttftMs": 22868.44
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 19,
+      "tokSOut": 33.6,
+      "tokSPrefill": 3.2,
+      "ttftMs": 22868.42
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 20,
+      "tokSOut": 33.6,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23032.25
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 21,
+      "tokSOut": 35,
+      "tokSPrefill": 152.2,
+      "ttftMs": 486.14
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 22,
+      "tokSOut": 36.2,
+      "tokSPrefill": 152.4,
+      "ttftMs": 485.72
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 23,
+      "tokSOut": 42.9,
+      "tokSPrefill": 2.4,
+      "ttftMs": 31009.02
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 24,
+      "tokSOut": 36.2,
+      "tokSPrefill": 9.2,
+      "ttftMs": 8000.96
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 25,
+      "tokSOut": 35.9,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7935.15
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 26,
+      "tokSOut": 36.2,
+      "tokSPrefill": 152.2,
+      "ttftMs": 486.1
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 27,
+      "tokSOut": 33.9,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23253.94
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 28,
+      "tokSOut": 42.4,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30944.11
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 29,
+      "tokSOut": 43.6,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30780.83
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 30,
+      "tokSOut": 34.3,
+      "tokSPrefill": 3.1,
+      "ttftMs": 23632.9
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 31,
+      "tokSOut": 32.5,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15475.14
+    },
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 32,
+      "tokSOut": 35.9,
+      "tokSPrefill": 176.4,
+      "ttftMs": 419.39
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 36.2,
+      "tokSPrefill": 138.4,
+      "ttftMs": 534.56
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 2,
+      "tokSOut": 36.6,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7994.14
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 3,
+      "tokSOut": 36.3,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7927.92
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 4,
+      "tokSOut": 34.6,
+      "tokSPrefill": 3.2,
+      "ttftMs": 22909.61
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 5,
+      "tokSOut": 36.2,
+      "tokSPrefill": 138.4,
+      "ttftMs": 534.61
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 6,
+      "tokSOut": 34.6,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15332.53
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 7,
+      "tokSOut": 31.8,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23264.17
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 8,
+      "tokSOut": 34.1,
+      "tokSPrefill": 3.2,
+      "ttftMs": 22975.47
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 9,
+      "tokSOut": 35.3,
+      "tokSPrefill": 138.4,
+      "ttftMs": 534.66
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 10,
+      "tokSOut": 43.1,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30877.67
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 11,
+      "tokSOut": 36.2,
+      "tokSPrefill": 138.4,
+      "ttftMs": 534.61
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 12,
+      "tokSOut": 34.1,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7993.95
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 13,
+      "tokSOut": 35.3,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15332.47
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 14,
+      "tokSOut": 36.3,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7927.96
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 15,
+      "tokSOut": 32.9,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7994.03
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 16,
+      "tokSOut": 34.3,
+      "tokSPrefill": 4.6,
+      "ttftMs": 16261.48
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 17,
+      "tokSOut": 31.6,
+      "tokSPrefill": 4.6,
+      "ttftMs": 15975.07
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 18,
+      "tokSOut": 31.9,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15332.99
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 19,
+      "tokSOut": 35.3,
+      "tokSPrefill": 138.4,
+      "ttftMs": 534.52
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 20,
+      "tokSOut": 35.3,
+      "tokSPrefill": 138.4,
+      "ttftMs": 534.7
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 21,
+      "tokSOut": 34.9,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15399.32
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 22,
+      "tokSOut": 35.2,
+      "tokSPrefill": 9.3,
+      "ttftMs": 7927.91
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 23,
+      "tokSOut": 32.9,
+      "tokSPrefill": 8.9,
+      "ttftMs": 8280.37
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 24,
+      "tokSOut": 33.2,
+      "tokSPrefill": 3.2,
+      "ttftMs": 22975.23
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 25,
+      "tokSOut": 41.8,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30653.69
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 26,
+      "tokSOut": 33.6,
+      "tokSPrefill": 3.1,
+      "ttftMs": 23910.97
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 27,
+      "tokSOut": 31.8,
+      "tokSPrefill": 3.1,
+      "ttftMs": 23553.81
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 28,
+      "tokSOut": 43.3,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30811.46
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 29,
+      "tokSOut": 34.2,
+      "tokSPrefill": 3,
+      "ttftMs": 24262.38
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 30,
+      "tokSOut": 45,
+      "tokSPrefill": 2.3,
+      "ttftMs": 31498.72
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 31,
+      "tokSOut": 34.7,
+      "tokSPrefill": 4.7,
+      "ttftMs": 15686.87
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 32,
+      "tokSOut": 33.6,
+      "tokSPrefill": 158.1,
+      "ttftMs": 468.05
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 34.4,
+      "tokSPrefill": 4.6,
+      "ttftMs": 16204.29
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 2,
+      "tokSOut": 35.2,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23133.68
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 3,
+      "tokSOut": 34.8,
+      "tokSPrefill": 4.7,
+      "ttftMs": 15649.21
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 4,
+      "tokSOut": 45.1,
+      "tokSPrefill": 2.4,
+      "ttftMs": 31043.7
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 5,
+      "tokSOut": 34.6,
+      "tokSPrefill": 152.1,
+      "ttftMs": 486.54
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 6,
+      "tokSOut": 34.2,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15336.6
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 7,
+      "tokSOut": 32.5,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23134.46
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 8,
+      "tokSOut": 35.4,
+      "tokSPrefill": 152.1,
+      "ttftMs": 486.52
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 9,
+      "tokSOut": 35.6,
+      "tokSPrefill": 9.4,
+      "ttftMs": 7857.69
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 10,
+      "tokSOut": 34.9,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15493.86
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 11,
+      "tokSOut": 35.1,
+      "tokSPrefill": 3.1,
+      "ttftMs": 23551.55
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 12,
+      "tokSOut": 35.2,
+      "tokSPrefill": 9.1,
+      "ttftMs": 8096.08
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 13,
+      "tokSOut": 35.7,
+      "tokSPrefill": 9.2,
+      "ttftMs": 8030.43
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 14,
+      "tokSOut": 34.5,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23133.86
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 15,
+      "tokSOut": 34.9,
+      "tokSPrefill": 3.1,
+      "ttftMs": 23835.13
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 16,
+      "tokSOut": 34.5,
+      "tokSPrefill": 9.1,
+      "ttftMs": 8096.41
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 17,
+      "tokSOut": 32.1,
+      "tokSPrefill": 9.2,
+      "ttftMs": 8030.42
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 18,
+      "tokSOut": 35.4,
+      "tokSPrefill": 152.1,
+      "ttftMs": 486.49
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 19,
+      "tokSOut": 34.6,
+      "tokSPrefill": 152.1,
+      "ttftMs": 486.47
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 20,
+      "tokSOut": 33.5,
+      "tokSPrefill": 4.7,
+      "ttftMs": 15715.58
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 21,
+      "tokSOut": 34.6,
+      "tokSPrefill": 152.1,
+      "ttftMs": 486.56
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 22,
+      "tokSOut": 34.9,
+      "tokSPrefill": 4.8,
+      "ttftMs": 15493.69
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 23,
+      "tokSOut": 34.8,
+      "tokSPrefill": 3.2,
+      "ttftMs": 23199.93
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 24,
+      "tokSOut": 43.2,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30755.93
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 25,
+      "tokSOut": 36,
+      "tokSPrefill": 9.1,
+      "ttftMs": 8096.04
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 26,
+      "tokSOut": 35.5,
+      "tokSPrefill": 4.6,
+      "ttftMs": 16138.51
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 27,
+      "tokSOut": 35.4,
+      "tokSPrefill": 152.1,
+      "ttftMs": 486.4
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 28,
+      "tokSOut": 32.7,
+      "tokSPrefill": 9.2,
+      "ttftMs": 8030.48
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 29,
+      "tokSOut": 43.1,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30688.23
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 30,
+      "tokSOut": 33.8,
+      "tokSPrefill": 3.1,
+      "ttftMs": 23550.25
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 31,
+      "tokSOut": 43.2,
+      "tokSPrefill": 2.4,
+      "ttftMs": 30754.71
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 32,
+      "tokSOut": 35.9,
+      "tokSPrefill": 176.3,
+      "ttftMs": 419.65
+    }
+  ],
+  "submissionId": "cmt00i0eb0eflms012anb0yau",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-08-19T11:32:18.179Z",
+  "timingSource": "client_observed_http",
+  "tokSOut": 224.2,
+  "tokSOutSource": "concurrent_request_window",
+  "tokSPrefill": 4.8,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 285.7,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 15418.91,
+  "ttftSource": "stream_first_token"
+}

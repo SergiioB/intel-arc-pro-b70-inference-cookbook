@@ -1,0 +1,69 @@
+#error "QUARANTINED: invalid MTP stub; do not build or benchmark"
+/**
+ * Fused MTP Draft Step Kernel (Prototype)
+ * Target: Intel Arc Pro B70 (Xe2)
+ * 
+ * Fuses:
+ * 1. RMSNorm (computed in SLM)
+ * 2. 1-layer MTP projection (XMX DPAS)
+ * 3. LM Head projection + top-p/argmax sampling (writes directly to draft sequence buffer)
+ * 
+ * NOTE: This is a structural prototype defining the memory layout and work-group boundaries.
+ * It expects to be integrated into `vllm-xpu-kernels`.
+ */
+
+#include <sycl/sycl.hpp>
+
+// Assuming standard vllm-xpu-kernels types / helpers
+using half = sycl::half;
+
+void fused_mtp_step_xpu(
+    sycl::queue &q,
+    const half* hidden_states_in,   // [batch, hidden_dim]
+    const void* norm_weight,        // [hidden_dim]
+    const void* mtp_proj_weights,   // [hidden_dim, hidden_dim] - W4A16 packed
+    const void* lm_head_weights,    // [hidden_dim, vocab_size] - W4A16 packed
+    int32_t* draft_token_out,       // [batch] - Output directly to device memory
+    int hidden_dim,
+    int vocab_size,
+    float rms_eps
+) {
+    // Single persistent kernel launch
+    q.submit([&](sycl::handler& cgh) {
+        
+        // SLM allocation for RMSNorm and intermediate projection state
+        // Xe2 SLM is highly optimized. We size this to hold the normalized state and output.
+        sycl::local_accessor<half, 1> slm_normed(sycl::range<1>(hidden_dim), cgh);
+        sycl::local_accessor<half, 1> slm_proj(sycl::range<1>(hidden_dim), cgh);
+        
+        // Workgroup size tuned for B70 (e.g. 256 or 512 threads)
+        cgh.parallel_for(sycl::nd_range<1>(256, 256), [=](sycl::nd_item<1> item) {
+            int tid = item.get_local_id(0);
+            
+            // Phase 1: RMS Norm
+            // Parallel reduction for variance, sync, then scale into slm_normed
+            // (Omitted: exact warp-reduction math for brevity)
+            
+            item.barrier(sycl::access::fence_space::local_space);
+            
+            // Phase 2: MTP Projection (XMX DPAS)
+            // Use sub_group operations to multiply slm_normed by mtp_proj_weights.
+            // Output writes to slm_proj.
+            // (Omitted: dpas assembly/subgroup math)
+            
+            item.barrier(sycl::access::fence_space::local_space);
+            
+            // Phase 3: LM Head + Sampling
+            // Multiply slm_proj by lm_head_weights.
+            // Instead of writing vocab_size logits to global memory, 
+            // compute the local argmax/top-p incrementally in registers/SLM.
+            
+            // (Omitted: token selection reduction)
+            
+            // Write winning token ID directly to global memory output buffer
+            if (tid == 0) {
+                draft_token_out[0] = 0; // selected_token_id
+            }
+        });
+    });
+}

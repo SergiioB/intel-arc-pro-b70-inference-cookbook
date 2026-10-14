@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://raw.githubusercontent.com/openvinotoolkit/nncf/master/src/nncf/parameters.py",
+  "final_url": "https://raw.githubusercontent.com/openvinotoolkit/nncf/master/src/nncf/parameters.py",
+  "fetched_at": "2026-10-09T16:40:02.576311Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "527269864cd5e7a700d191ff100838032f46cd58b1619a474c4de90aae9368ef",
+  "size_bytes": 11968,
+  "claim": "NNCF CompressWeightsMode at master: int8/int4 sym+asym, nf4, cb4, mxfp4 (E2M1+E8M0 g32), mxfp8_e4m3, fp8_e4m3, fp4, nvfp4 (E2M1+E4M3 g16), codebook/adaptive",
+  "relevance": "OpenVINO int4/new-format weight compression enumeration",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

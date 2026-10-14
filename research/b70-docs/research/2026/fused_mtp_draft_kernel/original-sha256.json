@@ -1,0 +1,13 @@
+{
+  "python_bindings.py": "27faf2ed85959142526fb5d91383769ac1cacfbe2e5cb31e1061b3adae1aa4dc",
+  "fused_mtp_step_sycl.cpp": "3611a2e33a56084b9260c131f448d9863920f1598143c54aeb994b30eff7810e",
+  "README.md": "8e3e6f22a0c92fcbe16f92f7326bc53cba95cb91d2b453b24ec00cdb8d6c4c66",
+  "fused_mtp_step_xpu.cpp": "5b5516bbabcd5a528cb24b406364eac35493a4217376bdb53c4c44018c24074a",
+  "llamacpp_patch/03_ggml_backend_sycl.patch": "522d8eba835d1d8418c5e25f2c1e4ef5795399383337b1cc9c5db9a173461213",
+  "llamacpp_patch/PLAN.md": "cdd1cc94935b1273bc76ee75faa97f0337dc5cfb43c90295a348ac52143dece3",
+  "llamacpp_patch/01_ggml_sycl_kernel.patch": "e6ed03f712733cd74c81015c5ea836dc1a7db19ff5da30512ab84d25d555bc0a",
+  "llamacpp_patch/02_ggml_graph_builder.patch": "cccb164216454026a922edf7f5353d4a1911b79e2d75b9191f4b74503355eee6",
+  "vllm_xpu_patch/03_compile_and_test.sh": "422c32da93e91c75238232ff62b378cc4eb14b2a06ad75b87290da4e66616cbb",
+  "vllm_xpu_patch/01_vllm_xpu_kernels_fused_mtp.cpp": "bebc2bda66924d810d62a3675e6bcbf2a92ce00da13537d01e777badab9537b8",
+  "vllm_xpu_patch/02_vllm_mtp_worker_patch.py": "dec54ef8cddf1d2d877d7d7a523df8fb64f7c24f90d62801d2fa426c5ab655df"
+}

@@ -1,0 +1,33 @@
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=9614303e,plane_chk=71911e4f rc_values_relmax=1.303e-05 wrap_bitwise=True gemm_bitwise=False values_ok=True
+RESULT,mode=correct,RC=4,K=256,N=128,M=4,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=3407607e,plane_chk=71911e4f rc_values_relmax=9.998e-01 wrap_bitwise=True gemm_bitwise=False values_ok=False
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=9614303e,plane_chk=71911e4f rc_values_relmax=1.303e-05 wrap_bitwise=True gemm_bitwise=False values_ok=True
+RESULT,mode=correct,RC=4,K=256,N=128,M=4,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=6e0c9a12,plane_chk=71911e4f rc_values_relmax=1.806e+00 wrap_bitwise=True gemm_bitwise=False values_ok=False
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=9614303e,plane_chk=71911e4f values_relmax=1.303e-05 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=9614303e,plane_chk=71911e4f values_relmax=1.303e-05 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=6afb0824,plane_chk=71911e4f values_relmax=8.886e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=58e5b5eb,plane_chk=71911e4f values_relmax=6.000e-07 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=2134ed6d,plane_chk=71911e4f values_relmax=2.534e-07 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=02d2f2ad,plane_chk=71911e4f values_relmax=4.715e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=6f6dbcd8,plane_chk=71911e4f values_relmax=1.164e-05 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=f484e7b2,plane_chk=71911e4f values_relmax=4.020e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=f2ab0625,plane_chk=71911e4f values_relmax=1.185e-07 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=6f1c8e40,plane_chk=71911e4f values_relmax=6.401e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=1fbf3499,plane_chk=71911e4f values_relmax=1.258e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=2a9e5b6a,plane_chk=71911e4f values_relmax=1.321e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=ee1fd595,plane_chk=71911e4f values_relmax=1.920e-03 wrap_bitwise=True values_ok=False
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=9614303e,plane_chk=71911e4f values_relmax=1.303e-05 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=6afb0824,plane_chk=71911e4f values_relmax=8.886e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=58e5b5eb,plane_chk=71911e4f values_relmax=6.000e-07 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=2134ed6d,plane_chk=71911e4f values_relmax=2.534e-07 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=02d2f2ad,plane_chk=71911e4f values_relmax=4.715e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=6f6dbcd8,plane_chk=71911e4f values_relmax=1.164e-05 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=f484e7b2,plane_chk=71911e4f values_relmax=4.020e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=f2ab0625,plane_chk=71911e4f values_relmax=1.185e-07 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=6f1c8e40,plane_chk=71911e4f values_relmax=6.401e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=1fbf3499,plane_chk=71911e4f values_relmax=1.258e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=2a9e5b6a,plane_chk=71911e4f values_relmax=1.321e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=ee1fd595,plane_chk=71911e4f values_relmax=1.920e-03 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=256,N=128,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=2729f406,plane_chk=71911e4f values_relmax=1.608e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=5120,N=12288,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=46e3fe93,plane_chk=d7b0ed5c values_relmax=1.971e-05 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=5120,N=12288,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=14a9f4a7,plane_chk=d7b0ed5c values_relmax=7.962e-06 wrap_bitwise=True values_ok=True
+RESULT,mode=correct,RC=1,K=5120,N=12288,M=1,ksplit=1,wrap_x=1,wrap_S=1,gemm=0,mismatch_index=0,out_chk=9d3d81d7,plane_chk=d7b0ed5c values_relmax=1.779e+00 wrap_bitwise=True values_ok=False

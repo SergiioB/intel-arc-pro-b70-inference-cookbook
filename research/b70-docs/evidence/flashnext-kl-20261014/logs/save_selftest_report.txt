@@ -1,0 +1,2 @@
+selftest-write: module-scope save_file OK | 4 checkpoints on disk during capture (4 files) | consolidated round-trip bitwise OK
+selftest-write: a crash before the consolidated write still leaves 4 layers on disk

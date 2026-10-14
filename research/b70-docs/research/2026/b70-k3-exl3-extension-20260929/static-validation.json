@@ -1,0 +1,47 @@
+{
+  "source_base": "15ded2f3add148c4db3c900cba7de878238f53bc",
+  "stage": "/tmp/b70-k3-patchcheck-awa_kvrw",
+  "patches": [
+    {
+      "patch": "0001-P1-build-enablement.patch",
+      "sha256": "e032d42ba893b4a2bcab065fda25908afd6e6d6600c1f480e39fbb4a94c5fa39",
+      "sequential_apply": "PASS"
+    },
+    {
+      "patch": "0002-P1b-strip-constraint.patch",
+      "sha256": "7e2ef51406d879d1ca44da4ddc761c0f2f6afeafca5700ee47db85b154d54235",
+      "sequential_apply": "PASS"
+    },
+    {
+      "patch": "0003-P2-k3-strip-selection.patch",
+      "sha256": "d9162926384476b9e94a4f4c46860f5b92a59374f2e8179b7e856f3364a5c933",
+      "sequential_apply": "PASS"
+    },
+    {
+      "patch": "0004-P3-real-geometry-correctness.patch",
+      "sha256": "b03851d2065f18a9a3b8f66dd9a139313e3e6eeec82f247f800eabd22400432c",
+      "sequential_apply": "PASS"
+    },
+    {
+      "patch": "0005-P4-matched-ab-spec.patch",
+      "sha256": "fc6a40f3985256029ba4b440a5b6d8a55fa143f7090075470a78a8abb57f581a",
+      "sequential_apply": "PASS"
+    },
+    {
+      "patch": "0006-P5-k-aware-reconstruction.patch",
+      "sha256": "4fae89399991c8e3474db0fbce80ee63537d2eb0e6b299f097dd065cf9b14b30",
+      "sequential_apply": "PASS"
+    }
+  ],
+  "python_ast": "PASS",
+  "bash_syntax": "PASS",
+  "d5_cpu_tests": {
+    "returncode": 0,
+    "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.003s\n\nOK\n"
+  },
+  "review_copy_identity": "PASS",
+  "source_unchanged": true,
+  "builds_run": false,
+  "gpu_run": false,
+  "docker_run": false
+}

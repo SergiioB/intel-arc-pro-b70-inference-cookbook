@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/document.schema.yaml",
+  "title": "B70 research document registry",
+  "$type_note": "JSON Schema expressed as YAML-compatible JSON",
+  "$type_policy": "YAML registry files use the JSON subset so stdlib tooling can parse them",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "documents"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/document"
+      }
+    }
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "title",
+        "kind",
+        "lifecycle",
+        "authority",
+        "source_state",
+        "metadata_confidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?:doc-[a-z0-9][a-z0-9-]*|[A-Za-z0-9][A-Za-z0-9:._-]*)$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(README\\.md|AGENTS\\.md|DOCUMENT-MAP\\.md|(?:docs|research|benchmarks|models|studies|decisions|campaigns|archive)/.*\\.md)$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "master-reference",
+            "agent-contract",
+            "landing-page",
+            "model-dossier",
+            "decision-record",
+            "campaign-record",
+            "study",
+            "methodology",
+            "run-log",
+            "recommendation",
+            "benchmark-report",
+            "research-note",
+            "experiment",
+            "reproducibility",
+            "source-index",
+            "archive",
+            "plan",
+            "operational-guide",
+            "document-index"
+          ]
+        },
+        "lifecycle": {
+          "enum": [
+            "canonical",
+            "stable",
+            "active",
+            "stale",
+            "superseded",
+            "withdrawn",
+            "historical",
+            "archived",
+            "draft"
+          ]
+        },
+        "authority": {
+          "enum": [
+            "primary",
+            "supporting",
+            "legacy"
+          ]
+        },
+        "source_state": {
+          "enum": [
+            "current-doc",
+            "legacy-doc"
+          ]
+        },
+        "metadata_confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "superseded_by": {
+          "type": "string",
+          "pattern": "^(?:doc-[a-z0-9][a-z0-9-]*|[A-Za-z0-9][A-Za-z0-9:._-]*)$"
+        },
+        "result_roots": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(results|b70-bench-results|runs)(/.*)?$"
+          },
+          "uniqueItems": true
+        },
+        "declared_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "basis"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

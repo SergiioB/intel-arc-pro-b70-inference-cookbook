@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/supersession.schema.yaml",
+  "title": "B70 canonical correction and supersession registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "supersessions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "supersessions": {"type": "array", "items": {"$ref": "#/$defs/supersession"}}
+  },
+  "$defs": {
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_type", "target_id", "disposition"],
+      "properties": {
+        "target_type": {"enum": ["model", "artifact", "campaign", "decision", "legacy_evidence"]},
+        "target_id": {"type": "string", "minLength": 1},
+        "disposition": {"enum": ["invalid", "superseded", "partial", "corrected_scope"]}
+      }
+    },
+    "supersession": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "subject", "source_path", "effective_date", "truth_verdict", "evidence_tier", "targets", "supersedes", "replacement"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^correction:.+:2026-08-19$"},
+        "subject": {"type": "string", "minLength": 1},
+        "source_path": {"const": "decisions/corrections-and-supersessions-2026-08-19.md"},
+        "effective_date": {"const": "2026-08-19"},
+        "truth_verdict": {"enum": ["CONFIRMED"]},
+        "evidence_tier": {"enum": ["E2"]},
+        "targets": {"type": "array", "items": {"$ref": "#/$defs/target"}, "minItems": 1},
+        "supersedes": {"type": "array", "items": {"type": "string", "pattern": "^correction:.+:2026-08-19$"}, "uniqueItems": true},
+        "replacement": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

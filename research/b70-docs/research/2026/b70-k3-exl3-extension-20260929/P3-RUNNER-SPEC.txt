@@ -1,0 +1,101 @@
+P3 — owned numerical gate and fail-closed runner contract
+PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Classification: local-only draft, upstreamable after execution/review through
+b70-upstream-researcher. Source base 15ded2f3add148c4db3c900cba7de878238f53bc.
+Capture status: test-only allocations/synchronizations intentionally occur OUTSIDE
+capture. Production allocation behavior is unchanged; D3 HOLD remains. This
+script does not certify allocator safety merely because replay produces outputs.
+
+Deliverables
+- 0004-P3-real-geometry-correctness.patch adds tests/test_k3_real_geometry.py and
+  guarded K3/cb2 support to the existing raw diagnostic op (:585-589 base).
+  K4/K6 raw dispatch is unchanged. No new production fast path is introduced.
+- test_k3_real_geometry.py beside the patch is the byte-identical review copy.
+  It is NOT intended to import the clone when run in GPU mode from this directory;
+  apply the patch to the future dedicated source tree and run its tests/ copy.
+- Header-only mode is stdlib-only and was executed in the authoring session.
+  It reads no tensor payload, imports no torch and touches no accelerator.
+- The full GPU mode is AUTHOR-OWNED CODE, NOT EXECUTED. No skipped/XFAIL success:
+  nonfinite, unsupported K, mismatch, incomplete census, missing authorization,
+  output overwrite and missing replay API all raise and exit nonzero.
+
+Real artifact, never 4bpw codes
+/mnt/<nvme-disk>/b70-exl3-qwen38-3bpw-20260929/
+First action is an independent header recensus with index cross-checks and hashes.
+Required metadata: exl3 1.4.2, bits=3.0, head_bits=6, mtp_bits=4, codebook=mul1.
+Required payload geometries [Kdim,N,count] for width48:
+[5120,1024,32], [5120,6144,48], [5120,10240,48], [5120,12288,16],
+[5120,17408,128], [6144,5120,64], [17408,5120,64]. Total 400.
+Header census also finds width64 x8 (MTP) and width96 x1 (head), explicitly
+excluded from the K3 body gate, NOT silently relabeled K3. The inherited mix
+{3:400,6:1} describes the body+head subset, not the entire shard inventory.
+The reported 13,819,939,309-byte artifact size is inherited trial evidence, not
+re-established by this header read. Header hashes are NOT payload hashes; require
+the trial's complete checksum manifest and verify it before numerical execution.
+
+Numerical contract (frozen before GPU execution)
+1. Every real module: compare C++ exl3_reconstruct K3/cb2 (:545) vs Triton
+   reconstruction for all weights, sliced at 16384 columns (17408 exercises tail).
+   fp16 representation equality and finite values: ZERO tolerance.
+2. Forced raw GEMV and DPAS, MR=1/2/4/8: one-hot Hadamard-domain inputs select
+   rows at beginning/end, tile boundaries and Hadamard boundaries. Output equals
+   reconstructed fp16 weights represented as fp32, ZERO numerical tolerance.
+   This tests D1's otherwise-unused MR8 specialization directly. Production
+   Hadamard transforms are not part of this one-hot decode equality assertion.
+3. All 400 modules, fp16 AND bf16 inputs, CPU seeds 1701/2909;
+   M=1,2,3,4,8,9,16,17,24,25,32,33,40,41,48,49,64,65,127,128,129,256,512.
+   This covers vector/DPAS boundaries, padded row blocks and large-M reconstruction.
+   Compare direct E.linear AND public routing against (a) explicitly forced
+   Triton fallback and (b) C++-reconstructed weights + fp32 dense reference dot.
+   Also force the Python large-M path to exercise the corrected D5 branch.
+4. Each dense output row must satisfy BOTH:
+   ||candidate-reference||2 / max(||reference||2,1e-12) <= 0.01;
+   max_abs_error <= 0.01 + 0.05 * RMS(reference row).
+   Reject NaN/Inf first. Record measured errors. These are proposed screening
+   tolerances, NOT established error bounds or a task-quality certificate.
+   Never auto-relax; if they fail, architect review gets the errors and arithmetic
+   path. Any changed tolerance is a new declared experiment, not a pass overwrite.
+5. Small-M public op is warmed and captured, replayed three times, then input is
+   changed in place and replay compared with fresh eager output. One live graph
+   per cell. Allocation interception and concurrent graph/stream lifetime proofs
+   belong to D3, not to this single-graph numerical smoke.
+6. Matrix: 400*23*2*2 = 36,800 dense cells. Final PASS requires every cell.
+   Partial JSONL or a killed process is incomplete/FAIL, never a full PASS.
+   K4/K5/K6 coverage remains separately necessary: default and all-codebooks
+   compile checks, K5 MR8 synthetic one-hot smoke in the future window, and
+   incumbent real K4/MTP/K6 regression tests. P3 does not claim K5 quality.
+
+External runner — b70-bench-engineer / b70-profiler, future assigned window
+A. BEFORE any image build: architect resolves D3 and records the chosen contract.
+   This authoring task neither chooses it nor grants a GPU/build window.
+B. Before GPU mode: storage discovery, artifact checksum, empty-GPU process /
+   container / VRAM gates, declared single-card ownership, BDF/affinity mapping,
+   per-card observed cap and package temperature, >=2 GiB projected reserve.
+   Retain live gate evidence. No unrelated process is killed to pass a gate.
+C. Authorization JSON is an attestation of those external gates, not permission
+   inferred by the test: source_base, window_id, d3_status='architect-approved',
+   d3_option ('graph-private-pre-reservation' or 'caller-owned-workspace'),
+   d3_review_record, empty_gpu_gate_passed=true, preflight_evidence.
+   If the workspace option changes the API, adapt and review this test before use.
+D. Use fresh exclusive JSONL output outside the model directory. Set
+   EXL3_BACKEND=auto EXL3_INT8_PREFILL=0 EXL3_SMALL_M_MAX=128
+   EXL3_RECON_SLICE_N=16384 ZE_AFFINITY_MASK=<assigned-card>
+   EXL3_LIB=<absolute pinned built-library path>; record its SHA256, source/diff
+   hashes, dependency versions, all EXL3 flags (no LUT/fused/debug-skip overrides).
+E. Smallest falsifier before the full matrix: instrument one module per real
+   family using the SAME test routines and frozen tolerances in a separately
+   reviewed screening wrapper. Label its result screen_only, never full PASS.
+   First-load/JIT deadline 300 s, per-cell deadline 120 s, screen deadline 30 min.
+   Measure screen cost and live reserve; obtain full-window allocation before
+   committing to the 36,800-cell matrix. The script has no timing/throughput claim.
+F. Full run: visible watchdog enforces an orchestrator-approved absolute deadline
+   and <=300 s without progress (module_begin/cell_pass/module_pass). SIGTERM then
+   exact test PID only if deadline expires; preserve partial JSONL and nonzero
+   timeout status. No unattended retries, missing-cell forgiveness or shell ||true.
+G. Success requires process rc=0 AND final event PASS with modules=400,cells=36800,
+   every declared key/M/dtype/seed exactly once, expected header/library hashes,
+   and no FAIL event. Save stderr/stdout. No performance adoption from numerics alone.
+H. Cleanup only owned test resources; restore observed per-card caps as found
+   under the current host contract, retain empty-GPU verification. No production
+   restart without authorization. Run the exact-answer battery/spec canary before
+   isolated timing, and rerun after finalist build before P4.

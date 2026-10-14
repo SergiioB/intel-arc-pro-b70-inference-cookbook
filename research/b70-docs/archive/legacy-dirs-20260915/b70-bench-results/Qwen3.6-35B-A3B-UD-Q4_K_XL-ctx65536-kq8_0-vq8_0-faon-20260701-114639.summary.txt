@@ -1,0 +1,16 @@
+model=Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf
+ctx=65536
+kv_k=q8_0
+kv_v=q8_0
+fa=on
+pp512=
+tg32=
+idle_temp_c=76.0
+idle_power_w=NA
+run_temp_avg_c=79.0
+run_temp_max_c=83.0
+run_power_avg_w=NA
+run_power_max_w=NA
+log=~/b70-bench-results/Qwen3.6-35B-A3B-UD-Q4_K_XL-ctx65536-kq8_0-vq8_0-faon-20260701-114639.log
+telemetry=~/b70-bench-results/Qwen3.6-35B-A3B-UD-Q4_K_XL-ctx65536-kq8_0-vq8_0-faon-20260701-114639.telemetry.csv
+exit_code=124

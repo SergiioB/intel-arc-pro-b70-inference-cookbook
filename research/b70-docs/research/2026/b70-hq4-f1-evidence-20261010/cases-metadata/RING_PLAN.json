@@ -1,0 +1,29 @@
+{
+  "qkv": {
+    "plane_bytes": 32440320,
+    "ring": 5,
+    "ring_bytes": 162201600,
+    "budget_bytes": 29904338944,
+    "fits": true,
+    "gt_4x_L2": true,
+    "visible_avail_mib": 32615
+  },
+  "gate_up": {
+    "plane_bytes": 91914240,
+    "ring": 2,
+    "ring_bytes": 183828480,
+    "budget_bytes": 29904338944,
+    "fits": true,
+    "gt_4x_L2": true,
+    "visible_avail_mib": 32615
+  },
+  "down": {
+    "plane_bytes": 45957120,
+    "ring": 3,
+    "ring_bytes": 137871360,
+    "budget_bytes": 29904338944,
+    "fits": true,
+    "gt_4x_L2": true,
+    "visible_avail_mib": 32615
+  }
+}

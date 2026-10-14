@@ -1,0 +1,21 @@
+QUARANTINED NON-APPLICABLE: invalid MTP stub. Preserved for forensic review only.
+--- llama.cpp
++++ llama.cpp
+@@ -10050,6 +10050,17 @@
+         struct ggml_tensor * x = inpL;
+         struct ggml_tensor * inp_pos = build_inp_pos();
+ 
++        // =================================================================
++        // FUSED MTP DRAFT STEP OVERRIDE
++        // =================================================================
++        // If running on SYCL and fused MTP is enabled, replace the sequential
++        // graph with our single fused op.
++        if (ggml_backend_is_sycl(ctx)) {
++             x = ggml_sycl_fused_mtp_draft_step(ctx, x, model.mtp_norm_weight, model.mtp_proj, model.lm_head);
++             return x;
++        }
++
++        // Standard sequential path:
+         x = ggml_rms_norm(ctx, x, hparams.f_norm_eps);
+         x = ggml_mul(ctx, x, model.mtp_norm_weight);
+         

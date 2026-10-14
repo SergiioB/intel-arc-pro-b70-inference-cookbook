@@ -1,0 +1,61 @@
+{
+ "question_id": "RQ-27",
+ "hypothesis": "Folding an offline residual Hadamard rotation into the BF16 weights before GPTQ W4 G128 (desc_act off, auto_gptq packing) removes the 14-vs-30 margin inversion and brings final-logit KL to EXL3 4bpw level, so the stock XPU W4A16 kernel serves EXL3-class quality.",
+ "changed_variable": "Weight preprocessing before GPTQ W4 G128: none (plain, positive control) versus offline residual Hadamard fold with a boundary rotation sandwich; kernel, packing, heads, MTP and KV unchanged",
+ "resource": "gpu",
+ "stage": "screen",
+ "timeout_s": 3600,
+ "command": [
+  "bash",
+  "scripts/tmp/r4_r0_launch_20261011.sh",
+  "run"
+ ],
+ "preflight_command": [
+  "bash",
+  "scripts/tmp/r4_r0_launch_20261011.sh",
+  "preflight"
+ ],
+ "cleanup_command": [
+  "bash",
+  "scripts/tmp/r4_r0_launch_20261011.sh",
+  "cleanup"
+ ],
+ "identities": {
+  "baseline": {
+   "host": "b70-host",
+   "engine_revision": "R0 harness scripts/tmp/r4_r0_20261011.py inside vllm/vllm-openai-xpu:v0.30.0@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d (isolated daemon /run/<exl3-docker>.sock, torch-xpu, GPU1 only, no serving); EXL3 4bpw arm = bit-exact ref.py reconstruction (ref.py sha256 3f614b7c91510d8520202e85dd0a08255370349a4d5ae4e7601edfa6897d1780, git head 15ded2f3add148c4db3c900cba7de878238f53bc) of /mnt/<nvme-disk>/b70-exl3-qwen38-4bpw-20260926 @113cf7ab; layer-streamed eager Qwen3_5DecoderLayer forwards via scripts/tmp/hq4_states_20261010.py helpers",
+   "model_revision": "Qwen3.8-27B BF16 farm /mnt/<nvme-disk>/b70-bf16-qwen38-20260926 (ARTIFACTS.sha256 verified fail-closed at run start); eval tokens /mnt/<nvme-disk>/hq4-states-20261010/tokens_eval.safetensors (2x832, starts 62%/80%); calibration wikitext-2-raw-v1 test parquet sha256 5f1bea067869d04849c0f975a2b29c4ff47d867f484f5010ea5e861eab246d91 per corpus_meta.json"
+  },
+  "candidate": {
+   "host": "b70-host",
+   "engine_revision": "same harness, same image, same container; GPTQ arms computed in-harness (classic GPTQ bits=4 sym desc_act=False percdamp=0.01, port of scripts/tmp/rotation_t1t2_common.py gptq_quant with per-arm Hessians from forward hooks on calibration tokens); Q = H_5120 = D(K_20 kron S_256)/sqrt(5120) seed 20260925, fp64 orthogonality asserted to 1e-6",
+   "model_revision": "same BF16 source; R4 arms = residual fold (readers W diag(1+w) Q, writers Q^T W, norm gains zeroed, entry x' = Q^T embed(x), exit h = Q h' before the original model.norm) then GPTQ G128 / G64; r4_fp arm = fold with quantization off (sanity s1); gptq_plain arm = no rotation, champion GPTQ G128 (positive control, must reproduce RL-092)"
+  }
+ },
+ "controlled": {
+  "workload": {
+   "arms": "six parallel bf16 hidden-state streams, layer-streamed sequentially, one decoder layer resident at a time: bf16, exl3 (ref.py bit-exact), gptq_plain, r4_g128, r4_g64, r4_fp (eval+canary only)",
+   "calibration": "64 sequences x 512 tokens from the wikitext-2-raw-v1 TEST parquet inside tokens [0, 60%) at deterministic evenly spaced starts (same formula as scripts/tmp/hq4_states_20261010.py); carried only by the GPTQ arms",
+   "eval": "/states/tokens_eval.safetensors 2 x 832 (starts 62% and 80%); final norm + lm_head in chunks of <= 256 positions, fp32 logits; per arm KL(BF16||arm) mean and p99, top-1 agreement vs BF16, held-out next-token NLL",
+   "canaries": "r01 sum(i*i for i in range(4)) expected 14 foil 30 (rendered 36 tokens, asserted), plus h03/n01/n02/n03 from results/2026/09/b70-margin-requant-pilot1-20260930T0855Z/heldout-manifest.json; rendered with the /bf16 chat template enable_thinking=False; step-0 margin = logit(first expected token) - logit(first foil token), first tokens asserted to differ",
+   "sanity": "computed and written BEFORE the gate, gate not evaluated if any fails: s1 r4_fp top-1 >= 99.9% and KL <= 1e-4 vs bf16; s2 gptq_plain r01 margin wrong sign; s3 exl3 r01 margin correct",
+   "success_gate": "Sanity (else blocked, unscored): the fp32 fold-exactness probe on every quantized layer has rel L2 <= 1e-4 (fold exact) [amended 2026-10-11 before any sealed run, RL-167: the original clause 'R4 with quantization off reproduces BF16 logits (top-1 >= 99.9 %, KL <= 1e-4)' measured bf16 storage noise of the folded weights, not harness exactness; r4_fp is still reported, ungated, and that storage noise stays inside every R4 arm's gated metric]; GPTQ-plain reproduces the defect (r01 margin wrong sign); EXL3 answers r01 correctly. R0 gate: best R4 arm has every canary margin correct, eval final-logit KL <= EXL3's and top-1 >= EXL3 - 0.1 pt. R1: exported checkpoint passes the exact-answer battery with EXL3's pass set. R2: >= 1.30x decode vs EXL3 4bpw in every confirmation pair, MTP acceptance within 0.05."
+  },
+  "config": {
+   "card": "GPU1 only: ONEAPI_DEVICE_SELECTOR=level_zero:1 (never ZE_AFFINITY_MASK, RL RQ-11 crash); asserted live by the harness",
+   "container": "isolated daemon (sudo -n docker -H unix:///run/<exl3-docker>.sock, unit <exl3-dockerd>d7), image vllm/vllm-openai-xpu:v0.30.0@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d, --entrypoint python3, --network none, --memory=14g --memory-swap=14g --cpus=6, --device=/dev/dri, --group-add render gid (stat -c %g /dev/dri/renderD129), name r4-r0-20261011",
+   "mounts": "/repo rw; /bf16, /exl3, /states, /corpus, /refsrc (b70-k3-build-20260929/src for the pinned ref.py) ro; /out (b70-r4-20261011) rw for large code exports only; run root mounted at /run_dir for small JSON + pointers + sha256",
+   "rounding": "GPTQ W4 sym g128/g64 desc_act=False percdamp=0.01 in the arm's own rotated/plain basis; in_proj_a/b, norms, conv, lm_head, embeddings, mtp untouched; export packing auto_gptq (qweight i32 [in/8,out] 4-bit lanes, scales fp16 [in/g,out], qzeros zp-1=7, g_idx sequential)",
+   "isolation": "preflight refuses if any Strata/vLLM/llama container is up on either daemon, host MemAvailable < 30 GiB, gpu_guard_20261011.sh finds a non-desktop holder of /dev/dri/renderD129, or /out free < 35 GB; cleanup removes only container r4-r0-20261011 and proves GPU1 empty via sudo -n cat /sys/kernel/debug/dri/1/tile0/vram_mm visible_avail",
+   "guard": "scripts/tmp/gpu_guard_20261011.sh bracketed at preflight, run start, run end and cleanup; every call logged to raw/guard_*.txt in the run root"
+  }
+ },
+ "comparison": {
+  "metric": "eval_final_logit_kl_ratio_r4_best_vs_exl3",
+  "unit": "kl_ratio",
+  "direction": "lower",
+  "min_relative_gain": 0.0
+ },
+ "evidence_rationale": "R0 of the RQ-27 kill ladder (research/2026/b70-r4-rotated-int4-design-20261011.md section 3). The block KL metric is forbidden (RL-161: blind on this model, channel 3994); the metric is end-to-end final-logit KL on held-out eval positions with a known-bad positive control (gptq_plain must reproduce the RL-092 14-vs-30 margin inversion) and a known-good reference (EXL3 bit-exact via pinned ref.py). Rotation Q is the same H_5120 as RL-067 (seed 20260925); GPTQ settings are the removed champion contract so R1/R2 can export unchanged for the stock XPUwNa16 kernel.",
+ "measurements_note": "The adapter writes measurements.json in the run root with checks {correctness: sanity, quality: gate, measurement_validity, isolation}, per-arm JSON (raw/arm_*.json), per-layer log (raw/layers.jsonl, per-layer wall time and per-linear relative Frobenius error); integer codes + scales for the R4 arms go to /out only while >= 10 GiB stays free, with sha256 manifest + pointer (raw/codes_manifest.json) in the run root."
+}

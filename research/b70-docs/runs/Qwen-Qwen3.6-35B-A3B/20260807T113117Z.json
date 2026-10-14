@@ -1,0 +1,57 @@
+{
+  "agentFeedback": {
+    "attachHardwareCommand": "lmx benchmark add-hardware runs/Qwen-Qwen3.6-35B-A3B/20260807T113117Z.json --hardware hardware.json",
+    "benchmarkStatus": "planned",
+    "canApiValidate": false,
+    "canSubmit": false,
+    "engine": "vllm",
+    "hardwareCommand": "lmx hardware --out hardware.json",
+    "message": "Measurement plan written. No benchmark command or API request ran. Run without --dry-run to measure, or pass explicit --tok-s-out metrics before API validation. Remote endpoint submissions also require --hardware with metadata from the endpoint host.",
+    "mode": "remote",
+    "nextCommand": "lmx benchmark run \u003cengine\u003e \u003csame options without --dry-run\u003e --hardware hardware.json",
+    "outputPath": "runs/Qwen-Qwen3.6-35B-A3B/20260807T113117Z.json",
+    "outputPathAbsolute": "~/projects/B70-DOCS/runs/Qwen-Qwen3.6-35B-A3B/20260807T113117Z.json",
+    "requiresHardware": true,
+    "requiresMetrics": true,
+    "savedRunPathAbsolute": "~/projects/B70-DOCS/runs/Qwen-Qwen3.6-35B-A3B/20260807T113117Z.json",
+    "savedRunPathRelative": "runs/Qwen-Qwen3.6-35B-A3B/20260807T113117Z.json",
+    "status": "plan_needs_metrics",
+    "submissionStatus": "needs_remote_hardware"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "detectedEngines": [
+    {
+      "name": "ollama",
+      "installed": true,
+      "binaries": {
+        "ollama": "/usr/local/bin/ollama"
+      },
+      "serverCommand": "ollama serve",
+      "notes": [
+        "Ollama is detected for serving; benchmark with --mode remote --base-url http://localhost:11434."
+      ]
+    }
+  ],
+  "dryRun": true,
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8001",
+    "commandSnippet": "# Remote endpoint: http://127.0.0.1:8001  servedModel: Qwen/Qwen3.6-35B-A3B",
+    "mode": "remote",
+    "servedModel": "Qwen/Qwen3.6-35B-A3B"
+  },
+  "engineName": "vllm",
+  "hardwareSource": "missing_remote",
+  "hfId": "Qwen/Qwen3.6-35B-A3B",
+  "metricSource": "remote_endpoint",
+  "modelRevision": "main",
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-07T11:31:17Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http"
+  },
+  "quantization": "GPTQ-Int4",
+  "timingSource": "client_observed_http"
+}

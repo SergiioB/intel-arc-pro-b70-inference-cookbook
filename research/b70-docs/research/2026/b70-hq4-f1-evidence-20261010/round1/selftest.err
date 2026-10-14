@@ -1,0 +1,4 @@
+# device: Intel(R) Graphics [0xe223]
+RESULT,mode=selftest,RC=1,acc=2048.000000,expect=2048.000000,pass=1
+RESULT,mode=selftest,RC=4,acc=8192.000000,expect=8192.000000,pass=1
+RESULT,mode=selftest,RC=8,acc=16384.000000,expect=16384.000000,pass=1

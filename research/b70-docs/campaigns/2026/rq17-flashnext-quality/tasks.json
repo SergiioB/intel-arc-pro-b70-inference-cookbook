@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "question_id": "RQ-17",
+  "predeclared_at": "2026-10-10",
+  "purpose": "Predeclared RQ-17 P0 quality battery workload (correctness-validation.md task-quality scope). Frozen before any run exists; no cell may be added, removed or re-keyed after results are seen. Scoring functions live in scripts/tmp/rq17_battery_20261010.py keyed by 'scorer'.",
+  "sampling": {"temperature": 0.0, "note": "greedy everywhere; no sampling cell in this battery"},
+  "canaries": {
+    "source": "token files /mnt/<sata-disk>/strata/prompts/batt-*.txt (batt-sumsq/logic/json rebuilt and tokenizer-verified 2026-10-09, see registry RQ-17 uncertainty and research/2026/b70-overnight-quant-campaign-plan-20261009.md P0 prep)",
+    "runs": 2,
+    "run_labels": ["A", "B"],
+    "max_tokens": 64,
+    "order": ["batt-arith", "batt-capital", "batt-token", "batt-sumsq", "batt-logic", "batt-json"],
+    "cells": [
+      {"id": "batt-arith", "expect": {"kind": "last_integer", "value": 703},
+       "note": "37*19; adoption canary (RL-125)"},
+      {"id": "batt-capital", "expect": {"kind": "last_line_equals", "value": "paris"},
+       "note": "capital of France; adoption canary (RL-125)"},
+      {"id": "batt-token", "expect": {"kind": "contains", "value": "B70-FLASH-OK"},
+       "note": "verbatim token string; adoption canary (RL-125)"},
+      {"id": "batt-sumsq", "expect": {"kind": "last_integer", "value": 14},
+       "note": "sum(i*i for i in range(4)) = 0+1+4+9 = 14. This is the 14-vs-30 in-head arithmetic class: the fluent wrong answer 30 (summing 1..4) is the historical RL-087 defect and the precommitted stop-rule trigger"},
+      {"id": "batt-logic", "expect": {"kind": "last_line_first_word", "value": "no"},
+       "note": "Alice>Bob>Charlie transitive chain; multi-hop logic, answer No"},
+      {"id": "batt-json", "expect": {"kind": "last_json_equals", "value": {"status": "ok", "count": 3}},
+       "note": "strict JSON object emission"}
+    ],
+    "token_exactness_rule": "the server-rendered prompt must be token-exact with the batt file: usage.prompt_tokens must equal the batt file's id count (22/20/22/28/31/26); any mismatch fails measurement_validity, it is never adjusted"
+  },
+  "replay": {
+    "prompts": ["batt-arith", "batt-logic", "batt-json"],
+    "repetitions": 3,
+    "gen_tokens": 128,
+    "transport": "engine one-shot --tokens-file launches (config-of-record args + cell args), one engine start per launch; output ids from the engine's 'output :' line",
+    "gate": "all three repetitions of each prompt produce the identical token-id sequence (rep 1 is the reference); any mismatch is replay drift",
+    "exit2_contingency": "if a launch exits 2 with the 'device residency table' message, the same cell is relaunched once as a discarded same-shape warmup before the 3 measured repetitions; the event is recorded"
+  },
+  "tasks": {
+    "max_tokens": 256,
+    "gate": "at least 8 of 10 tasks pass",
+    "cells": [
+      {"id": "t1-extract", "scorer": "last_line_equals", "expected": "cache-03",
+       "prompt": "From the following table rows, extract the hostname of the server in rack R12 and reply with only the hostname.\nR08 web-07 10.0.8.31\nR09 db-primary 10.0.8.44\nR12 cache-03 10.0.9.12\nR14 mail-01 10.0.7.5"},
+      {"id": "t2-math-word", "scorer": "last_integer", "expected": 320,
+       "prompt": "A warehouse had 480 crates. It shipped 145 crates on Monday and 95 crates on Tuesday, then received 2 boxes of 40 crates each. How many crates does the warehouse hold now? Reply with only the integer."},
+      {"id": "t3-arith-chain", "scorer": "last_integer", "expected": 50,
+       "prompt": "Compute ((18 * 25) - 150) / 6. Reply with only the integer."},
+      {"id": "t4-json-tool", "scorer": "last_json_equals",
+       "expected": {"target_c": 21, "mode": "heat", "hold_minutes": 90},
+       "prompt": "You are calling the set_thermostat tool. Emit only the JSON argument object with exactly these keys: target_c (number), mode (string), hold_minutes (number). Setpoint 21 degrees Celsius, mode heat, hold for 90 minutes."},
+      {"id": "t5-code-output", "scorer": "last_two_integers", "expected": [12, 39],
+       "prompt": "What does this Python program print to stdout? Reply with only the program's output.\nvals = [3, 8, 15, 4, 42]\nprint(sum(v for v in vals if v % 2 == 0))\nprint(max(vals) - min(vals))"},
+      {"id": "t6-long-input-qa", "scorer": "last_token_pair", "expected": ["S-7", "98.7"],
+       "prompt": "Below is a facility sensor log.\n\n--- LOG BEGIN ---\n2026-10-09T06:00 sensor S-1 reading 20.1\n2026-10-09T06:05 sensor S-2 reading 21.3\n2026-10-09T06:10 sensor S-3 reading 19.8\n2026-10-09T06:15 sensor S-1 reading 20.4\n2026-10-09T06:20 sensor S-2 reading 21.9\n2026-10-09T06:25 sensor S-3 reading 20.0\n2026-10-09T06:30 sensor S-1 reading 20.2\n2026-10-09T06:35 sensor S-2 reading 22.1\n2026-10-09T06:40 sensor S-3 reading 19.9\n2026-10-09T06:45 sensor S-1 reading 20.6\n2026-10-09T06:50 sensor S-2 reading 21.7\n2026-10-09T06:55 sensor S-3 reading 20.3\n2026-10-09T07:00 sensor S-1 reading 20.9\n2026-10-09T07:05 sensor S-2 reading 21.5\n2026-10-09T07:10 sensor S-3 reading 20.2\n2026-10-09T07:15 sensor S-1 reading 20.3\n2026-10-09T07:20 sensor S-2 reading 21.8\n2026-10-09T07:25 sensor S-3 reading 19.7\n2026-10-09T07:30 sensor S-1 reading 20.5\n2026-10-09T07:35 sensor S-2 reading 22.0\n2026-10-09T07:40 sensor S-3 reading 20.1\n2026-10-09T07:45 sensor S-1 reading 20.8\n2026-10-09T07:50 sensor S-2 reading 21.4\n2026-10-09T07:55 sensor S-3 reading 20.6\n2026-10-09T08:00 sensor S-1 reading 20.1\n2026-10-09T08:05 sensor S-2 reading 21.2\n2026-10-09T08:10 sensor S-3 reading 19.6\n2026-10-09T08:15 sensor S-1 reading 20.7\n2026-10-09T08:20 sensor S-2 reading 21.6\n2026-10-09T08:25 sensor S-3 reading 20.4\n2026-10-09T08:30 sensor S-1 reading 20.0\n2026-10-09T08:35 sensor S-2 reading 21.1\n2026-10-09T08:40 sensor S-7 reading CRITICAL 98.7\n2026-10-09T08:45 sensor S-1 reading 20.9\n2026-10-09T08:50 sensor S-2 reading 21.9\n2026-10-09T08:55 sensor S-3 reading 20.5\n2026-10-09T09:00 sensor S-1 reading 20.2\n2026-10-09T09:05 sensor S-2 reading 21.3\n2026-10-09T09:10 sensor S-3 reading 19.9\n2026-10-09T09:15 sensor S-1 reading 20.4\n2026-10-09T09:20 sensor S-2 reading 21.7\n2026-10-09T09:25 sensor S-3 reading 20.8\n--- LOG END ---\n\nWhich sensor reported a CRITICAL reading, and what value did it report? Answer as: <sensor> <value>"},
+      {"id": "t7-sort", "scorer": "word_list_equals",
+       "expected": ["apple", "bread", "grape", "kettle", "mango", "night", "olive", "zebra"],
+       "prompt": "Sort these words alphabetically and reply with only the comma-separated sorted list: kettle, apple, zebra, mango, bread, olive, grape, night"},
+      {"id": "t8-count", "scorer": "last_integer", "expected": 14,
+       "prompt": "How many words does this sentence contain? Reply with only the integer.\nSentence: The quick brown warehouse robot carried twelve fragile tiles across the noisy loading platform"},
+      {"id": "t9-convert", "scorer": "last_float_near", "expected": 22.22222222222222, "tolerance": 0.05,
+       "prompt": "Convert 72 degrees Fahrenheit to Celsius. Round to one decimal place. Reply with only the number."},
+      {"id": "t10-constraint", "scorer": "three_alphabetic_words", "expected": null,
+       "prompt": "Reply with exactly three words and no punctuation, describing typical summer weather."}
+    ]
+  },
+  "two_turn_8k": {
+    "purpose": "8K two-turn KV-edge check on the route of record (max-context 10240): long occupied context carried across a conversation turn, exercising the engine's conversation/prompt cache path on this speculative stack (AGENTS.md section 7 cache-times-speculation check).",
+    "turn1_prompt_source": "decoded text of /mnt/<sata-disk>/strata/prompts/p8192.txt (8192 ids) followed by the turn-1 question",
+    "turn1_question": "\n\nSeparately from the text above: what is 17 + 26? Reply with only the integer.",
+    "turn1_expect": {"kind": "last_integer", "value": 43},
+    "turn2_question": "Now, going back to the long text above: what is its very first word? Reply with only that word.",
+    "turn2_expect": {"kind": "last_line_first_word", "value": "measurement"},
+    "max_tokens_per_turn": 64,
+    "validity_rule": "usage.prompt_tokens of turn 1 must be >= 8100 (the full 8K cell text must actually be rendered) and turn-2 occupied context must be >= turn-1 prompt + turn-1 completion; otherwise the cell fails measurement_validity"
+  },
+  "warmup": {
+    "rule": "one discarded same-shape warmup before run A (first measured cell shape: batt-arith user text, max_tokens 64); a cold-start exit-2 ('device residency table') surfaces as a failed request and is retried after the server recovers; all attempts are recorded and discarded"
+  }
+}

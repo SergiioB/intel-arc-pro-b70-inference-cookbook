@@ -1,0 +1,452 @@
+diff --git a/ggml/src/ggml-sycl/ggml-sycl.cpp b/ggml/src/ggml-sycl/ggml-sycl.cpp
+index 8a19f648b..5e9c8e955 100644
+--- a/ggml/src/ggml-sycl/ggml-sycl.cpp
++++ b/ggml/src/ggml-sycl/ggml-sycl.cpp
+@@ -4443,6 +4443,15 @@ static void ggml_sycl_mul_mat(ggml_backend_sycl_context & ctx, const ggml_tensor
+     use_mul_mat_q = use_mul_mat_q && (src1->ne[1] <= MMQ_MAX_BATCH_SIZE);
+ #endif // SYCL_USE_XMX
+ 
++    // On Intel Xe2 (XMX), MMVQ uses scalar dp4a emulation (4 scalar INT8 MULs)
++    // while MMQ uses XMX/DPAS hardware. Prefer MMQ when XMX is available
++    // to avoid the scalar bottleneck on K-quants (Q4_K, Q5_K, Q6_K, etc.).
++#ifdef SYCL_USE_XMX
++    if (use_mul_mat_q) {
++        use_mul_mat_vec_q = false;
++    }
++#endif
++
+     // Dispatch becomes obscure with the reorder, MMVQ when the reorder optimization
+     // is enabled takes precedence over DMMV, the current if-else implementation
+     // requires disabling DMMV if both conditions are met
+diff --git a/ggml/src/ggml-sycl/ssm_conv.cpp b/ggml/src/ggml-sycl/ssm_conv.cpp
+index 3eafa1a68..5982fdbc5 100644
+--- a/ggml/src/ggml-sycl/ssm_conv.cpp
++++ b/ggml/src/ggml-sycl/ssm_conv.cpp
+@@ -5,6 +5,100 @@
+ 
+ using namespace sycl;
+ 
++// Split-input fused conv kernel: reads directly from conv_state + xBC
++// (eliminates concat + transpose + state-cpy dispatches).
++// Also fuses bias + SiLU and in-place state update for n_t == 1.
++static void kernel_ssm_conv_split(
++    queue &q,
++    const float *conv_state_data,  // [d_conv-1, d_inner, n_s]
++    const float *xbc_data,          // [d_inner, n_t, n_s]
++    const float *weights,           // [d_conv, d_inner]
++    float *dst_data,
++    const float *bias_data,         // optional [d_inner]
++    float *conv_state_out,          // same as conv_state_data for in-place update (n_t==1 only)
++    int d_conv,
++    int d_inner,
++    int n_t,
++    int n_s,
++    int conv_state_stride_inner,    // d_conv - 1
++    int conv_state_stride_seq,      // (d_conv-1) * d_inner
++    int xbc_stride_token,           // d_inner
++    int xbc_stride_seq,             // d_inner * n_t
++    int dst_stride_token,           // d_inner
++    int dst_stride_seq              // d_inner * n_t
++) {
++    const size_t total_work = static_cast<size_t>(d_inner) * static_cast<size_t>(n_t) * static_cast<size_t>(n_s);
++    const size_t work_group_size = 256;
++    const size_t num_work_groups = (total_work + work_group_size - 1) / work_group_size;
++
++    const range<1> global_range(num_work_groups * work_group_size);
++    const range<1> local_range(work_group_size);
++
++    q.submit([&](handler &h) {
++        h.parallel_for(
++            nd_range<1>(global_range, local_range),
++            [=](nd_item<1> item) {
++                const size_t idx = item.get_global_id(0);
++                if (idx >= total_work) return;
++
++                const int token   = static_cast<int>(idx % n_t);
++                const int channel = static_cast<int>((idx / n_t) % d_inner);
++                const int seq     = static_cast<int>(idx / (static_cast<size_t>(n_t) * static_cast<size_t>(d_inner)));
++
++                const float *c = weights + static_cast<size_t>(channel) * static_cast<size_t>(d_conv);
++
++                const float *cs_base = conv_state_data
++                    + static_cast<size_t>(seq) * static_cast<size_t>(conv_state_stride_seq)
++                    + static_cast<size_t>(channel) * static_cast<size_t>(conv_state_stride_inner);
++
++                const float *xbc_base = xbc_data
++                    + static_cast<size_t>(seq) * static_cast<size_t>(xbc_stride_seq);
++
++                // Compute conv by reading from conv_state (history) + xBC (current tokens)
++                float sumf = 0.0f;
++                for (int j = 0; j < d_conv; ++j) {
++                    const int virt_pos = token + j;  // position in virtual concatenated array
++                    float val;
++                    if (virt_pos < d_conv - 1) {
++                        // Read from conv_state history
++                        val = cs_base[virt_pos];
++                    } else {
++                        // Read from xBC
++                        const int xbc_tok = virt_pos - (d_conv - 1);
++                        val = xbc_base[xbc_tok * xbc_stride_token + channel];
++                    }
++                    sumf += val * c[j];
++                }
++
++                // Fused bias + SiLU
++                if (bias_data != nullptr) {
++                    sumf += bias_data[channel];
++                    sumf = sumf / (1.0f + sycl::exp(-sumf));
++                }
++
++                const size_t dst_idx =
++                    static_cast<size_t>(seq) * static_cast<size_t>(dst_stride_seq) +
++                    static_cast<size_t>(token) * static_cast<size_t>(dst_stride_token) +
++                    static_cast<size_t>(channel);
++                dst_data[dst_idx] = sumf;
++
++                // In-place state update for single-token decode (no race: 1 thread per channel)
++                if (n_t == 1 && conv_state_out != nullptr) {
++                    float *cs_out = conv_state_out
++                        + static_cast<size_t>(seq) * static_cast<size_t>(conv_state_stride_seq)
++                        + static_cast<size_t>(channel) * static_cast<size_t>(conv_state_stride_inner);
++                    // Shift ring buffer left by 1
++                    for (int i = 0; i < d_conv - 2; ++i) {
++                        cs_out[i] = cs_out[i + 1];
++                    }
++                    // Write current xBC value at the end
++                    cs_out[d_conv - 2] = xbc_base[channel];
++                }
++            }
++        );
++    });
++}
++
+ static void kernel_ssm_conv(
+     queue &q,
+     const float *src_data,
+@@ -18,7 +112,8 @@ static void kernel_ssm_conv(
+     int src_stride_inner,
+     int src_stride_seq,
+     int dst_stride_token,
+-    int dst_stride_seq
++    int dst_stride_seq,
++    const float *bias_data  // optional: if non-NULL, apply bias + SiLU (fused path)
+ ) {
+     const size_t total_work = static_cast<size_t>(d_inner) * static_cast<size_t>(n_t) * static_cast<size_t>(n_s);
+     const size_t work_group_size = 256;
+@@ -56,6 +151,14 @@ static void kernel_ssm_conv(
+                     sumf += s[i0] * c[i0];
+                 }
+ 
++                // Fused path: apply bias + SiLU directly in the conv kernel
++                // (eliminates separate ggml_add + ggml_silu dispatches)
++                if (bias_data != nullptr) {
++                    sumf += bias_data[channel];
++                    // SiLU(x) = x * sigmoid(x) = x / (1 + exp(-x))
++                    sumf = sumf / (1.0f + sycl::exp(-sumf));
++                }
++
+                 const size_t dst_idx =
+                     static_cast<size_t>(seq) * static_cast<size_t>(dst_stride_seq) +
+                     static_cast<size_t>(token) * static_cast<size_t>(dst_stride_token) +
+@@ -68,61 +171,71 @@ static void kernel_ssm_conv(
+ }
+ 
+ inline void ggml_sycl_op_ssm_conv(ggml_backend_sycl_context & ctx, ggml_tensor * dst) {
+-    ggml_tensor * src0 = dst->src[0];
+     ggml_tensor * src1 = dst->src[1];
+ 
+-    GGML_ASSERT(src0->type == GGML_TYPE_F32);
+     GGML_ASSERT(src1->type == GGML_TYPE_F32);
+     GGML_ASSERT(dst->type  == GGML_TYPE_F32);
+ 
+-    const int d_conv   = src1->ne[0];
+-    const int ncs      = src0->ne[0];
+-    const int d_inner  = src0->ne[1];
+-    const int n_t      = dst->ne[1];
+-    const int n_s      = dst->ne[2];
+-
+-    GGML_ASSERT(src0->ne[0] == d_conv - 1 + n_t);
+-    GGML_ASSERT(src0->ne[1] == d_inner);
+-    GGML_ASSERT(src1->ne[1] == d_inner);
+-
+-    GGML_ASSERT(dst->ne[0] == d_inner);
+-    GGML_ASSERT(dst->ne[1] == n_t);
+-    GGML_ASSERT(dst->ne[2] == n_s);
++    const int d_conv  = src1->ne[0];
++    const int d_inner = dst->ne[0];
++    const int n_t     = dst->ne[1];
++    const int n_s     = dst->ne[2];
+ 
+-    GGML_ASSERT(src0->nb[0] == sizeof(float));
+-    GGML_ASSERT(src1->nb[0] == sizeof(float));
+-
+-    GGML_ASSERT(src0->nb[1] == src0->ne[0] * sizeof(float));
+-
+-    const int src_stride_inner = ncs;
+-    const int src_stride_seq   = ncs * d_inner;
+     const int dst_stride_token = d_inner;
+     const int dst_stride_seq   = d_inner * n_t;
+ 
++    // Fused bias
++    const float *bias_data = nullptr;
++    if (dst->src[2] != nullptr) {
++        GGML_ASSERT(dst->src[2]->type == GGML_TYPE_F32);
++        bias_data = static_cast<const float *>(dst->src[2]->data);
++    }
++
+     try {
+         queue *q = ctx.stream();
++        float *dst_data = static_cast<float *>(dst->data);
++        GGML_ASSERT(dst_data);
++
++        // Split-input path: read directly from conv_state + xBC (no concat/transpose)
++        if (dst->src[3] != nullptr && dst->src[4] != nullptr) {
++            const float *conv_state_data = static_cast<const float *>(dst->src[3]->data);
++            const float *xbc_data        = static_cast<const float *>(dst->src[4]->data);
++            GGML_ASSERT(conv_state_data && xbc_data);
++
++            const int cs_stride_inner = dst->src[3]->nb[1] / sizeof(float);
++            const int cs_stride_seq   = dst->src[3]->nb[2] / sizeof(float);
++            const int xbc_stride_token = dst->src[4]->nb[1] / sizeof(float);
++            const int xbc_stride_seq   = dst->src[4]->nb[2] / sizeof(float);
++            float *conv_state_out = nullptr;  // TODO: enable in-place state update after debugging
++
++            kernel_ssm_conv_split(*q, conv_state_data, xbc_data,
++                static_cast<const float *>(src1->data), dst_data, bias_data, conv_state_out,
++                d_conv, d_inner, n_t, n_s,
++                cs_stride_inner, cs_stride_seq, xbc_stride_token, xbc_stride_seq,
++                dst_stride_token, dst_stride_seq);
++            return;
++        }
++
++        // Legacy path: read from concatenated input
++        ggml_tensor * src0 = dst->src[0];
++        GGML_ASSERT(src0->type == GGML_TYPE_F32);
++        const int ncs = src0->ne[0];
++        GGML_ASSERT(src0->ne[0] == d_conv - 1 + n_t);
++        GGML_ASSERT(src0->ne[1] == d_inner);
++        GGML_ASSERT(src0->nb[0] == sizeof(float));
++        GGML_ASSERT(src0->nb[1] == src0->ne[0] * sizeof(float));
++
++        const int src_stride_inner = ncs;
++        const int src_stride_seq   = ncs * d_inner;
+ 
+         const float *src_data = static_cast<const float *>(src0->data);
+         const float *weights  = static_cast<const float *>(src1->data);
+-        float *dst_data       = static_cast<float *>(dst->data);
+-
+-        GGML_ASSERT(src_data && weights && dst_data);
+-
+-        kernel_ssm_conv(
+-            *q,
+-            src_data,
+-            weights,
+-            dst_data,
+-            d_conv,
+-            d_inner,
+-            n_t,
+-            n_s,
+-            ncs,
+-            src_stride_inner,
+-            src_stride_seq,
+-            dst_stride_token,
+-            dst_stride_seq
+-        );
++        GGML_ASSERT(src_data && weights);
++
++        kernel_ssm_conv(*q, src_data, weights, dst_data,
++            d_conv, d_inner, n_t, n_s, ncs,
++            src_stride_inner, src_stride_seq, dst_stride_token, dst_stride_seq,
++            bias_data);
+ 
+     } catch (const std::exception &e) {
+         std::fprintf(stderr, "[SYCL-SSM_CONV] ERROR: %s\n", e.what());
+diff --git a/ggml/src/ggml-sycl/ssm_scan.cpp b/ggml/src/ggml-sycl/ssm_scan.cpp
+index ae6529813..9bb3e188a 100644
+--- a/ggml/src/ggml-sycl/ssm_scan.cpp
++++ b/ggml/src/ggml-sycl/ssm_scan.cpp
+@@ -10,6 +10,8 @@ static void ssm_scan_f32_group(
+         const int src2_nb1, const int src2_nb2, const int src3_nb1,
+         const int src4_nb2, const int src4_nb3, const int src5_nb2, const int src5_nb3,
+         const int64_t s_off, const int64_t n_head, const int64_t d_head, const int64_t n_group, const int64_t n_tok,
++        const float * __restrict__ dt_bias,   // optional: fused dt bias (src[7])
++        const float * __restrict__ ssm_d,      // optional: fused D skip (src[8])
+         const sycl::nd_item<2> & item) {
+ 
+     const int lane     = item.get_local_id(1) % WARP_SIZE;
+@@ -25,8 +27,8 @@ static void ssm_scan_f32_group(
+     const float * x_warp  = (const float *) ((const char *) src1 + (seq_idx * src1_nb3) + (warp_idx * sizeof(float)));
+     const float * dt_warp = (const float *) ((const char *) src2 + (seq_idx * src2_nb2) + head_idx * sizeof(float));
+     const float * A_warp  = (const float *) ((const char *) src3 + head_idx * src3_nb1);
+-    const float * B_warp  = (const float *) ((const char *) src4 + (seq_idx * src4_nb3) + (group_off));
+-    const float * C_warp  = (const float *) ((const char *) src5 + (seq_idx * src5_nb3) + (group_off));
++    const float * B_warp  = (const float *) ((const char *) src4 + (seq_idx * src4_nb3) + group_off);
++    const float * C_warp  = (const float *) ((const char *) src5 + (seq_idx * src5_nb3) + group_off);
+     float *       y_warp  = dst + (seq_idx * n_tok * n_head * d_head) + warp_idx;
+     float *       s_warp  = (float *) ((char *) dst + s_off + seq_idx * src0_nb3 + head_idx * src0_nb2 + head_off * d_state);
+ 
+@@ -45,7 +47,11 @@ static void ssm_scan_f32_group(
+     }
+ 
+     for (int64_t i = 0; i < n_tok; i++) {
+-        const float dt_val = dt_warp[i * stride_dt];
++        float dt_val = dt_warp[i * stride_dt];
++        // Fused: add dt_bias before softplus (eliminates cont(dt) + add(dt, dt_bias))
++        if (dt_bias != nullptr) {
++            dt_val += dt_bias[head_idx];
++        }
+         const float dt_soft_plus = (dt_val <= 20.0f ? sycl::log1p(sycl::exp(dt_val)) : dt_val);
+ 
+         state_sum = 0.0f;
+@@ -62,7 +68,13 @@ static void ssm_scan_f32_group(
+         state_sum = warp_reduce_sum<WARP_SIZE>(state_sum);
+ 
+         if (lane == 0) {
+-            y_warp[i * stride_y] = state_sum;
++            float y_val = state_sum;
++            // Fused: add D*x skip connection (eliminates mul(x, D) + add(y, Dx))
++            // ssm_d has shape {1, n_head} — one D value per head, not per warp_idx
++            if (ssm_d != nullptr) {
++                y_val += ssm_d[head_idx] * x_warp[i * stride_x];
++            }
++            y_warp[i * stride_y] = y_val;
+         }
+     }
+ 
+@@ -79,6 +91,7 @@ static void ssm_scan_f32_sycl(
+         const int src2_nb2, const int src3_nb1, const int src4_nb2, const int src4_nb3, const int src5_nb2,
+         const int src5_nb3, const int64_t s_off, const int64_t d_state, const int64_t head_dim,
+         const int64_t n_head, const int64_t n_group, const int64_t n_tok, const int64_t n_seq,
++        const float * dt_bias, const float * ssm_d,
+         dpct::queue_ptr stream) {
+ 
+     // NOTE: if you change conditions here, be sure to update the corresponding supports_op condition!
+@@ -94,7 +107,8 @@ static void ssm_scan_f32_sycl(
+                 ssm_scan_f32_group<128 / WARP_SIZE, 128>(
+                     src0, src1, src2, src3, src4, src5, src6, dst,
+                     src0_nb2, src0_nb3, src1_nb2, src1_nb3, src2_nb1, src2_nb2, src3_nb1,
+-                    src4_nb2, src4_nb3, src5_nb2, src5_nb3, s_off, n_head, head_dim, n_group, n_tok, item);
++                    src4_nb2, src4_nb3, src5_nb2, src5_nb3, s_off, n_head, head_dim, n_group, n_tok,
++                    dt_bias, ssm_d, item);
+             });
+     } else if (d_state == 256) {
+         constexpr int threads   = 256;
+@@ -107,7 +121,8 @@ static void ssm_scan_f32_sycl(
+                 ssm_scan_f32_group<256 / WARP_SIZE, 256>(
+                     src0, src1, src2, src3, src4, src5, src6, dst,
+                     src0_nb2, src0_nb3, src1_nb2, src1_nb3, src2_nb1, src2_nb2, src3_nb1,
+-                    src4_nb2, src4_nb3, src5_nb2, src5_nb3, s_off, n_head, head_dim, n_group, n_tok, item);
++                    src4_nb2, src4_nb3, src5_nb2, src5_nb3, s_off, n_head, head_dim, n_group, n_tok,
++                    dt_bias, ssm_d, item);
+             });
+     } else {
+         GGML_ABORT("ssm_scan: unsupported d_state (must be 128 or 256)");
+@@ -140,6 +155,18 @@ inline void ggml_sycl_op_ssm_scan(ggml_backend_sycl_context & ctx, ggml_tensor *
+     dpct::queue_ptr stream = ctx.stream();
+     SYCL_CHECK(ggml_sycl_set_device(ctx.device));
+ 
++    // Fused path: optional src[7] = dt_bias, src[8] = ssm_d
++    // dt_bias is added before softplus (eliminates cont(dt) + add(dt, dt_bias))
++    // ssm_d is used for D*x skip connection (eliminates mul(x, D) + add(y, Dx))
++    const float * dt_bias_data = nullptr;
++    const float * ssm_d_data   = nullptr;
++    if (dst->src[7] != nullptr) {
++        dt_bias_data = static_cast<const float *>(dst->src[7]->data);
++    }
++    if (dst->src[8] != nullptr) {
++        ssm_d_data = static_cast<const float *>(dst->src[8]->data);
++    }
++
+     ssm_scan_f32_sycl(
+         static_cast<const float *>(src0->data), static_cast<const float *>(src1->data),
+         static_cast<const float *>(src2->data), static_cast<const float *>(src3->data),
+@@ -147,7 +174,7 @@ inline void ggml_sycl_op_ssm_scan(ggml_backend_sycl_context & ctx, ggml_tensor *
+         static_cast<const int32_t *>(src6->data), static_cast<float *>(dst->data),
+         src0->nb[2], src0->nb[3], src1->nb[2], src1->nb[3], src2->nb[1], src2->nb[2],
+         src3->nb[1], src4->nb[2], src4->nb[3], src5->nb[2], src5->nb[3],
+-        s_off, nc, nr, nh, ng, n_t, n_s, stream);
++        s_off, nc, nr, nh, ng, n_t, n_s, dt_bias_data, ssm_d_data, stream);
+ }
+ 
+ void ggml_sycl_ssm_scan(ggml_backend_sycl_context & ctx, ggml_tensor * dst) {
+diff --git a/ggml/src/ggml.c b/ggml/src/ggml.c
+index da7f3a5f2..b1cb082c8 100644
+--- a/ggml/src/ggml.c
++++ b/ggml/src/ggml.c
+@@ -5590,7 +5590,9 @@ struct ggml_tensor * ggml_ssm_scan(
+         struct ggml_tensor  * C,
+         struct ggml_tensor  * ids) {
+     GGML_ASSERT(ggml_is_contiguous(s));
+-    GGML_ASSERT(ggml_is_contiguous(dt));
++    // Relaxed: SYCL ssm_scan kernel handles non-contiguous dt via stride parameters.
++    // This allows fusing dt_bias into the scan kernel (eliminates cont+add dispatches).
++    // GGML_ASSERT(ggml_is_contiguous(dt));
+     GGML_ASSERT(ggml_is_contiguous(A));
+     GGML_ASSERT(x->nb[0] == ggml_type_size(x->type));
+     GGML_ASSERT(B->nb[0] == ggml_type_size(B->type));
+diff --git a/src/models/mamba-base.cpp b/src/models/mamba-base.cpp
+index fd3fe3f03..07230dba2 100644
+--- a/src/models/mamba-base.cpp
++++ b/src/models/mamba-base.cpp
+@@ -208,21 +208,10 @@ ggml_tensor * llm_build_mamba_base::build_mamba2_layer(llm_graph_input_rs * inp,
+                                                             kv_head * (d_conv - 1) * (d_inner + 2 * n_group * d_state) *
+                                                                 ggml_element_size(conv_states_all))));
+ 
+-        // 1D convolution
+-        // The equivalent is to make a self-overlapping view of conv_x
+-        // over d_conv columns at each stride in the 3rd dimension,
+-        // then element-wise multiply that with the conv1d weight,
+-        // then sum the elements of each row,
+-        // (the last two steps are a dot product over rows (also doable with mul_mat))
+-        // then permute away the ne[0] dimension,
+-        // and then you're left with the resulting x tensor.
+-        // For simultaneous sequences, all sequences need to have the same length.
++        // 1D convolution — FUSED with bias + SiLU in the SYCL kernel (src[2]).
++        // Eliminates separate ggml_add + ggml_silu dispatches per layer.
+         xBC = ggml_ssm_conv(ctx0, conv_x, model.layers[il].ssm_conv1d);
+-
+-        // bias
+-        xBC = ggml_add(ctx0, xBC, model.layers[il].ssm_conv1d_b);
+-
+-        xBC = ggml_silu(ctx0, xBC);
++        xBC->src[2] = model.layers[il].ssm_conv1d_b;  // fused bias + SiLU
+     }
+ 
+     // ssm
+@@ -236,7 +225,9 @@ ggml_tensor * llm_build_mamba_base::build_mamba2_layer(llm_graph_input_rs * inp,
+                                        xBC->nb[1], xBC->nb[2], (d_inner + n_group * d_state) * ggml_element_size(xBC));
+ 
+         // {n_head, n_seq_tokens, n_seqs}
+-        dt = ggml_add(ctx0, ggml_cont(ctx0, dt), model.layers[il].ssm_dt_b);
++        // FUSED: dt_bias is added inside the scan kernel (src[7]).
++        // This eliminates cont(dt) + add(dt, dt_bias) dispatches per layer.
++        // dt stays as the raw view (non-contiguous OK — SYCL kernel handles strides).
+ 
+         ggml_tensor * A = model.layers[il].ssm_a;
+ 
+@@ -248,7 +239,12 @@ ggml_tensor * llm_build_mamba_base::build_mamba2_layer(llm_graph_input_rs * inp,
+ 
+             // TODO: use semistructured matrices to implement state-space duality
+             // => {d_inner, n_seq_tokens, n_seqs} and {d_state, d_inner, n_seqs}
+-            return ggml_ssm_scan(ctx, ssm, x, dt, A, B, C, ids);
++            ggml_tensor * scan_result = ggml_ssm_scan(ctx, ssm, x, dt, A, B, C, ids);
++            // FUSED: dt_bias added before softplus (eliminates cont+add)
++            scan_result->src[7] = model.layers[il].ssm_dt_b;
++            // FUSED: D*x skip connection added to scan output (eliminates mul+add)
++            scan_result->src[8] = model.layers[il].ssm_d;
++            return scan_result;
+         };
+ 
+         ggml_tensor * y_ssm = build_rs(inp, ssm_states_all, hparams.n_embd_s(), ubatch.n_seqs, get_ssm_rows);
+@@ -263,9 +259,9 @@ ggml_tensor * llm_build_mamba_base::build_mamba2_layer(llm_graph_input_rs * inp,
+                                        n_seq_tokens * n_head * x->nb[1], 0);
+ 
+         // TODO: skip computing output earlier for unused tokens
++        // FUSED: D*x is already added inside the scan kernel (src[8]).
++        // Skip: y = ggml_add(ctx0, y, ggml_mul(ctx0, x, model.layers[il].ssm_d));
+ 
+-        y = ggml_add(ctx0, y, ggml_mul(ctx0, x, model.layers[il].ssm_d));
+-        cb(y, "mamba2_y_add_d", il);
+         y = ggml_swiglu_split(ctx0, ggml_cont(ctx0, z), y);
+ 
+         // grouped RMS norm

@@ -1,0 +1,10 @@
+{
+  "cpu": "AMD Ryzen 7 5700X3D (8 threads)",
+  "gpuCount": 1,
+  "gpuName": "Intel Arc Pro B70",
+  "hwClass": "DISCRETE_GPU",
+  "os": "Linux",
+  "powerWatts": 230,
+  "ramGb": 30,
+  "vramGb": 32
+}

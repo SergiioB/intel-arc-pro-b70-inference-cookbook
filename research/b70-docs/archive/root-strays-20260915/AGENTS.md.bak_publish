@@ -1,0 +1,320 @@
+# B70 Inference Host — Agent Contract
+
+Intel Arc Pro B70 32 GB | llama.cpp SYCL and vLLM XPU
+
+This file is the concise mandatory operating contract. Detailed research conclusions, live inventory, campaign narratives, and historical benchmark numbers live in their typed authorities.
+
+## 1. Locate the host before acting
+
+```bash
+hostname
+pwd -P
+```
+
+If the hostname is `b70-host`, operate locally. **Do not SSH to `<lab-host>` from the B70 itself**; self-SSH fails and is unnecessary.
+
+When controlling the B70 from another board, use the documented remote path. Telegram/Radxa operations are separate and must be explicitly requested.
+
+## 2. Canonical authorities
+
+| Question | Authority |
+|---|---|
+| Current mounts, free space, artifacts, active profile | `docs/operations/current-host-state.md` |
+| Storage, conversion, and VRAM safety | `docs/operations/storage-and-vram-safety.md` |
+| Benchmark validity and publication | `docs/benchmark-protocol.md` is normative; `docs/methods/benchmark-protocol.md` is the typed migration pointer |
+| Architecture Triage & Bottleneck Playbook | `docs/methods/architecture-diagnostic-playbook.md`; contract summary §18 |
+| Runtime telemetry and power semantics | `docs/methods/observability-standard.md` |
+| Correctness and quality gates | `docs/methods/correctness-validation.md` |
+| Weight/KV/draft quantization decisions | `docs/reference/quantization-decision-record.md` |
+| KV cache policy | `docs/reference/kv-cache-reference.md` |
+| Engine support | `docs/reference/engine-support-matrix.md` |
+| Xe2 ESIMD / Decode Launch Bounds (vLLM bottleneck) | `research/xe2-esimd-launch-bounds-2026-08.md` |
+| Qwen3.8-27B FP8 TP2 Speed Attack & Ceilings | `research/qwen38-fp8-tp2-speed-attack-and-ceilings-20260829.md`; dossier `models/qwen/qwen3.8-27b/serving.md` |
+| Qwen3.8-27B official DFlash2 route (adoption-first decision, gates, stop rules) | `research/qwen38-dflash2-objective-campaign-20260830.md`; campaign record `campaigns/2026/qwen38-dflash2-objective/README.md` |
+| Megakernels, Persistent Fusion, and Xe2/XMX Policy | `research/megakernel-xe2-xmx-architecture-guide-20260829.md`; roadmap `research/megakernel-implementation-roadmap-20260829.md`; policy `decisions/adr-0009-xe2-megakernel-and-persistent-fusion-policy.md`; contract §17 |
+| Dual-B70 PCIe topology, link widths, dual-stack placement | `research/x570f-dual-b70-pcie-topology-20260830.md` (B450-F note superseded 2026-08-30) |
+| Dual-card product choice (independent stacks vs TP2) | `decisions/adr-0008-dual-b70-independent-default.md`; recipe capture `research/humble-b70-llm-dual-tp2-20260824.md` |
+| llama.cpp HTTP → token pipeline (K216 IQ3 SYCL, buses, bottlenecks) | short: this file §16; full: `research/dsv4-k216-request-to-output-pipeline-20260825.md` |
+| Current model route and open gates | `models/<family>/<model-slug>/README.md` |
+| Why a route was selected | `decisions/` |
+| Exact raw measurement | registered campaign plus `results/` evidence |
+| Repository navigation | `DOCUMENT-MAP.md` and `docs/indexes/` |
+| **Video generation (MiniMax H3, Comfy, dual-B70 split)** | Sibling `../B70-VIDEO/AGENTS.md` — not this inference contract |
+
+When an older script/report conflicts with the benchmark protocol, the protocol wins.
+
+The vendored Intel `gpu-ai-skills` skillpack in `.agents/skills/` (upstream `intel/gpu-ai-skills`) is supplemental generic guidance; on any conflict, this contract and the typed authorities win. See `.agents/skills/INTEL-GPU-AI-SKILLS.md` for provenance and known conflicts.
+
+## 3. Hardware and runtime invariants
+
+- GPUs: two Intel Arc Pro B70 cards, `xe` driver, 32,656 MiB visible VRAM each (65,312 MiB combined):
+  - GPU 0 — PCI `0000:0b:00.0`: `/dev/dri/card0` + `renderD128`, Level Zero device 0 (`ZE_AFFINITY_MASK=0`).
+  - GPU 1 — PCI `0000:0f:00.0`: `/dev/dri/card1` + `renderD129`, Level Zero device 1 (`ZE_AFFINITY_MASK=1`).
+  - Level Zero device order follows BDF sort order; confirm with `sycl-ls` before targeting a card.
+  - hwmon `xe` nodes must be resolved dynamically (`/sys/class/hwmon/*/name` → PCI device). Observed 2026-08-24: hwmon4 = `0000:0b:00.0`, hwmon5 = `0000:0f:00.0`; hwmon indices are boot-dependent.
+  - PCIe links (ASUS ROG STRIX X570-F GAMING, dual CPU-attached x8/x8 — board swapped from B450-F on 2026-08-27; all results from 2026-08-27T23:10Z onward are X570-F): GPU 0 = `00:03.1` (PCIEX16_1, x8), GPU 1 = `00:03.2` (PCIEX16_2, x8); both slots CPU-attached (Starship/Matisse GPP root ports), no GPU P2P. Measured H2D ≈ 8.9 / 7.9 GB/s (probe-limited — treat as a floor, not link bandwidth; `lspci` LnkSta misreports 2.5GT/s x1 on these endpoints even while active). Placement guidance: `research/x570f-dual-b70-pcie-topology-20260830.md`. Dual-card **default** is one independent engine per GPU (`ZE_AFFINITY_MASK`); vLLM `--tensor-parallel-size 2` is a gated research path that needs host-staged collectives, not a stock Docker launch (ADR-0008).
+- GPU 1 is power-managed on demand via `/usr/local/bin/b70-gpu1`:
+
+```bash
+b70-gpu1 status        # both cards: presence, driver, render node, hwmon, cap, VRAM, temp
+b70-gpu1 off           # PCI-remove GPU 1; Level Zero then enumerates GPU 0 only
+b70-gpu1 on [WATT]     # PCI rescan + xe rebind; restores 150 W cap unless WATT given (max 230)
+```
+
+  - `off` refuses if a display is attached to GPU 1, a process holds real VRAM on it, or inference processes are running; `--force` overrides. Never force during a live campaign.
+  - This is a driver-level power-down (PCI remove, D3), not a physical power cut.
+  - After a power cycle, DRM render minors and hwmon indices can renumber (observed: `renderD129` → `renderD130`). Re-discover these paths; the desktop dashboard re-discovers automatically.
+  - `on` also pins runtime PM to `on` up the PCI chain — mandatory: with runtime-auto, GPU 1's link has silently dropped 30–60 s after resume (flapping incident 2026-08-24 on the previous B450-F board; the pin remains required on the X570-F — 2026-08-30 verification found `control=auto` on both cards after rebind).
+  - One-click toggle: desktop shortcut `B70 GPU 1 Power` (`~/Desktop/B70-GPU1-Power.desktop` → `/usr/local/bin/b70-gpu1-toggle`) flips the state with a desktop notification; the dashboard shows GPU 1 as `POWERED OFF` while it is removed.
+- CPU: Ryzen 7 5700X3D; use 8 CPU threads for the established llama.cpp path.
+- Discover storage live before every download/conversion; remembered sizes are invalid.
+- Activate oneAPI before llama.cpp SYCL work:
+
+```bash
+source /opt/intel/oneapi/setvars.sh --force >/dev/null 2>&1
+```
+
+- Do not use `xpu-smi` or i915 clock tooling as B70 control/telemetry authorities. Use verified `xe` hwmon, debugfs VRAM, and perf PMU where required.
+- Stock power-cap maximum is 230 W. Restore 150 W after research work.
+
+## 4. Empty-GPU gate — mandatory
+
+Before every model load:
+
+```bash
+pgrep -af 'llama-server|llama-bench|vllm|vllm-xpu'
+docker ps --format '{{.ID}} {{.Image}} {{.Names}}'
+sudo cat /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm
+sudo cat /sys/kernel/debug/dri/0000:0f:00.0/tile0/vram_mm
+```
+
+Also discover the B70 hwmon nodes (one per card) and verify `power1_cap`; restore 150 W before setting a campaign cap.
+
+All gates must pass:
+
+- no inference process;
+- no inference container;
+- approximately 31,000 MiB or more empty-card `visible_avail` on every card in use;
+- one declared engine and one campaign harness only.
+
+A controlled Cn campaign sends concurrent requests to one declared server. A second engine or unrelated GPU workload is contamination.
+
+## 5. Post-load VRAM gates
+
+| Free VRAM | Allowed work |
+|---:|---|
+| below 500 MiB | Abort; no request |
+| 500–1,023 MiB | Isolated C1 capacity observation only |
+| 1,024–2,047 MiB | Staged C1 research |
+| at least 2,048 MiB | Preferred C1 performance work |
+| at least 3,072 MiB | Target for mixed/concurrent serving |
+
+A server launch is not a capacity result. Stage real prompt-plus-output requests.
+
+Never full-offload a single GGUF above roughly 30 GB without an explicit partial-offload budget; this class can hard-crash the host.
+
+## 6. llama.cpp mandatory serving defaults
+
+Unless a campaign explicitly tests a different variable:
+
+```text
+-ngl 99
+-ncmoe 0
+-fa on
+-ctk q8_0
+-ctv q4_1
+-t 8
+--no-mmap
+```
+
+- `q8_0 K + q4_1 V` is the fleet-standard llama.cpp KV policy.
+- **Never use q4_0 for K cache.** The recorded quality cliff is catastrophic.
+- Model-weight Q4_0 is a separate representation and does not relax the KV rule.
+- Always declare context with `-c`; choose it from the serving target and measured reserve.
+- Vision requests require the exact projector and sufficient output tokens for reasoning models.
+
+## 7. vLLM XPU discipline
+
+- Pin a pullable image by immutable digest and record observed in-container vLLM/kernel versions.
+- Verify exact architecture registration, checkpoint metadata, packing, quantization, and kernel dispatch.
+- GPTQ-INT4 is a best-proven practical B70 path for exact validated checkpoints; it is **not** a universal format guarantee.
+- Keep target-weight, draft/MTP/DFlash, LM-head, activation, and KV precision as independent axes.
+- Apply only patches anchored to the exact source generation. Record each as upstream, required, not applicable, rejected, or local-only.
+- Local derived images are not public recipes.
+- Prefix caching in vLLM V1 defaults on unless explicitly disabled; verify server logs and counters.
+- Dual-card default is independent stacks (`ZE_AFFINITY_MASK`). Do not launch stock `--tensor-parallel-size 2` on this X570-F host; TP2 needs host-staged collectives and the per-worker affinity patch, occupies both cards, and is validated only through the registered campaign recipe (ADR-0008).
+
+## 8. Benchmark workflow
+
+For “benchmark this model,” use `.agentic/skills/benchmark-model/SKILL.md`.
+
+Default Lane 1 card:
+
+- p2048/g1 cold input;
+- p8192/g1 cold input;
+- p512/g128 decode;
+- p8192/g128 decode;
+- one representative real workload;
+- fresh n=5 final samples.
+
+MTP/config screens use matched p512/g128 and p8192/g128 n=3, then a fresh n=5 finalist confirmation. Acceptance is diagnostic; choose the winner by the declared throughput/latency/capacity/quality objective.
+
+### Measurement naming
+
+- vLLM `actual endpoint input tokens / client TTFT` is **cold input rate**, not llama-bench pp or isolated prefill.
+- Client post-first rate is request-side, not engine-native llama.cpp tg.
+- C1 and Cn aggregate metrics never share an unlabeled field.
+- For Cn, use successful generated tokens divided by the declared campaign interval; never sum per-request rates as wall aggregate.
+- A short best sample is maximum observed, not representative or sustained.
+
+### HTTP cache guards
+
+For every cold HTTP input cell:
+
+1. Put at least 64 characters of unique entropy at the start while preserving exact total tokens.
+2. Snapshot prefix-cache queries/hits before and after.
+3. Require zero cache-hit delta.
+4. Verify actual endpoint prompt tokens.
+5. Investigate unexplained material acceleration across equal-length repetitions.
+
+## 9. Warmup, cooldown, and progress
+
+- Discard one same-shape warmup for every distinct shape/mode as required by the protocol.
+- Cool to the declared verified GPU package threshold, normally at most 52–55 °C, between comparable tests.
+- Run campaigns under a visible controlling process.
+- Emit milestones before/after load, warmup, each cell, configuration change, retry, timeout, and cleanup.
+- Stop when progress exceeds the declared timeout; do not leave an unobservable detached campaign.
+
+## 10. Power and thermal claims
+
+Discover the `xe` hwmon node dynamically; never hard-code `hwmon4` in new evidence.
+
+Average card draw:
+
+```text
+(energy_end_uJ - energy_start_uJ) / elapsed_seconds / 1,000,000
+```
+
+Use monotonic time and align energy reads to the exact workload interval. Record raw energy, elapsed time, resolved path, configured cap, cadence, named temperatures, and coverage. A maximum 0.5–1.0 s delta is **peak interval-average W**, not instantaneous peak.
+
+B70 `xe` hwmon energy counters: `energy1_input` = card domain, `energy2_input` = pkg domain (both µJ). Reading a counter resumes a runtime-suspended GPU; pin runtime PM before energy telemetry.
+
+Configured cap is not measured draw. Campaign-wide telemetry with unmatched phase coverage cannot establish a mode-to-mode power difference.
+
+## 11. Quantization and artifact safety
+
+Treat architecture, checkpoint representation, engine/kernel support, quality, and performance as separate gates.
+
+- Identify formats from config and tensors, not repository titles.
+- Prefer a native compatible artifact.
+- Distinguish reconstruction, repack, and requantization.
+- Preserve source artifacts unchanged.
+- Never write an output index through a source symlink.
+- Record exclusions and mixed-precision tensors.
+- Validate static coverage, numerical behavior, coherent load, deterministic replay, reference/parity, and task quality in increasing cost order.
+- A successful conversion or load is not parity.
+- Artifact presence is independent from recommendation and quality state.
+
+## 12. Evidence, claims, and publication
+
+Retain under one UTC result root:
+
+- manifest and exact identities;
+- prompts/hashes and actual tokens;
+- all raw samples;
+- server/harness logs;
+- cache and MTP counter snapshots;
+- synchronized monitor and VRAM state;
+- failures/exclusions;
+- formulas and statistics;
+- cleanup state.
+
+Use the mandatory `.agents/skills/b70-benchmark-claims-standard/SKILL.md` for any benchmark, comparison, public number, recommendation, portfolio/social content, or LocalMaxxing projection.
+
+Until the lane, evidence, and claims audit pass, label results:
+
+> PROVISIONAL — NOT FOR PUBLIC HEADLINE
+
+LocalMaxxing `APPROVED` means accepted/published self-report, not independent reproduction.
+
+No commit, push, deployment, social post, portfolio update, leaderboard submission, or external publication is implied by benchmark completion. Obtain separate authorization.
+
+## 13. Cleanup
+
+On exit:
+
+1. stop the exact campaign server/container;
+2. restore 150 W;
+3. re-run process/container/VRAM gates;
+4. retain cleanup evidence;
+5. restart a production service only when authorized and its artifact is valid.
+
+For user services in agent shells:
+
+```bash
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+export DBUS_SESSION_BUS_ADDRESS=unix:path=${XDG_RUNTIME_DIR}/bus
+```
+
+See `docs/operations/incident-and-cleanup.md`.
+
+## 14. Script policy
+
+New benchmark scripts start in `scripts/tmp/`. Promotion to `scripts/` requires:
+
+- a complete header explaining use, actions, output, safety, and example;
+- one successful controlled run;
+- protocol-compliant evidence output;
+- isolation, cooldown, trap, cleanup, and 150 W restoration;
+- an entry in the canonical script decision matrix.
+
+`~/inference/benchmark.py` is a development smoke tool only and is not citable.
+
+## 15. Historical reference
+
+The pre-migration comprehensive host notebook is preserved at:
+
+`archive/docs/pre-migration-20260819/AGENTS.md`
+
+It contains important historical findings but also volatile inventories and superseded claims. Use current typed authorities first, then follow registered evidence and decisions for history.
+
+## 16. llama.cpp SYCL request-to-output (DeepSeek-V4 K216)
+
+Full walk, buses, and ranked levers: `research/dsv4-k216-request-to-output-pipeline-20260825.md`. Sister notes: `research/dsv4-k216-prefill-ubatch-20260825.md`, `research/dsv4-k216-dspark-and-public-numbers-20260825.md`, `research/dsv4-k216-buun-moe-cache-20260825.md`.
+
+C1 HTTP on this host is: socket → JSON/chat template → tokenize → ubatch graph (`min(-b,-ub)`) → serial `-sm layer` GPU0 then host-staged copy then GPU1 → DSA/indexer attention (not spec decode) → routed MoE `MUL_MAT_ID` → sample → chunked socket. Localhost HTTP/tokenize/sample are not the wall.
+
+**Decode wall (PROVISIONAL best 8.87 engine tok/s, L5 `-ncmoe 15 -ts 65,35`):** IQ3_XXS is omitted from fused SYCL `MUL_MAT_ID` MMVQ, so each routed projection D2H-copies ~24 B of expert IDs and `stream->wait()` (~84 waits/token on L5 GPU-routed layers), then host-launches tiny GEMVs. `-ncmoe N` puts the first N layers’ **experts** on CPU (mmap + DDR4-2133). Dual split is capacity, not per-layer 2×; no P2P (both GPUs on CPU-attached x8 slots, measured H2D ≈ 8.9/7.9 GB/s).
+
+**Prefill wall (PROVISIONAL best ~105 pp at `-b/-ub 1024`):** host counting-sort grouping + IQ3→FP16 then oneMKL. ub512→1024 already ~1.26–1.30×. Remaining ~2× is a grouped IQ3 kernel, not another flag sweep.
+
+Do not retry: `-ts 46,54`/`50,50` low ncmoe, `-sm row`, single GPU, GPU-resident Unsloth DSpark (256-expert `dflash`) on L3/L5, `ggml_sycl_supports_mmq()` flip, SYCL graphs on dual+`MUL_MAT_ID`, `--no-mmap`/`--mlock` on this ~83 GiB GGUF, q4_0 K, spiritbuun `-ot 'exps=CPU' --moe-cache on` on this SYCL build (CUDA-only cache; all-CPU experts without it is slower than L5). CPU-MoE DSpark accepted well and was slower (2.48 tg). Packed P15_65 loaded (GPU0 1897 / GPU1 1720 MiB free) then exited unmeasured; P15_60 SYCL1 OOM 2.21 GiB.
+
+Architect range with fused IQ3 MMVQ and a **compatible 216-expert** GPU draft: ~9.6–18 tok/s. **30 tok/s C1 is not realistic on this SYCL IQ3 MoE path.** Label all of the above provisional; no public headline.
+
+## 17. Megakernels, Persistent Fusion & Xe2/XMX Guidelines
+
+Full reference manual: `docs/reference/megakernel-comprehensive-reference.md`; architecture guide: `research/megakernel-xe2-xmx-architecture-guide-20260829.md`; roadmap: `research/megakernel-implementation-roadmap-20260829.md`; policy: `decisions/adr-0009-xe2-megakernel-and-persistent-fusion-policy.md`.
+
+### Core Rules for Kernel Optimization on B70:
+1. **Decode ($M=1$) vs. Prefill Separation:** In single-token decode, standard multi-kernel execution wastes $500+\,\mu\text{s}$ per token in host-driver launch latency and repeatedly writes $8\text{ KB}$ activations to GDDR6. Persistent kernels maintain the residual stream in on-chip GRF (registers) / SLM across all layers.
+2. **Single-Card Persistent Grid:** Target 32 work-groups (1 per Xe-core) on a single B70. Never attempt cross-card Tensor-Parallel (TP) megakernels across PCIe (x8 + x8, CPU-attached, no P2P) (`ADR-0008`); use independent single-card persistent pipelines instead (`ZE_AFFINITY_MASK`).
+3. **Native DPAS Formats Only:** Persistent megakernels and XMX fast-paths require native systolic formats: **INT4 (GPTQ/AWQ)**, **INT8**, or **FP16/BF16**. Non-native formats (IQ3, Q3_K) force scalar unpack loops on Vector Engines and destroy persistent performance.
+4. **Sub-Group Specialization:** In Xe-core work-groups, dedicate 1–2 producer sub-groups to asynchronous 2D block prefetching (`esimd::block_load_2d`) from GDDR6 to SLM, and 6–7 consumer sub-groups to XMX `dpas` systolic compute.
+5. **Host-Sync Elimination Gate:** Any MoE/GEMV optimization must verify zero intermediate host synchronizations (`stream->wait()` or D2H expert-ID copies). On-device router-to-GEMV dispatch is mandatory.
+6. **vLLM Decode Kernel Bounds:** Before benchmarking vLLM on Xe2, ensure `vllm-xpu-kernels` is built with explicit sub-group size bounds (`[[intel::reqd_sub_group_size(16)]]`) and `VLLM_PAGED_DECODE_CONFIG` to prevent GRF register spills (`research/xe2-esimd-launch-bounds-2026-08.md`).
+
+## 18. Architecture-First Triage & Diagnostic Quick Reference
+
+Authority: `docs/methods/architecture-diagnostic-playbook.md`.
+
+Before modifying configs, writing kernels, or launching sweeps, determine the model class and hardware placement:
+
+| Model Family / Setup | Dominant Bottleneck | Primary Lever & Action | Never Attempt (Anti-Pattern) |
+|---|---|---|---|
+| **Large Dense ($27\text{B}\text{–}70\text{B}$)**<br>e.g. `Qwen3.8-27B` | GDDR6 Memory Bandwidth ($31\text{ ms}$ base) | 1. Speculative Decode (MTP4 / DFlash)<br>2. Block-FP8 W8A16 linear reroute (`patch_fp8_w8a16.py`)<br>3. Native Xe2 small-$M$ GEMM (`research/qwen38-fp8-tp2-speed-attack-and-ceilings-20260829.md`) | Base GEMV megakernels (saves $<1.5\%$); tuning host flags for base decode |
+| **Pure MoE**<br>e.g. `DeepSeek-V4 K216`, `Ornith-1.5` | Host-Device Sync ($84+$ D2H waits & `stream->wait()`) | 1. Keep router `top_k_indices` on-device<br>2. Fused `mul_mat_id_fused_moe_sycl`<br>3. Level Zero graph capture (`research/dsv4-k216-request-to-output-pipeline-20260825.md`) | `-sm row` (segfaults); CPU-MoE without cache (`spiritbuun -ot exps=CPU` is slower); sweeping low `-ncmoe` |
+| **Hybrid SSM + MoE**<br>e.g. `Nemotron-3.5-30B` | Sequential Dispatch Lag ($736$ launches per token) | 1. Fused Mamba2 SSD block kernel in GRF/SLM<br>2. On-device 128-expert MoE router<br>3. DFlash drafter (`models/nemotron/nemotron-3.5-lightning-30b-a3b/serving.md`) | Unfused Mamba2 layers on XPU; older Q4_0 GGUF routes |
+| **Dual B70 (X570-F)**<br>No GPU P2P (x8 + x8, CPU-attached) | Inter-Card CCL Traffic | 1. Default to independent single-card engines (`ZE_AFFINITY_MASK`) (`ADR-0008`)<br>2. If TP2, require worker affinity + SYS_PTRACE + host-staged CCL | Stock Docker TP2 without affinity patches; expecting $2\times$ scaling over the x8 links; inter-card TP megakernels |
+
+

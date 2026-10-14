@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://raw.githubusercontent.com/Niko1221/Strata/main/docs/INTEL.md",
+  "final_url": "https://raw.githubusercontent.com/Niko1221/Strata/main/docs/INTEL.md",
+  "fetched_at": "2026-10-09T17:57:46.399586Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "a394b896a24582227dad7fbd971771d6a6467ad3e4c8f89ab3361d6a0c625e8a",
+  "size_bytes": 68289,
+  "claim": "Strata Intel port: layer-split, expert residency, kernel GB/s sweep, B70 rows",
+  "relevance": "RQ-18 mechanism and Strata kernel efficiency (130-160 GB/s claim)",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

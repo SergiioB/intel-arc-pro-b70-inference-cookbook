@@ -1,0 +1,14 @@
+{
+  "created_at": "20260705-162948",
+  "llama_bin": "~/llama.cpp/build-sycl-latest-l0/bin/llama-server",
+  "models_dir": "/mnt/<models-disk>/gguf",
+  "implemented_engines": [
+    "llama.cpp-sycl"
+  ],
+  "power_caps_w": [
+    150,
+    165,
+    180,
+    200
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "amdahl": {
+    "wall_fraction": 0.3,
+    "local_speedup": 3.5,
+    "provenance": {
+      "kind": "assumption",
+      "references": [
+        "/mnt/<sata-disk>/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16/config.json",
+        "docs/governance/standing-rules.md",
+        "hypothesis:RQ-24"
+      ],
+      "note": "Upper-bound sketch, not measured. The DFlash drafter is a 6-layer BF16 model (hidden 2688, intermediate 6144; 1.6 GB safetensors) read once per draft-verify round. Assumed round traffic ~5.3 GB: target verify of 8 tokens over a 30B-A3B GPTQ-INT4 G64 model (~1.6 GB active per token, union of routed experts across 8 tokens assumed ~3.7 GB) plus the 1.6 GB draft. Draft share ~0.30; BF16 to INT4 with scales cuts its bytes ~3.5x. Ignores acceptance loss from a quantized drafter, which is the main risk and the reason for the acceptance gate. Precedent: draft-side INT4 pair measured +39.6/+48.6% on the removed GPTQ Qwen3.8-27B stack (standing rules section 2)."
+    }
+  }
+}

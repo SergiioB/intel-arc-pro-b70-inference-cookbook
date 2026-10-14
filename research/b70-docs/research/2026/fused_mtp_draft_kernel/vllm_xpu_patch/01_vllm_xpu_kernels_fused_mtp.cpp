@@ -1,0 +1,92 @@
+#error "QUARANTINED: invalid MTP stub; do not build or benchmark"
+/**
+ * Fused MTP Draft Step Kernel for vLLM XPU (Intel Arc B70)
+ * 
+ * Fuses RMSNorm + XMX DPAS MTP Projection + Argmax
+ * Exposes a PyTorch-compatible interface via pybind11.
+ */
+
+#include <torch/extension.h>
+#include <c10/xpu/XPUStream.h>
+#include <sycl/sycl.hpp>
+
+using namespace sycl;
+
+// Forward declaration of the SYCL kernel
+void launch_fused_mtp_step_kernel(
+    sycl::queue& q,
+    const half* hidden_states,
+    const half* norm_weight,
+    const uint8_t* mtp_proj_qweight, // GPTQ packed
+    const half* mtp_proj_scales,
+    const uint8_t* lm_head_qweight,  // GPTQ packed
+    const half* lm_head_scales,
+    int32_t* draft_tokens,
+    int batch_size,
+    int hidden_dim,
+    int vocab_size,
+    float eps
+) {
+    // WG size aligned for DPAS efficiency
+    int wg_size = 256;
+    
+    q.submit([&](sycl::handler& cgh) {
+        // SLM arrays to avoid VRAM round-trips
+        sycl::local_accessor<half, 1> slm_normed(hidden_dim, cgh);
+        sycl::local_accessor<half, 1> slm_proj(hidden_dim, cgh);
+        
+        cgh.parallel_for(sycl::nd_range<1>(batch_size * wg_size, wg_size), [=](sycl::nd_item<1> item) {
+            int tid = item.get_local_id(0);
+            int batch_idx = item.get_group(0);
+            
+            // Phase 1: RMSNorm using sub_group reductions
+            // Phase 2: DPAS multiply for MTP projection (dequantizes W4A16 from mtp_proj_qweight)
+            // Phase 3: DPAS multiply for LM Head + local argmax reduction
+            
+            if (tid == 0) {
+                draft_tokens[batch_idx] = 0; // argmax result
+            }
+        });
+    });
+}
+
+// PyTorch bindings
+torch::Tensor fused_mtp_step_xpu(
+    torch::Tensor hidden_states,
+    torch::Tensor norm_weight,
+    torch::Tensor mtp_proj_qweight,
+    torch::Tensor mtp_proj_scales,
+    torch::Tensor lm_head_qweight,
+    torch::Tensor lm_head_scales,
+    float eps
+) {
+    int batch_size = hidden_states.size(0);
+    int hidden_dim = hidden_states.size(1);
+    int vocab_size = lm_head_qweight.size(1) * 8; // W4 packed expansion
+    
+    auto draft_tokens = torch::empty({batch_size}, torch::TensorOptions().dtype(torch::kInt32).device(hidden_states.device()));
+    
+    auto& q = c10::xpu::getCurrentXPUStream().queue();
+    
+    launch_fused_mtp_step_kernel(
+        q,
+        reinterpret_cast<const half*>(hidden_states.data_ptr<at::Half>()),
+        reinterpret_cast<const half*>(norm_weight.data_ptr<at::Half>()),
+        mtp_proj_qweight.data_ptr<uint8_t>(),
+        reinterpret_cast<const half*>(mtp_proj_scales.data_ptr<at::Half>()),
+        lm_head_qweight.data_ptr<uint8_t>(),
+        reinterpret_cast<const half*>(lm_head_scales.data_ptr<at::Half>()),
+        draft_tokens.data_ptr<int32_t>(),
+        batch_size,
+        hidden_dim,
+        vocab_size,
+        eps
+    );
+    
+    return draft_tokens;
+}
+
+// Register the op so vLLM Python can call torch.ops._xpu_C.fused_mtp_step
+TORCH_LIBRARY_IMPL(_xpu_C, XPU, m) {
+    m.impl("fused_mtp_step", &fused_mtp_step_xpu);
+}

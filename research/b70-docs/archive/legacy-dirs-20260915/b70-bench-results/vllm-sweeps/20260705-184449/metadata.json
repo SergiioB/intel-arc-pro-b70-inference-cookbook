@@ -1,0 +1,13 @@
+{
+  "created_at": "20260705-184449",
+  "image": "intel/llm-scaler-vllm:0.14.0-b8.3.2",
+  "base_url": "http://127.0.0.1:8000",
+  "power_caps_w": [
+    150,
+    165,
+    180,
+    200
+  ],
+  "cooldown_target_c": 55,
+  "metric_caveat": "vLLM OpenAI API does not expose llama.cpp prompt/decode engine timings; pp_tps is null and tg_tps is an approximation."
+}

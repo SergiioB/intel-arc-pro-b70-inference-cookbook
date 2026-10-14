@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "question_id": "RQ-18",
+  "predeclared_at": "2026-10-11",
+  "purpose": "The six precommitted exact-answer canaries that RQ-18 requires to be byte-identical (content) between the one-card arm A and the two-card --layer-split arm B. Definitions, scorers, expected values and prompt token files are copied verbatim from campaigns/2026/rq17-flashnext-quality/tasks.json (predeclared 2026-10-10, frozen before any RQ-17 result existed); only the generation budget is set here to RQ-18's predeclared gen 512 (greedy).",
+  "source": "token files /mnt/<sata-disk>/strata/prompts/batt-{arith,capital,token,sumsq,logic,json}.txt",
+  "sampling": "greedy (temperature 0)",
+  "max_tokens": 512,
+  "scoring": "content-only (message.content); reasoning_content is retained as evidence and never scored",
+  "order": [
+    "batt-arith",
+    "batt-capital",
+    "batt-token",
+    "batt-sumsq",
+    "batt-logic",
+    "batt-json"
+  ],
+  "cells": [
+    {
+      "id": "batt-arith",
+      "expect": {"kind": "last_integer", "value": 703},
+      "note": "37*19; adoption canary (RL-125)"
+    },
+    {
+      "id": "batt-capital",
+      "expect": {"kind": "last_line_equals", "value": "paris"},
+      "note": "capital of France; adoption canary (RL-125)"
+    },
+    {
+      "id": "batt-token",
+      "expect": {"kind": "contains", "value": "B70-FLASH-OK"},
+      "note": "verbatim token string; adoption canary (RL-125)"
+    },
+    {
+      "id": "batt-sumsq",
+      "expect": {"kind": "last_integer", "value": 14},
+      "note": "sum(i*i for i in range(4)) = 0+1+4+9 = 14. The 14-vs-30 in-head arithmetic class: the fluent wrong answer 30 (summing 1..4) is the historical RL-087 defect and the precommitted stop-rule trigger"
+    },
+    {
+      "id": "batt-logic",
+      "expect": {"kind": "last_line_first_word", "value": "no"},
+      "note": "Alice>Bob>Charlie transitive chain; multi-hop logic, answer No"
+    },
+    {
+      "id": "batt-json",
+      "expect": {"kind": "last_json_equals", "value": {"status": "ok", "count": 3}},
+      "note": "strict JSON object emission"
+    }
+  ],
+  "prompt_id_counts": {
+    "batt-arith": 22,
+    "batt-capital": 20,
+    "batt-token": 22,
+    "batt-sumsq": 28,
+    "batt-logic": 31,
+    "batt-json": 26,
+    "p512": 512,
+    "p8192": 8192
+  },
+  "byte_identical_rule": "For every pair, arm B's canary content bytes must equal arm A's for the same cell id, and the three pairs' arm-A contents must agree with each other. Any difference rejects (RQ-18 stop rule: 'any output difference'). The serve surface renders both arms through the same model chat template, so a byte difference is a numeric/placement difference, not a surface difference."
+}

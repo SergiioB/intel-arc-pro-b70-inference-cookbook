@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "artifacts": [
+    {
+      "id": "ART-MUSE-GLIMMER-Q4KXL-SET", "model_id": "MODEL-MUSE-GLIMMER-30B", "label": "Muse Glimmer Q4_K_XL target, projector, and DFlash campaign set", "role": "target-set", "format": "GGUF Q4_K_XL plus mmproj and DFlash GGUF",
+      "remote_repository": {"state": "published", "observed_at": "2026-08-19", "repository": "unsloth/Muse-Glimmer-30B-GGUF", "path": null, "host_or_volume": null, "provenance": ["models/muse/muse-glimmer-30b/artifacts.md"]},
+      "local_presence": {"state": "deleted", "observed_at": "2026-08-14", "repository": null, "path": null, "host_or_volume": "B70 local model volumes", "provenance": ["models/muse/muse-glimmer-30b/artifacts.md", "decisions/corrections-and-supersessions-2026-08-19.md"]},
+      "provenance_state": "official", "last_verified": "2026-08-19", "historical": true, "correction_ids": ["correction:artifact-availability-state:2026-08-19"], "notes": "Remote publication and local deletion are independent; the retained campaign evidence does not prove current launch availability."
+    },
+    {
+      "id": "ART-NEMOTRON-GPTQ-G64", "model_id": "MODEL-NEMOTRON-3.5-LIGHTNING-30B-A3B", "label": "Nemotron 3.5 Lightning GPTQ-INT4 G64 symmetric target", "role": "target", "format": "GPTQ INT4 symmetric group-64",
+      "remote_repository": {"state": "published", "observed_at": "2026-08-19", "repository": "SergiioB/Nemotron-3.5-Lightning-30B-A3B-GPTQ-INT4-G64-sym", "path": null, "host_or_volume": null, "provenance": ["models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md"]},
+      "local_presence": {"state": "present", "observed_at": "2026-08-19", "repository": null, "path": "/mnt/<models-disk>/nemotron-lightning-gptq-sym64-20260812", "host_or_volume": "b70-host:/mnt/<models-disk>", "provenance": ["docs/operations/current-host-state.md", "models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md"]},
+      "provenance_state": "local_conversion", "last_verified": "2026-08-19", "historical": false, "correction_ids": ["correction:artifact-availability-state:2026-08-19"]
+    },
+    {
+      "id": "ART-NEMOTRON-DFLASH-BF16", "model_id": "MODEL-NEMOTRON-3.5-LIGHTNING-30B-A3B", "label": "Nemotron 3.5 Lightning DFlash BF16 draft", "role": "draft", "format": "BF16 DFlash draft reconstructed from official NVFP4",
+      "remote_repository": {"state": "published", "observed_at": "2026-08-19", "repository": "SergiioB/Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16", "path": null, "host_or_volume": null, "provenance": ["models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md"]},
+      "local_presence": {"state": "present", "observed_at": "2026-08-19", "repository": null, "path": "/mnt/<models-disk>/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-DFlash-BF16", "host_or_volume": "b70-host:/mnt/<models-disk>", "provenance": ["docs/operations/current-host-state.md"]},
+      "provenance_state": "reconstructed_from_official", "last_verified": "2026-08-19", "historical": false, "correction_ids": ["correction:artifact-availability-state:2026-08-19"]
+    },
+    {
+      "id": "ART-NEMOTRON-Q4-0-HISTORICAL", "model_id": "MODEL-NEMOTRON-3.5-LIGHTNING-30B-A3B", "label": "Historical Nemotron model-weight Q4_0 GGUF", "role": "target", "format": "GGUF Q4_0 requantized from Q4_K_M",
+      "remote_repository": {"state": "unknown", "observed_at": null, "repository": null, "path": null, "host_or_volume": null, "provenance": ["models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md"]},
+      "local_presence": {"state": "deleted", "observed_at": "2026-08-19", "repository": null, "path": "/mnt/<models-disk>/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf", "host_or_volume": "b70-host:/mnt/<models-disk>", "provenance": ["models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md"]},
+      "provenance_state": "local_requantization", "last_verified": "2026-08-19", "historical": true, "correction_ids": ["correction:nemotron-q4-0-evidence-path:2026-08-19", "correction:artifact-availability-state:2026-08-19"]
+    },
+    {
+      "id": "ART-ORNITH15-GPTQ-G128-MTP-BF16", "model_id": "MODEL-ORNITH-1.5-35B-A3B", "label": "Ornith 1.5 GPTQ-INT4 G128 target with BF16 MTP exclusions", "role": "target", "format": "GPTQ INT4 symmetric group-128 with RTN fallback and BF16 MTP",
+      "remote_repository": {"state": "not_established", "observed_at": "2026-08-19", "repository": null, "path": null, "host_or_volume": null, "provenance": ["decisions/corrections-and-supersessions-2026-08-19.md"]},
+      "local_presence": {"state": "present", "observed_at": "2026-08-19", "repository": null, "path": "/mnt/<models-disk>/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16", "host_or_volume": "b70-host:/mnt/<models-disk>", "provenance": ["docs/operations/current-host-state.md"]},
+      "provenance_state": "local_conversion", "last_verified": "2026-08-19", "historical": false, "correction_ids": ["correction:ornith-rtn-fallback:2026-08-19", "correction:artifact-availability-state:2026-08-19"], "notes": "Quality parity is not established; 7,605 of 30,720 quantized projection matrices used RTN fallback."
+    },
+    {
+      "id": "ART-QWEN36-GPTQ-MTP-BF16", "model_id": "MODEL-QWEN3.6-35B-A3B", "label": "Qwen3.6-35B-A3B GPTQ-INT4 target with BF16 MTP", "role": "target", "format": "GPTQ INT4 with preserved BF16 MTP",
+      "remote_repository": {"state": "unknown", "observed_at": null, "repository": null, "path": null, "host_or_volume": null, "provenance": ["models/qwen/qwen3.6-35b-a3b/artifacts.md"]},
+      "local_presence": {"state": "present", "observed_at": "2026-08-19", "repository": null, "path": "/mnt/<models-disk>/Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4", "host_or_volume": "b70-host:/mnt/<models-disk>", "provenance": ["docs/operations/current-host-state.md"]},
+      "provenance_state": "local_conversion", "last_verified": "2026-08-19", "historical": false, "correction_ids": ["correction:artifact-availability-state:2026-08-19"]
+    },
+    {
+      "id": "ART-QWEN38-DFLASH2-BF16-OFFICIAL", "model_id": "MODEL-QWEN3.8-27B", "label": "Official incoai Qwen3.8-27B DFlash2 drafter (2B BF16, block size 8)", "role": "draft", "format": "BF16 safetensors, DFlash2 block-diffusion (top-16 selector + two-tap dynamic depthwise conv), block size 8 = 7 draft tokens per verification step",
+      "remote_repository": {"state": "published", "observed_at": "2026-08-30", "repository": "incoai/Qwen3.8-27B-DFlash2", "path": null, "host_or_volume": null, "provenance": ["research/qwen38-dflash2-objective-campaign-20260830.md"]},
+      "local_presence": {"state": "present", "observed_at": "2026-08-30", "repository": null, "path": "/mnt/<models-disk>/Qwen3.8-27B-DFlash2", "host_or_volume": "b70-host:/mnt/<models-disk>", "provenance": ["research/qwen38-dflash2-objective-campaign-20260830.md", "results/qwen38-dflash2-objective-20260830/artifact-pin/MANIFEST.md"]},
+      "provenance_state": "official", "last_verified": "2026-08-30", "historical": false, "correction_ids": [], "notes": "Pinned revision dedf8df68adfb1afeaf7b7480c0a0243108177b4, sha256 67fc76d6...; present at the recorded path; tensor inventory in the campaign artifact-pin evidence. Mirror: z-lab/Qwen3.8-27B-DFlash2."
+    },
+    {
+      "id": "ART-QWEN38-GPTQ-G128-MTP-BF16", "model_id": "MODEL-QWEN3.8-27B", "label": "Qwen3.8-27B GPTQ-INT4 G128 target with BF16 MTP", "role": "target", "format": "GPTQ INT4 symmetric group-128 with BF16 MTP",
+      "remote_repository": {"state": "published", "observed_at": "2026-08-15", "repository": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16", "path": null, "host_or_volume": null, "provenance": ["models/qwen/qwen3.8-27b/artifacts.md", "decisions/corrections-and-supersessions-2026-08-19.md"]},
+      "local_presence": {"state": "present", "observed_at": "2026-08-19", "repository": null, "path": "/mnt/<models-disk>/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16-nogidx", "host_or_volume": "b70-host:/mnt/<models-disk>", "provenance": ["docs/operations/current-host-state.md"]},
+      "provenance_state": "local_conversion", "last_verified": "2026-08-19", "historical": false, "correction_ids": ["correction:artifact-availability-state:2026-08-19"], "notes": "The local observed path is the recorded no-g_idx variant; do not infer byte identity from the remote publication name."
+    }
+  ]
+}

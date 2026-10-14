@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "models": [
+    {"id": "MODEL-MUSE-GLIMMER-30B", "hf_model_id": "facebook/Muse-Glimmer-30B", "slug": "muse-glimmer-30b", "name": "Muse Glimmer 30B", "dossier_path": "models/muse/muse-glimmer-30b/README.md", "status": "experimental", "as_of": "2026-08-19"},
+    {"id": "MODEL-NEMOTRON-3.5-LIGHTNING-30B-A3B", "hf_model_id": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B", "slug": "nemotron-3.5-lightning-30b-a3b", "name": "Nemotron 3.5 Lightning 30B-A3B", "dossier_path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/README.md", "status": "validated_internal", "as_of": "2026-08-19"},
+    {"id": "MODEL-ORNITH-1.5-35B-A3B", "hf_model_id": "ornith-ai/Ornith-1.5-35B-A3B", "slug": "ornith-1.5-35b-a3b", "name": "Ornith 1.5 35B-A3B", "dossier_path": "models/ornith/ornith-1.5-35b-a3b/README.md", "status": "provisional", "as_of": "2026-08-19"},
+    {"id": "MODEL-QWEN3.6-35B-A3B", "hf_model_id": "Qwen/Qwen3.6-35B-A3B", "slug": "qwen3.6-35b-a3b", "name": "Qwen3.6-35B-A3B", "dossier_path": "models/qwen/qwen3.6-35b-a3b/README.md", "status": "validated_internal", "as_of": "2026-08-19"},
+    {"id": "MODEL-QWEN3.8-27B", "hf_model_id": "Qwen/Qwen3.8-27B", "slug": "qwen3.8-27b", "name": "Qwen3.8-27B", "dossier_path": "models/qwen/qwen3.8-27b/README.md", "status": "validated_internal", "as_of": "2026-08-19"}
+  ]
+}

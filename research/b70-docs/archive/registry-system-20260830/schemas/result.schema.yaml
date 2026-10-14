@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/result.schema.yaml",
+  "title": "B70 legacy result catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated",
+    "results"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "generated": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "source_roots",
+        "selection",
+        "entry_count"
+      ],
+      "properties": {
+        "mode": {
+          "const": "read-only"
+        },
+        "source_roots": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "results",
+              "b70-bench-results",
+              "runs"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "selection": {
+          "const": "current-top-level-paths-at-generation"
+        },
+        "entry_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/result"
+      }
+    }
+  },
+  "$defs": {
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "source_root",
+        "artifact_kind",
+        "catalog_state",
+        "metadata"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^legacy-result-[a-f0-9]{16}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(results|b70-bench-results|runs)/.+$"
+        },
+        "source_root": {
+          "enum": [
+            "results",
+            "b70-bench-results",
+            "runs"
+          ]
+        },
+        "artifact_kind": {
+          "enum": [
+            "json",
+            "jsonl",
+            "log",
+            "text",
+            "table",
+            "markdown",
+            "image",
+            "vector-image",
+            "binary",
+            "other",
+            "collection"
+          ]
+        },
+        "catalog_state": {
+          "const": "legacy-read-only"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "campaign",
+            "observed_date",
+            "confidence"
+          ],
+          "properties": {
+            "campaign": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "observed_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            },
+            "confidence": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "level",
+                "basis",
+                "inferred_fields",
+                "unresolved_fields"
+              ],
+              "properties": {
+                "level": {
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low"
+                  ]
+                },
+                "basis": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1
+                },
+                "inferred_fields": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "campaign",
+                      "observed_date"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "unresolved_fields": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "campaign",
+                      "observed_date",
+                      "model",
+                      "engine",
+                      "build",
+                      "workload",
+                      "metrics"
+                    ]
+                  },
+                  "uniqueItems": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "migration_id": "migration-20260819-research-observability",
+  "status": "completed_2026-08-19",
+  "entries": [
+    {
+      "source_path": "docs/lvm-and-storage.md",
+      "source_sha256": "56947d04c9df46ad303c137763653c20ac1bc36251654c89f326330d50259958",
+      "destinations": [
+        "docs/operations/storage-and-vram-safety.md",
+        "docs/operations/current-host-state.md"
+      ],
+      "compatibility_path": "docs/lvm-and-storage.md",
+      "archive_snapshot": "archive/docs/pre-migration-20260819/lvm-and-storage.md",
+      "disposition": "split-with-tombstone"
+    },
+    {
+      "source_path": "docs/launcher-guide.md",
+      "source_sha256": "095c36517aee94e57ab41bf13def4f187611f1fcbd6d146bd899e7290c9e40f3",
+      "destinations": [
+        "docs/operations/launcher-guide.md"
+      ],
+      "compatibility_path": "docs/launcher-guide.md",
+      "archive_snapshot": "archive/docs/pre-migration-20260819/launcher-guide.md",
+      "disposition": "replace-with-tombstone"
+    },
+    {
+      "source_path": "research/quantization-format-strategy.md",
+      "source_sha256": "cdd892629f0fcacdbba66a250dfa34b2acd03e523124fde13b0f0417418331ce",
+      "destinations": [
+        "studies/quantization/historical/quantization-format-strategy-20260807.md",
+        "docs/reference/quantization-decision-record.md"
+      ],
+      "compatibility_path": "research/quantization-format-strategy.md",
+      "disposition": "historical-copy-and-current-synthesis"
+    },
+    {
+      "source_path": "research/README.md",
+      "source_sha256": "51c411e2f3d2c6cb87be2fc90a83cb17a468a48e3a161162222ddcd822a16dce",
+      "destinations": [
+        "docs/indexes/research-index.md"
+      ],
+      "compatibility_path": "research/README.md",
+      "disposition": "replace-with-tombstone"
+    },
+    {
+      "source_path": "DOCUMENT-MAP.md",
+      "source_sha256": "78edbb81edfc1f171781b0f33a056c1336fb2b09f3af675da77030720c7af5d2",
+      "destinations": [
+        "DOCUMENT-MAP.md"
+      ],
+      "compatibility_path": "DOCUMENT-MAP.md",
+      "disposition": "rewrite-as-navigation-map"
+    },
+    {
+      "source_path": "models/ornith-1.5-35b-a3b",
+      "source_file_sha256": {
+        "README.md": "0d2ae1541380c17f89ac8c6cc8b354f55d7c3acc012431f1db1dd8b22ab1b8d1",
+        "adoption.md": "b3359af3766df0031a777912b287f91349ebcc1b9e2a9bc277267dd4868ddcfb",
+        "artifacts.md": "3d49ad9d874564fa5af8953fb1ea55a3486d9b713fde845e6c5fee276d615349",
+        "quality.md": "6b6845b1730a152b434f487486427f40cc6c79243a9a1fe18c6bb52f9184561a",
+        "serving.md": "f1165456488df2faef65327b0bed016f12c7063db559f008f7c1025ba866e572",
+        "timeline.md": "1bd1976f0d44834c69ad68169c696e9862445016d7928060f1f732e7dfb44ee5"
+      },
+      "destinations": [
+        "models/ornith/ornith-1.5-35b-a3b"
+      ],
+      "compatibility_path": null,
+      "disposition": "move-new-dossier-to-family-hierarchy"
+    },
+    {
+      "source_path": "models/nemotron-3.5-lightning-30b-a3b",
+      "source_file_sha256": {
+        "README.md": "601143462379a4440dd22d3604bf22fba34e05c9224469511683bf985da207b6",
+        "adoption.md": "ecf7a72b51cb87a27cd2c34d2435562e33b1989f5e1c1db3697b80552cf587b3",
+        "artifacts.md": "a6329f93f297179dba9cdf97b68d3d6ddefeb151cd4e3e0fde78488d20b651cf",
+        "quality.md": "f1abad848c378e5548b9dae12afff364ddb8e2bd303f526f345ef4157ab2ab53",
+        "serving.md": "e5ed7b364ac5b4cdaadba65fab7a2cb835b2ae5bb60120a996acc620fa811cf2",
+        "timeline.md": "71f0a08d7433e00e091ecad309d69c02b6daafb256121a204ea36526fa0bd145"
+      },
+      "destinations": [
+        "models/nemotron/nemotron-3.5-lightning-30b-a3b"
+      ],
+      "compatibility_path": null,
+      "disposition": "move-new-dossier-to-family-hierarchy"
+    },
+    {
+      "source_path": "models/qwen3.8-27b",
+      "source_file_sha256": {
+        "README.md": "7807f620f24eb955184285731e94a8bf4643c2f2ef4941f348cd39f421d382c9",
+        "adoption.md": "21eef70c62757cc3b14bc54f6883673c6deb10c3c71f45f4028e2a2b5f0de01c",
+        "artifacts.md": "4d29b3e2a3776fc0e14a722d81211217a446266c01c998f13d33852e633a4a4e",
+        "quality.md": "40d90d67a6f428a1ebc43011802560e276b5ca20d03e14242c7ea27a56b5dcf0",
+        "serving.md": "952d505fd374fc7ba62d01f64e0b5b5de513233d35f59c653230af7daf26db77",
+        "timeline.md": "20426fcd6b9e8aa6fd301a2e4bfc923fe7559e848ee663209a69106347aa2c30"
+      },
+      "destinations": [
+        "models/qwen/qwen3.8-27b"
+      ],
+      "compatibility_path": null,
+      "disposition": "move-new-dossier-to-family-hierarchy"
+    },
+    {
+      "source_path": "models/qwen3.6-35b-a3b",
+      "source_file_sha256": {
+        "README.md": "5f4c153f38cfe9139154effa8871baa12580ce905fdc9814769de5d3fcfd3fac",
+        "adoption.md": "52b12c5ee715c5d212af9f72dea795bb36afe382962b3b5ef4dc2e8598fa10d0",
+        "artifacts.md": "8ac6c3c5bd50c88539503e9b65e467746a52029c4abf4f965fedb9a9811183a7",
+        "quality.md": "62f4cfc57d0976dab4a3215b9b03a8983403ff4b2946030a8ab5a5dab08c32fd",
+        "serving.md": "67de90718a4a10d0977acf62aafb5a5bf232321f37eb9a0186f6e4d82f48f205",
+        "timeline.md": "dd1cc8a66ba7cb6cfa9b8e47087a7cdcc67cc207f0d550e1232a7104f3af5969"
+      },
+      "destinations": [
+        "models/qwen/qwen3.6-35b-a3b"
+      ],
+      "compatibility_path": null,
+      "disposition": "move-new-dossier-to-family-hierarchy"
+    },
+    {
+      "source_path": "models/muse-glimmer-30b",
+      "source_file_sha256": {
+        "README.md": "c5ddb0b1bf98c8ada769ab5115100025ad4253c264a6f566799ba7e1905a67f1",
+        "adoption.md": "e5ccb3b4f7c29a38fe68ca8509529e0664c3faba5b25c17454ee6fa4f8ae5648",
+        "artifacts.md": "eda29cc2aadb50d0f575b44337c024f863d8382e7e1edadf7ae2438906e001e2",
+        "quality.md": "90d7c208bce284203ab555c201c690e59c6ff75c91aa41a4e8b2a71522655862",
+        "serving.md": "4b98454addc5cd17dcb266b187fdbc85be5ef52e20121f2a7c063a83fdb2a131",
+        "timeline.md": "c4242d35c87f49c4f0fa665887dfb5927e28d6f59f57f2ad443d5459a55d4627"
+      },
+      "destinations": [
+        "models/muse/muse-glimmer-30b"
+      ],
+      "compatibility_path": null,
+      "disposition": "move-new-dossier-to-family-hierarchy"
+    },
+    {
+      "source_path": "docs/benchmark-history.md",
+      "source_sha256": "bb1b716a18bf729334c79547aa91e1e5be356beb3a236a8251e1576cddbf1e57",
+      "destinations": [
+        "docs/indexes/campaign-index.md"
+      ],
+      "compatibility_path": "docs/benchmark-history.md",
+      "archive_snapshot": "archive/docs/pre-migration-20260819/benchmark-history.md",
+      "disposition": "archive-full-log-and-replace-with-compact-view"
+    }
+  ],
+  "raw_results_policy": "Existing results paths are immutable and are cataloged in place."
+}

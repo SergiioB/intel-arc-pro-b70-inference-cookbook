@@ -1,0 +1,106 @@
+{
+  "question_id": "RQ-26",
+  "hypothesis": "EXL3's quality comes mainly from block-128 sign+Hadamard incoherence, not from the trellis. Rotated affine INT4 G128 (GPTQ or AutoRound in the rotated basis, INT8 escape for failing tensors, <=4.5 bpw) matches EXL3 block-output KL, and its decode costs a few instructions per weight.",
+  "changed_variable": "F0 metric and budget: block-delta KL primary + final-logit KL secondary, RTN-INT3 sanity control, AutoRound >= 100 iters; arms, split and gates unchanged",
+  "resource": "cpu",
+  "stage": "screen",
+  "timeout_s": 7200,
+  "command": [
+    "/mnt/<sata-disk>/d11-venv/bin/python",
+    "scripts/tmp/rq26_f0_driver_20261011.py",
+    "--mode",
+    "run"
+  ],
+  "preflight_command": [
+    "/mnt/<sata-disk>/d11-venv/bin/python",
+    "scripts/tmp/rq26_f0_driver_20261011.py",
+    "--mode",
+    "preflight"
+  ],
+  "cleanup_command": [
+    "/mnt/<sata-disk>/d11-venv/bin/python",
+    "scripts/tmp/rq26_f0_driver_20261011.py",
+    "--mode",
+    "cleanup"
+  ],
+  "identities": {
+    "baseline": {
+      "host": "b70-host (CPU-only screen; no GPU touched)",
+      "engine_revision": "EXL3 4bpw reference reconstructed through the bit-exact ref.py (sha256 3f614b7c91510d8520202e85dd0a08255370349a4d5ae4e7601edfa6897d1780, git 15ded2f3add148c4db3c900cba7de878238f53bc, tree /mnt/<nvme-disk>/b70-k3-build-20260929/src; same hash sealed in results/2026/09/b70-exl3-tp-cpu-slice-20260929/results.json); artifact /mnt/<nvme-disk>/b70-exl3-qwen38-4bpw-20260926 = turboderp EXL3 4bpw @113cf7ab, exl3 1.4.2, codebook mul1, head_bits 6, ARTIFACTS.sha256 891525064bf25ff6771ab403183c8fa555679b9144b0ea93467469afa5c60f77; measured on the block DELTA (primary) and through the real tail (secondary), same identity as RL-150",
+      "model_revision": "Qwen/Qwen3.8-27B BF16 source; farm /mnt/<nvme-disk>/b70-bf16-qwen38-20260926, ARTIFACTS.sha256 c9a350dba4f1ce9cf140882fa7ccb9f6c5145660193789f95ffb451b919dc4e4; transformers 5.16.1 reference forward (RL-067 harness class); hidden states reused from /mnt/<nvme-disk>/hq4-states-20261010 (ARTIFACTS.sha256 re-verified 2026-10-11, all entries OK; not regenerated)"
+    },
+    "candidate": {
+      "host": "b70-host (CPU-only screen; no GPU touched)",
+      "engine_revision": "HQ4 fake-quant screen in scripts/tmp/rq26_f0_driver_20261011.py (declared in scripts/tmp/rq26_f0_manifest_20261011.json before any number): 8 arms {uniform, E2M1-shaped levels} x {GPTQ desc_act=False percdamp 0.01, AutoRound-recipe sign-rounding iters=100 rows=128 lr=5e-3 (registry >= 100; recipe imported verbatim from scripts/tmp/hq4_f0_20261010.py, run through a traced wrapper that is bitwise-identical by selftest and retains per-arm loss traces)} x {output block-128 sign+Hadamard on, off}; per-linear random signs x block-128 Hadamard on inputs; INT4 sym G128 (group = Hadamard block), FP16 scale per 128; INT8 per-channel escape for rel Frobenius > 0.25; arm average <= 4.5 bpw; PLUS rtn-int3 sanity control (3-bit sym uniform RTN G128 raw basis, no escape, bpw 3.125) which must show block-delta KL > 1e-6 on every block before the campaign is dispatched and before anything is scored (one bounded in-driver fp64 recheck round on failure, then blocked_harness_broken); checkpoints per arm/block under /mnt/<nvme-disk>/b70-run2-20261011/rq26/<run-id>/; hard internal deadline 6840 s (5% margin inside the RL-155-raised 7200 s screen cap), sized from the measured 1-tensor probe scripts/tmp/rq26_ar_probe_20261011.json (uniform 0.8295 / e2m1 1.3601 s/iter per 89.1M-param tensor at 2 threads)",
+      "model_revision": "Qwen/Qwen3.8-27B BF16 source; farm /mnt/<nvme-disk>/b70-bf16-qwen38-20260926, ARTIFACTS.sha256 c9a350dba4f1ce9cf140882fa7ccb9f6c5145660193789f95ffb451b919dc4e4; hidden states reused from /mnt/<nvme-disk>/hq4-states-20261010 (ARTIFACTS.sha256 re-verified 2026-10-11; not regenerated)"
+    }
+  },
+  "controlled": {
+    "workload": {
+      "blocks": {
+        "gdn_l01": 1,
+        "gdn_l30": 30,
+        "gdn_l62": 62,
+        "att_l03": 3,
+        "att_l31": 31,
+        "att_l63": 63,
+        "note": "same 6 blocks as RL-150 = layers 30 (GDN) and 31 (attention) plus one early and one late block of each type; layer_types asserted live from the farm config (64 layers, full_attention interval 4)"
+      },
+      "quantized_linears": {
+        "gdn": [
+          "linear_attn.in_proj_qkv",
+          "linear_attn.in_proj_z",
+          "linear_attn.out_proj",
+          "mlp.gate_proj",
+          "mlp.up_proj",
+          "mlp.down_proj"
+        ],
+        "att": [
+          "self_attn.q_proj",
+          "self_attn.k_proj",
+          "self_attn.v_proj",
+          "self_attn.o_proj",
+          "mlp.gate_proj",
+          "mlp.up_proj",
+          "mlp.down_proj"
+        ],
+        "note": "champion/EXL3 scope; in_proj_a/b, conv1d and all norms stay BF16 on every arm"
+      },
+      "states": {
+        "dir": "/mnt/<nvme-disk>/hq4-states-20261010",
+        "calibration": "12 sequences x 512 positions (wikitext-2-raw-v1 test parquet, tokens [0,60%), deterministic offsets; corpus_meta.json: calib starts 0..177720 of 297054)",
+        "eval": "2 sequences x 832 positions (same parquet, eval starts 184173 (62%) and 237643 (80%); disjoint from calibration)",
+        "dtype": "bfloat16 block inputs, captured by layer-streaming BF16 forward (RL-067 arithmetic class: transformers 5.16.1 eager attention, manual causal mask, fp32 GDN scan)"
+      },
+      "metrics": "PRIMARY block-delta KL (KL on y-x between arm and BF16, exact fp32 difference of bf16 tensors, RL-067 softmax-standardized-row conventions, first batch row = 832 eval positions as in RL-150) + top-1 channel agreement + cos_min + per-tensor relative Frobenius error in the original basis; SECONDARY final-logit KL through the real tail (layers L+1..63 + final norm + lm_head, all BF16) on gdn_l62 and att_l63 over all 1664 eval positions with next-token argmax agreement; SANITY rtn-int3 must clear KL > 1e-6 on every block",
+      "arithmetic": "one bf16 Qwen3_5DecoderLayer forward class shared by BF16 reference, EXL3 reference, sanity arm and all 8 arms on identical eval states"
+    },
+    "config": {
+      "seed": 20261010,
+      "sign_derivation": "per-linear su (inputs) and sv (outputs): torch.Generator seeded by sha256(seed:layer:name:io)[:4], identical across all arms (unchanged from RL-150)",
+      "input_transform": "per-linear random signs x normalized Sylvester H128 per 128-input block (EXL3 suh class); orthogonality asserted; transforms folded into the quantized matrix and exactly un-folded before the bf16 forward",
+      "gptq_recipe": "bits=4 sym=True group=128 desc_act=False percdamp=0.01, classic IST-DASLab chain, final upper Cholesky (scripts/tmp/rotation_t1t2_common.py port; unchanged)",
+      "autoround_recipe": "SignSGD/Adam on per-(row,group) symmetric clip scales vs ||X W^T - X Wq^T||^2 with straight-through level gradient, then RTN; iters=100 (registry mandate >= 100; RL-150 ran iters=10), rows=128, lr=5e-3; implementation imported verbatim from scripts/tmp/hq4_f0_20261010.py, executed through autoround_signround_traced (line-identical update math + per-iteration loss recording; --mode selftest asserts bitwise equality vs the imported function); 2026-10-11 measured probe on the largest tensor: 0.8295 s/iter uniform / 1.3601 s/iter e2m1 at 2 threads, and a synthetic-xs divergence diagnostic (loss grows over 100 iters) recorded in scripts/tmp/rq26_ar_probe_20261011.json — the campaign runs the mandated recipe regardless and records the real-xs outcome",
+      "sanity_arm": "rtn-int3: 3-bit symmetric uniform RTN, group 128, RAW basis, no escape, bpw 3.125; gate KL > 1e-6 on every block BEFORE the campaign and any scoring; if any block reads ~0, one bounded fix round inside the sealed run re-checks the failing blocks with the metric accumulated in float64 (identical deterministic recompute; delta_metrics_fp64); still ~0 => blocked_harness_broken, no scoring, no AutoRound",
+      "e2m1_grid": "levels {0,+-0.5,+-1,+-1.5,+-2,+-3,+-4,+-6} x per-group scale (top magnitude 6s); arithmetic remap, no LUT (unchanged)",
+      "int8_escape": "un-rotated relative Frobenius error vs BF16 > 0.25 -> INT8 per-channel symmetric in the same rotated basis; decision recorded per tensor per arm (unchanged)",
+      "bpw_cap": 4.5,
+      "exl3_reference": "ref.py weight_orig decode only (no requant); per-tensor relative error vs BF16 recorded; same bf16 forward class (unchanged)",
+      "arm_ranking": "smallest worst-block KL ratio; tiebreak smaller mean KL ratio, then larger min top-1 margin (unchanged); identical ranking reported whether the gate passes or fails; EVERY arm reported on EVERY block",
+      "secondary_tail_blocks": [
+        "gdn_l62",
+        "att_l63"
+      ],
+      "budget": "8 job slots x 2 torch threads (16 logical CPUs / 8 physical cores); hard internal deadline 6840 s = 5% margin inside the 7200 s screen timeout, which the RL-155 budget accommodation (operator-authorized before the sealed run, from the measured 1-tensor probe scripts/tmp/rq26_ar_probe_20261011.json: 0.8295/1.3601 s/iter per 89.1M-param tensor at 2 threads; campaign ~25,100 2-thread-job-seconds; realistic projection 4,318-6,000 s; RL-150 sealed throughput 5.81 job-s/s) raised from 3600 s; scheduling is BLOCK-MAJOR (all arms for block 1, then block 2, ...) so a deadline-truncated partial retains complete blocks; per-arm AutoRound loss traces and INT8-escape counts per block are retained; at the deadline the pool is torn down, per-arm progress retained, blocked_incomplete.json written, NO measurements.json (assess records blocked, never pass), state blocked_incomplete_deadline; that outcome consumes attempt 1 of 2 and no attempt 2 is sealed without a new mechanism or fresh authorization; sanity or positivity failures take equivalent blocked paths",
+      "checkpoints": "per arm/block quantized weights + escape decisions + bpw under /mnt/<nvme-disk>/b70-run2-20261011/rq26/<run-id>/ with nvme_pointer.json + sha256 manifest in the repo run root (window disk rule; >= 2 GB kept free on repo / and the checkpoint mount)",
+      "reentry_note": "attempt 1 (RQ-26-20261010T2148...daee8d535f, RL-149) died on the execution deadline at AR iters=25; attempt 2 (RQ-26-20261010T2312...1e1f43f8d1, RL-150) was blocked by the non-positive-baseline guard and RL-151 showed the output-KL metric degenerate on 4/6 blocks; this re-entry under the new changed_variable fixes the metric (block-delta KL primary, real-tail logit KL secondary), adds the RTN-INT3 sanity control, and raises AutoRound to the mandated 100 iterations with a probe-sized deadline; arms, split, gates, seeds and recipes are otherwise unchanged; RL-155 records the screen-cap accommodation (3600->7200 s) authorized before this sealed run — no gate, arm, iteration or recipe change; launch RQ-26-20261011T112518648623Z was interrupted pre-job by a driver checkpoint-path defect (absolute base passed as a component; zero jobs, zero measurements, never sealed) and is retained verbatim under /mnt/<nvme-disk>/b70-run2-20261011/rq26/aborted-launches/ with a pointer at results/2026/10/RQ-26-20261011T112518648623Z-3a0286737a.MOVED.txt; the defect is fixed and covered by a selftest regression check"
+    }
+  },
+  "comparison": {
+    "metric": "block_delta_kl",
+    "unit": "mean_nats_per_position_vs_bf16",
+    "direction": "lower",
+    "min_relative_gain": 0.0
+  },
+  "evidence_rationale": "F0 is the cheapest rung of the RQ-26 kill ladder (research/2026/b70-hq4-format-design-20261009.md section 4) and can close the question with zero GPU. RL-153 (operator decision D3) re-entered the question after RL-151 proved the RL-150 block-output KL degenerate on 4/6 blocks (every arm AND EXL3 read |KL| <= 4e-12; the residual pass-through saturates the standardized softmax) and after RL-150's AutoRound at iters=10 escaped every tensor to INT8. This plan fixes exactly what the registry changed_variable names: primary = KL on the block delta (the shared input cancels exactly, exposing the arm's full perturbation), secondary = final-logit KL through the real tail on 2 blocks, a mandatory RTN-INT3 sanity control that must clear KL > 1e-6 on every block before the campaign and any scoring, and AutoRound at the mandated 100 iterations with the deadline sized from a measured 1-tensor probe (scripts/tmp/rq26_ar_probe_20261011.py: 0.8295/1.3601 s/iter per 89.1M-param tensor at 2 threads, plus a synthetic-xs divergence diagnostic that motivates but does not change the mandated recipe). Arms, blocks, split, seeds, gates and ranking are unchanged from RL-150; identities are re-verified (farms, states re-verified 2026-10-11; states NOT regenerated). The same stop rule applies: a failed F0 after one rounding-recipe retry closes HQ4 for this model and records the measured KL gap as the value of the trellis. Measured probe arithmetic also shows the mandated campaign (~25,600 2-thread-job-seconds) exceeds the 3600 s screen budget on this 8-core host (~1.3-2.3x); the driver therefore carries a hard internal 6840 s deadline (5% margin) under the RL-155 budget accommodation that raised the screen cap to 7200 s before the sealed run — no gate, arm, iteration or recipe change — and schedules the campaign block-major so a truncated partial retains complete blocks."
+}

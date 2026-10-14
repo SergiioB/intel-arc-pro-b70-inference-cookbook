@@ -1,0 +1,66 @@
+{
+ "question_id": "RQ-17",
+ "hypothesis": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.",
+ "changed_variable": "Execution isolation for the unchanged battery: host-memory guard re-samples a high PSI reading every 5 s for up to 120 s before calling it contamination (floor 8 GiB and PSI ceiling 5.0 unchanged); Strata root moved to /data/sata1/engines/strata after the 2026-10-13 remount; run alone on GPU0 in its own systemd unit; route, artifacts, tasks, scorers and gates unchanged",
+ "resource": "gpu",
+ "stage": "screen",
+ "timeout_s": 3600,
+ "command": [
+  "python3",
+  "scripts/tmp/rq17_battery_20261010.py",
+  "battery"
+ ],
+ "preflight_command": [
+  "python3",
+  "scripts/tmp/rq17_battery_20261010.py",
+  "preflight"
+ ],
+ "cleanup_command": [
+  "python3",
+  "scripts/tmp/rq17_battery_20261010.py",
+  "cleanup"
+ ],
+ "identities": {
+  "baseline": {
+   "host": "b70-host",
+   "engine_revision": "Strata v0.1.40.3 SYCL build-sycl/strata in image strata-sycl-dev:latest (release pin d5ea7133741e67743c0e886bb426c0ce8d69cf6c), config of record /data/sata1/engines/strata/serve-flashnext-iq3xxs.json, resident via serve.server --engine strata; battery repetition A. Attempt 5 2026-10-13 (RL-206 mechanism: PSI settle window; Strata root /data/sata1/engines/strata) (RL-158 re-entry: host-memory guard + isolated unit) (RL-152 mechanism; token-exactness conjunct amended per RL-156): battery budget/scoring mechanism only (gen >= 512, content-only scoring, truncation class, per-cell foreign-process guard); route, config of record and artifact identities unchanged from RL-144 Image note 2026-10-13: strata-sycl-dev:latest (was 9ef833f8730a) was deleted in the storage cleanup; it is re-tagged from strata-sycl-serve:0.1.40.3 (02af14c9db52), built FROM the same dev layers plus one 0-byte layer (pip jinja2, already present); filesystem, ENV and ENTRYPOINT identical. The mounted build-sycl/strata binary is unchanged.",
+   "model_revision": "Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS two-shard GGUF + pack/iq3xxs + mtp-rt + data/expert-profile.bin, identities sealed in results/2026/10/rq14-strata-matched-screen-20261009/ARTIFACTS.sha256 (RL-125)"
+  },
+  "candidate": {
+   "host": "b70-host",
+   "engine_revision": "Strata v0.1.40.3 SYCL build-sycl/strata in image strata-sycl-dev:latest (release pin d5ea7133741e67743c0e886bb426c0ce8d69cf6c), config of record /data/sata1/engines/strata/serve-flashnext-iq3xxs.json, resident via serve.server --engine strata; battery repetition B. Attempt 5 2026-10-13 (RL-206 mechanism: PSI settle window; Strata root /data/sata1/engines/strata) (RL-158 re-entry: host-memory guard + isolated unit) (RL-152 mechanism; token-exactness conjunct amended per RL-156): battery budget/scoring mechanism only (gen >= 512, content-only scoring, truncation class, per-cell foreign-process guard); route, config of record and artifact identities unchanged from RL-144 Image note 2026-10-13: strata-sycl-dev:latest (was 9ef833f8730a) was deleted in the storage cleanup; it is re-tagged from strata-sycl-serve:0.1.40.3 (02af14c9db52), built FROM the same dev layers plus one 0-byte layer (pip jinja2, already present); filesystem, ENV and ENTRYPOINT identical. The mounted build-sycl/strata binary is unchanged.",
+   "model_revision": "Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS two-shard GGUF + pack/iq3xxs + mtp-rt + data/expert-profile.bin, identities sealed in results/2026/10/rq14-strata-matched-screen-20261009/ARTIFACTS.sha256 (RL-125)"
+  }
+ },
+ "controlled": {
+  "workload": {
+   "definition": "campaigns/2026/rq17-flashnext-quality/tasks.json (predeclared 2026-10-10, frozen before any result exists; its sha256 is recorded in preflight evidence)",
+   "cells": "one discarded same-shape warmup; 6 canaries (batt-arith/capital/token/sumsq/logic/json token files on T-FORCE) x2 runs greedy gen 512; 3x3 replay drift gen 256 (batt-arith/batt-logic/batt-json, engine one-shot launches, output-id lines token-identical across reps); 10 representative host tasks greedy gen 512 with deterministic scorers; 8K two-turn KV-edge check (p8192 text + arithmetic question, then first-word follow-up; turn-1 rendered prompt >= 8100 tokens; per-turn gen raised by the adapter from the frozen tasks.json value 64 to the RL-152 floor 512, texts and scorers unchanged); content-only scoring with reasoning and content token counts logged separately per cell; finish_reason=length classed truncated-never-wrong; scripts/tmp/gpu_guard_20261011.sh called before AND after every cell on both render nodes (foreign inference PID -> that cell aborted as contaminated, lane paused with exit 3, PIDs recorded and never killed)",
+   "sampling": "greedy (temperature 0) everywhere; replay one-shot cells pass --greedy",
+   "client": "single sequential client (the adapter); one request in flight at a time",
+   "scoring": "deterministic Python scorers in scripts/tmp/rq17_battery_20261010.py keyed from the frozen tasks.json; content-only (message.content; reasoning_content retained as evidence, never scored); raw responses retained per cell",
+   "token_exactness": "Amended 2026-10-11 before attempt 2 (RL-152 mechanism, attempt 2 of 2): each canary's rendered prompt_tokens must equal batt-file ids + the serve surface's fixed chat-template overhead of 44 tokens (22/20/22/28/31/26 + 44 = 66/64/66/72/75/70) in BOTH runs. The overhead was measured identical on every canary in RL-144 and RL-156 raw; the attempt-1 conjunct compared rendered to bare file counts and was unsatisfiable by construction (RL-156). Mismatch fails measurement_validity, never adjusted.",
+   "cell_order": "warmup, canaries run A, tasks, 8K two-turn, canaries run B, serve stop, replay 3x3; every request and every replay launch bracketed by guard calls",
+   "host_memory_guard": "Amended 2026-10-11 before attempt 3 (RL-158): every guard call (before and after every cell) also reads /proc/meminfo MemAvailable and /proc/pressure/memory; MemAvailable < 8192 MiB or memory PSI full avg10 > 5.0 classes the cell contaminated (never wrong) and pauses the lane. The run executes in its own systemd user unit, not the interactive terminal scope; no CPU-heavy lane runs beside it."
+  },
+  "config": {
+   "card": "config of record ONEAPI_DEVICE_SELECTOR=level_zero:0 -> card0; verified live by PCI 0000:0b:00.0 in preflight (renderD128 group added); never a remembered hwmon index",
+   "engine_argv": "serve-flashnext-iq3xxs.json args verbatim: --pack /work/pack/iq3xxs --native/--ple-gguf IQ3_XXS shards --expert-profile data/expert-profile.bin --expert-cache auto --stream-experts --mtp /work/mtp-rt --spec 4 --spec-min-p 0.5 --vram-reserve-mib 256 --ple-io ram --max-context 10240 --kv int8 --prefill 4096; no --prompt-cache override and no other flag added or removed between arms",
+   "engine_env": "config env verbatim (ONEAPI_DEVICE_SELECTOR, STRATA_VERIFY_NO_HOST=1, STRATA_VERIFY_DEVICE_PLAN=1, STRATA_STAGER_THREADS=12, STRATA_PREFILL_RING=512) plus the section-2 vars pinned at docker level and PYTHONPATH=/work/pylibs",
+   "container": "image strata-sycl-dev:latest, explicit --entrypoint (python3 -m serve.server for the battery; the config exe for replay one-shots), dedicated container names under rq17-battery-, main docker daemon socket /run/docker.sock",
+   "vram_budget": "engine allocates its own profile (~23.6 GiB) on a card gated at >= 28500 MiB visible_avail (allocation invariant: live free minus 4 GiB reserve plus ~0.9 GiB slack; amended 2026-10-11 pre-seal from 31000 under run-2 lead authorization — the 31000 figure was a stale desktop baseline, not a research gate; record scripts/tmp/rq17_plan_amendment_20261011.md), keeping allocation inside live free VRAM minus 4 GiB; the serve container is stopped and VRAM release re-proven before any replay launch",
+   "power_thermal": "as-found caps recorded at preflight (currently card0 180 W / card1 230 W) and restored at cleanup; sustained thermal regime declared per standing rules (the <=55 C cooldown is unreachable on this host, RL-065/069)",
+   "isolation": "preflight fails on any foreign compute client on dri/0, any leftover rq17-battery-* or running strata container, or any listener on 8095; never touches the foreign processes other sessions own; scripts/tmp/gpu_guard_20261011.sh additionally brackets every cell on BOTH render nodes (GPU0 0000:0b:00.0/renderD128, GPU1 0000:0f:00.0/renderD129): a foreign inference PID aborts that cell as contaminated and pauses the lane (exit 3, evidence retained, PID never killed); guard hits that are this battery's own live rq17-battery-* containers (docker inspect State.Pid) are not foreign",
+   "guard": "scripts/tmp/gpu_guard_20261011.sh (2026-10-11 window tooling; same-contract performance fix vs its .slow-orig, verified A/B on clean and contaminated paths); called by preflight, at battery start, and before AND after every cell; every call logged to raw/guard/guard_log.jsonl",
+   "port": 8095
+  }
+ },
+ "comparison": {
+  "metric": "canary_pass_fraction",
+  "unit": "add_one_smoothed_correct_fraction",
+  "direction": "higher",
+  "min_relative_gain": 0.0
+ },
+ "evidence_rationale": "Attempt 4 = second attempt of the RL-158 mechanism (same changed_variable as RL-159). RL-159 was contaminated by the lead's co-scheduled subagent CPU lanes in breach of the declared isolation; the guard caught it (PSI) after an xe engine reset on GPU0 (RL-160). This run executes with no subagent or CPU-heavy job active on the host. Plan otherwise byte-identical to attempt 3; gates unchanged. Attempt 3. Attempt 1 (RL-156) passed every quality element and failed only an unsatisfiable token conjunct; attempt 2 (RL-158) was killed by systemd-oomd from the lead's co-scheduled CPU lanes after 22/24 serve cells (all completed cells consistent with RL-156). This attempt keeps the amended conjunct and adds the host-memory guard and isolated execution; gates unchanged. Re-entry attempt 1 of the fresh RL-152 mechanism pair (new changed_variable; zero prior manifests match it, so the max_attempts=2 budget is fresh). RL-144 scored canaries 4/6 only because the frozen gen-64 budget truncated CORRECT computation inside reasoning_content (batt-arith '7' = first digit of 703; the reasoning reaches 740 on the way to 703), and its replay UR_RESULT_ERROR_DEVICE_LOST (rc 139) was foreign llama-loop contention, per the operator re-entry decision D2 recorded as RL-152: NO canary produced a wrong answer, so the pre-declared stop rule (ADR-0011 REOPENED_QUALITY_FAILURE) never fired. This plan changes only the battery budget and scoring mechanism: canary/host-task/8K-turn2 gen >= 512, replay gen >= 256, content-only scoring with reasoning and content token counts logged separately, finish_reason=length classed truncated-never-wrong (truncation or contamination alone = blocked with cause via measurement_validity or a non-zero exit, NEVER a quality failure), and the render-node foreign-process guard bracketing every cell. Gates are unchanged and nothing that could lower them is introduced: the correctness check still fires on any wrong canary (finish stop + scorer miss) or replay drift, the success gate is still all 6 canaries correct in both runs, 3x3 replays token-identical, >= 8/10 host tasks, 8K two-turn correct. Route, config of record, artifact identities, server lifecycle, container naming, port and single-client discipline are byte-for-byte the RL-144 coordinates; minimum_relative_gain stays 0.0 (quality gate, not speed). Budget arithmetic from RL-144 per-cell timings scaled to the new budgets (engine load 354 s; serve decode 17.7-26.4 tok/s; 8.2K prefill ~12 s; replay one-shot ~120 s fixed load + 28.77 tok/s decode; guard 0.71 s/call) gives a worst-case battery phase of ~2725 s inside the 3300 s adapter deadline and the 3600 s screen timeout, with preflight and cleanup as separate bounded phases; the full arithmetic is predeclared in scripts/tmp/rq17_budget_notes_20261011.md.",
+ "measurements_note": "The adapter reads the frozen plan.json from B70_RUN_DIR and copies metric/unit/identities/controlled verbatim into measurements.json; baseline/candidate are arrays of {pair, value} over the 6 canary pairs; checks carry quality, correctness, isolation and measurement_validity, each with a relative evidence file under the run root. Check semantics for this mechanism (predeclared, per RL-152): correctness fails only on a WRONG canary or replay drift (the stop rule); truncated cells and contamination block through measurement_validity / a non-zero exit (blocked with cause), never as a quality failure. reasoning vs content token counts per cell are recorded in measurement_validity.token_counts_reasoning_vs_content; every guard call is recorded in raw/guard/guard_log.jsonl."
+}

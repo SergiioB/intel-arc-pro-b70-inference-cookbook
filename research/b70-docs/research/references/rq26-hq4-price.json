@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "amdahl": {
+    "wall_fraction": 0.75,
+    "local_speedup": 1.4,
+    "provenance": {
+      "kind": "assumption",
+      "references": [
+        "research/2026/b70-small-m-quant-layout-static-spec-20261009.md",
+        "research/2026/b70-format-route-lessons-20260930.md",
+        "results/2026/09/b70-m4-flag-ablation-20260930T143631Z/ABLATION-RESULT.json",
+        "hypothesis:RQ-26"
+      ],
+      "note": "Upper-bound sketch, not measured. Body linears are 12.23 of 16.68 GB per EXL3 MTP3 round; EXL3 reaches 381 GB/s and 636 logical-byte GB/s when trellis decode is skipped (B_FAKE). wall_fraction 0.75 = assumed share of round time spent in body linears. local_speedup 1.40 = an assumed 550 GB/s for a 4.125 bpw affine INT4-G128 kernel with block-128 Hadamard wraps versus 381 GB/s at 4.0 bpw (550/381 x 4/4.125). Assumes equal MTP3 acceptance, which requires equal target quality."
+    }
+  }
+}

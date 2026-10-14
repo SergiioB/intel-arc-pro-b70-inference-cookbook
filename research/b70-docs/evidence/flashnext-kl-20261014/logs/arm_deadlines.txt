@@ -1,0 +1,10 @@
+2026-10-14T06:04:20Z deadlines: bf16 pid=1144039 deadline=2026-10-14T12:04:20Z ; parity pid=1194472 deadline=2026-10-14T11:04:20Z
+2026-10-14T07:25:56Z relaunch bf16 (coalesced gather FN_HTTP_WORKERS=8, retries 12) log bf16_coalesced_20261014T072356Z.log
+2026-10-14T07:26:01Z bf16 retry pid=1624717 deadline=2026-10-14T11:26:01Z (enforced by fn_arm_deadlines.sh, single SIGINT, no restart)
+2026-10-14T07:26:01Z deadlines: bf16 pid=1624717 deadline=2026-10-14T11:26:01Z ; parity pid=1194472 deadline=2026-10-14T11:04:20Z
+2026-10-14T10:41:26Z deadlines: both arms no longer present
+2026-10-14T10:41:26Z deadlines: exit
+2026-10-14T11:26:05Z deadlines: bf16 deadline reached -> SIGINT
+2026-10-14T11:27:05Z deadlines: bf16 still alive -> SIGTERM
+2026-10-14T11:28:05Z deadlines: both arms no longer present
+2026-10-14T11:28:05Z deadlines: exit

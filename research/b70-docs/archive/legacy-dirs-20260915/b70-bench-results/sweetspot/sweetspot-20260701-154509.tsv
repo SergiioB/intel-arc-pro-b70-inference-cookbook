@@ -1,0 +1,9 @@
+model	ctx	cap_w	gt0_max	gt1_max	status	pp512	tg32	temp_avg	temp_max	temp_min	idle_temp	errors	log
+Qwen3.6-35B-A3B-UD-Q4_K_XL	65536	130	2800	1500	failure			54.4	60.0	53.0	54.0		~/b70-bench-results/sweetspot/Qwen3.6-35B-A3B-UD-Q4_K_XL-ctx65536-cap130-gt0_2800-gt1_1500-20260701-154509.log
+Qwen3.6-35B-A3B-UD-Q4_K_XL	65536	110	2800	1500	failure			55.9	60.0	55.0	60.0		~/b70-bench-results/sweetspot/Qwen3.6-35B-A3B-UD-Q4_K_XL-ctx65536-cap110-gt0_2800-gt1_1500-20260701-154509.log
+Qwen3.6-35B-A3B-UD-Q4_K_XL	65536	130	2400	1300	failure			57.4	62.0	56.0	60.0		~/b70-bench-results/sweetspot/Qwen3.6-35B-A3B-UD-Q4_K_XL-ctx65536-cap130-gt0_2400-gt1_1300-20260701-154509.log
+Qwen3.6-35B-A3B-UD-Q4_K_XL	65536	130	2000	1000	failure			57.4	62.0	56.0	62.0		~/b70-bench-results/sweetspot/Qwen3.6-35B-A3B-UD-Q4_K_XL-ctx65536-cap130-gt0_2000-gt1_1000-20260701-154509.log
+ornith-1.0-35b-Q4_K_M	65536	130	2400	1300	failure			58.4	62.0	58.0	60.0		~/b70-bench-results/sweetspot/ornith-1.0-35b-Q4_K_M-ctx65536-cap130-gt0_2400-gt1_1300-20260701-154509.log
+Agents-A1-Q4_K_M	65536	130	2400	1300	failure			56.8	62.0	56.0	58.0		~/b70-bench-results/sweetspot/Agents-A1-Q4_K_M-ctx65536-cap130-gt0_2400-gt1_1300-20260701-154509.log
+gemma-4-26B-A4B-it-UD-Q4_K_M	65536	130	2400	1300	failure			56.8	62.0	56.0	62.0		~/b70-bench-results/sweetspot/gemma-4-26B-A4B-it-UD-Q4_K_M-ctx65536-cap130-gt0_2400-gt1_1300-20260701-154509.log
+Qwen3.6-27B-Q5_K_M	65536	130	2400	1300	failure			59.0	68.0	56.0	62.0		~/b70-bench-results/sweetspot/Qwen3.6-27B-Q5_K_M-ctx65536-cap130-gt0_2400-gt1_1300-20260701-154509.log

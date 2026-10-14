@@ -1,0 +1,123 @@
+Subject: [P2] Name K3 strip choices independently of K4 tuning
+Base-commit: 15ded2f3add148c4db3c900cba7de878238f53bc
+Status: local-only draft; PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Anchor: csrc/exl3_ops.sycl:181-184, after P1b. Defaults [8,4,4,4].
+Sweep geometry, legality, paper GRF budget and gates: P2-SWEEP-SPEC.txt.
+Trellis decode equality is zero-tolerance; dense output uses P3 frozen tolerance.
+Capture-safety: compile-time constants only; no new allocation/sync. D3 HOLD.
+
+diff --git a/csrc/exl3_ops.sycl b/csrc/exl3_ops.sycl
+--- a/csrc/exl3_ops.sycl
++++ b/csrc/exl3_ops.sycl
+@@ -176,17 +176,37 @@
+ // 256-GRF DPAS kernels only hold ~1024 resident threads); MB=64 prefers 2048 (77 vs 88 ms).
+ static int g_target_threads = 1024;          // vector GEMV (M<=2) and DPAS MB=32
+ static int g_target_threads_mb16 = 1408;     // DPAS MB=8/16: plateau 1280-1536 (M=4 35.1->32.2 ms, M=16 38.7->36.0), cliff at 1664
+ static int g_target_threads_mb64 = 2048;
+ 
+ // Column-strip width (tiles per thread) per case, from bench sweeps on B70:
+ // K=4 M=1 -> 8, K=4 M=2..4 -> 4, K=6 -> 4; M=8 -> 2 except K=3/5.
+ // Geo<3/5>::G=8 => TP=4: every instantiated MR needs NT % TP == 0.
++// K3 starts from the repaired pattern, not a claimed measured optimum.
++// Restrict the sweep to 64/128 columns: valid pairing and no 128-column shard crossing.
++#ifndef EXL3_K3_NT_MR1
++#define EXL3_K3_NT_MR1 8
++#endif
++#ifndef EXL3_K3_NT_MR2
++#define EXL3_K3_NT_MR2 4
++#endif
++#ifndef EXL3_K3_NT_MR4
++#define EXL3_K3_NT_MR4 4
++#endif
++#ifndef EXL3_K3_NT_MR8
++#define EXL3_K3_NT_MR8 4
++#endif
++static_assert(EXL3_K3_NT_MR1 == 4 || EXL3_K3_NT_MR1 == 8, "K3 MR1 NT must be 4 or 8");
++static_assert(EXL3_K3_NT_MR2 == 4 || EXL3_K3_NT_MR2 == 8, "K3 MR2 NT must be 4 or 8");
++static_assert(EXL3_K3_NT_MR4 == 4 || EXL3_K3_NT_MR4 == 8, "K3 MR4 NT must be 4 or 8");
++static_assert(EXL3_K3_NT_MR8 == 4 || EXL3_K3_NT_MR8 == 8, "K3 MR8 NT must be 4 or 8");
+ constexpr int nt_of(int K, int MR) {
++    if (K == 3) return MR == 1 ? EXL3_K3_NT_MR1 : MR == 2 ? EXL3_K3_NT_MR2
++                           : MR == 4 ? EXL3_K3_NT_MR4 : EXL3_K3_NT_MR8;
+     return MR == 8 ? ((K == 3 || K == 5) ? 4 : 2) : (K <= 4 ? (MR == 1 ? 8 : 4) : 4);
+ }
+ static int nt_for(int K, int MR) { return nt_of(K, MR); }
+ 
+ template <int K, int CB>
+ static bool dispatch_mr(int MR, const at::Tensor& xh, const at::Tensor& tr, const at::Tensor& shard,
+                         at::Tensor& part, int M, int Kdim, int N, int P, int rps, sycl::queue& q) {
+     switch (MR) {
+diff --git a/tests/k3_sweep_spec.txt b/tests/k3_sweep_spec.txt
+new file mode 100644
+--- /dev/null
++++ b/tests/k3_sweep_spec.txt
+@@ -0,0 +1,69 @@
++P2 — K3 column-strip sweep specification (FUTURE EXECUTION ONLY)
++PROVISIONAL — NOT FOR PUBLIC HEADLINE
++Base: 0xSero/exl3xpu 15ded2f3add148c4db3c900cba7de878238f53bc.
++Classification: local-only tuning draft; not a measured selection.
++Capture status: no new allocations/waits from the constexpr selection. Whole-op
++capture safety remains D3 HOLD. No image build until architect review clears it.
++
++Changed parameter
++- nt_of(3, MR): NT = number of 16-column trellis tiles per vector thread;
++  MR is 1, 2, 4 or 8 rows. P2 gives K3 explicit entries, independently overridable
++  as EXL3_K3_NT_MR1/2/4/8 through EXL3_FLAGS. Defaults = [8,4,4,4].
++- This is NOT a native INT3 DPAS path: trellis codes decode to fp16; vector GEMV
++  handles M<=2, existing fp16 DPAS handles M=3..128, reconstructed fp16 GEMM
++  handles M>128. Do not ascribe extra XMX TOPS to three-bit storage.
++- Existing DPAS geometry remains N=16, SD=8, K_instr=16 (fp16), repeat rows 8;
++  MB=8/16/24/32/40/48/64 groups those row repeats. No DPAS tile changes here.
++
++Legality and paper resource budget
++- Geo<3>: G=8, TP=32/G=4, GV=32, W=24 uint32 words per tile.
++  NP=NT/4; ACC=MR*NP*2*32=16*MR*NT elements.
++- Require NT in {4,8}. Both divide every real N/16 and do not cross a 128-column
++  shard boundary. NT=2 is illegal; NT=16 crosses shard assumptions and is excluded.
++- Named live arrays (not compiler allocation): acc fp32 + hacc fp16 = 96*MR*NT B;
++  words+prev = 192*NT B; xr = 32*MR B. Subtotal at MR1 NT8 = 2,336 B;
++  MR8 NT4 = 4,096 B; MR8 NT8 = 7,936 B. The step copies dw/pw add up to 768 B
++  before compiler reuse; decoded values/indices, reduction vectors and address
++  temporaries are additional. This is a lower-bound inventory, not spill proof.
++- GEMV adds no SLM. Preserve upstream work-group size, split-K settings and GRF
++  properties for the first screen. Do not blindly add subgroup attributes to an
++  ESIMD functor (ESIMD differs from implicit-SIMD subgroup kernels).
++- Later compiler/IGC register reports and profiler scratch traffic must establish
++  occupancy under the 64 KiB/XVE budget. Reject spilling variants before timing.
++
++Sweep ownership and order
++1. Architect accepts D3 option; orchestrator assigns an isolated build/test window.
++   Source oneAPI; discover storage live; use dedicated build/output dirs and save
++   source SHA, ordered patch hashes, flags, compiler versions and complete logs.
++2. Build repaired default [8,4,4,4] and one-coordinate variants: MR1=4,
++   MR2=8, MR4=8, MR8=8. Five initial candidates, not a 16-build blind sweep.
++   Only combine independently winning changes after correctness; max 16 legal
++   combinations total. Default serving uses MR1/2; MR4/8 use P3 raw diagnostics.
++3. Run P3 for every proposed finalist; first screen one module per each of the
++   seven real width-48 families, then ALL 400 real modules for promotion. No
++   substitution of 4bpw payload. A screen subset is never full correctness PASS.
++4. Reconstruction reference is exl3_ops.sycl:545 (base numbering), K3/cb2.
++   Compare every decoded weight with Triton at zero tolerance, then forced raw
++   one-hot GEMV/DPAS at zero tolerance. Dense output comparisons use the frozen
++   P3 row-relative L2 and absolute/RMS limits; no tolerance adjustment on failure.
++5. Run n=3 screens, fresh n=5 finalist measurements, same-shape warmup discarded.
++   Time default public op under graph replay, not eager dispatch: M=1,2,4,8,
++   16,32,64,128; report per-shape median/max/range and replay launch count.
++   MR4/8 forced-vector timings are diagnostic only, not serving-path wins.
++6. Isolated gate: >=5% weighted latency reduction against repaired default at
++   M=1/2 (weights from the 400-module census), no >5% regression in any default
++   serving cell; reject a noise-sized gain. Then P4 end-to-end gates decide
++   adoption. If default wins, retain defaults and explicitly record no tuning win.
++
++Fail-closed harness contract
++- A bench engineer implements the timing wrapper, separate from the P3 numerical
++  script. No measurements are performed by this authoring task.
++- Require approved D3 record, live ownership and empty-card gates, projected
++  scratch+weight+graph reserve, >=2 GiB post-load free, exact library hash, trace
++  confirming K3 dispatch under replay and no unexpected host synchronization.
++- One controlling process, one client; log progress before/after every cell.
++  Per cell deadline 120 s after JIT warmup; first-shape JIT deadline 300 s;
++  screen window deadline 30 min. Timeout/OOM/unsupported dispatch/nonfinite/
++  incomplete evidence = STOP, no fallback score and no automatic retry.
++- Save all timings and exclusions. No global scratch cache, tolerance loosening,
++  silent fallback, graph-off champion, or tuning other variables in this sweep.

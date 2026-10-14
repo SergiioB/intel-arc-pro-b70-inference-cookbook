@@ -1,0 +1,326 @@
+EXL3 K=3 REVIEWABLE PATCH SERIES — 2026-09-29
+PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Status: PHASE 2 COMPLETE — authored and statically checked; NOT BUILT / NOT GPU-TESTED.
+Capture-safety: D3 HOLD, the open architect design gate before any image build.
+Requested Markdown report is emitted as text because the kernel-engineer operating contract prohibits report .md writes.
+
+Scope and anchor
+- Host verified b70-host; situation compiler research halt=false.
+- Target upstream 0xSero/exl3xpu main 15ded2f3add148c4db3c900cba7de878238f53bc.
+- No builds, GPU work, docker operations, images, model downloads, commits or publication authorized.
+- Source-only shallow clone restored with explicit operator authorization after /tmp loss; HEAD matches.
+- Production patches add no captured-region allocation or device synchronization, but inherited allocations remain: D3 HOLD.
+
+Ordering (apply the entire series before any future build; P1 alone is insufficient)
+0001-P1-build-enablement.patch — Docker build args + EXL3_FLAGS enablement, D2 fail-closed compile.
+0002-P1b-strip-constraint.patch — D1 correction: NT=4 at MR8 for BOTH K3 and K5.
+0003-P2-k3-strip-selection.patch — explicit K3 nt_of entries and bounded sweep specification.
+0004-P3-real-geometry-correctness.patch — owned test + guarded K3 diagnostic raw dispatch + runner spec.
+0005-P4-matched-ab-spec.patch — token-audited sustained A/B, prefill and quality gates; spec only.
+0006-P5-k-aware-reconstruction.patch — D5 compiled-K/codebook-aware routing + CPU regression tests.
+0007-P6-dpas-mb4.patch — default M in {3,4} -> MB=4 DPAS dispatch (RL-098 B6 fix
+candidate) + same-build A/B lever + isolated-op spec.
+
+Risk register (initial)
+- K3 kernels unverified; source support and build success are not numerical correctness.
+- Unswept strip geometry; no performance claim until isolated and matched gates pass.
+- Prefill K4/K6 restriction remains; prefill regression gate required.
+- Updated by RL-094: 3bpw Triton quality ADVANCED (6/6 battery twice, tasks 9/10); this does not certify the new ESIMD kernels.
+- All GPU/build windows remain orchestrator-gated.
+
+Upstreamability
+Local-only drafts, anchored and minimal; contribution routing through b70-upstream-researcher only. No upstream submission.
+
+Static evidence / review / final inventory
+Phase 1 — verified source, not recalled line numbers
+Source-only shallow clone: /tmp/b70-k3-exl3-source-20260929
+HEAD: 15ded2f3add148c4db3c900cba7de878238f53bc (main).
+Exact upstream anchors:
+- docker/Dockerfile:2 immutable base; :11 build invocation.
+- scripts/build_ext.sh:14-19 compile command, EXL3_FLAGS consumption, swallowed error pipeline.
+- csrc/exl3_ops.sycl:181-195 nt_of and all four unconditional vector instantiations.
+- :264-266 optional single-kernel fused path is K4/K6 ONLY; K3 uses the normal multi-kernel ESIMD path.
+- :303-310 production K3 GEMV/DPAS dispatch behind ALL_CODEBOOKS.
+- :536-551 reconstruction, K3 specifically :545.
+- :554-591 diagnostic raw GEMM supports ONLY K4/K6, even with ALL_CODEBOOKS (prior dig's implication of guarded raw K3 support was incorrect).
+- :661 actual int8-prefill gate (not :658 in the earlier map).
+- :760-766 supported predicate; ops.py:78-84 fallback; :130-137 public routing.
+
+Defects / blocking findings
+D1, statically demonstrated template defect: Geo<3> and Geo<5> both have G=8, TP=32/G=4. GemvKernel at exl3_esimd.h:464-467 requires NT%TP==0. Existing nt_of(K,8)=2 violates it. dispatch_mr unconditionally instantiates MR=8 (:193), even though default serving uses vector only for M<=2. Thus ALL_CODEBOOKS enables ill-formed K3 AND K5 instantiations. Separate patch repairs both MR8 entries to 4, the minimum legal pairing. This is not a measured tuning choice.
+D2, build integrity: build_ext.sh:18 ends compiler pipeline in '|| true'. A failed compile with an older _C.so present can succeed at the final ls. Separate fail-closed build-script patch removes the swallowing pipeline. Not a GPU-kernel bug.
+D3, capture caveat: inherited decode allocates output at :654 and xh/part at :283-284/:297 (optional fused scratch at :222, counters lazy-init :202). No synchronization occurs on the default non-LUT K3 device launch path, but a literal 'no dynamic allocation in captured region' claim is NOT statically true of this upstream API. Graph-private allocator behavior requires later trace/replay proof; strict zero-allocation compliance remains HOLD pending architect acceptance of graph-private pre-reserved allocation or a separately scoped caller-owned workspace API. No unsafe process-global scratch cache is introduced to conceal this issue.
+D4, numerical semantics: exact trellis reconstruction and one-hot decode are distinct from dense linear bit identity. GemvKernel uses per-tile fp16 hacc (:492/:552-555); DPAS is fp16 operands/fp32 accumulate (:829-830); Triton uses fp32 dot/atomic split reduction (triton_kernels.py:173-175). Dense random output equality is not promised. Exact decode gates remain zero-tolerance; dense comparison uses a predeclared tolerance and is not called bit-exact.
+
+Real geometry census (header reads only; no tensor payload/model load)
+Resident 4bpw artifact headers independently reproduce the plan's seven body families and 400 modules. K3 width48 is demanded by the plan/RL-089; candidate artifact itself is not downloaded or verified here.
+[Kdim,N,count] = [5120,1024,32], [5120,6144,48], [5120,10240,48], [5120,12288,16], [5120,17408,128], [6144,5120,64], [17408,5120,64].
+Later candidate runner must independently recensus all 400 width48 tensors, not substitute 4bpw codes.
+
+Phase 2 — COMPLETE (authoring/static validation only)
+
+All paths below are relative to this inventory's directory unless absolute.
+Authoring root: ~/B70-DOCS/research/2026/b70-k3-exl3-extension-20260929/
+Source: /tmp/b70-k3-exl3-source-20260929 (restored authorized shallow clone, exact HEAD, unchanged).
+Static-only patch validation copy: /tmp/b70-k3-patchcheck-awa_kvrw (NOT a build tree).
+
+Patch dispositions and capture status
+- P1: required opt-in build enablement + D2 correction; local-only draft. Docker ARG
+  EXL3_ALL_CODEBOOKS defaults 0, EXL3_FLAGS defaults empty; script appends define
+  only for 1, invalid values fail. Removing grep/||true preserves full diagnostics
+  and compiler exit status even with an old .so present. No runtime capture change.
+- P1b: required template correction, local-only draft. MR stays 8; NT changes 2->4
+  for K3 and K5. Does not claim a speed win. No new runtime allocations/waits.
+- P2: local-only provisional tuning surface, defaults [8,4,4,4]; each MR can select
+  NT=4 or 8, static assertions reject illegal values. P2-SWEEP-SPEC.txt gives the
+  tile geometry, conservative GRF inventory, candidate range, isolated gate and
+  numerical criteria. No DPAS tile rewrite or native INT3 compute-rate claim.
+- P3: local-only owned correctness code; K3 raw-op addition is diagnostic only.
+  Test allocations and synchronizations are outside captured region; captured
+  production allocations are NOT fixed or certified. Upstreamable after review
+  and execution through b70-upstream-researcher, not submitted by this agent.
+- P4: local-only spec, no executable timing harness or measured result. P4-AB-SPEC.txt
+  defines >=10% sustained serial-C1 post-first token-rate gain, 69.575 tok/s as the
+  arithmetic historical target only if metric/protocol matches, <=5% prefill
+  regression, exact-answer/spec-canary kill gates, and fresh matched controls.
+- P5: required D5 guard correction, local-only draft. It checks compiled support
+  AND actual reconstruction pairs (K6/cb0/1 excluded), including public large-M
+  C++ routing. Only host integer metadata is queried; no tensor scalar read or
+  new device sync/allocation. Default K3 unsupported -> Triton reconstruction;
+  all-codebooks K3 supported -> C++ small AND large M.
+- P6: local-only draft, the RL-098 B6 fix candidate (substitute kernel-engineer,
+  provider quota). Makes the previously opt-in EXL3_DPAS_MB4 case unconditional
+  and selects MB=4 for M in {3,4} by default; exl3_set_dpas_mb4(0) restores the
+  padded MB=8 path for a same-build A/B. Legality verified D1-style: the tile
+  decode geometry is MB-independent (Geo G/V/D/W, A_=G/P=8 asserted); RC=4 gives
+  one legal dpas<8,4>; NT=4 keeps n_strips/m_blocks/P identical and divides
+  every routed tiles_n. xh scratch shrinks (Mp 8->4); part sizing unchanged; no
+  new allocation or sync sites — D3 HOLD unchanged. Expected bit-identical
+  per-element accumulation vs MB8; identity check and >=5-point pin-fraction
+  recovery gate in tests/mb4_ab_spec.txt. K3 inherits the instantiation only
+  under EXL3_ALL_CODEBOOKS. exl3_gemm_raw deliberately keeps MB=8 as a fixed
+  reference arm.
+- EVERY patch explicitly records capture status. Whole-op D3 remains HOLD.
+
+Actual checkpoint recensus (Phase 2 supersedes the Phase 1 candidate-unverified note)
+Read-only headers from /mnt/<nvme-disk>/b70-exl3-qwen38-3bpw-20260929/:
+400 width48 K3 body modules independently verified against index and scale shapes,
+with all seven [Kdim,N,count] families above. Full shard inventory ALSO includes
+8 width64 K4 MTP tensors and 1 width96 K6 lm_head. Do not present {3:400,6:1} as
+an exhaustive checkpoint census. Metadata: version1.4.2, bits3, head6, mtp4, mul1.
+real-k3-header-census.jsonl contains every module/header identity plus final PASS;
+no payload/model load and no full-checkpoint checksum claim. Payload identity and
+GPU correctness remain future gates; the trial's byte verification is inherited.
+
+Owned tests and review copies
+- test_k3_real_geometry.py (byte-identical to P3 tests/ file): stdlib-only header
+  mode; explicit future GPU mode covers all 400 real tensors, fp16/bf16, two
+  seeds and 23 M values = 36,800 dense cells. Reconstruction/one-hot decode use
+  zero tolerance; dense rows use rel-L2<=0.01 AND maxerr<=0.01+0.05*row-RMS,
+  frozen before execution, no automatic relaxation. Small-M replay includes an
+  input mutation to catch stale outputs. This is not dense bit-identity.
+- P3-RUNNER-SPEC.txt: external ownership/VRAM/checksum/D3 authorization, timeout,
+  progress, full-coverage, error and cleanup gates. GPU mode has NOT been run.
+- test_reconstruct_support.py (byte-identical to P5 tests/ file): CPU-only AST
+  execution of actual ops.py routing functions with stubs; five passing tests.
+  Covers K3 unsupported/supported, both M regimes, pair truth table, missing
+  predicate and K6 non-mul1 reconstruction exclusion. Not a numerical test.
+- author_series.py: deterministic stdlib patch authoring from exact clean clone;
+  does not modify source, build or import GPU packages. Refuses overwrite.
+
+D3 architect decision, not implementation
+D3-ARCHITECT-DECISION.txt is addressed to b70-architect review. Option A allows
+allocator calls backed by graph-private pre-reserved storage, with an explicit
+contract relaxation and runtime allocation/lifetime evidence. Option B introduces
+caller-owned output/workspace, an allocation-free captured API with shape/capacity
+and lifetime checks. Neither is selected or patched here. D3 is the ONE open
+DESIGN gate before any image build; future build/GPU ownership, compilation,
+numerics, dispatch, task quality and performance gates still apply afterward.
+
+Future build instructions — NOT EXECUTED, not authorization
+1. Architect records D3 disposition; orchestrator assigns exclusive build window.
+   Discover storage live per ~/B70-DOCS/docs/operations/storage-and-vram-safety.md;
+   check no running campaign and ownership/empty-GPU gates. No build alongside one.
+2. Use a dedicated source/output directory on an approved large mount, exact
+   base 15ded2f3add148c4db3c900cba7de878238f53bc; retain compiler/library versions,
+   base image immutable digest (Dockerfile:2), complete logs and patch SHA256s.
+   Apply seven patches in order with git apply --check then git apply. Rebase by
+   context/function, never blindly carry line numbers to a moved generation.
+3. Source /opt/intel/oneapi/setvars.sh --force. Default regression library:
+   EXL3_ALL_CODEBOOKS=0 EXL3_OUT=<absolute dedicated default.so> bash scripts/build_ext.sh
+   Candidate library:
+   EXL3_ALL_CODEBOOKS=1 EXL3_OUT=<absolute dedicated all-codebooks.so> bash scripts/build_ext.sh
+   Optional P2 flags travel through EXL3_FLAGS, e.g. -DEXL3_K3_NT_MR1=4.
+   Defaults preserve upstream GRF policy; compiler resource reports remain owed.
+   Negative D2 test in an isolated stub-compiler fixture: compiler exit nonzero
+   must propagate even with preexisting output. Do not trust final file presence.
+4. If building a derived image is separately approved, docker/Dockerfile accepts
+   --build-arg EXL3_ALL_CODEBOOKS=1 and --build-arg EXL3_FLAGS=... . Use isolated
+   exl3 dockerd/large storage per current contract, never root-disk pull. No image
+   command was run here; derived images remain local-only, not public recipes.
+5. P3 fail-closed correctness then exact-answer/spec-canary; profiler dispatch
+   verification under graph replay; isolated-op P2 then matched P4. Do not treat
+   compile success, eager timings or a numerical smoke as adoption evidence.
+
+Validation actually performed
+- All six patches sequentially git apply --check --whitespace=error-all and apply
+  in a four-source-file temporary copy: PASS, clone unchanged.
+- 2026-09-29 (P6, substitute kernel-engineer): full series 0001..0007
+  git apply --check --whitespace=error-all then apply onto a fresh clone:
+  PASS; resulting tree identical to the P6 authoring tree. Static only —
+  no SYCL compile, no GPU, no docker.
+- Python AST parse of added/modified Python: PASS; bash -n patched build script: PASS.
+- CPU-only D5 routing regressions: 5/5 PASS (no torch imported).
+- Real 3bpw header-only census: PASS, 400 real width48 modules, exact family counts.
+- Review test copies identical to applied patch contents: PASS.
+- static-validation.json records patch hashes, exact base, validation tree and results.
+- static-negative-checks.json: D2 compile-command shell fragment with a CPU stub
+  icpx returning 37 exits 37 and never reaches final ls (no real compiler/build).
+- Missing GPU authorization negative test: expected rc=1 before torch import,
+  retained as missing-authorization-negative.jsonl. It performed header census
+  then refused; NO accelerator operation. This expected FAIL is not numerical failure.
+
+Unverified / limits / failures retained
+Initial /tmp clone missing blocked authoring; restored only after explicit user
+permission. An oversized Read of quantization_config.json was replaced by bounded
+stdlib JSON-field extraction; a guessed quantization.py path was absent, so scale
+semantics were read from existing ref.py/ops.py instead. No hidden success claims.
+No SYCL/C++ compile, no resource/spill report, no payload read, no numerical GPU
+execution, no actual graph allocator proof, no performance measurement. Source
+clone, local file reads/header census and CPU-only static/routing checks only;
+NO builds, GPU, Docker, model downloads, commits, publication or spawned agents.
+No typed route or measurement status changed; RL-094 quality input is inherited,
+not a new experiment. Next deciding action: architect D3 choice, then separately
+assigned build/correctness/isolated-op/end-to-end windows owned by bench/profiler.
+
+================================================================================
+P3 excursion root-cause (substitute analyst) — 2026-09-29
+PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Analyst: substitute for b70-kernel-engineer (provider quota). Static source
+analysis only; no GPU, no builds, no docker. Evidence: results/2026/09/
+b70-k3-build-p3-20260929/p3/{p3-screen,p3-diag-outproj,p3-repro-outproj}.jsonl;
+source /tmp/b70-k3-exl3-source-20260929 @ 15ded2f3ad.
+
+1. What actually ran at the failing cell
+- E.linear -> exl3_gemm_small (exl3_ops.sycl:255-318): M=8 > g_vec_max_m(2) ->
+  use_vec=false -> MB=8, m_blocks=1, Mp=8 -> DpasKernel<3,2,8,EXL3_DPAS8_NT=4>
+  (dispatch_dpas :144). NOTE: this is NOT the D1-repaired template. P1b changed
+  nt_of(3,8): 2->4 for the VECTOR GemvKernel (:183, exercised only by the
+  exl3_gemm_raw path-0 one-hot checks, which passed zero-tolerance). The
+  production M=8 DPAS kernel uses the pre-existing EXL3_DPAS8_NT=4. RESULTS.md's
+  "MR8 DPAS instantiation (D1-repaired body)" conflates the two; precision matters
+  for blame assignment: the D1 repair itself was never on the failing path.
+- Geometry at k=6144/n=5120: tk=384 tile-rows, tiles_n=320, n_strips=80,
+  units=80, target=g_target_threads_mb16=1408 -> P=18, rps=22 (:289-297). The
+  FIRST kdim>5120 family differs from prior cells ONLY in (P=18 vs 9/15,
+  rps=22) and dot length 384 vs 320. No new code path; same templates as the
+  in_proj_z (k5120) cells that passed at P=15/rps=22. n=1440 work-items is an
+  exact multiple of local=8.
+- Coverage audit: part at::empty({18,8,5120}) fp32 (:297) is fully written —
+  every (strip,mb,p) stores NT*mrows*16 floats (:846-858) and the p*rps>=tk
+  early-exit (:724) only clips rounded-up threads (id>=1440 -> p>=18 -> exit).
+  had_out (:314 -> HadOutKernel :321-338) reads exactly the written region.
+  xh at::empty({1,8,6144}) fully written by HadInKernel (384 threads, all
+  tile-rows/rows). No uninitialised-read window exists at this geometry.
+- The kernel is a deterministic function of (x, tr, su, sv, shard): no atomics,
+  no cross-thread traffic (split-K reduction is a separate had_out kernel in
+  the same queue), complete coverage, zero-tolerance decode verified for this
+  module. DPAS accumulates fp32 throughout; fp16 hacc exists only on the M<=2
+  vector path (GemvKernel :492/:552-555).
+
+2. Why "intermittent" — the reproduction was input-nonidentical
+- gpu_gate (test_k3_real_geometry.py:191-194) seeds gen ONCE per (dtype,seed)
+  and draws sequentially over MS. The failing input = draw #5 of gen(1701)
+  (M=1,2,3,4 consumed 10x6144 values first), cast fp32->bf16.
+- scripts/tmp/b70-k3-p3-repro.py:64 calls manual_seed(1701) INSIDE run_cell —
+  every cell uses draw #1. b70-k3-p3-diag-outproj.py:102-105 runs ms=(8,) for
+  out_proj — also draw #1. Proof in the JSONL: M=1 bf16 vs_ref rel matches the
+  screen to 16 digits (0.0014597931876778603 — draw #1 identical in both),
+  while M=2 differs (0.0014547827886417508 vs screen's 0.0015262686647474766).
+  Ops are deterministic; therefore inputs differed. None of the ~50
+  "identical re-executions" ever ran the failing input. The intermittency is
+  at least partially an artifact of the probe design.
+- Error-shape analysis supports a single-element event: one 0.125 element on a
+  ~5120-wide, RMS 1.2 row contributes rel ~0.125/86.3 ~ 0.0015; observed excess
+  rel (0.0016 vs ~0.0009 typical) matches almost exactly. A wrong split-K
+  partial would smear through FWHT across a whole 128-column block (rel >>0.01)
+  — not seen. The event is downstream of the dot product: a single
+  output element differing by ~0.125.
+- bf16 ULP structure: 0.125 = 1 ulp at |y| in [16,32). The screen itself shows
+  a population of exactly-1-ulp 0.0625 excursions (ulp at |y| in [8,16)): 16
+  cells, all bf16, all passing on bound slack. The mechanism plausibly
+  identical: ESIMD-vs-Triton fp32 pipeline differences (~0.03-0.06 at moderate
+  elements; diag shows ESIMD carries ~2x the fp64-anchor error, 0.0156 vs
+  0.0078 — consistent with fp16-level xh differences: ESIMD fwht-fp32->fp16 vs
+  Triton tl.dot-fp32->fp16 rounding order) straddling a bf16 rounding boundary
+  at a rare large-magnitude element. The fp16 M=2 excursion (0.0625) is the
+  analogous event on the vector path where fp16 hacc is a real per-tile-row
+  accumulator — also single-element by the same signature.
+
+3. Ranked verdict
+- (b) FIRST — deterministic data-dependent excursion, most likely a bf16
+  output-rounding boundary flip at a large |y| element (possibly compounded by
+  an above-average fp32 pipeline difference). Explains: single-element error
+  signature, bidirectional excursions, clean re-runs (different inputs), bf16
+  concentration, P=18 being merely the longest dot so far. It also explains
+  why fp16 M=8 on the same base draws passed: different cast -> different xh
+  -> no boundary straddle.
+- (a) SECOND (residual) — no static hole found in split-K lifetime; wrong
+  partials would smear multi-element (not observed). Survives only as a
+  runtime/kernel-boundary visibility issue, which this code cannot produce
+  on paper.
+- (c) THIRD — no shared scratch on the small-M path (weight_scratch/_wbuf/
+  fused_counters/lut/q8dnnl all off-path); per-cell graph pools are destroyed
+  under synchronize; allocator reuse is benign given full coverage.
+
+4. Deterministic repro design (next GPU window; NOT run)
+- Cell matrix: module out_proj (k6144,n5120); EXACT generator discipline —
+  gen=manual_seed(seed) once per (dtype,seed), draw randn over MS in order,
+  evaluate the M=8 cell (draw #5). Certify input identity: M=1..4 cell rel_l2
+  must match p3-screen.jsonl bit-exactly before the M=8 result counts.
+  Arms: exact-input x {n>=200 replays}; in-sequence prefix (all prior cells,
+  same order, incl. graph blocks) x3; M in {7,8,9} (partial/full/split MB8
+  block); dtype {fp16,bf16}; seeds {1701,2909,+4 adjacent}; geometry control =
+  in_proj_z (k5120,n6144) same arms; module instances layers.0 vs a second
+  out_proj layer.
+- Instrumentation (no kernel rebuild needed for arms 1-2): dump argmax element
+  (row,col) with yc/yt/yr/y64 values, |value|, ulp_bf16(|value|), diff/ulp
+  ratio; per-cell xh bitwise diff ESIMD-vs-Triton (via exl3_gemm_small xh? no —
+  had_in is internal; use EXL3_DEBUG or a dump flag: add a debug binding that
+  returns the internal xh/part — small patch). If a rebuild is authorised:
+  variant library with part/xh at::zeros (one-line each) for the (a) arm.
+- Pre-declared verdict rule (freeze before running):
+  * V1 identical input -> bit-identical output across 200 reps = deterministic:
+    evaluate (b). Flips across reps = race/lifetime: (a)/(c).
+  * V2 under (b): argmax element |yt|>=16 AND |yc-yt| exactly 1 bf16 ulp AND
+    |fp32 pre-cast diff| < half-ulp -> boundary flip -> tolerance-scope
+    disposition (below). |yt|<8 with multi-ulp diff -> genuine divergence ->
+    kernel investigation (escalate (a): zeros-variant build + xh/part dumps).
+  * V3 excursion only in-sequence, never standalone = allocator/pool context:
+    (c) arm — repeat with torch.xpu.empty_cache() between cells and persistent
+    workspaces; disappearance under quarantine confirms (c).
+
+5. Disposition per suspect
+- (a) if V1/V2 implicate a real partial: minimal patch = at::zeros for part
+  (exl3_ops.sycl:297) and xh when Mp==M (:283), plus a static coverage
+  assertion; also fix the gemm_raw at::zeros (:582) asymmetry that would mask
+  the same hole. If zeros does not fix it -> runtime/driver escalation, out of
+  kernel scope.
+- (b) if V2 confirms a boundary flip: this is a TOLERANCE-SCOPE amendment, not
+  a patch: extend the dense gate elementwise — mx <= max(0.01+0.05*rms_row,
+  1 ulp of the OUTPUT dtype at the reference element). MUST be predeclared
+  before the next screen; the recorded FAIL stands (frozen contract — no
+  post-hoc relaxation of the run). Legality: D4 already declares dense
+  comparison non-bit-exact with predeclared tolerance; the zero-tolerance
+  gates (trellis reconstruct, one-hot decode — both PASS) are unaffected and
+  orthogonal. If excursions turn out multi-ulp at moderate |y|, (b) is NOT
+  available as a label change.
+- (c) if V3 confirms: harness-only fix — empty_cache between modules, and/or
+  allocate cell workspaces outside the graph-pool lifetime; no production
+  change.
+
+Recorded asymmetries/limits: p3-repro/p3-diag input nonidentity proven from
+rel_l2 bits; screen vs_triton-vs-vs_reconstruct side attribution unrecorded
+(the dict evaluates vs_triton first — the thrown line does not prove both
+deviated, contra RESULTS.md:122); pre-cast fp32 magnitudes of out_proj
+outputs unknown without the repro dump.

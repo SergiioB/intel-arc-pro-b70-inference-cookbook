@@ -1,0 +1,50 @@
+raise RuntimeError("QUARANTINED: invalid MTP stub; no real attention/MLP or valid sampling")
+"""
+Patch for vLLM XPU to route MTP draft execution to the new fused kernel.
+File: vllm/spec_decode/mtp_worker.py (or equivalent execution path)
+"""
+
+import torch
+
+# Existing MTP execution in vLLM:
+# def _draft_step(self, hidden_states):
+#     x = self.norm(hidden_states)
+#     x = self.mtp_proj(x)
+#     logits = self.lm_head(x)
+#     token = torch.argmax(logits, dim=-1)
+#     return token
+
+# Patched execution:
+def _draft_step_fused_xpu(self, hidden_states):
+    """
+    Reroutes the draft sequence through the custom `torch.ops._xpu_C.fused_mtp_step`.
+    Bypasses PyTorch's eager dispatch overhead entirely.
+    """
+    if hidden_states.device.type == "xpu":
+        # Extract the underlying GPTQ quantized weights and scales
+        # Assuming QLinearGPTQ or similar linear layer wrapper
+        mtp_qweight = self.mtp_proj.qweight
+        mtp_scales = self.mtp_proj.scales
+        
+        lm_head_qweight = self.lm_head.qweight
+        lm_head_scales = self.lm_head.scales
+        
+        norm_weight = self.norm.weight
+        eps = self.norm.variance_epsilon
+        
+        return torch.ops._xpu_C.fused_mtp_step(
+            hidden_states,
+            norm_weight,
+            mtp_qweight,
+            mtp_scales,
+            lm_head_qweight,
+            lm_head_scales,
+            eps
+        )
+    else:
+        # Fallback to eager sequential path if not running on XPU
+        x = self.norm(hidden_states)
+        x = self.mtp_proj(x)
+        logits = self.lm_head(x)
+        return torch.argmax(logits, dim=-1)
+

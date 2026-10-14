@@ -1,0 +1,1 @@
+~/b70_reddit_35b_bench.sh: line 14: uvx: command not found

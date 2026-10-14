@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "roofline": {
+    "bytes_per_step": 13500000000,
+    "flops_per_step": 54000000000,
+    "bandwidth_gbps": 608,
+    "compute_tflops": 100,
+    "serial_ms": 0,
+    "tokens_per_step": 1,
+    "provenance": {
+      "kind": "assumption",
+      "references": ["https://www.intel.com/content/dam/www/central-libraries/us/en/documents/2026-03/datasheet-b70-gpu.pdf"],
+      "note": "Illustrative 27B exactly-4-bit dense model, no scales/KV/workspace or re-reads, ideal bandwidth. 100 TFLOP/s is an assumed compatible compute rate, not a B70 measurement or INT8-to-FP16 conversion. Zero serial time is deliberately idealized, not observed."
+    }
+  },
+  "amdahl": {
+    "wall_fraction": 0.08,
+    "local_speedup": 2,
+    "provenance": {
+      "kind": "assumption",
+      "references": ["docs/methods/architecture-diagnostic-playbook.md"],
+      "note": "Independent illustration of an operation taking 8% of whole-task wall time becoming twice as fast. Do not combine with the roofline as a measured result."
+    }
+  },
+  "kv": {
+    "full_attention_layers": 16,
+    "kv_heads": 4,
+    "head_dim": 128,
+    "context_tokens": 32768,
+    "batch": 1,
+    "kv_bytes": 2,
+    "recurrent_state_bytes": 268435456,
+    "workspace_bytes": 2147483648,
+    "weights_bytes": 13500000000,
+    "provenance": {
+      "kind": "assumption",
+      "references": ["docs/methods/architecture-diagnostic-playbook.md"],
+      "note": "Hypothetical hybrid geometry and explicitly assumed state/workspace totals. Not checkpoint metadata or proof of fit; does not include engine slack or safety reserve."
+    }
+  }
+}

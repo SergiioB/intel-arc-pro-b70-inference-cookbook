@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/migration.schema.yaml",
+  "title": "B70 documentation migration baseline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "generated": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "source_set",
+        "approved_moves_path",
+        "entry_count"
+      ],
+      "properties": {
+        "mode": {
+          "const": "inventory-subordinate-to-approved-moves"
+        },
+        "source_set": {
+          "const": "current-markdown-at-generation"
+        },
+        "approved_moves_path": {
+          "const": "registry/migration/approved-moves.yaml"
+        },
+        "entry_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/migration"
+      }
+    }
+  },
+  "$defs": {
+    "migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_path",
+        "registry_id",
+        "disposition",
+        "target_path",
+        "metadata_confidence"
+      ],
+      "properties": {
+        "source_path": {
+          "type": "string",
+          "pattern": "^(README\\.md|AGENTS\\.md|DOCUMENT-MAP\\.md|(?:docs|research|benchmarks|models|studies|decisions|campaigns|archive)/.*\\.md)$"
+        },
+        "registry_id": {
+          "type": "string",
+          "pattern": "^(?:doc-[a-z0-9][a-z0-9-]*|[A-Za-z0-9][A-Za-z0-9:._-]*)$"
+        },
+        "disposition": {
+          "enum": [
+            "register-in-place",
+            "review"
+          ]
+        },
+        "target_path": {
+          "type": "string",
+          "pattern": "^(README\\.md|AGENTS\\.md|DOCUMENT-MAP\\.md|(?:docs|research|benchmarks|models|studies|decisions|campaigns|archive)/.*\\.md)$"
+        },
+        "metadata_confidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "level",
+            "basis"
+          ],
+          "properties": {
+            "level": {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ]
+            },
+            "basis": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "approved_move_entry": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://raw.githubusercontent.com/vllm-project/vllm/75e3b17c055c609f02c64cd4ad3f8692b8170d8e/vllm/platforms/xpu.py",
+  "final_url": "https://raw.githubusercontent.com/vllm-project/vllm/75e3b17c055c609f02c64cd4ad3f8692b8170d8e/vllm/platforms/xpu.py",
+  "fetched_at": "2026-10-09T16:39:47.274978Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "1d51cdfeaa02eeeb61313d8c9f361352b239eeac2245e0494295603eaf82186d",
+  "size_bytes": 23041,
+  "claim": "XPU supported_quantization list at master: awq gptq moe_wna16 auto_awq auto_gptq inc fp8 deepseek_v4_fp8 mxfp4 mxfp8 fp8_per_tensor/block/channel online gpt_oss_mxfp4 modelopt compressed-tensors; NVFP4 absent",
+  "relevance": "Engine-level truth for vLLM XPU quant availability on B70",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

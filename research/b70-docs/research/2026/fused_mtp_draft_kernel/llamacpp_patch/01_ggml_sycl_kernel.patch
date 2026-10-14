@@ -1,0 +1,54 @@
+QUARANTINED NON-APPLICABLE: invalid MTP stub. Preserved for forensic review only.
+--- ggml-sycl.cpp
++++ ggml-sycl.cpp
+@@ -4000,6 +4000,53 @@
+     });
+ }
+ 
++// ===========================================================================
++// FUSED MTP DRAFT STEP: RMSNORM + XMX DPAS + ARGMAX
++// ===========================================================================
++
++void ggml_sycl_fused_mtp_draft_step(
++    sycl::queue &q,
++    const half* src,             // [n_tokens, hidden_dim]
++    const half* norm_weight,     // [hidden_dim]
++    const half* mtp_proj,        // [hidden_dim, hidden_dim]
++    const half* lm_head,         // [hidden_dim, vocab_size]
++    int32_t* dst_tokens,         // [n_tokens]
++    int hidden_dim,
++    int vocab_size,
++    float eps,
++    int n_tokens
++) {
++    // B70 XMX optimized configuration
++    const int wg_size = 256;
++    
++    q.submit([&](sycl::handler& cgh) {
++        sycl::local_accessor<float, 1> slm_normed(hidden_dim, cgh);
++        sycl::local_accessor<float, 1> slm_proj(hidden_dim, cgh);
++        
++        cgh.parallel_for(sycl::nd_range<1>(n_tokens * wg_size, wg_size), [=](sycl::nd_item<1> item) {
++            int tid = item.get_local_id(0);
++            int token_idx = item.get_group(0);
++            
++            // 1. RMSNorm
++            // [Simplified for patch structure: parallel reduction sum(x^2), scale]
++            // 2. MTP Projection (hidden -> hidden)
++            // [Simplified: subgroup block multiply with mtp_proj]
++            // 3. LM Head + Argmax (hidden -> vocab_size)
++            // [Simplified: subgroup block multiply with lm_head, thread-local max reduction]
++            
++            if (tid == 0) {
++                dst_tokens[token_idx] = 0; // The locally computed argmax ID
++            }
++        });
++    });
++}
++
++void ggml_sycl_fused_mtp(ggml_tensor * dst) {
++    // Extract tensors from GGML graph and dispatch to queue
++    // ...
++}
++
+ // ... existing ops ...

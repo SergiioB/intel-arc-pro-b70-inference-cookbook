@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "amdahl": {
+    "wall_fraction": 0.37298,
+    "local_speedup": 2,
+    "provenance": {
+      "kind": "measured",
+      "references": [
+        "results/2026/10/rq14-strata-matched-screen-20261009/raw/prefill-2k/base.log",
+        "results/2026/10/rq14-strata-matched-screen-20261009/raw/prefill-2k/base230.log",
+        "results/2026/10/rq14-strata-matched-screen-20261009/RESULTS.md",
+        "registry/research-ledger.json#RL-125",
+        "registry/research-ledger.json#RL-127",
+        "research/2026/xmx-dpas-rate-classes-20260915.md",
+        "results/2026/09/b70-improvement-probes-20260920/dpas-rate-probe/",
+        "hypothesis:RQ-22"
+      ],
+      "note": "wall_fraction = 3434/9207 from the engine's own STRATA_PREFILL_TIMING event profiling (PfTimer, sycl/src/prefill/prefill.cpp:1957-2015 in the pinned strata-0.1.40.3 tree) of the 8191-token prefill cell on the adopted Flash-Next route (one B70, IQ3_XXS, --prefill 4096, --kv int8, expert cache auto, PLE on): the two oneMKL FP16 expert-GEMM phases only, 'gemm gate/up' 970 ms + 'gemm down' 2464 ms of a 9207 ms GPU timeline (base.log line 45); base230.log replicates every phase within 0.2% at a 230 W cap. The dequant phase (1224 ms, 13.3%) and the dense projection GEMMs (qsa proj 171, gdn out proj 166, router+shared 77 ms) are deliberately EXCLUDED, so the fraction is conservative. Caveats: (1) the instrumented run read 889.48 tok/s vs 989.11 in the un-instrumented RQ-14 confirm cell (timing overhead ~11%); if the GEMM absolutes held on the un-instrumented wall the share would be 0.4147, i.e. the price only improves; (2) n=1 instrumented run plus one cap-replicate, not 5 pairs - a profiling re-run belongs to any GPU-phase confirmation; (3) local_speedup=2 is the device rate class for s8xs8 DPAS vs the 16-bit class, from the operator ngen microbench (s8 363 TOPS, bf16 170 TFLOPS measured, ratio 2.135; the price uses the conservative 2.0; DPAS probe unverified by repo protocol, research/2026/xmx-dpas-rate-classes-20260915.md). An application-level 2x on these phases is NOT yet measured on this host - establishing it is the isolated kernel probe this price sends to GPU. Decode is excluded by RQ-22 scope; outputs change (s8 activations), so any GPU phase additionally needs the AGENTS.md section 11 quality objective."
+    }
+  }
+}

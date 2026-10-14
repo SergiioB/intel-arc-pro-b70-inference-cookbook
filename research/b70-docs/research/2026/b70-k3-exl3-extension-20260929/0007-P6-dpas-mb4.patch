@@ -1,0 +1,195 @@
+Subject: [P6] Dispatch M in {3,4} to an MB=4 DPAS tile (B6 fix candidate)
+Base-commit: 15ded2f3add148c4db3c900cba7de878238f53bc
+Status: local-only draft; PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Applies after 0001..0006. Anchors: csrc/exl3_ops.sycl dispatch_dpas :133-143,
+dpas_nt/globals :167-176, exl3_gemm_small MB selection :291-307 (post-series),
+setter block :797-803, bindings :826-833.
+Author: substitute for b70-kernel-engineer (provider quota), 2026-09-29.
+Static authoring only; NOT BUILT / NOT GPU-TESTED.
+
+Defect (RL-098, results/2026/09/b70-b6-microprobe-20260929/RESULTS.md): the
+M=4 DPAS path loses a uniform 8-15 points of pin-fraction vs the M=1 vector
+GEMV on identical bytes across every family (verify pass 34.46 ms vs 29.44 ms).
+Hypothesis encoded: M in {3,4} pads to the MB=8 tile, wasting ~half the DPAS
+tile work. This patch dispatches M in {3,4} to DpasKernel<K,CB,4,NT=4> by
+default; exl3_set_dpas_mb4(0) restores the padded MB=8 path for same-build A/B.
+
+Legality (D1-style derivation): the tile decode geometry is MB-independent —
+Geo<K>: K4 -> g=4,D=1,V=8,G=32,W=32; K6 -> g=2,D=3,V=16,G=16,W=48; K3 -> g=1,
+D=3,V=32,G=8,W=24; P=V==8?4:(V==16?2:1) and A_=G/P=8 unchanged (asserted at
+exl3_esimd.h:605). MB enters only row-block extents: RC = MB<8?MB:8 = 4 makes
+the rb-loop run once with a legal dpas<8,4>; Am = MB*16 = 64 fp16; acc =
+MB*16*NT = 256 fp32 lanes (vs 512 at MB8 — strictly less GRF pressure). Host
+side: dpas_nt(4)=EXL3_DPAS4_NT=4 = dpas_nt(8), so n_strips, m_blocks, P and rps
+are identical to the MB8 path and strip coverage needs tiles_n % NT == 0 —
+tiles_n in {64,320,384,640,768,1088,15520} all divide by 4 (static_assert
+restricts NT to {2,4,8}; min routed tiles_n is 64). launch_dpas's
+xh-rows==m_blocks*MB TORCH_CHECK holds: host pads Mp=4. FUSED path untouched
+(fused_small still instantiates MB=8; static_assert(MB==8) intact). Every
+compiled (K,cb) pair gets the case-4 instantiation: K4/K6 unconditionally,
+K3 + remaining codebooks only where EXL3_ALL_CODEBOOKS compiles them.
+
+Numerics: per output element the fp32 accumulate chain is unchanged — RC
+selects rows-per-instruction, not the K accumulation order; same r-ordered
+dpas sequence, same P/rps split-K, same n_strips, pad rows never stored.
+MB4 output is expected BIT-IDENTICAL to MB8 for identical xh rows; the spec
+asserts exact equality, with the RL-099 amended tolerance
+(mx <= max(0.01+0.05*rms_row, 1 ulp of the output dtype)) as the declared
+fallback only. Zero-tolerance trellis/one-hot gates are on the vector/raw
+paths and untouched. exl3_gemm_raw deliberately keeps the padded MB=8
+geometry — a fixed MB8 reference for the identity check.
+
+Capture-safety: no new host sync, no new allocation site, no new scratch
+kind; xh shrinks (Mp 8->4 for M in {3,4}); part {P,M,N} unchanged. Inherited
+allocation sites unchanged — whole-op D3 HOLD stands. The runtime flag is a
+host-side launch decision and must be set before graph capture.
+Known upstream wart (unchanged): under -DEXL3_DPAS_MB4, exl3_gemm_raw's MBp
+padding lacks an MB4 arm, so its MB4 dispatch would fail the xh TORCH_CHECK;
+stock builds never define it and the raw path is unaffected.
+
+Isolated-op A/B spec (for the bench window, NOT run): tests/mb4_ab_spec.txt —
+down_proj 17408->5120 and qkv 5120->12288 at M in {3,4}, MB8 vs MB4 via the
+runtime lever on one build, XPU-graph + bulk XPU-event methodology per
+RL-098; PRIMARY GATE: recover >=5 points of pin-fraction on both families at
+both M; identity check exact-or-amended-tolerance as stated above.
+
+diff --git a/csrc/exl3_ops.sycl b/csrc/exl3_ops.sycl
+--- a/csrc/exl3_ops.sycl
++++ b/csrc/exl3_ops.sycl
+@@ -138,9 +138,10 @@
+ #ifndef EXL3_DPAS4_NT
+ #define EXL3_DPAS4_NT 4
+ #endif
+-#ifdef EXL3_DPAS_MB4
++        // P6: MB=4 compiled unconditionally — M in {3,4} is dispatched to it by default. The case
++        // instantiates for every compiled (K, cb) pair: K4/K6 always; K3 only where
++        // EXL3_ALL_CODEBOOKS adds its EXL3_CASE. EXL3_DPAS_MB4 remains an accepted no-op define.
+         case 4:  launch_dpas<K, CB, 4, EXL3_DPAS4_NT>(xh, tr, shard, part, M, Kdim, N, P, rps, q); return true;
+-#endif
+         case 8:  launch_dpas<K, CB, 8, EXL3_DPAS8_NT>(xh, tr, shard, part, M, Kdim, N, P, rps, q); return true;
+         case 16: launch_dpas<K, CB, 16, 4>(xh, tr, shard, part, M, Kdim, N, P, rps, q); return true;
+ #ifdef EXL3_DPAS_MB24
+@@ -168,8 +169,13 @@
+ #ifndef EXL3_DPAS24_NT
+ #define EXL3_DPAS24_NT 2
+ #endif
++// P6 legality: strip coverage needs tiles_n % NT == 0; the smallest routed family is
++// N=1024 -> tiles_n=64, so NT in {2,4,8} is exact for every census family.
++static_assert(EXL3_DPAS4_NT == 2 || EXL3_DPAS4_NT == 4 || EXL3_DPAS4_NT == 8,
++              "MB4 column strip: tiles_n % NT must be 0 (min routed tiles_n = 64)");
+ static int dpas_nt(int MB) { return MB == 4 ? EXL3_DPAS4_NT : MB == 8 ? EXL3_DPAS8_NT : MB == 24 ? EXL3_DPAS24_NT : (MB == 40 || MB == 48) ? 2 : (MB <= 16 ? 4 : (MB == 32 ? EXL3_DPAS32_NT : EXL3_DPAS64_NT)); }
+ static int g_vec_max_m = 2;   // vector kernel for M<=2, DPAS (flat cost up to M=8) above
++static bool g_dpas_mb4 = true;   // P6 (RL-098): dispatch M in {3,4} to the MB=4 tile; false restores the padded MB=8 path
+ 
+ // Split-K sizing: threads to aim for when choosing the number of K splits. Measured on B70 (all linears,
+ // graph-captured): 1024 beats 4096 by 10-20% for M=1..32 (fewer fp32 partials for had_out to reduce, and the
+@@ -290,14 +296,14 @@
+     }
+     bool use_vec = M <= g_vec_max_m;
+     int MR = M <= 1 ? 1 : (M <= 2 ? 2 : (M <= 4 ? 4 : 8));
+-#ifdef EXL3_DPAS_MB4
+-    int MB = M <= 4 ? 4 : (M <= 8 ? 8 : (M <= 16 ? 16 : (M <= 32 ? 32 : 64)));
+-#elif defined(EXL3_DPAS_MB24) && defined(EXL3_DPAS_MB48)
+-    int MB = M <= 8 ? 8 : (M <= 16 ? 16 : (M <= 24 ? 24 : (M <= 32 ? 32 : (M <= 40 ? 40 : (M <= 48 ? 48 : 64)))));
++    // P6: M in {3,4} selects MB=4 — on MB=8 the verify rows pad the tile and waste half the DPAS
++    // work (RL-098: a uniform 8-15 points of pin-fraction lost on identical bytes). g_dpas_mb4 is a
++    // launch-time host decision; set it before graph capture.
++    int MB = (g_dpas_mb4 && M <= 4) ? 4 : (M <= 8 ? 8 : (M <= 16 ? 16 : (M <= 32 ? 32 : 64)));
++#if defined(EXL3_DPAS_MB24) && defined(EXL3_DPAS_MB48)
++    if (M > 8) MB = M <= 16 ? 16 : (M <= 24 ? 24 : (M <= 32 ? 32 : (M <= 40 ? 40 : (M <= 48 ? 48 : 64))));
+ #elif defined(EXL3_DPAS_MB24)
+-    int MB = M <= 8 ? 8 : (M <= 16 ? 16 : (M <= 24 ? 24 : (M <= 32 ? 32 : 64)));
+-#else
+-    int MB = M <= 8 ? 8 : (M <= 16 ? 16 : (M <= 32 ? 32 : 64));
++    if (M > 8) MB = M <= 16 ? 16 : (M <= 24 ? 24 : (M <= 32 ? 32 : 64));
+ #endif
+     if (MB > g_max_mb) MB = g_max_mb;
+     int m_blocks = use_vec ? 1 : (M + MB - 1) / MB;
+@@ -797,6 +803,7 @@
+ void exl3_set_target_threads_mb64(int64_t n) { g_target_threads_mb64 = (int)n; }
+ void exl3_set_target_threads_mb16(int64_t n) { g_target_threads_mb16 = (int)n; }
+ void exl3_set_vec_max_m(int64_t n) { g_vec_max_m = (int)n; }
++void exl3_set_dpas_mb4(int64_t on) { g_dpas_mb4 = on != 0; }
+ 
+ TORCH_LIBRARY(exl3xpu_C, m) {
+     m.def("exl3_set_int8(int on) -> ()", &exl3_set_int8);
+@@ -826,6 +833,7 @@
+     m.def("exl3_set_fused(int on) -> ()", &exl3_set_fused);
+     m.def("exl3_set_local(int n) -> ()", &exl3_set_local);
+     m.def("exl3_set_max_mb(int n) -> ()", &exl3_set_max_mb);
++    m.def("exl3_set_dpas_mb4(int on) -> ()", &exl3_set_dpas_mb4);
+     m.def("exl3_fa_fwd(Tensor q, Tensor k, Tensor v, Tensor(a!) out, Tensor(b!) lse, bool causal, float scale) -> ()");
+     m.impl("exl3_fa_fwd", torch::kXPU, &exl3_fa_fwd);
+ }
+
+diff --git a/tests/mb4_ab_spec.txt b/tests/mb4_ab_spec.txt
+new file mode 100644
+--- /dev/null
++++ b/tests/mb4_ab_spec.txt
+@@ -0,0 +1,66 @@
++P6 — MB=4 DPAS isolated-op A/B specification (FUTURE EXECUTION ONLY)
++PROVISIONAL — NOT FOR PUBLIC HEADLINE
++Base: 0xSero/exl3xpu 15ded2f3add148c4db3c900cba7de878238f53bc + series 0001..0007.
++Classification: local-only spec; NO measurement was performed or claimed here.
++Capture status: the patched dispatch adds no captured-region allocation site and
++no host sync; the xh scratch SHRINKS (Mp 8 -> 4 rows for M in {3,4}); part
++{P,M,N} is unchanged because dpas_nt(4)=EXL3_DPAS4_NT=4 = dpas_nt(8) keeps
++n_strips, m_blocks and P identical. Whole-op capture safety remains D3 HOLD
++(inherited allocation sites unchanged in kind). g_dpas_mb4 is a launch-time
++host decision and MUST be set before graph capture.
++
++1. Defect under test (RL-098, results/2026/09/b70-b6-microprobe-20260929/RESULTS.md)
++   The M=4 DPAS path loses a uniform 8-15 points of pin-fraction vs the M=1
++   vector GEMV on identical bytes across every family; the verify pass is
++   34.46 ms vs 29.44 ms M=1 for the same 13.12 GB. Hypothesis: M in {3,4}
++   pads to the MB=8 tile and wastes ~half the DPAS tile work. P6 dispatches
++   M in {3,4} to DpasKernel<K,CB,4,EXL3_DPAS4_NT=4> (RC=4, one dpas<8,4>
++   per tile instead of one dpas<8,8>; acc 256 vs 512 fp32 lanes).
++
++2. Cells
++   - down_proj family: Kdim=17408 -> N=5120, K=4 cb=2 (trellis (1088,320,64),
++     44.6 MB/call) — largest single-family byte weight.
++   - qkv family: Kdim=5120 -> N=12288, K=4 cb=2 (trellis (320,768,64),
++     31.5 MB/call).
++   - M in {3, 4} on each family (MTP3 verify is M=4 rows; M=3 exercises the
++     partial-row store path with a zero-padded xh row).
++   - Optional confirmation cell: K=6 lm_head 5120 -> 248320 at M=4 (the only
++     K=6 family; verifies the MB4 instantiation on the K6 build/decode path).
++
++3. Arms (single patched build, runtime lever — no rebuild needed)
++   - A = incumbent tile: exl3_set_dpas_mb4(0) -> the padded MB=8 path.
++   - B = candidate tile: exl3_set_dpas_mb4(1) -> the MB=4 path (default).
++   - Secondary fixed MB8 reference: exl3_gemm_raw(path=1) keeps the padded
++     MB=8 geometry by design on this patch, for an independent MB8 output.
++   - Optional third arm: a series-0001..0006 library as the stock control.
++
++4. Method (RL-098 harness methodology, unchanged)
++   - harness_graphprobe.py protocol: 16-32 calls captured in one
++     torch.xpu.XPUGraph, >=12 replay timings, median per call; plus the bulk
++     >=200-iteration XPU-event cross-check. Same read-only artifact, GPU0 /
++     ZE_AFFINITY_MASK=0, power caps as-found and restored, no engine/server.
++   - Metric: trellis bytes / XPU-event median time = GB/s, reported both as
++     % of the 608 GB/s pin floor and % of the 521 GB/s measured-achievable
++     read reference, per the RL-098 convention.
++   - Set the flag, capture the graph, measure; flip flag, re-capture, measure.
++     Never compare across a live capture boundary.
++
++5. Gates (pre-declared, frozen before execution)
++   - PRIMARY SPEED GATE: arm B recovers >= 5 points of pin-fraction vs arm A
++     on BOTH families at BOTH M=3 and M=4 (e.g. down_proj M=4: 57.5% -> >=62.5%
++     of pin). A miss on any of the four cells fails the gate.
++   - NUMERICAL IDENTITY: fixed identical inputs, arm B output vs arm A output.
++     Expected bit-identical: RC changes only rows-per-dpas-instruction (8 -> 4),
++     not the per-element fp32 accumulation order — same r-ordered accumulate
++     chain, same P/rps/n_strips, pad rows are never stored. Declared fallback
++     if a boundary-flip excursion appears: the amended dense gate
++     mx <= max(0.01 + 0.05*rms_row, 1 ulp of the OUTPUT dtype at the reference
++     element) per RL-099. Excursions beyond that bound = FAIL; no post-hoc
++     relaxation.
++   - EXACT-PATH GATES UNTOUCHED: trellis reconstruction and one-hot decode
++     remain zero-tolerance (P3 battery); this patch does not touch them.
++   - KILL: XPUGraph capture failure, TORCH_CHECK/dispatch failure, or output
++     corruption on any cell.
++   - If the primary gate passes: P6 becomes the champion-dispatch input for a
++     matched end-to-end verify-pass A/B (RL-098 §6 pricing: closing half the
++     M=4 gap is ~2.5 ms/verify pass). No adoption claim from the isolated op.

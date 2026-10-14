@@ -1,0 +1,149 @@
+{
+  "agentFeedback": {
+    "benchmarkStatus": "completed",
+    "canApiValidate": true,
+    "canSubmit": true,
+    "engine": "vllm",
+    "message": "Speed-test payload is ready for API validation.",
+    "mode": "remote",
+    "nextCommand": "lmx speed-test dry-run ~/B70-DOCS/results/qw38-fp8-tp2-n5-final-20260830T174732Z/platform/speed-test.json",
+    "outputPath": "~/B70-DOCS/results/qw38-fp8-tp2-n5-final-20260830T174732Z/platform/speed-test.json",
+    "outputPathAbsolute": "~/B70-DOCS/results/qw38-fp8-tp2-n5-final-20260830T174732Z/platform/speed-test.json",
+    "requiresMetrics": false,
+    "runPersisted": true,
+    "savedRunPath": "runs/Qwen-Qwen3.8-27B-FP8/20260830T180551Z.json",
+    "savedRunPathAbsolute": "~/B70-DOCS/runs/Qwen-Qwen3.8-27B-FP8/20260830T180551Z.json",
+    "savedRunPathRelative": "runs/Qwen-Qwen3.8-27B-FP8/20260830T180551Z.json",
+    "status": "ready_for_api_validation",
+    "submissionId": "cmtg4erjj001xqr01jhqw81dt",
+    "submissionStatus": "approved",
+    "submitCommand": "lmx speed-test submit ~/B70-DOCS/results/qw38-fp8-tp2-n5-final-20260830T174732Z/platform/speed-test.json"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8920",
+    "concurrency": 1,
+    "iterations": 3,
+    "maxTokens": 256,
+    "mode": "remote",
+    "servedModel": "qw38-fp8",
+    "servedModelSource": "explicit",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 5700X3D (8 threads)",
+    "gpuCount": 2,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "powerWatts": 230,
+    "ramGb": 30,
+    "vramGb": 64
+  },
+  "hardwareSource": "file",
+  "hfId": "Qwen/Qwen3.8-27B-FP8",
+  "id": "cmtg4erjj001xqr01jhqw81dt",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "candidates": [],
+    "hfId": "Qwen/Qwen3.8-27B-FP8",
+    "searchCommand": "lmx model search qw38-fp8",
+    "searchQuery": "qw38-fp8",
+    "searchQuerySource": "served_model",
+    "servedModel": "qw38-fp8",
+    "servedModelSource": "explicit",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "outputText": "We need answer user: \"Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.\" Need provide explanation. Need final. Let's think content.\n\nWe need explain local inference benchmarks: local means on-device or local hardware, constraints, user experience, workload phases. Prompt prefill throughput: processing input prompt in parallel, compute-bound, affects latency for long contexts, RAG, system prompts, batched prompts. Decode throughput: token generation autoregressive, memory-bandwidth bound, affects sustained output speed, cost, interactive responsiveness. Time to first token (TTFT): perceived latency, time from request to first generated token, includes prefill and scheduling/overhead, critical for UX, especially chat, agents, streaming. Why report all three: they measure different bottlenecks and phases; aggregate tokens/sec can hide tradeoffs; local hardware has limited memory, thermal, CPU/GPU/NPU, quantization, context length; prefill and decode have different scaling with batch size, sequence length, model size, KV cache; TTFT captures end-to-end first response, not just throughput. Also local inference often single-user, low batch, but may have long prompts; prefill throughput tells how fast can ingest context",
+  "outputTokens": 256,
+  "prompt": "Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.",
+  "promptTokens": 74,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-30T18:05:51Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "fp8",
+  "quantizationResolution": {
+    "cli": "fp8",
+    "status": "matched",
+    "trusted": "fp8",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 3,
+      "max": 32,
+      "mean": 31.17,
+      "min": 30.4,
+      "p50": 31.1,
+      "stddev": 0.8
+    },
+    "tokSTotal": {
+      "count": 3,
+      "max": 40.8,
+      "mean": 39.57,
+      "min": 38.5,
+      "p50": 39.4,
+      "stddev": 1.16
+    },
+    "ttftMs": {
+      "count": 3,
+      "max": 190.8,
+      "mean": 164.38,
+      "min": 112.43,
+      "p50": 189.93,
+      "stddev": 45
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 32,
+      "tokSPrefill": 658.2,
+      "ttftMs": 112.43
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 31.1,
+      "tokSPrefill": 389.6,
+      "ttftMs": 189.93
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 30.4,
+      "tokSPrefill": 387.8,
+      "ttftMs": 190.8
+    }
+  ],
+  "submissionId": "cmtg4erjj001xqr01jhqw81dt",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-08-30T18:06:04.015Z",
+  "timingSource": "client_observed_http",
+  "tokSOut": 31.1,
+  "tokSOutSource": "inter_token",
+  "tokSPrefill": 389.6,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 39.4,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 189.93,
+  "ttftSource": "stream_first_token"
+}

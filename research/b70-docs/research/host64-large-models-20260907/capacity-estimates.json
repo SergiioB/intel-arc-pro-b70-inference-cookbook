@@ -1,0 +1,108 @@
+{
+  "assumptions": {
+    "host_installed_GiB": 64,
+    "host_reserve_GiB": 12,
+    "gpu_weight_budget_GiB": 56,
+    "weight_budget_total_GiB": 108
+  },
+  "rows": [
+    {
+      "repo": "unsloth/Qwen3.8-Flash-Next-GGUF",
+      "quant": "UD-IQ3_XXS",
+      "GiB": 76.333,
+      "host_residue_with_56GiB_GPU": 20.333,
+      "files": 3
+    },
+    {
+      "repo": "unsloth/Qwen3.8-Flash-Next-GGUF",
+      "quant": "UD-IQ4_XS",
+      "GiB": 87.249,
+      "host_residue_with_56GiB_GPU": 31.249,
+      "files": 3
+    },
+    {
+      "repo": "unsloth/Qwen3.8-Flash-Next-GGUF",
+      "quant": "UD-Q2_K_XL",
+      "GiB": 73.453,
+      "host_residue_with_56GiB_GPU": 17.453,
+      "files": 3
+    },
+    {
+      "repo": "unsloth/Qwen3.8-Flash-Next-GGUF",
+      "quant": "UD-Q3_K_XL",
+      "GiB": 83.806,
+      "host_residue_with_56GiB_GPU": 27.806,
+      "files": 3
+    },
+    {
+      "repo": "unsloth/Qwen3.8-Flash-Next-GGUF",
+      "quant": "UD-Q4_K_XL",
+      "GiB": 103.688,
+      "host_residue_with_56GiB_GPU": 47.688,
+      "files": 4
+    },
+    {
+      "repo": "unsloth/GLM-5.3-Flash-GGUF",
+      "quant": "UD-IQ3_XXS",
+      "GiB": 112.101,
+      "host_residue_with_56GiB_GPU": 56.101,
+      "files": 4
+    },
+    {
+      "repo": "unsloth/GLM-5.3-Flash-GGUF",
+      "quant": "UD-IQ4_XS",
+      "GiB": 146.052,
+      "host_residue_with_56GiB_GPU": 90.052,
+      "files": 5
+    },
+    {
+      "repo": "unsloth/GLM-5.3-Flash-GGUF",
+      "quant": "UD-Q2_K_XL",
+      "GiB": 101.253,
+      "host_residue_with_56GiB_GPU": 45.253,
+      "files": 4
+    },
+    {
+      "repo": "unsloth/GLM-5.3-Flash-GGUF",
+      "quant": "UD-Q3_K_XL",
+      "GiB": 137.404,
+      "host_residue_with_56GiB_GPU": 81.404,
+      "files": 4
+    },
+    {
+      "repo": "unsloth/GLM-5.3-Flash-GGUF",
+      "quant": "UD-Q4_K_XL",
+      "GiB": 185.992,
+      "host_residue_with_56GiB_GPU": 129.992,
+      "files": 6
+    },
+    {
+      "repo": "6block/GLM-5.3-Flash-GGUF",
+      "quant": "GLM-5.3-Flash-IQ1_M",
+      "GiB": 65.826,
+      "host_residue_with_56GiB_GPU": 9.826,
+      "files": 15
+    },
+    {
+      "repo": "6block/GLM-5.3-Flash-GGUF",
+      "quant": "GLM-5.3-Flash-IQ2_XS",
+      "GiB": 85.783,
+      "host_residue_with_56GiB_GPU": 29.783,
+      "files": 15
+    },
+    {
+      "repo": "6block/GLM-5.3-Flash-GGUF",
+      "quant": "GLM-5.3-Flash-IQ3_XXS",
+      "GiB": 112.685,
+      "host_residue_with_56GiB_GPU": 56.685,
+      "files": 15
+    },
+    {
+      "repo": "6block/GLM-5.3-Flash-GGUF",
+      "quant": "GLM-5.3-Flash-IQ4_XS",
+      "GiB": 155.829,
+      "host_residue_with_56GiB_GPU": 99.829,
+      "files": 15
+    }
+  ]
+}

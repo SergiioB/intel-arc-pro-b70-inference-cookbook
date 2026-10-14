@@ -1,0 +1,682 @@
+{
+  "schema_version": 1,
+  "campaigns": [
+    {
+      "id": "CAM-2026-MUSE-GLIMMER-Q4KXL-DFLASH",
+      "title": "Muse Glimmer Q4_K_XL DFlash campaign",
+      "model_id": "MODEL-MUSE-GLIMMER-30B",
+      "artifact_ids": [
+        "ART-MUSE-GLIMMER-Q4KXL-SET"
+      ],
+      "evidence_root": "results/2026/08/muse-glimmer-q4kxl-dflash-20260810T143831-2493876",
+      "record_path": "campaigns/2026/muse-glimmer-q4kxl-dflash/README.md",
+      "observed_at": "2026-08-10",
+      "status": "historical_evidence",
+      "evidence_tier": "E2",
+      "publication_state": "historical_evidence_only",
+      "limits": [
+        "The local GGUF campaign set was later deleted.",
+        "The evidence root is immutable historical evidence, not proof of current launch availability."
+      ]
+    },
+    {
+      "id": "CAM-2026-NEMOTRON-DFLASH-N7-N5",
+      "title": "Nemotron DFlash BF16 n7 isolated C1 n=5",
+      "model_id": "MODEL-NEMOTRON-3.5-LIGHTNING-30B-A3B",
+      "artifact_ids": [
+        "ART-NEMOTRON-GPTQ-G64",
+        "ART-NEMOTRON-DFLASH-BF16"
+      ],
+      "decision_ids": [
+        "ADR-0002"
+      ],
+      "evidence_root": "results/2026/08/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994",
+      "record_path": "campaigns/2026/nemotron-dflash-n7-n5/README.md",
+      "observed_at": "2026-08-13",
+      "status": "validated_internal",
+      "evidence_tier": "E2",
+      "publication_state": "self_reported_not_independently_reproduced",
+      "limits": [
+        "Isolated C1 evidence only.",
+        "Correctness scope is deterministic replay and coherence smoke, not task-quality or BF16 parity.",
+        "Results apply only to the recorded image, target, draft, scheduler, and workload coordinates."
+      ]
+    },
+    {
+      "id": "CAM-2026-ORNITH15-DAY0-MTP-SCREEN",
+      "title": "Ornith 1.5 day-0 MTP screen",
+      "model_id": "MODEL-ORNITH-1.5-35B-A3B",
+      "artifact_ids": [
+        "ART-ORNITH15-GPTQ-G128-MTP-BF16"
+      ],
+      "decision_ids": [
+        "ADR-0003"
+      ],
+      "evidence_root": "results/2026/08/ornith15-35b-20260819T1630Z",
+      "record_path": "campaigns/2026/ornith15-day0-mtp-screen/README.md",
+      "observed_at": "2026-08-19",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "not_for_public_headline",
+      "limits": [
+        "n=3 greedy diagnostic screen, not a publishable model card.",
+        "C1 only; 64K and 128K completion ladders were not run.",
+        "Reference parity and task quality were not measured.",
+        "The artifact contains documented RTN calibration fallback."
+      ]
+    },
+    {
+      "id": "CAM-2026-ORNITH15-MIXEDCAL-V2",
+      "title": "Ornith 1.5 MixedCal-v2 characterization",
+      "model_id": "MODEL-ORNITH-1.5-35B-A3B",
+      "artifact_ids": [
+        "ART-ORNITH15-GPTQ-G128-MTP-BF16-MIXEDCAL-V2"
+      ],
+      "evidence_root": "results/2026/08/ornith15-mixedcal-v2-summary",
+      "record_path": "campaigns/2026/ornith15-mixedcal-v2/README.md",
+      "observed_at": "2026-08-21",
+      "status": "validated_internal",
+      "evidence_tier": "E2",
+      "publication_state": "self_reported_not_independently_reproduced",
+      "limits": [
+        "C1 only.",
+        "Speed at 150 W is parity with the original GPTQ, not a MixedCal tok/s win.",
+        "Prefill 150↔230 W A/B is configured cap, not a pinned-clock sweep.",
+        "LocalMaxxing payloads were validate-local only and not submitted.",
+        "230 W LMX tokSPrefill 9556.4 is the long-prompt 9.7k-class cell (2899 tokens); the 150 W LMX tokSPrefill 654.7 is a 32-token TTFT derivative.",
+        "No BF16 logit/KL or task-quality suite (lmx eval suite list HTTP 404)."
+      ]
+    },
+    {
+      "id": "CAM-2026-QWEN36-PI-128K-MATCHED",
+      "title": "Qwen3.6 Pi exact 128K matched cache/spec campaign",
+      "model_id": "MODEL-QWEN3.6-35B-A3B",
+      "artifact_ids": [
+        "ART-QWEN36-GPTQ-MTP-BF16"
+      ],
+      "evidence_root": "results/2026/08/vllm-pi-128k-cache-spec-matched-20260808T224033Z-101198",
+      "record_path": "campaigns/2026/qwen36-pi-128k-matched/README.md",
+      "observed_at": "2026-08-08",
+      "status": "validated_internal",
+      "evidence_tier": "E2",
+      "publication_state": "qualified_capacity_observation",
+      "limits": [
+        "Exact boundary completion is a capacity observation on the recorded stack.",
+        "It does not establish mixed-load, concurrency, or production safety for other configurations.",
+        "The evidence is self-reported and not independently reproduced."
+      ]
+    },
+    {
+      "id": "CAM-2026-QWEN38-4MODE-230W",
+      "title": "Qwen3.8 four-mode 230 W campaign",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-GPTQ-G128-MTP-BF16"
+      ],
+      "decision_ids": [
+        "ADR-0005",
+        "ADR-0006"
+      ],
+      "evidence_root": "results/2026/08/vllm-qwen38-4mode-230w-20260815T170840Z-581426",
+      "record_path": "campaigns/2026/qwen38-4mode-230w/README.md",
+      "observed_at": "2026-08-15",
+      "status": "validated_internal",
+      "evidence_tier": "E2",
+      "publication_state": "not_for_public_headline",
+      "limits": [
+        "Sampling regimes are distinct and must not be interchanged.",
+        "A 230 W configured cap is not measured average card draw.",
+        "Sub-1 GiB post-load reserve observations are isolated research capacity evidence only.",
+        "The campaign is self-reported and not independently reproduced."
+      ]
+    },
+    {
+      "id": "CAM-2026-QWEN38-DFLASH2-OBJECTIVE",
+      "title": "Qwen3.8 official DFlash2 objective campaign",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-DFLASH2-BF16-OFFICIAL"
+      ],
+      "evidence_root": "results/2026/08/qwen38-dflash2-objective-20260830",
+      "record_path": "campaigns/2026/qwen38-dflash2-objective/README.md",
+      "observed_at": "2026-08-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "not_for_public_headline",
+      "limits": [
+        "Comparison is matched DFlash2 k=7 vs native MTP7 on the FP8 W8A16 TP2 stack only; no extrapolation to other depths, targets, or engines.",
+        "Published 2.7–3.4x and acceptance numbers are external H200/BF16/FA3 evidence (E3), not B70 projections.",
+        "p2048/g128 is a numerics/content-stability diagnostic cell, not a guaranteed W8A16 production route.",
+        "All cells C1 isolated; Cn coverage absent by design.",
+        "The campaign is self-reported and not independently reproduced."
+      ]
+    },
+    {
+      "id": "CAM-2026-QWEN38-FP8-TP2-N5-CLOSEOUT",
+      "title": "Qwen3.8 FP8 TP2 MTP8 n=5 closeout",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "evidence_root": "results/2026/08/qw38-fp8-tp2-n5-final-20260830T174732Z",
+      "record_path": "models/qwen/qwen3.8-27b/serving.md",
+      "observed_at": "2026-08-30",
+      "status": "published_qualified",
+      "evidence_tier": "E3",
+      "publication_state": "public_cookbook_and_localmaxxing",
+      "limits": [
+        "Greedy temperature-0 cells are synthetic diagnostic maxima, not representative serving rates.",
+        "Model-card-sampling cells use random-token synthetic prompts and are sampling-sensitivity diagnostics, not natural-content evaluations.",
+        "LocalMaxxing APPROVED means accepted self-reported submission, not independent reproduction.",
+        "The Pi quality phase was stopped and voided; no completed quality comparison exists.",
+        "XeCores community API rows remain pending or blocked; canonical public values come from reconciled cookbook commit 7025ef443969bd5123169e7d34f18b89ef77becd."
+      ]
+    },
+    {
+      "id": "CAM-2026-QW38-BASE-MTP4-RECOVERY",
+      "title": "Base Qwen3.8 GPTQ MTP4 safe recovery and invalid prototype quarantine",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-GPTQ-G128-MTP-BF16"
+      ],
+      "evidence_root": "results/2026/09/qw38-base-mtp4-recovery-20260905T211844Z",
+      "record_path": "research/2026/LEDGER_OPTIMIZATION_20260905.md",
+      "observed_at": "2026-09-05",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "not_for_public_headline",
+      "limits": [
+        "Recovery audit and bounded native smoke only; no new performance measurement or candidate optimization yet.",
+        "No numerical/logit parity claim.",
+        "Historical speed cells not remeasured or overwritten."
+      ]
+    },
+    {
+      "id": "CAM-2026-QKROPE53989-SCREEN",
+      "title": "Qwen3.8-27B fused QK-RoPE dispatch screen",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-GPTQ-G128-MTP-BF16"
+      ],
+      "evidence_root": "results/2026/09/qkrope53989-abba-20260923",
+      "record_path": "campaigns/2026/qkrope53989-screen/README.md",
+      "observed_at": "2026-09-23",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "not_for_public_headline",
+      "limits": [
+        "Corrected n=6/arm screen only; decode ranges overlap and acceptance shifts fail the predeclared guard.",
+        "Cooldown protocol was violated (69-78 C observed vs <=55 C rule), so no performance conclusion or promotion is allowed.",
+        "Fused kernel dispatch was not traced; local treatment boot does not prove operator execution.",
+        "No n=5 finalist was run; equivalent dispatch is already upstream as vLLM #56096."
+      ]
+    },
+    {
+      "id": "CAM-2026-FLASHNEXT-AP-PLACEMENT-SMOKE",
+      "title": "Flash-Next AP-Q4_K_XL corrected placement load and smoke",
+      "model_id": "MODEL-QWEN3.8-FLASH-NEXT",
+      "artifact_ids": [
+        "ART-QWEN38-FLASHNEXT-AP-Q4-K-XL"
+      ],
+      "evidence_root": "results/2026/09/flashnext-ap-placement-correctness-20260923T114633Z",
+      "record_path": "campaigns/2026/flashnext-ap-placement-smoke/README.md",
+      "observed_at": "2026-09-23",
+      "status": "validated_internal",
+      "evidence_tier": "E2",
+      "publication_state": "not_for_public_headline",
+      "limits": [
+        "Validated only load feasibility and three fixed correctness smoke prompts under corrected two-sided expert offload.",
+        "No decode, prefill, MTP, broad task-quality, or comparative speed measurement was run.",
+        "CPU expert and PLE offload change serving placement; this is not the cookbook-default recipe and its speed impact is unknown.",
+        "Next performance cells require both GPUs at <=55 C, empty process/container gates, and post-load VRAM reserve checks."
+      ]
+    },
+    {
+      "id": "CAM-2026-QWEN38-TP2-VS-2XTP1",
+      "title": "Qwen3.8-27B TP2 vs two independent TP1 servers",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-GPTQ-G128-MTP-BF16"
+      ],
+      "record_path": "campaigns/2026/qwen38-tp2-vs-2xtp1/README.md",
+      "observed_at": "2026-09-24",
+      "status": "cancelled",
+      "evidence_tier": "E2",
+      "publication_state": "not_for_public_headline",
+      "limits": [
+        "Cancelled 2026-10-09 before any cell ran: the only artifact (ART-QWEN38-GPTQ-G128-MTP-BF16) was removed as quality-defective (RL-087, ADR-0010); RL-075 measured stock TP2 at -45..-71%; RL-103 blocks EXL3 TP2 at load. Reserved evidence root released. Re-entry is RQ-06 (custom copy-only TP2), not this campaign.",
+        "Addresses the ADR-0008 reconsideration trigger; the independent-stacks default stands until validated cells exist.",
+        "Cell D is predeclared non-comparable (expected upstream Cn block under MTP); it can publish at most as capability evidence."
+      ]
+    },
+    {
+      "id": "CAM-2026-QWEN27-IMPROVEMENT-NIGHT-0925",
+      "title": "Qwen3.8-27B improvement night: host-prep cache screen, verify-composition close, dispatch applicability, prefill knob screen",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-GPTQ-INT4-G128-MTP"
+      ],
+      "evidence_root": "results/2026/09/b70-improvement-probes-20260920/p1-qwen27-hostprep-screen-20260925T082440Z",
+      "record_path": "campaigns/2026/qwen27-improvement-night-20260925/README.md",
+      "observed_at": "2026-09-25",
+      "status": "validated_internal",
+      "evidence_tier": "E2",
+      "publication_state": "self_reported_not_independently_reproduced",
+      "limits": [
+        "Screens only: no promotion passed its gate tonight; champion recipe unchanged.",
+        "Thermal substitution: <=55C protocol window unreachable (RL-065); matched-arm design recorded; not protocol-1.3-cooled evidence.",
+        "Sibling roots: p2-qwen27-eager-composition-20260925T085704Z (eager hypothesis-generation), p4-qwen27-prefill-knob-screen-20260925T093105Z, plus P3-56096-DISPATCH-GATE-20260925.md."
+      ]
+    },
+    {
+      "id": "CAM-2026-B6-EXL3-MICROPROBE",
+      "title": "B6 isolated-op EXL3 per-family micro-timing probe (RL-096 route d)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-EXL3-4BPW-MIXED-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-b6-microprobe-20260929",
+      "record_path": "results/2026/09/b70-b6-microprobe-20260929/RESULTS.md",
+      "observed_at": "2026-09-29",
+      "status": "validated_internal",
+      "evidence_tier": "E3",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "PROVISIONAL - NOT FOR PUBLIC HEADLINE; op-level timing evidence, no serving run.",
+        "Kernel-only numbers are XPUGraph-replay medians on single representative modules per family (layer 0 GDN / layer 3 full-attn / layer 0 MLP / lm_head); per-layer weight variation within a family is not sampled.",
+        "Achievable-read reference 521 GB/s (sum) is itself a kernel, not a vendor-stated ceiling; 608 GB/s pin floor is only ~86% achievable by the best measured kernel.",
+        "No power/energy claims made (timing-only probe)."
+      ]
+    },
+    {
+      "id": "CAM-2026-B6-MB4-AB",
+      "title": "B6 MB=4 DPAS A/B window - P6 patch isolated-op gate (RL-101)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-EXL3-4BPW-MIXED-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-b6-mb4-ab-20260929",
+      "record_path": "results/2026/09/b70-b6-mb4-ab-20260929/RESULTS.md",
+      "observed_at": "2026-09-29",
+      "status": "validated_internal",
+      "evidence_tier": "E3",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "PROVISIONAL - NOT FOR PUBLIC HEADLINE; isolated-op evidence only, serving stage NOT reached (primary gate missed; stop rule fired).",
+        "Local-only derived image exl3xpu:k3-p6-mb4-20260929 (series 0001..0007 on 15ded2f3ad, EXL3_ALL_CODEBOOKS=0) - not a public recipe.",
+        "MB8 M=4-class timings drift +-5% across sessions (M=1 vector path reproduces <=2%); gate evidence is the within-image paired reversed-order deltas, not cross-session absolute us.",
+        "Numerical identity proven EXACT on the two gate families at M in {3,4} only; other families inherit the series' P3/P4 evidence, not new measurement.",
+        "No power/energy claims made (timing-only); caps as-found 180/230 W, never modified."
+      ]
+    },
+    {
+      "id": "CAM-2026-B6-NT-SWEEP",
+      "title": "B6 discriminating sweep window - NT strip geometry + M=4 guards (RL-102)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-EXL3-4BPW-MIXED-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-b6-sweep-20260929",
+      "record_path": "results/2026/09/b70-b6-sweep-20260929/RESULTS.md",
+      "observed_at": "2026-09-29",
+      "status": "validated_internal",
+      "evidence_tier": "E3",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "PROVISIONAL - NOT FOR PUBLIC HEADLINE; isolated-op evidence only, no serving re-measure (RL-090 63.25/61.12 tok/s stand).",
+        "Local-only derived images exl3xpu:k3-p6-nt2/nt8/hadguard-20260929 (EXL3_FLAGS defines on the RL-101-retained tree) - not public recipes.",
+        "Wall-break verdict rests on the declared primary metric (graph-replay medians); the bulk secondary on the one breaking cell lands in the 2-8% hint band - not mechanism certification.",
+        "had_out guard times had_in+had_out (upstream EXL3_DEBUG_SKIP_GEMV build); pure had_out is bounded below it by traffic arithmetic; P-marginal resolution +-3.5 us (lm_head noise cell).",
+        "M=4 DPAS-class cross-session drift +-5% (RL-101 finding, unchanged); all deltas are in-window paired reversed-order.",
+        "No power/energy claims made (timing-only); caps as-found 180/230 W, never modified.",
+        "Ledger incident during this window: accidental git-checkout wiped uncommitted RL-089..RL-101; restored verbatim from prior-session artifacts/transcripts (RL-100 tail reconstructed and marked in-entry); see RL-102 run log."
+      ]
+    },
+    {
+      "id": "CAM-2026-EXL3-TP-CPU-SLICE",
+      "title": "EXL3 TP2 representation gate - T1 CPU trellis slice-exactness (RL-104)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-EXL3-4BPW-MIXED-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-exl3-tp-cpu-slice-20260929",
+      "record_path": "research/2026/b70-exl3-tp-cpu-slice-20260929.md",
+      "observed_at": "2026-09-29",
+      "status": "validated_internal",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "PROVISIONAL - NOT FOR PUBLIC HEADLINE; CPU-only numerical test (torch 2.13.0+cpu), no GPU/serving evidence.",
+        "Representation gate only: PASS 38/38 proves the packed trellis format permits 128-block N/K slicing without requantization; says nothing about kernel efficiency at half-N, collective latency, or graph capture.",
+        "Two tensors sampled (layer 0 in_proj_z / out_proj); other families share the same format machinery but were not individually re-tested.",
+        "Row-split forward is fp32-reassociation exact (max_abs <= 9.5e-6), not bitwise - TP2 row-parallel outputs would differ at fp-noise level from TP1.",
+        "Stock exl3xpu TP2 remains impossible (plugin load guard, RL-103); this only de-risks the format question inside a custom-TP build program."
+      ]
+    },
+    {
+      "id": "CAM-2026-MARGIN-REQUANT-GATE0",
+      "title": "TaskB Gate0 heldout step-0 margin census (RL-107)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-BF16-SRC-20260926",
+        "ART-QWEN38-ARMC-AUTOGPTQ-G128",
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "decision_ids": [
+        "ADR-0010"
+      ],
+      "evidence_root": "results/2026/09/b70-margin-requant-gate0-20260929T204352Z",
+      "record_path": "results/2026/09/b70-margin-requant-gate0-20260929T204352Z/RESULTS.md",
+      "observed_at": "2026-09-29",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "PROVISIONAL - NOT FOR PUBLIC HEADLINE; CPU-only fp32 teacher-forced margin census, no GPU/serving evidence and no speed/performance claims (runtime figures are self-reported measurements, not guaranteed).",
+        "Verdict SUPERSEDED by CAM-2026-MARGIN-REQUANT-GATE0-SEQSUPP: the step-0 ADVANCE_AS_SYSTEMATIC_CANDIDATE (8/10 evaluable; inversions h03@armc +0.33->-1.20, h06@arext +0.33->-0.20) does not reproduce at sequence level; decision research/2026/b70-margin-requant-gate0-decision-20260929.md.",
+        "Step-0 designated-pair margins are blind to same-first-digit answer pairs (one token per digit) - the supplement root is the corrected measurement surface.",
+        "n=10 heldout prompts, single prompt per family cell - presence-only signal, no statistical claim; canary replays are validation outside the holdout count.",
+        "No conversion authorized by this evidence; requant remains forbidden; production route unchanged (EXL3 primary, W4A16 closed under ADR-0010)."
+      ]
+    },
+    {
+      "id": "CAM-2026-MARGIN-REQUANT-GATE0-SEQSUPP",
+      "title": "TaskB Gate0 sequence-level supplemental review (RL-107) - frozen gate NOT MET",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-BF16-SRC-20260926",
+        "ART-QWEN38-ARMC-AUTOGPTQ-G128",
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "decision_ids": [
+        "ADR-0010"
+      ],
+      "evidence_root": "results/2026/09/b70-margin-requant-gate0-seqsupp-20260929T212625Z",
+      "record_path": "research/2026/b70-margin-requant-gate0-decision-20260929.md",
+      "observed_at": "2026-09-29",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "PROVISIONAL - NOT FOR PUBLIC HEADLINE; CPU-only fp32 scoring of both answer strings per prompt on the frozen census set + 5 same-first-digit controls + 2 canary replays; no GPU/serving and no speed claims.",
+        "Frozen gate NOT MET at sequence level: 1 designated-pair inversion across 1 family (h03@armc +0.33->-1.20) vs the required >=2 inversions across >=2 families; first-divergent counting yields 2 but h06 is non-evaluable under strict greedy (bf16 emits 27, not 26).",
+        "Downgrades CAM-2026-MARGIN-REQUANT-GATE0's step-0 ADVANCE; one confirmed heldout recurrence beyond the canary is a presence-only n=10 signal - neither systematic-law proof nor refutation of margin-aware requant; both quant arms also repair bf16 string failures h07/c03.",
+        "Instrument caveat on record: executed script stored seq_logp* jsonl fields as off-diagonal block sums; per-token logprobs and npz logits always correct; all reported margins re-derived diagonally from npz (hashes.txt carries executed cf339d91 vs fixed 797dd40c script provenance).",
+        "Runtime figures are self-reported measured wall seconds on a shared host - measured, not guaranteed; no purity claim; census and supplement are separate executor sessions, not independent worker replicates.",
+        "No conversion authorized; requant remains forbidden; the splice design (research/2026/b70-margin-requant-splice-design-20260929.md) is DESIGN ONLY, an unexecuted separate future gate."
+      ]
+    },
+    {
+      "id": "CAM-2026-OVERNIGHT-BREAKTHROUGH-20260930",
+      "title": "Overnight breakthrough campaign — incomplete incumbent baseline closeout",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "evidence_root": "results/2026/09/b70-overnight-breakthrough-20260930T020047Z",
+      "record_path": "results/2026/09/b70-overnight-breakthrough-20260930T020047Z/REPORT.md",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "PARTIAL/E2: exact calibration failed after three p512/g128 cold observations; both fresh n5 anchors and real-workload timing incomplete.",
+        "Endpoint-token-count-normalized content-chunk-window rate is not exact individual-token post-first or engine-native decode.",
+        "No candidate comparisons or >=20% breakthrough; placeholder ratios are excluded, not measured.",
+        "Recorded greedy exact-answer and host-checked JSON fixtures only; no reference parity or sampled-task certification.",
+        "Live cleanup verified, observed caps restored as found, no production restart; source backups and evidence preserved."
+      ]
+    },
+    {
+      "id": "CAM-2026-RESUME-BREAKTHROUGH-A",
+      "title": "Revised Stage A fresh scoped incumbent baseline",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "evidence_root": "results/2026/09/b70-resume-breakthrough-20260930T063200Z/A",
+      "record_path": "results/2026/09/b70-resume-breakthrough-20260930T063200Z/REPORT.md",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": ["RL-109; baseline only at as-found180W, no candidate ratio", "Usage-normalized content-chunk-window metric, not engine tg/exact token arrivals", "Timed strict ONLY JSON0/5 despite correct leading calculation5/5; repeated greedy fixtures not full task parity"]
+    },
+    {
+      "id": "CAM-2026-RESUME-BREAKTHROUGH-B",
+      "title": "Revised Stage B CPU suffix P0 milestone",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "evidence_root": "results/2026/09/b70-resume-breakthrough-20260930T063200Z/B",
+      "record_path": "results/2026/09/b70-resume-breakthrough-20260930T063200Z/REPORT.md",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": ["RL-110; unchanged layers59-63 suffix replay not full-model forward", "Negative margin unchanged, no candidate/conversion/tuning or quality repair", "RL107 systematic gate failed and preserved; new pilot authorization is not confirmation"]
+    },
+    {
+      "id": "CAM-2026-RESUME-BREAKTHROUGH-C",
+      "title": "Revised Stage C negative kernel milestones",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "evidence_root": "results/2026/09/b70-resume-breakthrough-20260930T063200Z/C",
+      "record_path": "results/2026/09/b70-resume-breakthrough-20260930T063200Z/REPORT.md",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": ["RL-111; C1 strict D3 hostwait fail, diagnostic paired15percent gate missed", "C2 native ISA Bbank reuse falsifier failed; GPU timing not run", "No full-linear or serving-qualified candidate; isolated timing not model speed"]
+    },
+    {
+      "id": "CAM-2026-C2-V2-KERNEL-REPAIR",
+      "title": "C2 V2 EXL3 DPAS kernel variant - parity PASS, isolated timing NEGATIVE (RL-112)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-EXL3-4BPW-MIXED-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-c2-repair-20260930T085200Z",
+      "record_path": "results/2026/09/b70-c2-repair-20260930T085200Z/v2/RESULTS-V2.md",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "RL-112; numerical gate PASS (7 cells bit-identical, fp64 ref, det200, capture/mutation) but paired isolated timing is ~+3-4% SLOWER than stock DpasKernel<4,2,4,4> - validated, not adopted.",
+        "Isolated-op timing on GPU1 230W quiescent is not model-level or serving-qualified speed.",
+        "Concurrent-driver contamination ~10:25Z excluded from timing table; o0 pair dropped.",
+        "Variant 3 requires a new mechanism; register binding alone is closed for this path."
+      ]
+    },
+    {
+      "id": "CAM-2026-MARGIN-REQUANT-PILOT1",
+      "title": "Margin-requant round 1 - canary repaired, heldout gate NOT met (RL-113)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-BF16-SRC-20260926",
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "decision_ids": [
+        "ADR-0010"
+      ],
+      "evidence_root": "results/2026/09/b70-margin-requant-pilot1-20260930T0855Z",
+      "record_path": "results/2026/09/b70-margin-requant-pilot1-20260930T0855Z/PILOT-RESULT.json",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "CPU-only fp32 teacher-forced margins; no GPU serving, no speed claim, no promotion.",
+        "Canary r01 repaired (-2.97 -> +0.56, greedy '14') but heldout row n03 worsened (-2.50/-3.05): heldout gate NOT met.",
+        "Derived artifact b70-arext-marginpilot1-derived-20260930 is research-only, not for serving; source artifact untouched.",
+        "INDEPENDENT-PREREVIEW.json confirmed freeze ordering, disjointness, serialization integrity (minor flags only)."
+      ]
+    },
+    {
+      "id": "CAM-2026-MARGIN-REQUANT-PILOT2",
+      "title": "Margin-requant round 2 - honest negative on transfer, 4/4 variants worsen n03 (RL-114)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-BF16-SRC-20260926",
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "decision_ids": [
+        "ADR-0010"
+      ],
+      "evidence_root": "results/2026/09/b70-margin-requant-pilot2-20260930T1045Z",
+      "record_path": "results/2026/09/b70-margin-requant-pilot2-20260930T1045Z/PILOT2-RESULT.json",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "CPU-only; no serialization this round (acceptance not met); round-1 derived artifact unchanged.",
+        "v3/v4 repair r01 strongly (+13.2) but worsen heldout n03 (-0.89/-0.82); 4/4 variants across rounds fail the non-worsened rule.",
+        "Class evidence: scale-only repair retargets represented trajectories; unrepresented near-boundary rows drift negative.",
+        "Not a mechanism refutation: calibration representation of the near-boundary class was absent (motivates round 3)."
+      ]
+    },
+    {
+      "id": "CAM-2026-MARGIN-REQUANT-PILOT3",
+      "title": "Margin-requant round 3 - budget fail; disjoint near-boundary pool built, tuning never completed (RL-115)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-BF16-SRC-20260926",
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "decision_ids": [
+        "ADR-0010"
+      ],
+      "evidence_root": "results/2026/09/b70-margin-requant-pilot3-20260930T1145Z",
+      "record_path": "results/2026/09/b70-margin-requant-pilot3-20260930T1145Z/PILOT3-RESULT.json",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "BUDGET FAIL on execution, not mechanism: no v5 candidate frozen, no serialization, heldout never re-evaluated (manifest de54921f unchanged).",
+        "Completed half: 270-row disjoint pool (12 forms) classified; near-boundary structure is FORM-CONCENTRATED; calibration v5 frozen with 102 tuning rows + anchors.",
+        "Measured tuner cost law: 75-240 s/step all-57-block grad (memory-churn), ~25-35 s/step selected-block loop; next window needs 45-60 min and setsid-detached launch (RL-092 kill class).",
+        "Scripts p12/p13/p14/p15 staged and hash-recorded in-root for the next window."
+      ]
+    },
+    {
+      "id": "CAM-2026-W4A16-IMAGE-PULL-20260930",
+      "title": "W4A16 lane image pull into isolated exl3 dockerd",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-w4a16-image-pull-20260930T1105Z",
+      "record_path": "results/2026/09/b70-w4a16-image-pull-20260930T1105Z/PULL-RESULT.json",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "Ops/prep only: pull SUCCEEDED, digest f01e24f6 verified match, 13.5 GB into unix:///run/<exl3-docker>.sock NVMe data-root; root disk and main dockerd untouched.",
+        "No launch, no quality, no speed claim in this root."
+      ]
+    },
+    {
+      "id": "CAM-2026-W4A16-LAUNCHVERIFY-20260930",
+      "title": "W4A16 control launch verification - READY (no quality, no timing)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-w4a16-launchverify-20260930T111244Z",
+      "record_path": "results/2026/09/b70-w4a16-launchverify-20260930T111244Z/VERIFY-RESULT.json",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "Launch/dispatch/counters verification only: Qwen3_5MTP + compressed-tensors W4A16 g128 + fp8 KV (144955 tokens) + MTP4 + graphs ON + prefix-cache OFF on pinned f01e24f6; endpoint ready 290 s; controlled stop.",
+        "Not a quality result and not a serving recommendation; source artifact fails the exact-answer canary (30-defect class)."
+      ]
+    },
+    {
+      "id": "CAM-2026-W4A16-DIAGSPEED-20260930",
+      "title": "W4A16-class diagnostic speed screen at 180 W vs EXL3 baseline (RL-116)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-AREXT-CT-W4A16-20260926"
+      ],
+      "decision_ids": [
+        "ADR-0010"
+      ],
+      "evidence_root": "results/2026/09/b70-w4a16-diagspeed-20260930T112958Z",
+      "record_path": "results/2026/09/b70-w4a16-diagspeed-20260930T112958Z/MEASURE-RESULT.json",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "DIAGNOSTIC ONLY - source artifact fails the exact-answer canary; class-level pricing, NOT a serving recommendation.",
+        "n=3 chunk-window screen only: p512 median 64.49 (+6% vs EXL3 same-metric 60.60), p8192 median 46.34 (-23% vs 59.83); alpha collapses at p8192 (0.51-0.56).",
+        "GPU0 as-found 180 W; endpoint-token-count-normalized content-chunk-window rate, not engine tg or token arrivals.",
+        "Historical 83.7 tok/s was a different artifact/statistic at 230 W - not comparable; do not cite as regression."
+      ]
+    },
+    {
+      "id": "CAM-2026-M4-FLAG-ABLATION-20260930",
+      "title": "M=4 verify-pass kernel attribution by flag ablation (RL-119, registered retrospectively)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-EXL3-4BPW-MIXED-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-m4-flag-ablation-20260930T143631Z",
+      "record_path": "results/2026/09/b70-m4-flag-ablation-20260930T143631Z/RESULTS.md",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "Isolated-op diagnostic probes only: B_FAKE/NODECODE/SKIP produce wrong results by construction and are never serving candidates.",
+        "B_FAKE removes required work; it bounds opportunity and does not prove a unique bottleneck or an achievable gain.",
+        "GPU0 quiet-card recheck supersedes the co-resident GPU1 nodecode/skip/fold cells; contamination log retained in ABLATION-RESULT.json.",
+        "No whole-class geometry closure: production MB=8 target-threads and NT axes remain untested (research program RQ-02)."
+      ]
+    },
+    {
+      "id": "CAM-2026-EXL3-CONCURVE-20260930",
+      "title": "EXL3 C1-C16 concurrency panel and upstream-protocol comparison (RL-120, registered retrospectively)",
+      "model_id": "MODEL-QWEN3.8-27B",
+      "artifact_ids": [
+        "ART-QWEN38-EXL3-4BPW-MIXED-20260926"
+      ],
+      "evidence_root": "results/2026/09/b70-exl3-concurve-compare-20260930T1449Z",
+      "record_path": "results/2026/09/b70-exl3-concurve-compare-20260930T1449Z/PROTOCOL-COMPARE.json",
+      "observed_at": "2026-09-30",
+      "status": "provisional",
+      "evidence_tier": "E2",
+      "publication_state": "provisional_not_for_public_headline",
+      "limits": [
+        "Aggregate Cn panel (thinking-on greedy prose/code synthetic); never a C1 latency claim or a mixed-arrival service level.",
+        "Window conventions differ from the upstream published rows (45 s vs 60 s); the real-corpus cell is n=1 on a heat-soaked card.",
+        "Run history includes wrong-card boot, a duplicate-client contamination window and an external SIGKILL; only the solo panel is comparable evidence.",
+        "No task-quality, p95 service-level, or energy-per-task cells (research program RQ-05/RQ-10)."
+      ]
+    }
+  ,
+{"id": "CAM-RQ-17-20261010T131952270494Z-1A0043228C", "title": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.", "evidence_root": "results/2026/10/RQ-17-20261010T131952270494Z-1a0043228c", "record_path": "results/2026/10/RQ-17-20261010T131952270494Z-1a0043228c/assessment.json", "observed_at": "2026-10-10", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-17-20261010T131952270494Z-1a0043228c", "question_id": "RQ-17", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "f3e110055b9663b853b1ded936d43464b55bc306ab6ce4a3dc917dae6e7ddc7f"}
+,
+{"id": "CAM-RQ-17-20261010T171539823866Z-F31436BECD", "title": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.", "evidence_root": "results/2026/10/RQ-17-20261010T171539823866Z-f31436becd", "record_path": "results/2026/10/RQ-17-20261010T171539823866Z-f31436becd/assessment.json", "observed_at": "2026-10-10", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-17-20261010T171539823866Z-f31436becd", "question_id": "RQ-17", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "ed7346a9a0753f08406f4a3e9e859feb4444676e420304452bcc3df603f6b031"}
+,
+{"id": "CAM-RQ-11-20261010T183453712825Z-8B32E529B5", "title": "MoE active bytes per token, not raw bandwidth, decide the B70's best class; the missing pieces are on-device routing and a fused grouped dequant GEMM (the K216 25x grouped-op gap and 84+ host waits are the measured failure modes).", "evidence_root": "results/2026/10/RQ-11-20261010T183453712825Z-8b32e529b5", "record_path": "results/2026/10/RQ-11-20261010T183453712825Z-8b32e529b5/assessment.json", "observed_at": "2026-10-10", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-11-20261010T183453712825Z-8b32e529b5", "question_id": "RQ-11", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "e5f532a0ac4b39a0e822b69b657921de0c2bb8e936df8ec01ce58216981eadee"}
+,
+{"id": "CAM-RQ-11-20261010T212620351889Z-FA2D9769C9", "title": "MoE active bytes per token, not raw bandwidth, decide the B70's best class; the missing pieces are on-device routing and a fused grouped dequant GEMM (the K216 25x grouped-op gap and 84+ host waits are the measured failure modes).", "evidence_root": "results/2026/10/RQ-11-20261010T212620351889Z-fa2d9769c9", "record_path": "results/2026/10/RQ-11-20261010T212620351889Z-fa2d9769c9/assessment.json", "observed_at": "2026-10-10", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-11-20261010T212620351889Z-fa2d9769c9", "question_id": "RQ-11", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "f0cfefa9cda60abfa49f7784c432e111627e40f1569b52a7a7db2f1c47a59f22"}
+,
+{"id": "CAM-RQ-26-20261010T214816140328Z-DAEE8D535F", "title": "EXL3's quality comes mainly from block-128 sign+Hadamard incoherence, not from the trellis. Rotated affine INT4 G128 (GPTQ or AutoRound in the rotated basis, INT8 escape for failing tensors, <=4.5 bpw) matches EXL3 block-output KL, and its decode costs a few instructions per weight.", "evidence_root": "results/2026/10/RQ-26-20261010T214816140328Z-daee8d535f", "record_path": "results/2026/10/RQ-26-20261010T214816140328Z-daee8d535f/assessment.json", "observed_at": "2026-10-10", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-26-20261010T214816140328Z-daee8d535f", "question_id": "RQ-26", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "cpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "d63ed32a78d0e8014d4efc8a5738bc7f7fe985026ab1bef3cfe34bd3abb840ee"}
+,
+{"id": "CAM-RQ-26-20261010T231243348252Z-1E1F43F8D1", "title": "EXL3's quality comes mainly from block-128 sign+Hadamard incoherence, not from the trellis. Rotated affine INT4 G128 (GPTQ or AutoRound in the rotated basis, INT8 escape for failing tensors, <=4.5 bpw) matches EXL3 block-output KL, and its decode costs a few instructions per weight.", "evidence_root": "results/2026/10/RQ-26-20261010T231243348252Z-1e1f43f8d1", "record_path": "results/2026/10/RQ-26-20261010T231243348252Z-1e1f43f8d1/assessment.json", "observed_at": "2026-10-10", "status": "blocked", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-26-20261010T231243348252Z-1e1f43f8d1", "question_id": "RQ-26", "outcome": "blocked", "adoption": "not_adopted", "validation_scope": "cpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "1d0bb7175ea70cc51edccac222831d915344e21e3b554ac139402aa94c969f87"}
+,
+{"id": "CAM-RQ-17-20261011T114846278867Z-71A59DE867", "title": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.", "evidence_root": "results/2026/10/RQ-17-20261011T114846278867Z-71a59de867", "record_path": "results/2026/10/RQ-17-20261011T114846278867Z-71a59de867/assessment.json", "observed_at": "2026-10-11", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-17-20261011T114846278867Z-71a59de867", "question_id": "RQ-17", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "7b2fdece3f6f4eeced98c9ccdd916bde9eac18fb056857e34806d8552fdf5f83"}
+,
+{"id": "CAM-RQ-26-20261011T122026925511Z-0D5B5FF8B7", "title": "EXL3's quality comes mainly from block-128 sign+Hadamard incoherence, not from the trellis. Rotated affine INT4 G128 (GPTQ or AutoRound in the rotated basis, INT8 escape for failing tensors, <=4.5 bpw) matches EXL3 block-output KL, and its decode costs a few instructions per weight.", "evidence_root": "results/2026/10/RQ-26-20261011T122026925511Z-0d5b5ff8b7", "record_path": "results/2026/10/RQ-26-20261011T122026925511Z-0d5b5ff8b7/assessment.json", "observed_at": "2026-10-11", "status": "blocked", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-26-20261011T122026925511Z-0d5b5ff8b7", "question_id": "RQ-26", "outcome": "blocked", "adoption": "not_adopted", "validation_scope": "cpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "72a936f0d1b5179ac28e94ebc074440142ed9c4bbd9cce09a3c461ce470510f2"}
+,
+{"id": "CAM-RQ-17-20261011T175145164305Z-C25BE898F6", "title": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.", "evidence_root": "results/2026/10/RQ-17-20261011T175145164305Z-c25be898f6", "record_path": "results/2026/10/RQ-17-20261011T175145164305Z-c25be898f6/assessment.json", "observed_at": "2026-10-11", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-17-20261011T175145164305Z-c25be898f6", "question_id": "RQ-17", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "6eab9bcc8c55f1b3649d20ed4f8d5b3dec2cd16c8f5524de624880b735cdbc75"}
+,
+{"id": "CAM-RQ-17-20261011T180232777632Z-BB93FD410B", "title": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.", "evidence_root": "results/2026/10/RQ-17-20261011T180232777632Z-bb93fd410b", "record_path": "results/2026/10/RQ-17-20261011T180232777632Z-bb93fd410b/assessment.json", "observed_at": "2026-10-11", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-17-20261011T180232777632Z-bb93fd410b", "question_id": "RQ-17", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "edcbe9de0b1d75a657bf5b16b546e15ea672d77c531570e36a65f6e3b2dcc856"}
+,
+{"id": "CAM-RQ-25-20261011T181913675462Z-8AD0C3182F", "title": "98-byte IQ3_XXS blocks force 16-bit loads; a structure-of-arrays repack (aligned qs plane, separate signs/scales plane) lets the kernel use 16-byte loads and raises expert MMVQ throughput at least 1.5x with bit-identical dequant, giving >=10% decode on the route.", "evidence_root": "results/2026/10/RQ-25-20261011T181913675462Z-8ad0c3182f", "record_path": "results/2026/10/RQ-25-20261011T181913675462Z-8ad0c3182f/assessment.json", "observed_at": "2026-10-11", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-25-20261011T181913675462Z-8ad0c3182f", "question_id": "RQ-25", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "7e74822e84497493b8bab31bbd1236d7ff4da3c1d2bcc4565ed4bd42e490cabc"}
+,
+{"id": "CAM-RQ-25-20261011T182449159716Z-7E8D36AEFD", "title": "98-byte IQ3_XXS blocks force 16-bit loads; a structure-of-arrays repack (aligned qs plane, separate signs/scales plane) lets the kernel use 16-byte loads and raises expert MMVQ throughput at least 1.5x with bit-identical dequant, giving >=10% decode on the route.", "evidence_root": "results/2026/10/RQ-25-20261011T182449159716Z-7e8d36aefd", "record_path": "results/2026/10/RQ-25-20261011T182449159716Z-7e8d36aefd/assessment.json", "observed_at": "2026-10-11", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-25-20261011T182449159716Z-7e8d36aefd", "question_id": "RQ-25", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "cf8d00c8e062bd093cd42711a6bacad6fa56d58f550a3125847bfc5cce4a2916"}
+,
+{"id": "CAM-RQ-27-20261011T200019860520Z-3760EA5F41", "title": "Folding an offline residual Hadamard rotation into the BF16 weights before GPTQ W4 G128 (desc_act off, auto_gptq packing) removes the 14-vs-30 margin inversion and brings final-logit KL to EXL3 4bpw level, so the stock XPU W4A16 kernel serves EXL3-class quality.", "evidence_root": "results/2026/10/RQ-27-20261011T200019860520Z-3760ea5f41", "record_path": "results/2026/10/RQ-27-20261011T200019860520Z-3760ea5f41/assessment.json", "observed_at": "2026-10-11", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-27-20261011T200019860520Z-3760ea5f41", "question_id": "RQ-27", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "9df8fbdae7535f31e41100d489d2ed064253c7ec9e38bb410989f0753825de12"}
+,
+{"id": "CAM-RQ-27-20261011T202824666303Z-94C266D8DD", "title": "Folding an offline residual Hadamard rotation into the BF16 weights before GPTQ W4 G128 (desc_act off, auto_gptq packing) removes the 14-vs-30 margin inversion and brings final-logit KL to EXL3 4bpw level, so the stock XPU W4A16 kernel serves EXL3-class quality.", "evidence_root": "results/2026/10/RQ-27-20261011T202824666303Z-94c266d8dd", "record_path": "results/2026/10/RQ-27-20261011T202824666303Z-94c266d8dd/assessment.json", "observed_at": "2026-10-11", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-27-20261011T202824666303Z-94c266d8dd", "question_id": "RQ-27", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "a2f6311213cfa8c0a95978664fe4af7754fca8bee4591ef332870a928dcae0fc"}
+,
+{"id": "CAM-RQ-17-20261013T192018853258Z-69E649D464", "title": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.", "evidence_root": "results/2026/10/RQ-17-20261013T192018853258Z-69e649d464", "record_path": "results/2026/10/RQ-17-20261013T192018853258Z-69e649d464/assessment.json", "observed_at": "2026-10-13", "status": "failed", "publication_state": "not_for_public_headline", "run_root": "results/2026/10/RQ-17-20261013T192018853258Z-69e649d464", "question_id": "RQ-17", "outcome": "failed", "adoption": "not_adopted", "validation_scope": "gpu screen on declared identities and controlled coordinates only; no production adoption or general B70 speed claim", "assessment_sha256": "2ec22dbb416b7c46a1680c22acc76729e1531369b175047137143487dfa6352e"}
+]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://raw.githubusercontent.com/Niko1221/Strata/d5ea7133741e67743c0e886bb426c0ce8d69cf6c/docs/INTEL.md",
+  "final_url": "https://raw.githubusercontent.com/Niko1221/Strata/d5ea7133741e67743c0e886bb426c0ce8d69cf6c/docs/INTEL.md",
+  "fetched_at": "2026-10-08T21:24:36.678138Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "020c512a0da61e6bbf433ecaaabd139986c3c2468ea8f57d6827c3e169e467b9",
+  "size_bytes": 67442,
+  "claim": "Pinned Intel Arc installation path and expert-streaming requirements for Strata SYCL",
+  "relevance": "RQ-14 compatibility and storage gate before model acquisition",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

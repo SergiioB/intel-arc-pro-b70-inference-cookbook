@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://docs.vllm.ai/en/latest/features/speculative_decoding/",
+  "final_url": "https://docs.vllm.ai/en/latest/features/speculative_decoding/",
+  "fetched_at": "2026-10-09T17:58:17.302541Z",
+  "content_type": "text/html; charset=utf-8",
+  "sha256": "81d5b2a23eb789e74211593c5ee790dc2c557b55c9ff7fb7b571259081b83849",
+  "size_bytes": 210393,
+  "claim": "vLLM speculative methods include MTP, EAGLE-3, DFlash, draft model, n-gram, suffix decoding",
+  "relevance": "RQ-21: workload-matched speculation method on the RQ-10 task corpus",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

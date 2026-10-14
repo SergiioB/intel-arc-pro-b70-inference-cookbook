@@ -1,0 +1,9 @@
+CSV,mode=rowpass,RC=1,K=5120,N=12288,M=4,ksplit=1,nslots=5,median_launch_us=2047.084,median_round_us=8194.324,min_us=2017.500,max_us=2162.083,window_s=0.246022,eff_GBps_per_pass=15.85,eff_GBps_unique_round=3.96
+CSV,mode=rowpass,RC=1,K=5120,N=34816,M=4,ksplit=1,nslots=2,median_launch_us=5818.594,median_round_us=23311.565,min_us=5724.688,max_us=6057.604,window_s=0.700618,eff_GBps_per_pass=15.80,eff_GBps_unique_round=3.94
+CSV,mode=rowpass,RC=1,K=17408,N=5120,M=4,ksplit=1,nslots=3,median_launch_us=3420.260,median_round_us=13762.708,min_us=3172.500,max_us=4023.958,window_s=0.415305,eff_GBps_per_pass=13.44,eff_GBps_unique_round=3.34
+CSV,mode=rowpass,RC=1,K=5120,N=12288,M=1,ksplit=1,nslots=5,median_launch_us=2041.042,median_round_us=2041.042,min_us=2020.417,max_us=2780.208,window_s=0.065845,eff_GBps_per_pass=15.89,eff_GBps_unique_round=15.89
+CSV,mode=rowpass,RC=1,K=5120,N=34816,M=1,ksplit=1,nslots=2,median_launch_us=5834.583,median_round_us=5834.583,min_us=5725.104,max_us=7621.354,window_s=0.178666,eff_GBps_per_pass=15.75,eff_GBps_unique_round=15.75
+CSV,mode=rowpass,RC=1,K=17408,N=5120,M=1,ksplit=1,nslots=3,median_launch_us=3431.667,median_round_us=3431.667,min_us=3415.520,max_us=4886.875,window_s=0.108970,eff_GBps_per_pass=13.39,eff_GBps_unique_round=13.39
+CSV,mode=rowpass,RC=1,K=5120,N=12288,M=8,ksplit=1,nslots=5,median_launch_us=2046.719,median_round_us=16421.095,min_us=2017.917,max_us=2153.229,window_s=0.492176,eff_GBps_per_pass=15.85,eff_GBps_unique_round=1.98
+CSV,mode=rowpass,RC=1,K=5120,N=34816,M=8,ksplit=1,nslots=2,median_launch_us=5838.177,median_round_us=46840.677,min_us=5729.270,max_us=6037.188,window_s=1.404135,eff_GBps_per_pass=15.74,eff_GBps_unique_round=1.96
+CSV,mode=rowpass,RC=1,K=17408,N=5120,M=8,ksplit=1,nslots=3,median_launch_us=3419.687,median_round_us=27488.541,min_us=3168.542,max_us=3784.375,window_s=0.826685,eff_GBps_per_pass=13.44,eff_GBps_unique_round=1.67

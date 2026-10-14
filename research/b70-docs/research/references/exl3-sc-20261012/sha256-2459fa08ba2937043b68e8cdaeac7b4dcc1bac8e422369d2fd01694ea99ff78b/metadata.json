@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://raw.githubusercontent.com/turboderp-org/exllamav3/master/doc/optimize.md",
+  "final_url": "https://raw.githubusercontent.com/turboderp-org/exllamav3/master/doc/optimize.md",
+  "fetched_at": "2026-10-12T05:10:25.233335Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "2459fa08ba2937043b68e8cdaeac7b4dcc1bac8e422369d2fd01694ea99ff78b",
+  "size_bytes": 12742,
+  "claim": "exllamav3 optimize pipeline: per-tensor KL sensitivity via LDLQ-shaped noise injection, exact greedy bit allocation kld(t,K)=S_t*rfn_t(K)^alpha, in-domain self-generated calibration; shaped predictions Spearman 0.84 vs ground-truth swap attribution",
+  "relevance": "Rate-distortion-optimal per-tensor allocation on top of trellis coding: the quality half of the XTQ design already exists upstream for Qwen3.8-27B",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "amdahl": {
+    "wall_fraction": 0.35,
+    "local_speedup": 100,
+    "provenance": {
+      "kind": "assumption",
+      "references": [
+        "research/2026/b70-quant-format-lever-audit-20261009.md",
+        "research/references/levers-synthesis-20261009/sha256-ca6f0ea9a765553f59e1f57fe2ea3f8ada5a278ef8ab57fb2a43c0d2894a076c/content",
+        "hypothesis:RQ-18"
+      ],
+      "note": "Upper bound only. Expert-miss stream priced at 20.6 ms of a ~56 ms decode round (33-37%) in the 2026-10-09 lever audit; that miss count (135/round) and the 11.5 GB/s staging rate are sensitivity assumptions, not B70 counters. Two-card --layer-split holds all 24,576 IQ3_XXS experts (42.9 GB) in 64 GB VRAM, so the miss term goes to ~0 (local_speedup 100 stands for removal). Ignores the per-round hidden-state handoff between cards and any loss of copy/compute overlap. The deciding probe must read Strata's miss counters per cell."
+    }
+  },
+  "transfer": {
+    "bytes_per_step": 40960,
+    "bandwidth_gbps": 11.5,
+    "collective_count": 2,
+    "latency_us": 30,
+    "provenance": {
+      "kind": "assumption",
+      "references": [
+        "registry/research-ledger.json#RL-059",
+        "hypothesis:RQ-18"
+      ],
+      "note": "Layer-split boundary cost per decode round: one hidden-state block (assumed <=5 tokens x 2048 hidden x fp32 = 40 KB) crosses the card boundary forward, plus a token handback; 30 us per crossing is an assumed host-staged latency class, RL-059 measured 11.1-11.9 GB/s copy bandwidth only. Strata's actual hidden size and transport (P2P vs host-staged) must be read from the engine log."
+    }
+  }
+}

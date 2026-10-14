@@ -1,0 +1,639 @@
+{
+ "source": "enumerated from model.fwd_modules (exllamav3 XPU build) with the real class/key/layer_idx",
+ "rule": "reference decoder layer j maps to the native entry with class TransformerBlock and layer_idx == j; the PLE layer (PLELayer, layer_idx -2) and ExpandStreams/GatedResidual/lm_head are not decoder layers",
+ "entries": [
+  {
+   "index": 0,
+   "class": "exllamav3.modules.embedding.Embedding",
+   "key": "model.language_model.embed_tokens",
+   "layer_idx": null,
+   "captured_shape": [
+    1,
+    20,
+    2560
+   ]
+  },
+  {
+   "index": 1,
+   "class": "exllamav3.modules.hyperconnections.ExpandStreams",
+   "key": "hc_expand",
+   "layer_idx": null,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 2,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.0",
+   "layer_idx": 0,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 3,
+   "class": "exllamav3.modules.ple.PLELayer",
+   "key": "model.language_model.layers.1.ple",
+   "layer_idx": -2,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 4,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.1",
+   "layer_idx": 1,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 5,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.2",
+   "layer_idx": 2,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 6,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.3",
+   "layer_idx": 3,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 7,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.4",
+   "layer_idx": 4,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 8,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.5",
+   "layer_idx": 5,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 9,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.6",
+   "layer_idx": 6,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 10,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.7",
+   "layer_idx": 7,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 11,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.8",
+   "layer_idx": 8,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 12,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.9",
+   "layer_idx": 9,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 13,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.10",
+   "layer_idx": 10,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 14,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.11",
+   "layer_idx": 11,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 15,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.12",
+   "layer_idx": 12,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 16,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.13",
+   "layer_idx": 13,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 17,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.14",
+   "layer_idx": 14,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 18,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.15",
+   "layer_idx": 15,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 19,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.16",
+   "layer_idx": 16,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 20,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.17",
+   "layer_idx": 17,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 21,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.18",
+   "layer_idx": 18,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 22,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.19",
+   "layer_idx": 19,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 23,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.20",
+   "layer_idx": 20,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 24,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.21",
+   "layer_idx": 21,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 25,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.22",
+   "layer_idx": 22,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 26,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.23",
+   "layer_idx": 23,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 27,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.24",
+   "layer_idx": 24,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 28,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.25",
+   "layer_idx": 25,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 29,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.26",
+   "layer_idx": 26,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 30,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.27",
+   "layer_idx": 27,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 31,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.28",
+   "layer_idx": 28,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 32,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.29",
+   "layer_idx": 29,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 33,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.30",
+   "layer_idx": 30,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 34,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.31",
+   "layer_idx": 31,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 35,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.32",
+   "layer_idx": 32,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 36,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.33",
+   "layer_idx": 33,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 37,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.34",
+   "layer_idx": 34,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 38,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.35",
+   "layer_idx": 35,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 39,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.36",
+   "layer_idx": 36,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 40,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.37",
+   "layer_idx": 37,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 41,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.38",
+   "layer_idx": 38,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 42,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.39",
+   "layer_idx": 39,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 43,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.40",
+   "layer_idx": 40,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 44,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.41",
+   "layer_idx": 41,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 45,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.42",
+   "layer_idx": 42,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 46,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.43",
+   "layer_idx": 43,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 47,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.44",
+   "layer_idx": 44,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 48,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.45",
+   "layer_idx": 45,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 49,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.46",
+   "layer_idx": 46,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 50,
+   "class": "exllamav3.modules.transformer.TransformerBlock",
+   "key": "model.language_model.layers.47",
+   "layer_idx": 47,
+   "captured_shape": [
+    1,
+    20,
+    4,
+    2560
+   ]
+  },
+  {
+   "index": 51,
+   "class": "exllamav3.modules.hyperconnections.GatedResidual",
+   "key": "model.language_model.hyper_connection_mixer",
+   "layer_idx": null,
+   "captured_shape": [
+    1,
+    1,
+    2560
+   ]
+  },
+  {
+   "index": 52,
+   "class": "exllamav3.modules.linear.Linear",
+   "key": "lm_head",
+   "layer_idx": null,
+   "captured_shape": [
+    1,
+    1,
+    248320
+   ]
+  }
+ ]
+}

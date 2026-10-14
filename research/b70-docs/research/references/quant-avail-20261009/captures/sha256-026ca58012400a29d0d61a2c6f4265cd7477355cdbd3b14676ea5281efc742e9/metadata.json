@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://github.com/ggml-org/llama.cpp/pull/26689",
+  "final_url": "https://github.com/ggml-org/llama.cpp/pull/26689",
+  "fetched_at": "2026-10-09T16:39:34.911050Z",
+  "content_type": "text/html; charset=utf-8",
+  "sha256": "026ca58012400a29d0d61a2c6f4265cd7477355cdbd3b14676ea5281efc742e9",
+  "size_bytes": 828736,
+  "claim": "Merged 2026-08-28: SYCL TILE kernel for quantized-KV decode on BMG, +42% to +169% vs VEC at 32K-118K ctx, q4_0/q8_0 KV",
+  "relevance": "Xe2 quantized-KV baseline already upstream; defines what follow-ups are 'next' (q4_1/iq4_nl KV, prefill path)",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

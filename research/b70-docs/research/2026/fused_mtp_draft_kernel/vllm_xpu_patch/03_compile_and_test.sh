@@ -1,0 +1,18 @@
+#!/bin/bash
+printf "%s\n" "QUARANTINED: invalid MTP stub; execution refused" >&2
+exit 78
+#!/bin/bash
+# Prototype compilation script for vllm-xpu-kernels
+# To run on B70
+
+cd /path/to/vllm-xpu-kernels || exit 1
+
+echo "Applying fused MTP kernel patch..."
+# We assume the patch moves 01_vllm_xpu_kernels_fused_mtp.cpp into csrc/ and updates CMakeLists.txt
+
+export CXXFLAGS="-O3 -fsycl -fsycl-targets=spir64_gen -Xs '-device bmg' -Xs '-options -cl-intel-reqd-sub-group-size=16'"
+
+echo "Building vllm-xpu-kernels..."
+pip install . --no-build-isolation
+
+echo "Done."

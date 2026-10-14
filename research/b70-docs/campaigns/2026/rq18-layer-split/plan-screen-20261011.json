@@ -1,0 +1,67 @@
+{
+  "question_id": "RQ-18",
+  "hypothesis": "With every expert resident the miss term (about a third of a ~56 ms round) disappears while the per-round card handoff costs under 0.1 ms, so decode rises at least 15 % at identical greedy output.",
+  "changed_variable": "Expert placement: one-card VRAM cache plus pinned host mirror versus a two-card layer split with all experts resident (engine build, artifact, MTP and KV settings unchanged)",
+  "resource": "gpu",
+  "stage": "screen",
+  "timeout_s": 3600,
+  "command": [
+    "python3",
+    "scripts/tmp/rq18_layersplit_20261011.py",
+    "screen"
+  ],
+  "preflight_command": [
+    "python3",
+    "scripts/tmp/rq18_layersplit_20261011.py",
+    "preflight"
+  ],
+  "cleanup_command": [
+    "python3",
+    "scripts/tmp/rq18_layersplit_20261011.py",
+    "cleanup"
+  ],
+  "identities": {
+    "baseline": {
+      "host": "b70-host",
+      "arm": "A (one card, unchanged config of record)",
+      "engine_revision": "Strata v0.1.40.3 SYCL build-sycl/strata in image strata-sycl-dev:latest (release pin d5ea7133741e67743c0e886bb426c0ce8d69cf6c), config of record /mnt/<sata-disk>/strata/serve-flashnext-iq3xxs.json verbatim (args and env byte-identical), ONEAPI_DEVICE_SELECTOR=level_zero:0, resident via python3 -m serve.server --engine strata",
+      "model_revision": "Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS two-shard GGUF + pack/iq3xxs + mtp-rt + data/expert-profile.bin, identities sealed in results/2026/10/rq14-strata-matched-screen-20261009/ARTIFACTS.sha256 (RL-125)"
+    },
+    "candidate": {
+      "host": "b70-host",
+      "arm": "B (both cards, config of record + --layer-split auto)",
+      "engine_revision": "Strata v0.1.40.3 SYCL build-sycl/strata in image strata-sycl-dev:latest (release pin d5ea7133741e67743c0e886bb426c0ce8d69cf6c); config of record with ONLY the split changes: env ONEAPI_DEVICE_SELECTOR=level_zero:0,1 (from level_zero:0), args + [\"--layer-split\",\"auto\"], config keys \"gpu\": [0,1], \"gpu_order\": \"as_given\", \"layer_split\": \"auto\", and a run-specific engine log path; every other arg, env var, artifact and setting byte-identical to arm A",
+      "model_revision": "Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS two-shard GGUF + pack/iq3xxs + mtp-rt + data/expert-profile.bin, identities sealed in results/2026/10/rq14-strata-matched-screen-20261009/ARTIFACTS.sha256 (RL-125)"
+    }
+  },
+  "controlled": {
+    "workload": {
+      "definition": "campaigns/2026/rq18-layer-split/canaries.json (6 exact-answer canaries, scorers/expects copied verbatim from campaigns/2026/rq17-flashnext-quality/tasks.json; only the gen budget is RQ-18's predeclared 512)",
+      "cells": "per arm visit: dec = p512.txt rendered through the model chat template, greedy, 128 new tokens; pre = p8192.txt rendered through the same template, greedy, 8 new tokens; then the 6 batt-* canaries (batt-arith/capital/token/sumsq/logic/json) greedy gen 512 scored content-only. One discarded same-shape warmup (p512/g128) precedes each visit's measured cells",
+      "sampling": "greedy (temperature 0) on the serve /v1/chat/completions surface for BOTH arms",
+      "client": "single sequential client (this adapter); one request in flight at a time; no concurrency",
+      "scoring": "deterministic content-only scorers keyed from campaigns/2026/rq18-layer-split/canaries.json; reasoning_content retained as evidence, never scored",
+      "cell_order": "3 interleaved A/B pairs in ABBA order: pair 1 = A then B, pair 2 = B then A, pair 3 = A then B (six engine visits, one fresh engine per visit); every cell bracketed by guard calls; caps/temps/per-card visible_avail recorded at each visit start and per-cell visible_avail"
+    },
+    "config": {
+      "card": "arm A: ONEAPI_DEVICE_SELECTOR=level_zero:0 -> card0 (0000:0b:00.0, renderD128, the display card). arm B: level_zero:0,1 -> card0+card1 (0000:0b:00.0 + 0000:0f:00.0, renderD129). Both verified live by PCI at preflight; never a remembered hwmon index.",
+      "engine_argv": "arm A: serve-flashnext-iq3xxs.json args verbatim: --pack /work/pack/iq3xxs --native/--ple-gguf IQ3_XXS shards --expert-profile data/expert-profile.bin --expert-cache auto --stream-experts --mtp /work/mtp-rt --spec 4 --spec-min-p 0.5 --vram-reserve-mib 256 --ple-io ram --max-context 10240 --kv int8 --prefill 4096. arm B: the same args with --layer-split auto appended (and the split config keys). No other flag added or removed between arms.",
+      "engine_env": "arm A: config env verbatim (ONEAPI_DEVICE_SELECTOR=level_zero:0, STRATA_VERIFY_NO_HOST=1, STRATA_VERIFY_DEVICE_PLAN=1, STRATA_STAGER_THREADS=12, STRATA_PREFILL_RING=512). arm B: identical except ONEAPI_DEVICE_SELECTOR=level_zero:0,1. PYTHONPATH=/work/pylibs pinned at the docker level for both arms.",
+      "container": "image strata-sycl-dev:latest, explicit --entrypoint python3 -m serve.server --engine strata --config <arm config> --port 8095 --host 127.0.0.1; dedicated container names under rq18-layersplit-; main docker daemon socket /run/docker.sock. One container per arm visit (six total), stopped and VRAM release re-proven after each.",
+      "vram_budget": "engine sizes each stage's expert cache from live free VRAM; the living-free rule (AGENTS.md 4) is enforced as a >= 4 GiB reserve per card in the preflight residency pricing. All 24,576 IQ3_XXS experts total 42,912,972,800 B (39.97 GiB) from pack/iq3xxs/native_experts.txt; the auto split covers both cards' ranges and is gated on every expert fitting (see evidence_rationale). A residency below 100 % rejects. Corrected per-stage pricing (2026-10-11 prep, live visible_avail card0 30748 MiB / card1 32615 MiB, reserve 4096 each, plus a full 1467 MiB dense copy per stage since the config has no --trim-stage-weights, ~195 MiB context and the 993 MiB MTP drafter on the last stage): expert capacities card0 24.40 GiB / card1 25.26 GiB = 49.66 GiB for 39.97 GiB of experts, 9.7 GiB slack; feasible split window K in 21..31 (card0 holds layers [0,K), card1 [K,48)).",
+      "power_thermal": "as-found caps and temps recorded at preflight (currently card0 180 W / card1 230 W) and at every visit; restored to as-found at cleanup; sustained thermal regime declared per standing rules (the <=55 C cooldown is unreachable on this host, RL-065/069).",
+      "isolation": "preflight fails on any foreign compute client on EITHER render node, any leftover rq18-layersplit-* container, any running strata container, or a listener on 8095; scripts/tmp/gpu_guard_20261011.sh brackets every cell on BOTH render nodes (GPU0 0000:0b:00.0/renderD128, GPU1 0000:0f:00.0/renderD129): a foreign inference PID aborts that cell as contaminated and pauses the lane (exit 3, evidence retained, PID never killed); guard hits that are this screen's own live rq18-layersplit-* containers (docker inspect State.Pid) are not foreign.",
+      "guard": "scripts/tmp/gpu_guard_20261011.sh (2026-10-11 window tooling; same-contract performance fix vs its .slow-orig, verified A/B on clean and contaminated paths); called by preflight, at every visit start, and before AND after every cell; every call logged to <big-raw>/guard/guard_log.jsonl with a copy under the run root.",
+      "port": 8095,
+      "big_raw": "all large raw per-cell engine logs, docker logs and response bodies live under /mnt/<nvme-disk>/b70-rq18-20261011/<run-basename>/ (root disk has ~8 GiB free); the run root holds raw/BIG_RAW_POINTER.txt pointing at it"
+    }
+  },
+  "comparison": {
+    "metric": "decode_tok_s_engine_side",
+    "unit": "tok/s",
+    "direction": "higher",
+    "min_relative_gain": 0.15
+  },
+  "evidence_rationale": "RQ-18 screen of the two-card placement mechanism (research/2026/b70-untried-levers-synthesis-20261009.md; research/references/rq18-layer-split-price.json; RL-125/RL-127/RL-059). The one-card route of record (RL-125, 48.03 tok/s p512/g128 engine-side, 989.11 tok/s 8K prefill) holds 14,024 of 24,576 IQ3_XXS expert pairs, so ~10,552 pairs stream from the pinned host mirror and the CPU rounds a third of each ~56 ms decode round. The candidate holds every expert in the two cards' 64 GB via the pinned SYCL port's pipeline (layer) split: --layer-split requires --serve (sycl/src/program/generate.cpp:2024), so BOTH arms are driven through the serve surface and both are timed by the engine's own serve accounting line (strata serve: prompt N tokens = R reused + F read in P ms (x tok/s), G generated in D ms (y tok/s)) -- the same engine-side boundary class as RQ-14's one-shot 'decode N tokens in X ms', not client SSE or wall rate. Residency is proven from the engine log: per-stage 'strata verify: window up to T tokens, M MiB of device buffers (100% VRAM resident: zero-doorbell graph)' (sycl/src/core/verify.cpp:709) and 'strata serve: layer split: 100% of the experts resident, ... ring N slots' (sycl/src/program/generate.cpp:6403), plus per-cell 'decode expert cache hit rate 100.0%' with zero PCIe/GPU-offload reads. Feasibility (this prep): card0 budget 25.55 GiB and card1 27.89 GiB after a 4 GiB reserve on each 31.89 GiB card and the display card's ~2.4 GiB; the even and near-even splits need 17.7/22.2 GiB of experts at K=24, so all 24,576 experts fit and the split is not blocked. Gates: every pair and the median >= +15% decode (>= 55.2 tok/s against the 48.03 anchor), 8K prefill >= 0.95x, greedy canary content byte-identical across arms, engine reports 100% experts resident, both caps restored. Stop rule: below +15% after confirmation, any output difference, or residency below 100% rejects; one screen plus one confirmation. This is a screen, never a production recommendation.",
+  "measurements_note": "The adapter reads this plan.json from B70_RUN_DIR and copies metric/unit/identities/controlled verbatim into measurements.json; baseline/candidate are arrays of {pair, value} over the three A/B decode pairs (value = engine-side decode tok/s from the serve accounting line). checks carry residency, prefill, byte_identical, measurement_validity, isolation and cleanup, each with a relative evidence file under the run root (large raw bytes under the big-raw pointer). Check semantics (predeclared): every pair's decode ratio, the median ratio, every pair's prefill ratio >= 0.95, canary contents byte-identical (content bytes) across arms and across pairs, and arm B's engine log showing 100% expert residency on every stage. A foreign inference PID on either render node aborts the cell as contaminated and pauses the lane (exit 3) through a separate evidence path, never as a quality verdict. Per-cell engine logs and response bodies are kept in full; nothing is deleted."
+}

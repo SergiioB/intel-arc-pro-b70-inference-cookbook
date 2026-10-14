@@ -1,0 +1,12 @@
+[mem] {'tag': 'after_load', 'xpu_alloc_mb': 5422.8, 'xpu_reserved_mb': 5507.1, 'rss_mb': 2198.9}
+[qa] 58.3s -> '<think>\n\n</think>\n\nParis<|im_end|>\n<|endoftext|><|im_start|>user\n<|im_start|><|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nParis<|im_end|>\n'
+Q: What is the capital of France? Answer in one word.
+  A: '<think>\n\n</think>\n\nParis\nuser\n\nassistant\n<think>\n\n</think>\n\nParis\n'
+[qa_repeat] 69.8s -> '<think>\n\n</think>\n\nParis<|im_end|>\n<|endoftext|><|im_start|>user\n<|im_start|><|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nParis<|im_end|>\n'
+[qa] 69.0s -> '<think>\n\n</think>\n\nBerlin<|im_end|>\n<|endoftext|><|im_start|><|im_start|><|im_end|>\n<|im_start|>user\n<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n'
+Q: What is the capital of Germany? Answer in one word.
+  A: '<think>\n\n</think>\n\nBerlin\n\nuser\n\nassistant\n<think>\n\n</think>\n\n'
+[qa_repeat] 70.2s -> '<think>\n\n</think>\n\nBerlin<|im_end|>\n<|endoftext|><|im_start|><|im_start|><|im_end|>\n<|im_start|>user\n<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n'
+[qa] 77.4s -> '<think>\n\n</think>\n\n42<|im_end|>\n<|endoftext|><|im_start|><|im_start|><|im_end|>\n<|im_start|><|im_start|><|im_end|>\n<|im_start|><|im_end|>\n<|im_start|><|im_end|>\n<|im_start|>'
+Q: What is 17 + 25? Answer with the number only.
+  A: '<think>\n\n</think>\n\n42\n\n\n\n\n'

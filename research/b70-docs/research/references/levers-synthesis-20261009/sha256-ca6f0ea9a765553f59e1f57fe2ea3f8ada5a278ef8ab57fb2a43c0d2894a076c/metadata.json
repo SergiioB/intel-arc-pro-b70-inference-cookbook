@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://raw.githubusercontent.com/Niko1221/Strata/main/bench/results/2026-10-04-community-2x-arc-pro-b60/README.md",
+  "final_url": "https://raw.githubusercontent.com/Niko1221/Strata/main/bench/results/2026-10-04-community-2x-arc-pro-b60/README.md",
+  "fetched_at": "2026-10-09T17:57:46.068294Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "ca6f0ea9a765553f59e1f57fe2ea3f8ada5a278ef8ab57fb2a43c0d2894a076c",
+  "size_bytes": 6298,
+  "claim": "Community 2x Arc Pro B60 Strata --layer-split: Flash-Next IQ2_XS 58.6-61.3 tok/s decode, Coder IQ1_M 56.6 tok/s",
+  "relevance": "RQ-18: two-card layer-split with all experts resident vs one-card expert streaming",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

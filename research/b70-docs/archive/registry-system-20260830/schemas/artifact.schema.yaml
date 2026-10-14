@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/artifact.schema.yaml",
+  "title": "B70 canonical artifact registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifacts"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}}
+  },
+  "$defs": {
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "observed_at", "provenance"],
+      "properties": {
+        "state": {"enum": ["published", "present", "deleted", "unknown", "not_established"]},
+        "observed_at": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "repository": {"type": ["string", "null"]},
+        "path": {"type": ["string", "null"]},
+        "host_or_volume": {"type": ["string", "null"]},
+        "provenance": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "model_id", "label", "role", "format", "remote_repository", "local_presence", "provenance_state", "last_verified", "historical", "correction_ids"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^ART-[A-Z0-9][A-Z0-9.-]*$"},
+        "model_id": {"type": "string", "pattern": "^MODEL-[A-Z0-9][A-Z0-9.-]*$"},
+        "label": {"type": "string", "minLength": 1},
+        "role": {"enum": ["target", "draft", "projector", "target-set", "experimental-overlay"]},
+        "format": {"type": "string", "minLength": 1},
+        "remote_repository": {"$ref": "#/$defs/observation"},
+        "local_presence": {"$ref": "#/$defs/observation"},
+        "provenance_state": {"enum": ["official", "local_conversion", "local_requantization", "reconstructed_from_official", "unknown"]},
+        "last_verified": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "historical": {"type": "boolean"},
+        "correction_ids": {"type": "array", "items": {"type": "string", "pattern": "^correction:.+:20[0-9]{2}-[0-9]{2}-[0-9]{2}$"}, "uniqueItems": true},
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}

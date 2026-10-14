@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://github.com/ggml-org/llama.cpp/pull/29809",
+  "final_url": "https://github.com/ggml-org/llama.cpp/pull/29809",
+  "fetched_at": "2026-10-09T16:39:11.230181Z",
+  "content_type": "text/html; charset=utf-8",
+  "sha256": "1719f9221d68b1cae21acefff190dd1acf1bd75c8c3f79add4e152033f748f43",
+  "size_bytes": 460741,
+  "claim": "Open SYCL PR: MXFP4 MoE arithmetic decoding + weight reordering; gpt-oss-20b decode 55.84->106.64 tok/s on one B70, 120b 33.27->67.14 tok/s two cards, PPL within noise",
+  "relevance": "MXFP4 decode-feasibility on Xe2: the missing fast path for gpt-oss-class on our llama.cpp SYCL lane; B70-tested by author",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

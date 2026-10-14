@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-08",
+  "policy": "Primary sources establish published capabilities, not local gains. Capture content, retrieval time, digest, exact revision, claim, local relevance and falsifier. Community posts are discovery leads only.",
+  "sources": [
+    {"id":"intel-b70-datasheet","url":"https://www.intel.com/content/dam/www/central-libraries/us/en/documents/2026-03/datasheet-b70-gpu.pdf","kind":"vendor_specification","use":"32 Xe2 cores, 256 XMX engines, 32 GB, 608 GB/s, 367 dense INT8 TOPS. Distinguish card capability from installed topology and measured rates."},
+    {"id":"intel-xe-architecture","url":"https://www.intel.com/content/www/us/en/docs/oneapi/optimization-guide-gpu/2025-2/intel-xe-gpu-architecture.html","kind":"vendor_architecture","use":"Xe2-HPG per-core/vector/register/SLM/subgroup properties and SYCL query example. Its B580 example is not the B70 SKU."},
+    {"id":"intel-occupancy","url":"https://www.intel.com/content/www/us/en/docs/oneapi/optimization-guide-gpu/2025-2/thread-mapping-and-gpu-occupancy.html","kind":"vendor_method","use":"Register and SLM occupancy constraints; query actual device and compiler register use."},
+    {"id":"strata-intel-hotfix","url":"https://github.com/Niko1221/Strata/releases/tag/v0.1.40.3","revision":"d5ea7133741e67743c0e886bb426c0ce8d69cf6c","kind":"upstream_release","use":"Corrects Intel setup: ./setup.sh --backend sycl. B70 build unchanged versus v0.1.40.2; no new local speed evidence."},
+    {"id":"strata-intel-source","url":"https://raw.githubusercontent.com/Niko1221/Strata/d5ea7133741e67743c0e886bb426c0ce8d69cf6c/docs/INTEL.md","revision":"d5ea7133741e67743c0e886bb426c0ce8d69cf6c","kind":"upstream_source","use":"RQ-14 installation, supported quants, expert streaming and allocation safety. Follow exact pinned source to verify dispatch."},
+    {"id":"llama-sycl","url":"https://github.com/ggml-org/llama.cpp/blob/master/docs/backend/SYCL.md","kind":"upstream_discovery","use":"Discover current Intel backend, then resolve commit before a plan. A mutable branch URL alone is not experiment provenance."},
+    {"id":"vllm-xpu","url":"https://docs.vllm.ai/en/latest/getting_started/installation/gpu/xpu.html","kind":"upstream_discovery","use":"Engine/backend compatibility and installation; verify exact checkpoint quantization and dispatch in the pinned build."},
+    {"id":"openvino-genai","url":"https://github.com/openvinotoolkit/openvino.genai","kind":"upstream_discovery","use":"Release notes, model-specific pipeline support and metric API units. Pin release/source and do not guess metric units."},
+    {"id":"intel-profiler","url":"https://github.com/intel/pti-gpu","kind":"upstream_discovery","use":"Level Zero/SYCL trace tooling. Verify graph replay coverage; profiler failure does not establish a physical ceiling."},
+    {"id":"speculative-decoding-paper","url":"https://arxiv.org/abs/2211.17192","kind":"paper","use":"Exact speculative sampling algorithm and assumptions. Map acceptance and verification cost to local counters before proposing speed."},
+    {"id":"flashattention-paper","url":"https://arxiv.org/abs/2205.14135","kind":"paper","use":"Attention IO accounting; apply only to supported full-attention layers and relevant context shapes."}
+  ],
+  "queries": [
+    "site:intel.com Arc Pro B70 Xe2 DPAS bandwidth register occupancy",
+    "site:github.com/Niko1221/Strata Intel SYCL B70 stream-experts correctness",
+    "site:github.com/ggml-org/llama.cpp SYCL <exact architecture> <quant> <bottleneck>",
+    "site:github.com/vllm-project XPU <exact operator> graph <symptom>",
+    "site:arxiv.org <mechanism> inference bandwidth acceptance"
+  ],
+  "research_stop": "Stop discovery when a primary-source mechanism, local compatibility check, explicit byte/time budget and one falsifying probe exist; or record exactly which premise is unsupported. Never produce an unranked reading backlog."
+}

@@ -1,0 +1,14 @@
+{
+  "all_author_python_ast": "PASS",
+  "d2_stub_compiler_fail_closed": {
+    "status": "PASS",
+    "stub_returncode": 37,
+    "observed_returncode": 37,
+    "real_compiler_executed": false
+  },
+  "gpu_mode_missing_authorization": {
+    "status": "PASS (expected refusal before torch import)",
+    "returncode": 1
+  },
+  "gpu_executed": false
+}

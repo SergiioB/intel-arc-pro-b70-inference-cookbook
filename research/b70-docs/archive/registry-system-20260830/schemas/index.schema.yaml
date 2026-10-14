@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/index.schema.yaml",
+  "title": "B70 registry catalog index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "catalogs", "views", "summaries"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "catalogs": {"type": "object"},
+    "views": {"type": "object"},
+    "summaries": {"type": "object"}
+  }
+}

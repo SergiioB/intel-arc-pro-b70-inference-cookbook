@@ -1,0 +1,82 @@
+[
+  {
+    "probe": "p_k0_q0_p0_lo",
+    "nibble": {
+      "k_local": 0,
+      "qq": 0,
+      "p": 0,
+      "hi": 0
+    },
+    "k0": 0
+  },
+  {
+    "probe": "p_k0_q0_p0_hi",
+    "nibble": {
+      "k_local": 0,
+      "qq": 0,
+      "p": 0,
+      "hi": 1
+    },
+    "k0": 0
+  },
+  {
+    "probe": "p_k0_q0_p1_lo",
+    "nibble": {
+      "k_local": 0,
+      "qq": 0,
+      "p": 1,
+      "hi": 0
+    },
+    "k0": 0
+  },
+  {
+    "probe": "p_k0_q0_p3_lo",
+    "nibble": {
+      "k_local": 0,
+      "qq": 0,
+      "p": 3,
+      "hi": 0
+    },
+    "k0": 0
+  },
+  {
+    "probe": "p_k0_q1_p0_lo",
+    "nibble": {
+      "k_local": 0,
+      "qq": 1,
+      "p": 0,
+      "hi": 0
+    },
+    "k0": 0
+  },
+  {
+    "probe": "p_k1_q0_p0_lo",
+    "nibble": {
+      "k_local": 1,
+      "qq": 0,
+      "p": 0,
+      "hi": 0
+    },
+    "k0": 0
+  },
+  {
+    "probe": "p_k15_q0_p0_lo",
+    "nibble": {
+      "k_local": 15,
+      "qq": 0,
+      "p": 0,
+      "hi": 0
+    },
+    "k0": 0
+  },
+  {
+    "probe": "p_k0_q1_p3_hi",
+    "nibble": {
+      "k_local": 0,
+      "qq": 1,
+      "p": 3,
+      "hi": 1
+    },
+    "k0": 0
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "question_id": "RQ-17",
+  "hypothesis": "The IQ3_XXS artifact on Strata keeps exact answers, task quality and deterministic replay beyond the three adoption cases.",
+  "changed_variable": "Prompt class only (quality validation of the unchanged route of record)",
+  "resource": "gpu",
+  "stage": "screen",
+  "timeout_s": 3600,
+  "command": [
+    "python3",
+    "scripts/tmp/rq17_battery_20261010.py",
+    "battery"
+  ],
+  "preflight_command": [
+    "python3",
+    "scripts/tmp/rq17_battery_20261010.py",
+    "preflight"
+  ],
+  "cleanup_command": [
+    "python3",
+    "scripts/tmp/rq17_battery_20261010.py",
+    "cleanup"
+  ],
+  "identities": {
+    "baseline": {
+      "host": "b70-host",
+      "engine_revision": "Strata v0.1.40.3 SYCL build-sycl/strata in image strata-sycl-dev:latest (release pin d5ea7133741e67743c0e886bb426c0ce8d69cf6c), config of record /mnt/<sata-disk>/strata/serve-flashnext-iq3xxs.json, resident via serve.server --engine strata; battery repetition A",
+      "model_revision": "Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS two-shard GGUF + pack/iq3xxs + mtp-rt + data/expert-profile.bin, identities sealed in results/2026/10/rq14-strata-matched-screen-20261009/ARTIFACTS.sha256 (RL-125)"
+    },
+    "candidate": {
+      "host": "b70-host",
+      "engine_revision": "Strata v0.1.40.3 SYCL build-sycl/strata in image strata-sycl-dev:latest (release pin d5ea7133741e67743c0e886bb426c0ce8d69cf6c), config of record /mnt/<sata-disk>/strata/serve-flashnext-iq3xxs.json, resident via serve.server --engine strata; battery repetition B",
+      "model_revision": "Qwen3.8-Flash-Next-GSQ-RCO-IQ3_XXS two-shard GGUF + pack/iq3xxs + mtp-rt + data/expert-profile.bin, identities sealed in results/2026/10/rq14-strata-matched-screen-20261009/ARTIFACTS.sha256 (RL-125)"
+    }
+  },
+  "controlled": {
+    "workload": {
+      "definition": "campaigns/2026/rq17-flashnext-quality/tasks.json (predeclared 2026-10-10, frozen before any result exists; its sha256 is recorded in preflight evidence)",
+      "cells": "one discarded same-shape warmup; 6 canaries (batt-arith/capital/token/sumsq/logic/json token files on T-FORCE) x2 runs greedy gen 64; 3x3 replay drift gen 128 (batt-arith/batt-logic/batt-json, engine one-shot launches, output-id lines token-identical across reps); 10 representative host tasks greedy gen 256 with deterministic scorers; 8K two-turn KV-edge check (p8192 text + arithmetic question, then first-word follow-up; turn-1 rendered prompt >= 8100 tokens)",
+      "sampling": "greedy (temperature 0) everywhere; replay one-shot cells pass --greedy",
+      "client": "single sequential client (the adapter); one request in flight at a time",
+      "scoring": "deterministic Python scorers in scripts/tmp/rq17_battery_20261010.py keyed from tasks.json; raw responses retained per cell",
+      "token_exactness": "canary rendered prompt_tokens must equal the batt-file id counts (22/20/22/28/31/26) in both runs; mismatch fails measurement_validity, never adjusted",
+      "cell_order": "warmup, canaries run A, tasks, 8K two-turn, canaries run B, serve stop, replay 3x3"
+    },
+    "config": {
+      "card": "config of record ONEAPI_DEVICE_SELECTOR=level_zero:0 -> card0; verified live by PCI 0000:0b:00.0 in preflight (renderD128 group added); never a remembered hwmon index",
+      "engine_argv": "serve-flashnext-iq3xxs.json args verbatim: --pack /work/pack/iq3xxs --native/--ple-gguf IQ3_XXS shards --expert-profile data/expert-profile.bin --expert-cache auto --stream-experts --mtp /work/mtp-rt --spec 4 --spec-min-p 0.5 --vram-reserve-mib 256 --ple-io ram --max-context 10240 --kv int8 --prefill 4096; no --prompt-cache override and no other flag added or removed between arms",
+      "engine_env": "config env verbatim (ONEAPI_DEVICE_SELECTOR, STRATA_VERIFY_NO_HOST=1, STRATA_VERIFY_DEVICE_PLAN=1, STRATA_STAGER_THREADS=12, STRATA_PREFILL_RING=512) plus the section-2 vars pinned at docker level and PYTHONPATH=/work/pylibs",
+      "container": "image strata-sycl-dev:latest, explicit --entrypoint (python3 -m serve.server for the battery; the config exe for replay one-shots), dedicated container names under rq17-battery-, main docker daemon socket /run/docker.sock",
+      "vram_budget": "engine allocates its own profile (~23.6 GiB) on a card gated at >= 31000 MiB visible_avail per benchmark-protocol.md 1.1, keeping allocation inside live free VRAM minus 4 GiB; the serve container is stopped and VRAM release re-proven before any replay launch",
+      "power_thermal": "as-found caps recorded at preflight (currently card0 180 W / card1 230 W) and restored at cleanup; sustained thermal regime declared per standing rules (the <=55 C cooldown is unreachable on this host, RL-065/069)",
+      "isolation": "preflight fails on any foreign compute client on dri/0, any leftover rq17-battery-* or running strata container, or any listener on 8095; never touches the foreign processes other sessions own",
+      "port": 8095
+    }
+  },
+  "comparison": {
+    "metric": "canary_pass_fraction",
+    "unit": "add_one_smoothed_correct_fraction",
+    "direction": "higher",
+    "min_relative_gain": 0.0
+  },
+  "evidence_rationale": "ADR-0011 (RL-125) adopted the Strata IQ3_XXS one-card route on speed plus a 3-case exact-answer battery only; its own decision text makes representative task quality, long/multi-turn and replay drift open secondary gates AND a kill gate: any quality failure reopens the route. RQ-17's precommitted success gate is exactly that closure: all 6 canaries correct in both runs, 3x3 replays token-identical, >= 8/10 host tasks, 8K two-turn correct. minimum_relative_gain is 0.0 on the question (quality gate, not speed): the numeric arms are battery repetition A vs B over the 6 canaries with an add-one smoothed pass fraction (strictly positive so a wrong canary assesses rejected, never blocked), and the REAL gates live in the four evidence-backed checks the adapter writes; raw outputs, token counts, cache hit-deltas, caps timelines and all failures are retained under the run root. Budget: one card, ~30-45 minutes of engine time, inside the 3600 s screen budget; preflight/cleanup mandatory and fail-closed. The two prior manual preflight blocks (RL-132, RL-137) were caused by another session's arm.sh/llama-stream loop holding the render nodes; the mechanism has changed (dri/0 lists desktop clients only as of 2026-10-10 and the battery gates on dri/0 compute-free plus the protocol's empty-card VRAM bar at launch), and this run consumes attempt 1 of the question's max_attempts=2. A wrong canary - especially 30 for 14 on batt-sumsq - or replay drift marks ADR-0011 REOPENED_QUALITY_FAILURE per the question's stop rule; this plan precommits nothing that could lower that gate.",
+  "measurements_note": "The adapter reads the frozen plan.json from B70_RUN_DIR and copies metric/unit/identities/controlled verbatim into measurements.json; baseline/candidate are arrays of {pair, value} over the 6 canary pairs; checks carry quality, correctness, isolation and measurement_validity, each with a relative evidence file under the run root."
+}

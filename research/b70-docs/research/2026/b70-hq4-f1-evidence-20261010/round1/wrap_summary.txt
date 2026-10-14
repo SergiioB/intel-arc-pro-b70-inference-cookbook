@@ -1,0 +1,9 @@
+CSVWRAP,mode=wrapk,K=5120,M=4,items=160,median_ns=46042,min_ns=40000,max_ns=55417
+CSVWRAP,mode=wrapk,K=5120,M=1,items=40,median_ns=30469,min_ns=28230,max_ns=36979
+CSVWRAP,mode=wrapk,K=5120,M=8,items=320,median_ns=63542,min_ns=57604,max_ns=70730
+CSVWRAP,mode=wrapk,K=5120,M=4,items=160,median_ns=45990,min_ns=40417,max_ns=57604
+CSVWRAP,mode=wrapk,K=5120,M=1,items=40,median_ns=30625,min_ns=28229,max_ns=35834
+CSVWRAP,mode=wrapk,K=5120,M=8,items=320,median_ns=64531,min_ns=59062,max_ns=72604
+CSVWRAP,mode=wrapk,K=17408,M=4,items=544,median_ns=88177,min_ns=82708,max_ns=98125
+CSVWRAP,mode=wrapk,K=17408,M=1,items=136,median_ns=42240,min_ns=35417,max_ns=49479
+CSVWRAP,mode=wrapk,K=17408,M=8,items=1088,median_ns=133073,min_ns=127500,max_ns=141458

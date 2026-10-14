@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-08-28",
+  "status": "PROVISIONAL — NOT FOR PUBLIC HEADLINE",
+  "model": {
+    "id": "Qwen/Qwen3.8-27B-FP8",
+    "revision": "017b9c7af6b5689d5dd426a76e0bc077eb5ca20a",
+    "artifact_bytes": 30890081596,
+    "artifact_gib": 28.75,
+    "official": true
+  },
+  "hardware": {
+    "cards": 2,
+    "gpu": "Intel Arc Pro B70",
+    "visible_vram_mib_per_card": 32656,
+    "host_ram_gib": 32,
+    "driver": "xe",
+    "configured_power_cap_w": 230
+  },
+  "stack": {
+    "image": "vllm/vllm-openai-xpu@sha256:f01e24f6c7ff01f1e0662234255a1372297d1dbd89d003cf13c8fad3eab1ba4f",
+    "target_dtype": "bfloat16",
+    "kv_cache_dtype": "fp8",
+    "prefix_cache": false,
+    "max_num_batched_tokens": 4096,
+    "max_num_seqs": 8,
+    "gpu_memory_utilization": 0.9,
+    "affinity": "one ZE_AFFINITY_MASK per spawned worker",
+    "docker_ipc": "SYS_PTRACE capability"
+  },
+  "fp8_tp2_c1": [
+    {
+      "input_tokens": 512,
+      "output_tokens": 128,
+      "n": 3,
+      "duration_s": 8.589170939005271,
+      "output_throughput_tok_s": 44.707458115215,
+      "mean_ttft_ms": 762.3765869987741,
+      "mean_tpot_ms": 16.538971548554276,
+      "approx_post_first_tok_s": 60.463252,
+      "mean_itl_ms": 75.9198671084631,
+      "mean_e2el_ms": 2862.825973665167,
+      "acceptance_pct": 82.14285714285714,
+      "acceptance_length": 4.285714285714286,
+      "drafts": 91,
+      "draft_tokens": 364,
+      "accepted_tokens": 299,
+      "result": "3/3",
+      "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-230w-compile-confirm-20260828T130000Z/n3-p512-g128/"
+    },
+    {
+      "input_tokens": 2048,
+      "output_tokens": 128,
+      "n": 3,
+      "duration_s": 10.790733283000009,
+      "output_throughput_tok_s": 35.58608946483398,
+      "mean_ttft_ms": 1489.1050876661513,
+      "mean_tpot_ms": 16.595096097111895,
+      "approx_post_first_tok_s": 60.258765,
+      "mean_itl_ms": 77.10649418297136,
+      "mean_e2el_ms": 3596.6822919993624,
+      "acceptance_pct": 93.29268292682927,
+      "acceptance_length": 4.731707317073171,
+      "drafts": 82,
+      "draft_tokens": 328,
+      "accepted_tokens": 306,
+      "result": "3/3",
+      "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-230w-compile-confirm-20260828T130000Z/n3-p2048-g128/"
+    },
+    {
+      "input_tokens": 8192,
+      "output_tokens": 128,
+      "n": 3,
+      "duration_s": 23.326251118000073,
+      "output_throughput_tok_s": 16.462139503577593,
+      "mean_ttft_ms": 5681.047849000606,
+      "mean_tpot_ms": 16.489273711256473,
+      "approx_post_first_tok_s": 60.645485,
+      "mean_itl_ms": 78.53017892484786,
+      "mean_e2el_ms": 7775.185610330179,
+      "acceptance_pct": 96.5625,
+      "acceptance_length": 4.8625,
+      "drafts": 80,
+      "draft_tokens": 320,
+      "accepted_tokens": 309,
+      "result": "3/3",
+      "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-230w-compile-confirm-20260828T130000Z/n3-p8192-g128/"
+    }
+  ],
+  "full_context": {
+    "declared_context_tokens": 262144,
+    "reported_kv_tokens": 603082,
+    "reported_max_concurrency": 2.300578,
+    "valid_probe": {
+      "input_tokens": 240000,
+      "output_tokens": 128,
+      "n": 1,
+      "duration_s": 714.3220259079972,
+      "output_throughput_tok_s": 0.17919089060328944,
+      "mean_ttft_ms": 711060.1448870002,
+      "mean_tpot_ms": 25.6814768,
+      "acceptance_pct": 80.41666666666667,
+      "acceptance_length": 4.216666666666667,
+      "result": "1/1",
+      "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-230w-fullctx-20260828T130957Z/fullctx-p240000-g128/"
+    },
+    "excluded_probe": {
+      "requested_input_tokens": 262016,
+      "actual_input_tokens": 282403,
+      "server_limit_tokens": 262144,
+      "reason": "client tokenizer produced a sequence above the declared server limit",
+      "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-230w-fullctx-20260828T130957Z/fullctx-p262016-g128/exclusion.txt"
+    }
+  },
+  "graph_screen": {
+    "fresh_mtp2_full_graph": [
+      {
+        "input_tokens": 512,
+        "n": 3,
+        "output_throughput_tok_s": 34.391,
+        "mean_tpot_ms": 25.375,
+        "approx_post_first_tok_s": 39.41,
+        "acceptance_pct": 85.915,
+        "result": "3/3",
+        "evidence": "results/2026/08/qw38-fp8-tp2-mtp2-graph-confirm-20260828T114155Z/n3-p512-g128/"
+      },
+      {
+        "input_tokens": 8192,
+        "n": 3,
+        "output_throughput_tok_s": 11.299,
+        "mean_tpot_ms": 31.192,
+        "approx_post_first_tok_s": 32.06,
+        "acceptance_pct": 63.529,
+        "result": "3/3",
+        "evidence": "results/2026/08/qw38-fp8-tp2-mtp2-graph-confirm-20260828T114155Z/n3-p8192-g128/"
+      }
+    ],
+    "historical_mtp4_modes": [
+      {
+        "mode": "MTP4 compile-only",
+        "graph_setting": "VLLM_XPU_ENABLE_XPU_GRAPH=0",
+        "input_tokens": 512,
+        "n": 5,
+        "metric": "historical custom post-first lane",
+        "value_tok_s": 46.97,
+        "result": "orientation only",
+        "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-compile-x570-20260828/"
+      },
+      {
+        "mode": "MTP4 PIECEWISE",
+        "graph_setting": "cudagraph_mode=PIECEWISE",
+        "input_tokens": 512,
+        "n": 1,
+        "metric": "historical custom post-first lane",
+        "value_tok_s": 44.98,
+        "result": "functional one-request probe",
+        "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-pwgraph-20260828/"
+      },
+      {
+        "mode": "MTP4 full graph",
+        "graph_setting": "full graph",
+        "metric": "status",
+        "value": null,
+        "result": "failed in earlier TP2 runs: deadlock",
+        "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-pwgraph-20260828/"
+      },
+      {
+        "mode": "MTP1 full graph",
+        "graph_setting": "full graph",
+        "input_tokens": 512,
+        "n": 5,
+        "metric": "historical custom post-first lane",
+        "value_tok_s": 28.36,
+        "result": "orientation only",
+        "evidence": "results/2026/08/qw38-fp8-tp2-mtp1-x570-20260827/"
+      }
+    ]
+  },
+  "int4_comparison": {
+    "current_tp2_230w": [
+      {
+        "input_tokens": 512,
+        "n": 3,
+        "output_throughput_tok_s": 84.0049,
+        "mean_ttft_ms": 355.235,
+        "mean_tpot_ms": 9.199,
+        "median_tpot_ms": 7.883,
+        "mean_itl_ms": 34.361,
+        "mean_e2el_ms": 1523.509,
+        "acceptance_pct": 69.1176,
+        "acceptance_length": 3.7647,
+        "result": "3/3"
+      },
+      {
+        "input_tokens": 2048,
+        "n": 3,
+        "output_throughput_tok_s": 38.352,
+        "mean_ttft_ms": 991.138,
+        "mean_tpot_ms": 18.473,
+        "median_tpot_ms": 11.941,
+        "mean_itl_ms": 36.094,
+        "mean_e2el_ms": 3337.238,
+        "acceptance_pct": 24.4872,
+        "acceptance_length": 1.9795,
+        "result": "3/3"
+      },
+      {
+        "input_tokens": 8192,
+        "n": 3,
+        "output_throughput_tok_s": 24.5216,
+        "mean_ttft_ms": 4002.101,
+        "mean_tpot_ms": 9.587,
+        "median_tpot_ms": 8.606,
+        "mean_itl_ms": 37.273,
+        "mean_e2el_ms": 5219.677,
+        "acceptance_pct": 74.2347,
+        "acceptance_length": 3.9694,
+        "result": "3/3"
+      }
+    ],
+    "current_tp1_150w": [
+      {
+        "input_tokens": 512,
+        "n": 3,
+        "output_throughput_tok_s": 49.0782,
+        "mean_tpot_ms": 16.5178,
+        "approx_post_first_tok_s": 60.54,
+        "acceptance_pct": 71.5347,
+        "result": "3/3"
+      },
+      {
+        "input_tokens": 8192,
+        "n": 3,
+        "output_throughput_tok_s": 12.5085,
+        "mean_tpot_ms": 15.3078,
+        "approx_post_first_tok_s": 65.33,
+        "acceptance_pct": 70.7921,
+        "result": "3/3"
+      }
+    ],
+    "historical_old_artifact_230w": {
+      "p512_mtp4_tok_s": 83.7,
+      "p8192_mtp4_tok_s": 77.1,
+      "metric": "historical custom post-first lane",
+      "artifact": "older g_idx artifact",
+      "result": "orientation only",
+      "evidence": "results/2026/08/vllm-qwen38-4mode-230w-20260815T170840Z-581426/"
+    }
+  },
+  "pp2_validation": [
+    {
+      "mode": "eager",
+      "tensor_parallel": 1,
+      "pipeline_parallel": 2,
+      "n": 5,
+      "c1_decode_tok_s": 8.05,
+      "cold_input_tok_s": 1077,
+      "metric": "historical custom lane",
+      "result": "validation only"
+    },
+    {
+      "mode": "compile",
+      "tensor_parallel": 1,
+      "pipeline_parallel": 2,
+      "n": 5,
+      "c1_decode_tok_s": 10.9,
+      "cold_input_tok_s": 639,
+      "metric": "historical custom lane",
+      "result": "validation only; graph capture had no speed effect"
+    }
+  ],
+  "ram_probes": [
+    {
+      "process_view": "one process sees both GPUs",
+      "vram_allocated_gib": 11.0,
+      "host_overhead_gib": 10.97,
+      "evidence": "research/2026/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md"
+    },
+    {
+      "process_view": "one process sees one GPU",
+      "vram_allocated_gib": 5.6,
+      "host_overhead_gib": 0.77,
+      "evidence": "research/2026/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md"
+    },
+    {
+      "process_view": "two workers, one GPU mask each",
+      "vram_allocated_gib": 10.5,
+      "host_overhead_gib": 0.82,
+      "evidence": "research/2026/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md"
+    }
+  ],
+  "concurrency": {
+    "kv_safe_attempt": {
+      "max_model_len": 9216,
+      "reported_kv_tokens": 132096,
+      "reported_max_concurrency": 14.33,
+      "attempted_concurrency": 14,
+      "mode": "MTP4",
+      "result": "excluded",
+      "reason": "causal_conv1d does not support spec-decode and non-spec (prefill + decode) tokens in the same invocation",
+      "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-230w-c14-20260828T141323Z/"
+    },
+    "prior_attempt": {
+      "attempted_concurrency": 19,
+      "completed_requests": 1,
+      "failed_requests": 56,
+      "result": "excluded",
+      "evidence": "results/2026/08/qw38-fp8-tp2-mtp4-230w-concurrency-20260828T134408Z/"
+    },
+    "no_spec_controls": [
+      {
+        "mode": "compile",
+        "minimum_mem_available_mib": 1029,
+        "result": "excluded before health; watchdog floor breached",
+        "evidence": "results/2026/08/qw38-fp8-tp2-nospec-230w-c14-20260828T141700Z/"
+      },
+      {
+        "mode": "eager",
+        "minimum_mem_available_mib": 1008,
+        "result": "excluded before health; watchdog floor breached",
+        "evidence": "results/2026/08/qw38-fp8-tp2-nospec-eager-c14-20260828T142000Z/"
+      }
+    ]
+  },
+  "patch_ledger": [
+    {
+      "item": "per-worker Level Zero affinity patch",
+      "state": "required local workaround",
+      "scope": "TP2 and PP2",
+      "reason": "sets one ZE_AFFINITY_MASK per spawned worker before device initialization"
+    },
+    {
+      "item": "Docker SYS_PTRACE",
+      "state": "required launch setting",
+      "scope": "TP2 and PP2",
+      "reason": "keeps oneCCL pidfd IPC on its working path under Docker seccomp"
+    },
+    {
+      "item": "cudagraph_mode=PIECEWISE",
+      "state": "functional graph workaround",
+      "scope": "MTP4 graph test",
+      "reason": "avoids the first-generation full-graph failure; slower than compile-only"
+    },
+    {
+      "item": "VLLM_XPU_ENABLE_XPU_GRAPH=0",
+      "state": "speed configuration",
+      "scope": "TP2 MTP4",
+      "reason": "current fastest functional MTP4 route"
+    },
+    {
+      "item": "two's-complement pointer wrap in mamba_utils",
+      "state": "rejected",
+      "scope": "INT4",
+      "reason": "stopped the VA overflow but produced garbage tokens"
+    }
+  ]
+}

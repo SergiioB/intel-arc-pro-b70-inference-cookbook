@@ -1,0 +1,207 @@
+TO: b70-architect review (via orchestrator)
+SUBJECT: D3 capture allocation contract — decision required BEFORE any image build
+PROVISIONAL — NOT FOR PUBLIC HEADLINE
+Disposition: HOLD. This series does NOT patch around D3. No option is approved.
+
+Known inherited source facts, base 15ded2f3add148c4db3c900cba7de878238f53bc
+csrc/exl3_ops.sycl:654 allocates output on every linear invocation;
+:283-284 allocates/zeros xh; :297 allocates split-K partials. Optional fused
+scratch :222 / lazy counters :202 are outside K3's default path; LUT :67-74
+can allocate and wait, so LUT stays OFF. Default K3 non-LUT launch code adds no
+explicit host wait, but that does NOT prove no allocator-driven synchronization.
+The current API does not satisfy literal zero-allocation-inside-capture by static
+inspection. Upstream graph functionality or trial quality is not that proof.
+Existing global prefill scratch (:636-641) is also not a safe general concurrent
+graph workspace. This patch series adds no process-global scratch workaround.
+
+OPTION A — Graph-private pre-reserved allocation (minimal API change)
+Architect explicitly accepts a contract allowing at::empty/zeros during capture
+only when serviced from a private, pre-reserved graph allocator pool, without
+new device allocation, host synchronization, cross-graph reuse, or pool growth.
+Pre-reserve per device + graph identity + shape bucket + dtype + split-K policy;
+keep output, padded xh and part storage alive through all replays. Warm initialization
+and allocator reservation precede capture. This is NOT literal zero allocator
+API calls; acceptance must name that distinction. Shapes/split settings freeze
+for capture lifetime. Capture/replay failure is fatal, no eager champion fallback.
+Required evidence in a future window: allocator hooks + Level Zero trace under
+capture/replay, stable addresses, zero device allocations/pool growth after
+reservation, no host waits attributable to pool misses, repeated input changes,
+multiple independent graph instances/streams without aliasing, destruction/rebuild,
+and exact peak/reserved VRAM budget. Numerical replay alone cannot certify this.
+Benefit: smallest integration surface; keeps upstream operator signature.
+Cost: runtime/allocator-version-specific guarantee and an explicitly relaxed
+interpretation of strict zero-allocation; pre-reservation implementation/proof owed.
+
+OPTION B — Caller-owned output/workspace (separate scoped API patch)
+Add a reviewed out/workspace API taking caller-owned output, xh and split-K
+partials; size/query workspace on CPU BEFORE capture from M,Kdim,N,S,dtype,
+vector-vs-DPAS, MB/Mp, NT and P/rps. All buffers allocated and initialized before
+capture; zero-padding is a graph-recorded device operation, not an allocation.
+Enforce capacity/alignment/dtype/device/stride/no-aliasing, owner and stream/graph
+lifetime; do not use a device-index-only global cache. Explicit mutability schemas
+and fake/meta implementations must match torch.compile and graph-capture use.
+Preserve public functional wrapper for eager compatibility if desired, but captured
+calls must go through the allocation-free API. Handle outputs retained by callers,
+concurrent graph instances, teardown and shape rebucketing. Lock split settings
+while a graph exists. No hidden growth or fallback allocation on undersized inputs.
+Benefit: statically enforceable allocation-free captured path and clear ownership.
+Cost: larger C++/Python/integration change; P3 must adapt to the new API and be
+re-reviewed. Requires separately authorized implementation, not a stealth addition
+inside the K3 enablement series.
+
+Paper sizing inputs (not a reservation proof)
+Output M*N*element_bytes. xh S*Mp*Kdim*2 (including DPAS padding).
+part P*M*N*4; P is computed from n_strips*m_blocks and target threads at
+:289-297, not a constant. Sum across simultaneously live graph workspaces;
+include allocator rounding, graph overhead and model/KV reserve. No full-model
+reservation amount is asserted without actual capture bucket and liveness data.
+
+Decision requested
+Record A or B, the exact capture contract accepted, owner, runtime versions and
+review/evidence identifiers. D3 is the ONE unresolved DESIGN gate before an image
+build is even considered. Clearing it is NOT a build/GPU authorization and does
+not waive future compiler, numerical, dispatch, quality or performance gates.
+Route this memo to b70-architect; ready-to-run P2/P3/P4 specs go to the bench and
+profiler owners only after architect disposition and orchestrator scheduling.
+
+=============================================================================
+ARCHITECT DISPOSITION — 2026-09-29 (b70-architect-2, CPU-only dispatch)
+DECISION: OPTION A — graph-private pre-reserved allocation. HOLD on the image
+build is LIFTED at the DESIGN level only; all downstream gates stand unchanged.
+Option B is the named reversal path, NOT a planned follow-up.
+PROVISIONAL — NOT FOR PUBLIC HEADLINE.
+=============================================================================
+
+1. Exact capture contract accepted (this is the relaxed reading, named as such)
+   Allocator calls (at::empty/at::zeros) inside the captured region are
+   permitted when ALL of the following hold:
+   a. They execute at CAPTURE time only; replay performs no allocator call.
+   b. They are serviced by the pinned runtime's existing capture path without
+      new device allocation, host synchronization, event query, or pool growth
+      at capture or replay time — the same mechanism that services every native
+      allocating op in the production FULL decode graph (attention, norms,
+      sampling all allocate intermediates; literal zero-allocation-inside-
+      capture is not the contract this fleet's production route runs under).
+   c. Backing storage stays resident and address-stable for the graph lifetime,
+      across simultaneous graph instances and destruction/rebuild.
+   d. Shapes/split settings freeze for the graph lifetime. In this series the
+      P2 NT/split choices are COMPILE-TIME defines, so the freeze holds by
+      construction; any future runtime-tunable split would need its own gate.
+   e. LUT stays OFF (its lut_for allocates AND q.wait()s — exl3_ops.sycl:67-74,
+      verified in clone HEAD 15ded2f3); fused scratch :222 / lazy counters
+      :202 remain out of the K3 default path (fused path is K4/K6-only,
+      :264-266); weight_scratch :636-641 is large-M/prefill-class and is not
+      in the captured decode path (decode M <= 1+MTP3 = 4 << small_m_max).
+   Capture/replay failure under this contract is FATAL. No eager fallback
+   (A.1 rule 1: capture-off numbers are diagnostic-only, never champion input).
+
+2. Grounds — what the pinned XPU capture path actually does and tolerates
+   - MEASURED (strongest tier, this host, this image, 2026-09-29): the
+     production exl3 4bpw route runs the IDENTICAL inherited allocation call
+     sites (out :654, xh :283-284, part :297 — line numbers verified in the
+     clone) inside FULL decode graph capture: server-startup.log:101 shows
+     "Capturing CUDA graphs (decode, FULL) 10/10"; every measured token in
+     results/2026/09/b70-probe1-exl3-rate-20260929/ was then produced by
+     REPLAY of those graphs (63.25 tok/s sustained n=5, exact-128 completions,
+     token/counter reconciliation 0.00-0.65 %, zero cache-hit deltas). Ten
+     simultaneously-live capture buckets already exercise the multi-instance
+     liveness the memo's Option A evidence list demands. If the runtime
+     rejected allocation-under-capture, the 10/10 capture would have aborted;
+     it did not.
+   - STATIC (engine capability audit, research/2026/b70-engine-capability-
+     audit-20260929.md Audit C): capture is warning-gated single-GPU
+     experimental (platforms/xpu.py:311-314), default OFF (envs.py:309),
+     reached via the thin CUDA-wrapper alias (xpu_model_runner.py:59-63);
+     the named capture-breakers are host syncs / D2H / event queries /
+     dynamic shapes — allocation is NOT among them. The audit also flags
+     capture-awareness gaps "silently skipped" on XPU (fused_batched_moe.py:
+     40-42) — which cuts BOTH ways and is exactly why gate D3a below is
+     required rather than assumed.
+   - DELTA ANALYSIS: the K3 series (PATCH-SERIES.txt) adds no new captured-
+     region allocation or synchronization; it changes only which kernel
+     templates the dispatch instantiates (EXL3_CASE(3,2) under
+     ALL_CODEBOOKS). Allocation structure of the captured region is the same
+     code path production already replays. The one behavioral difference —
+     illegal work-group geometry — fails LOUD at capture time (D1 repair
+     NT 2->4 exists precisely because launch would not compile/instantiate),
+     i.e. fail-closed, not silent.
+   - ARITHMETIC (recomputed): captured-graph pool delta class = out (M*N*elt
+     = 8..136 KiB per module call; ~30 MiB summed over all 400 body modules
+     at M=4) plus xh (S*Mp*Kdim*2) and part (P*M*N*4, P runtime-derived).
+     Same shape class the production K4 route already pays inside the same
+     capture mechanism with 2,782 MiB post-load headroom measured. K3 changes
+     codebook count, not activation shapes (same Kdim/N families — header
+     census). No new VRAM class is introduced; the exact number is recorded,
+     not asserted, per gate D3a(iii).
+
+3. Required P3 window additions (the two concrete new gates)
+   D3a — CAPTURE/REPLAY ALLOCATION TRACE (K3 build, production image class,
+   VLLM_XPU_ENABLE_XPU_GRAPH=1, torch version recorded in-window):
+     (i)   capture reaches the production signature "10/10" — fewer buckets,
+           abort, or capture error is fatal;
+     (ii)  allocator-hook or Level Zero trace over capture + >=3 replays with
+           changing inputs: zero new device allocations, zero host
+           synchronizations, zero pool growth attributable to exl3 ops after
+           capture completes;
+     (iii) stable virtual addresses for out/xh/part across replays, and the
+           measured graph-pool VRAM delta recorded against the paper sizing
+           (output M*N*elt + xh + part, summed over live buckets).
+   D3b — STALE-OUTPUT/ALIASING MUTATION CHECK UNDER REPLAY: P3's existing
+     small-M input-mutation replay test executed against a replayed graph
+     instance (not eager), plus two simultaneously-live captured shapes with
+     interleaved replays asserting no cross-instance output aliasing. This is
+     the smallest experiment separating "pool-backed and address-stable" from
+   "works by allocator luck".
+   Numerical replay equality alone certifies neither; the memo's remaining
+   Option A evidence items (destruction/rebuild, multiple independent
+   instances/streams, exact peak/reserved budget) ride the same window and
+   are recorded in the P3 runner output.
+
+4. Risks accepted, build-time vs replay-time
+   - Build time (A): minimal — integration surface unchanged; the risk is the
+     K3 template instantiations themselves (compile success is not numerical
+     correctness — unchanged upstream gates own that).
+   - Replay time (A): allocator behavior is runtime-version-specific and the
+     torch XPU wheel is not statically auditable here (audit: "not statically
+     determinable"). Accepted because measured production evidence on the
+     exact pinned digest covers the identical call sites, and D3a/D3b convert
+     the residual doubt into in-window falsifiers.
+   - Option B risks if chosen now: larger C++/Python/API surface touching
+     ops.py routing, fake/meta torch.compile registration, and every call
+     site; P3/P5 re-review and a new authorization cycle — all spent BEFORE
+     the series' actual deciding question (are the K3 kernels numerically
+     correct and fast?) gets asked. B's ownership/lifetime checks also add
+     host-side branching whose failure mode at capture time is its own new
+     class. On this pin, production evidence says B solves a problem that
+     does not manifest.
+
+5. Reversal condition (what flips this decision to Option B)
+   Any of the following, verified in a GPU window, reverses the decision and
+   makes the caller-owned allocation-free API (Option B, separately
+   authorized, upstreamable shape preferred) the required design:
+   - D3a fails on the pinned runtime (<10/10 capture, post-capture device
+     allocation or pool growth, host sync attributable to the pool, address
+     instability across replays);
+   - D3b fails (stale/aliased outputs under replay, cross-instance aliasing);
+   - the runtime pin moves (new image digest / torch XPU wheel / vLLM
+     generation) without D3a/D3b re-passing on the new pin — this contract
+     is version-pinned; evidence does not transfer across runtime moves;
+   - any later silent-corruption signature (nondeterministic output under
+     identical replayed inputs) attributable to the captured allocator path.
+   Eager-mode timing or capture-off quality results do NOT reverse it (those
+   are diagnostic-only by standing rule).
+
+6. Record
+   Owner of this disposition: b70-architect-2 (adversarial review model,
+   2026-09-29 dispatch). Runtime identity the evidence is pinned to: image
+   ghcr.io/0xsero/exl3xpu@sha256:21412bdd7535e9c653eeb3d099dce3bc79a83d440d
+   ef2cd9556111c79c870fa8 (in-image vLLM 0.26.1.dev0+g568afb3a1; torch XPU
+   wheel identity is carried by the digest and MUST be recorded textually in
+   the D3a window). Kernel source: 0xSero/exl3xpu main 15ded2f3add148c4db3c9
+   00cba7de878238f53bc (allocation lines re-verified in clone this dispatch).
+   Evidence: results/2026/09/b70-probe1-exl3-rate-20260929/ (RESULTS.md M3,
+   server-startup.log:101, cells); research/2026/b70-engine-capability-
+   audit-20260929.md Audit C (file:line); PATCH-SERIES.txt + this memo.
+   Clearing D3 does NOT authorize a build, image, or GPU window; the
+   orchestrator schedules those, and P2/P3/P4 specs proceed to their owners
+   only through that channel.

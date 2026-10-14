@@ -1,0 +1,15 @@
+QUARANTINED NON-APPLICABLE: invalid MTP stub. Preserved for forensic review only.
+--- ggml-backend-sycl.cpp
++++ ggml-backend-sycl.cpp
+@@ -1025,6 +1025,12 @@
+             ggml_sycl_argmax(dst);
+             break;
+         }
++        case GGML_OP_FUSED_MTP_DRAFT_STEP: {
++            // Dispatch to the persistent DPAS kernel we injected into ggml-sycl.cpp
++            ggml_sycl_fused_mtp(dst);
++            break;
++        }
+         // ...
+         default: {
+             fprintf(stderr, "%s: unsupported op %s\n", __func__, ggml_op_name(src0->op));

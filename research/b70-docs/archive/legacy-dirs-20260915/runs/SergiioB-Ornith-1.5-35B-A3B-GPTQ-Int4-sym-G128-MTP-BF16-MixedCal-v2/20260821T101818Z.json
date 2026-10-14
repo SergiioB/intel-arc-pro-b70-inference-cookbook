@@ -1,0 +1,165 @@
+{
+  "agentFeedback": {
+    "benchmarkStatus": "completed",
+    "canApiValidate": true,
+    "canSubmit": true,
+    "engine": "vllm",
+    "message": "Speed-test payload is ready for API validation.",
+    "mode": "remote",
+    "nextCommand": "lmx speed-test dry-run ~/B70-DOCS/results/ornith15-lmx-prefill230-g128-20260821T101300Z/speed-test.json",
+    "outputPath": "~/B70-DOCS/results/ornith15-lmx-prefill230-g128-20260821T101300Z/speed-test.json",
+    "outputPathAbsolute": "~/B70-DOCS/results/ornith15-lmx-prefill230-g128-20260821T101300Z/speed-test.json",
+    "requiresMetrics": false,
+    "runPersisted": true,
+    "savedRunPath": "runs/SergiioB-Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2/20260821T101818Z.json",
+    "savedRunPathAbsolute": "~/B70-DOCS/runs/SergiioB-Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2/20260821T101818Z.json",
+    "savedRunPathRelative": "runs/SergiioB-Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2/20260821T101818Z.json",
+    "status": "ready_for_api_validation",
+    "submissionId": "cmt2sr6gq0himmv01ogieh0c8",
+    "submissionStatus": "approved",
+    "submitCommand": "lmx speed-test submit ~/B70-DOCS/results/ornith15-lmx-prefill230-g128-20260821T101300Z/speed-test.json"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8000",
+    "concurrency": 1,
+    "iterations": 5,
+    "maxTokens": 128,
+    "mode": "remote",
+    "servedModel": "ornith15",
+    "servedModelSource": "explicit",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 5700X3D (8 threads)",
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "powerWatts": 230,
+    "ramGb": 30,
+    "vramGb": 32
+  },
+  "hardwareSource": "file",
+  "hfId": "SergiioB/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2",
+  "id": "cmt2sr6gq0himmv01ogieh0c8",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "candidates": [],
+    "hfId": "SergiioB/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2",
+    "searchCommand": "lmx model search ornith15",
+    "searchQuery": "ornith15",
+    "searchQuerySource": "served_model",
+    "servedModel": "ornith15",
+    "servedModelSource": "explicit",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "outputText": "The user has sent a message that appears to be a command to run something called \"lmx-prefill-230w-g128\" followed by what looks like a hash and then a very long repetition of \"alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima\" repeated many times.\n\nThis looks like it might be a prompt injection or a test. The repeated text is a classic pattern used to test tokenization or to attempt prompt injection. There's no actual instruction here that makes sense as a real command - it's just a repeated string.\n\nI should respond helpfully but",
+  "outputTokens": 128,
+  "prompt": "RUN lmx-prefill-230w-g128 a6787ca7180f4d7487b1529343683988 ffa1c25b64939a713249b6dd34d518a250d3785c062eed6e4ecebcaec1eb4686 alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima. alpha bravo charlie delta echo f",
+  "promptTokens": 2906,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-21T10:18:18Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "GPTQ-Int4",
+  "quantizationResolution": {
+    "cli": "GPTQ-Int4",
+    "status": "matched",
+    "trusted": "GPTQ-Int4",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 5,
+      "max": 69.9,
+      "mean": 69.9,
+      "min": 69.9,
+      "p50": 69.9,
+      "stddev": 0
+    },
+    "tokSTotal": {
+      "count": 5,
+      "max": 1436,
+      "mean": 1428.34,
+      "min": 1399.7,
+      "p50": 1435.2,
+      "stddev": 16.01
+    },
+    "ttftMs": {
+      "count": 5,
+      "max": 351.38,
+      "mean": 307.81,
+      "min": 296.46,
+      "p50": 297.14,
+      "stddev": 24.36
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 69.9,
+      "tokSPrefill": 8270.3,
+      "ttftMs": 351.38
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 69.9,
+      "tokSPrefill": 9776.9,
+      "ttftMs": 297.23
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 69.9,
+      "tokSPrefill": 9802.5,
+      "ttftMs": 296.46
+    },
+    {
+      "iteration": 4,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 69.9,
+      "tokSPrefill": 9789.8,
+      "ttftMs": 296.84
+    },
+    {
+      "iteration": 5,
+      "outputTokens": 128,
+      "request": 1,
+      "tokSOut": 69.9,
+      "tokSPrefill": 9780,
+      "ttftMs": 297.14
+    }
+  ],
+  "submissionId": "cmt2sr6gq0himmv01ogieh0c8",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-08-21T10:18:47.546Z",
+  "timingSource": "client_observed_http",
+  "tokSOut": 69.9,
+  "tokSOutSource": "inter_token",
+  "tokSPrefill": 9780,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 1435.2,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 297.14,
+  "ttftSource": "stream_first_token"
+}

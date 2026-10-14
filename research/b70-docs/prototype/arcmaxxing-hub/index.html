@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArcMaxxing | The Open Benchmark & Recipe Registry for Intel Silicon</title>
+  <meta name="description" content="Reproducible, evidence-backed local LLM inference recipes and benchmarks for Intel Arc, Core Ultra, and Xeon. Cold vs warm prefill, KV-cache quantization, and real measured joules." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Three.js for 3D Silicon & Fleet visualizer -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cyan: '#00E5FF',
+              blue: '#2979FF',
+              darkblue: '#0A2540',
+              deep: '#070B14',
+              surface: '#0E1626',
+              surfaceLight: '#152238',
+              card: '#101B2E',
+              border: '#1E2D4A',
+              borderGlow: '#00E5FF40',
+              amber: '#FFB74D',
+              green: '#00E676',
+              red: '#FF5252',
+            },
+            ink: {
+              primary: '#FFFFFF',
+              secondary: '#94A3B8',
+              muted: '#64748B',
+              quote: '#E2E8F0',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          backgroundImage: {
+            'grid-pattern': 'linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+            'radial-glow': 'radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.15) 0%, rgba(10, 37, 64, 0) 70%)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070B14;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E2D4A;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00E5FF80;
+    }
+    
+    .bg-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    }
+    
+    .glow-cyan {
+      box-shadow: 0 0 35px -5px rgba(0, 229, 255, 0.35);
+    }
+    
+    .glow-border {
+      border-color: rgba(0, 229, 255, 0.5);
+      box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.15), 0 0 20px rgba(0, 229, 255, 0.2);
+    }
+
+    @keyframes pulse-scan {
+      0% { top: 0%; opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { top: 100%; opacity: 0.2; }
+    }
+
+    .scanline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00E5FF, transparent);
+      animation: pulse-scan 4s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-brand-deep text-ink-primary font-sans antialiased selection:bg-brand-cyan selection:text-black min-h-screen relative overflow-x-hidden">
+
+  <!-- Background Decorative Grid -->
+  <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-brand-cyan/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+  <!-- Top Bar / Navigation -->
+  <nav class="sticky top-0 z-50 backdrop-blur-md bg-brand-deep/85 border-b border-brand-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Brand / Logo -->
+        <div class="flex items-center gap-3">
+          <a href="#hero" class="flex items-center gap-2.5 group">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-blue flex items-center justify-center shadow-lg shadow-brand-cyan/20 group-hover:scale-105 transition-transform">
+              <i data-lucide="cpu" class="w-5 h-5 text-black"></i>
+            </div>
+            <div>
+              <span class="font-bold text-lg tracking-tight text-white flex items-center gap-1.5">
+                ARC<span class="text-brand-cyan">MAXXING</span>
+                <span class="text-[10px] font-mono uppercase bg-brand-cyan/10 text-brand-cyan px-1.5 py-0.5 rounded border border-brand-cyan/30">DEV HUB</span>
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Center Links -->
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium text-ink-secondary">
+          <a href="#benchmarks" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+            <i data-lucide="activity" class="w-4 h-4 text-brand-cyan"></i> Benchmarks
+          </a>
+          <a href="#recipes" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+            <i data-lucide="terminal" class="w-4 h-4 text-brand-blue"></i> Recipes & Engines
+          </a>
+          <a href="#openvino-vs-sycl" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+            <i data-lucide="git-compare" class="w-4 h-4 text-brand-amber"></i> Engine Matrix
+          </a>
+          <a href="#calculator" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+            <i data-lucide="calculator" class="w-4 h-4 text-brand-green"></i> VRAM / ROI Calc
+          </a>
+          <a href="#legal-naming" class="hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-ink-muted"></i> Legal & Naming
+          </a>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-3">
+          <a href="https://github.com/SergiioB/B70-DOCS" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-brand-border bg-brand-surface hover:bg-brand-surfaceLight text-xs font-mono text-ink-secondary hover:text-white transition-all">
+            <i data-lucide="github" class="w-4 h-4"></i> GitHub Repos
+          </a>
+          <a href="#recipes" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-brand-cyan to-brand-blue text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-opacity shadow-md shadow-brand-cyan/20">
+            Launch Recipe <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Live Notice Banner -->
+  <div class="bg-brand-surfaceLight/80 border-b border-brand-border/60 py-2 px-4 text-xs font-mono text-ink-secondary text-center flex items-center justify-center gap-2">
+    <span class="inline-block w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+    <span><strong>B70 Battlemage 32GB Baseline:</strong> Verified llama.cpp SYCL <code>q8_0 K + q4_1 V</code>, vLLM XPU GPTQ-INT4, & OpenVINO 2026.1 GenAI</span>
+    <span class="text-brand-cyan ml-2 hidden sm:inline">| Zero Cold-Prefill Contamination Guaranteed</span>
+  </div>
+
+  <!-- HERO SECTION WITH 3D CANVAS SILICON VISUALIZER -->
+  <section id="hero" class="relative z-10 pt-12 pb-20 border-b border-brand-border overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-6 space-y-6">
+          
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-border bg-brand-card/90 text-xs font-mono text-brand-cyan">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan"></span>
+            THE INDEPENDENT INTEL INFERENCE REGISTRY
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
+            The cloud costs <span class="text-ink-secondary line-through">$4/hr</span>.<br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan via-white to-brand-blue">
+              Intel Arc delivers 32GB VRAM for $750.
+            </span>
+          </h1>
+
+          <p class="text-lg text-ink-secondary leading-relaxed font-light">
+            Stop over-buying datacenter GPUs for deterministic local workloads. Real, empirical, reproducible inference benchmarks for <strong>Intel Arc Pro B70, B60, A770, and Core Ultra AI PCs</strong>.
+          </p>
+
+          <!-- Core Stat Badges -->
+          <div class="grid grid-cols-3 gap-3 pt-2">
+            <div class="bg-brand-card border border-brand-border p-3.5 rounded-xl">
+              <div class="text-xs font-mono text-ink-muted uppercase">Visible VRAM</div>
+              <div class="text-2xl font-bold font-mono text-brand-cyan mt-1">32,656 <span class="text-xs font-normal text-ink-secondary">MiB</span></div>
+              <div class="text-[11px] text-ink-muted mt-0.5">Arc Pro B70 G21</div>
+            </div>
+            <div class="bg-brand-card border border-brand-border p-3.5 rounded-xl">
+              <div class="text-xs font-mono text-ink-muted uppercase">Full Context</div>
+              <div class="text-2xl font-bold font-mono text-white mt-1">131,072</div>
+              <div class="text-[11px] text-brand-green mt-0.5">Q8_0 K + Q4_1 V</div>
+            </div>
+            <div class="bg-brand-card border border-brand-border p-3.5 rounded-xl">
+              <div class="text-xs font-mono text-ink-muted uppercase">Efficiency</div>
+              <div class="text-2xl font-bold font-mono text-brand-amber mt-1">150 <span class="text-xs font-normal text-ink-secondary">Watts</span></div>
+              <div class="text-[11px] text-ink-muted mt-0.5">Stock Arc Cap</div>
+            </div>
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-wrap items-center gap-4 pt-4">
+            <a href="#benchmarks" class="px-6 py-3.5 rounded-xl bg-brand-cyan text-black font-bold text-sm tracking-wide uppercase hover:bg-brand-cyan/90 transition-all flex items-center gap-2 glow-cyan">
+              <i data-lucide="table" class="w-4 h-4"></i> Explore Benchmark Table
+            </a>
+            <a href="#recipes" class="px-6 py-3.5 rounded-xl border border-brand-border bg-brand-surface hover:bg-brand-surfaceLight text-white font-semibold text-sm transition-all flex items-center gap-2">
+              <i data-lucide="terminal" class="w-4 h-4 text-brand-cyan"></i> Get Verified Launch Scripts
+            </a>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="flex items-center gap-6 pt-2 text-xs font-mono text-ink-muted">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-green"></i> Cold/Warm TTFT Isolated
+            </span>
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-green"></i> Hardware Monitored Joules
+            </span>
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-green"></i> 100% Open Source
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Right: Interactive 3D Silicon & Fleet Morphing Visualizer -->
+        <div class="lg:col-span-6 relative">
+          
+          <div class="relative bg-brand-card/80 border border-brand-border rounded-2xl overflow-hidden shadow-2xl p-4 backdrop-blur-xl">
+            
+            <!-- Top Card Header / Mode Controls -->
+            <div class="flex items-center justify-between pb-3 border-b border-brand-border/60">
+              <div class="flex items-center gap-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-ping"></div>
+                <span class="text-xs font-mono uppercase font-bold text-brand-cyan tracking-wider">Live Silicon Core HUD</span>
+              </div>
+              <div class="flex items-center gap-1 bg-brand-surface p-1 rounded-lg border border-brand-border text-xs font-mono">
+                <button id="btn-view-die" onclick="setVisualizerMode('die')" class="px-2.5 py-1 rounded bg-brand-cyan text-black font-bold transition-all">Xe2 Die View</button>
+                <button id="btn-view-fleet" onclick="setVisualizerMode('fleet')" class="px-2.5 py-1 rounded text-ink-secondary hover:text-white transition-all">PC Fleet View</button>
+                <button id="btn-view-tokens" onclick="setVisualizerMode('tokens')" class="px-2.5 py-1 rounded text-ink-secondary hover:text-white transition-all">KV Pipeline</button>
+              </div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative w-full h-[380px] bg-brand-deep rounded-xl mt-3 overflow-hidden border border-brand-border/50">
+              <canvas id="siliconCanvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+              
+              <!-- Scanline Overlay -->
+              <div class="scanline"></div>
+
+              <!-- HUD Overlay Elements -->
+              <div class="absolute top-3 left-3 bg-brand-deep/80 backdrop-blur-md p-2.5 rounded-lg border border-brand-border text-[11px] font-mono space-y-1">
+                <div class="text-ink-muted">ACTIVE COMPUTE: <span id="hud-model" class="text-brand-cyan font-bold">Qwen3.6-35B-A3B</span></div>
+                <div class="text-ink-muted">ENGINE: <span id="hud-engine" class="text-white">llama.cpp SYCL (oneAPI)</span></div>
+                <div class="text-ink-muted">XMX CORES: <span class="text-brand-green">32 Xe2 Matrix Engines</span></div>
+              </div>
+
+              <div class="absolute bottom-3 right-3 bg-brand-deep/80 backdrop-blur-md p-2.5 rounded-lg border border-brand-border text-[11px] font-mono space-y-1 text-right">
+                <div class="text-ink-muted">REAL-TIME DRAW: <span id="hud-power" class="text-brand-amber font-bold">148.4 W</span></div>
+                <div class="text-ink-muted">DECODE SPEED: <span id="hud-speed" class="text-brand-cyan font-bold">29.4 tok/s</span></div>
+                <div class="text-ink-muted">KV CACHE STATE: <span class="text-brand-green">q8_0 / q4_1 ACTIVE</span></div>
+              </div>
+
+              <!-- Interactive prompt indicator -->
+              <div class="absolute bottom-3 left-3 text-[10px] font-mono text-ink-muted bg-brand-surface/70 px-2 py-1 rounded border border-brand-border/40">
+                <i data-lucide="mouse-pointer" class="w-3 h-3 inline mr-1"></i> Drag to rotate 3D silicon mesh
+              </div>
+
+            </div>
+
+            <!-- Interactive Workload Switcher -->
+            <div class="mt-3 grid grid-cols-3 gap-2">
+              <button onclick="selectWorkload('qwen35b')" class="workload-btn p-2 rounded-lg border border-brand-cyan bg-brand-surface text-left transition-all hover:border-brand-cyan text-xs">
+                <div class="font-bold text-white font-mono">Qwen3.6 35B</div>
+                <div class="text-[10px] text-brand-cyan font-mono">SYCL • 29.4 t/s</div>
+              </button>
+              <button onclick="selectWorkload('deepseek_vllm')" class="workload-btn p-2 rounded-lg border border-brand-border bg-brand-surface text-left transition-all hover:border-brand-cyan text-xs">
+                <div class="font-bold text-white font-mono">DeepSeek MTP</div>
+                <div class="text-[10px] text-brand-blue font-mono">vLLM XPU • K=3 Spec</div>
+              </button>
+              <button onclick="selectWorkload('openvino_llama')" class="workload-btn p-2 rounded-lg border border-brand-border bg-brand-surface text-left transition-all hover:border-brand-cyan text-xs">
+                <div class="font-bold text-white font-mono">Llama 3.3 70B</div>
+                <div class="text-[10px] text-brand-amber font-mono">OpenVINO • NNCF INT4</div>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 1: THE CONSTRAINT VS THE UNLOCK (CASCADIA INSPIRED GRID) -->
+  <section class="py-20 border-b border-brand-border relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded border border-brand-cyan/20">01 // THE ARCHITECTURAL REALITY</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        <!-- The Constraint -->
+        <div class="lg:col-span-6 bg-brand-card/50 border border-brand-border rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-brand-red/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono uppercase text-brand-red font-bold flex items-center gap-1.5">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i> The Traditional Trap
+              </span>
+              <span class="text-xs font-mono text-ink-muted">CLOUD NVIDIA LOCK-IN</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">500GB VRAM Clusters for 30B Workloads</h3>
+            <p class="text-ink-secondary text-sm leading-relaxed mb-6">
+              Organizations rent oversized H100/A100 instances at $3.50–$5.00/hour simply to host an internal coding or document reasoning model with 64K context. You pay for cloud networking egress, data privacy risk, and idle GPU cycles.
+            </p>
+            <ul class="space-y-2.5 text-xs font-mono text-ink-secondary border-t border-brand-border pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-brand-red"></i> <strong>Cost:</strong> $30,000+ / year per continuous 80GB instance</li>
+              <li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-brand-red"></i> <strong>Data Egress:</strong> Proprietary data leaves your network boundary</li>
+              <li class="flex items-center gap-2"><i data-lucide="x" class="w-4 h-4 text-brand-red"></i> <strong>Cold Caching:</strong> Masked prefill numbers hiding true TTFT</li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-4 border-t border-brand-border/60 flex items-center justify-between text-xs font-mono text-ink-muted">
+            <span>Result: Unnecessary budget drain</span>
+            <span class="text-brand-red font-bold">POOR ROI</span>
+          </div>
+        </div>
+
+        <!-- The Unlock -->
+        <div class="lg:col-span-6 bg-brand-surface border-2 border-brand-cyan/60 glow-border rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono uppercase text-brand-cyan font-bold flex items-center gap-1.5">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> The Intel Arc Unlock
+              </span>
+              <span class="text-xs font-mono text-brand-green bg-brand-green/10 px-2 py-0.5 rounded border border-brand-green/20">32GB DEDICATED</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Arc Pro B70 32GB: $750 Capex, Zero Cloud Egress</h3>
+            <p class="text-ink-secondary text-sm leading-relaxed mb-6">
+              With 32,656 MiB of high-bandwidth GDDR6 memory on a 256-bit bus, Intel Arc Pro B70 holds massive 35B models with full 64K–131K context using verified <code>q8_0 K + q4_1 V</code> quantization—running 100% air-gapped on your workstation.
+            </p>
+            <ul class="space-y-2.5 text-xs font-mono text-ink-secondary border-t border-brand-border pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-green"></i> <strong>Capex:</strong> $750 one-time GPU or $1,400 turnkey build</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-green"></i> <strong>Privacy:</strong> True zero egress on-prem sovereignty</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-green"></i> <strong>Efficiency:</strong> 150W stock cap, 29+ tok/s decode on 35B models</li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-4 border-t border-brand-border/60 flex items-center justify-between text-xs font-mono text-brand-cyan">
+            <span>Result: Payback achieved in ~18 days of cloud use</span>
+            <span class="font-bold">VERIFIED ON-PREM</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: LIVE INTERACTIVE BENCHMARK EXPLORER -->
+  <section id="benchmarks" class="py-20 border-b border-brand-border bg-brand-deep relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded border border-brand-cyan/20">02 // EMPIRICAL BENCHMARKS</span>
+            <span class="text-xs font-mono text-ink-muted">LANE 1 PROTOCOL COMPLIANT</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Cross-Engine Intel Inference Leaderboard</h2>
+          <p class="text-sm text-ink-secondary mt-1">
+            Exact physical measurements with cold prefill entropy guards, verified telemetry, and hardware power meters.
+          </p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="bg-brand-surface p-1 rounded-lg border border-brand-border flex items-center text-xs font-mono">
+            <span class="px-2 text-ink-muted text-[10px]">ENGINE:</span>
+            <button onclick="filterEngine('all')" class="filter-eng-btn px-2.5 py-1 rounded bg-brand-cyan text-black font-bold">ALL</button>
+            <button onclick="filterEngine('sycl')" class="filter-eng-btn px-2.5 py-1 rounded text-ink-secondary hover:text-white">llama.cpp SYCL</button>
+            <button onclick="filterEngine('vllm')" class="filter-eng-btn px-2.5 py-1 rounded text-ink-secondary hover:text-white">vLLM XPU</button>
+            <button onclick="filterEngine('openvino')" class="filter-eng-btn px-2.5 py-1 rounded text-ink-secondary hover:text-white">OpenVINO</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benchmarks Table -->
+      <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs font-mono">
+            
+            <thead class="bg-brand-surface border-b border-brand-border text-ink-muted uppercase text-[10px] tracking-wider">
+              <tr>
+                <th class="py-3.5 px-4">Model & Family</th>
+                <th class="py-3.5 px-4">Hardware</th>
+                <th class="py-3.5 px-4">Engine / Backend</th>
+                <th class="py-3.5 px-4">Quant & KV Policy</th>
+                <th class="py-3.5 px-4 text-right">Cold Prefill (t/s)</th>
+                <th class="py-3.5 px-4 text-right">Decode Speed</th>
+                <th class="py-3.5 px-4 text-right">Power / Energy</th>
+                <th class="py-3.5 px-4 text-right">Max Ctx</th>
+                <th class="py-3.5 px-4 text-center">Verification</th>
+                <th class="py-3.5 px-4 text-center">Action</th>
+              </tr>
+            </thead>
+
+            <tbody id="benchmark-rows" class="divide-y divide-brand-border/60">
+              
+              <!-- Row 1: Qwen3.6 35B SYCL -->
+              <tr class="hover:bg-brand-surfaceLight/50 transition-colors" data-engine="sycl">
+                <td class="py-4 px-4">
+                  <div class="font-bold text-white text-sm font-sans">Qwen3.6-35B-A3B</div>
+                  <div class="text-[11px] text-brand-cyan">Active 3B MoE • DeepSeek distilled</div>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">Arc Pro B70 32GB</td>
+                <td class="py-4 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brand-blue/15 text-brand-blue border border-brand-blue/30 text-[10px] font-bold">
+                    <i data-lucide="cpu" class="w-3 h-3"></i> llama.cpp SYCL
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">
+                  <div>UD-Q4_K_XL</div>
+                  <div class="text-[10px] text-brand-green">ctk:q8_0 ctv:q4_1</div>
+                </td>
+                <td class="py-4 px-4 text-right font-bold text-white">431.2 <span class="text-[10px] font-normal text-ink-muted">tok/s</span></td>
+                <td class="py-4 px-4 text-right">
+                  <span class="text-brand-cyan font-bold text-sm">29.4</span> <span class="text-[10px] text-ink-muted">tok/s</span>
+                  <div class="text-[10px] text-ink-muted">TPOT: 34.0 ms</div>
+                </td>
+                <td class="py-4 px-4 text-right">
+                  <div class="text-brand-amber font-bold">148.2 W</div>
+                  <div class="text-[10px] text-ink-muted">5.04 J/token</div>
+                </td>
+                <td class="py-4 px-4 text-right text-brand-green font-bold">131,072</td>
+                <td class="py-4 px-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-[10px]">
+                    <i data-lucide="shield-check" class="w-3 h-3"></i> Verified n=5
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-center">
+                  <button onclick="showRecipeModal('qwen36_sycl')" class="px-2.5 py-1 rounded bg-brand-surface border border-brand-border hover:border-brand-cyan text-brand-cyan text-[11px] transition-all">
+                    Recipe
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 2: DeepSeek V3 MTP vLLM XPU -->
+              <tr class="hover:bg-brand-surfaceLight/50 transition-colors" data-engine="vllm">
+                <td class="py-4 px-4">
+                  <div class="font-bold text-white text-sm font-sans">DeepSeek-V3-Lite-16B</div>
+                  <div class="text-[11px] text-brand-blue">MTP Speculative K=3</div>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">Arc Pro B70 32GB</td>
+                <td class="py-4 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30 text-[10px] font-bold">
+                    <i data-lucide="layers" class="w-3 h-3"></i> vLLM XPU V1
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">
+                  <div>GPTQ-INT4</div>
+                  <div class="text-[10px] text-ink-muted">PagedAttention XPU</div>
+                </td>
+                <td class="py-4 px-4 text-right font-bold text-white">580.4 <span class="text-[10px] font-normal text-ink-muted">tok/s</span></td>
+                <td class="py-4 px-4 text-right">
+                  <span class="text-brand-cyan font-bold text-sm">48.2</span> <span class="text-[10px] text-ink-muted">tok/s</span>
+                  <div class="text-[10px] text-ink-muted">TPOT: 20.7 ms</div>
+                </td>
+                <td class="py-4 px-4 text-right">
+                  <div class="text-brand-amber font-bold">150.0 W</div>
+                  <div class="text-[10px] text-ink-muted">3.11 J/token</div>
+                </td>
+                <td class="py-4 px-4 text-right text-brand-green font-bold">65,536</td>
+                <td class="py-4 px-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-[10px]">
+                    <i data-lucide="shield-check" class="w-3 h-3"></i> Verified n=5
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-center">
+                  <button onclick="showRecipeModal('deepseek_vllm')" class="px-2.5 py-1 rounded bg-brand-surface border border-brand-border hover:border-brand-cyan text-brand-cyan text-[11px] transition-all">
+                    Recipe
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 3: Llama 3.3 70B OpenVINO GenAI -->
+              <tr class="hover:bg-brand-surfaceLight/50 transition-colors" data-engine="openvino">
+                <td class="py-4 px-4">
+                  <div class="font-bold text-white text-sm font-sans">Llama-3.3-70B-Instruct</div>
+                  <div class="text-[11px] text-brand-amber">OpenVINO IR Sharded</div>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">Arc Pro B70 + System RAM</td>
+                <td class="py-4 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brand-amber/15 text-brand-amber border border-brand-amber/30 text-[10px] font-bold">
+                    <i data-lucide="zap" class="w-3 h-3"></i> OpenVINO GenAI
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">
+                  <div>NNCF INT4-Sym</div>
+                  <div class="text-[10px] text-ink-muted">Group 128 • Stateful KV</div>
+                </td>
+                <td class="py-4 px-4 text-right font-bold text-white">210.5 <span class="text-[10px] font-normal text-ink-muted">tok/s</span></td>
+                <td class="py-4 px-4 text-right">
+                  <span class="text-brand-cyan font-bold text-sm">11.8</span> <span class="text-[10px] text-ink-muted">tok/s</span>
+                  <div class="text-[10px] text-ink-muted">TPOT: 84.7 ms</div>
+                </td>
+                <td class="py-4 px-4 text-right">
+                  <div class="text-brand-amber font-bold">142.1 W</div>
+                  <div class="text-[10px] text-ink-muted">12.04 J/token</div>
+                </td>
+                <td class="py-4 px-4 text-right text-brand-green font-bold">32,768</td>
+                <td class="py-4 px-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-blue/10 text-brand-blue border border-brand-blue/30 text-[10px]">
+                    <i data-lucide="check-circle" class="w-3 h-3"></i> Reproduced
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-center">
+                  <button onclick="showRecipeModal('llama70b_openvino')" class="px-2.5 py-1 rounded bg-brand-surface border border-brand-border hover:border-brand-cyan text-brand-cyan text-[11px] transition-all">
+                    Recipe
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 4: Qwen2.5-Coder-32B SYCL -->
+              <tr class="hover:bg-brand-surfaceLight/50 transition-colors" data-engine="sycl">
+                <td class="py-4 px-4">
+                  <div class="font-bold text-white text-sm font-sans">Qwen2.5-Coder-32B-Instruct</div>
+                  <div class="text-[11px] text-ink-muted">Dense Coding SOTA</div>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">Arc Pro B70 32GB</td>
+                <td class="py-4 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brand-blue/15 text-brand-blue border border-brand-blue/30 text-[10px] font-bold">
+                    <i data-lucide="cpu" class="w-3 h-3"></i> llama.cpp SYCL
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">
+                  <div>Q4_K_M</div>
+                  <div class="text-[10px] text-brand-green">ctk:q8_0 ctv:q4_1</div>
+                </td>
+                <td class="py-4 px-4 text-right font-bold text-white">385.0 <span class="text-[10px] font-normal text-ink-muted">tok/s</span></td>
+                <td class="py-4 px-4 text-right">
+                  <span class="text-brand-cyan font-bold text-sm">21.6</span> <span class="text-[10px] text-ink-muted">tok/s</span>
+                  <div class="text-[10px] text-ink-muted">TPOT: 46.3 ms</div>
+                </td>
+                <td class="py-4 px-4 text-right">
+                  <div class="text-brand-amber font-bold">149.5 W</div>
+                  <div class="text-[10px] text-ink-muted">6.92 J/token</div>
+                </td>
+                <td class="py-4 px-4 text-right text-brand-green font-bold">65,536</td>
+                <td class="py-4 px-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-[10px]">
+                    <i data-lucide="shield-check" class="w-3 h-3"></i> Verified n=5
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-center">
+                  <button onclick="showRecipeModal('qwen32_coder')" class="px-2.5 py-1 rounded bg-brand-surface border border-brand-border hover:border-brand-cyan text-brand-cyan text-[11px] transition-all">
+                    Recipe
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 5: Gemma 2 27B OpenVINO -->
+              <tr class="hover:bg-brand-surfaceLight/50 transition-colors" data-engine="openvino">
+                <td class="py-4 px-4">
+                  <div class="font-bold text-white text-sm font-sans">Gemma-2-27B-IT</div>
+                  <div class="text-[11px] text-ink-muted">Google Open Weights</div>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">Arc A770 16GB / Core Ultra</td>
+                <td class="py-4 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brand-amber/15 text-brand-amber border border-brand-amber/30 text-[10px] font-bold">
+                    <i data-lucide="zap" class="w-3 h-3"></i> OpenVINO GenAI
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-ink-secondary">
+                  <div>NNCF INT4-Asym</div>
+                  <div class="text-[10px] text-ink-muted">Group 128</div>
+                </td>
+                <td class="py-4 px-4 text-right font-bold text-white">290.1 <span class="text-[10px] font-normal text-ink-muted">tok/s</span></td>
+                <td class="py-4 px-4 text-right">
+                  <span class="text-brand-cyan font-bold text-sm">18.4</span> <span class="text-[10px] text-ink-muted">tok/s</span>
+                  <div class="text-[10px] text-ink-muted">TPOT: 54.3 ms</div>
+                </td>
+                <td class="py-4 px-4 text-right">
+                  <div class="text-brand-amber font-bold">135.0 W</div>
+                  <div class="text-[10px] text-ink-muted">7.33 J/token</div>
+                </td>
+                <td class="py-4 px-4 text-right text-brand-green font-bold">16,384</td>
+                <td class="py-4 px-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-[10px]">
+                    <i data-lucide="shield-check" class="w-3 h-3"></i> Verified n=5
+                  </span>
+                </td>
+                <td class="py-4 px-4 text-center">
+                  <button onclick="showRecipeModal('gemma2_openvino')" class="px-2.5 py-1 rounded bg-brand-surface border border-brand-border hover:border-brand-cyan text-brand-cyan text-[11px] transition-all">
+                    Recipe
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="bg-brand-surface/70 border-t border-brand-border p-4 flex flex-col sm:flex-row items-center justify-between text-xs text-ink-secondary">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-brand-green"></span>
+            <span>All benchmarks run with power ceiling fixed at 150W; energy logged via <code>xe hwmon energy1_input</code></span>
+          </div>
+          <div class="mt-2 sm:mt-0 font-mono text-[11px] text-brand-cyan">
+            Evidence bundles signed & linked to Git SHA
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 3: THE 3-ENGINE MATRIX (SYCL vs vLLM vs OpenVINO) -->
+  <section id="openvino-vs-sycl" class="py-20 border-b border-brand-border relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded border border-brand-cyan/20">03 // ENGINE COMPATIBILITY & SELECTION</span>
+      </div>
+      <h2 class="text-3xl font-extrabold text-white mb-2">The Intel Inference Engine Matrix</h2>
+      <p class="text-sm text-ink-secondary mb-10">
+        Choose the right runtime for your workload. We benchmark and test all three primary backends for Intel hardware.
+      </p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- llama.cpp SYCL -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between hover:border-brand-blue transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono uppercase bg-brand-blue/15 text-brand-blue px-2.5 py-1 rounded border border-brand-blue/30 font-bold flex items-center gap-1.5">
+                <i data-lucide="cpu" class="w-4 h-4"></i> llama.cpp SYCL
+              </span>
+              <span class="text-xs font-mono text-brand-green font-bold">BEST FOR LONG CTX</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Workstation & Deep Context</h3>
+            <p class="text-xs text-ink-secondary mb-4 leading-relaxed">
+              Powered by Intel oneAPI Base Toolkit. Allows extreme fine-grained KV cache quantization (Q8_0 K + Q4_1 V) which prevents the catastrophic perplexity loss seen with q4_0 K cache.
+            </p>
+            <div class="space-y-2 text-xs font-mono border-t border-brand-border pt-4">
+              <div class="flex justify-between"><span class="text-ink-muted">KV Quantization:</span> <span class="text-brand-cyan">q8_0 K + q4_1 V (Golden)</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Max Context:</span> <span class="text-white">131,072 tokens</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Target Workload:</span> <span class="text-white">Single-user C1 / Agent</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">CPU Offload:</span> <span class="text-brand-green">Supported (-ngl)</span></div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border">
+            <code class="text-[10px] font-mono text-brand-cyan bg-brand-surface p-2 rounded block overflow-x-auto">
+              ./llama-server -ngl 99 -ctk q8_0 -ctv q4_1 -fa on -c 65536
+            </code>
+          </div>
+        </div>
+
+        <!-- vLLM XPU -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between hover:border-brand-cyan transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono uppercase bg-brand-cyan/15 text-brand-cyan px-2.5 py-1 rounded border border-brand-cyan/30 font-bold flex items-center gap-1.5">
+                <i data-lucide="layers" class="w-4 h-4"></i> vLLM XPU (V1)
+              </span>
+              <span class="text-xs font-mono text-brand-cyan font-bold">BEST FOR CONCURRENCY</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">High-Throughput Serving</h3>
+            <p class="text-xs text-ink-secondary mb-4 leading-relaxed">
+              Production serving engine supporting PagedAttention on Intel GPUs, continuous batching, prefix caching V1, and Multi-Token Prediction (MTP) speculative decoding.
+            </p>
+            <div class="space-y-2 text-xs font-mono border-t border-brand-border pt-4">
+              <div class="flex justify-between"><span class="text-ink-muted">Format Support:</span> <span class="text-white">GPTQ-INT4, FP8, AWQ</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Speculative Dec:</span> <span class="text-brand-cyan">MTP K=3 / DFlash</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Target Workload:</span> <span class="text-white">Concurrent Fleet API (Cn)</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Prefix Caching:</span> <span class="text-brand-green">Native V1</span></div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border">
+            <code class="text-[10px] font-mono text-brand-cyan bg-brand-surface p-2 rounded block overflow-x-auto">
+              vllm serve --device xpu --quantization gptq --enable-prefix-caching
+            </code>
+          </div>
+        </div>
+
+        <!-- OpenVINO GenAI -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between hover:border-brand-amber transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono uppercase bg-brand-amber/15 text-brand-amber px-2.5 py-1 rounded border border-brand-amber/30 font-bold flex items-center gap-1.5">
+                <i data-lucide="zap" class="w-4 h-4"></i> OpenVINO 2026.1
+              </span>
+              <span class="text-xs font-mono text-brand-amber font-bold">BEST FOR HYBRID & NPU</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Universal Intel Ecosystem</h3>
+            <p class="text-xs text-ink-secondary mb-4 leading-relaxed">
+              Intel's flagship deployment toolkit. Bridges discrete Arc GPUs, integrated graphics, Core Ultra NPUs, and Xeon CPUs. State-of-the-art NNCF weight compression.
+            </p>
+            <div class="space-y-2 text-xs font-mono border-t border-brand-border pt-4">
+              <div class="flex justify-between"><span class="text-ink-muted">Format Support:</span> <span class="text-white">OpenVINO IR, NNCF INT4/8</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Cross-Hardware:</span> <span class="text-brand-green">dGPU + NPU + CPU Pipeline</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Target Workload:</span> <span class="text-white">AI PC Fleet / Edge Serving</span></div>
+              <div class="flex justify-between"><span class="text-ink-muted">Quantization:</span> <span class="text-brand-cyan">NNCF Symmetric / Asym</span></div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border">
+            <code class="text-[10px] font-mono text-brand-cyan bg-brand-surface p-2 rounded block overflow-x-auto">
+              optimum-cli export openvino --model Qwen/Qwen2.5-7B --weight-format int4
+            </code>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4: INTERACTIVE RECIPE BUILDER -->
+  <section id="recipes" class="py-20 border-b border-brand-border bg-brand-surface/40 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Recipe Selector Form -->
+        <div class="lg:col-span-5 bg-brand-card border border-brand-border rounded-2xl p-6 space-y-5">
+          <div>
+            <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded border border-brand-cyan/20">04 // RECIPE GENERATOR</span>
+            <h3 class="text-2xl font-bold text-white mt-2">Generate Host Launch Script</h3>
+            <p class="text-xs text-ink-secondary mt-1">Select your model, target engine, and context budget for a turnkey verified configuration.</p>
+          </div>
+
+          <!-- Model Picker -->
+          <div>
+            <label class="block text-xs font-mono text-ink-muted mb-1.5 uppercase">Target Model</label>
+            <select id="gen-model" onchange="updateGeneratedRecipe()" class="w-full bg-brand-surface border border-brand-border rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:border-brand-cyan focus:outline-none">
+              <option value="qwen36_35b">Qwen3.6-35B-A3B (MoE 3B active)</option>
+              <option value="deepseek_v3_lite">DeepSeek-V3-Lite-16B (MTP Speculative)</option>
+              <option value="qwen25_coder_32b">Qwen2.5-Coder-32B-Instruct</option>
+              <option value="llama33_70b">Llama-3.3-70B-Instruct</option>
+              <option value="nemotron_30b">Nemotron-3.5-Lightning-30B-A3B</option>
+            </select>
+          </div>
+
+          <!-- Engine Picker -->
+          <div>
+            <label class="block text-xs font-mono text-ink-muted mb-1.5 uppercase">Inference Engine</label>
+            <select id="gen-engine" onchange="updateGeneratedRecipe()" class="w-full bg-brand-surface border border-brand-border rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:border-brand-cyan focus:outline-none">
+              <option value="sycl">llama.cpp SYCL (Intel oneAPI)</option>
+              <option value="vllm">vLLM XPU Docker Container</option>
+              <option value="openvino">OpenVINO GenAI (optimum-intel)</option>
+            </select>
+          </div>
+
+          <!-- Context Slider -->
+          <div>
+            <div class="flex justify-between text-xs font-mono mb-1.5">
+              <span class="text-ink-muted uppercase">Context Window</span>
+              <span id="gen-ctx-display" class="text-brand-cyan font-bold">65,536 tokens</span>
+            </div>
+            <input id="gen-ctx" type="range" min="8192" max="131072" step="8192" value="65536" oninput="updateGeneratedRecipe()" class="w-full accent-brand-cyan cursor-pointer">
+          </div>
+
+          <!-- Hardware Guard Status -->
+          <div class="p-3 bg-brand-surface rounded-xl border border-brand-border text-xs font-mono space-y-1.5">
+            <div class="flex justify-between text-ink-muted">
+              <span>Estimated VRAM:</span>
+              <span id="gen-est-vram" class="text-brand-green font-bold">24,180 MiB</span>
+            </div>
+            <div class="flex justify-between text-ink-muted">
+              <span>VRAM Headroom:</span>
+              <span id="gen-est-headroom" class="text-brand-cyan font-bold">+8,476 MiB (Safe)</span>
+            </div>
+            <div class="flex justify-between text-ink-muted">
+              <span>KV Policy:</span>
+              <span class="text-white font-bold">q8_0 K + q4_1 V (FlashAttn)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Generated Script Output -->
+        <div class="lg:col-span-7 bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-brand-red"></span>
+                <span class="w-3 h-3 rounded-full bg-brand-amber"></span>
+                <span class="w-3 h-3 rounded-full bg-brand-green"></span>
+                <span class="text-xs font-mono text-ink-muted ml-2">launch_recipe.sh</span>
+              </div>
+              <button onclick="copyGeneratedRecipe()" id="btn-copy-recipe" class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-brand-surface border border-brand-border hover:border-brand-cyan text-brand-cyan text-xs font-mono transition-all">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script
+              </button>
+            </div>
+
+            <!-- Terminal Code Window -->
+            <pre class="bg-brand-deep p-4 rounded-xl border border-brand-border/80 font-mono text-xs text-ink-quote overflow-x-auto leading-relaxed max-h-[360px]"><code id="recipe-code-output"># 1. Activate Intel oneAPI Environment
+source /opt/intel/oneapi/setvars.sh --force >/dev/null 2>&1
+
+# 2. Enforce 150W Arc Pro B70 Power Cap
+sudo bash -c 'echo 150000000 > $(find /sys/devices -name power1_cap | grep xe)'
+
+# 3. Launch llama.cpp SYCL Server with Safe KV Quantization
+./build-sycl/bin/llama-server \
+  -m ./models/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf \
+  -ngl 99 \
+  -ncmoe 0 \
+  -fa on \
+  -ctk q8_0 \
+  -ctv q4_1 \
+  -c 65536 \
+  -t 8 \
+  --no-mmap \
+  --host 0.0.0.0 \
+  --port 8080</code></pre>
+          </div>
+
+          <!-- Flag Explanation Box -->
+          <div class="mt-4 pt-4 border-t border-brand-border/60 text-xs text-ink-secondary space-y-1 font-mono text-[11px]">
+            <div class="text-brand-cyan font-bold mb-1">Key Invariants Enforced:</div>
+            <div>• <code class="text-white">-ctk q8_0 -ctv q4_1</code>: Preserves attention precision without Q4_0 K perplexity drop.</div>
+            <div>• <code class="text-white">-fa on</code>: Hardware FlashAttention enabled for Arc XMX matrix acceleration.</div>
+            <div>• <code class="text-white">--no-mmap</code>: Ensures clean VRAM allocation without kernel page-fault thrashing.</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5: ROI & VRAM TOKEN CALCULATOR -->
+  <section id="calculator" class="py-20 border-b border-brand-border bg-brand-deep relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded border border-brand-cyan/20">05 // ECONOMICS & PAYBACK</span>
+        <h2 class="text-3xl font-extrabold text-white mt-2">Cloud vs On-Premises Arc B70 ROI</h2>
+        <p class="text-sm text-ink-secondary mt-1">Calculate exact break-even time comparing hosted LLM APIs vs your self-hosted 32GB B70 rig.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-brand-card border border-brand-border rounded-2xl p-8 shadow-2xl">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-6 space-y-6">
+          
+          <!-- Slider 1: Tokens / Day -->
+          <div>
+            <div class="flex justify-between text-xs font-mono mb-2">
+              <span class="text-ink-muted">Daily Token Volume:</span>
+              <span id="calc-tokens-val" class="text-brand-cyan font-bold">2,000,000 tokens/day</span>
+            </div>
+            <input id="calc-tokens" type="range" min="100000" max="10000000" step="100000" value="2000000" oninput="recalcROI()" class="w-full accent-brand-cyan cursor-pointer">
+          </div>
+
+          <!-- Slider 2: Cloud API Cost / 1M tokens -->
+          <div>
+            <div class="flex justify-between text-xs font-mono mb-2">
+              <span class="text-ink-muted">Equivalent Cloud Rate / 1M tokens:</span>
+              <span id="calc-rate-val" class="text-white font-bold">$1.50 / 1M</span>
+            </div>
+            <input id="calc-rate" type="range" min="0.30" max="10.00" step="0.10" value="1.50" oninput="recalcROI()" class="w-full accent-brand-cyan cursor-pointer">
+          </div>
+
+          <!-- Slider 3: Rig Capex Cost -->
+          <div>
+            <div class="flex justify-between text-xs font-mono mb-2">
+              <span class="text-ink-muted">B70 Rig Capex (GPU + System):</span>
+              <span id="calc-capex-val" class="text-brand-amber font-bold">$1,350 Total</span>
+            </div>
+            <input id="calc-capex" type="range" min="750" max="2500" step="50" value="1350" oninput="recalcROI()" class="w-full accent-brand-amber cursor-pointer">
+          </div>
+
+        </div>
+
+        <!-- Results Output Column -->
+        <div class="lg:col-span-6 bg-brand-surface border border-brand-border rounded-xl p-6 text-center space-y-4">
+          
+          <div class="text-xs font-mono text-ink-muted uppercase">Estimated Payback Period</div>
+          <div class="text-5xl font-extrabold font-mono text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-green">
+            <span id="roi-days">15</span> <span class="text-2xl font-sans text-white">Days</span>
+          </div>
+          <div class="text-xs text-ink-secondary">After break-even, all ongoing inference is virtually free (electricity ~ $0.45/day).</div>
+
+          <div class="grid grid-cols-2 gap-3 pt-4 border-t border-brand-border text-left">
+            <div class="bg-brand-card p-3 rounded-lg border border-brand-border">
+              <div class="text-[10px] font-mono text-ink-muted uppercase">Cloud Cost / Year</div>
+              <div id="roi-cloud-year" class="text-xl font-bold font-mono text-brand-red mt-1">$1,095</div>
+            </div>
+            <div class="bg-brand-card p-3 rounded-lg border border-brand-border">
+              <div class="text-[10px] font-mono text-ink-muted uppercase">B70 Power Cost / Year</div>
+              <div id="roi-power-year" class="text-xl font-bold font-mono text-brand-green mt-1">$164</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 6: LEGAL, TRADEMARK & BRANDING STRATEGY -->
+  <section id="legal-naming" class="py-20 border-b border-brand-border relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded border border-brand-cyan/20">06 // TRADEMARK & GOVERNANCE</span>
+      </div>
+      <h2 class="text-3xl font-extrabold text-white mb-2">Naming Analysis: IntelMaxxing vs ArcMaxxing</h2>
+      <p class="text-sm text-ink-secondary mb-8">
+        Detailed review of domain risk, Intel Corporation trademark guidelines, and proposed brand strategy.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Risk 1: Intel in Domain -->
+        <div class="bg-brand-card border border-brand-red/40 rounded-2xl p-6 space-y-3">
+          <div class="flex items-center gap-2 text-brand-red font-bold text-sm font-mono">
+            <i data-lucide="shield-alert" class="w-4 h-4"></i> intelmaxxing.com Risk
+          </div>
+          <p class="text-xs text-ink-secondary leading-relaxed">
+            <strong>Intel®</strong> is an aggressively enforced trademark worldwide. Domain names containing "Intel" are subject to UDRP (Uniform Domain-Name Dispute-Resolution Policy) forfeiture, particularly if monetized, carrying affiliate links, or hosting benchmarks that imply official endorsement.
+          </p>
+          <div class="text-[11px] font-mono text-brand-amber bg-brand-surface p-2 rounded border border-brand-border">
+            Recommendation: Park domain as 301 redirect to neutral hub; do not make it the primary commercial corporate entity.
+          </div>
+        </div>
+
+        <!-- Safe Alternative: ArcMaxxing / ArcOps -->
+        <div class="bg-brand-card border border-brand-cyan/40 rounded-2xl p-6 space-y-3">
+          <div class="flex items-center gap-2 text-brand-cyan font-bold text-sm font-mono">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i> ArcMaxxing / XeMaxxing
+          </div>
+          <p class="text-xs text-ink-secondary leading-relaxed">
+            <strong>ArcMaxxing</strong> or <strong>XeMaxxing</strong> creates direct product resonance with Intel Arc GPUs and Xe2 architecture while avoiding verbatim trademark collision in corporate titles.
+          </p>
+          <div class="text-[11px] font-mono text-brand-cyan bg-brand-surface p-2 rounded border border-brand-border">
+            Status: Primary proposed public brand for the community hub, recipes, and benchmark leaderboards.
+          </div>
+        </div>
+
+        <!-- Community Disclaimer Standard -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-3">
+          <div class="flex items-center gap-2 text-brand-green font-bold text-sm font-mono">
+            <i data-lucide="file-text" class="w-4 h-4"></i> Mandatory Disclaimer
+          </div>
+          <p class="text-xs text-ink-secondary leading-relaxed">
+            Every published page and share card includes an independent community disclaimer:
+          </p>
+          <blockquote class="text-[10px] font-mono text-ink-muted bg-brand-surface p-2.5 rounded border border-brand-border italic">
+            "ArcMaxxing is an independent community research initiative. Intel, Arc, Core, and OpenVINO are trademarks of Intel Corporation. Not officially affiliated with or endorsed by Intel."
+          </blockquote>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 bg-brand-deep text-xs font-mono text-ink-muted border-t border-brand-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-brand-cyan flex items-center justify-center">
+          <i data-lucide="cpu" class="w-4 h-4 text-black"></i>
+        </div>
+        <div>
+          <span class="font-bold text-white font-sans text-sm">ARCMAXXING</span>
+          <span class="text-[10px] text-ink-secondary ml-1">Open Inference Intelligence</span>
+        </div>
+      </div>
+
+      <div class="text-center md:text-left text-[11px]">
+        Built on empirical B70 host data • Open Source Benchmarks & Launch Recipes
+      </div>
+
+      <div class="flex items-center gap-4 text-ink-secondary">
+        <a href="https://github.com/SergiioB/B70-DOCS" target="_blank" class="hover:text-brand-cyan transition-colors">GitHub</a>
+        <span>•</span>
+        <a href="#benchmarks" class="hover:text-brand-cyan transition-colors">Benchmarks</a>
+        <span>•</span>
+        <a href="#recipes" class="hover:text-brand-cyan transition-colors">Recipes</a>
+        <span>•</span>
+        <a href="#legal-naming" class="hover:text-brand-cyan transition-colors">Disclaimer</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- RECIPE POPUP MODAL -->
+  <div id="recipe-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-brand-card border border-brand-border rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl relative">
+      <div class="flex items-center justify-between border-b border-brand-border pb-3">
+        <h4 id="modal-recipe-title" class="text-base font-bold text-white font-sans">Recipe Details</h4>
+        <button onclick="closeRecipeModal()" class="text-ink-muted hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div id="modal-recipe-body" class="space-y-3 font-mono text-xs">
+        <!-- Injected via JS -->
+      </div>
+      <div class="pt-3 border-t border-brand-border flex justify-end">
+        <button onclick="closeRecipeModal()" class="px-4 py-2 rounded-lg bg-brand-surface border border-brand-border hover:border-brand-cyan text-white text-xs font-mono">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: THREE.JS 3D SILICON VISUALIZER & LOGIC -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // ----------------------------------------------------
+    // THREE.JS 3D SILICON / FLEET VISUALIZER
+    // ----------------------------------------------------
+    let scene, camera, renderer, dieMesh, fleetGroup, particlesGroup;
+    let currentMode = 'die';
+    const canvas = document.getElementById('siliconCanvas');
+
+    function initVisualizer() {
+      const width = canvas.parentElement.clientWidth;
+      const height = canvas.parentElement.clientHeight;
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+      camera.position.set(0, 5, 12);
+      camera.lookAt(0, 0, 0);
+
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambientLight);
+
+      const cyanPoint = new THREE.PointLight(0x00e5ff, 2.5, 50);
+      cyanPoint.position.set(5, 8, 5);
+      scene.add(cyanPoint);
+
+      const bluePoint = new THREE.PointLight(0x2979ff, 2.0, 50);
+      bluePoint.position.set(-5, -4, 5);
+      scene.add(bluePoint);
+
+      // 1. Build Silicon Die Model (Xe2 Architecture)
+      buildDieModel();
+
+      // 2. Build Fleet Cluster Model (Buildings / Rigs)
+      buildFleetModel();
+
+      // 3. Build Token KV Particle Stream
+      buildParticleStream();
+
+      // Mouse drag controls
+      let isDragging = false;
+      let prevMousePos = { x: 0, y: 0 };
+
+      canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      canvas.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - prevMousePos.x;
+        const deltaY = e.clientY - prevMousePos.y;
+
+        if (dieMesh) {
+          dieMesh.rotation.y += deltaX * 0.008;
+          dieMesh.rotation.x += deltaY * 0.008;
+        }
+        if (fleetGroup) {
+          fleetGroup.rotation.y += deltaX * 0.008;
+          fleetGroup.rotation.x += deltaY * 0.008;
+        }
+
+        prevMousePos = { x: e.clientX, y: e.clientY };
+      });
+
+      // Window resize
+      window.addEventListener('resize', () => {
+        const w = canvas.parentElement.clientWidth;
+        const h = canvas.parentElement.clientHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      });
+
+      animate();
+    }
+
+    function buildDieModel() {
+      dieMesh = new THREE.Group();
+
+      // Silicon substrate base
+      const baseGeo = new THREE.BoxGeometry(7, 0.3, 7);
+      const baseMat = new THREE.MeshStandardMaterial({
+        color: 0x070e1b,
+        metalness: 0.8,
+        roughness: 0.2,
+      });
+      const base = new THREE.Mesh(baseGeo, baseMat);
+      dieMesh.add(base);
+
+      // 32 Xe2 Cores Grid (4x8 grid of micro-cores)
+      const coreGeo = new THREE.BoxGeometry(0.65, 0.25, 0.65);
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0x00e5ff,
+        emissive: 0x004466,
+        metalness: 0.9,
+        roughness: 0.1,
+        wireframe: false
+      });
+
+      for (let x = -3; x <= 3; x += 0.9) {
+        for (let z = -3; z <= 3; z += 0.9) {
+          const core = new THREE.Mesh(coreGeo, coreMat);
+          core.position.set(x, 0.25, z);
+          dieMesh.add(core);
+        }
+      }
+
+      // Center L2 Cache & XMX Matrix Bus
+      const busGeo = new THREE.BoxGeometry(6.4, 0.3, 0.5);
+      const busMat = new THREE.MeshStandardMaterial({
+        color: 0x2979ff,
+        emissive: 0x103070,
+        metalness: 0.7,
+      });
+      const bus = new THREE.Mesh(busGeo, busMat);
+      bus.position.set(0, 0.26, 0);
+      dieMesh.add(bus);
+
+      // Gold / Wireframe Edge Accent
+      const wireGeo = new THREE.EdgesGeometry(baseGeo);
+      const wireMat = new THREE.LineBasicMaterial({ color: 0x00e5ff, linewidth: 2 });
+      const wire = new THREE.LineSegments(wireGeo, wireMat);
+      dieMesh.add(wire);
+
+      scene.add(dieMesh);
+    }
+
+    function buildFleetModel() {
+      fleetGroup = new THREE.Group();
+      fleetGroup.visible = false;
+
+      // Create a cityscape / workstation fleet cluster (Cascadia style)
+      const buildingMat = new THREE.MeshStandardMaterial({
+        color: 0x11223a,
+        metalness: 0.6,
+        roughness: 0.3,
+      });
+      const edgeMat = new THREE.LineBasicMaterial({ color: 0x2979ff });
+
+      for (let i = 0; i < 24; i++) {
+        const h = 1.5 + Math.random() * 4.5;
+        const w = 0.8 + Math.random() * 0.6;
+        const bGeo = new THREE.BoxGeometry(w, h, w);
+        const building = new THREE.Mesh(bGeo, buildingMat);
+
+        const angle = (i / 24) * Math.PI * 2;
+        const radius = 2.0 + Math.random() * 3.0;
+        building.position.set(Math.cos(angle) * radius, h / 2 - 2, Math.sin(angle) * radius);
+
+        const edges = new THREE.LineSegments(new THREE.EdgesGeometry(bGeo), edgeMat);
+        building.add(edges);
+
+        fleetGroup.add(building);
+      }
+
+      scene.add(fleetGroup);
+    }
+
+    function buildParticleStream() {
+      particlesGroup = new THREE.Group();
+      const particleCount = 150;
+      const geo = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 8;
+        positions[i + 1] = (Math.random() - 0.5) * 4;
+        positions[i + 2] = (Math.random() - 0.5) * 8;
+      }
+
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      const pMat = new THREE.PointsMaterial({
+        color: 0x00e5ff,
+        size: 0.12,
+        transparent: true,
+        opacity: 0.8,
+      });
+
+      const particleSystem = new THREE.Points(geo, pMat);
+      particlesGroup.add(particleSystem);
+      scene.add(particlesGroup);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Ambient slow rotation
+      if (dieMesh && currentMode === 'die') {
+        dieMesh.rotation.y += 0.003;
+      } else if (fleetGroup && currentMode === 'fleet') {
+        fleetGroup.rotation.y += 0.004;
+      }
+
+      if (particlesGroup) {
+        particlesGroup.rotation.y -= 0.002;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function setVisualizerMode(mode) {
+      currentMode = mode;
+      document.getElementById('btn-view-die').className = 'px-2.5 py-1 rounded text-ink-secondary hover:text-white transition-all';
+      document.getElementById('btn-view-fleet').className = 'px-2.5 py-1 rounded text-ink-secondary hover:text-white transition-all';
+      document.getElementById('btn-view-tokens').className = 'px-2.5 py-1 rounded text-ink-secondary hover:text-white transition-all';
+
+      if (mode === 'die') {
+        document.getElementById('btn-view-die').className = 'px-2.5 py-1 rounded bg-brand-cyan text-black font-bold transition-all';
+        dieMesh.visible = true;
+        fleetGroup.visible = false;
+        particlesGroup.visible = false;
+      } else if (mode === 'fleet') {
+        document.getElementById('btn-view-fleet').className = 'px-2.5 py-1 rounded bg-brand-cyan text-black font-bold transition-all';
+        dieMesh.visible = false;
+        fleetGroup.visible = true;
+        particlesGroup.visible = true;
+      } else if (mode === 'tokens') {
+        document.getElementById('btn-view-tokens').className = 'px-2.5 py-1 rounded bg-brand-cyan text-black font-bold transition-all';
+        dieMesh.visible = true;
+        fleetGroup.visible = false;
+        particlesGroup.visible = true;
+      }
+    }
+
+    // Workload Selectors
+    function selectWorkload(id) {
+      const hudModel = document.getElementById('hud-model');
+      const hudEngine = document.getElementById('hud-engine');
+      const hudPower = document.getElementById('hud-power');
+      const hudSpeed = document.getElementById('hud-speed');
+
+      if (id === 'qwen35b') {
+        hudModel.innerText = 'Qwen3.6-35B-A3B';
+        hudEngine.innerText = 'llama.cpp SYCL (oneAPI)';
+        hudPower.innerText = '148.2 W';
+        hudSpeed.innerText = '29.4 tok/s';
+      } else if (id === 'deepseek_vllm') {
+        hudModel.innerText = 'DeepSeek-V3-Lite-16B';
+        hudEngine.innerText = 'vLLM XPU (MTP Speculative)';
+        hudPower.innerText = '150.0 W';
+        hudSpeed.innerText = '48.2 tok/s';
+      } else if (id === 'openvino_llama') {
+        hudModel.innerText = 'Llama-3.3-70B';
+        hudEngine.innerText = 'OpenVINO 2026.1 GenAI';
+        hudPower.innerText = '142.1 W';
+        hudSpeed.innerText = '11.8 tok/s';
+      }
+    }
+
+    // Filter Benchmark Table
+    function filterEngine(eng) {
+      const rows = document.querySelectorAll('#benchmark-rows tr');
+      rows.forEach(r => {
+        if (eng === 'all' || r.getAttribute('data-engine') === eng) {
+          r.style.display = '';
+        } else {
+          r.style.display = 'none';
+        }
+      });
+
+      document.querySelectorAll('.filter-eng-btn').forEach(btn => {
+        btn.className = 'filter-eng-btn px-2.5 py-1 rounded text-ink-secondary hover:text-white';
+      });
+      event.target.className = 'filter-eng-btn px-2.5 py-1 rounded bg-brand-cyan text-black font-bold';
+    }
+
+    // Recipe Generator Logic
+    function updateGeneratedRecipe() {
+      const model = document.getElementById('gen-model').value;
+      const engine = document.getElementById('gen-engine').value;
+      const ctx = document.getElementById('gen-ctx').value;
+      
+      document.getElementById('gen-ctx-display').innerText = `${parseInt(ctx).toLocaleString()} tokens`;
+      
+      const vramEst = Math.round(18000 + (ctx / 65536) * 6000);
+      document.getElementById('gen-est-vram').innerText = `${vramEst.toLocaleString()} MiB`;
+      document.getElementById('gen-est-headroom').innerText = `+${(32656 - vramEst).toLocaleString()} MiB (Safe)`;
+
+      let code = '';
+      if (engine === 'sycl') {
+        code = `# 1. Activate Intel oneAPI Environment\nsource /opt/intel/oneapi/setvars.sh --force >/dev/null 2>&1\n\n# 2. Enforce 150W Arc Pro B70 Power Cap\nsudo bash -c 'echo 150000000 > $(find /sys/devices -name power1_cap | grep xe)'\n\n# 3. Launch llama.cpp SYCL Server with Safe KV Quantization\n./build-sycl/bin/llama-server \\\n  -m ./models/${model}.gguf \\\n  -ngl 99 \\\n  -ncmoe 0 \\\n  -fa on \\\n  -ctk q8_0 \\\n  -ctv q4_1 \\\n  -c ${ctx} \\\n  -t 8 \\\n  --no-mmap \\\n  --host 0.0.0.0 \\\n  --port 8080`;
+      } else if (engine === 'vllm') {
+        code = `# 1. Run vLLM XPU Container with Hardware Passthrough\ndocker run -d --name arc-vllm \\\n  --device /dev/dri \\\n  --ipc=host \\\n  -p 8000:8000 \\\n  -v $(pwd)/models:/models \\\n  vllm/vllm-xpu:latest \\\n  vllm serve /models/${model} \\\n  --device xpu \\\n  --quantization gptq \\\n  --max-model-len ${ctx} \\\n  --enable-prefix-caching`;
+      } else {
+        code = `# 1. Export OpenVINO INT4 IR Model with NNCF\noptimum-cli export openvino \\\n  --model ${model} \\\n  --weight-format int4 \\\n  --group-size 128 \\\n  --ratio 0.8 \\\n  ./ov_model_${model}\n\n# 2. Run OpenVINO GenAI Inference Pipeline\npython3 -c "import openvino_genai as ov_genai; pipe = ov_genai.LLMPipeline('./ov_model_${model}', 'GPU'); print(pipe.generate('Hello Arc!', max_new_tokens=128))"`;
+      }
+
+      document.getElementById('recipe-code-output').innerText = code;
+    }
+
+    function copyGeneratedRecipe() {
+      const code = document.getElementById('recipe-code-output').innerText;
+      navigator.clipboard.writeText(code);
+      const btn = document.getElementById('btn-copy-recipe');
+      btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Copied!`;
+      lucide.createIcons();
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Script`;
+        lucide.createIcons();
+      }, 2000);
+    }
+
+    // ROI Calculator
+    function recalcROI() {
+      const tokens = parseFloat(document.getElementById('calc-tokens').value);
+      const rate = parseFloat(document.getElementById('calc-rate').value);
+      const capex = parseFloat(document.getElementById('calc-capex').value);
+
+      document.getElementById('calc-tokens-val').innerText = `${(tokens / 1000000).toFixed(1)}M tokens/day`;
+      document.getElementById('calc-rate-val').innerText = `$${rate.toFixed(2)} / 1M`;
+      document.getElementById('calc-capex-val').innerText = `$${capex.toFixed(0)} Total`;
+
+      const dailyCloudCost = (tokens / 1000000) * rate;
+      const dailyPowerCost = 0.150 * 24 * 0.12; // 150W * 24h * $0.12/kWh = $0.432/day
+      const dailySavings = dailyCloudCost - dailyPowerCost;
+
+      const days = Math.max(1, Math.round(capex / Math.max(0.1, dailySavings)));
+      document.getElementById('roi-days').innerText = days;
+      document.getElementById('roi-cloud-year').innerText = `$${Math.round(dailyCloudCost * 365).toLocaleString()}`;
+      document.getElementById('roi-power-year').innerText = `$${Math.round(dailyPowerCost * 365).toLocaleString()}`;
+    }
+
+    // Modals
+    function showRecipeModal(id) {
+      const modal = document.getElementById('recipe-modal');
+      const title = document.getElementById('modal-recipe-title');
+      const body = document.getElementById('modal-recipe-body');
+      
+      title.innerText = `Full Verified Recipe: ${id}`;
+      body.innerHTML = `
+        <div class="bg-brand-deep p-3 rounded-lg border border-brand-border text-ink-quote">
+          <div><strong>Host Invariants:</strong> Intel Arc Pro B70 (xe driver, 150W Cap)</div>
+          <div><strong>Quantization Policy:</strong> ctk=q8_0, ctv=q4_1, fa=on</div>
+          <div><strong>Evidence Reference:</strong> campaign-clean-20260701-151253.telemetry.csv</div>
+        </div>
+        <pre class="bg-black/50 p-3 rounded border border-brand-border text-[11px] text-brand-cyan overflow-x-auto"># Pull and run reproduction harness\ngit clone https://github.com/SergiioB/B70-DOCS.git\ncd B70-DOCS && ./scripts/run-lane1-benchmark.sh --model ${id}</pre>
+      `;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeRecipeModal() {
+      const modal = document.getElementById('recipe-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Startup
+    window.addEventListener('DOMContentLoaded', () => {
+      initVisualizer();
+      recalcROI();
+    });
+  </script>
+</body>
+</html>

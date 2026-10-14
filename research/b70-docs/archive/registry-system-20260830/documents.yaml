@@ -1,0 +1,3407 @@
+{
+  "schema_version": 1,
+  "documents": [
+    {
+      "id": "doc-agents",
+      "path": "AGENTS.md",
+      "title": "B70 Inference Host — Agent Contract",
+      "kind": "agent-contract",
+      "lifecycle": "stable",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "DOC-ROOT-DOCUMENT-MAP",
+      "path": "DOCUMENT-MAP.md",
+      "title": "B70 Documentation Map",
+      "kind": "document-index",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "DOC-ROOT-README",
+      "path": "README.md",
+      "title": "Intel Arc Pro B70 Research Repository",
+      "kind": "landing-page",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "DOC-ARCHIVE-INDEX",
+      "path": "archive/README.md",
+      "title": "B70-DOCS Archive",
+      "kind": "archive",
+      "lifecycle": "active",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active"
+    },
+    {
+      "id": "doc-archive-docs-pre-migration-20260819-agents",
+      "path": "archive/docs/pre-migration-20260819/AGENTS.md",
+      "title": "B70 INFERENCE HOST — AGENTS.md",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/dense27-matched-power-20260809T214116Z/",
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/",
+        "results/nemotron-gptq-builtin-profile-20260812T171658Z-671822/",
+        "results/nemotron-gptq-graph-sampler-eager-screen-20260812T2030Z/",
+        "results/qwen38-gdn-mixed-split-v5-20260818/",
+        "results/qwen38-pi-isolation-20260819T120424Z/",
+        "results/vllm-pi-128k-cache-spec-matched-20260808T224033Z-101198/",
+        "results/vllm-pi-mtp4-128k-boundary-fix-20260808T214938Z-77748/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-archive-docs-pre-migration-20260819-benchmark-history",
+      "path": "archive/docs/pre-migration-20260819/benchmark-history.md",
+      "title": "Benchmark History — Run Log",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/ab-llama-bench-20260803-1648.txt",
+        "results/all-models-128k-256k-20260803-1452.txt",
+        "results/boundary-sweep-20260803-1744.txt",
+        "results/dense-vllm-fp8-serve.log",
+        "results/dense27-matched-power-20260809T214116Z/",
+        "results/dense27-prefill-budget-ab-20260809T222808Z/",
+        "results/engine-comparison-full-20260806.md",
+        "results/llamacpp-concurrency-20260805.json",
+        "results/longctx-session-20260804.log",
+        "results/moe-vllm-mtp-prefillfix-150w-grid.json",
+        "results/muse-dflash-sweep-manual-20260810T164735/",
+        "results/muse-glimmer-q4kxl-dflash-20260810T143831-2493876/",
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/",
+        "results/nemotron-dflash-bf16-n7-screen-20260813T080234Z-1389483/",
+        "results/nemotron-dflash-ctx-capacity-20260813T103627Z-1501089/",
+        "results/nemotron-dflash-prefill-budget16k-20260813T100159Z-1477342/",
+        "results/nemotron-dflash-prefill-budget16k-n5-20260813T101252Z-1486488/",
+        "results/nemotron-gptq-graph-n5-20260812T2045Z/",
+        "results/ornith15-35b-20260819T1630Z/",
+        "results/ovms-dense-reverify-20260804.txt",
+        "results/power-ab-prefill-150v230.json",
+        "results/qwen38-agentic-128k-20260819T102259Z/",
+        "results/qwen38-agentic-cacheon-20260819T093858Z/",
+        "results/qwen38-c5-realistic-20260819T114142Z/",
+        "results/qwen38-c5v2-20260819T123851Z/",
+        "results/qwen38-concurrency-20260819T110843Z/",
+        "results/qwen38-dflash2-n5-20260819T151054Z/",
+        "results/qwen38-gdn-mixed-split-v5-20260818/",
+        "results/qwen38-gguf-20260814T150404/",
+        "results/qwen38-pi-isolation-20260819T120424Z/",
+        "results/qwen38-pr-n5-20260818T214749Z",
+        "results/qwen38-sampling-20260819T131817Z/",
+        "results/qwen38-sm1-ctx-gen-20260819T082145Z/",
+        "results/sanity-mtp4-150w.json",
+        "results/vllm-021-dense-fp8-bench.json",
+        "results/vllm-021-gptq-concurrency.json",
+        "results/vllm-021-mtp-native-int4-bench-v2.json",
+        "results/vllm-dense27-4mode-230w-20260809T163138Z-74780/",
+        "results/vllm-dense27-int4-bench-20260809T104145Z-332156/",
+        "results/vllm-dense27-int4-budget-ab-b8192-20260809T120157Z-361073/",
+        "results/vllm-dense27-int4-budget-ab-b8192-20260809T143533Z-27690/",
+        "results/vllm-dense27-int4-budget-ab-b8192-20260809T144410Z-32099/",
+        "results/vllm-dense27-int4-decode-sweep-20260809T114630Z-356008/",
+        "results/vllm-dense27-int4-exact128k-20260809T104326Z-332600/",
+        "results/vllm-dense27-int4-flow-20260809T110641Z-342371/",
+        "results/vllm-dense27-int4-mtp4-20260809T103223Z-327957/",
+        "results/vllm-dense27-int4-mtp4-20260809T105325Z-335186/",
+        "results/vllm-dense27-int4-mtp4-20260809T143714Z-28637/w4a8-accuracy.json",
+        "results/vllm-dense27-int4-resident-cache-on-20260809T121736Z-368981/",
+        "results/vllm-moe-12k-exact-20260809T190246Z-13717/",
+        "results/vllm-moe-12k-lowctx-20260809T193408Z-64922/",
+        "results/vllm-moe-12k-repro-20260809T183124Z-127886/",
+        "results/vllm-mtp-128k-ctx-scaling.json",
+        "results/vllm-mtp-128k-multiturn-pc.json",
+        "results/vllm-mtp-128k-multiturn-pc.out",
+        "results/vllm-mtp-128k-serve.log",
+        "results/vllm-mtp-concurrency-150w.json",
+        "results/vllm-mxfp4-bench-20260805.json",
+        "results/vllm-mxfp4-concurrency-20260805.json",
+        "results/vllm-mxfp4-summary-20260805.md",
+        "results/vllm-native-mtp-bf16draft-serve.log",
+        "results/vllm-pi-128k-cache-spec-matched-20260808T224033Z-101198/",
+        "results/vllm-pi-128k-cache-spec-matched-20260808T224033Z-101198/summary.json",
+        "results/vllm-pi-128k-mtp-fallback-20260808T203735Z-44148/",
+        "results/vllm-pi-mixed-load-20260808T211221Z-60972/",
+        "results/vllm-pi-mixed-load-nospec-20260808T212657Z-68780/",
+        "results/vllm-pi-mtp4-128k-boundary-fix-20260808T214938Z-77748/",
+        "results/vllm-pi-mtp4-longctx-20260808T202455Z-38872/",
+        "results/vllm-pi-prefill-decode-matrix-20260809T060920Z-238794/summary.json",
+        "results/vllm-pi-realworld-flow-20260808T210237Z-56507/",
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426/",
+        "results/vllm-realworld-mtp4-capacity-20260808T201134Z-31970/",
+        "results/vllm-realworld-scheduler-20260808T193702Z-13490/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-archive-docs-pre-migration-20260819-launcher-guide",
+      "path": "archive/docs/pre-migration-20260819/launcher-guide.md",
+      "title": "B70 Launcher Guide",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-archive-docs-pre-migration-20260819-lvm-and-storage",
+      "path": "archive/docs/pre-migration-20260819/lvm-and-storage.md",
+      "title": "Disk Layout, LVM, and VRAM Rules",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-archive-docs-pre-migration-20260819-recommended-configs",
+      "path": "archive/docs/pre-migration-20260819/recommended-configs.md",
+      "title": "B70 Recommended Configurations",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-benchmarks-b9853-vs-b10222-qwen35b-q4-moe-2026-08-03",
+      "path": "benchmarks/b9853-vs-b10222-qwen35b-q4-moe-2026-08-03.md",
+      "title": "A/B Benchmark: b9853 vs b10222 — Qwen3.6-35B-A3B Q4_K_XL MoE",
+      "kind": "benchmark-report",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/ab-llama-bench-20260803-1648.txt"
+      ]
+    },
+    {
+      "id": "doc-benchmarks-boundary-sweep-2026-08-03",
+      "path": "benchmarks/boundary-sweep-2026-08-03.md",
+      "title": "Boundary Sweep — VRAM/Context Limits for Every Config",
+      "kind": "benchmark-report",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/boundary-sweep-20260803-1744.txt"
+      ]
+    },
+    {
+      "id": "doc-benchmarks-ovms-vs-llamacpp-qwen35b-moe-2026-08-04",
+      "path": "benchmarks/ovms-vs-llamacpp-qwen35b-moe-2026-08-04.md",
+      "title": "OVMS/OpenVINO vs llama.cpp SYCL — Qwen3.6 on B70 (MoE + Dense)",
+      "kind": "benchmark-report",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/ab-llama-bench-20260803-1648.txt"
+      ]
+    },
+    {
+      "id": "doc-benchmarks-vllm-pi-realworld-and-long-context-2026-08-08",
+      "path": "benchmarks/vllm-pi-realworld-and-long-context-2026-08-08.md",
+      "title": "B70 vLLM Pi Real-World and Long-Context Campaign — 2026-08-08",
+      "kind": "benchmark-report",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/vllm-pi-128k-mtp-fallback-20260808T203735Z-44148/",
+        "results/vllm-pi-mixed-load-20260808T211221Z-60972/",
+        "results/vllm-pi-mixed-load-nospec-20260808T212657Z-68780/",
+        "results/vllm-pi-mtp4-128k-boundary-fix-20260808T214938Z-77748/",
+        "results/vllm-pi-mtp4-longctx-20260808T202455Z-38872/",
+        "results/vllm-pi-realworld-flow-20260808T210237Z-56507/",
+        "results/vllm-publication-phase-20260808T174831Z-138768/",
+        "results/vllm-realworld-mtp4-capacity-20260808T201134Z-31970/",
+        "results/vllm-realworld-scheduler-20260808T193702Z-13490/",
+        "runs"
+      ]
+    },
+    {
+      "id": "DOC-CAM-2026-MUSE-GLIMMER-Q4KXL-DFLASH",
+      "path": "campaigns/2026/muse-glimmer-q4kxl-dflash/README.md",
+      "title": "Muse Glimmer Q4_K_XL DFlash campaign",
+      "kind": "campaign-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "historical_evidence",
+      "result_roots": [
+        "results/muse-glimmer-q4kxl-dflash-20260810T143831-2493876",
+        "results/muse-glimmer-q4kxl-dflash-20260810T143831-2493876/"
+      ]
+    },
+    {
+      "id": "DOC-CAM-2026-NEMOTRON-DFLASH-N7-N5",
+      "path": "campaigns/2026/nemotron-dflash-n7-n5/README.md",
+      "title": "Nemotron DFlash BF16 n7 isolated C1 n=5",
+      "kind": "campaign-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994",
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/"
+      ]
+    },
+    {
+      "id": "DOC-CAM-2026-ORNITH15-DAY0-MTP-SCREEN",
+      "path": "campaigns/2026/ornith15-day0-mtp-screen/README.md",
+      "title": "Ornith 1.5 day-0 MTP screen",
+      "kind": "campaign-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/ornith15-35b-20260819T1630Z",
+        "results/ornith15-35b-20260819T1630Z/"
+      ]
+    },
+    {
+      "id": "DOC-CAM-2026-ORNITH15-MIXEDCAL-V2",
+      "path": "campaigns/2026/ornith15-mixedcal-v2/README.md",
+      "title": "Ornith 1.5 MixedCal-v2 characterization",
+      "kind": "campaign-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/ornith15-boundary-fixup-20260821T072410Z/",
+        "results/ornith15-draftint4-20260821T084132Z/",
+        "results/ornith15-lmx-mixedcal-20260821T090450Z/",
+        "results/ornith15-lmx-prefill230-20260821T095259Z/",
+        "results/ornith15-mixedcal-v2-summary/summary.json",
+        "results/ornith15-mtpdepth-power-20260821T075858Z/",
+        "results/ornith15-n5-maxkv-20260821T054323Z/",
+        "results/ornith15-n5-maxkv-resume-20260821T062400Z/"
+      ]
+    },
+    {
+      "id": "DOC-CAM-2026-QWEN36-PI-128K-MATCHED",
+      "path": "campaigns/2026/qwen36-pi-128k-matched/README.md",
+      "title": "Qwen3.6 Pi exact 128K matched cache/spec campaign",
+      "kind": "campaign-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/vllm-pi-128k-cache-spec-matched-20260808T224033Z-101198",
+        "results/vllm-pi-128k-cache-spec-matched-20260808T224033Z-101198/"
+      ]
+    },
+    {
+      "id": "DOC-CAM-2026-QWEN38-4MODE-230W",
+      "path": "campaigns/2026/qwen38-4mode-230w/README.md",
+      "title": "Qwen3.8 four-mode 230 W campaign",
+      "kind": "campaign-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426",
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426/"
+      ]
+    },
+    {
+      "id": "DOC-CAM-2026-QWEN38-DFLASH2-OBJECTIVE",
+      "path": "campaigns/2026/qwen38-dflash2-objective/README.md",
+      "title": "Qwen3.8-27B Official DFlash2 objective campaign",
+      "kind": "campaign-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/qwen38-dflash2-objective-20260830/"
+      ]
+    },
+    {
+      "id": "b70-ref-adr-0001-llamacpp-kv-fleet-default",
+      "path": "decisions/adr-0001-llamacpp-kv-fleet-default.md",
+      "title": "ADR-0001: q8_0 K and q4_1 V as the llama.cpp fleet KV default",
+      "kind": "decision-record",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-ref-adr-0002-nemotron-dflash-serving-default",
+      "path": "decisions/adr-0002-nemotron-dflash-serving-default.md",
+      "title": "ADR-0002: DFlash over native MTP for Nemotron vLLM serving",
+      "kind": "decision-record",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical",
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/manifest.txt",
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/n5-summary.json",
+        "results/nemotron-gptq-graph-n5-20260812T2045Z/n5-summary.json"
+      ]
+    },
+    {
+      "id": "b70-ref-adr-0003-ornith-provisional-mtp1",
+      "path": "decisions/adr-0003-ornith-provisional-mtp1.md",
+      "title": "ADR-0003: Provisional MTP1 over MTP4 for Ornith-1.5",
+      "kind": "decision-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "accepted",
+      "result_roots": [
+        "results/ornith15-35b-20260819T1630Z/c1-screen-mtp4.json",
+        "results/ornith15-35b-20260819T1630Z/c1-screen.json",
+        "results/ornith15-35b-20260819T1630Z/mtp-accept-cells.json",
+        "results/ornith15-35b-20260819T1630Z/mtp1-accept-cells.json",
+        "results/ornith15-35b-20260819T1630Z/spec-mtp1.json",
+        "results/ornith15-35b-20260819T1630Z/spec-mtp4.json",
+        "results/ornith15-mixedcal-v2-summary/summary.json",
+        "results/ornith15-mtpdepth-power-20260821T075858Z/"
+      ]
+    },
+    {
+      "id": "b70-ref-adr-0004-qwen38-mixed-gdn-v5-concurrency",
+      "path": "decisions/adr-0004-qwen38-mixed-gdn-v5-concurrency.md",
+      "title": "ADR-0004: Mixed GDN split v5 required for Qwen3.8 speculative concurrency",
+      "kind": "decision-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/qwen38-gdn-mixed-split-v5-20260818/NOTE.txt",
+        "results/qwen38-gdn-mixed-split-v5-20260818/server.log"
+      ]
+    },
+    {
+      "id": "b70-ref-adr-0005-gptq-practical-vllm-path",
+      "path": "decisions/adr-0005-gptq-practical-vllm-path.md",
+      "title": "ADR-0005: GPTQ as the best-proven practical B70 vLLM path, not a universal optimum",
+      "kind": "decision-record",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-ref-adr-0006-sub-1gib-vram-reserve",
+      "path": "decisions/adr-0006-sub-1gib-vram-reserve.md",
+      "title": "ADR-0006: Sub-1 GiB post-load VRAM reserve is research-only",
+      "kind": "decision-record",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-ref-adr-0007-ornith-autoround-w4a16-candidate",
+      "path": "decisions/adr-0007-ornith-autoround-w4a16-candidate.md",
+      "title": "ADR-0007: AutoRound as the default B70 INT4 converter",
+      "kind": "decision-record",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "accepted",
+      "result_roots": [
+        "results",
+        "results/ornith15-35b-20260819T1630Z/c1-screen.json",
+        "results/ornith15-ar-headtohead-20260822T0535Z/",
+        "results/ornith15-ar-headtohead-control-20260822T0551Z/",
+        "results/ornith15-ar-parity-20260822/",
+        "runs"
+      ]
+    },
+    {
+      "id": "b70-ref-adr-0008-dual-b70-independent-default",
+      "path": "decisions/adr-0008-dual-b70-independent-default.md",
+      "title": "ADR-0008: Independent per-card stacks are the dual-B70 default; vLLM TP2 is a gated research path",
+      "kind": "decision-record",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical",
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "b70-ref-adr-0009-xe2-megakernel-and-persistent-fusion-policy",
+      "path": "decisions/adr-0009-xe2-megakernel-and-persistent-fusion-policy.md",
+      "title": "ADR-0009: Xe2 Megakernels, Persistent Fusion, and ESIMD Optimization Policy",
+      "kind": "decision-record",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-report-corrections-and-supersessions-2026-08-19",
+      "path": "decisions/corrections-and-supersessions-2026-08-19.md",
+      "title": "Corrections and Supersessions for Historical B70 Claims",
+      "kind": "decision-record",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical",
+      "result_roots": [
+        "results/dense27-matched-power-20260809T214116Z/manifest.txt",
+        "results/dense27-matched-power-20260809T214116Z/summary.json",
+        "results/nemotron-q4_0-lmx-result.json",
+        "results/nemotron-q4_0-mtp4-230w/server.log",
+        "results/nemotron-q4_0-test/",
+        "results/ornith15-35b-20260819T1630Z/derived/rtn-fallback-summary.json",
+        "results/ornith15-35b-20260819T1630Z/manifest-start.json"
+      ]
+    },
+    {
+      "id": "doc-docs-archive-b70-sycl-inference-guide",
+      "path": "docs/archive/B70-SYCL-INFERENCE-GUIDE.md",
+      "title": "Intel Arc Pro B70 — SYCL Inference Quick Guide",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-archive-b70-benchmark-findings-july-2026",
+      "path": "docs/archive/b70-benchmark-findings-july-2026.md",
+      "title": "Intel Arc B70 32GB — Benchmark & Optimization Findings",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-docs-archive-mtp-power-sweep-raw-results",
+      "path": "docs/archive/mtp-power-sweep-raw-results.md",
+      "title": "⚠️ WARNING: VALUES IN THIS DOCUMENT ARE INFLATED ~4-5%",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-archive-raw-results-master-v2",
+      "path": "docs/archive/raw-results-master-v2.md",
+      "title": "B70 Master Benchmark v2 — Raw Results (Jul 1, 2026)",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-archive-verification-results-2026-07-01",
+      "path": "docs/archive/verification-results-2026-07-01.md",
+      "title": "B70 Verification Results — Jul 1, 2026 19:11Z",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-archive-vision-results",
+      "path": "docs/archive/vision-results.md",
+      "title": "B70 Vision Benchmark — Raw Results (Jul 1, 2026)",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-b70-engine-sweep-results-2026-07-05",
+      "path": "docs/b70-engine-sweep-results-2026-07-05.md",
+      "title": "B70 Engine Sweep Results - 2026-07-05",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "b70-bench-results/engine-sweeps/20260705-164340/results.jsonl",
+        "results",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-docs-b70-evidence-led-improvement-plan-2026-07-05",
+      "path": "docs/b70-evidence-led-improvement-plan-2026-07-05.md",
+      "title": "B70 Evidence-Led Improvement Plan - 2026-07-05",
+      "kind": "plan",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-b70-optimization-sweep-plan",
+      "path": "docs/b70-optimization-sweep-plan.md",
+      "title": "B70 Optimization Sweep Plan",
+      "kind": "plan",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-b70-reddit-sweep-2026-07-05",
+      "path": "docs/b70-reddit-sweep-2026-07-05.md",
+      "title": "B70 Reddit/Forum Sweep - 2026-07-05",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-docs-benchmark-guide",
+      "path": "docs/benchmark-guide.md",
+      "title": "B70 Model Benchmark Guide",
+      "kind": "operational-guide",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "DOC-COMPAT-BENCHMARK-HISTORY",
+      "path": "docs/benchmark-history.md",
+      "title": "B70 Benchmark History",
+      "kind": "run-log",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active",
+      "result_roots": [
+        "results",
+        "results/cascadia-dualgpu-20260824T130000Z/",
+        "results/qw38-dualcard-20260824T123000Z/",
+        "results/qw38-dualcard-20260824T123000Z/MANIFEST.md",
+        "results/qw38-fp8-20260824T130000Z/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-docs-benchmark-protocol",
+      "path": "docs/benchmark-protocol.md",
+      "title": "B70 Benchmark Protocol",
+      "kind": "methodology",
+      "lifecycle": "canonical",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-docs-benchmark-standards-audit-2026-08-08",
+      "path": "docs/benchmark-standards-audit-2026-08-08.md",
+      "title": "B70 Benchmark Standards & Tooling Audit (2026-08-08)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-docs-cross-engine-comparison-2026-08-06",
+      "path": "docs/cross-engine-comparison-2026-08-06.md",
+      "title": "B70 Cross-Engine Comparison — All Engines, MoE + Dense (2026-08-06)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/vllm-mxfp4-concurrency-20260805.json"
+      ]
+    },
+    {
+      "id": "DOC-CURRENT-RECOMMENDED-CONFIGS",
+      "path": "docs/current/recommended-configs.md",
+      "title": "Current B70 Recommended Configurations",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-experiments-live-exact-baseline-20260718",
+      "path": "docs/experiments/live-exact-baseline-20260718.md",
+      "title": "Exact Live Qwen3.6 27B MTP Vision Baseline",
+      "kind": "experiment",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-experiments-protocol-live-exact-baseline-20260718",
+      "path": "docs/experiments/protocol-live-exact-baseline-20260718.md",
+      "title": "Protocol — Exact Live Qwen27 MTP Vision Baseline",
+      "kind": "experiment",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-experiments-qwen27-reasoning-candidate-discovery-20260719",
+      "path": "docs/experiments/qwen27-reasoning-candidate-discovery-20260719.md",
+      "title": "Qwen3.6 27B Reasoning-Control Candidate Discovery",
+      "kind": "experiment",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-experiments-qwen27-thinkingcap-ab-20260719",
+      "path": "docs/experiments/qwen27-thinkingcap-ab-20260719.md",
+      "title": "Qwen3.6-27B ThinkingCap bounded A/B — 2026-07-19",
+      "kind": "experiment",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "runs"
+      ]
+    },
+    {
+      "id": "b70-gov-authority-map",
+      "path": "docs/governance/authority-map.md",
+      "title": "B70 Documentation Authority Map",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "b70-gov-documentation-standard",
+      "path": "docs/governance/documentation-standard.md",
+      "title": "B70 Documentation Standard",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "b70-gov-evidence-lifecycle",
+      "path": "docs/governance/evidence-lifecycle.md",
+      "title": "B70 Evidence Lifecycle",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-gov-metadata-and-id-schema",
+      "path": "docs/governance/metadata-and-id-schema.md",
+      "title": "B70 Metadata and ID Schema",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "GOV-PUBLIC-BENCHMARK-PUBLICATION",
+      "path": "docs/governance/public-benchmark-publication.md",
+      "title": "Public Benchmark Publication Workflow",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-docs-indexes-archive-index",
+      "path": "docs/indexes/archive-index.md",
+      "title": "Archive index",
+      "kind": "document-index",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-indexes-artifact-index",
+      "path": "docs/indexes/artifact-index.md",
+      "title": "Artifact index",
+      "kind": "document-index",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-indexes-campaign-index",
+      "path": "docs/indexes/campaign-index.md",
+      "title": "Campaign index",
+      "kind": "document-index",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/muse-glimmer-q4kxl-dflash-20260810T143831-2493876",
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994",
+        "results/ornith15-35b-20260819T1630Z",
+        "results/ornith15-mixedcal-v2-summary",
+        "results/qwen38-dflash2-objective-20260830",
+        "results/vllm-pi-128k-cache-spec-matched-20260808T224033Z-101198",
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426"
+      ]
+    },
+    {
+      "id": "doc-docs-indexes-decision-index",
+      "path": "docs/indexes/decision-index.md",
+      "title": "Decision index",
+      "kind": "document-index",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-indexes-research-index",
+      "path": "docs/indexes/research-index.md",
+      "title": "Research index",
+      "kind": "document-index",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-kv-cache-quantization",
+      "path": "docs/kv-cache-quantization.md",
+      "title": "KV Cache Quantization — Definitive Reference",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "DOC-COMPAT-LAUNCHER-GUIDE",
+      "path": "docs/launcher-guide.md",
+      "title": "Launcher Guide Has Moved",
+      "kind": "operational-guide",
+      "lifecycle": "superseded",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "superseded"
+    },
+    {
+      "id": "DOC-COMPAT-LVM-AND-STORAGE",
+      "path": "docs/lvm-and-storage.md",
+      "title": "Storage Documentation Has Moved",
+      "kind": "operational-guide",
+      "lifecycle": "superseded",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "superseded"
+    },
+    {
+      "id": "b70-method-architecture-diagnostic-playbook",
+      "path": "docs/methods/architecture-diagnostic-playbook.md",
+      "title": "B70 Architecture-First Diagnostic Playbook & Triage Guide",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "DOC-METHOD-BENCHMARK-PROTOCOL",
+      "path": "docs/methods/benchmark-protocol.md",
+      "title": "B70 Benchmark Protocol",
+      "kind": "research-note",
+      "lifecycle": "stable",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "stable"
+    },
+    {
+      "id": "b70-method-correctness-validation",
+      "path": "docs/methods/correctness-validation.md",
+      "title": "B70 Correctness Validation Method",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-method-observability-standard",
+      "path": "docs/methods/observability-standard.md",
+      "title": "B70 Benchmark Observability Standard",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-method-quantization-evaluation",
+      "path": "docs/methods/quantization-evaluation.md",
+      "title": "B70 Quantization Evaluation Method",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "doc-docs-muse-code-glm",
+      "path": "docs/muse-code-glm.md",
+      "title": "Muse Code → GLM (Z.ai) Integration: Reverse-Engineering Writeup",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "DOC-OPS-CURRENT-HOST-STATE",
+      "path": "docs/operations/current-host-state.md",
+      "title": "Current B70 Host State",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active",
+      "result_roots": [
+        "results/ornith15-ar-parity-20260822/storage-cleanup-20260822-manifest.txt"
+      ]
+    },
+    {
+      "id": "DOC-OPS-INCIDENT-CLEANUP",
+      "path": "docs/operations/incident-and-cleanup.md",
+      "title": "Incident and Cleanup Procedure",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active"
+    },
+    {
+      "id": "DOC-OPS-LAUNCHER-GUIDE",
+      "path": "docs/operations/launcher-guide.md",
+      "title": "B70 Launcher Guide",
+      "kind": "operational-guide",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active"
+    },
+    {
+      "id": "DOC-OPS-STORAGE-VRAM-SAFETY",
+      "path": "docs/operations/storage-and-vram-safety.md",
+      "title": "Storage and VRAM Safety",
+      "kind": "operational-guide",
+      "lifecycle": "stable",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "stable"
+    },
+    {
+      "id": "doc-docs-production-audit-architecture-audit-2026-07-18",
+      "path": "docs/production-audit/architecture-audit-2026-07-18.md",
+      "title": "Current Inference Architecture — Intel Arc Pro B70",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "b70-bench-results/engine-sweeps/",
+        "results",
+        "runs"
+      ]
+    },
+    {
+      "id": "DOC-COMPAT-RECOMMENDED-CONFIGS",
+      "path": "docs/recommended-configs.md",
+      "title": "Recommended Configurations — Compatibility View",
+      "kind": "recommendation",
+      "lifecycle": "superseded",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "compatibility_view",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "b70-ref-engine-support-matrix",
+      "path": "docs/reference/engine-support-matrix.md",
+      "title": "B70 Engine Support Matrix",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-ref-hardware-software-stack",
+      "path": "docs/reference/hardware-software-stack.md",
+      "title": "B70 Hardware and Software Stack Reference",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "DOC-REF-KV-CACHE",
+      "path": "docs/reference/kv-cache-reference.md",
+      "title": "KV Cache Quantization Reference",
+      "kind": "research-note",
+      "lifecycle": "stable",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "stable"
+    },
+    {
+      "id": "b70-ref-megakernel-comprehensive-reference",
+      "path": "docs/reference/megakernel-comprehensive-reference.md",
+      "title": "Megakernels, Persistent Fusion, and Hardware Architecture: The Comprehensive Reference Manual",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical"
+    },
+    {
+      "id": "b70-ref-quantization-decision-record",
+      "path": "docs/reference/quantization-decision-record.md",
+      "title": "B70 Quantization Decision Record",
+      "kind": "research-note",
+      "lifecycle": "canonical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "canonical",
+      "result_roots": [
+        "results/ornith15-ar-parity-20260822/"
+      ]
+    },
+    {
+      "id": "doc-docs-reproducibility-production-b9853-20260718t224645-0200",
+      "path": "docs/reproducibility/production-b9853-20260718T224645+0200.md",
+      "title": "Production Reproducibility Manifest — llama.cpp SYCL b9853",
+      "kind": "reproducibility",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-docs-session-2026-08-03-longcat-llamacpp-lvm",
+      "path": "docs/session-2026-08-03-longcat-llamacpp-lvm.md",
+      "title": "B70 Session Report — 2026-08-03",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/all-models-128k-256k-20260803-1452.txt"
+      ]
+    },
+    {
+      "id": "doc-docs-speculative-decoding-on-b70",
+      "path": "docs/speculative-decoding-on-b70.md",
+      "title": "Speculative Decoding on Intel Arc Pro B70 (SYCL)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-models-muse-muse-glimmer-30b-readme",
+      "path": "models/muse/muse-glimmer-30b/README.md",
+      "title": "Muse Glimmer 30B",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "experimental",
+      "result_roots": [
+        "results/muse-dflash-sweep-manual-20260810T164735/FINAL-TABLE.md",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-models-muse-muse-glimmer-30b-adoption",
+      "path": "models/muse/muse-glimmer-30b/adoption.md",
+      "title": "Adoption",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "experimental",
+      "result_roots": [
+        "results/muse-dflash-sweep-manual-20260810T164735/FINAL-TABLE.md"
+      ]
+    },
+    {
+      "id": "doc-models-muse-muse-glimmer-30b-artifacts",
+      "path": "models/muse/muse-glimmer-30b/artifacts.md",
+      "title": "Artifacts",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "deleted_local_reacquisition_required",
+      "result_roots": [
+        "results",
+        "results/muse-dflash-sweep-manual-20260810T164735/MANIFEST.txt",
+        "results/muse-glimmer-int4-screen-20260812T192845Z-835270/manifest.txt",
+        "results/muse-glimmer-q4kxl-dflash-20260810T143831-2493876/manifest.txt"
+      ]
+    },
+    {
+      "id": "doc-models-muse-muse-glimmer-30b-quality",
+      "path": "models/muse/muse-glimmer-30b/quality.md",
+      "title": "Quality",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/muse-glimmer-q4kxl-dflash-20260810T143831-2493876/manifest.txt"
+      ]
+    },
+    {
+      "id": "doc-models-muse-muse-glimmer-30b-serving",
+      "path": "models/muse/muse-glimmer-30b/serving.md",
+      "title": "Serving",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "experimental",
+      "result_roots": [
+        "results/muse-dflash-sweep-manual-20260810T164735/FINAL-TABLE.md",
+        "results/muse-glimmer-int4-screen-20260812T192845Z-835270/manifest.txt"
+      ]
+    },
+    {
+      "id": "doc-models-muse-muse-glimmer-30b-timeline",
+      "path": "models/muse/muse-glimmer-30b/timeline.md",
+      "title": "Timeline",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "experimental",
+      "result_roots": [
+        "results/muse-dflash-sweep-manual-20260810T164735/FINAL-TABLE.md"
+      ]
+    },
+    {
+      "id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-readme",
+      "path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/README.md",
+      "title": "Nemotron 3.5 Lightning 30B-A3B",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/n5-summary.json"
+      ]
+    },
+    {
+      "id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-adoption",
+      "path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/adoption.md",
+      "title": "Adoption",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/manifest.txt"
+      ]
+    },
+    {
+      "id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-artifacts",
+      "path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/artifacts.md",
+      "title": "Artifacts",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "mixed_availability",
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/manifest.txt",
+        "results/nemotron-q4_0-mtp4-230w/",
+        "results/nemotron-q4_0-test/"
+      ]
+    },
+    {
+      "id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-quality",
+      "path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/quality.md",
+      "title": "Quality",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "open",
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/correctness-summary.json"
+      ]
+    },
+    {
+      "id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-serving",
+      "path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/serving.md",
+      "title": "Serving",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/correctness-summary.json",
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/n5-summary.json",
+        "results/nemotron-dflash-ctx-capacity-20260813T103627Z-1501089/results.json"
+      ]
+    },
+    {
+      "id": "doc-models-nemotron-nemotron-3-5-lightning-30b-a3b-timeline",
+      "path": "models/nemotron/nemotron-3.5-lightning-30b-a3b/timeline.md",
+      "title": "Timeline",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/nemotron-q4_0-mtp4-230w/",
+        "results/nemotron-q4_0-test/"
+      ]
+    },
+    {
+      "id": "doc-models-ornith-ornith-1-5-35b-a3b-readme",
+      "path": "models/ornith/ornith-1.5-35b-a3b/README.md",
+      "title": "Ornith 1.5 35B-A3B",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "self_reported",
+      "result_roots": [
+        "results/cleanup-ornith-removal-20260824T121500Z/",
+        "results/ornith15-ar-headtohead-20260822T0535Z/",
+        "results/ornith15-ar-parity-20260822/",
+        "results/ornith15-boundary-fixup-20260821T072410Z/",
+        "results/ornith15-draftint4-20260821T084132Z/",
+        "results/ornith15-lmx-mixedcal-20260821T090450Z/",
+        "results/ornith15-lmx-prefill230-20260821T095259Z/",
+        "results/ornith15-mixedcal-v2-summary/summary.json",
+        "results/ornith15-mtpdepth-power-20260821T075858Z/",
+        "results/ornith15-n5-maxkv-20260821T054323Z/",
+        "results/ornith15-n5-maxkv-resume-20260821T062400Z/"
+      ]
+    },
+    {
+      "id": "doc-models-ornith-ornith-1-5-35b-a3b-adoption",
+      "path": "models/ornith/ornith-1.5-35b-a3b/adoption.md",
+      "title": "Adoption",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/ornith15-35b-20260819T1630Z/manifest-start.json",
+        "results/ornith15-35b-20260819T1630Z/server3.log"
+      ]
+    },
+    {
+      "id": "doc-models-ornith-ornith-1-5-35b-a3b-artifacts",
+      "path": "models/ornith/ornith-1.5-35b-a3b/artifacts.md",
+      "title": "Artifacts",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/cleanup-ornith-removal-20260824T121500Z/",
+        "results/ornith15-35b-20260819T1630Z/download.log",
+        "results/ornith15-35b-20260819T1630Z/supervise.stdout",
+        "results/ornith15-ar-parity-20260822/",
+        "results/ornith15-mixedcal-v2-summary/"
+      ]
+    },
+    {
+      "id": "doc-models-ornith-ornith-1-5-35b-a3b-mixedcal-v2-conversion",
+      "path": "models/ornith/ornith-1.5-35b-a3b/mixedcal-v2-conversion.md",
+      "title": "Ornith MixedCal-v2 conversion",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "completed_promotion_screen_in_progress",
+      "result_roots": [
+        "results/ornith15-35b-20260819T1630Z/",
+        "results/ornith15-mixedcal-v2-screen-20260821T043027Z/"
+      ]
+    },
+    {
+      "id": "doc-models-ornith-ornith-1-5-35b-a3b-quality",
+      "path": "models/ornith/ornith-1.5-35b-a3b/quality.md",
+      "title": "Quality",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "open",
+      "result_roots": [
+        "results/ornith15-35b-20260819T1630Z/c1-screen.json",
+        "results/ornith15-ar-headtohead-20260822T0535Z/",
+        "results/ornith15-ar-parity-20260822/",
+        "results/ornith15-ar-parity-20260822/parity-summary.json",
+        "results/ornith15-lmx-eval-20260820T175635Z/",
+        "results/ornith15-lmx-speed-20260820T180754Z/"
+      ]
+    },
+    {
+      "id": "doc-models-ornith-ornith-1-5-35b-a3b-serving",
+      "path": "models/ornith/ornith-1.5-35b-a3b/serving.md",
+      "title": "Serving",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results",
+        "results/ornith15-35b-20260819T1630Z/c1-screen-mtp4.json",
+        "results/ornith15-35b-20260819T1630Z/c1-screen.json",
+        "results/ornith15-35b-20260819T1630Z/mtp1-accept-cells.json",
+        "results/ornith15-35b-20260819T1630Z/server4.log"
+      ]
+    },
+    {
+      "id": "doc-models-ornith-ornith-1-5-35b-a3b-timeline",
+      "path": "models/ornith/ornith-1.5-35b-a3b/timeline.md",
+      "title": "Timeline",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/ornith15-35b-20260819T1630Z/supervise.log",
+        "results/ornith15-ar-headtohead-20260822T0535Z/",
+        "results/ornith15-ar-parity-20260822/",
+        "results/ornith15-ar-parity-20260822/storage-cleanup-20260822-manifest.txt",
+        "results/ornith15-boundary-fixup-20260821T072410Z/",
+        "results/ornith15-draftint4-20260821T084132Z/",
+        "results/ornith15-lmx-eval-20260820T175635Z/",
+        "results/ornith15-lmx-mixedcal-20260821T090450Z/",
+        "results/ornith15-lmx-prefill230-20260821T095259Z/",
+        "results/ornith15-lmx-prefill230-g128-20260821T101300Z/",
+        "results/ornith15-lmx-speed-20260820T180754Z/",
+        "results/ornith15-mtpdepth-power-20260821T075858Z/"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-6-35b-a3b-readme",
+      "path": "models/qwen/qwen3.6-35b-a3b/README.md",
+      "title": "Qwen3.6-35B-A3B",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results/vllm-mtp4-correctness-20260808T182243Z-157102/no-spec/results.json"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-6-35b-a3b-adoption",
+      "path": "models/qwen/qwen3.6-35b-a3b/adoption.md",
+      "title": "Adoption",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal"
+    },
+    {
+      "id": "doc-models-qwen-qwen3-6-35b-a3b-artifacts",
+      "path": "models/qwen/qwen3.6-35b-a3b/artifacts.md",
+      "title": "Artifacts",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "available_local",
+      "result_roots": [
+        "results",
+        "results/vllm-mtp4-correctness-20260808T182243Z-157102/no-spec/results.json"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-6-35b-a3b-quality",
+      "path": "models/qwen/qwen3.6-35b-a3b/quality.md",
+      "title": "Quality",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/vllm-mtp4-correctness-20260808T182243Z-157102/no-spec/results.json"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-6-35b-a3b-serving",
+      "path": "models/qwen/qwen3.6-35b-a3b/serving.md",
+      "title": "Serving",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-6-35b-a3b-timeline",
+      "path": "models/qwen/qwen3.6-35b-a3b/timeline.md",
+      "title": "Timeline",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal"
+    },
+    {
+      "id": "doc-models-qwen-qwen3-8-27b-readme",
+      "path": "models/qwen/qwen3.8-27b/README.md",
+      "title": "Qwen3.8-27B",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results",
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426/summary.json"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-8-27b-adoption",
+      "path": "models/qwen/qwen3.8-27b/adoption.md",
+      "title": "Adoption",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal"
+    },
+    {
+      "id": "doc-models-qwen-qwen3-8-27b-artifacts",
+      "path": "models/qwen/qwen3.8-27b/artifacts.md",
+      "title": "Artifacts",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal"
+    },
+    {
+      "id": "doc-models-qwen-qwen3-8-27b-quality",
+      "path": "models/qwen/qwen3.8-27b/quality.md",
+      "title": "Quality",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results/qwen38-quality-20260815/QUALITY-REPORT.md"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-8-27b-serving",
+      "path": "models/qwen/qwen3.8-27b/serving.md",
+      "title": "Serving",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal",
+      "result_roots": [
+        "results",
+        "results/qw38-dualcard-20260824T123000Z/",
+        "results/qw38-fp8-pp2-affval5-20260827/",
+        "results/qw38-fp8-pp2-bench-20260827/",
+        "results/qw38-fp8-pp2-graphs-20260827/",
+        "results/qw38-fp8-pp2-xpugraph-20260827/",
+        "results/qw38-fp8-tp2-mtp2-graph-confirm-20260828T114155Z/",
+        "results/qw38-fp8-tp2-mtp4-230w-c14-20260828T141323Z/",
+        "results/qw38-fp8-tp2-mtp4-230w-compile-confirm-20260828T130000Z/",
+        "results/qw38-fp8-tp2-mtp4-230w-concurrency-wave-20260828T135602Z/",
+        "results/qw38-fp8-tp2-mtp4-230w-fullctx-20260828T130957Z/",
+        "results/qw38-fp8-tp2-mtp4-compile-x570-20260828/",
+        "results/qw38-fp8-tp2-mtp4-pwgraph-20260828/",
+        "results/qw38-fp8-tp2-nativemoe-20260828T215751Z/",
+        "results/qw38-fp8-tp2-nativemoe-randomcontent-20260828T233439Z/",
+        "results/qw38-fp8-tp2-nospec-230w-c14-20260828T141700Z/",
+        "results/qw38-fp8-tp2-nospec-eager-c14-20260828T142000Z/",
+        "results/qw38-fp8-tp2-pwgraph-20260828T223900Z/",
+        "results/qw38-int4-sc-mtp4-champ-20260828T112032Z/",
+        "results/qw38-int4-tp2-mtp4-230w-graph-confirm-20260828T120423Z/",
+        "results/qwen38-lmx-fp8-tp2-mtp8-compile-20260830T121838Z/",
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426/",
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426/summary.json",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-models-qwen-qwen3-8-27b-timeline",
+      "path": "models/qwen/qwen3.8-27b/timeline.md",
+      "title": "Timeline",
+      "kind": "model-dossier",
+      "lifecycle": "active",
+      "authority": "primary",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "declared_status": "validated_internal"
+    },
+    {
+      "id": "DOC-COMPAT-RESEARCH-INDEX",
+      "path": "research/README.md",
+      "title": "Research Index Has Moved",
+      "kind": "research-note",
+      "lifecycle": "superseded",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "superseded"
+    },
+    {
+      "id": "doc-research-archive-high-context-validation",
+      "path": "research/archive/high-context-validation.md",
+      "title": "High-Context Validation Results",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-archive-optimization-roadmap",
+      "path": "research/archive/optimization-roadmap.md",
+      "title": "Optimization Roadmap",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-archive-power-scaling-corrected",
+      "path": "research/archive/power-scaling-corrected.md",
+      "title": "Power Scaling — Corrected Values",
+      "kind": "archive",
+      "lifecycle": "historical",
+      "authority": "legacy",
+      "source_state": "legacy-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-b450f-dual-b70-pcie-topology-20260824",
+      "path": "research/b450f-dual-b70-pcie-topology-20260824.md",
+      "title": "ASUS ROG STRIX B450-F Gaming — dual-B70 PCIe topology and capability map (2026-08-24)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-b70-patch-candidates-20260807",
+      "path": "research/b70-patch-candidates-20260807.md",
+      "title": "B70 Patch Candidates — Consolidated Analysis (2026-08-07)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-b70-vllm-muse-int4-plan",
+      "path": "research/b70-vllm-muse-int4/PLAN.md",
+      "title": "Research plan — Muse-Glimmer-30B on vLLM XPU (B70)",
+      "kind": "plan",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/muse-compressed-tensors-vllm-smoke-20260812/",
+        "results/muse-dflash-sweep-manual-20260810T164735/",
+        "results/muse-glimmer-int4-screen-20260812T113031Z-372721/",
+        "results/muse-glimmer-int4-screen-20260812T192845Z-835270/"
+      ]
+    },
+    {
+      "id": "doc-research-b70-xe2-architecture-prefill-analysis-20260807",
+      "path": "research/b70-xe2-architecture-prefill-analysis-20260807.md",
+      "title": "B70 (Battlemage / Xe2) Architecture & Prefill Optimization Analysis",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-dsv4-k216-buun-moe-cache-20260825",
+      "path": "research/dsv4-k216-buun-moe-cache-20260825.md",
+      "title": "spiritbuun `--moe-cache` vs dual-B70 SYCL K216 (2026-08-25)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-dsv4-k216-dspark-and-public-numbers-20260825",
+      "path": "research/dsv4-k216-dspark-and-public-numbers-20260825.md",
+      "title": "K216 decode next steps: DSpark / public numbers / kernels (2026-08-25)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/dsv4-k216-20260825T0707Z-prefill/",
+        "results/dsv4-k216-20260825Tdual2/"
+      ]
+    },
+    {
+      "id": "doc-research-dsv4-k216-prefill-ubatch-20260825",
+      "path": "research/dsv4-k216-prefill-ubatch-20260825.md",
+      "title": "DeepSeek-V4-Flash-0731 K216 — dual-B70 prefill ubatch (2026-08-25)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/dsv4-k216-20260825T0707Z-prefill/",
+        "results/dsv4-k216-20260825Tdual2/"
+      ]
+    },
+    {
+      "id": "doc-research-dsv4-k216-request-to-output-pipeline-20260825",
+      "path": "research/dsv4-k216-request-to-output-pipeline-20260825.md",
+      "title": "DeepSeek-V4-Flash-0731 REAP-K216 — HTTP request to output on dual B70 (2026-08-25)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/dsv4-k216-20260825T0707Z-prefill/",
+        "results/dsv4-k216-20260825T1441Z-dspark/",
+        "results/dsv4-k216-20260825Tdual2/"
+      ]
+    },
+    {
+      "id": "doc-research-dual-b70-stack-research-20260824",
+      "path": "research/dual-b70-stack-research-20260824.md",
+      "title": "Dual-B70 inference stack research — llama.cpp / vLLM / SGLang / Cascadia / OpenVINO (2026-08-24)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/qw38-dualcard-20260824T123000Z/",
+        "results/qw38-fp8-20260824T130000Z/",
+        "runs"
+      ]
+    },
+    {
+      "id": "b70-research-humble-b70-llm-dual-tp2-20260824",
+      "path": "research/humble-b70-llm-dual-tp2-20260824.md",
+      "title": "humble-b70-llm dual-B70 TP2 stack vs this host — 2026-08-24",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "complete",
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-intel-outreach-playbook",
+      "path": "research/intel-outreach/PLAYBOOK.md",
+      "title": "Intel, affiliate, and distribution playbook (2026-08-13)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-intel-outreach-email-oneapi-innovator",
+      "path": "research/intel-outreach/email-oneapi-innovator.md",
+      "title": "Email — oneAPI Innovator application (copy-paste block)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-research-intel-outreach-internal-checklist",
+      "path": "research/intel-outreach/internal-checklist.md",
+      "title": "Intel outreach — INTERNAL checklist (never attach this to anything sent out)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-intel-outreach-linkedin-dm",
+      "path": "research/intel-outreach/linkedin-dm.md",
+      "title": "LinkedIn outreach — DM variants",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-research-intel-outreach-one-pager",
+      "path": "research/intel-outreach/one-pager.md",
+      "title": "Intel Arc Pro B70 Inference Cookbook",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "b70-research-intel-skills-vs-observations",
+      "path": "research/intel-vllm-xpu-skills-vs-b70-observations-20260822.md",
+      "title": "Intel vLLM-XPU skills vs B70 measured observations — 2026-08-22",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "complete",
+      "result_roots": [
+        "results/ornith15-ar-parity-20260822/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-kv-cache-quantization-analysis",
+      "path": "research/kv-cache-quantization-analysis.md",
+      "title": "KV Cache Quantization Analysis",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-kv-cache-validation-results",
+      "path": "research/kv-cache-validation-results.md",
+      "title": "KV Cache Quantization Validation Results",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-megakernel-implementation-roadmap-20260829",
+      "path": "research/megakernel-implementation-roadmap-20260829.md",
+      "title": "Megakernel & Persistent Fusion Implementation Roadmap: Host Production Target Guide",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-megakernel-xe2-xmx-architecture-guide-20260829",
+      "path": "research/megakernel-xe2-xmx-architecture-guide-20260829.md",
+      "title": "Megakernels, Persistent Fusion, and Xe2/XMX Architecture Guide",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-minimax-h3-comfy-xpu-20260814",
+      "path": "research/minimax-h3-comfy-xpu-20260814.md",
+      "title": "MiniMax H3 on B70 via ComfyUI XPU (2026-08-14)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-minimax-h3-dual-b70-20260825",
+      "path": "research/minimax-h3-dual-b70-20260825.md",
+      "title": "MiniMax H3 dual-B70 ComfyUI (2026-08-25)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-minimax-h3-workflows-readme",
+      "path": "research/minimax-h3-workflows/README.md",
+      "title": "MiniMax H3 B70 workflows",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-cold-input-vs-10k",
+      "path": "research/nemotron-cold-input-vs-10k.md",
+      "title": "Nemotron vLLM “10k prefill” — what was actually measured",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/",
+        "results/nemotron-dflash-ctx-capacity-20260813T103627Z-1501089/",
+        "results/nemotron-dflash-prefill-budget16k-20260813T100159Z-1477342/",
+        "results/nemotron-dflash-prefill-budget16k-n5-20260813T101252Z-1486488/",
+        "results/nemotron-gptq-det-a-grade-20260812T2236Z/",
+        "results/nemotron-gptq-graph-n5-20260812T2045Z/"
+      ]
+    },
+    {
+      "id": "doc-research-nemotron-dflash-xpu-first-proof-20260813",
+      "path": "research/nemotron-dflash-xpu-first-proof-20260813.md",
+      "title": "Nemotron DFlash on vLLM XPU — isolated n=5 confirmation (2026-08-13)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/",
+        "results/nemotron-dflash-bf16-n7-screen-20260813T080234Z-1389483/"
+      ]
+    },
+    {
+      "id": "doc-research-nemotron-impact-vs-nvidia-cards-20260813",
+      "path": "research/nemotron-impact-vs-nvidia-cards-20260813.md",
+      "title": "Impact note — B70 Nemotron DFlash vs 5090 / DGX Spark / H100",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-01-architectu-fa1df449",
+      "path": "research/nemotron-lightning-optimization-20260811/01-architecture-analysis.md",
+      "title": "01 — Nemotron-H MoE Architecture Analysis",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-02-root-cause-94f3b586",
+      "path": "research/nemotron-lightning-optimization-20260811/02-root-cause-bottleneck.md",
+      "title": "02 — Root Cause: Why Nemotron Decode is 37 t/s, Not 72",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-03-kernel-fus-eee312c8",
+      "path": "research/nemotron-lightning-optimization-20260811/03-kernel-fusion-implementation.md",
+      "title": "03 — Kernel Fusion Implementation (Phase 1-3)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-04-spec-decod-1982125e",
+      "path": "research/nemotron-lightning-optimization-20260811/04-spec-decoding-comparison.md",
+      "title": "04 — Speculative Decoding Comparison",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-05-mmq-xmx-di-0d70e1e3",
+      "path": "research/nemotron-lightning-optimization-20260811/05-mmq-xmx-dispatch-fix.md",
+      "title": "05 — MMQ/XMX Dispatch Fix: The `__dp4a` Scalar Emulation Discovery",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-06-architect-aee4b0c5",
+      "path": "research/nemotron-lightning-optimization-20260811/06-architect-subagent-report.md",
+      "title": "06 — b70-architect Subagent Report (Condensed)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-07-path-to-75-tps",
+      "path": "research/nemotron-lightning-optimization-20260811/07-path-to-75-tps.md",
+      "title": "06 — Path to 75+ t/s",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-08-q4-0-breakthrough",
+      "path": "research/nemotron-lightning-optimization-20260811/08-q4_0-breakthrough.md",
+      "title": "08 — The Q4_0 Breakthrough: 78% Faster Decode from Simpler Quantization",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/nemotron-lmx-mtp4-230w/campaign-results.json",
+        "results/nemotron-q4_0-lmx-result.json",
+        "results/nemotron-q4_0-mtp4-230w/server.log",
+        "results/nemotron-q4_0-test/"
+      ]
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-09-conversion-9ea9ec67",
+      "path": "research/nemotron-lightning-optimization-20260811/09-conversion-and-download-status-20260812.md",
+      "title": "Conversion and download status — 2026-08-12",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-10-vllm-gptq-d9b5b7ea",
+      "path": "research/nemotron-lightning-optimization-20260811/10-vllm-gptq-readiness-20260812.md",
+      "title": "vLLM GPTQ readiness — Nemotron and Muse — 2026-08-12",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/nemotron-gptq-builtin-profile-20260812T171658Z-671822/",
+        "results/nemotron-gptq-det-a-grade-20260812T2236Z/",
+        "results/nemotron-gptq-eager-screen-20260812T111330Z-361352/",
+        "results/nemotron-gptq-graph-n5-20260812T2045Z/",
+        "results/nemotron-gptq-graph-native-router-v1-20260812T190038Z-801758/",
+        "results/nemotron-gptq-graph-sampler-eager-screen-20260812T2030Z/",
+        "results/nemotron-gptq-mtp2-cpu-fix-screen-20260812T1645Z/",
+        "results/nemotron-gptq-vllm-smoke-20260812/chat-coherence-eager.json",
+        "results/nemotron-gptq-vllm-smoke-20260812/raw-completions-eager.json",
+        "results/nemotron-gptq-vllm-smoke-20260812/server-conv1d-corrected.log",
+        "results/nemotron-gptq-vllm-smoke-20260812/server-eager.log",
+        "results/nemotron-gptq-vllm-smoke-20260812/validation-conv1d-corrected.json",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-11-session-lo-777358a1",
+      "path": "research/nemotron-lightning-optimization-20260811/11-session-log-20260812.md",
+      "title": "Nemotron vLLM decode optimization — full session log (2026-08-12)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/muse-glimmer-int4-screen-20260812T192845Z-835270/",
+        "results/nemotron-gptq-builtin-profile-20260812T171658Z-671822/",
+        "results/nemotron-gptq-graph-n5-20260812T2045Z/",
+        "results/nemotron-gptq-graph-n5-20260812T2045Z/localmaxxing-payload.json",
+        "results/nemotron-gptq-latest-eager-correctness-screen-20260812T131758Z-440538/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-readme",
+      "path": "research/nemotron-lightning-optimization-20260811/README.md",
+      "title": "Nemotron 3.5 Lightning 30B-A3B — Optimization Research",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-research-nemotron-lightning-optimization-20260811-evidence-status",
+      "path": "research/nemotron-lightning-optimization-20260811/evidence/STATUS.md",
+      "title": "Nemotron 3.5 Lightning — optimization status",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-nemotron-session-summary-20260813",
+      "path": "research/nemotron-session-summary-20260813.md",
+      "title": "Nemotron-3.5-Lightning B70 Optimization — Session Summary (2026-08-13)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/"
+      ]
+    },
+    {
+      "id": "doc-research-next-model-adaptation-playbook",
+      "path": "research/next-model-adaptation-playbook.md",
+      "title": "Next-model adaptation playbook (B70)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/"
+      ]
+    },
+    {
+      "id": "doc-research-ornith15-35b-a3b-adoption-20260819",
+      "path": "research/ornith15-35b-a3b-adoption-20260819.md",
+      "title": "Ornith-1.5-35B-A3B B70 adoption — 2026-08-19/20 (COMPLETE)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/ornith15-35b-20260819T1630Z/"
+      ]
+    },
+    {
+      "id": "doc-research-ornith15-autoround-vs-gptq-20260822",
+      "path": "research/ornith15-autoround-vs-gptq-20260822.md",
+      "title": "Ornith-1.5-35B-A3B AutoRound-vs-GPTQ head-to-head — 2026-08-21/22 (COMPLETE)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/ornith15-35b-20260819T1630Z/",
+        "results/ornith15-ar-parity-20260822/"
+      ]
+    },
+    {
+      "id": "doc-research-prs-20260813-readme",
+      "path": "research/prs/20260813-README.md",
+      "title": "Focused upstream PRs — 2026-08-13",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-prs-20260813-vllm-xpu-grouped-topk-graph-safe-pr",
+      "path": "research/prs/20260813-vllm-xpu-grouped-topk-graph-safe/PR.md",
+      "title": "PR 2 — `vllm`: graph-safe grouped_topk on XPU",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-prs-20260813-vllm-xpu-kernels-atomic-zeros-and-muse-tuple-pr",
+      "path": "research/prs/20260813-vllm-xpu-kernels-atomic-zeros-and-muse-tuple/PR.md",
+      "title": "PR 1 — `vllm-xpu-kernels`: zero the grouped-GEMM scheduler counter; add Muse local-attn decode tuple",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-quantization-format-strategy",
+      "path": "research/quantization-format-strategy.md",
+      "title": "Quantization Format Strategy for Intel Arc Pro B70",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/vllm-mxfp4-summary-20260805.md",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827",
+      "path": "research/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md",
+      "title": "Qwen3.8-27B official FP8 on dual B70 — PP2 root cause closed; single-card route unblocked (2026-08-27)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/b70-pp2-hostram-ident-20260827T132351Z/",
+        "results/qw38-fp8-h2dstorm-20260826T215049Z",
+        "results/qw38-fp8-pp2-dummy-20260826T215400Z",
+        "results/qw38-fp8-pp2-serving-20260826T213125Z",
+        "results/qw38-fp8-sc-leg-20260827T070523Z/server",
+        "results/qw38-fp8-singlecard-gpu1-final-20260826T221654Z",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-27b-day0-adoption-20260814",
+      "path": "research/qwen38-27b-day0-adoption-20260814.md",
+      "title": "Qwen3.8-27B Day-0 B70 Adoption — 2026-08-14",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/qwen38-gguf-20260814T150404/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-27b-drafter-campaign-20260817",
+      "path": "research/qwen38-27b-drafter-campaign-20260817.md",
+      "title": "Qwen3.8-27B C1 decode — executed decision + drafter campaign",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-agentic-128k-20260819",
+      "path": "research/qwen38-agentic-128k-20260819.md",
+      "title": "Qwen3.8 prefix-on agentic ladder 32K→128K — 2026-08-19",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-agentic-128k-20260819T102259Z/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-agentic-cacheon-20260819",
+      "path": "research/qwen38-agentic-cacheon-20260819.md",
+      "title": "Qwen3.8 prefix-on agentic A/B — 2026-08-19",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-agentic-cacheon-20260819T093858Z/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-cookbook-pr1-pr2-review-20260818",
+      "path": "research/qwen38-cookbook-pr1-pr2-review-20260818.md",
+      "title": "Cookbook PR #1 / #2 review — 2026-08-18",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-pr-ab-20260818T205619Z/",
+        "results/qwen38-pr-ab-live.log",
+        "results/qwen38-pr-long-20260818T221813Z/",
+        "results/qwen38-pr-n5-20260818T214749Z/",
+        "results/qwen38-pr-n5-20260818T214749Z/comparison.json",
+        "results/qwen38-pr-n5-live.log"
+      ]
+    },
+    {
+      "id": "DOC-RESEARCH-QWEN38-DFLASH2-OBJECTIVE-20260830",
+      "path": "research/qwen38-dflash2-objective-campaign-20260830.md",
+      "title": "Qwen3.8-27B Official DFlash2 Objective Campaign — 2026-08-30",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "provisional",
+      "result_roots": [
+        "results",
+        "results/qwen38-dflash2-objective-20260830/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-dflash2-smoke-20260819",
+      "path": "research/qwen38-dflash2-smoke-20260819.md",
+      "title": "Qwen3.8-27B + DFlash 2 on champion XPU — 2026-08-19 smoke",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-dflash2-fix12-20260819T144711Z/",
+        "results/qwen38-dflash2-fix13-20260819T145921Z/",
+        "results/qwen38-dflash2-fix14-20260819T152418Z/",
+        "results/qwen38-dflash2-n5-20260819T151054Z/",
+        "results/qwen38-dflash2-smoke-20260819T071612Z/",
+        "results/qwen38-dflash2-smoke-20260819T075955Z/",
+        "results/qwen38-dflash2-smoke-20260819T081114Z/",
+        "results/qwen38-dflash2-smoke-20260819T081653Z/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-flash-next-b70-adoption-20260826",
+      "path": "research/qwen38-flash-next-b70-adoption-20260826.md",
+      "title": "Qwen3.8-Flash-Next on Dual B70 — Adoption and Porting Dossier",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/logs/",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/logs/tiny-xpu-construct-v2.log",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/logs/tiny-xpu-construct.log",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/manifests/metadata-sha256.txt",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/manifests/official-artifact.json",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/tests/official-tensor-name-test.txt",
+        "results/qwen38-flash-next-adoption-20260826T133339Z/tests/tiny_xpu_construct.py"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-fp8-tp2-mtp4-w8a16-cliff-note",
+      "path": "research/qwen38-fp8-tp2-mtp4-w8a16-cliff-note.md",
+      "title": "Cliff probe addendum — 2026-08-29 ~12:00 UTC",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qw38-fp8-tp2-mtp4-w8a16-20260829T104757Z/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-fp8-tp2-speed-attack-and-ceilings-20260829",
+      "path": "research/qwen38-fp8-tp2-speed-attack-and-ceilings-20260829.md",
+      "title": "Qwen3.8-27B FP8 TP2 Speed Attack, Step-Time Decomposition, and Architectural Ceilings",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-qwen38-fp8-tp2-speed-attack-consolidated-20260830",
+      "path": "research/qwen38-fp8-tp2-speed-attack-consolidated-20260830.md",
+      "title": "FP8 TP2 Speed Attack — Consolidated Record and Current Status",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-qwen38-gdn-mixed-split-v5-20260818",
+      "path": "research/qwen38-gdn-mixed-split-v5-20260818.md",
+      "title": "Qwen3.8 GDN mixed-split v5 (2026-08-18)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-gdn-mixed-split-v5-20260818/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-pi-agent-backend-20260816",
+      "path": "research/qwen38-pi-agent-backend-20260816.md",
+      "title": "Qwen3.8-27B as the `pi` coding-agent backend on B70 vLLM XPU (2026-08-15/16)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-quality-20260815/pi-games/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-pi-agent-loop-20260816",
+      "path": "research/qwen38-pi-agent-loop-20260816.md",
+      "title": "Qwen3.8-27B pi-agent screenshot loop — observed failure mode (2026-08-16)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-quality-20260815/pi-games-vision/_evidence-loop-01/"
+      ]
+    },
+    {
+      "id": "doc-research-qwen38-sm1-ctx-gen-20260819",
+      "path": "research/qwen38-sm1-ctx-gen-20260819.md",
+      "title": "Qwen3.8 S+M1 generation + isolated C1 128K — 2026-08-19",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-pr-n5-20260818T214749Z",
+        "results/qwen38-sm1-ctx-gen-20260819T082145Z/measure/research-mtp4-v5-draftint4-ctx-gen.json"
+      ]
+    },
+    {
+      "id": "doc-research-references-2026-08-11-hikari-memory-bandwidth-vs-flops",
+      "path": "research/references/2026-08-11-hikari-memory-bandwidth-vs-flops.md",
+      "title": "Reference: memory bandwidth vs FLOPS in inference",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/nemotron-lightning-status-20260811T1915/STATUS.md"
+      ]
+    },
+    {
+      "id": "doc-research-references-deleted-model-artifacts-20260813-invalid-co-7ef719ae",
+      "path": "research/references/deleted-model-artifacts-20260813/invalid-conv1d/README.md",
+      "title": "mlx-community/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-4bit",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-references-deleted-model-artifacts-20260813-invalid-em-6847abf2",
+      "path": "research/references/deleted-model-artifacts-20260813/invalid-embed/README.md",
+      "title": "mlx-community/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-4bit",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-references-deleted-model-artifacts-20260813-muse-redha-ff5c5bae",
+      "path": "research/references/deleted-model-artifacts-20260813/muse-redhat-partial/README.md",
+      "title": "RedHatAI/Muse-Glimmer-30B-W4A16",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-sglang-xe2-dense-e1-and-n256-tile-20260817",
+      "path": "research/sglang-xe2-dense-e1-and-n256-tile-20260817.md",
+      "title": "SGLang Xe2 dense E=1 and custom W4A16 tile — 2026-08-17",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/sglang-xe2-dense-e1-microbench-20260817.md"
+      ]
+    },
+    {
+      "id": "doc-research-sources",
+      "path": "research/sources.md",
+      "title": "Research Sources",
+      "kind": "source-index",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-upstream-filings-20260827",
+      "path": "research/upstream-filings-20260827.md",
+      "title": "Upstream filings — dual-B70 host-RAM and oneCCL findings (2026-08-27)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/b70-pp2-hostram-ident-20260827T132351Z/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-vllm-021-campaign-20260806",
+      "path": "research/vllm-021-campaign-20260806.md",
+      "title": "vLLM 0.21.0 XPU Campaign — reproduce Reddit numbers (145-150 t/s decode, ~8-10K prefill)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/dense-vllm-fp8-serve.log",
+        "results/engine-comparison-full-20260806.md",
+        "results/moe-vllm-mtp-prefillfix-150w-grid.json",
+        "results/nightly-clean-serve.log",
+        "results/vllm-021-dense-fp8-bench.json",
+        "results/vllm-021-dense-fp8-serve.log",
+        "results/vllm-021-gptq-230w-bench.json",
+        "results/vllm-021-gptq-concurrency.json",
+        "results/vllm-021-gptq-lmonly-graphs-bench.json",
+        "results/vllm-021-gptq-reddit-bench.json",
+        "results/vllm-021-mtp-native-int4-bench-v2.json",
+        "results/vllm-021-native-int4-v3-fail.log",
+        "results/vllm-021-native-int4-v4-230w-bench.json",
+        "results/vllm-021-native-int4-v4-bench.json",
+        "results/vllm-021-native-int4-v4-concurrency.json",
+        "results/vllm-mtp-128k-ctx-scaling.json",
+        "results/vllm-mtp-128k-multiturn-pc.json",
+        "results/vllm-mtp-128k-serve.log",
+        "results/vllm-native-mtp-bf16draft-serve.log",
+        "results/vllm-native-ngram-serve.log",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-vllm-mtp-xpu-issue",
+      "path": "research/vllm-mtp-xpu-issue.md",
+      "title": "NemotronH MTP speculator: 0% draft acceptance on Intel XPU — V1 execution path bypasses standard sampling chain",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-vllm-xpu-kernel-customizations-technical-reference",
+      "path": "research/vllm-xpu-kernel-customizations-technical-reference.md",
+      "title": "B70 vLLM XPU Kernel Customizations — Complete Technical Reference",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/muse-glimmer-int4-screen-20260812T192845Z-835270/",
+        "results/nemotron-dflash-bf16-n7-n5-20260813T082203Z-1407994/",
+        "results/nemotron-gptq-builtin-profile-20260812T171658Z-671822/",
+        "results/nemotron-gptq-det-a-grade-20260812T2236Z/",
+        "results/nemotron-gptq-graph-n5-20260812T2045Z/",
+        "results/nemotron-gptq-latest-eager-correctness-screen-20260812T131758Z-440538/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-vllm-xpu-mtp-agentic-crash-pr-20260816",
+      "path": "research/vllm-xpu-mtp-agentic-crash-pr-20260816.md",
+      "title": "XPU GDN mixed spec/non-spec crash — PR-ready writeup (2026-08-16)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/qwen38-speed-push-20260815/pi-agent-serve/server.log",
+        "results/vllm-dense27-int4-mtp4-20260809T120403Z-362107/",
+        "results/vllm-dense27-int4-mtp4-20260809T120403Z-362107/server.log",
+        "results/vllm-pi-mixed-load-20260808T211221Z-60972/",
+        "results/vllm-pi-mixed-load-20260808T211221Z-60972/server.log",
+        "results/vllm-qwen38-4mode-230w-20260815T170840Z-581426/tables.md"
+      ]
+    },
+    {
+      "id": "doc-research-vllm-xpu-pr-readiness-20260813",
+      "path": "research/vllm-xpu-pr-readiness-20260813.md",
+      "title": "vLLM / Intel XPU — PR readiness after Nemotron DFlash (2026-08-13)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results/nemotron-gptq-det-a-grade-20260812T2236Z/",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-research-vram-budget-model",
+      "path": "research/vram-budget-model.md",
+      "title": "VRAM Budget Model",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-weight-quantization-quality",
+      "path": "research/weight-quantization-quality.md",
+      "title": "Weight Quantization Quality Analysis",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-x570f-dual-b70-pcie-topology-20260830",
+      "path": "research/x570f-dual-b70-pcie-topology-20260830.md",
+      "title": "Dual-B70 PCIe Topology — ASUS ROG STRIX X570-F GAMING (current host)",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-research-xe2-esimd-launch-bounds-2026-08",
+      "path": "research/xe2-esimd-launch-bounds-2026-08.md",
+      "title": "Xe2 Launch Bounds, ESIMD, and vLLM Decode Bottlenecks",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "doc-research-xemaxxing-overnight-prompt",
+      "path": "research/xemaxxing-overnight-prompt.md",
+      "title": "OVERNIGHT BUILD PROMPT — XeMaxxing landing mockup",
+      "kind": "research-note",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    },
+    {
+      "id": "DOC-STUDY-QUANTIZATION-INDEX",
+      "path": "studies/quantization/README.md",
+      "title": "Quantization Studies",
+      "kind": "study",
+      "lifecycle": "active",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "Stable id/doc_id and simple status read from front matter where present; title read from front matter or the first Markdown H1. Path-based ID fallback is retained only for legacy documents without a stable identifier."
+      },
+      "declared_status": "active",
+      "result_roots": [
+        "results"
+      ]
+    },
+    {
+      "id": "doc-studies-quantization-historical-quantization-format-strategy-20260807",
+      "path": "studies/quantization/historical/quantization-format-strategy-20260807.md",
+      "title": "Quantization Format Strategy for Intel Arc Pro B70",
+      "kind": "study",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      },
+      "result_roots": [
+        "results",
+        "results/vllm-mxfp4-summary-20260805.md",
+        "runs"
+      ]
+    },
+    {
+      "id": "doc-studies-quantization-historical-weight-quantization-quality-202607",
+      "path": "studies/quantization/historical/weight-quantization-quality-202607.md",
+      "title": "Weight Quantization Quality Analysis",
+      "kind": "study",
+      "lifecycle": "historical",
+      "authority": "supporting",
+      "source_state": "current-doc",
+      "metadata_confidence": {
+        "level": "high",
+        "basis": "No stable id/doc_id was present in simple front matter; legacy-safe path-based ID fallback used. Title and classification came from the H1 and maintained path conventions."
+      }
+    }
+  ]
+}

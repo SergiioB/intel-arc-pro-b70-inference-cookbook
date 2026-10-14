@@ -1,0 +1,56 @@
+{
+ "question_id": "RQ-25",
+ "hypothesis": "98-byte IQ3_XXS blocks force 16-bit loads; a structure-of-arrays repack (aligned qs plane, separate signs/scales plane) lets the kernel use 16-byte loads and raises expert MMVQ throughput at least 1.5x with bit-identical dequant, giving >=10% decode on the route.",
+ "changed_variable": "On-device byte layout of IQ3_XXS expert blocks and the matching load code; quantized values unchanged",
+ "resource": "gpu",
+ "stage": "screen",
+ "timeout_s": 3300,
+ "command": [
+  "python3",
+  "scripts/tmp/rq25_adapter_20261011.py",
+  "run"
+ ],
+ "preflight_command": [
+  "python3",
+  "scripts/tmp/rq25_adapter_20261011.py",
+  "preflight"
+ ],
+ "cleanup_command": [
+  "python3",
+  "scripts/tmp/rq25_adapter_20261011.py",
+  "cleanup"
+ ],
+ "identities": {
+  "baseline": {
+   "host": "b70-host",
+   "engine_revision": "AoS IQ3_XXS gate/up MMVQ (Strata 0.1.40.3 load path), 256 GRF; scripts/tmp/rq25_soa_20261011 bench binaries: aos128 offline-build/rq25_bench (default 128 GRF), aos256/soa256 isa-devimg-r3/rq25_bench_g256 (-cl-intel-256-GRF-per-thread, 0 spills, ISA in isa/r3/); sources src/tu_current.dp.cpp (Strata 0.1.40.3 Multi<18> load path) and src/tu_soa.dp.cpp",
+   "model_revision": "real IQ3_XXS gate/up expert slots from the Flash-Next pack (layers 35,36,41,44,45,47; 427 slots x 1280 rows x 980 B, 512 MiB ring > L2), ring-20261011/ring_manifest.json"
+  },
+  "candidate": {
+   "host": "b70-host",
+   "engine_revision": "SoA IQ3_XXS gate/up MMVQ (16-byte-aligned q plane, separate signs/scales and fp16 d planes, same values), 256 GRF; scripts/tmp/rq25_soa_20261011 bench binaries: aos128 offline-build/rq25_bench (default 128 GRF), aos256/soa256 isa-devimg-r3/rq25_bench_g256 (-cl-intel-256-GRF-per-thread, 0 spills, ISA in isa/r3/); sources src/tu_current.dp.cpp (Strata 0.1.40.3 Multi<18> load path) and src/tu_soa.dp.cpp",
+   "model_revision": "real IQ3_XXS gate/up expert slots from the Flash-Next pack (layers 35,36,41,44,45,47; 427 slots x 1280 rows x 980 B, 512 MiB ring > L2), ring-20261011/ring_manifest.json"
+  }
+ },
+ "controlled": {
+  "workload": {
+   "cells": "per E in 1..6 (columns/tokens): one discarded warmup per arm, then 3 interleaved triples (aos128, aos256, soa256), each a fresh ring slice; groups 128, seed 25",
+   "pairs": "pair = (E, triple); primary comparison soa256 vs aos256 isolates the layout; aos128 incumbent reported in checks/grf_diagnostic.json and never credited to the layout",
+   "correctness": "dequantized words bitwise equal across layouts on both executables (word_mismatches == 0), f64 dot gate <= 5e-3 relative (cpu_check --gate-dots); bitwise-vs-CPU is not a gate on this hardware (RL-145 finding)"
+  },
+  "config": {
+   "card": "GPU1 only, PCI 0000:0f:00.0 / renderD129, ONEAPI_DEVICE_SELECTOR=level_zero:1 plus the binary's positive PCI match",
+   "vram": "each cell allocates <= live visible_avail - 4 GiB (debugfs vram_mm)",
+   "host": "idle host: no Strata/vLLM/llama container, MemAvailable >= 30000 MiB at preflight (RL-160)",
+   "power": "as-found caps recorded and never changed; sustained thermal regime",
+   "guard": "scripts/tmp/gpu_guard_20261011.sh before and after every cell"
+  }
+ },
+ "comparison": {
+  "metric": "logical_GBps",
+  "unit": "GB/s of logical IQ3_XXS expert bytes per kernel second",
+  "direction": "higher",
+  "min_relative_gain": 0.5
+ },
+ "evidence_rationale": "RQ-25 isolated stage. ISA round 3 (research/2026/b70-run3-agent-reports-20261011/rq25-isa-round3.md): SoA keeps 16-byte q-plane loads with zero spills at 256 GRF; the AoS incumbent also reaches zero spills at 256 GRF, so the GRF mode is held fixed in the primary pairs. Gate >= 1.5x (min_relative_gain 0.5) as registered."
+}

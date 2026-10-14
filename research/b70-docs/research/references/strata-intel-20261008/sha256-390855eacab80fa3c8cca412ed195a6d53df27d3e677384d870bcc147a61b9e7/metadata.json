@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://github.com/Niko1221/Strata/releases/tag/v0.1.40.3",
+  "final_url": "https://github.com/Niko1221/Strata/releases/tag/v0.1.40.3",
+  "fetched_at": "2026-10-09T14:19:04.110446Z",
+  "content_type": "text/html; charset=utf-8",
+  "sha256": "390855eacab80fa3c8cca412ed195a6d53df27d3e677384d870bcc147a61b9e7",
+  "size_bytes": 201127,
+  "claim": "v0.1.40.3 corrects Intel setup to ./setup.sh --backend sycl at revision d5ea7133741e67743c0e886bb426c0ce8d69cf6c; B70 build unchanged versus v0.1.40.2, no new B70 speed numbers",
+  "relevance": "RQ-14 pinned adoption candidate: exact release and revision provenance before any matched screen",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

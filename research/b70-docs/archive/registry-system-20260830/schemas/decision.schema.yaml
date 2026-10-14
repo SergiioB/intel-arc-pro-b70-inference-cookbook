@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sergiiob.dev/b70/registry/decision.schema.yaml",
+  "title": "B70 canonical decision registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "decisions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "decisions": {"type": "array", "items": {"$ref": "#/$defs/decision"}}
+  },
+  "$defs": {
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "source_path", "status", "effective_date", "truth_verdict", "evidence_tier", "model_ids", "campaign_ids"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^ADR-00[0-9]{2}$"},
+        "title": {"type": "string", "minLength": 1},
+        "source_path": {"type": "string", "pattern": "^decisions/adr-00[0-9]{2}-.*\\.md$"},
+        "status": {"enum": ["accepted", "provisional_acceptance"]},
+        "effective_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+        "truth_verdict": {"enum": ["CONFIRMED", "PARTIAL"]},
+        "evidence_tier": {"enum": ["E2"]},
+        "model_ids": {"type": "array", "items": {"type": "string", "pattern": "^MODEL-[A-Z0-9][A-Z0-9.-]*$"}, "uniqueItems": true},
+        "campaign_ids": {"type": "array", "items": {"type": "string", "pattern": "^CAM-2026-[A-Z0-9][A-Z0-9.-]*$"}, "uniqueItems": true},
+        "supersession_state": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

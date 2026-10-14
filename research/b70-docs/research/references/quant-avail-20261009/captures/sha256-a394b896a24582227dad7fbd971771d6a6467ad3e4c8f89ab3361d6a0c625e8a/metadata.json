@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "classification": "external_claim_not_validated_evidence",
+  "source_role": "primary_source_asserted_by_caller",
+  "url": "https://raw.githubusercontent.com/Niko1221/Strata/fb58e0dbc8399662c0e47c76578c6e878b14f6cf/docs/INTEL.md",
+  "final_url": "https://raw.githubusercontent.com/Niko1221/Strata/fb58e0dbc8399662c0e47c76578c6e878b14f6cf/docs/INTEL.md",
+  "fetched_at": "2026-10-09T16:40:00.778903Z",
+  "content_type": "text/plain; charset=utf-8",
+  "sha256": "a394b896a24582227dad7fbd971771d6a6467ad3e4c8f89ab3361d6a0c625e8a",
+  "size_bytes": 68289,
+  "claim": "Strata v0.1.41 INTEL.md: SYCL engine quant coverage IQ1_M/IQ2_XS/IQ2_S/IQ3_XXS/IQ3_S/IQ4_XS/IQ4_NL/Q2_0/Q4_K/Q5_K/Q6_K/Q8_0 + GSQ-RCO packs, KV int8/q4_0/k8v4, wide MMVQ kernels, XMX int8 prefill GEMMs planned",
+  "relevance": "Adopted Strata lane upstream truth at our pinned-class revision",
+  "content_file": "content",
+  "interpretation": "Archival capture only; no claim truth, local measured gain, or adoption is inferred."
+}

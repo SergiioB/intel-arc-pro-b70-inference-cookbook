@@ -1,0 +1,149 @@
+{
+  "agentFeedback": {
+    "benchmarkStatus": "completed",
+    "canApiValidate": true,
+    "canSubmit": true,
+    "engine": "vllm",
+    "message": "Speed-test payload is ready for API validation.",
+    "mode": "remote",
+    "nextCommand": "lmx speed-test dry-run ~/B70-DOCS/results/ornith15-lmx-mixedcal-20260821T090450Z/speed-test.json",
+    "outputPath": "~/B70-DOCS/results/ornith15-lmx-mixedcal-20260821T090450Z/speed-test.json",
+    "outputPathAbsolute": "~/B70-DOCS/results/ornith15-lmx-mixedcal-20260821T090450Z/speed-test.json",
+    "requiresMetrics": false,
+    "runPersisted": true,
+    "savedRunPath": "runs/SergiioB-Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2/20260821T091021Z.json",
+    "savedRunPathAbsolute": "~/B70-DOCS/runs/SergiioB-Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2/20260821T091021Z.json",
+    "savedRunPathRelative": "runs/SergiioB-Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2/20260821T091021Z.json",
+    "status": "ready_for_api_validation",
+    "submissionId": "cmt2sl6eg0hdcmv01gre5o3ub",
+    "submissionStatus": "approved",
+    "submitCommand": "lmx speed-test submit ~/B70-DOCS/results/ornith15-lmx-mixedcal-20260821T090450Z/speed-test.json"
+  },
+  "backend": "cuda",
+  "benchmarkMode": "remote",
+  "detectedEngines": [],
+  "engineFlags": {
+    "baseUrl": "http://127.0.0.1:8000",
+    "concurrency": 1,
+    "iterations": 3,
+    "maxTokens": 256,
+    "mode": "remote",
+    "servedModel": "ornith15",
+    "servedModelSource": "explicit",
+    "stream": true,
+    "timeoutSeconds": 600,
+    "warmup": 1
+  },
+  "engineName": "vllm",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 5700X3D (8 threads)",
+    "gpuCount": 1,
+    "gpuName": "Intel Arc Pro B70",
+    "hwClass": "DISCRETE_GPU",
+    "os": "Linux",
+    "powerWatts": 150,
+    "ramGb": 30,
+    "vramGb": 32
+  },
+  "hardwareSource": "file",
+  "hfId": "SergiioB/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2",
+  "id": "cmt2sl6eg0hdcmv01gre5o3ub",
+  "metricSource": "remote_endpoint",
+  "modelResolution": {
+    "hfId": "SergiioB/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2",
+    "searchCommand": "lmx model search ornith15",
+    "searchError": "Could not reach https://www.localmaxxing.com/api/models/search?q=ornith15\u0026limit=5: Get \"https://www.localmaxxing.com/api/models/search?q=ornith15\u0026limit=5\": net/http: TLS handshake timeout",
+    "searchQuery": "ornith15",
+    "searchQuerySource": "served_model",
+    "servedModel": "ornith15",
+    "servedModelSource": "explicit",
+    "status": "alias"
+  },
+  "modelRevision": "main",
+  "outputText": "The user is asking me to explain why local inference benchmarks should report three specific metrics:\n1. Prompt prefill throughput\n2. Decode throughput\n3. Time to first token (TTFT)\n\nThis is a technical question about LLM inference benchmarking. Let me think through what each of these means and why they matter for local inference.\n\nLet me break down the concepts:\n\n**LLM Inference Phases**\n\nLLM inference happens in two distinct phases:\n\n1. **Prefill phase**: When you send a prompt (the input), the model processes all the tokens in the prompt at once (in parallel). This is the \"prompt prefill\" phase. It computes the initial key-value (KV) cache and generates the first output token.\n\n2. **Decode phase**: After the first token is generated, the model generates each subsequent token one at a time (sequentially). Each new token depends on all previous tokens. This is the \"decode\" phase.\n\n**The three metrics:**\n\n1. **Prompt prefill throughput**: How fast the model processes the input prompt tokens. Usually measured in tokens per second (tok/s) for the prompt. This reflects how quickly the model can handle the initial input.\n\n2. **",
+  "outputTokens": 256,
+  "prompt": "Explain why local inference benchmarks should report prompt prefill throughput, decode throughput, and time to first token.",
+  "promptTokens": 32,
+  "provenance": {
+    "benchmarkMode": "remote",
+    "cli": "localmaxxing-go",
+    "createdAt": "2026-08-21T09:10:21Z",
+    "metricSource": "remote_endpoint",
+    "timingSource": "client_observed_http",
+    "ttftSource": "stream_first_token"
+  },
+  "quantization": "GPTQ-Int4",
+  "quantizationResolution": {
+    "cli": "GPTQ-Int4",
+    "status": "matched",
+    "trusted": "GPTQ-Int4",
+    "trustedSource": "cli"
+  },
+  "sampleStats": {
+    "tokSOut": {
+      "count": 3,
+      "max": 94.2,
+      "mean": 94.13,
+      "min": 94.1,
+      "p50": 94.1,
+      "stddev": 0.06
+    },
+    "tokSTotal": {
+      "count": 3,
+      "max": 104.6,
+      "mean": 104.47,
+      "min": 104.4,
+      "p50": 104.4,
+      "stddev": 0.12
+    },
+    "ttftMs": {
+      "count": 3,
+      "max": 49.05,
+      "mean": 48.76,
+      "min": 48.36,
+      "p50": 48.88,
+      "stddev": 0.36
+    }
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 94.1,
+      "tokSPrefill": 654.7,
+      "ttftMs": 48.88
+    },
+    {
+      "iteration": 2,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 94.1,
+      "tokSPrefill": 652.4,
+      "ttftMs": 49.05
+    },
+    {
+      "iteration": 3,
+      "outputTokens": 256,
+      "request": 1,
+      "tokSOut": 94.2,
+      "tokSPrefill": 661.7,
+      "ttftMs": 48.36
+    }
+  ],
+  "submissionId": "cmt2sl6eg0hdcmv01gre5o3ub",
+  "submissionStatus": "approved",
+  "submittedAt": "2026-08-21T10:14:07.529Z",
+  "timingSource": "client_observed_http",
+  "tokSOut": 94.1,
+  "tokSOutSource": "inter_token",
+  "tokSPrefill": 654.7,
+  "tokSPrefillSource": "estimated_from_ttft",
+  "tokSTotal": 104.4,
+  "tokenSources": {
+    "output": "endpoint_usage",
+    "prompt": "endpoint_usage"
+  },
+  "ttftMs": 48.88,
+  "ttftSource": "stream_first_token"
+}

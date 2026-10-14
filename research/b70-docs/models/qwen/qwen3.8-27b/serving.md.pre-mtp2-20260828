@@ -1,0 +1,106 @@
+---
+schema_version: 1
+model_id: Qwen/Qwen3.8-27B
+model_slug: qwen3.8-27b
+document: serving
+as_of: 2026-08-19
+status: validated_internal
+truth_verdict: CONFIRMED
+evidence_tier: E2
+engine: vllm-xpu
+primary_evidence:
+  - ../../../results/vllm-qwen38-4mode-230w-20260815T170840Z-581426/summary.json
+  - ../../../docs/benchmark-history.md
+  - ../../../research/qwen38-dflash2-smoke-20260819.md
+---
+
+# Serving
+
+## Base vLLM class
+
+The Run 40 matrix used vLLM `0.27.2rc1.dev77+gac7509e2b`, XPU kernels 0.1.12.3, GPTQ INT4 G128 target, BF16 MTP head, fp8 KV, graphs on, cache off, U=0.88, scheduler budget 8,192, and a configured 230 W cap. Client post-first medians at p512/g128 were 32.9 no-spec, 52.0 MTP1, 65.8 MTP2, and 83.7 tok/s MTP4. Exact 131,072 total tokens completed once at 56.3 tok/s under MTP4.
+
+## Sampling regimes
+
+| Regime | Settings | C1 p512/g128 median | Label |
+|---|---|---:|---|
+| Greedy diagnostic | temperature 0; diagnostic harness | 106.7 tok/s | Run 47 diagnostic |
+| Recommended non-thinking | temperature 0.7, top_p 0.80, top_k 20, presence penalty 1.5, thinking off | 102.61 tok/s | Run 48 n=5 |
+| Recommended thinking | temperature 1.0, top_p 0.95, top_k 20, presence penalty 0, thinking on; reasoning effort selected separately | 99.32 tok/s | Run 48 n=5 |
+
+These Run 47/48 figures use a later prefix-on champion stack and must not be blended with the cache-off Run 40 matrix. Under recommended non-thinking sampling, C5 aggregate throughput was 107.8 tok/s, or 21.6 tok/s per user; C1 and C5 are different workloads.
+
+## Dual-card
+
+The current Qwen3.8 route is **one card**. Dual-B70 default remains independent stacks ([ADR-0008](../../../decisions/adr-0008-dual-b70-independent-default.md)).
+
+An external vLLM TP2 recipe for a different AutoRound INT4 checkpoint is captured in [`research/humble-b70-llm-dual-tp2-20260824.md`](../../../research/humble-b70-llm-dual-tp2-20260824.md). Their cold TP1 66.84 / TP2 94.58 and warm LMX TP1 97.8 / TP2 136.4 are **not comparable** to Run 48 (different checkpoint, converter, MTP depth, KV, prefix cache, statistic, and card count). Do not publish those rows as this host.
+
+## Research exclusions
+
+DFlash2's n=5 screen used actual p476/g128, cache off, eager execution, and a wrong causal fallback mask. Its 22.41 tok/s and 24.7% acceptance are coherent-output research observations, not a serving recipe or a comparison to MTP4.
+
+
+## Official-FP8 artifact route — 2026-08-27/28 (dual-card UNBLOCKED)
+
+PROVISIONAL — NOT FOR PUBLIC HEADLINE. `Qwen/Qwen3.8-27B-FP8` selects the native
+`XPUFp8BlockScaledMMKernel`. The earlier `blocked_host_ram` closure is **resolved**: root cause
+was an Intel Level Zero behavior (a process seeing BOTH GPUs pays ~1 GiB host RAM per GiB VRAM
+allocated; upstream [intel/compute-runtime#986](https://github.com/intel/compute-runtime/issues/986)),
+plus a oneCCL IPC deadlock under Docker seccomp with disjoint per-rank masks
+([uxlfoundation/oneCCL#217](https://github.com/uxlfoundation/oneCCL/issues/217)).
+
+**Serving recipe of record (dual B70, TP2 + MTP1, X570 Gen4 x8/x8):** pinned image
+`f01e24f6…`, per-worker `ZE_AFFINITY_MASK` patch (`scripts/tmp/patch_vllm_worker_affinity.py`),
+container `--cap-add SYS_PTRACE` (`scripts/tmp/qw38-fp8-pp2-affinity-launch.sh`),
+`--tensor-parallel-size 2 --speculative-config '{"method":"mtp","num_speculative_tokens":1}'`,
+max_model_len 9216, util 0.90, seqs 8, batched 4096, compile on (XPUGraph env set), cache off,
+KV bf16. Loads and serves on the 30 GiB host with ~15–17 GiB MemAvailable at steady state.
+
+Measured C1 medians, p512/g128 decode / p2048/g1 cold input (n=5, client post-first /
+cold-input rate; zero prefix-cache-hit deltas; cooldown gate 60 °C — desktop-attached idle
+floor deviation, declared):
+
+| Config (dual card, FP8) | Decode C1 tok/s | Cold input tok/s | Note |
+|---|---:|---:|---|
+| PP2 eager (B450-F) | 8.05 | 1077 | validation config |
+| PP2 compile (B450-F) | 10.9 | 639 | XPUGraph capture no effect |
+| TP2 no-spec (B450-F) | 15.2 | 860 | |
+| TP2 + MTP1 + XPUGraph (X570) | 28.4 | 1125 | MTP1 ≈ 1.87× vs no-spec |
+| TP2 + MTP4 eager (X570) | 24.7 | 981 | works; eager penalty |
+| **TP2 + MTP4 compile-only (X570)** | **46.97** | **1177** | **champion — requires `VLLM_XPU_ENABLE_XPU_GRAPH=0`** |
+
+**MTP>1 rule for this build:** with XPUGraph capture enabled (`VLLM_XPU_ENABLE_XPU_GRAPH=1`),
+`num_speculative_tokens > 1` **deadlocks the engine on the first generate** (capture completes;
+runtime replay of the multi-forward MTP draft loop hangs; TP2, dual masked workers). Fix:
+keep torch.compile on, disable capture only (`VLLM_XPU_ENABLE_XPU_GRAPH=0`). MTP4
+compile-only = 3.1× TP2 no-spec and 1.66× MTP1+graphs.
+
+Capacity (PP2 validation config, util 0.94): weights 14.1 + 16.7 GiB, KV 282,009 tokens
+(14.3 + 11.7 GiB) ≈ 30× concurrency at 9,216 len — versus 0.7–2 GiB KV single-card.
+
+Honest comparison: single-card GPTQ-Int4 remains the C1 speed champion (32.9 no-spec /
+~100 MTP4-class); dual-card FP8 is the capacity champion. Gaps on this build: fused GDN
+decode kernel is CUDA-only (Triton fallback), FP8 decode GEMV, and MTP>1 deadlocks TP2.
+Full evidence: `results/qw38-fp8-pp2-{bench,graphs,xpugraph}-20260827/`,
+`results/qw38-fp8-tp2-{baseline,mtp4b,mtp1-x570}-20260827*/`; root-cause and amendments:
+[`research/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md`](../../../research/qw38-fp8-singlecard-unblock-and-pp2-rootcause-20260827.md).
+
+Single-card unblock note (2026-08-27, GPU1): max_model_len 9216, util 0.96, batched 512,
+seqs 2, eager, cache off, KV bf16 — superseded as the only FP8 route by the dual-card recipe above.
+
+## Dual-B70 layer-split (llama.cpp SYCL) — 2026-08-24
+
+PROVISIONAL. Q4_K_M GGUF (verified `7b2aec3b…`), build 1692f9e50, KV q8_0/q4_1, fa on,
+230 W declared. `-sm layer -ts 1/1 -mg 0` with `ZE_AFFINITY_MASK=0,1`:
+
+- decode tg128 n=5: 26.03 ± 0.01 t/s vs single-GPU0 25.78 ± 0.01 (+1.0 %)
+- real workload g256 HTTP engine median: 25.58 vs 25.31 t/s (+1.1 %)
+- long cold prefill ~8260 tok: −1.7 % vs control; pp512 −2.7 %; pp8192 +1.3 %
+- row split (`-sm row`): SIGSEGV — closed as negative diagnostic
+- Greedy replay may diverge by one token (SYCL reduction ordering); coherence unaffected
+
+Interpretation: layer-split buys capacity (65 GiB combined) at decode parity-to-slight-win;
+the x4 second-slot link is not observable at C1 decode. Evidence:
+`results/qw38-dualcard-20260824T123000Z/`; analysis:
+`research/dual-b70-stack-research-20260824.md`.
