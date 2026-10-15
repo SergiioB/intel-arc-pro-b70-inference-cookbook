@@ -43,7 +43,8 @@ Intel Arc Pro B70 has 608 GB/s peak theoretical memory bandwidth. Achievable sus
   - Plain 4.00bpw: 32.58 tok/s (achieved streaming rate: 429.4 GB/s)
   - SC_5.00bpw_H6: 27.17 tok/s (achieved streaming rate: 440.7 GB/s)
   - Measured speed ratio: $27.17 / 32.58 = \mathbf{0.8339\text{x}}$ (~0.834x)
-  - **Conclusion at M=1**: SC5 runs at **99.5% of the byte bandwidth floor**. At no-spec, there is zero unexplained gap.
+  - **Conclusion at M=1**: SC5/plain speed ratio (0.834x) is 99.5 % of the *checkpoint-size* ratio (0.838x) and 102.6 % of the *active-byte* ratio (0.813x). At no-spec there is no unexplained SC5-vs-plain gap.
+  - **Correction 2026-10-15 (external audit, RL-216):** this is a relative ratio, not bandwidth saturation. Bytes x rate gives a model-derived effective stream of 429.4 / 440.7 GB/s = 71-72 % of the 608 GB/s pin rate (86-88 % of the ~500 GB/s isolated GEMV ceiling). It is not a DRAM-counter measurement. Perfect pin bandwidth would bound plain no-spec at 46.1 tok/s and SC5 at 37.5 tok/s (weight bytes only), ~1.4x above the observed rates before KV, state and overhead.
 
 ### MTP3 Speculative Decoding Ratios (Evidence RL-182, RL-185, RL-186)
 In MTP3, 3 draft tokens are proposed sequentially ($M=1$ draft forward), followed by 1 batched verification round across the target model ($M=4$ verify forward).

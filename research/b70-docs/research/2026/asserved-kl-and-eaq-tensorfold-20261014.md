@@ -39,7 +39,7 @@ Scripts: `scripts/tmp/asserved_kl_20261014/`. Raw logprobs and panels: `/data/nv
   - TensorFold 1.0.9 is a Zig engine with Metal and CUDA kernels, and has no SYCL or Level Zero backend.
   - Qwen3.8-27B is qualified on Metal only. Its own README says the 27B decodes slower than mlx_lm
     without the drafter and reads prompts at about half mlx_lm's speed.
-  - SC5 without speculation already runs at 99.5 % of its byte floor (RL-202).
+  - SC5 without speculation already runs at 99.5 % of the plain-vs-SC5 checkpoint-size ratio (RL-202); that is a relative ratio, about 71-72 % of pin bandwidth in effective terms (correction RL-216).
 
 ## 2. The engine-side error on exl3xpu: int8 prefill
 
@@ -114,7 +114,7 @@ Engine facts these rely on:
 | C | Attention-K/V graft (SC5 → plain) | copy SC5's K=6/7 `k_proj` / `v_proj` (16 layers, ~50 MB more) into plain 4.0; each EXL3 tensor carries its own trellis + signs + scale; the mixed-K image already serves per-member K | if those tiny tensors carry a large share of SC5's gain: a quality upgrade at ~0.99x plain speed, the niche SC4 missed. Hypothesis; cumulative hidden-state MSE in RL-179 `layers.jsonl` is not monotone and cannot attribute it | CPU artifact assembly + one RL-179-harness run (~30 min GPU) + canaries | new |
 | D | In-graph MTP draft | run the 3 draft steps inside the captured decode graph instead of eagerly (config capture failed: RL-187 / RL-188) | eager 7.8 → ~2 ms of 46.7 ms ≈ +12–14 % decode on plain and SC5; the only speed lever above the 10 % SC5 re-entry gate | kernel / runner engineering | new, gated by §17 |
 | E | Suffix / n-gram speculation for agent code edits | copy-heavy tool traffic complements MTP | RQ-21; local ngram alone −31 % on non-copy text | needs the RQ-10 frozen corpus (CPU-only) | gated |
-| F | Rotated 4-bit KV for the 16 attention layers | Hadamard-domain int4 KV, QuaRot-style; the plain q4_0-K cliff was unrotated | at 196K: 6.4 GB of KV read per token vs 13–16 GB of weights, so up to ~1.3x long-context decode; ~0 at 8K | attention kernel + quality battery | new, long-context only |
+| F | Rotated 4-bit KV for the 16 attention layers | Hadamard-domain int4 KV, QuaRot-style; the plain q4_0-K cliff was unrotated | at 196K: 6.44 GB of fp8 KV per token sweep vs 13.2-16.2 GB of weights. Halving KV is a byte-only ceiling of 1.17x (SC5) / 1.20x (plain) long-context decode, ~1.01x at 8K (correction RL-216; the earlier "~1.3x" assumed removing more than half the KV). Capacity gain ~3 GiB at 196K | attention kernel + quality battery | new, long-context only |
 | G | Measure fp8-KV error | reference harness with simulated fp8 KV | the last unmeasured engine-side error | ~30 min | new |
 | — | K/V co-merge, narrow-N split-K, shared `had_in`, K=4 draft head | already priced (RL-202) | +7–9 % combined, SC5 ≤ 0.93x plain | — | closed |
 | — | Lower-bit `lm_head` or a sparse-vocab verify | changes outputs | ≤ 1.2 % bytes | — | rejected (not exact) |
