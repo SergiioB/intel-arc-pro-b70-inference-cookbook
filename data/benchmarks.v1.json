@@ -1758,6 +1758,32 @@
     "commit": "8683d4bbee96813c626782685a56d02f88cc332b",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8683d4bbee96813c626782685a56d02f88cc332b/results/nemotron35-bolt-74b/llamacpp-c1-20261015-summary.json"
    }
+  },
+  {
+   "id": "nemotron35-bolt-74b-llamacpp-ctx262k-20261015",
+   "kind": "capability",
+   "title": "Nemotron 3.5 Bolt 74B-A9B context capacity (one B70): full 262,144 tokens fit, needle found at 250K",
+   "summary": "llama-server at -c 262144 (the GGUF context_length), -np 1, q8_0 K / q4_1 V, -b 8192 -ub 4096: 25.8 GiB resident after load, 26.5 GiB after a 250K-token prompt (65,536 context: 23.9 GiB). Only 8 of 88 layers keep KV (2 KV heads); the 40 Mamba layers keep fixed state. Greedy, thinking off, cold prompt, one needle at 50% depth: native build 127,993 tokens 1128.1 prefill / 19.94 decode token/s, 250,037 tokens 941.1 / 15.82, found both; the pinned image 250,035 tokens 950.6 / 15.57, found. A retrieval check, not a long-context quality benchmark.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL 620d2225c (b11669) + llama.cpp-620d2225c-b70-bolt.patch; native build and ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt@sha256:c1b871ee87d2790e92605e89d8fa40c41a61afa128bdce55da0f9fba22e3d042"
+   },
+   "model": {
+    "id": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-GGUF",
+    "quantization": "IQ2_XXS experts + NVFP4 Mamba + Q8_0 (20.5 GiB)",
+    "speculation": "none"
+   },
+   "evidence": {
+    "commit": "f681e54b607804c1f3f3be8fc567bafcb8e57fcb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/f681e54b607804c1f3f3be8fc567bafcb8e57fcb/results/nemotron35-bolt-74b/llamacpp-c1-20261015-summary.json"
+   }
   }
  ]
 }

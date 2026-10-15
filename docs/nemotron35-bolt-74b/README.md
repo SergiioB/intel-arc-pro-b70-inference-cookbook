@@ -6,7 +6,7 @@ Do not mix images, patches or numbers between the two families.
 
 | Route | Hardware | Start here |
 |---|---|---|
-| llama.cpp SYCL, NVIDIA 24GB GGUF + mmproj, no drafter | One B70, C1, 64K context | [NEMOTRON-BOLT-B70-LLAMACPP.md](NEMOTRON-BOLT-B70-LLAMACPP.md) |
+| llama.cpp SYCL, NVIDIA 24GB GGUF + mmproj, no drafter | One B70, C1, 64K default, up to 262K context | [NEMOTRON-BOLT-B70-LLAMACPP.md](NEMOTRON-BOLT-B70-LLAMACPP.md) |
 
 | Item | Authority |
 |---|---|
@@ -26,8 +26,10 @@ Do not mix images, patches or numbers between the two families.
   decodes about 6% slower on the same card, cause not isolated. The upstream
   `server-intel-b11669` image loads the model but lacks the fixes and was not
   measured. Numbers from it are not this route.
-- One card, one request at a time (`-np 1`), 65,536-token context. No
-  concurrency, multi-card or longer-context claim.
+- One card, one request at a time (`-np 1`). Speed numbers use a 65,536-token
+  context; 262,144 tokens (the GGUF maximum) loads in 25.8 GiB and found a
+  needle in a 250K-token prompt. No concurrency or multi-card claim, and no
+  long-context quality claim beyond that retrieval check.
 - Evidence tier E2: self-reported, one host, one card, not independently
   reproduced. The quality evidence is a 6-case greedy smoke and a KLD screen
   against the stock build. That does not establish general quality.

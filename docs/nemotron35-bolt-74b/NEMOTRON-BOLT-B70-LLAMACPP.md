@@ -1,13 +1,14 @@
 # Nemotron 3.5 Bolt 74B-A9B on one B70 (llama.cpp SYCL)
 
 NVIDIA's 24GB GGUF of Nemotron 3.5 Bolt runs on one Intel Arc Pro B70 with
-no offload. The route is llama.cpp `620d2225c` (tag `b11669`) with one
-cookbook patch, served from a prebuilt image. Measured on 2026-10-15 with a
-native build of the same source: 28.2 tok/s decode at short context,
-23.4 tok/s at 65K, and 1357.2 to 1430.7 tok/s prefill on 2K to 8K prompts.
-The packaged image decodes about 6% slower on the same card (see
-[Image check](#image-check)). Evidence tier E2 (one host, one card, not
-independently reproduced).
+no offload, up to its full 262,144-token context. The route is llama.cpp
+`620d2225c` (tag `b11669`) with one cookbook patch, served from a prebuilt
+image. Measured on 2026-10-15 with a native build of the same source: 28.2
+tok/s decode at short context, 23.4 tok/s at 65K, and 1357.2 to 1430.7 tok/s
+prefill on 2K to 8K prompts. A needle in a 250K-token prompt was found with
+26.5 GiB of the card in use. The packaged image decodes about 6% slower on
+the same card (see [Image check](#image-check)). Evidence tier E2 (one host,
+one card, not independently reproduced).
 
 ## Stack
 
@@ -51,6 +52,9 @@ curl -f http://127.0.0.1:8080/health
 The launcher refuses to start while another llama.cpp or vLLM process runs.
 `GPU=1` selects the second card (`ONEAPI_DEVICE_SELECTOR=level_zero:1`). The
 measurement used the headless card, not the one driving a display.
+`CTX=262144` raises the context to the model's maximum (see
+[Context](#context)). The port is bound to 127.0.0.1 only: llama-server has
+no API key.
 
 The launcher runs this inside the image:
 
@@ -62,7 +66,7 @@ llama-server -m <gguf> --mmproj <mmproj> -ngl 999 --fit off -c 65536 -np 1 \
 | Flag | Why |
 |---|---|
 | `-ngl 999 --fit off` | All layers on the card; skip the automatic fit search. |
-| `-c 65536 -np 1` | 64K context, one slot. This is the tested shape. |
+| `-c 65536 -np 1` | 64K context, one slot: the shape of the speed tables. Up to `-c 262144` fits (see [Context](#context)). |
 | `-b 8192 -ub 4096` | `-ub 4096` measured 6% faster than 2048 on a 16K prompt. |
 | `-ctk q8_0 -ctv q4_1` | Quantized KV cache, as in the measurement. |
 | `--jinja` | Uses the model's chat template, including the thinking switch. |
@@ -112,7 +116,8 @@ Patch SHA-256: `51fe97fd2f76ee04adddcf4fc2c0fcb4158fed49d411edee0145a5b736f972f7
   instead of aborting.
 
 `test-backend-ops` on the patched build: SSM_SCAN 12/12, MUL_MAT_ID 937/937,
-MUL_MAT 2277/2277, OUT_PROD 87/87, SQR 6/6.
+MUL_MAT 2277/2277, OUT_PROD 89/89, SQR 6/6. The two new row-strided
+`OUT_PROD` cases abort on unpatched source.
 
 ## Why there is no drafter
 
@@ -184,7 +189,33 @@ with `docker run`. llama-server timings, greedy, thinking off. token/s:
   (host: 26.05.37020.3 / 2.28.4) and is built with `GGML_BACKEND_DL`. Setting
   `UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS=1` and
   `SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1` did not change it.
-- Only these two prompts were run on the image. The llama-bench cells were not.
+- These two prompts and the 250K needle in [Context](#context) were run on
+  the image. The llama-bench cells were not.
+
+### Context
+
+Only 8 of the 88 layers keep a KV cache (2 KV heads each), and the 40 Mamba
+layers keep a fixed-size state. At q8_0 K / q4_1 V the cache grows by about
+1 GiB per 100K tokens, so the GGUF's trained maximum of 262,144 tokens fits
+on one card.
+
+| Context setting | Resident VRAM (native build, DRM fdinfo) |
+|---|---:|
+| `-c 65536` | 23.9 GiB |
+| `-c 262144`, loaded | 25.8 GiB |
+| `-c 262144`, after a 250K-token prompt | 26.5 GiB |
+
+Needle test at `-c 262144`, recipe flags otherwise unchanged, greedy, thinking
+off, cold prompt, one needle sentence at 50% depth. token/s:
+
+| Prompt tokens | Build | Prefill | Decode | Needle |
+|---:|---|---:|---:|---|
+| 127,993 | native | 1128.1 | 19.94 | found |
+| 250,037 | native | 941.1 | 15.82 | found |
+| 250,035 | image | 950.6 | 15.57 | found |
+
+A 250K prompt takes about 4.5 minutes to prefill. One needle per prompt is a
+retrieval check, not a long-context quality benchmark.
 
 ## Quality
 
@@ -199,9 +230,9 @@ with `docker run`. llama-server timings, greedy, thinking off. token/s:
 ## Not tested
 
 - More than one concurrent request, or more than one card.
-- Context above 65,536 tokens.
-- llama-bench on the image, and image server runs beyond the two prompts in
-  the image check.
+- Context above 262,144 tokens (beyond the GGUF's `context_length`).
+- llama-bench on the image, and image server runs beyond the three prompts
+  in the image and context checks.
 - The upstream `ghcr.io/ggml-org/llama.cpp:server-intel-b11669` image (runs
   the model without the fixes; not measured).
 - Task-quality benchmarks beyond the smoke and the KLD screen.
