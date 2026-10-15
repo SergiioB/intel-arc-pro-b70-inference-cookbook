@@ -5,9 +5,11 @@ What the release bot does, what a maintainer does, and the one command that ship
 ## How a release is cut
 
 1. Merge commits to `master`. release-please reads the commit **titles**: `feat:` bumps the minor,
-   `fix:` bumps the patch, `feat!:` or `BREAKING CHANGE:` bumps the major. A title without a type
-   (`serving: prefix caching on by default`) is ignored entirely, so it never reaches the release
-   notes. Keep the type.
+   `fix:` bumps the patch, `feat!:` or `BREAKING CHANGE:` bumps the major. Only a few types reach
+   the release notes: a title with no type (`Add recipe request issue form`) is not parsed at all,
+   and a type the config has no section for (`serving:`, `research:`, `nemotron:`, `evidence:`) is
+   parsed and then dropped. Anything a reader needs to see - a changed default, a corrected number -
+   belongs in a `feat:` or `fix:` title.
 2. Every push to `master` runs `.github/workflows/release-please.yml`. It opens or updates the
    release PR `chore(master): release X.Y.Z`, which bumps `.release-please-manifest.json` and writes
    the new section of `CHANGELOG.md`. `release-please-config.json` owns the version policy; change

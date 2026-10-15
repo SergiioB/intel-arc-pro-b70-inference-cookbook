@@ -18,6 +18,16 @@
 * **catalog:** SC5 int8-vs-fp16 prefill served-KL and cold-prompt cost capability records (2026-10-14) ([2412995](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/2412995ecbb89363b51ffde7264ddd056d42ec7f))
 * **catalog:** SC5 KL screen, V6 check and exl3xpu-mixedk 20261013 pin records; EXL3-XPU + image matrix update ([c79bb75](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/c79bb751801b07e7b62c6f0d511895ae330421a8))
 
+### Other changes
+
+Titles release-please does not list: a type it has no section for (`serving`, `research`, `nemotron`) or no type at all. They still ship.
+
+* nemotron: keep DFlash serving cache-off after the 2026-10-15 host check (answer tests failed); other recipes stay cache-on ([3d80fc8](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/3d80fc818f054923ad99e68d0d37cff26cbe6bf5))
+* serving: prefix caching on by default in every serving recipe; cache-off kept only on benchmark commands (labelled cold-input benchmarks only) ([0b7669f](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/0b7669f89ac2acde90ccc873c7135b59d65bb238))
+* research: correct FP8 KV size (32 KiB/token: 4 GiB at 131K) and 'byte floor' wording per 2026-10-14 audit ([fbdbd19](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/fbdbd19b76ec77d687c74da85e035d79bbda4b33))
+* Add recipe request issue form ([5f3b0e2](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/5f3b0e249b98f9c2f94781cec0bb017c03eed397))
+* research: import sanitized B70-DOCS lab knowledge base (research/b70-docs/) ([299831c](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/299831c7724eed84d86dfbe6de174038baa9bf2d))
+
 ## [1.4.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.4.0...v1.4.1) (2026-09-27)
 
 
