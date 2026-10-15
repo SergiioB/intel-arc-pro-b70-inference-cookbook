@@ -87,6 +87,11 @@ Traps already priced in:
 - **fp8 is the only KV dtype** — bf16 KV is rejected at capture warmup.
 - **Prefix caching is ON by default** — do not benchmark cold cells without
   the entropy-guard protocol.
+- **One interactive agent per card.** On real agent work (2026-10-15, cache
+  on), 4 agents at once on one card gave only 16 % more total tokens (49.9 →
+  57.8 tok/s), with the slowest first tokens 4x later and the slowest
+  per-token latency 7x higher. Each agent's long new prompt stalls the others'
+  generation. For two agents, run one engine per card.
 
 ## Mixed-bit SC_5.00bpw_H6 (quality pick)
 
