@@ -41,7 +41,7 @@ speculator.
 | Runtime (in launcher) | `patches/patch_xpu_grouped_topk_native_v2.py` + `patches/ssu-b70-b8w4/` (still required on this `0.1.12.3` image) |
 | Upstream (2026-09-05) | [vllm#52159](https://github.com/vllm-project/vllm/pull/52159) closed without merge. Fused XPU grouped_topk is [vllm#53580](https://github.com/vllm-project/vllm/pull/53580) (open). [vllm-xpu-kernels#524](https://github.com/vllm-project/vllm-xpu-kernels/pull/524) (`at::zeros`) still open. Muse tuple already in kernels `main` via [#526](https://github.com/vllm-project/vllm-xpu-kernels/pull/526). |
 | Context / batch / seqs | **120,000** serving limit / 8,192 / `max_num_seqs=1`. Speed card remains the isolated 16K n=5 matrix |
-| Cache | `--enable-prefix-caching` for serving (launcher default). The measured tables used `--no-enable-prefix-caching` (cache off is for cold-input benchmarks only; serve with cache on). Prefix caching is on by default. An upstream corruption class (vLLM #53912) was reproduced on earlier vLLM-XPU speculative builds; if you see wrong output with cache on, report it and serve with cache off. |
+| Cache | **off** (`--no-enable-prefix-caching`). The 2026-10-15 cache-on check on this host did not pass its answer tests, so this route stays cache-off until it is re-checked. Other serving recipes default to cache on. |
 | Power | configured **150 W** |
 
 ## Measured (isolated n=5, C1, cache off, 150 W)
