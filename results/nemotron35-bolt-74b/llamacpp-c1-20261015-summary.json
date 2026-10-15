@@ -14,8 +14,21 @@
   "name": "llama.cpp",
   "upstream_commit": "620d2225cc436ab0b001e3200e590e3b286ef9ab",
   "upstream_tag": "b11669",
-  "build": "upstream .devops/intel.Dockerfile, target server, GGML_SYCL_F16=ON",
-  "image": "ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt",
+  "build": "native GGML_SYCL_F16=ON build of the same commit and engine changes (the published patch adds only an OUT_PROD test case)",
+  "host_gpu_runtime": {
+   "compute_runtime": "26.05.37020.3",
+   "igc": "2.28.4"
+  },
+  "measured_build_note": "llama_bench_c1, server_c1 and the catalog record come from this native build",
+  "image": {
+   "ref": "ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt@sha256:c1b871ee87d2790e92605e89d8fa40c41a61afa128bdce55da0f9fba22e3d042",
+   "role": "packaged route",
+   "build": "upstream .devops/intel.Dockerfile, target server, GGML_SYCL_F16=ON",
+   "bundled_gpu_runtime": {
+    "compute_runtime": "26.18.38308.1",
+    "igc": "2.34.4"
+   }
+  },
   "patches": {
    "llama.cpp-620d2225c-b70-bolt.patch": "51fe97fd2f76ee04adddcf4fc2c0fcb4158fed49d411edee0145a5b736f972f7"
   },
@@ -45,26 +58,115 @@
   "method": "llama-bench, C1, built-in same-shape warmup, 5 reps, median; synthetic tokens, cold prefix; stock and patched builds in separate sequential sessions",
   "unit": "token/s",
   "cells": [
-   {"cell": "pp2048", "stock": 581.3, "patched_f16": 1357.2},
-   {"cell": "pp8192", "stock": 664.1, "patched_f16": 1430.7},
-   {"cell": "pp4096 @ depth 16384", "patched_f16": 1310.7},
-   {"cell": "pp4096 @ depth 32768", "stock": 625.5, "patched_f16": 1247.1},
-   {"cell": "pp4096 @ depth 61440", "patched_f16": 1137.2},
-   {"cell": "tg128 @ depth 512", "stock": 28.17, "patched_f16": 28.24},
-   {"cell": "tg128 @ depth 16384", "patched_f16": 26.82},
-   {"cell": "tg128 @ depth 32768", "stock": 25.47, "patched_f16": 25.58},
-   {"cell": "tg128 @ depth 65280", "patched_f16": 23.43}
+   {
+    "cell": "pp2048",
+    "stock": 581.3,
+    "patched_f16": 1357.2
+   },
+   {
+    "cell": "pp8192",
+    "stock": 664.1,
+    "patched_f16": 1430.7
+   },
+   {
+    "cell": "pp4096 @ depth 16384",
+    "patched_f16": 1310.7
+   },
+   {
+    "cell": "pp4096 @ depth 32768",
+    "stock": 625.5,
+    "patched_f16": 1247.1
+   },
+   {
+    "cell": "pp4096 @ depth 61440",
+    "patched_f16": 1137.2
+   },
+   {
+    "cell": "tg128 @ depth 512",
+    "stock": 28.17,
+    "patched_f16": 28.24
+   },
+   {
+    "cell": "tg128 @ depth 16384",
+    "patched_f16": 26.82
+   },
+   {
+    "cell": "tg128 @ depth 32768",
+    "stock": 25.47,
+    "patched_f16": 25.58
+   },
+   {
+    "cell": "tg128 @ depth 65280",
+    "patched_f16": 23.43
+   }
   ]
  },
  "server_c1": {
   "method": "llama-server timings, greedy, thinking off, cold prompt, recipe flags",
   "unit": "token/s",
-  "short_prompt": {"prompt_tokens": 886, "output_tokens": 128, "prefill": 840, "decode": 28.1},
+  "short_prompt": {
+   "prompt_tokens": 886,
+   "output_tokens": 128,
+   "prefill": 840,
+   "decode": 28.1
+  },
   "long_prompts_needle_at_50pct": [
-   {"prompt_tokens": 8022, "prefill": 1230.8, "decode": 27.36, "needle_found": true},
-   {"prompt_tokens": 16012, "prefill": 1308.9, "decode": 26.79, "needle_found": true},
-   {"prompt_tokens": 32018, "prefill": 1305.8, "decode": 25.65, "needle_found": true},
-   {"prompt_tokens": 59976, "prefill": 1262.9, "decode": 23.67, "needle_found": true}
+   {
+    "prompt_tokens": 8022,
+    "prefill": 1230.8,
+    "decode": 27.36,
+    "needle_found": true
+   },
+   {
+    "prompt_tokens": 16012,
+    "prefill": 1308.9,
+    "decode": 26.79,
+    "needle_found": true
+   },
+   {
+    "prompt_tokens": 32018,
+    "prefill": 1305.8,
+    "decode": 25.65,
+    "needle_found": true
+   },
+   {
+    "prompt_tokens": 59976,
+    "prefill": 1262.9,
+    "decode": 23.67,
+    "needle_found": true
+   }
+  ]
+ },
+ "image_check": {
+  "label": "image check: pinned image, same card, same recipe flags, docker run; llama-server timings, greedy, thinking off",
+  "unit": "token/s",
+  "smoke": "6 cases pass; greedy text byte-identical to the native build",
+  "cells": [
+   {
+    "prompt_tokens": 886,
+    "output_tokens": 128,
+    "prefill_range": [
+     852,
+     856
+    ],
+    "decode": 26.3,
+    "native_prefill": 840,
+    "native_decode": 28.1
+   },
+   {
+    "prompt_tokens": 32019,
+    "prefill": 1281.3,
+    "decode": 24.2,
+    "needle_found": true,
+    "native_prompt_tokens": 32018,
+    "native_prefill": 1305.8,
+    "native_decode": 25.65
+   }
+  ],
+  "finding": "the image decodes about 6% slower than the native build; cause not isolated (bundled runtime or GGML_BACKEND_DL build)",
+  "env_tried_no_change": [
+   "UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS=1",
+   "SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1"
   ]
  },
  "drafter": {
@@ -89,7 +191,7 @@
  "untested": [
   "concurrency above 1",
   "context above 65536",
-  "the published image itself; numbers come from a local GGML_SYCL_F16=ON build of the same commit and engine changes (the published patch adds only an OUT_PROD test case)",
+  "llama-bench on the image, and image server runs beyond the two image_check prompts",
   "task-quality benchmarks beyond the 6-case smoke and the KLD screen",
   "power caps other than 230 W"
  ]
