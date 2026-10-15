@@ -169,6 +169,40 @@
    "SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1"
   ]
  },
+ "context_check": {
+  "label": "context capacity: -c 262144 (the GGUF's trained maximum), recipe flags otherwise unchanged; llama-server timings, greedy, thinking off, cold prompt, one needle sentence at 50% depth",
+  "unit": "token/s",
+  "resident_vram_gib": {
+   "c65536_native": 23.9,
+   "c262144_native_loaded": 25.8,
+   "c262144_native_after_250k_prompt": 26.5,
+   "source": "DRM fdinfo drm-total-vram0 of the llama-server process; card has 32 GB"
+  },
+  "cells": [
+   {
+    "build": "native",
+    "prompt_tokens": 127993,
+    "prefill": 1128.1,
+    "decode": 19.94,
+    "needle_found": true
+   },
+   {
+    "build": "native",
+    "prompt_tokens": 250037,
+    "prefill": 941.1,
+    "decode": 15.82,
+    "needle_found": true
+   },
+   {
+    "build": "image",
+    "prompt_tokens": 250035,
+    "prefill": 950.6,
+    "decode": 15.57,
+    "needle_found": true
+   }
+  ],
+  "scope": "one needle per prompt, one request at a time; not a long-context quality benchmark"
+ },
  "drafter": {
   "model": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr-GGUF (DFlash)",
   "result": "runs after the patch, greedy output identical, 87% accepted, decode 25.7 vs 28.1 tok/s without it",
@@ -190,9 +224,9 @@
  "thinking": "on by default (chat template); chat_template_kwargs {\"enable_thinking\": false} turns it off",
  "untested": [
   "concurrency above 1",
-  "context above 65536",
   "llama-bench on the image, and image server runs beyond the two image_check prompts",
   "task-quality benchmarks beyond the 6-case smoke and the KLD screen",
-  "power caps other than 230 W"
+  "power caps other than 230 W",
+  "context above 262144 (beyond the GGUF context_length)"
  ]
 }
