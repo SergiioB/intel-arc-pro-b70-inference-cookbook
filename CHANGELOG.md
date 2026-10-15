@@ -8,6 +8,16 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.5.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.4.1...v1.5.0) (2026-10-15)
+
+
+### Features
+
+* **catalog:** SC_5.00bpw_H6 mixed-bit records — paired A/B + capability, pinned to sc5-mixedk-ab-20261012 ([b4464f7](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/b4464f7ebda578027b898781e349643c5e94b38c))
+* **catalog:** SC5 context-capacity capability record (2026-10-14) ([a3bced5](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/a3bced5e62d3d860cc9c1b52dad3438e48a4d487))
+* **catalog:** SC5 int8-vs-fp16 prefill served-KL and cold-prompt cost capability records (2026-10-14) ([2412995](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/2412995ecbb89363b51ffde7264ddd056d42ec7f))
+* **catalog:** SC5 KL screen, V6 check and exl3xpu-mixedk 20261013 pin records; EXL3-XPU + image matrix update ([c79bb75](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/c79bb751801b07e7b62c6f0d511895ae330421a8))
+
 ## [1.4.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.4.0...v1.4.1) (2026-09-27)
 
 
