@@ -36,3 +36,8 @@ Use the verifier shipped in the PR; there is no repository-wide patch verifier.
 `docker run` without `--device`. Pass means the patches apply, re-apply is a no-op,
 and the touched files compile in the targeted trees. That is not a live
 corruption measurement.
+
+## Cutting a release
+
+Conventional commits on `master` drive release-please. The release PR's checks, the
+one merge command, and the token the bot uses are in [RELEASING.md](../RELEASING.md).

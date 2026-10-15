@@ -7,13 +7,102 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  # Needed to approve the release PR's queued runs and to dispatch ci/pr-precheck.
+  actions: write
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # The default GITHUB_TOKEN authors the release PR as github-actions[bot],
+          # and GitHub holds the pull_request runs of such a PR for approval.
+          # Setting RELEASE_PLEASE_TOKEN (PAT or GitHub App token) authors the PR
+          # as a user, whose runs start on their own. See RELEASING.md.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      # Since 2026-06-11 GitHub queues pull_request runs created by a
+      # GITHUB_TOKEN update in the action_required state, so ci and pr-precheck
+      # never start on the release PR until someone clicks "Approve workflows to
+      # run". Approve those runs here; workflow_dispatch runs are never held for
+      # approval, so they are the fallback if the token may not approve.
+      - name: Start checks on the release PR
+        if: ${{ steps.release.outputs.pr != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_JSON: ${{ steps.release.outputs.pr }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          branch=$(jq -r '.headBranchName' <<<"$PR_JSON")
+          number=$(jq -r '.number' <<<"$PR_JSON")
+          if [ -z "$branch" ] || [ "$branch" = "null" ]; then
+            echo "::error::release-please did not report a release PR branch"
+            exit 1
+          fi
+          sha=$(gh api "repos/$REPO/commits/$branch" --jq .sha)
+          echo "release PR #$number head: $branch at $sha"
+
+          run_id() {
+            gh api "repos/$REPO/actions/runs?head_sha=$sha&per_page=100" --jq \
+              "[.workflow_runs[] | select(.path == \".github/workflows/$1\")][0].id // empty"
+          }
+
+          # The pull_request runs appear a few seconds after the PR is updated.
+          for _ in 1 2 3 4 5 6 7 8; do
+            if [ -n "$(run_id ci.yml)" ] && [ -n "$(run_id pr-precheck.yml)" ]; then
+              break
+            fi
+            sleep 5
+          done
+
+          fallback=0
+          for workflow in ci.yml pr-precheck.yml; do
+            run=$(run_id "$workflow")
+            if [ -z "$run" ]; then
+              echo "no $workflow run is queued for $sha"
+              fallback=1
+            elif [ "$(gh api "repos/$REPO/actions/runs/$run" --jq .conclusion)" != "action_required" ]; then
+              echo "$workflow run $run is already past the approval gate"
+            elif gh api -X POST "repos/$REPO/actions/runs/$run/approve" >/dev/null 2>&1; then
+              echo "approved $workflow run $run"
+            else
+              echo "$workflow run $run still needs a maintainer approval"
+              fallback=1
+            fi
+          done
+
+          if [ "$fallback" = 1 ]; then
+            for workflow in ci.yml pr-precheck.yml; do
+              if gh workflow run "$workflow" --repo "$REPO" --ref "$branch"; then
+                echo "dispatched $workflow on $branch (workflow_dispatch is not held for approval)"
+              else
+                echo "::error::could not start $workflow on $branch; approve the queued runs in the Actions tab, or store a PAT or GitHub App token as RELEASE_PLEASE_TOKEN (see RELEASING.md)"
+                exit 1
+              fi
+            done
+          fi
+
+      - name: Arm auto-merge for the release PR when the repository allows it
+        if: ${{ steps.release.outputs.pr != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_JSON: ${{ steps.release.outputs.pr }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          number=$(jq -r '.number' <<<"$PR_JSON")
+          if [ "$(gh api "repos/$REPO" --jq .allow_auto_merge)" != "true" ]; then
+            echo "auto-merge is disabled on $REPO; merge release PR #$number once its checks are green:"
+            echo "    gh pr merge $number --repo $REPO --merge"
+            exit 0
+          fi
+          if gh pr merge "$number" --repo "$REPO" --auto --merge; then
+            echo "auto-merge armed for release PR #$number; it merges when the checks pass"
+          else
+            echo "::warning::auto-merge was not armed for release PR #$number; merge it after the checks pass (see RELEASING.md)"
+          fi

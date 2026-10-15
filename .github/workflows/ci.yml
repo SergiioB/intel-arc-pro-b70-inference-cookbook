@@ -4,6 +4,9 @@ on:
   pull_request:
   push:
     branches: [master]
+  # release-please.yml dispatches this on the release PR branch when GitHub
+  # holds that PR's own pull_request run for approval.
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}

@@ -3,6 +3,9 @@ name: pr-precheck
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+  # release-please.yml dispatches this on the release PR branch when GitHub
+  # holds that PR's own pull_request run for approval.
+  workflow_dispatch:
 
 permissions:
   pull-requests: write
@@ -10,7 +13,10 @@ permissions:
 
 jobs:
   precheck:
-    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
+    # Release PRs carry only a version and changelog edit; ci.yml already runs
+    # scripts/check-repo.py on them. Skipped runs (including dispatches, which
+    # have no pull request context) report as neutral, never as a failure.
+    if: ${{ github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

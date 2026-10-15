@@ -34,7 +34,7 @@
     },
     "triage": {
       "start": "docs/MAINTAINER-PRECHECKS.md",
-      "then": ["docs/RELIABILITY-REPORT.md"]
+      "then": ["RELEASING.md", "docs/RELIABILITY-REPORT.md"]
     }
   },
   "authorities": {
@@ -53,6 +53,7 @@
     "contribution_workflow": "docs/ADDING-A-RECIPE.md",
     "confirmation_workflow": "docs/CONFIRM-A-RECIPE.md",
     "reporter_prechecks": "docs/MAINTAINER-PRECHECKS.md",
+    "release_process": "RELEASING.md",
     "architecture_reference": "docs/architecture/architecture.md",
     "feature_flags_registry": "docs/FEATURE-FLAGS.md"
   },
