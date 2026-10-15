@@ -294,7 +294,7 @@ docker run -d --name qw38speed -p 8000:8000 --device /dev/dri --group-add "$REND
   -e B70_MTP_BF16_DRAFT=1 -e VLLM_XPU_ENABLE_XPU_GRAPH=1 \
   -e PYTORCH_ALLOC_CONF=expandable_segments:True \
   --entrypoint bash "$IMAGE" -lc \
-  'set -e; python /patch_mtp.py; python /patch_boundary.py; exec vllm serve /model --quantization gptq --dtype float16 --max-model-len 131072 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 --max-num-seqs 64 --max-num-batched-tokens 8192 --no-enable-prefix-caching --served-model-name qwen38 --language-model-only --enable-auto-tool-choice --tool-call-parser qwen3_xml --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
+  'set -e; python /patch_mtp.py; python /patch_boundary.py; exec vllm serve /model --quantization gptq --dtype float16 --max-model-len 131072 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 --max-num-seqs 64 --max-num-batched-tokens 8192 --enable-prefix-caching --served-model-name qwen38 --language-model-only --enable-auto-tool-choice --tool-call-parser qwen3_xml --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
 ```
 
 The two tool flags are no-ops for plain completions but required for agent
@@ -347,8 +347,8 @@ full-buffer GDN split.
 ### Concurrent serving (v5 + optional draft-INT4) — same server, client-side concurrency
 
 The launch line above already sets `--max-num-seqs 64`. For concurrent
-serving apply v5 (required) and optionally S+M1, switch
-`--no-enable-prefix-caching` → `--enable-prefix-caching`, and drive N
+serving apply v5 (required) and optionally S+M1 (the launch line already has
+`--enable-prefix-caching`), and drive N
 concurrent clients. Measured 2026-08-19 (results and labels:
 [QWEN38-VLLM-XPU.md §11](qwen38-27b/QWEN38-VLLM-XPU.md)): 0 crashes at every
 cell including mixed long-prefill + spec decode; LocalMaxxing harness

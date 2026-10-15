@@ -286,7 +286,7 @@ Shared flags for every context size:
 --device SYCL0,SYCL1 --tensor-split 1,1 --split-mode layer -ngl 99
 -ot 'per_layer_token_embd=CPU' -fa on -t 6 -tb 14 -np 1
 --cache-type-k q8_0 --cache-type-v q4_1
---no-warmup --no-cache-prompt --host 127.0.0.1 --port 8001
+--no-warmup --host 127.0.0.1 --port 8001
 ```
 
 **Sampling — Hugging Face card defaults** (`Qwen/Qwen3.8-Flash-Next`). Serve with
@@ -312,6 +312,8 @@ endless repetition; higher values can cause language mixing).
 to host memory — see "N-gram (per-layer token embedding) table" above. It is
 never loaded into VRAM.
 
+Prompt caching is on (llama.cpp default). The published n=5 cells were measured with `--no-cache-prompt` added (cache off is for cold-input benchmarks only; serve with cache on).
+
 Only `-c` and `-b` / `--ubatch-size` change:
 
 | Context | `-c` | `-b` / `--ubatch-size` | Binary for the published n=5 cell |
@@ -331,7 +333,7 @@ Do not pass `--no-mmap` or `--mlock` on this GGUF. `-fa on` is required:
   --device SYCL0,SYCL1 --tensor-split 1,1 --split-mode layer -ngl 99 \
   -ot 'per_layer_token_embd=CPU' -c 8192 -fa on -t 6 -tb 14 -np 1 \
   -b 512 --ubatch-size 512 --cache-type-k q8_0 --cache-type-v q4_1 \
-  --no-warmup --no-cache-prompt --host 127.0.0.1 --port 8001
+  --no-warmup --host 127.0.0.1 --port 8001
 ```
 
 16K (F16 binary) — n=5 prefill **594.49**:
@@ -341,7 +343,7 @@ Do not pass `--no-mmap` or `--mlock` on this GGUF. `-fa on` is required:
   --device SYCL0,SYCL1 --tensor-split 1,1 --split-mode layer -ngl 99 \
   -ot 'per_layer_token_embd=CPU' -c 16384 -fa on -t 6 -tb 14 -np 1 \
   -b 3072 --ubatch-size 3072 --cache-type-k q8_0 --cache-type-v q4_1 \
-  --no-warmup --no-cache-prompt --host 127.0.0.1 --port 8001
+  --no-warmup --host 127.0.0.1 --port 8001
 ```
 
 128K (same F16 binary, smaller ubatch):
@@ -351,7 +353,7 @@ Do not pass `--no-mmap` or `--mlock` on this GGUF. `-fa on` is required:
   --device SYCL0,SYCL1 --tensor-split 1,1 --split-mode layer -ngl 99 \
   -ot 'per_layer_token_embd=CPU' -c 131072 -fa on -t 6 -tb 14 -np 1 \
   -b 1024 --ubatch-size 1024 --cache-type-k q8_0 --cache-type-v q4_1 \
-  --no-warmup --no-cache-prompt --host 127.0.0.1 --port 8001
+  --no-warmup --host 127.0.0.1 --port 8001
 ```
 
 ### 8. Smoke

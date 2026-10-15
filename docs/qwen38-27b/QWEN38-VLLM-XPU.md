@@ -54,7 +54,7 @@ docker run -d --name qw38speed -p 8000:8000 --device /dev/dri --group-add "$REND
   -e B70_MTP_BF16_DRAFT=1 -e VLLM_XPU_ENABLE_XPU_GRAPH=1 \
   -e PYTORCH_ALLOC_CONF=expandable_segments:True \
   --entrypoint bash "$IMAGE" -lc \
-  'set -e; python /patch_mtp.py; python /patch_boundary.py; exec vllm serve /model --quantization gptq --dtype float16 --max-model-len 100000 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 --max-num-seqs 1 --max-num-batched-tokens 8192 --no-enable-prefix-caching --served-model-name qwen38 --language-model-only --enable-auto-tool-choice --tool-call-parser qwen3_xml --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
+  'set -e; python /patch_mtp.py; python /patch_boundary.py; exec vllm serve /model --quantization gptq --dtype float16 --max-model-len 100000 --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 --max-num-seqs 1 --max-num-batched-tokens 8192 --enable-prefix-caching --served-model-name qwen38 --language-model-only --enable-auto-tool-choice --tool-call-parser qwen3_xml --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
 
 curl -f http://127.0.0.1:8000/health
 ```
@@ -149,7 +149,7 @@ echo 230000000 | sudo tee /sys/class/hwmon/hwmon4/power1_cap
 *Note: A 300 W write is rejected by the driver; readback stays at the 230 W hardware ceiling. There is no clock control on the `xe` driver (no gt_min/gt_max). Under a 230 W cap load, the PMU reports actual frequencies of 3,400 MHz against requested 2,400 MHz.* Restore to 150 W after benchmark completion.
 
 ## 6. Launch commands (isolated reference modes)
-Run the server for each mode sequentially.
+Run the server for each mode sequentially. These reference modes keep `--no-enable-prefix-caching`: cache off is for cold-input benchmarks only; serve with cache on.
 
 ### no-spec
 ```bash

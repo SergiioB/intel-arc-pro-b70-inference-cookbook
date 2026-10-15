@@ -46,5 +46,5 @@ docker run --name "$CONTAINER" --rm --network host \
   -e ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE -e ZE_AFFINITY_MASK=0 \
   -e SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=0 -e SYCL_CACHE_PERSISTENT=0 \
   --entrypoint bash "$IMAGE" \
-  -lc "python /patch_v2.py; cp /ssu/*.json /opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/mamba/ops/configs/selective_state_update/ 2>/dev/null || true; exec vllm serve /model --served-model-name $SERVED --dtype bfloat16 --quantization gptq --max-model-len 16384 --max-num-seqs 1 --max-num-batched-tokens 8192 --gpu-memory-utilization 0.90 --no-enable-prefix-caching --async-scheduling --host 0.0.0.0 --port $PORT" >/dev/null 2>&1 &
+  -lc "python /patch_v2.py; cp /ssu/*.json /opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/mamba/ops/configs/selective_state_update/ 2>/dev/null || true; exec vllm serve /model --served-model-name $SERVED --dtype bfloat16 --quantization gptq --max-model-len 16384 --max-num-seqs 1 --max-num-batched-tokens 8192 --gpu-memory-utilization 0.90 --enable-prefix-caching --async-scheduling --host 0.0.0.0 --port $PORT" >/dev/null 2>&1 &
 echo "launched $CONTAINER on :$PORT (model $SERVED)"

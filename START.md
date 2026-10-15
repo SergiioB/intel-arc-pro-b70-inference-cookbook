@@ -71,7 +71,7 @@ docker run -d --name b70-qwen38 -p 8000:8000 \
    --quantization gptq --dtype float16 --max-model-len 100000 \
    --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 \
    --max-num-seqs 1 --max-num-batched-tokens 8192 \
-   --no-enable-prefix-caching --served-model-name qwen38 \
+   --enable-prefix-caching --served-model-name qwen38 \
    --language-model-only --enable-auto-tool-choice --tool-call-parser qwen3_xml \
    --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
 ```
@@ -112,7 +112,7 @@ python3 scripts/canary.py --port 8000 --model qwen38
 | `UR_RESULT_ERROR_OUT_OF_DEVICE_MEMORY` | **VRAM KV overflow** | Lower `--max-model-len` from `100000` to `65536` or reduce `--gpu-memory-utilization` to `0.85`. |
 | `UR_RESULT_ERROR_OUT_OF_RESOURCES` during compile | **Parallel inductor compile threads** | Level Zero context exhausted during JIT. Add `-e TORCHINDUCTOR_COMPILE_THREADS=1` to the `docker run` line. |
 | `zeMemOpenIpcHandle` failure on dual-card | **Missing oneCCL thresholds** | Host does not support P2P direct access. Export the 4 simple-threshold variables in [DUAL-B70-TP2.md](docs/DUAL-B70-TP2.md). |
-| Gibberish output or repeating tokens | **APC + MTP conflict** | Prefix caching (`--enable-prefix-caching`) combined with MTP produces silent corruption on this kernel build. Keep `--no-enable-prefix-caching`. |
+| Gibberish output or repeating tokens | **APC + MTP conflict** | Prefix caching is on by default. An upstream corruption class (vLLM #53912) was reproduced on earlier vLLM-XPU speculative builds; if you see wrong output with cache on, report it and serve with cache off. |
 
 ---
 

@@ -25,7 +25,7 @@ llama-server -m Signal-3.8-Flash-Next-AP-Q4_K_XL.gguf \
   -ot 'per_layer_token_embd=CPU,blk\.([0-5]|4[2-7])\.ffn_(up|gate|down)_exps\.weight=CPU' \
   -c 8192 -fa on -t 6 -tb 14 -np 1 -b 512 -ub 512 \
   --cache-type-k q8_0 --cache-type-v q4_1 \
-  --no-warmup --no-cache-prompt --metrics --slots --jinja \
+  --no-warmup --metrics --slots --jinja \
   --host 127.0.0.1 --port 8010
 ```
 

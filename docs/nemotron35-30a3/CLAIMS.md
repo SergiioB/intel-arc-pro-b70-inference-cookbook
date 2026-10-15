@@ -12,7 +12,7 @@ No-spec graph n=5 is a separate campaign on the same target / image family.
 
 - One Intel Arc Pro B70 32 GB, C1 (`max_num_seqs=1`)
 - Configured cap **150 W**
-- Cache **explicitly off** (`--no-enable-prefix-caching`)
+- Cache **explicitly off** (`--no-enable-prefix-caching`; cache off is for cold-input benchmarks only; serve with cache on)
 - Public image `vllm/vllm-openai-xpu@sha256:1da0a95485455f08588c11080b9718992fd7d434c6a965d74654903a9d999c57`
 - vLLM `0.26.1rc1.dev668+g3ee2df303`, kernels `0.1.12.3`
 - Timing: client monotonic SSE

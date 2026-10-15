@@ -121,10 +121,12 @@ claimed.
 --mamba-ssm-cache-dtype float16
 --max-num-batched-tokens 4096
 --gpu-memory-utilization 0.90
---no-enable-prefix-caching
+--enable-prefix-caching
 --language-model-only
 --speculative-config '{"method":"mtp","num_speculative_tokens":8}'
 ```
+
+The measured cells on this page used `--no-enable-prefix-caching` (cache off is for cold-input benchmarks only; serve with cache on). Prefix caching is on by default. An upstream corruption class (vLLM #53912) was reproduced on earlier vLLM-XPU speculative builds; if you see wrong output with cache on, report it and serve with cache off.
 
 Before applying this model-specific stack, implement the complete
 [dual-B70 infrastructure contract](../DUAL-B70-TP2.md): spawn-time worker

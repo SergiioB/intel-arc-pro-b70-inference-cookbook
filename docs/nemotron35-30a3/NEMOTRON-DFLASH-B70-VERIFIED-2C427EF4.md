@@ -22,7 +22,7 @@ prefill measurement.
 | Runtime patch | **none** — stock vLLM. Do **not** apply `patch_xpu_grouped_topk_native_v2.py` here; it costs 16% (see below) |
 | Autotune cache | `ssu-b70-b8w4/` copied into `.../mamba/ops/configs/selective_state_update/` |
 | Power | **150 W** configured (`power1_cap=150000000`); 200 W variant documented below |
-| Cache | explicitly off (`--no-enable-prefix-caching`) |
+| Cache | explicitly off (`--no-enable-prefix-caching`): cache off is for cold-input benchmarks only; serve with cache on |
 | Context / seqs | 16384 / `max_num_seqs=16` for the speed card |
 
 ## Launch

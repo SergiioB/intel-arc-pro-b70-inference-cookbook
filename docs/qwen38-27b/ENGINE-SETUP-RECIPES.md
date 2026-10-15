@@ -53,7 +53,7 @@ docker run -d --name qw38 -p 8000:8000 \
    --quantization gptq --dtype float16 --max-model-len 100000 \
    --gpu-memory-utilization 0.88 --kv-cache-dtype fp8 --port 8000 \
    --max-num-seqs 1 --max-num-batched-tokens 8192 \
-   --no-enable-prefix-caching --served-model-name qwen38 \
+   --enable-prefix-caching --served-model-name qwen38 \
    --language-model-only \
    --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"'
 
@@ -188,7 +188,7 @@ docker run -d --name qw38-fp8 -p 8005:8000 \
    --max-model-len 100000 --async-scheduling --block-size 64 \
    --mamba-ssm-cache-dtype float16 --max-num-batched-tokens 4096 \
    --gpu-memory-utilization 0.90 --kv-cache-dtype fp8 --port 8000 \
-   --max-num-seqs 1 --no-enable-prefix-caching --served-model-name qwen38 \
+   --max-num-seqs 1 --enable-prefix-caching --served-model-name qwen38 \
    --language-model-only \
    --speculative-config "{\"method\":\"mtp\",\"num_speculative_tokens\":8}"'
 

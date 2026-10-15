@@ -7,7 +7,7 @@ Family index. Keep Qwen, Nemotron, and Muse numbers on their own pages.
 | [ORNITH-VLLM-XPU.md](ORNITH-VLLM-XPU.md) | Recipe: download, launch, measured results |
 | [MIXEDCAL-V2.md](MIXEDCAL-V2.md) | Why this GPTQ exists: experts-only, mixed-domain cal, RTN 24.76% → 10.37% |
 | [CLAIMS.md](CLAIMS.md) | Full measured tables and LocalMaxxing ids |
-| `benchmarks/ornith15-35a3/launch-ornith-mtp1.sh` | Default serve: MTP1 + DraftINT4, cache off |
+| `benchmarks/ornith15-35a3/launch-ornith-mtp1.sh` | Default serve: MTP1 + DraftINT4, cache on (`CACHE=off` for cold-input benchmarks only) |
 | [Dashboard SVG](../assets/b70-ornith15-dashboard.svg) | Decode, cold-input, capacity, and LocalMaxxing card |
 
 ## Artifact

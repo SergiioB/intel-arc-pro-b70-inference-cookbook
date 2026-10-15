@@ -29,7 +29,7 @@ The conversion win is RTN fallback **10.37% vs 24.76%**, not tok/s. Method:
 | Never on C1 | `patch_gdn_mixed_split_v5.py` |
 | Context / util / seqs | 16,384 (MTP speed tables) or 32,768 / 65,536 / 131,072 / 262,144 (no-spec ladder) / `gpu-memory-utilization=0.85` / `max-num-seqs=8` |
 | KV | fp16 auto (only 10 full-attn layers; fp8 KV is not required) |
-| Cache | `--no-enable-prefix-caching` |
+| Cache | `--enable-prefix-caching` for serving. The measured tables below used `--no-enable-prefix-caching` (cache off is for cold-input benchmarks only; serve with cache on). Prefix caching is on by default. An upstream corruption class (vLLM #53912) was reproduced on earlier vLLM-XPU speculative builds; if you see wrong output with cache on, report it and serve with cache off. |
 | Power | configured **150 W** for the decode tables below unless a cell names **230 W** |
 
 This is the **same image digest** as Qwen3.8-27B, not the Qwen3.6 Pi `2c427ef`
@@ -105,7 +105,7 @@ Default flags:
 --max-num-seqs 8
 --max-num-batched-tokens 8192
 --block-size 64
---no-enable-prefix-caching
+--enable-prefix-caching
 --language-model-only
 --trust-remote-code
 --speculative-config {"method":"mtp","num_speculative_tokens":1}

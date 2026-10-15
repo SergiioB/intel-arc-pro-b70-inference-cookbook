@@ -18,7 +18,7 @@ Recipe: [ORNITH-VLLM-XPU.md](ORNITH-VLLM-XPU.md). Conversion:
 | Dtype | float16 |
 | MoE backend | XPU WNA16 (`int_wna16`) |
 | Model | [`SergiioB/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2`](https://huggingface.co/SergiioB/Ornith-1.5-35B-A3B-GPTQ-Int4-sym-G128-MTP-BF16-MixedCal-v2) |
-| Cache | `--no-enable-prefix-caching` |
+| Cache | `--no-enable-prefix-caching` (cache off is for cold-input benchmarks only; serve with cache on) |
 | Timing | client SSE post-first; cold input = actual endpoint tokens / client TTFT |
 | Scope | C1 only |
 | Power | configured **150 W** unless a cell names another cap |

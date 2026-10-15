@@ -271,9 +271,8 @@ the two WebGL cases.
 `--enable-prefix-caching` on the vLLM-XPU compressed-tensors route, repeated
 shared-prefix prompts degenerate into token salad mid-generation (8/9 cases
 across a 3-run battery). Same server and prompts with prefix caching OFF
-produce complete coherent output every time. Until this is isolated upstream,
-run W4A16 exports on this stack with prefix caching disabled — and note this
-is additive to the known arithmetic defect, independent of it.
+produce complete coherent output every time. This is additive to the known
+arithmetic defect, independent of it. Prefix caching is on by default. An upstream corruption class (vLLM #53912) was reproduced on earlier vLLM-XPU speculative builds; if you see wrong output with cache on, report it and serve with cache off.
 
 ## Alternate route
 

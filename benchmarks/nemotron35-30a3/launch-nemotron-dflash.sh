@@ -73,7 +73,7 @@ docker run --name "$CONTAINER" --rm --network host \
       --served-model-name $SERVED \
       --dtype float16 --quantization gptq \
       --max-model-len $MAX_MODEL_LEN --max-num-seqs 1 --max-num-batched-tokens 8192 \
-      --gpu-memory-utilization 0.90 --no-enable-prefix-caching \
+      --gpu-memory-utilization 0.90 --enable-prefix-caching \
       --language-model-only --async-scheduling \
       --speculative-config '$SPEC' \
       --host 0.0.0.0 --port $PORT"
