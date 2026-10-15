@@ -21,7 +21,7 @@ Pinned vLLM XPU and llama.cpp SYCL recipes, failure notes, and measurement recor
 3. Connect a client using [client setup](docs/CONNECTING-CLIENTS.md); use the [reliability guide](docs/RELIABILITY-REPORT.md) if the server hangs.
 4. Confirm a recipe with [the reproduction procedure](docs/CONFIRM-A-RECIPE.md) and [benchmark format](docs/BENCHMARK-FORMAT.md). The numeric authority is [`data/benchmarks.v1.json`](data/benchmarks.v1.json); [`docs/BENCHMARK-CATALOG.md`](docs/BENCHMARK-CATALOG.md) is generated.
 
-More routes: [Nemotron DFlash](docs/nemotron35-30a3/README.md), [Flash-Next](docs/qwen38-flash-next/README.md), [Windows](docs/qwen38-27b/WINDOWS-STANDALONE.md), and [family-specific research](docs/WHAT-WORKED.md). Research routes are not interchangeable with the first-run recipe.
+More routes: [Nemotron DFlash](docs/nemotron35-30a3/README.md), [Nemotron Bolt 74B](docs/nemotron35-bolt-74b/README.md), [Flash-Next](docs/qwen38-flash-next/README.md), [Windows](docs/qwen38-27b/WINDOWS-STANDALONE.md), and [family-specific research](docs/WHAT-WORKED.md). Research routes are not interchangeable with the first-run recipe.
 
 ## Request or add a recipe
 
