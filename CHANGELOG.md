@@ -8,6 +8,16 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.6.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.5.1...v1.6.0) (2026-10-15)
+
+
+### Features
+
+* **recipes:** Nemotron 3.5 Bolt 74B-A9B on one B70 (llama.cpp SYCL) ([57cd376](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/57cd3767ba5e409ef3dd004d5a6f6f7d166cb898))
+* **recipes:** Nemotron 3.5 Bolt 74B-A9B on one B70 with patched llama.cpp SYCL ([415809b](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/415809b9d8a389941ea8556c23456f1948813c78))
+* **recipes:** Nemotron Bolt context up to 262,144 tokens (CTX setting, capability record), launcher bound to localhost ([a67ed3e](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/a67ed3ee32365aa7931fbf4ce9f0b5ab98efbca1))
+* **recipes:** pin the Nemotron Bolt image digest and report the image check ([622aca8](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/622aca8267fbb3f170bad32f0f7491317b883190))
+
 ## [1.5.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.5.0...v1.5.1) (2026-10-15)
 
 
