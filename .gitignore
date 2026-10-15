@@ -19,6 +19,7 @@ target/
 .DS_Store
 Thumbs.db
 .pytest_cache/
+.ci-chart-staging*/
 .ruff_cache/
 .mypy_cache/
 .coverage

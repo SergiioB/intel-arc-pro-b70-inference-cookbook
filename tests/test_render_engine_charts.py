@@ -137,10 +137,16 @@ class RenderTests(unittest.TestCase):
 
 
 class CliTests(unittest.TestCase):
-    STAGING = ROOT / ".ci-chart-staging"
+    def setUp(self) -> None:
+        # One staging directory per test. pytest-xdist runs these methods in
+        # parallel workers, and a shared path let one worker's tearDown delete
+        # SVGs another worker had just rendered (FileNotFoundError), or let a
+        # concurrent render overwrite a tampered SVG so --check wrongly passed.
+        # mkdtemp keeps it inside ROOT, which write_charts requires.
+        self.staging = pathlib.Path(tempfile.mkdtemp(prefix=".ci-chart-staging-", dir=ROOT))
 
     def tearDown(self) -> None:
-        shutil.rmtree(self.STAGING, ignore_errors=True)
+        shutil.rmtree(self.staging, ignore_errors=True)
 
     def test_check_mode_verifies_committed_svgs(self) -> None:
         completed = run_cli(["--check"])
@@ -151,12 +157,12 @@ class CliTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             data = json.loads(INPUT.read_text())
             for chart in data["charts"]:
-                chart["output"] = str(self.STAGING / pathlib.Path(chart["output"]).name)
+                chart["output"] = str(self.staging / pathlib.Path(chart["output"]).name)
             staging_input = pathlib.Path(td) / "inputs.json"
             staging_input.write_text(json.dumps(data))
             completed = run_cli(["--input", str(staging_input)])
             self.assertEqual(completed.returncode, 0, completed.stderr)
-            rendered = list(self.STAGING.glob("*.svg"))
+            rendered = list(self.staging.glob("*.svg"))
             self.assertEqual(len(rendered), len(data["charts"]))
             for svg in rendered:
                 self.assertIn("PROVISIONAL", svg.read_text())
@@ -166,7 +172,7 @@ class CliTests(unittest.TestCase):
             data = json.loads(INPUT.read_text())
             first = data["charts"][0]
             data["charts"] = [first]
-            out = self.STAGING / pathlib.Path(first["output"]).name
+            out = self.staging / pathlib.Path(first["output"]).name
             first["output"] = str(out)
             staging_input = pathlib.Path(td) / "inputs.json"
             staging_input.write_text(json.dumps(data))
