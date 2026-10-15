@@ -8,6 +8,13 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.5.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.5.0...v1.5.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* **serving:** prefix cache on for Nemotron DFlash after its second host check; one agent per card on EXL3 ([81d4c78](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/81d4c7842ec45a12671f5e51d094dfa85917f484))
+
 ## [1.5.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.4.1...v1.5.0) (2026-10-15)
 
 
