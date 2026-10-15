@@ -1699,7 +1699,7 @@
    "id": "nemotron35-bolt-74b-llamacpp-c1-v1",
    "kind": "benchmark",
    "title": "Nemotron 3.5 Bolt 74B-A9B 24GB GGUF (llama.cpp SYCL, one B70)",
-   "summary": "NVIDIA 24GB GGUF (IQ2_XXS experts, NVFP4 Mamba, Q8_0 rest) fully on one B70, no drafter. llama.cpp 620d2225c (b11669) + b70-bolt patch, GGML_SYCL_F16=ON, GGML_SYCL_GROUPED_MAX_ROWS=0. llama-bench -ngl 999 -fa 1 -ctk q8_0 -ctv q4_1 -ub 4096 -b 8192, 5 reps median, synthetic tokens, cold prefix. tg128 at depth 512 is the decode cell. Stock 620d2225c on the same flags: pp2048 581.3, pp8192 664.1, tg128 d512 28.17. Server C1 at 59,976 prompt tokens: 1262.9 prefill / 23.67 decode, needle found. E2 self-report: one host, one card, not independently reproduced.",
+   "summary": "NVIDIA 24GB GGUF (IQ2_XXS experts, NVFP4 Mamba, Q8_0 rest) fully on one B70, no drafter. llama.cpp 620d2225c (b11669) + b70-bolt patch, GGML_SYCL_F16=ON, GGML_SYCL_GROUPED_MAX_ROWS=0. llama-bench -ngl 999 -fa 1 -ctk q8_0 -ctv q4_1 -ub 4096 -b 8192, 5 reps median, synthetic tokens, cold prefix. tg128 at depth 512 is the decode cell. Stock 620d2225c on the same flags: pp2048 581.3, pp8192 664.1, tg128 d512 28.17. Server C1 at 59,976 prompt tokens: 1262.9 prefill / 23.67 decode, needle found. Numbers are from a native build of the same source on host compute-runtime 26.05 / IGC 2.28.4. Packaged route: ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt@sha256:c1b871ee87d2790e92605e89d8fa40c41a61afa128bdce55da0f9fba22e3d042 (bundled 26.18 / 2.34.4) decodes about 6% slower on the same card (server: 26.3 vs 28.1 at 886 tokens, 24.2 vs 25.65 at 32K), cause not isolated. E2 self-report: one host, one card, not independently reproduced.",
    "evidence_status": "official-lab",
    "hardware": {
     "gpu_model": "Intel Arc Pro B70",
@@ -1709,7 +1709,7 @@
    },
    "engine": {
     "name": "llama.cpp",
-    "version": "SYCL 620d2225c (b11669) + llama.cpp-620d2225c-b70-bolt.patch, GGML_SYCL_F16=ON"
+    "version": "SYCL 620d2225c (b11669) + llama.cpp-620d2225c-b70-bolt.patch, GGML_SYCL_F16=ON, native build on host compute-runtime 26.05.37020.3 / IGC 2.28.4"
    },
    "model": {
     "id": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-GGUF",
@@ -1755,8 +1755,8 @@
     "samples": 5
    },
    "evidence": {
-    "commit": "0619c4be65d323d8c8536fbe77fe8d39026fdf2d",
-    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/0619c4be65d323d8c8536fbe77fe8d39026fdf2d/results/nemotron35-bolt-74b/llamacpp-c1-20261015-summary.json"
+    "commit": "8683d4bbee96813c626782685a56d02f88cc332b",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8683d4bbee96813c626782685a56d02f88cc332b/results/nemotron35-bolt-74b/llamacpp-c1-20261015-summary.json"
    }
   }
  ]

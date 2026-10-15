@@ -2,10 +2,12 @@
 
 NVIDIA's 24GB GGUF of Nemotron 3.5 Bolt runs on one Intel Arc Pro B70 with
 no offload. The route is llama.cpp `620d2225c` (tag `b11669`) with one
-cookbook patch, served from a prebuilt image. Measured on 2026-10-15:
-28.2 tok/s decode at short context, 23.4 tok/s at 65K, and 1357.2 to 1430.7
-tok/s prefill on 2K to 8K prompts. Evidence tier E2 (one host, one card,
-not independently reproduced).
+cookbook patch, served from a prebuilt image. Measured on 2026-10-15 with a
+native build of the same source: 28.2 tok/s decode at short context,
+23.4 tok/s at 65K, and 1357.2 to 1430.7 tok/s prefill on 2K to 8K prompts.
+The packaged image decodes about 6% slower on the same card (see
+[Image check](#image-check)). Evidence tier E2 (one host, one card, not
+independently reproduced).
 
 ## Stack
 
@@ -17,7 +19,8 @@ not independently reproduced).
 | Vision | `mmproj-NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB.gguf` (BF16, 1.6 GiB), same repo |
 | Architecture | 88 layers: 40 Mamba-2, 40 latent MoE (up to 496 experts per layer, top-9), 8 GQA attention (32 query / 2 KV heads). About 9B active parameters. |
 | Engine | llama.cpp [`620d2225c`](https://github.com/ggml-org/llama.cpp/commit/620d2225cc436ab0b001e3200e590e3b286ef9ab) (tag `b11669`) + [`llama.cpp-620d2225c-b70-bolt.patch`](../../patches/llamacpp-sycl/llama.cpp-620d2225c-b70-bolt.patch) |
-| Image | `ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt` (upstream `.devops/intel.Dockerfile`, target `server`, `GGML_SYCL_F16=ON`) |
+| Image (packaged route) | `ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt@sha256:c1b871ee87d2790e92605e89d8fa40c41a61afa128bdce55da0f9fba22e3d042` (upstream `.devops/intel.Dockerfile`, target `server`, `GGML_SYCL_F16=ON`; bundles compute-runtime 26.18.38308.1, IGC 2.34.4) |
+| Measured build | Native `GGML_SYCL_F16=ON` build of the same commit and patch on host compute-runtime 26.05.37020.3, IGC 2.28.4. The catalog record and the tables below come from this build. |
 | Card | One B70 32 GB at its as-found 230 W cap. Server resident VRAM 23.9 GiB at the flags below (DRM fdinfo). |
 | Required env | `GGML_SYCL_GROUPED_MAX_ROWS=0` |
 
@@ -123,6 +126,11 @@ drafter.
 
 ## Numbers
 
+The llama-bench and llama-server tables, and catalog record
+`nemotron35-bolt-74b-llamacpp-c1-v1`, come from the native build on host
+compute-runtime 26.05.37020.3 / IGC 2.28.4. The image check covers the
+packaged route.
+
 ### llama-bench, C1 (record `nemotron35-bolt-74b-llamacpp-c1-v1`)
 
 `-ngl 999 -fa 1 -ctk q8_0 -ctv q4_1 -ub 4096 -b 8192`, built-in same-shape
@@ -159,6 +167,25 @@ placed at 50% depth was found in every long prompt. token/s:
 
 Evidence: [`llamacpp-c1-20261015-summary.json`](../../results/nemotron35-bolt-74b/llamacpp-c1-20261015-summary.json).
 
+### Image check
+
+The pinned image (`sha256:c1b871ee…d042`), same card, same recipe flags, run
+with `docker run`. llama-server timings, greedy, thinking off. token/s:
+
+| Prompt | Image prefill | Image decode | Native prefill | Native decode |
+|---|---:|---:|---:|---:|
+| 886 tokens, 128 out | 852 to 856 | 26.3 | 840 | 28.1 |
+| 32K needle (32,019 image / 32,018 native tokens) | 1281.3 | 24.2 | 1305.8 | 25.65 |
+
+- The 6 smoke cases pass and the greedy text is byte-identical to the native
+  build. The needle was found.
+- The image decodes about 6% slower than the native build. The cause is not
+  isolated: the image bundles compute-runtime 26.18.38308.1 / IGC 2.34.4
+  (host: 26.05.37020.3 / 2.28.4) and is built with `GGML_BACKEND_DL`. Setting
+  `UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS=1` and
+  `SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1` did not change it.
+- Only these two prompts were run on the image. The llama-bench cells were not.
+
 ## Quality
 
 - 6 greedy smoke cases (arithmetic, capital city, letter count, code,
@@ -173,9 +200,8 @@ Evidence: [`llamacpp-c1-20261015-summary.json`](../../results/nemotron35-bolt-74
 
 - More than one concurrent request, or more than one card.
 - Context above 65,536 tokens.
-- The published image itself. The numbers above come from a local
-  `GGML_SYCL_F16=ON` build of the same commit and engine changes; the
-  published patch adds only the `OUT_PROD` test case on top.
+- llama-bench on the image, and image server runs beyond the two prompts in
+  the image check.
 - The upstream `ghcr.io/ggml-org/llama.cpp:server-intel-b11669` image (runs
   the model without the fixes; not measured).
 - Task-quality benchmarks beyond the smoke and the KLD screen.

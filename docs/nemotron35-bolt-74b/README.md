@@ -19,9 +19,13 @@ Do not mix images, patches or numbers between the two families.
 
 - Artifact: `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-GGUF`, the 20.5 GiB
   GGUF plus the BF16 mmproj. Other quantizations of this model are not covered.
-- Engine: the patched image `ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt`.
-  The upstream `server-intel-b11669` image loads the model but lacks the
-  fixes and was not measured. Numbers from it are not this route.
+- Engine: the patched image
+  `ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt@sha256:c1b871ee87d2790e92605e89d8fa40c41a61afa128bdce55da0f9fba22e3d042`.
+  The catalog numbers come from a native build of the same source on host
+  compute-runtime 26.05 / IGC 2.28.4; the image (bundled 26.18 / 2.34.4)
+  decodes about 6% slower on the same card, cause not isolated. The upstream
+  `server-intel-b11669` image loads the model but lacks the fixes and was not
+  measured. Numbers from it are not this route.
 - One card, one request at a time (`-np 1`), 65,536-token context. No
   concurrency, multi-card or longer-context claim.
 - Evidence tier E2: self-reported, one host, one card, not independently

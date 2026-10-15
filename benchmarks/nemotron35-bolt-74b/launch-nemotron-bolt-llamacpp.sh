@@ -17,7 +17,7 @@ set -euo pipefail
 MODEL_DIR=${1:?usage: $0 MODEL_DIR [PORT]}
 PORT=${2:-8080}
 GPU=${GPU:-0}
-IMAGE=${IMAGE:-ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt}
+IMAGE=${IMAGE:-ghcr.io/sergiiob/llama.cpp-sycl-b70:b11669-bolt@sha256:c1b871ee87d2790e92605e89d8fa40c41a61afa128bdce55da0f9fba22e3d042}
 GGUF='NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB.gguf'
 MMPROJ='mmproj-NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB.gguf'
 CONTAINER='b70-nemotron-bolt'
