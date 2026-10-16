@@ -1,0 +1,131 @@
+{
+ "run": "nemotron35-bolt-74b-vllm-tp2-20261016",
+ "date_utc": "2026-10-16",
+ "claim_state": "E2 self-reported: one host, two cards, not independently reproduced",
+ "hardware": {
+  "gpu": "2x Intel Arc Pro B70 32 GB, tensor parallel 2",
+  "power_cap_w": {
+   "card0": 180,
+   "card1": 230
+  },
+  "power_cap_note": "card 1 cap changed 230 W -> 180 W on 2026-10-16 (VRAM temperature 88 C); the speed screen was taken before that"
+ },
+ "engine": {
+  "name": "vLLM XPU",
+  "version": "0.31.0",
+  "image": "vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7",
+  "patches": [
+   "patches/patch_vllm_worker_affinity.py",
+   "patches/patch_xpu_moe_topk_pad.py"
+  ],
+  "apply_order": [
+   "patch_vllm_worker_affinity.py",
+   "patch_xpu_moe_topk_pad.py"
+  ],
+  "entrypoint": "benchmarks/nemotron35-bolt-74b/tp2-entry.sh",
+  "required_env": {
+   "ZE_AFFINITY_MASK": "0,1",
+   "B70_WORKER_AFFINITY": "1",
+   "ONEAPI_DEVICE_SELECTOR": "level_zero:0,1",
+   "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
+   "CCL_SYCL_ALLREDUCE_SIMPLE_THRESHOLD": "4294967296",
+   "CCL_SYCL_REDUCE_SCATTER_SIMPLE_THRESHOLD": "4294967296",
+   "CCL_SYCL_ALLGATHERV_SIMPLE_THRESHOLD": "4294967296",
+   "CCL_SYCL_ALLTOALL_TMP_BUF": "1",
+   "HF_HUB_OFFLINE": "1",
+   "CCL_KVS_IFACE": "lo",
+   "FI_TCP_IFACE": "lo",
+   "VLLM_HOST_IP": "127.0.0.1"
+  },
+  "fixes": {
+   "worker_affinity": "spawn-time ZE_AFFINITY_MASK per worker + device remap; Mamba pointer wrap already upstream in 0.31.0",
+   "topk_pad": "remap_hidden_states supports TopK 1,2,4,6,7,8,10,12,16 only; Bolt routes 9; pad to 10 with router weight 0; output unchanged, about 11% more routed-expert work",
+   "loopback": "without lo pinning the two ranks paired endpoints on different interfaces and hung at startup"
+  }
+ },
+ "model": {
+  "id": "SergiioB/Nemotron-3.5-Bolt-74B-A9B-AutoRound-W4A16-G128-sym",
+  "weights_commit": "31f574676ecc",
+  "card_commit": "213539444c7a",
+  "source": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+  "quantization": "AutoRound W4A16 int4, group 128, symmetric, GPTQ packing",
+  "size": "41 GB (40.65 GiB), 9 shards",
+  "speculation": "none (no MTP layer)"
+ },
+ "flags": {
+  "serve": "--served-model-name nemotron-bolt --host 127.0.0.1 --port 8000 --trust-remote-code --tensor-parallel-size 2 --dtype bfloat16 --kv-cache-dtype fp8 --attention-backend TRITON_ATTN --max-model-len 262144 --max-num-batched-tokens 8192 --block-size 64 --max-num-seqs 4 --gpu-memory-utilization 0.85 --limit-mm-per-prompt {\"image\":1,\"video\":0} --enable-prefix-caching --mamba-cache-mode align",
+  "graph_mode": "on"
+ },
+ "memory": {
+  "weights_gib_per_card": 20.0,
+  "kv_cache_gib_per_card_262k": "0.92-0.94",
+  "kv_tokens_fp8_262k": 409375,
+  "max_concurrency_full_length": 1.56,
+  "used_gib_per_card_16k": 26.6
+ },
+ "speed_screen_c1": {
+  "label": "screen: median of 3 after 1 warmup; not a confirmed result",
+  "method": "16K config, graph mode, prefix cache off, unique prefixes, 128 output tokens, greedy, thinking off",
+  "unit": "token/s",
+  "cells": [
+   {
+    "prompt_tokens": 886,
+    "prefill": 2866,
+    "decode": 59.5
+   },
+   {
+    "prompt_tokens": 8192,
+    "prefill": 2005,
+    "decode": 49.8
+   },
+   {
+    "prompt_tokens": 15000,
+    "prefill": 1446,
+    "decode": 43.5
+   }
+  ],
+  "prefill_definition": "prompt tokens / TTFT",
+  "eager_decode": 10.1,
+  "reference_llamacpp_one_card": {
+   "decode": 28.2,
+   "pp8192": 1431
+  }
+ },
+ "quality": {
+  "config": "262K, prefix cache on",
+  "gate_6q": "5/6; miss is vision with text before image, answers only 42; image first passes",
+  "vision_battery_6": "6/6 both orders",
+  "exact_answer": "8/8 thinking off",
+  "gsm8k_first200": {
+   "correct": 192,
+   "total": 200,
+   "pct": 96.0,
+   "scope": "first 200 of the test split, greedy, thinking off; not a full-benchmark claim"
+  },
+  "multiturn_prefix_cache": "3/3",
+  "cache_on_vs_off": "6/6 identical",
+  "concurrent_4": "4/4 correct, identical to serial",
+  "needles_found": [
+   {
+    "prompt_tokens": 31153,
+    "depth_pct": 90
+   },
+   {
+    "prompt_tokens": 127072,
+    "depth_pct": 10
+   },
+   {
+    "prompt_tokens": 127078,
+    "depth_pct": 50
+   }
+  ]
+ },
+ "untested": [
+  "5-rep speed confirmation",
+  "needles at 250K",
+  "LiLiCorr DFlash drafter",
+  "tool calling",
+  "video",
+  "concurrency beyond 4"
+ ]
+}
