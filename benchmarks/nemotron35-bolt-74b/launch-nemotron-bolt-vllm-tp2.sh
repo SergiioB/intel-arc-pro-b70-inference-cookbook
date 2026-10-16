@@ -3,7 +3,7 @@
 # Intel Arc Pro B70 cards with vLLM XPU 0.31.0, tensor parallel 2.
 #
 # WHEN TO USE: serve the recipe in docs/nemotron35-bolt-74b/VLLM-TP2-AUTOROUND-W4A16.md
-#   (TP2, 262144 context by default, up to 4 sequences).
+#   (TP2, 65536 context by default, up to 4 sequences).
 # WHAT IT DOES: runs the pinned vLLM XPU image with tp2-entry.sh as entrypoint.
 #   The wrapper applies patches/patch_vllm_worker_affinity.py and
 #   patches/patch_xpu_moe_topk_pad.py, checks both, then starts `vllm serve`.
@@ -14,12 +14,12 @@
 #   Load time depends on disk; about 12-15 min on our USB SSD.
 #
 #   bash benchmarks/nemotron35-bolt-74b/launch-nemotron-bolt-vllm-tp2.sh /path/to/model-dir 8000
-#   MAX_LEN=16384 bash ...     # the speed-screen config
+#   MAX_LEN=262144 bash ...    # model maximum (opt-in: a 250K prompt takes about 35 min to read)
 set -euo pipefail
 
 MODEL_DIR=${1:?usage: $0 MODEL_DIR [PORT]}
 PORT=${2:-8000}
-MAX_LEN=${MAX_LEN:-262144}
+MAX_LEN=${MAX_LEN:-65536}
 IMAGE=${IMAGE:-vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7}
 CONTAINER='b70-nemotron-bolt-tp2'
 REPO_ROOT=$(cd "$(dirname "$0")/../.." && pwd)

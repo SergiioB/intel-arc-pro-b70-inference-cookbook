@@ -6,9 +6,13 @@
   "gpu": "2x Intel Arc Pro B70 32 GB, tensor parallel 2",
   "power_cap_w": {
    "card0": 180,
-   "card1": 230
+   "card1": 180
   },
-  "power_cap_note": "card 1 cap changed 230 W -> 180 W on 2026-10-16 (VRAM temperature 88 C); the speed screen was taken before that"
+  "power_cap_note": "both cards capped at 180 W for speed_c1; measured average draw over the 1,178 s run: 170.8 W card 0, 172.3 W card 1. The superseded screen ran with card 1 at 230 W.",
+  "avg_power_w": {
+   "card0": 170.8,
+   "card1": 172.3
+  }
  },
  "engine": {
   "name": "vLLM XPU",
@@ -53,18 +57,96 @@
   "speculation": "none (no MTP layer)"
  },
  "flags": {
-  "serve": "--served-model-name nemotron-bolt --host 127.0.0.1 --port 8000 --trust-remote-code --tensor-parallel-size 2 --dtype bfloat16 --kv-cache-dtype fp8 --attention-backend TRITON_ATTN --max-model-len 262144 --max-num-batched-tokens 8192 --block-size 64 --max-num-seqs 4 --gpu-memory-utilization 0.85 --limit-mm-per-prompt {\"image\":1,\"video\":0} --enable-prefix-caching --mamba-cache-mode align",
-  "graph_mode": "on"
+  "serve": "--served-model-name nemotron-bolt --host 127.0.0.1 --port 8000 --trust-remote-code --tensor-parallel-size 2 --dtype bfloat16 --kv-cache-dtype fp8 --attention-backend TRITON_ATTN --max-model-len 65536 --max-num-batched-tokens 8192 --block-size 64 --max-num-seqs 4 --gpu-memory-utilization 0.85 --limit-mm-per-prompt {\"image\":1,\"video\":0} --enable-prefix-caching --mamba-cache-mode align",
+  "graph_mode": "on",
+  "default_max_model_len": 65536,
+  "opt_in_max_model_len": 262144,
+  "speed_run_max_model_len": 262144
  },
  "memory": {
   "weights_gib_per_card": 20.0,
   "kv_cache_gib_per_card_262k": "0.92-0.94",
   "kv_tokens_fp8_262k": 409375,
-  "max_concurrency_full_length": 1.56,
-  "used_gib_per_card_16k": 26.6
+  "max_concurrency_full_length": 1.56
  },
- "speed_screen_c1": {
-  "label": "screen: median of 3 after 1 warmup; not a confirmed result",
+ "speed_c1": {
+  "label": "confirmed: 1 discarded warmup + 5 reps per shape, median [min-max]",
+  "method": "server --max-model-len 262144, prefix caching on, graph mode, C1, greedy, thinking off, 128 output tokens, unique random prefix per request",
+  "prefix_cache_hit_delta": 0,
+  "prefix_cache_hits_before_after": 46464,
+  "run_seconds": 1178,
+  "unit": "token/s",
+  "prefill_definition": "prompt tokens / TTFT",
+  "cells": [
+   {
+    "prompt_tokens": 886,
+    "prefill": 2925,
+    "prefill_range": [
+     2895,
+     2943
+    ],
+    "ttft_s": 0.3,
+    "decode": 60.5,
+    "decode_range": [
+     60.2,
+     60.7
+    ]
+   },
+   {
+    "prompt_tokens": 8192,
+    "prefill": 2014,
+    "prefill_range": [
+     1993,
+     2026
+    ],
+    "ttft_s": 4.07,
+    "decode": 50.7,
+    "decode_range": [
+     49.9,
+     50.7
+    ]
+   },
+   {
+    "prompt_tokens": 32000,
+    "prefill": 871,
+    "prefill_range": [
+     835,
+     873
+    ],
+    "ttft_s": 36.7,
+    "decode": 33.5,
+    "decode_range": [
+     32.0,
+     33.5
+    ]
+   },
+   {
+    "prompt_tokens": 64000,
+    "prefill": 486,
+    "prefill_range": [
+     463,
+     487
+    ],
+    "ttft_s": 131.7,
+    "decode": 23.0,
+    "decode_range": [
+     23.0,
+     23.0
+    ]
+   }
+  ]
+ },
+ "eager_mode_check": {
+  "config": "16K, earlier check",
+  "decode": 10.1,
+  "note": "graph mode about 6x faster on decode"
+ },
+ "reference_llamacpp_one_card": {
+  "decode": 28.2,
+  "pp8192": 1431
+ },
+ "speed_screen_superseded": {
+  "label": "screen (superseded by speed_c1): median of 3 after 1 warmup, 16K config, prefix cache off; card 0 180 W, card 1 230 W. Do not cite.",
   "method": "16K config, graph mode, prefix cache off, unique prefixes, 128 output tokens, greedy, thinking off",
   "unit": "token/s",
   "cells": [
@@ -84,12 +166,7 @@
     "decode": 43.5
    }
   ],
-  "prefill_definition": "prompt tokens / TTFT",
-  "eager_decode": 10.1,
-  "reference_llamacpp_one_card": {
-   "decode": 28.2,
-   "pp8192": 1431
-  }
+  "prefill_definition": "prompt tokens / TTFT"
  },
  "quality": {
   "config": "262K, prefix cache on",
@@ -118,14 +195,20 @@
     "prompt_tokens": 127078,
     "depth_pct": 50
    }
-  ]
+  ],
+  "full_context_check": {
+   "prompt_tokens": 249212,
+   "depth_pct": 50,
+   "found": true,
+   "request_minutes": 34.6,
+   "scope": "functional only, not a speed claim"
+  }
  },
  "untested": [
-  "5-rep speed confirmation",
-  "needles at 250K",
   "LiLiCorr DFlash drafter",
   "tool calling",
   "video",
-  "concurrency beyond 4"
+  "concurrency beyond 4",
+  "task benchmarks beyond GSM8K first 200"
  ]
 }
