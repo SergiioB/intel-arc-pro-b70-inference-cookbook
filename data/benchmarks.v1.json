@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-10-15T00:00:00Z",
+ "updated_at": "2026-10-16T00:00:00Z",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -1783,6 +1783,75 @@
    "evidence": {
     "commit": "f681e54b607804c1f3f3be8fc567bafcb8e57fcb",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/f681e54b607804c1f3f3be8fc567bafcb8e57fcb/results/nemotron35-bolt-74b/llamacpp-c1-20261015-summary.json"
+   }
+  },
+  {
+   "id": "nemotron35-bolt-74b-vllm-tp2-screen-20261016",
+   "kind": "benchmark",
+   "title": "Nemotron 3.5 Bolt 74B-A9B AutoRound W4A16 (vLLM XPU TP2, two B70) screen",
+   "summary": "Screen, not a confirmed result: median of 3 after 1 warmup. SergiioB AutoRound W4A16 int4 g128 sym (weights 31f574676ecc) on two B70 with tensor parallel 2. vLLM 0.31.0 XPU image vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7 + patch_vllm_worker_affinity.py + patch_xpu_moe_topk_pad.py (pads TopK 9 to 10 with router weight 0) + oneCCL loopback pinning. 16K config, graph mode, prefix cache off, unique prefixes, 128 output tokens, greedy, thinking off. Prefill is prompt tokens / TTFT. 886 tokens: 2,866 prefill / 59.5 decode; 8,192: 2,005 / 49.8; 15,000: 1,446 / 43.5. Eager mode decodes 10.1. Card 0 capped at 180 W, card 1 at 230 W. 5-rep confirmation and 250K needles not tested yet.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.31.0 (vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7) + patch_vllm_worker_affinity.py + patch_xpu_moe_topk_pad.py, TP2"
+   },
+   "model": {
+    "id": "SergiioB/Nemotron-3.5-Bolt-74B-A9B-AutoRound-W4A16-G128-sym",
+    "quantization": "AutoRound W4A16 int4 g128 sym (40.65 GiB)",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 886,
+    "output_tokens": 128,
+    "context_limit_tokens": 16384,
+    "cache": "prefix cache off, unique prefixes"
+   },
+   "metrics": [
+    {
+     "name": "decode_p886",
+     "value": 59.5,
+     "unit": "token/s"
+    },
+    {
+     "name": "prefill_p886",
+     "value": 2866,
+     "unit": "token/s"
+    },
+    {
+     "name": "decode_p8192",
+     "value": 49.8,
+     "unit": "token/s"
+    },
+    {
+     "name": "prefill_p8192",
+     "value": 2005,
+     "unit": "token/s"
+    },
+    {
+     "name": "decode_p15000",
+     "value": 43.5,
+     "unit": "token/s"
+    },
+    {
+     "name": "prefill_p15000",
+     "value": 1446,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 3
+   },
+   "evidence": {
+    "commit": "7daf8b0129c29911ed1893772a7110f65ba313df",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/7daf8b0129c29911ed1893772a7110f65ba313df/results/nemotron35-bolt-74b/vllm-tp2-20261016-summary.json"
    }
   }
  ]
