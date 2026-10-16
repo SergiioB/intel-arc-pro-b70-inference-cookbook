@@ -16,7 +16,7 @@ reproduced. Speed numbers are C1, median of 5 reps, both cards capped at 180 W.
 |---|---|
 | Artifact | [`SergiioB/Nemotron-3.5-Bolt-74B-A9B-AutoRound-W4A16-G128-sym`](https://huggingface.co/SergiioB/Nemotron-3.5-Bolt-74B-A9B-AutoRound-W4A16-G128-sym) (weights commit `31f574676ecc`, card commit `213539444c7a`). License OpenMDW 1.1. |
 | Source model | `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16` (139.5 GiB) |
-| Quantization | Intel AutoRound W4A16, int4, group 128, symmetric, GPTQ packing. 41 GB (40.65 GiB), 9 shards. No MTP layer. |
+| Quantization | Intel AutoRound W4A16, int4, group 128, symmetric, GPTQ packing. 41 GB (40.65 GiB), 9 shards. No MTP layer. How it was made and checked: [AUTOROUND-W4A16-PROCESS.md](AUTOROUND-W4A16-PROCESS.md). |
 | Image | `vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7` (vLLM 0.31.0) |
 | Patches, in order | 1. [`patches/patch_vllm_worker_affinity.py`](../../patches/patch_vllm_worker_affinity.py) 2. [`patches/patch_xpu_moe_topk_pad.py`](../../patches/patch_xpu_moe_topk_pad.py). Both applied at container start by [`tp2-entry.sh`](../../benchmarks/nemotron35-bolt-74b/tp2-entry.sh). |
 | Env | `ZE_AFFINITY_MASK=0,1 B70_WORKER_AFFINITY=1 ONEAPI_DEVICE_SELECTOR=level_zero:0,1 VLLM_WORKER_MULTIPROC_METHOD=spawn CCL_SYCL_ALLREDUCE_SIMPLE_THRESHOLD=4294967296 CCL_SYCL_REDUCE_SCATTER_SIMPLE_THRESHOLD=4294967296 CCL_SYCL_ALLGATHERV_SIMPLE_THRESHOLD=4294967296 CCL_SYCL_ALLTOALL_TMP_BUF=1 HF_HUB_OFFLINE=1`, plus `CCL_KVS_IFACE=lo FI_TCP_IFACE=lo VLLM_HOST_IP=127.0.0.1` |
@@ -103,7 +103,8 @@ average draw over the 1,178 s run was 170.8 W (card 0) and 172.3 W (card 1).
   found. The request took 34.6 min. This is a functional check only.
 
 Quantization static check against BF16: 27,920/27,920 quantized Linear layers,
-no NaN, Inf or zero scales. Every unquantized tensor is identical.
+no NaN, Inf or zero scales. Every unquantized tensor is identical. The export
+steps, fixes and checks are in [AUTOROUND-W4A16-PROCESS.md](AUTOROUND-W4A16-PROCESS.md).
 
 ## Claim boundary
 
