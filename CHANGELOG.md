@@ -14,7 +14,6 @@
 ### Features
 
 * **recipes:** Nemotron 3.5 Bolt 74B-A9B on two B70s with vLLM TP2 (AutoRound W4A16) and the full quantization guide ([5194d73](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/5194d73f1bd7a82675d995535e5883f73577f24d))
-* **recipes:** Nemotron 3.5 Bolt 74B-A9B on two B70s with vLLM TP2 (AutoRound W4A16) and the full quantization guide ([691294f](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/691294f3ef12df8be4f9139199c90466247ad6a9))
 
 ## [1.6.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.5.1...v1.6.0) (2026-10-15)
 
