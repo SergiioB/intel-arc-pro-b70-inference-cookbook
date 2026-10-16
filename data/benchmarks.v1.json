@@ -1786,16 +1786,16 @@
    }
   },
   {
-   "id": "nemotron35-bolt-74b-vllm-tp2-screen-20261016",
+   "id": "nemotron35-bolt-74b-vllm-tp2-c1-20261016",
    "kind": "benchmark",
-   "title": "Nemotron 3.5 Bolt 74B-A9B AutoRound W4A16 (vLLM XPU TP2, two B70) screen",
-   "summary": "Screen, not a confirmed result: median of 3 after 1 warmup. SergiioB AutoRound W4A16 int4 g128 sym (weights 31f574676ecc) on two B70 with tensor parallel 2. vLLM 0.31.0 XPU image vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7 + patch_vllm_worker_affinity.py + patch_xpu_moe_topk_pad.py (pads TopK 9 to 10 with router weight 0) + oneCCL loopback pinning. 16K config, graph mode, prefix cache off, unique prefixes, 128 output tokens, greedy, thinking off. Prefill is prompt tokens / TTFT. 886 tokens: 2,866 prefill / 59.5 decode; 8,192: 2,005 / 49.8; 15,000: 1,446 / 43.5. Eager mode decodes 10.1. Card 0 capped at 180 W, card 1 at 230 W. 5-rep confirmation and 250K needles not tested yet.",
+   "title": "Nemotron 3.5 Bolt 74B-A9B AutoRound W4A16 (vLLM XPU TP2, two B70)",
+   "summary": "SergiioB AutoRound W4A16 int4 g128 sym (weights 31f574676ecc) on two B70 with tensor parallel 2, both cards capped at 180 W. vLLM 0.31.0 XPU image vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7 + patch_vllm_worker_affinity.py + patch_xpu_moe_topk_pad.py (pads TopK 9 to 10 with router weight 0) + oneCCL loopback pinning. Server --max-model-len 262144, prefix caching on (hit delta 0 over the run, so all prompts were cold input), graph mode, C1, greedy, thinking off, 128 output tokens, unique random prefix per request. 1 discarded warmup + 5 reps per shape, median [min-max]. Prefill is prompt tokens / TTFT. 886 tokens: 2,925 [2,895-2,943] prefill / 60.5 [60.2-60.7] decode; 8,192: 2,014 [1,993-2,026] / 50.7 [49.9-50.7]; 32,000: 871 [835-873] / 33.5 [32.0-33.5]; 64,000: 486 [463-487] / 23.0 [23.0-23.0]. Recipe default context 65,536; 262,144 is opt-in. Functional check: one needle at 50% depth in a 249,212-token prompt was found (34.6 min request).",
    "evidence_status": "official-lab",
    "hardware": {
     "gpu_model": "Intel Arc Pro B70",
     "gpu_count": 2,
     "vram_gib_per_gpu": 32,
-    "power_cap_w": 230
+    "power_cap_w": 180
    },
    "engine": {
     "name": "vllm",
@@ -1810,48 +1810,58 @@
     "concurrency": 1,
     "prompt_tokens": 886,
     "output_tokens": 128,
-    "context_limit_tokens": 16384,
-    "cache": "prefix cache off, unique prefixes"
+    "context_limit_tokens": 262144,
+    "cache": "prefix caching on, hit delta 0 (cold input), unique random prefix per request"
    },
    "metrics": [
     {
      "name": "decode_p886",
-     "value": 59.5,
+     "value": 60.5,
      "unit": "token/s"
     },
     {
      "name": "prefill_p886",
-     "value": 2866,
+     "value": 2925,
      "unit": "token/s"
     },
     {
      "name": "decode_p8192",
-     "value": 49.8,
+     "value": 50.7,
      "unit": "token/s"
     },
     {
      "name": "prefill_p8192",
-     "value": 2005,
+     "value": 2014,
      "unit": "token/s"
     },
     {
-     "name": "decode_p15000",
-     "value": 43.5,
+     "name": "decode_p32000",
+     "value": 33.5,
      "unit": "token/s"
     },
     {
-     "name": "prefill_p15000",
-     "value": 1446,
+     "name": "prefill_p32000",
+     "value": 871,
+     "unit": "token/s"
+    },
+    {
+     "name": "decode_p64000",
+     "value": 23.0,
+     "unit": "token/s"
+    },
+    {
+     "name": "prefill_p64000",
+     "value": 486,
      "unit": "token/s"
     }
    ],
    "statistics": {
     "statistic": "median",
-    "samples": 3
+    "samples": 5
    },
    "evidence": {
-    "commit": "7daf8b0129c29911ed1893772a7110f65ba313df",
-    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/7daf8b0129c29911ed1893772a7110f65ba313df/results/nemotron35-bolt-74b/vllm-tp2-20261016-summary.json"
+    "commit": "64ded1a907fdb158a5eca77160168e5392b73cee",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/64ded1a907fdb158a5eca77160168e5392b73cee/results/nemotron35-bolt-74b/vllm-tp2-20261016-summary.json"
    }
   }
  ]
