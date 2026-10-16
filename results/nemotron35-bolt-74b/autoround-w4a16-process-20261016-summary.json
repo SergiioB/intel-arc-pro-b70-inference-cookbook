@@ -1,0 +1,417 @@
+{
+ "run": "nemotron35-bolt-74b-autoround-w4a16-process-20261016",
+ "date_utc": "2026-10-16",
+ "claim_state": "E2 self-reported: one host, two cards, not independently reproduced",
+ "guide": "docs/nemotron35-bolt-74b/AUTOROUND-W4A16-PROCESS.md",
+ "serving_evidence": "results/nemotron35-bolt-74b/vllm-tp2-20261016-summary.json",
+ "source_model": {
+  "id": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+  "revision": "a6a1e5030819a130a1ea08aadb1fe42f4cc86777",
+  "size_gib": 139.5,
+  "modeling_nemotron_h_py_sha256": "e1cb5fc02e887983f0a445bf4c1a2604453b2cb2db4624c7004dcf663bbb1b6e"
+ },
+ "artifact": {
+  "id": "SergiioB/Nemotron-3.5-Bolt-74B-A9B-AutoRound-W4A16-G128-sym",
+  "weights_commit": "31f574676ecc",
+  "size": "41 GB (40.65 GiB), 9 shards",
+  "tensors": 112940,
+  "quantized_layers": 27920,
+  "unquantized_tensors_copied_from_source": 393
+ },
+ "toolchain": {
+  "auto_round": "08d7085e7ef6c9b8ff5969d74dabe8ae4e730c5d + intel/auto-round#2512 commits 6daaf7ce, a5ea56e6e74385c3250d0d123699c0f55a72a1a7 + tools/autoround-b70/patches/autoround-a5ea56e6-dryrun-fixes.diff",
+  "python": "3.12.13",
+  "torch": "2.12.1+xpu",
+  "transformers": "5.12.1",
+  "safetensors": "0.8.0",
+  "accelerate": "1.15.0",
+  "intel_sycl_rt": "2025.3.2",
+  "host_compute_runtime": "26.05.37020.3",
+  "source_patches": ["tools/autoround-b70/patches/nemotron_h_mamba2_einsum.diff (source copy only; NVIDIA original restored in the artifact)"],
+  "shim": "tools/autoround-b70/shims/mamba_ssm"
+ },
+ "export": {
+  "scheme": "W4A16",
+  "bits": 4,
+  "group_size": 128,
+  "sym": true,
+  "format": "auto_gptq",
+  "iters": 200,
+  "nsamples": 128,
+  "seqlen": 1536,
+  "batch_size": 1,
+  "device_map": "0,1",
+  "low_gpu_mem_usage": true,
+  "low_cpu_mem_usage": true,
+  "disk_stream": true,
+  "torch_compile": false,
+  "seed": 42,
+  "calibration_seed": 20260609,
+  "ignore_layers": "vision_model,vision_projector,lm_head,embeddings (+40 MoE router gates by AutoRound)",
+  "calibration_corpus": "private: three gzipped text files of our own docs and code; 8,000-char pieces, 128 kept, truncated to 1,536 tokens",
+  "wall_s_including_save": 21436,
+  "tuning_s": 21352,
+  "layers": 88,
+  "peak_vram_gb": {
+   "card0": 17.11,
+   "card1": 24.1
+  },
+  "peak_ram_gb": 47.45,
+  "host_ram_gb": 60,
+  "extra_swap_gb": 32,
+  "card_power_w_during_tuning": "96-137",
+  "failed_attempts": [
+   {
+    "attempt": 1,
+    "minutes": 14,
+    "cause": "ZE_AFFINITY_MASK + ONEAPI_DEVICE_SELECTOR clash: torch saw 0 XPU devices, ran on CPU"
+   },
+   {
+    "attempt": 2,
+    "minutes": 2,
+    "cause": "out of memory in layer 0, Mamba2 backward (before the einsum patch)"
+   },
+   {
+    "attempt": 3,
+    "minutes": 79,
+    "cause": "one card: DEVICE_LOST at layer 21 of 88 after 71 min (xe VM worker error -12)"
+   }
+  ],
+  "gpu_time_lost": "about 1 h 50 min (08:01-09:54 local)"
+ },
+ "dry_run": {
+  "model": "tiny Bolt-shaped checkpoint (tools/autoround-b70/build_tiny_bolt.py), 6 layers",
+  "device": "cpu",
+  "args": "--iters 2 --nsamples 2 --seqlen 64 --batch-size 1 --device cpu",
+  "summary": "quantized 90/109",
+  "missing_tensors_copied": 36,
+  "wall_s": 34,
+  "peak_ram_gb": 1.55,
+  "fixes_found": [3, 4, 5, 6, 7]
+ },
+ "static_check": {
+  "script": "tools/autoround-b70/check_artifact.py",
+  "run": "2026-10-16, CPU only, published version (alias + lossless F32 rule)",
+  "checks_total": 21,
+  "failed": 0,
+  "expected_breakdown": {
+   "routed": 27648,
+   "shared": 80,
+   "latent": 80,
+   "mamba": 80,
+   "attn": 32
+  },
+  "history": "first version: 11 false failures (source names vs exported names); after the alias fix: 20/21 (120 Mamba A_log/D/dt_bias stored F32 with exact BF16 values); with the F32 rule: 21/21",
+  "checks": [
+   {
+    "name": "artifact-shards-complete",
+    "ok": true,
+    "detail": "all 9 indexed shards present"
+   },
+   {
+    "name": "artifact-quant-config",
+    "ok": true,
+    "detail": "quant_method=gptq bits=4 group_size=128 sym=True desc_act=False modules_to_not_convert=None"
+   },
+   {
+    "name": "artifact-sidecar-files",
+    "ok": true,
+    "detail": "all 19 remote-code/tokenizer/template files present"
+   },
+   {
+    "name": "expected-count",
+    "ok": true,
+    "detail": "27920 == reviewer estimate 27920"
+   },
+   {
+    "name": "count-routed",
+    "ok": true,
+    "detail": "27648 found, 27648 expected, layer set identical"
+   },
+   {
+    "name": "count-shared",
+    "ok": true,
+    "detail": "80 found, 80 expected, layer set identical"
+   },
+   {
+    "name": "count-latent",
+    "ok": true,
+    "detail": "80 found, 80 expected, layer set identical"
+   },
+   {
+    "name": "count-mamba",
+    "ok": true,
+    "detail": "80 found, 80 expected, layer set identical"
+   },
+   {
+    "name": "count-attn",
+    "ok": true,
+    "detail": "32 found, 32 expected, layer set identical"
+   },
+   {
+    "name": "no-unexpected-quantized",
+    "ok": true,
+    "detail": "every quantized module is inside the planned Linear scope"
+   },
+   {
+    "name": "scales-present",
+    "ok": true,
+    "detail": "all 27920 quantized modules carry a scale tensor"
+   },
+   {
+    "name": "scales-finite",
+    "ok": true,
+    "detail": "no NaN, no Inf across 27920 scale tensors"
+   },
+   {
+    "name": "scales-nonzero",
+    "ok": true,
+    "detail": "no zero scale values"
+   },
+   {
+    "name": "e_score_correction_bias (F32 router bias)",
+    "ok": true,
+    "detail": "40 tensors: 40 identical, 0 differ, 0 missing in artifact"
+   },
+   {
+    "name": "mamba core: A_log/D/dt_bias/conv1d",
+    "ok": true,
+    "detail": "200 tensors: 200 identical (120 as exact F32 upcast), 0 differ, 0 missing in artifact"
+   },
+   {
+    "name": "norms: layer norm + norm_f",
+    "ok": true,
+    "detail": "129 tensors: 129 identical, 0 differ, 0 missing in artifact"
+   },
+   {
+    "name": "router gate.weight (must stay unquantized)",
+    "ok": true,
+    "detail": "40 tensors: 40 identical, 0 differ, 0 missing in artifact"
+   },
+   {
+    "name": "vision tower (vision_model.*)",
+    "ok": true,
+    "detail": "391 tensors: 391 identical, 0 differ, 0 missing in artifact"
+   },
+   {
+    "name": "projector (mlp1.*)",
+    "ok": true,
+    "detail": "3 tensors: 3 identical, 0 differ, 0 missing in artifact"
+   },
+   {
+    "name": "embeddings",
+    "ok": true,
+    "detail": "1 tensors: 1 identical, 0 differ, 0 missing in artifact"
+   },
+   {
+    "name": "lm_head",
+    "ok": true,
+    "detail": "1 tensors: 1 identical, 0 differ, 0 missing in artifact"
+   }
+  ],
+  "notes": [
+   {
+    "name": "artifact-only-keys",
+    "detail": "455 keys absent from source: ['vision_model.embeddings.cls_register_token', 'vision_model.embeddings.patch_projection.weight', 'vision_mo..."
+   },
+   {
+    "name": "out_proj-scales-below-6.1e-5",
+    "detail": "0/10485760 = 0.000000 below 6.1e-05 (min=0.002655029296875, max=0.06494140625)"
+   }
+  ]
+ },
+ "speed_confirm": {
+  "label": "confirmed: 1 discarded warmup + 5 reps per shape, median",
+  "script": "tools/autoround-b70/speed2.py",
+  "command": "REPS=5 speed2.py <outdir> 886 8192 32000 64000",
+  "server": "--max-model-len 262144, prefix caching on, graph mode, C1",
+  "utc_window": "2026-10-16T19:24:24Z/2026-10-16T19:44:02Z",
+  "run_seconds": 1178,
+  "prefix_cache_hits_before": 46464,
+  "prefix_cache_hits_after": 46464,
+  "power_cap_w": {
+   "card0": 180,
+   "card1": 180
+  },
+  "avg_power_w": {
+   "card0": 170.8,
+   "card1": 172.3
+  },
+  "shapes": [
+   {
+    "target_tokens": 886,
+    "median_prefill_tok_s": 2924.5,
+    "median_decode_tok_s": 60.49,
+    "median_ttft_s": 0.303,
+    "samples": [
+     [0, true, 886, 128, 0.3934, 2252.0, 60.24, 2.502],
+     [1, false, 886, 128, 0.303, 2924.5, 60.16, 2.414],
+     [2, false, 886, 128, 0.3057, 2898.5, 60.48, 2.406],
+     [3, false, 886, 128, 0.3061, 2894.8, 60.49, 2.406],
+     [4, false, 886, 128, 0.3011, 2942.9, 60.66, 2.395],
+     [5, false, 886, 128, 0.3029, 2924.7, 60.57, 2.4]
+    ]
+   },
+   {
+    "target_tokens": 8192,
+    "median_prefill_tok_s": 2013.9,
+    "median_decode_tok_s": 50.68,
+    "median_ttft_s": 4.0677,
+    "samples": [
+     [0, true, 8192, 128, 4.0449, 2025.3, 50.66, 6.552],
+     [1, false, 8192, 128, 4.0435, 2026.0, 50.68, 6.549],
+     [2, false, 8192, 128, 4.1097, 1993.4, 50.68, 6.615],
+     [3, false, 8192, 128, 4.0901, 2002.9, 49.9, 6.635],
+     [4, false, 8192, 128, 4.053, 2021.2, 50.69, 6.558],
+     [5, false, 8192, 128, 4.0677, 2013.9, 50.68, 6.574]
+    ]
+   },
+   {
+    "target_tokens": 32000,
+    "median_prefill_tok_s": 871.4,
+    "median_decode_tok_s": 33.47,
+    "median_ttft_s": 36.7238,
+    "samples": [
+     [0, true, 32000, 128, 36.6924, 872.1, 33.5, 40.484],
+     [1, false, 32000, 128, 36.7238, 871.4, 33.52, 40.513],
+     [2, false, 32000, 128, 36.6617, 872.8, 33.47, 40.456],
+     [3, false, 32000, 128, 36.7449, 870.9, 33.47, 40.539],
+     [4, false, 32000, 128, 36.6759, 872.5, 33.5, 40.467],
+     [5, false, 32000, 128, 38.3302, 834.9, 32.02, 42.296]
+    ]
+   },
+   {
+    "target_tokens": 64000,
+    "median_prefill_tok_s": 485.9,
+    "median_decode_tok_s": 23.04,
+    "median_ttft_s": 131.7144,
+    "samples": [
+     [0, true, 64000, 128, 140.2464, 456.3, 21.76, 146.083],
+     [1, false, 64000, 128, 138.0997, 463.4, 23.01, 143.619],
+     [2, false, 64000, 128, 131.7144, 485.9, 23.04, 137.227],
+     [3, false, 64000, 128, 131.4641, 486.8, 23.03, 136.978],
+     [4, false, 64000, 128, 131.7789, 485.7, 23.04, 137.292],
+     [5, false, 64000, 128, 131.4635, 486.8, 23.04, 136.977]
+    ]
+   }
+  ],
+  "sample_fields": ["rep", "warmup", "prompt_tokens", "completion_tokens", "ttft_s", "prefill_tok_s", "decode_tok_s", "wall_s"]
+ },
+ "suite": {
+  "config": "262K, prefix cache on, greedy, thinking off",
+  "gate_6q": {
+   "passed": 5,
+   "total": 6,
+   "cases": [
+    {
+     "case": "arith",
+     "pass": true,
+     "text": "391"
+    },
+    {
+     "case": "capital",
+     "pass": true,
+     "text": "Canberra"
+    },
+    {
+     "case": "count_r",
+     "pass": true,
+     "text": "3"
+    },
+    {
+     "case": "code",
+     "pass": true,
+     "text": "```python\ndef is_prime(n):\n    if n < 2:\n        return False\n    for i in range"
+    },
+    {
+     "case": "spanish",
+     "pass": true,
+     "text": "El gato duerme."
+    },
+    {
+     "case": "vision",
+     "pass": false,
+     "text": "42"
+    }
+   ]
+  },
+  "exact_answer": {
+   "passed": 8,
+   "total": 8
+  },
+  "vision_6_images": [
+   ["red_circle_42", "image_first", true, "A red circle with the number 42."],
+   ["red_circle_42", "text_first", true, "42 red circle"],
+   ["blue_square", "image_first", true, "The image contains a blue square."],
+   ["blue_square", "text_first", true, "The image shows a blue square."],
+   ["three_triangles", "image_first", true, "There are 3 green triangles in the image."],
+   ["three_triangles", "text_first", true, "There are 3 green triangles in the image."],
+   ["text_hello", "image_first", true, "HELLO 2026"],
+   ["text_hello", "text_first", true, "HELLO 2026"],
+   ["yellow_star_count", "image_first", true, "4"],
+   ["yellow_star_count", "text_first", true, "4"],
+   ["arrow_right", "image_first", true, "right"],
+   ["arrow_right", "text_first", true, "Right"]
+  ],
+  "gsm8k_first200": {
+   "correct": 192,
+   "total": 200,
+   "failed_indices": [12, 37, 62, 89, 93, 119, 163, 180],
+   "dataset": "openai/gsm8k revision 740312add88f781978c0658806c59bc2815b9866, main test split"
+  },
+  "multiturn": {
+   "passed": 3,
+   "total": 3
+  },
+  "cache_equivalence": {
+   "identical": 6,
+   "total": 6
+  },
+  "concurrent_4": {
+   "passed": 4,
+   "same_as_serial": 4,
+   "total": 4
+  },
+  "needles": [
+   {
+    "prompt_tokens": 31152,
+    "depth": 0.1,
+    "found": true
+   },
+   {
+    "prompt_tokens": 31150,
+    "depth": 0.5,
+    "found": true
+   },
+   {
+    "prompt_tokens": 31153,
+    "depth": 0.9,
+    "found": true
+   },
+   {
+    "prompt_tokens": 127072,
+    "depth": 0.1,
+    "found": true
+   },
+   {
+    "prompt_tokens": 127078,
+    "depth": 0.5,
+    "found": true
+   },
+   {
+    "prompt_tokens": 127071,
+    "depth": 0.9,
+    "found": true
+   },
+   {
+    "prompt_tokens": 249212,
+    "depth": 0.5,
+    "found": true,
+    "wall_s": 2074.62
+   }
+  ],
+  "wikitext": "wiki.test.raw (WikiText-2 raw test), 1,292,013 bytes, sha256 aca2f46735043bcfd0a44eca981d04627b9cdf74c4c9a04bf0856d04066f58fc",
+  "vision_fields": ["case", "order", "pass", "text"]
+ },
+ "untested": ["export on intel/auto-round#2512 head 345e0fe1", "other calibration corpus, seqlen, iters or torch.compile during tuning", "one card plus CPU offload", "task benchmarks beyond GSM8K first 200", "tool calling", "video", "concurrency beyond 4", "LiLiCorr DFlash drafter"]
+}

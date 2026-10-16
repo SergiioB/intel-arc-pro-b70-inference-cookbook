@@ -13,6 +13,8 @@ The two routes use different weights, engines and patches. The claim boundary
 below covers the llama.cpp route; the vLLM TP2 route has its own boundary,
 launcher ([`launch-nemotron-bolt-vllm-tp2.sh`](../../benchmarks/nemotron35-bolt-74b/launch-nemotron-bolt-vllm-tp2.sh)),
 record (`nemotron35-bolt-74b-vllm-tp2-c1-20261016`) and evidence in its recipe.
+How its int4 weights were made and checked, step by step, is in
+[AUTOROUND-W4A16-PROCESS.md](AUTOROUND-W4A16-PROCESS.md).
 
 | Item | Authority |
 |---|---|
