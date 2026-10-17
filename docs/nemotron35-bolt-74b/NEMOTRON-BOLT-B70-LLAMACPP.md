@@ -60,7 +60,8 @@ The launcher runs this inside the image:
 
 ```text
 llama-server -m <gguf> --mmproj <mmproj> -ngl 999 --fit off -c 65536 -np 1 \
-  -b 8192 -ub 4096 --flash-attn on -ctk q8_0 -ctv q4_1 -t 8 --jinja --metrics
+  -b 8192 -ub 4096 --flash-attn on -ctk q8_0 -ctv q4_1 -t 8 --jinja --metrics \
+  --temp 1.0 --top-p 0.95 --top-k 0 --min-p 0
 ```
 
 | Flag | Why |
@@ -72,15 +73,34 @@ llama-server -m <gguf> --mmproj <mmproj> -ngl 999 --fit off -c 65536 -np 1 \
 | `--jinja` | Uses the model's chat template, including the thinking switch. |
 | `GGML_SYCL_GROUPED_MAX_ROWS=0` | Patch knob: grouped XMX MoE GEMM at every batch width. Measured +7% on pp8192. |
 
-### 3. Thinking on or off
+### 3. Sampling and thinking
 
-Thinking is on by default (chat template). Turn it off per request:
+The [NVIDIA model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-GGUF)
+recommends text sampling with temperature `1.0` and top_p `0.95`. The launcher
+sets `--temp 1.0 --top-p 0.95 --top-k 0 --min-p 0` explicitly. The card does
+not specify top_k or min_p, so those extra filters are disabled. Clients such
+as omp that send no sampling settings rely on these server defaults.
+
+At the pinned source, llama-server initializes through
+[`common_init_from_params`](https://github.com/ggml-org/llama.cpp/blob/620d2225cc436ab0b001e3200e590e3b286ef9ab/tools/server/server-context.cpp#L1217),
+which [loads sampling metadata](https://github.com/ggml-org/llama.cpp/blob/620d2225cc436ab0b001e3200e590e3b286ef9ab/common/common.cpp#L1335).
+The [metadata reader](https://github.com/ggml-org/llama.cpp/blob/620d2225cc436ab0b001e3200e590e3b286ef9ab/common/common.cpp#L1088-L1145)
+preserves explicit CLI settings and leaves absent keys unchanged. Thus the
+GGUF's temperature and top_p metadata apply, but absent top_k and min_p keys
+leave the engine defaults of
+[`40` and `0.05`](https://github.com/ggml-org/llama.cpp/blob/620d2225cc436ab0b001e3200e590e3b286ef9ab/common/common.h#L233-L235).
+The explicit flags above avoid those extra filters.
+
+Thinking is on by default. This example turns it off; set `enable_thinking`
+to `true` to turn it on. For medium effort, also set `medium_effort` to `true`.
+Reasoning and answer share the `max_tokens` budget.
 
 ```bash
 curl -s http://127.0.0.1:8080/v1/chat/completions \
   -H 'Content-Type: application/json' \
   -d '{"messages":[{"role":"user","content":"What is 17*23?"}],
-       "chat_template_kwargs":{"enable_thinking":false},"temperature":0}'
+       "temperature":1.0,"top_p":0.95,"max_tokens":16384,
+       "chat_template_kwargs":{"enable_thinking":false}}'
 ```
 
 With thinking on, the server returns the reasoning in a separate field.

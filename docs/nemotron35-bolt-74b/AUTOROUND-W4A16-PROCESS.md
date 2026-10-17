@@ -366,6 +366,7 @@ Fixes 1-11 are for the export, 12 is for the checker, 13-15 are for serving.
 | 13 | vLLM TP2 hung at the oneCCL rendezvous, both cards idle, no log for 20 min | The serve command lacked the cookbook dual-B70 contract (one card per worker, CCL thresholds). Needed, but not the whole cause (see 14) | [`patch_vllm_worker_affinity.py`](../../patches/patch_vllm_worker_affinity.py) plus the four CCL thresholds from [DUAL-B70-TP2.md](../DUAL-B70-TP2.md) | Each worker sees one card; the hang stayed until fix 14 |
 | 14 | Still hung at startup | With `--network host`, oneCCL saw 7 interfaces and the two ranks paired endpoints on different ones (wifi and the docker bridge) | `CCL_KVS_IFACE=lo FI_TCP_IFACE=lo VLLM_HOST_IP=127.0.0.1` | CCL init passes; weights load |
 | 15 | `RuntimeError: Unsupported TopK value` on the first forward pass | vllm-xpu-kernels `remap_hidden_states` supports TopK 1, 2, 4, 6, 7, 8, 10, 12, 16; Bolt routes 9 experts per token | [`patch_xpu_moe_topk_pad.py`](../../patches/patch_xpu_moe_topk_pad.py) pads to 10 with a copy of the last expert at router weight 0 (about 11% more routed-expert work) | Serving; gate and exact battery below. Output equality with an unpadded run cannot be tested: no TopK 9 kernel exists. |
+| 16 | Clients that omit sampling used top_p `1.0` instead of NVIDIA's `0.95` | AutoRound rewrote `generation_config.json`, dropping `do_sample`, temperature and top_p and retaining only EOS `11` instead of `[2, 11]` | Copy NVIDIA's `generation_config.json` after export; serve with `--override-generation-config '{"temperature":1.0,"top_p":0.95}'` regardless of artifact config | Exported config and captured omp request inspected: omp sent neither temperature nor top_p. The quality suite sent `1.0`/`0.95` explicitly and is unaffected. No new quality run is claimed. |
 
 Fixes 3-7 came from the CPU dry run. Fixes 4, 6 and 7 are in
 `autoround-a5ea56e6-dryrun-fixes.diff`; 3 and 5 are in the converter. The
@@ -490,6 +491,17 @@ Not tested:
   concurrency beyond 4; the LiLiCorr DFlash drafter.
 
 ## 8. If you do this again
+
+Copy NVIDIA's `generation_config.json` from the BF16 source after export:
+
+```bash
+cp "$SRC/generation_config.json" "$OUT/generation_config.json"
+```
+
+Preserve `do_sample: true`, `temperature: 1.0`, `top_p: 0.95` and
+`eos_token_id: [2, 11]`. AutoRound's rewritten file is not the model-card
+sampling contract. Keep the explicit server override in the serving recipe
+so clients that omit sampling settings do not inherit engine fallbacks.
 
 1. Download the small files first and run the CPU dry run while the weights
    download.
