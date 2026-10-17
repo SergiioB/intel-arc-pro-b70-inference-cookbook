@@ -16,6 +16,12 @@ record (`nemotron35-bolt-74b-vllm-tp2-c1-20261016`) and evidence in its recipe.
 How its int4 weights were made and checked, step by step, is in
 [AUTOROUND-W4A16-PROCESS.md](AUTOROUND-W4A16-PROCESS.md).
 
+Both routes set model-card text sampling: temperature `1.0`, top_p `0.95`.
+See the [llama.cpp sampling settings](NEMOTRON-BOLT-B70-LLAMACPP.md#3-sampling-and-thinking)
+and [vLLM sampling settings](VLLM-TP2-AUTOROUND-W4A16.md#sampling-and-thinking)
+for server defaults and client examples. Clients such as omp that omit sampling
+settings rely on the server defaults.
+
 | Item | Authority |
 |---|---|
 | Image and patch | [IMAGE-AND-PATCH-MATRIX.md](../IMAGE-AND-PATCH-MATRIX.md), row "Nemotron 3.5 Bolt 74B-A9B" |

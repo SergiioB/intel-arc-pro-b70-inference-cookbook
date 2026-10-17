@@ -48,6 +48,7 @@ docker run -d --restart unless-stopped --name "$CONTAINER" -p "127.0.0.1:$PORT:8
   -m "/model/$GGUF" --mmproj "/model/$MMPROJ" \
   -ngl 999 --fit off -c "$CTX" -np 1 -b 8192 -ub 4096 \
   --flash-attn on -ctk q8_0 -ctv q4_1 -t 8 --jinja --metrics \
+  --temp 1.0 --top-p 0.95 --top-k 0 --min-p 0 \
   --host 0.0.0.0 --port 8080
 
 cat <<EOF

@@ -67,6 +67,7 @@ docker run -d --name "$CONTAINER" --network host \
   --max-model-len "$MAX_LEN" --max-num-batched-tokens 8192 --block-size 64 \
   --max-num-seqs 4 --gpu-memory-utilization 0.85 \
   --limit-mm-per-prompt '{"image":1,"video":0}' \
+  --override-generation-config '{"temperature":1.0,"top_p":0.95}' \
   --enable-prefix-caching --mamba-cache-mode align
 
 cat <<EOF

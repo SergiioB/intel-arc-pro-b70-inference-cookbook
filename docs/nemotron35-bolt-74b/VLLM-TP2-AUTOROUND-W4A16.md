@@ -44,6 +44,27 @@ is not the default. At 262,144 max length the KV cache is 0.92-0.94 GiB per
 card, which holds 409,375 fp8 tokens. That is a max concurrency of 1.56x for one
 full-length request. Weights take 20.0 GiB per card.
 
+## Sampling and thinking
+
+The [NVIDIA model card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16)
+recommends text sampling with temperature `1.0` and top_p `0.95`. The launcher
+sets `--override-generation-config '{"temperature":1.0,"top_p":0.95}'` so these
+are the server defaults even when the exported quantization's generation
+config omits them. Clients such as omp that send no sampling settings rely
+on the server defaults. Explicit client settings still take precedence.
+
+```bash
+curl -s http://127.0.0.1:8000/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"nemotron-bolt","messages":[{"role":"user","content":"What is 17*23?"}],
+       "temperature":1.0,"top_p":0.95,"max_tokens":16384,
+       "chat_template_kwargs":{"enable_thinking":true}}'
+```
+
+Set `enable_thinking` to `false` for thinking off. For medium effort, use
+`{"enable_thinking":true,"medium_effort":true}`. Reasoning and answer share
+the `max_tokens` budget. The historical greedy results below are unchanged.
+
 ## The three fixes
 
 1. **Worker affinity** (`patch_vllm_worker_affinity.py`). Each worker gets its
