@@ -9,6 +9,10 @@ Do not mix images, patches or numbers between the two families.
 | llama.cpp SYCL, NVIDIA 24GB GGUF + mmproj, no drafter | One B70, C1, 64K default, up to 262K context | [NEMOTRON-BOLT-B70-LLAMACPP.md](NEMOTRON-BOLT-B70-LLAMACPP.md) |
 | vLLM XPU TP2, AutoRound W4A16 int4 g128 | Two B70, TP2, both 180 W, 64K default, up to 262K context; C1 decode 60.5 tok/s at 886 prompt tokens (median of 5) | [VLLM-TP2-AUTOROUND-W4A16.md](VLLM-TP2-AUTOROUND-W4A16.md) |
 
+What Bolt is good for compared with Qwen3.8-27B and Qwen3.6-35B-A3B on the same 94 tasks
+(agentic work, tool use and long context strong; physics and strict JSON weaker; two cards for a
+lower total than Qwen3.8-27B on one card): [MODEL-COMPARISON.md](../MODEL-COMPARISON.md).
+
 The two routes use different weights, engines and patches. The claim boundary
 below covers the llama.cpp route; the vLLM TP2 route has its own boundary,
 launcher ([`launch-nemotron-bolt-vllm-tp2.sh`](../../benchmarks/nemotron35-bolt-74b/launch-nemotron-bolt-vllm-tp2.sh)),

@@ -1,0 +1,2716 @@
+{
+ "schema": "model-compare-v1",
+ "date": "2026-10-17",
+ "evidence_tier": "E2 self_reported_with_raw_evidence for per-item outcomes; model answers and the eval harness are not published",
+ "item_set": {
+  "name": "v1-compare",
+  "total": 94,
+  "quota": {
+   "agentic_coding": 6,
+   "chemistry_biology": 8,
+   "coding": 8,
+   "instruction_following": 8,
+   "knowledge_humanities": 8,
+   "knowledge_professional": 8,
+   "long_context": 4,
+   "math": 8,
+   "multilingual": 8,
+   "physics": 8,
+   "structured_output": 8,
+   "tool_use": 8,
+   "web_3d_games": 4
+  },
+  "item_ids": [
+   "agentic-codegen_state_machine",
+   "agentic-repo_dupes_perf",
+   "agentic-repo_inventory_bugs",
+   "agentic-repo_wordfreq_cli",
+   "agentic-codegen_lfu_cache",
+   "agentic-bugfix_token_bucket",
+   "chembio-gpqa-032",
+   "chembio-gpqa-039",
+   "chembio-mmlu-4254",
+   "chembio-gpqa-029",
+   "chembio-gpqa-033",
+   "chembio-gpqa-036",
+   "chembio-mmlu-4353",
+   "chembio-gpqa-028",
+   "coding-he-048",
+   "coding-he-080",
+   "coding-tb-bugfix_binary_search",
+   "coding-tb-codegen_state_machine",
+   "coding-he-082",
+   "coding-tb-bugfix_json_flatten",
+   "coding-tb-codegen_retry_decorator",
+   "coding-he-083",
+   "ifeval-0122",
+   "ifeval-3079",
+   "ifeval-3089",
+   "ifeval-3287",
+   "ifeval-1582",
+   "ifeval-1927",
+   "ifeval-2801",
+   "ifeval-1571",
+   "humanities-hist-4943",
+   "humanities-arts-1208",
+   "humanities-phil-11070",
+   "humanities-hist-4944",
+   "humanities-arts-1366",
+   "humanities-phil-11175",
+   "humanities-hist-4947",
+   "humanities-arts-1658",
+   "prof-biz-484",
+   "prof-econ-7162",
+   "prof-law-928",
+   "prof-med-6262",
+   "prof-biz-401",
+   "prof-econ-7161",
+   "prof-law-1045",
+   "prof-med-6585",
+   "longcontext-multifact16k-01",
+   "longcontext-needle16k-07",
+   "longcontext-multifact64k-10",
+   "longcontext-needle64k-04",
+   "math-test/prealgebra/1840.json",
+   "math-test/counting_and_probability/216.json",
+   "math-test/geometry/561.json",
+   "math-test/number_theory/978.json",
+   "math-test/precalculus/989.json",
+   "math-test/prealgebra/1227.json",
+   "math-test/counting_and_probability/181.json",
+   "math-test/geometry/615.json",
+   "multi-fr-04",
+   "multi-de-09",
+   "multi-it-09",
+   "multi-ja-09",
+   "multi-es-08",
+   "multi-fr-05",
+   "multi-de-08",
+   "multi-it-08",
+   "physics-electromagnetism-18",
+   "physics-mechanics-03",
+   "physics-optics-33",
+   "physics-relativity-45",
+   "physics-thermodynamics-24",
+   "physics-electromagnetism-16",
+   "physics-mechanics-02",
+   "physics-optics-32",
+   "struct-enum-09",
+   "struct-nested-01",
+   "struct-relation-10",
+   "struct-constraints-01",
+   "struct-enum-08",
+   "struct-nested-03",
+   "struct-relation-08",
+   "struct-constraints-02",
+   "tool-args-20",
+   "tool-select-20",
+   "tool-dispatch-09",
+   "tool-args-08",
+   "tool-select-10",
+   "tool-dispatch-12",
+   "tool-args-09",
+   "tool-select-11",
+   "web-web_raymarched_fractal",
+   "web-web_tower_defense",
+   "web-web_boids_flocking",
+   "web-web_planet_generator"
+  ],
+  "sources": "HumanEval, GPQA Diamond (option order shuffled with a fixed seed), MMLU-Pro, MATH-500, IFEval, plus authored physics, tool-use, structured-output, multilingual and long-context (needle and multi-fact, nominal 16K/64K) items, omp agentic repository tasks graded by hidden tests, and single-page web/3D tasks graded by a headless-browser render check"
+ },
+ "sampling": "temperature 1.0, top_p 0.95 (Qwen also top_k 20, min_p 0; presence_penalty 0 for Qwen3.8, 1.5 for Qwen3.6), fixed seed per item, thinking on, one sample per item",
+ "max_tokens": {
+  "coding": 16384,
+  "agentic_coding": "32768 per turn, 15 min per task",
+  "web_3d_games": 32768,
+  "physics": 32768,
+  "chemistry_biology": 32768,
+  "math": 32768,
+  "knowledge_humanities": 16384,
+  "knowledge_professional": 16384,
+  "instruction_following": 16384,
+  "long_context": 8192,
+  "tool_use": 16384,
+  "structured_output": 16384,
+  "multilingual": 16384
+ },
+ "power": "power1_cap 180 W on both cards for every run; energy from hwmon energy1_input (card domain), 1 Hz",
+ "models": {
+  "nemotron35-bolt-74b-a9b-w4a16": {
+   "label": "Nemotron 3.5 Bolt 74B-A9B AutoRound W4A16 g128 (vLLM XPU TP2)",
+   "cards": 2,
+   "route": "docs/nemotron35-bolt-74b/VLLM-TP2-AUTOROUND-W4A16.md",
+   "params_total_b": 74,
+   "params_active_b": 9,
+   "weights_gb": 43.6,
+   "concurrency": "C8, long context C2, agentic C1",
+   "engine": "vllm-xpu",
+   "engine_version": "vLLM 0.31.0 vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7, TP2, fp8 KV, graphs on, prefix cache on (cookbook VLLM-TP2-AUTOROUND-W4A16)",
+   "wall_time_s": 3096.022,
+   "items": [
+    {
+     "item_id": "chembio-gpqa-039",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 508,
+     "reasoning_tokens": 403
+    },
+    {
+     "item_id": "coding-he-048",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 253,
+     "reasoning_tokens": 166
+    },
+    {
+     "item_id": "chembio-gpqa-033",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1310,
+     "reasoning_tokens": 1226
+    },
+    {
+     "item_id": "coding-he-080",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 608,
+     "reasoning_tokens": 419
+    },
+    {
+     "item_id": "coding-he-082",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 664,
+     "reasoning_tokens": 494
+    },
+    {
+     "item_id": "coding-tb-bugfix_binary_search",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 935,
+     "reasoning_tokens": 856
+    },
+    {
+     "item_id": "coding-he-083",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1777,
+     "reasoning_tokens": 1704
+    },
+    {
+     "item_id": "coding-tb-bugfix_json_flatten",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 520,
+     "reasoning_tokens": 436
+    },
+    {
+     "item_id": "chembio-mmlu-4353",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4260,
+     "reasoning_tokens": 4073
+    },
+    {
+     "item_id": "chembio-mmlu-4254",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5221,
+     "reasoning_tokens": 5139
+    },
+    {
+     "item_id": "chembio-gpqa-029",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5505,
+     "reasoning_tokens": 5406
+    },
+    {
+     "item_id": "coding-tb-codegen_retry_decorator",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3013,
+     "reasoning_tokens": 2862
+    },
+    {
+     "item_id": "ifeval-1571",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1301,
+     "reasoning_tokens": 1215
+    },
+    {
+     "item_id": "ifeval-2801",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 449,
+     "reasoning_tokens": 402
+    },
+    {
+     "item_id": "ifeval-1927",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1007,
+     "reasoning_tokens": 806
+    },
+    {
+     "item_id": "ifeval-0122",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2996,
+     "reasoning_tokens": 2060
+    },
+    {
+     "item_id": "ifeval-1582",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1925,
+     "reasoning_tokens": 1883
+    },
+    {
+     "item_id": "humanities-hist-4944",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 779,
+     "reasoning_tokens": 724
+    },
+    {
+     "item_id": "ifeval-3079",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1517,
+     "reasoning_tokens": 1242
+    },
+    {
+     "item_id": "humanities-hist-4947",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 559,
+     "reasoning_tokens": 496
+    },
+    {
+     "item_id": "humanities-phil-11175",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 403,
+     "reasoning_tokens": 314
+    },
+    {
+     "item_id": "humanities-hist-4943",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 771,
+     "reasoning_tokens": 709
+    },
+    {
+     "item_id": "ifeval-3287",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2622,
+     "reasoning_tokens": 2103
+    },
+    {
+     "item_id": "humanities-arts-1208",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2135,
+     "reasoning_tokens": 2049
+    },
+    {
+     "item_id": "ifeval-3089",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5377,
+     "reasoning_tokens": 4593
+    },
+    {
+     "item_id": "chembio-gpqa-028",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 13904,
+     "reasoning_tokens": 13810
+    },
+    {
+     "item_id": "humanities-phil-11070",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5165,
+     "reasoning_tokens": 5030
+    },
+    {
+     "item_id": "prof-med-6262",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 483,
+     "reasoning_tokens": 334
+    },
+    {
+     "item_id": "prof-law-928",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5482,
+     "reasoning_tokens": 5403
+    },
+    {
+     "item_id": "prof-med-6585",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3674,
+     "reasoning_tokens": 3626
+    },
+    {
+     "item_id": "prof-econ-7161",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 547,
+     "reasoning_tokens": 496
+    },
+    {
+     "item_id": "humanities-arts-1366",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 7112,
+     "reasoning_tokens": 7045
+    },
+    {
+     "item_id": "prof-econ-7162",
+     "area": "knowledge_professional",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 1112,
+     "reasoning_tokens": 1063
+    },
+    {
+     "item_id": "math-test/prealgebra/1840.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 365,
+     "reasoning_tokens": 225
+    },
+    {
+     "item_id": "coding-tb-codegen_state_machine",
+     "area": "coding",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 16384,
+     "reasoning_tokens": 16105
+    },
+    {
+     "item_id": "math-test/prealgebra/1227.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 506,
+     "reasoning_tokens": 489
+    },
+    {
+     "item_id": "prof-biz-484",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1420,
+     "reasoning_tokens": 1281
+    },
+    {
+     "item_id": "math-test/number_theory/978.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 536,
+     "reasoning_tokens": 420
+    },
+    {
+     "item_id": "prof-biz-401",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3636,
+     "reasoning_tokens": 3543
+    },
+    {
+     "item_id": "math-test/geometry/615.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3692,
+     "reasoning_tokens": 3558
+    },
+    {
+     "item_id": "math-test/counting_and_probability/216.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 817,
+     "reasoning_tokens": 764
+    },
+    {
+     "item_id": "multi-es-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 631,
+     "reasoning_tokens": 426
+    },
+    {
+     "item_id": "prof-law-1045",
+     "area": "knowledge_professional",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 10386,
+     "reasoning_tokens": 10323
+    },
+    {
+     "item_id": "humanities-arts-1658",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 15072,
+     "reasoning_tokens": 15004
+    },
+    {
+     "item_id": "multi-de-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 572,
+     "reasoning_tokens": 315
+    },
+    {
+     "item_id": "multi-fr-05",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1113,
+     "reasoning_tokens": 866
+    },
+    {
+     "item_id": "multi-fr-04",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1213,
+     "reasoning_tokens": 578
+    },
+    {
+     "item_id": "multi-de-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 781,
+     "reasoning_tokens": 395
+    },
+    {
+     "item_id": "multi-it-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 661,
+     "reasoning_tokens": 182
+    },
+    {
+     "item_id": "math-test/precalculus/989.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3271,
+     "reasoning_tokens": 2902
+    },
+    {
+     "item_id": "multi-ja-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1122,
+     "reasoning_tokens": 784
+    },
+    {
+     "item_id": "multi-it-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1530,
+     "reasoning_tokens": 179
+    },
+    {
+     "item_id": "physics-electromagnetism-18",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 755,
+     "reasoning_tokens": 669
+    },
+    {
+     "item_id": "physics-mechanics-02",
+     "area": "physics",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 3055,
+     "reasoning_tokens": 2807
+    },
+    {
+     "item_id": "physics-mechanics-03",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4018,
+     "reasoning_tokens": 3809
+    },
+    {
+     "item_id": "physics-thermodynamics-24",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3420,
+     "reasoning_tokens": 3366
+    },
+    {
+     "item_id": "physics-optics-33",
+     "area": "physics",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 846,
+     "reasoning_tokens": 676
+    },
+    {
+     "item_id": "struct-nested-01",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 529,
+     "reasoning_tokens": 428
+    },
+    {
+     "item_id": "struct-nested-03",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 286,
+     "reasoning_tokens": 185
+    },
+    {
+     "item_id": "struct-constraints-01",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 243,
+     "reasoning_tokens": 174
+    },
+    {
+     "item_id": "chembio-gpqa-036",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32768
+    },
+    {
+     "item_id": "chembio-gpqa-032",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32768
+    },
+    {
+     "item_id": "struct-constraints-02",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 212,
+     "reasoning_tokens": 143
+    },
+    {
+     "item_id": "physics-optics-32",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3879,
+     "reasoning_tokens": 3641
+    },
+    {
+     "item_id": "struct-enum-08",
+     "area": "structured_output",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 1122,
+     "reasoning_tokens": 1062
+    },
+    {
+     "item_id": "tool-select-10",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 111,
+     "reasoning_tokens": 65
+    },
+    {
+     "item_id": "struct-enum-09",
+     "area": "structured_output",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 1247,
+     "reasoning_tokens": 1188
+    },
+    {
+     "item_id": "tool-select-11",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 73,
+     "reasoning_tokens": 34
+    },
+    {
+     "item_id": "struct-relation-10",
+     "area": "structured_output",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 1110,
+     "reasoning_tokens": 982
+    },
+    {
+     "item_id": "tool-select-20",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 134,
+     "reasoning_tokens": 91
+    },
+    {
+     "item_id": "tool-args-08",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 114,
+     "reasoning_tokens": 63
+    },
+    {
+     "item_id": "struct-relation-08",
+     "area": "structured_output",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 1310,
+     "reasoning_tokens": 1183
+    },
+    {
+     "item_id": "tool-args-09",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 148,
+     "reasoning_tokens": 97
+    },
+    {
+     "item_id": "tool-args-20",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 113,
+     "reasoning_tokens": 61
+    },
+    {
+     "item_id": "tool-dispatch-09",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 174,
+     "reasoning_tokens": 120
+    },
+    {
+     "item_id": "tool-dispatch-12",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 183,
+     "reasoning_tokens": 128
+    },
+    {
+     "item_id": "math-test/counting_and_probability/181.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 16017,
+     "reasoning_tokens": 15853
+    },
+    {
+     "item_id": "math-test/geometry/561.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 18184,
+     "reasoning_tokens": 17899
+    },
+    {
+     "item_id": "web-web_planet_generator",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 11619,
+     "reasoning_tokens": 6702
+    },
+    {
+     "item_id": "web-web_boids_flocking",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 18955,
+     "reasoning_tokens": 15886
+    },
+    {
+     "item_id": "web-web_tower_defense",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 22298,
+     "reasoning_tokens": 17350
+    },
+    {
+     "item_id": "physics-electromagnetism-16",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 32040,
+     "reasoning_tokens": 31963
+    },
+    {
+     "item_id": "web-web_raymarched_fractal",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 29221,
+     "reasoning_tokens": 25822
+    },
+    {
+     "item_id": "physics-relativity-45",
+     "area": "physics",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 38321
+    },
+    {
+     "item_id": "longcontext-needle16k-07",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 131,
+     "reasoning_tokens": 117
+    },
+    {
+     "item_id": "longcontext-needle64k-04",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 140,
+     "reasoning_tokens": 125
+    },
+    {
+     "item_id": "longcontext-multifact64k-10",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 292,
+     "reasoning_tokens": 270
+    },
+    {
+     "item_id": "longcontext-multifact16k-01",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 389,
+     "reasoning_tokens": 349
+    },
+    {
+     "item_id": "agentic-repo_inventory_bugs",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1695,
+     "reasoning_tokens": 759
+    },
+    {
+     "item_id": "agentic-repo_wordfreq_cli",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1921,
+     "reasoning_tokens": 1038
+    },
+    {
+     "item_id": "agentic-repo_dupes_perf",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 930,
+     "reasoning_tokens": 345
+    },
+    {
+     "item_id": "agentic-codegen_lfu_cache",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 9271,
+     "reasoning_tokens": 4648
+    },
+    {
+     "item_id": "agentic-codegen_state_machine",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 6999,
+     "reasoning_tokens": 5439
+    },
+    {
+     "item_id": "agentic-bugfix_token_bucket",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 953,
+     "reasoning_tokens": 392
+    }
+   ]
+  },
+  "qwen38-27b-exl3-4.0bpw": {
+   "label": "Qwen3.8-27B EXL3 4.00bpw + MTP3 (exl3xpu)",
+   "cards": 1,
+   "route": "docs/qwen38-27b/EXL3-XPU.md",
+   "params_total_b": 27,
+   "params_active_b": 27,
+   "weights_gb": 15.7,
+   "concurrency": "C8, long context C1, agentic C1",
+   "engine": "exl3xpu",
+   "engine_version": "ghcr.io/0xsero/exl3xpu:0.1.0@sha256:21412bdd7535e9c653eeb3d099dce3bc79a83d440def2cd9556111c79c870fa8, MTP3, fp8 KV, int8 prefill, prefix cache on (launcher recipe qwen38-27b exl3, cookbook EXL3-XPU)",
+   "wall_time_s": 3401.022,
+   "items": [
+    {
+     "item_id": "chembio-gpqa-039",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 801,
+     "reasoning_tokens": 681
+    },
+    {
+     "item_id": "coding-he-048",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 186,
+     "reasoning_tokens": 97
+    },
+    {
+     "item_id": "chembio-gpqa-033",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1032,
+     "reasoning_tokens": 956
+    },
+    {
+     "item_id": "coding-he-082",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 333,
+     "reasoning_tokens": 161
+    },
+    {
+     "item_id": "coding-he-080",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 546,
+     "reasoning_tokens": 346
+    },
+    {
+     "item_id": "coding-tb-bugfix_binary_search",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 567,
+     "reasoning_tokens": 481
+    },
+    {
+     "item_id": "coding-he-083",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 993,
+     "reasoning_tokens": 914
+    },
+    {
+     "item_id": "chembio-mmlu-4353",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2603,
+     "reasoning_tokens": 2183
+    },
+    {
+     "item_id": "chembio-mmlu-4254",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2462,
+     "reasoning_tokens": 2395
+    },
+    {
+     "item_id": "ifeval-0122",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 740,
+     "reasoning_tokens": 225
+    },
+    {
+     "item_id": "ifeval-1571",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 269,
+     "reasoning_tokens": 220
+    },
+    {
+     "item_id": "chembio-gpqa-028",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4076,
+     "reasoning_tokens": 3920
+    },
+    {
+     "item_id": "ifeval-1927",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 581,
+     "reasoning_tokens": 458
+    },
+    {
+     "item_id": "coding-tb-bugfix_json_flatten",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2709,
+     "reasoning_tokens": 2618
+    },
+    {
+     "item_id": "ifeval-2801",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 207,
+     "reasoning_tokens": 158
+    },
+    {
+     "item_id": "ifeval-1582",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 755,
+     "reasoning_tokens": 704
+    },
+    {
+     "item_id": "chembio-gpqa-029",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 6444,
+     "reasoning_tokens": 6292
+    },
+    {
+     "item_id": "ifeval-3079",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2025,
+     "reasoning_tokens": 1855
+    },
+    {
+     "item_id": "humanities-hist-4944",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 584,
+     "reasoning_tokens": 519
+    },
+    {
+     "item_id": "humanities-hist-4947",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 201,
+     "reasoning_tokens": 161
+    },
+    {
+     "item_id": "humanities-hist-4943",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 156,
+     "reasoning_tokens": 150
+    },
+    {
+     "item_id": "humanities-phil-11175",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 238,
+     "reasoning_tokens": 185
+    },
+    {
+     "item_id": "ifeval-3287",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3448,
+     "reasoning_tokens": 2951
+    },
+    {
+     "item_id": "ifeval-3089",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3345,
+     "reasoning_tokens": 2862
+    },
+    {
+     "item_id": "humanities-phil-11070",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2848,
+     "reasoning_tokens": 2795
+    },
+    {
+     "item_id": "chembio-gpqa-032",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 17732,
+     "reasoning_tokens": 17645
+    },
+    {
+     "item_id": "coding-tb-codegen_retry_decorator",
+     "area": "coding",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 16384,
+     "reasoning_tokens": 16383
+    },
+    {
+     "item_id": "prof-med-6262",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 237,
+     "reasoning_tokens": 199
+    },
+    {
+     "item_id": "coding-tb-codegen_state_machine",
+     "area": "coding",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 16384,
+     "reasoning_tokens": 16383
+    },
+    {
+     "item_id": "prof-med-6585",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 756,
+     "reasoning_tokens": 728
+    },
+    {
+     "item_id": "prof-econ-7161",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 157,
+     "reasoning_tokens": 151
+    },
+    {
+     "item_id": "prof-law-1045",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1808,
+     "reasoning_tokens": 1585
+    },
+    {
+     "item_id": "prof-econ-7162",
+     "area": "knowledge_professional",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 1012,
+     "reasoning_tokens": 1006
+    },
+    {
+     "item_id": "math-test/prealgebra/1840.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 272,
+     "reasoning_tokens": 145
+    },
+    {
+     "item_id": "math-test/prealgebra/1227.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 167,
+     "reasoning_tokens": 109
+    },
+    {
+     "item_id": "prof-biz-484",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1418,
+     "reasoning_tokens": 1269
+    },
+    {
+     "item_id": "humanities-arts-1658",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 12331,
+     "reasoning_tokens": 12137
+    },
+    {
+     "item_id": "math-test/number_theory/978.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 951,
+     "reasoning_tokens": 731
+    },
+    {
+     "item_id": "math-test/geometry/615.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1269,
+     "reasoning_tokens": 1090
+    },
+    {
+     "item_id": "math-test/counting_and_probability/216.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 394,
+     "reasoning_tokens": 268
+    },
+    {
+     "item_id": "prof-biz-401",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2390,
+     "reasoning_tokens": 2290
+    },
+    {
+     "item_id": "multi-es-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 260,
+     "reasoning_tokens": 128
+    },
+    {
+     "item_id": "multi-fr-04",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 293,
+     "reasoning_tokens": 136
+    },
+    {
+     "item_id": "multi-fr-05",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 221,
+     "reasoning_tokens": 75
+    },
+    {
+     "item_id": "multi-de-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 351,
+     "reasoning_tokens": 125
+    },
+    {
+     "item_id": "prof-law-928",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 12851,
+     "reasoning_tokens": 12684
+    },
+    {
+     "item_id": "humanities-arts-1208",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 16384,
+     "reasoning_tokens": 16383
+    },
+    {
+     "item_id": "multi-it-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 154,
+     "reasoning_tokens": 54
+    },
+    {
+     "item_id": "multi-it-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 289,
+     "reasoning_tokens": 45
+    },
+    {
+     "item_id": "multi-de-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1066,
+     "reasoning_tokens": 991
+    },
+    {
+     "item_id": "multi-ja-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 360,
+     "reasoning_tokens": 114
+    },
+    {
+     "item_id": "humanities-arts-1366",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 16384,
+     "reasoning_tokens": 16384
+    },
+    {
+     "item_id": "physics-electromagnetism-18",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 348,
+     "reasoning_tokens": 268
+    },
+    {
+     "item_id": "physics-mechanics-02",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1903,
+     "reasoning_tokens": 1553
+    },
+    {
+     "item_id": "physics-thermodynamics-24",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1015,
+     "reasoning_tokens": 837
+    },
+    {
+     "item_id": "physics-optics-33",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 562,
+     "reasoning_tokens": 309
+    },
+    {
+     "item_id": "math-test/precalculus/989.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 6694,
+     "reasoning_tokens": 6200
+    },
+    {
+     "item_id": "struct-nested-01",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 356,
+     "reasoning_tokens": 244
+    },
+    {
+     "item_id": "struct-nested-03",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 265,
+     "reasoning_tokens": 152
+    },
+    {
+     "item_id": "physics-electromagnetism-16",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3835,
+     "reasoning_tokens": 3738
+    },
+    {
+     "item_id": "struct-constraints-01",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 192,
+     "reasoning_tokens": 119
+    },
+    {
+     "item_id": "struct-constraints-02",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 273,
+     "reasoning_tokens": 199
+    },
+    {
+     "item_id": "struct-enum-08",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 175,
+     "reasoning_tokens": 107
+    },
+    {
+     "item_id": "struct-enum-09",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 144,
+     "reasoning_tokens": 75
+    },
+    {
+     "item_id": "struct-relation-08",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 247,
+     "reasoning_tokens": 107
+    },
+    {
+     "item_id": "struct-relation-10",
+     "area": "structured_output",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 215,
+     "reasoning_tokens": 78
+    },
+    {
+     "item_id": "tool-select-11",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 79,
+     "reasoning_tokens": 36
+    },
+    {
+     "item_id": "tool-select-10",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 157,
+     "reasoning_tokens": 107
+    },
+    {
+     "item_id": "tool-select-20",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 88,
+     "reasoning_tokens": 42
+    },
+    {
+     "item_id": "tool-args-08",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 85,
+     "reasoning_tokens": 28
+    },
+    {
+     "item_id": "tool-args-09",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 111,
+     "reasoning_tokens": 54
+    },
+    {
+     "item_id": "tool-args-20",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 133,
+     "reasoning_tokens": 76
+    },
+    {
+     "item_id": "tool-dispatch-09",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 107,
+     "reasoning_tokens": 50
+    },
+    {
+     "item_id": "tool-dispatch-12",
+     "area": "tool_use",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 170,
+     "reasoning_tokens": 112
+    },
+    {
+     "item_id": "physics-mechanics-03",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 6935,
+     "reasoning_tokens": 6712
+    },
+    {
+     "item_id": "chembio-gpqa-036",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32768
+    },
+    {
+     "item_id": "math-test/counting_and_probability/181.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 9514,
+     "reasoning_tokens": 9060
+    },
+    {
+     "item_id": "math-test/geometry/561.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 13029,
+     "reasoning_tokens": 12656
+    },
+    {
+     "item_id": "physics-optics-32",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 7981,
+     "reasoning_tokens": 7867
+    },
+    {
+     "item_id": "physics-relativity-45",
+     "area": "physics",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 22065,
+     "reasoning_tokens": 21665
+    },
+    {
+     "item_id": "web-web_planet_generator",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32760
+    },
+    {
+     "item_id": "web-web_tower_defense",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32768
+    },
+    {
+     "item_id": "web-web_boids_flocking",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32768
+    },
+    {
+     "item_id": "web-web_raymarched_fractal",
+     "area": "web_3d_games",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32765
+    },
+    {
+     "item_id": "longcontext-needle16k-07",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 142,
+     "reasoning_tokens": 127
+    },
+    {
+     "item_id": "longcontext-needle64k-04",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 121,
+     "reasoning_tokens": 106
+    },
+    {
+     "item_id": "longcontext-multifact16k-01",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 279,
+     "reasoning_tokens": 246
+    },
+    {
+     "item_id": "longcontext-multifact64k-10",
+     "area": "long_context",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 257,
+     "reasoning_tokens": 228
+    },
+    {
+     "item_id": "agentic-repo_inventory_bugs",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1771,
+     "reasoning_tokens": 769
+    },
+    {
+     "item_id": "agentic-repo_wordfreq_cli",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1762,
+     "reasoning_tokens": 817
+    },
+    {
+     "item_id": "agentic-repo_dupes_perf",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1147,
+     "reasoning_tokens": 719
+    },
+    {
+     "item_id": "agentic-codegen_lfu_cache",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 12549,
+     "reasoning_tokens": 8601
+    },
+    {
+     "item_id": "agentic-codegen_state_machine",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 31937,
+     "reasoning_tokens": 25790
+    },
+    {
+     "item_id": "agentic-bugfix_token_bucket",
+     "area": "agentic_coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1363,
+     "reasoning_tokens": 522
+    }
+   ]
+  },
+  "qwen36-35b-a3b-openvino-int4": {
+   "label": "Qwen3.6-35B-A3B OpenVINO INT4 (OVMS 2026.4.1)",
+   "cards": 1,
+   "route": "OVMS openvino/model_server:2026.4.1-gpu, Qwen3.6-35B-A3B-int4-ov",
+   "params_total_b": 35,
+   "params_active_b": 3,
+   "weights_gb": 18.3,
+   "concurrency": "C4, long context C1, agentic C1",
+   "engine": "ovms",
+   "engine_version": "openvino/model_server:2026.4.1-gpu@sha256:a928903fe429f1e3e27107cc45932d30d95febfd2d1159dc50869c3eac76fc58, prefix cache on, qwen3 reasoning + qwen3coder tool parsers (launcher recipe qwen36-35b openvino)",
+   "wall_time_s": null,
+   "items": [
+    {
+     "item_id": "chembio-gpqa-033",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2576,
+     "reasoning_tokens": 1909
+    },
+    {
+     "item_id": "chembio-gpqa-032",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 7230,
+     "reasoning_tokens": 6734
+    },
+    {
+     "item_id": "chembio-gpqa-029",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 9995,
+     "reasoning_tokens": 9520
+    },
+    {
+     "item_id": "chembio-gpqa-039",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 4786,
+     "reasoning_tokens": 4089
+    },
+    {
+     "item_id": "chembio-mmlu-4254",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5569,
+     "reasoning_tokens": 5105
+    },
+    {
+     "item_id": "chembio-gpqa-028",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 20114,
+     "reasoning_tokens": 19683
+    },
+    {
+     "item_id": "coding-he-048",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5760,
+     "reasoning_tokens": 5673
+    },
+    {
+     "item_id": "coding-he-080",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 8361,
+     "reasoning_tokens": 8078
+    },
+    {
+     "item_id": "chembio-mmlu-4353",
+     "area": "chemistry_biology",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 16572,
+     "reasoning_tokens": 15710
+    },
+    {
+     "item_id": "coding-he-082",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 7958,
+     "reasoning_tokens": 7709
+    },
+    {
+     "item_id": "coding-tb-bugfix_json_flatten",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4049,
+     "reasoning_tokens": 3899
+    },
+    {
+     "item_id": "coding-tb-bugfix_binary_search",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4957,
+     "reasoning_tokens": 4871
+    },
+    {
+     "item_id": "chembio-gpqa-036",
+     "area": "chemistry_biology",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 32768,
+     "reasoning_tokens": 32768
+    },
+    {
+     "item_id": "coding-tb-codegen_retry_decorator",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4616,
+     "reasoning_tokens": 4487
+    },
+    {
+     "item_id": "ifeval-0122",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3023,
+     "reasoning_tokens": 2158
+    },
+    {
+     "item_id": "coding-he-083",
+     "area": "coding",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 11737,
+     "reasoning_tokens": 11658
+    },
+    {
+     "item_id": "ifeval-1582",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1855,
+     "reasoning_tokens": 1767
+    },
+    {
+     "item_id": "ifeval-1571",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2546,
+     "reasoning_tokens": 2412
+    },
+    {
+     "item_id": "ifeval-2801",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1511,
+     "reasoning_tokens": 1462
+    },
+    {
+     "item_id": "ifeval-3079",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2145,
+     "reasoning_tokens": 1563
+    },
+    {
+     "item_id": "ifeval-1927",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2491,
+     "reasoning_tokens": 2185
+    },
+    {
+     "item_id": "humanities-hist-4944",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1643,
+     "reasoning_tokens": 1313
+    },
+    {
+     "item_id": "humanities-hist-4947",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1336,
+     "reasoning_tokens": 1171
+    },
+    {
+     "item_id": "ifeval-3287",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3722,
+     "reasoning_tokens": 3110
+    },
+    {
+     "item_id": "humanities-hist-4943",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1714,
+     "reasoning_tokens": 1543
+    },
+    {
+     "item_id": "humanities-phil-11175",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1360,
+     "reasoning_tokens": 1018
+    },
+    {
+     "item_id": "ifeval-3089",
+     "area": "instruction_following",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 5992,
+     "reasoning_tokens": 5172
+    },
+    {
+     "item_id": "coding-tb-codegen_state_machine",
+     "area": "coding",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "length",
+     "completion_tokens": 16384,
+     "reasoning_tokens": 16383
+    },
+    {
+     "item_id": "humanities-phil-11070",
+     "area": "knowledge_humanities",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3865,
+     "reasoning_tokens": 3370
+    },
+    {
+     "item_id": "humanities-arts-1366",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 5512,
+     "reasoning_tokens": 5110
+    },
+    {
+     "item_id": "humanities-arts-1658",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 8725,
+     "reasoning_tokens": 8194
+    },
+    {
+     "item_id": "prof-med-6262",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2253,
+     "reasoning_tokens": 1755
+    },
+    {
+     "item_id": "humanities-arts-1208",
+     "area": "knowledge_humanities",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 10993,
+     "reasoning_tokens": 10362
+    },
+    {
+     "item_id": "prof-law-928",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 7587,
+     "reasoning_tokens": 6906
+    },
+    {
+     "item_id": "prof-law-1045",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4517,
+     "reasoning_tokens": 3989
+    },
+    {
+     "item_id": "prof-econ-7161",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2637,
+     "reasoning_tokens": 2115
+    },
+    {
+     "item_id": "prof-econ-7162",
+     "area": "knowledge_professional",
+     "status": "fail",
+     "score": 0.0,
+     "finish": "stop",
+     "completion_tokens": 3619,
+     "reasoning_tokens": 3135
+    },
+    {
+     "item_id": "prof-med-6585",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 6190,
+     "reasoning_tokens": 5907
+    },
+    {
+     "item_id": "math-test/prealgebra/1227.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1261,
+     "reasoning_tokens": 1009
+    },
+    {
+     "item_id": "math-test/prealgebra/1840.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 4435,
+     "reasoning_tokens": 4078
+    },
+    {
+     "item_id": "prof-biz-484",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 11005,
+     "reasoning_tokens": 10438
+    },
+    {
+     "item_id": "prof-biz-401",
+     "area": "knowledge_professional",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 14002,
+     "reasoning_tokens": 13361
+    },
+    {
+     "item_id": "math-test/geometry/615.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 17403,
+     "reasoning_tokens": 16873
+    },
+    {
+     "item_id": "math-test/number_theory/978.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 12620,
+     "reasoning_tokens": 12136
+    },
+    {
+     "item_id": "math-test/counting_and_probability/216.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 3633,
+     "reasoning_tokens": 2821
+    },
+    {
+     "item_id": "multi-es-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1027,
+     "reasoning_tokens": 752
+    },
+    {
+     "item_id": "multi-fr-04",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1646,
+     "reasoning_tokens": 1261
+    },
+    {
+     "item_id": "multi-fr-05",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1227,
+     "reasoning_tokens": 899
+    },
+    {
+     "item_id": "multi-de-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2851,
+     "reasoning_tokens": 2613
+    },
+    {
+     "item_id": "multi-de-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 2029,
+     "reasoning_tokens": 1616
+    },
+    {
+     "item_id": "multi-it-08",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 973,
+     "reasoning_tokens": 764
+    },
+    {
+     "item_id": "math-test/geometry/561.json",
+     "area": "math",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 31762,
+     "reasoning_tokens": 31123
+    },
+    {
+     "item_id": "multi-it-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1616,
+     "reasoning_tokens": 905
+    },
+    {
+     "item_id": "multi-ja-09",
+     "area": "multilingual",
+     "status": "pass",
+     "score": 1.0,
+     "finish": "stop",
+     "completion_tokens": 1151,
+     "reasoning_tokens": 794
+    },
+    {
+     "item_id": "physics-mechanics-03",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "math-test/precalculus/989.json",
+     "area": "math",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "physics-mechanics-02",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "math-test/counting_and_probability/181.json",
+     "area": "math",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "physics-optics-32",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "physics-electromagnetism-18",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "physics-thermodynamics-24",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "physics-electromagnetism-16",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "physics-relativity-45",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "physics-optics-33",
+     "area": "physics",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-nested-01",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-nested-03",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-constraints-02",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-enum-08",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-constraints-01",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-enum-09",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-relation-08",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "struct-relation-10",
+     "area": "structured_output",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-select-10",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-select-11",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-select-20",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-args-20",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-args-09",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-args-08",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-dispatch-09",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "web-web_planet_generator",
+     "area": "web_3d_games",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "tool-dispatch-12",
+     "area": "tool_use",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "web-web_tower_defense",
+     "area": "web_3d_games",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "web-web_boids_flocking",
+     "area": "web_3d_games",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "web-web_raymarched_fractal",
+     "area": "web_3d_games",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "longcontext-needle16k-07",
+     "area": "long_context",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "longcontext-needle64k-04",
+     "area": "long_context",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "longcontext-multifact16k-01",
+     "area": "long_context",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "longcontext-multifact64k-10",
+     "area": "long_context",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "agentic-repo_inventory_bugs",
+     "area": "agentic_coding",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "agentic-repo_wordfreq_cli",
+     "area": "agentic_coding",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "agentic-repo_dupes_perf",
+     "area": "agentic_coding",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "agentic-codegen_lfu_cache",
+     "area": "agentic_coding",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "agentic-codegen_state_machine",
+     "area": "agentic_coding",
+     "status": "not_scored_server_down",
+     "score": null,
+     "finish": "error",
+     "completion_tokens": 0,
+     "reasoning_tokens": 0
+    },
+    {
+     "item_id": "agentic-bugfix_token_bucket",
+     "area": "agentic_coding",
+     "status": "not_run"
+    }
+   ]
+  }
+ }
+}
