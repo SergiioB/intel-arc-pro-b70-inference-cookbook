@@ -5,6 +5,10 @@ recipe. Use it to choose a model. It is not a leaderboard: one sample per task, 
 area.
 
 Per-task outcomes: [`results/2026/10/model-compare-v1-20261017/summary.json`](../results/2026/10/model-compare-v1-20261017/summary.json).
+Catalog records in [`data/benchmarks.v1.json`](../data/benchmarks.v1.json):
+`nemotron35-bolt-74b-vllm-tp2-quality-v1compare-20261017`,
+`qwen38-27b-exl3-4bpw-quality-v1compare-20261017`,
+`qwen36-35b-a3b-ovms-int4-quality-v1compare-20261017`.
 
 ## 1. Pick by job
 

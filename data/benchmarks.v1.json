@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-10-16T00:00:00Z",
+ "updated_at": "2026-10-17T00:00:00Z",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -1862,6 +1862,84 @@
    "evidence": {
     "commit": "64ded1a907fdb158a5eca77160168e5392b73cee",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/64ded1a907fdb158a5eca77160168e5392b73cee/results/nemotron35-bolt-74b/vllm-tp2-20261016-summary.json"
+   }
+  },
+  {
+   "id": "nemotron35-bolt-74b-vllm-tp2-quality-v1compare-20261017",
+   "kind": "capability",
+   "title": "Nemotron 3.5 Bolt 74B-A9B W4A16 task-quality screen (vLLM XPU TP2): 75 of 94 tasks passed",
+   "summary": "94-task quality screen v1-compare (agentic omp repository tasks with hidden tests, coding, physics, GPQA/MMLU-Pro, MATH-500, IFEval, tool calls, JSON output, 5 languages, 16K/64K retrieval, web/3D render check). One sample per task, temperature 1.0, top_p 0.95, thinking on, fixed seed per task, deterministic graders, no judge model. Both cards capped at 180 W; energy from hwmon energy1_input at 1 Hz. Comparison guide: docs/MODEL-COMPARISON.md. vLLM TP2, fp8 KV, graphs and prefix cache on, --max-model-len 131072, --max-num-seqs 8, C8 (long context C2, agentic C1). Passed 75/94 (mean score 0.798): agentic 6/6, coding 7/8, physics 5/8, chemistry/biology 5/8, math 8/8, humanities 6/8, professional 6/8, instruction following 8/8, tool use 8/8, structured output 4/8, multilingual 8/8, long context 4/4, web/3D 0/4. 51.6 min wall; 266 Wh on two cards (142 W + 167 W average), 3.5 Wh per passed task; package max 77 C, VRAM max 86 C. A second run on 87 of the tasks flipped 6 pass/fail results.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 180
+   },
+   "engine": {
+    "name": "vllm",
+    "version": "0.31.0 (vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7) + patch_vllm_worker_affinity.py + patch_xpu_moe_topk_pad.py, TP2"
+   },
+   "model": {
+    "id": "SergiioB/Nemotron-3.5-Bolt-74B-A9B-AutoRound-W4A16-G128-sym",
+    "quantization": "AutoRound W4A16 int4 g128 sym",
+    "speculation": "none"
+   },
+   "evidence": {
+    "commit": "c91e1448b17d2117b3fa9613f5eda61725fda091",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c91e1448b17d2117b3fa9613f5eda61725fda091/results/2026/10/model-compare-v1-20261017/summary.json"
+   }
+  },
+  {
+   "id": "qwen38-27b-exl3-4bpw-quality-v1compare-20261017",
+   "kind": "capability",
+   "title": "Qwen3.8-27B EXL3 4.00bpw task-quality screen (exl3xpu, one B70): 81 of 94 tasks passed",
+   "summary": "94-task quality screen v1-compare (agentic omp repository tasks with hidden tests, coding, physics, GPQA/MMLU-Pro, MATH-500, IFEval, tool calls, JSON output, 5 languages, 16K/64K retrieval, web/3D render check). One sample per task, temperature 1.0, top_p 0.95, thinking on, fixed seed per task, deterministic graders, no judge model. Both cards capped at 180 W; energy from hwmon energy1_input at 1 Hz. Comparison guide: docs/MODEL-COMPARISON.md. exl3xpu, MTP3, fp8 KV, int8 prefill, prefix cache on, 98,304 context, C8 (long context C1, agentic C1). Passed 81/94 (mean score 0.862): agentic 6/6, coding 6/8, physics 8/8, chemistry/biology 5/8, math 8/8, humanities 5/8, professional 7/8, instruction following 8/8, tool use 8/8, structured output 8/8, multilingual 8/8, long context 4/4, web/3D 0/4 (all four hit the 32,768-token limit while thinking; 1/4 passed at 65,536). 56.7 min wall; 169 Wh on one card (179 W average), 2.1 Wh per passed task; package max 77 C, VRAM max 86 C.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 180
+   },
+   "engine": {
+    "name": "exl3xpu",
+    "version": "ghcr.io/0xsero/exl3xpu:0.1.0@sha256:21412bdd7535e9c653eeb3d099dce3bc79a83d440def2cd9556111c79c870fa8"
+   },
+   "model": {
+    "id": "Qwen/Qwen3.8-27B (EXL3 4.00bpw, see docs/qwen38-27b/EXL3-XPU.md)",
+    "quantization": "EXL3 trellis 4.00bpw",
+    "speculation": "native MTP3"
+   },
+   "evidence": {
+    "commit": "c91e1448b17d2117b3fa9613f5eda61725fda091",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c91e1448b17d2117b3fa9613f5eda61725fda091/results/2026/10/model-compare-v1-20261017/summary.json"
+   }
+  },
+  {
+   "id": "qwen36-35b-a3b-ovms-int4-quality-v1compare-20261017",
+   "kind": "capability",
+   "title": "Qwen3.6-35B-A3B OpenVINO INT4 task-quality screen (OVMS 2026.4.1, one B70): partial, 47 of 54 scored tasks; server crashed under load",
+   "summary": "94-task quality screen v1-compare (agentic omp repository tasks with hidden tests, coding, physics, GPQA/MMLU-Pro, MATH-500, IFEval, tool calls, JSON output, 5 languages, 16K/64K retrieval, web/3D render check). One sample per task, temperature 1.0, top_p 0.95, thinking on, fixed seed per task, deterministic graders, no judge model. Both cards capped at 180 W; energy from hwmon energy1_input at 1 Hz. Comparison guide: docs/MODEL-COMPARISON.md. OVMS 2026.4.1, prefix cache on, qwen3 reasoning and qwen3coder tool parsers, C4 (long context C1). The OpenVINO GenAI executor crashed twice when its KV cache filled (block_manager.hpp:759 'Invalid sequence group', then segfault): first at C8 after 10 min, then at C4 after 54 finished tasks; 40 tasks have no result. On the 54 scored tasks: 47 passed (mean 0.870): coding 7/8, chemistry/biology 6/8, math 6/6, humanities 5/8, professional 7/8, instruction following 8/8, multilingual 8/8. Same 54 tasks: Bolt 46, Qwen3.8-27B 45. 149 Wh over 57.0 min to the last scored task (157 W average), package max 77 C, VRAM max 76 C.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 180
+   },
+   "engine": {
+    "name": "openvino-model-server",
+    "version": "openvino/model_server:2026.4.1-gpu@sha256:a928903fe429f1e3e27107cc45932d30d95febfd2d1159dc50869c3eac76fc58"
+   },
+   "model": {
+    "id": "OpenVINO/Qwen3.6-35B-A3B-int4-ov",
+    "quantization": "OpenVINO INT4 (NNCF)",
+    "speculation": "none"
+   },
+   "evidence": {
+    "commit": "c91e1448b17d2117b3fa9613f5eda61725fda091",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c91e1448b17d2117b3fa9613f5eda61725fda091/results/2026/10/model-compare-v1-20261017/summary.json"
    }
   }
  ]
