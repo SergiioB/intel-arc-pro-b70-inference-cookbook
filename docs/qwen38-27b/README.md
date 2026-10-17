@@ -17,6 +17,9 @@ not share a numeric authority or an interchangeable patch list.
 | OpenVINO GenAI | One B70 | INT4-GDN8 + grafted MTP5: single-card short-ctx champion (79 t/s @512); draft off ≥98K, full-protocol ceiling 128K | [OPENVINO-CASCADIA-REPORT.md](OPENVINO-CASCADIA-REPORT.md) · [Tuning](OPENVINO-B70-TUNING.md) |
 | Cascadia (separate engine) | One B70 | Rust server + IR surgery; `qwen35` ~5 t/s measured — multi-node pipeline-parallel research path, not a B70 speed path | [Architecture](../architecture/openvino-and-cascadia.md) |
 
+Task quality against Nemotron Bolt 74B-A9B and Qwen3.6-35B-A3B on the same 94 tasks (EXL3
+4.0bpw route, one card): [MODEL-COMPARISON.md](../MODEL-COMPARISON.md).
+
 ## Shared topology and compatibility references
 
 - [Quantization and Drafters](../QUANTIZATION-AND-DRAFTERS.md) — how weight

@@ -6,6 +6,7 @@ Pinned vLLM XPU and llama.cpp SYCL recipes, failure notes, and measurement recor
 
 | Your goal | Start here | Status |
 |---|---|---|
+| Choose a model for a job | [Model comparison](docs/MODEL-COMPARISON.md) | 94-task quality screen of Bolt 74B-A9B (two cards), Qwen3.8-27B and Qwen3.6-35B-A3B (one card each) with power and heat; one sample per task, Qwen3.6 partial. |
 | Serve on one B70 | [Qwen3.8-27B EXL3 route](docs/qwen38-27b/EXL3-XPU.md) | Primary route: trellis 4bpw + MTP3 + fp8 KV on the exl3xpu engine; the only measured route at full 262,144 context and clean on the exact-answer battery. The GPTQ/W4A16 route is legacy — that class fails the canary on this model. |
 | Run GGUF or vision | [Muse-Glimmer llama.cpp route](docs/muse-glimmer/MUSE-GLIMMER-B70.md) | Measured on its own engine and workload; no cross-engine speed ranking without matched timing. |
 | Run MoE or long context | [Qwen3.6-35B-A3B recipe](docs/qwen36-35a3/QWEN36-MOE-VLLM-XPU.md) | Historical MTP speed record is stack-specific; a [later matched comparison](docs/qwen36-35a3/MOE-INT4-THREE-ENGINE-CEILING-20260917.md) did not reproduce it. |
