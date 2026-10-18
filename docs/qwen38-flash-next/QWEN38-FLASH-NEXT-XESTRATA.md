@@ -36,9 +36,9 @@ Autoregressive base speed without speculative drafting is **~25–28 tok/s**. Na
 
 | Component | Usage / Setting |
 |---|---|
-| **Context Window** | **262,144 tokens** (full native 262K context with `int8` KV cache) |
-| **GPU 0 (0000:0b:00.0)** | 23.1 / 32 GiB (Layers 0–23 dense weights + 12,288 expert slots) |
-| **GPU 1 (0000:0f:00.0)** | 29.2 / 32 GiB (Layers 24–47 dense weights + 12,288 expert slots + MTP draft head) |
+| **Context Window** | **350,000 tokens** (YaRN 1.335× scaling over 262K native with `int8` KV cache) |
+| **GPU 0 (0000:0b:00.0)** | 23.7 / 32 GiB (Layers 0–23 dense weights + 12,288 expert slots) |
+| **GPU 1 (0000:0f:00.0)** | 29.9 / 32 GiB (Layers 24–47 dense weights + 12,288 expert slots + MTP draft head) |
 | **Interconnect** | PCIe 4.0 x16 (14.4 GB/s measured bandwidth) |
 | **Host System RAM** | 60.7 GiB available, 5.7 GiB resident before model load; mmap expert backing |
 
@@ -60,6 +60,9 @@ Autoregressive base speed without speculative drafting is **~25–28 tok/s**. Na
    - Supports image inputs via the model's 27-layer ViT projector (`mmproj-Qwen3.8-Flash-Next-BF16.gguf`, 866 MB).
    - In B70 Launcher: toggle with `--vision` (enabled) or `--no-vision` (text-only).
    - Compatible with both OpenAI vision format (`{"type": "image_url", ...}`) and Anthropic image blocks (`{"type": "image", ...}`).
+6. **YaRN Context Extension (350K)**:
+   - Extends the native 262,144 context by 1.335× to **350,000 tokens** using YaRN (`--rope-scaling yarn --rope-scale 1.33514 --yarn-orig-ctx 262144`).
+   - Keeps perplexity degradation negligible while fitting cleanly inside the dual 32 GB VRAM footprint (23.7 GB on GPU 0, 29.9 GB on GPU 1).
 ## 3. Serving Commands
 
 ### Via B70 Launcher (Recommended)
