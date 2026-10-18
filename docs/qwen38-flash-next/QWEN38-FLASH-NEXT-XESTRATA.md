@@ -11,7 +11,8 @@ Evidence tier: E2 (community verified, run `cmvb7j24x01hzle01zgemx67l` on [Local
 | Metric | Measured Value | Notes |
 |---|---:|---|
 | **Decode Throughput** | **122.2 tok/s** | C1 greedy, reasoning on (512 max output tokens) |
-| **Prefill Rate** | **469.2 tok/s** | 333 prompt tokens, TTFT 727.88 ms |
+| **Prefill Rate** | **2,015.4 tok/s** | 32,052 prompt tokens (431 tok/s at 772 tokens, 1,253 at 5.6K, 1,813 at 16K) |
+| **Context Window** | **262,144 tokens** | Full native 262K context supported via int8 KV cache |
 | **MTP Acceptance** | **54.36%** | MTP depth 4, mean accepted length 2.64 tokens/step |
 | **Hardware** | **2× Arc Pro B70 (32 GB)** | Card 0 (primary) + Card 1 (expert parallel) |
 | **Power Draw** | **180 W cap** | As-found desktop workstation profile |
