@@ -52,6 +52,10 @@ Autoregressive base speed without speculative drafting is **~25–28 tok/s**. Na
 3. **Dynamic Context Chunking**:
    - Batched prefill automatically sizes chunks up to 32,768 tokens, borrowing cache slots dynamically for 2,026 tok/s prefill while keeping full 262K context resident.
 
+4. **Dynamic Reasoning Effort Control (No Relaunch Needed)**:
+   - Thinking is configurable dynamically per-request via `"reasoning_effort": "none" | "low" | "medium" | "high" | "xhigh"` or `{"chat_template_kwargs": {"enable_thinking": false}}`.
+   - When `"none"`, thinking tokens are skipped completely and the answer is returned directly (~50 ms).
+   - In B70 Launcher: specify `--effort none` (or `--effort high`) at launch to set the default, or select variants directly in OpenCode and OMP.
 ## 3. Serving Commands
 
 ### Via B70 Launcher (Recommended)
