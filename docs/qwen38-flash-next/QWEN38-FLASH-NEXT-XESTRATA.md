@@ -56,6 +56,10 @@ Autoregressive base speed without speculative drafting is **~25–28 tok/s**. Na
    - Thinking is configurable dynamically per-request via `"reasoning_effort": "none" | "low" | "medium" | "high" | "xhigh"` or `{"chat_template_kwargs": {"enable_thinking": false}}`.
    - When `"none"`, thinking tokens are skipped completely and the answer is returned directly (~50 ms).
    - In B70 Launcher: specify `--effort none` (or `--effort high`) at launch to set the default, or select variants directly in OpenCode and OMP.
+5. **Multimodal Vision (`mmproj`)**:
+   - Supports image inputs via the model's 27-layer ViT projector (`mmproj-Qwen3.8-Flash-Next-BF16.gguf`, 866 MB).
+   - In B70 Launcher: toggle with `--vision` (enabled) or `--no-vision` (text-only).
+   - Compatible with both OpenAI vision format (`{"type": "image_url", ...}`) and Anthropic image blocks (`{"type": "image", ...}`).
 ## 3. Serving Commands
 
 ### Via B70 Launcher (Recommended)
