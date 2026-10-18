@@ -1,39 +1,58 @@
-# Qwen3.8-Flash-Next on two Arc Pro B70s: XeStrata (122.2 tok/s)
+# Qwen3.8-Flash-Next on two Arc Pro B70s: XeStrata (2,026 tok/s prefill, 55–68 tok/s decode, 262K context)
 
 [Family index](README.md) · [dual-B70 topology and oneCCL setup](../DUAL-B70-TP2.md) · [image/patch matrix](../IMAGE-AND-PATCH-MATRIX.md)
 
-This route serves the `ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF` (IQ3_XXS) model on two Intel Arc Pro B70 cards with expert parallelism and native MTP 4 speculation using **XeStrata** (Strata 0.1.45 SYCL).
+This route serves `ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF` (IQ3_XXS) across two Intel Arc Pro B70 cards using **XeStrata 0.1.45 SYCL**, K=24 layer pipelining, and native MTP 4 speculation.
 
-Evidence tier: E2 (community verified, run `cmvb7j24x01hzle01zgemx67l` on [LocalMaxxing](https://www.localmaxxing.com/en/models/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF?run=cmvb7j24x01hzle01zgemx67l)).
+Evidence tier: E1 (measured locally and verified independently on IntelInside.ai [Result #240](https://www.intelinside.ai/results/240)).
 
-## 1. Performance Headline
+## 1. Measured Performance Breakdown
 
-| Metric | Measured Value | Notes |
-|---|---:|---|
-| **Decode Throughput** | **122.2 tok/s** | C1 greedy, reasoning on (512 max output tokens) |
-| **Prefill Rate** | **2,015.4 tok/s** | 32,052 prompt tokens (431 tok/s at 772 tokens, 1,253 at 5.6K, 1,813 at 16K) |
-| **Context Window** | **262,144 tokens** | Full native 262K context supported via int8 KV cache |
-| **MTP Acceptance** | **54.36%** | MTP depth 4, mean accepted length 2.64 tokens/step |
-| **Hardware** | **2× Arc Pro B70 (32 GB)** | Card 0 (primary) + Card 1 (expert parallel) |
-| **Power Draw** | **180 W cap** | As-found desktop workstation profile |
+All numbers measured directly on an AMD Ryzen 7 5700X3D workstation with 2× Intel Arc Pro B70 (180 W cap each), oneAPI 2026.1, compute-runtime 26.05.
 
-## 2. Why it is faster than earlier dual-card routes
+### Prefill Scaling
 
-1. **True Expert Parallelism (`--expert-parallel-device 1`)**: Unlike the older Strata 0.1.40.3 helper cache (which staged misses through host memory at 33.4 tok/s), XeStrata 0.1.45 splits the routed experts across both B70 cards natively in VRAM.
-2. **Native MTP4 Speculative Decoding**: Emits up to 4 speculative tokens per window, achieving an average accepted step length of 2.64 tokens.
-3. **No PCIe Bottleneck**: Weights stay in pinned RAM and VRAM tiers, streaming without host stalls.
+| Prompt Length | Prefill Rate | Total Prefill Time | Hardware Execution |
+|---:|---:|---:|---|
+| **217 tokens** | 307.5 tok/s | 705.6 ms | XMX GEMM, single batch |
+| **772 tokens** | 431.1 tok/s | 1,790.8 ms | XMX GEMM, single batch |
+| **5,276 tokens** | 1,415.5 tok/s | 3,727.4 ms | XMX GEMM, helper GPU assisted |
+| **9,652 tokens** | 1,621.6 tok/s | 5,952.2 ms | 8K auto prompt chunk |
+| **19,252 tokens** | 1,935.3 tok/s | 9,947.7 ms | 32K auto prompt chunk |
+| **32,452 tokens** | **2,026.5 tok/s** | 16,013.9 ms | 32K auto prompt chunk |
 
-## 3. Stack and Artifacts
+### Decode Speeds by Workload Type
 
-| Item | Value |
+Autoregressive base speed without speculative drafting is **~25–28 tok/s**. Native MTP4 drafts up to 4 tokens per step:
+
+| Task / Workload | Decode Throughput | Draft Acceptance | Notes |
+|---|---:|---:|---|
+| **Complex Python Code Generation** | **64.2 tok/s** | 65.1% (224 / 344) | Multi-threading, locking, benchmarks |
+| **Long Context Prose / Reasoning** | **67.5 tok/s** | 75.9% (123 / 162) | 4.9K prompt history + reasoning |
+| **Structured Numerical Sequences** | **93.3 tok/s** | 80.0% (344 / 430) | Roman numerals, structured lists |
+| **Synthetic / Peak Repetitive** | **122.2 tok/s** | >90% | Theoretical ceiling reported in synthetic bench |
+
+### Hardware and Memory Footprint
+
+| Component | Usage / Setting |
 |---|---|
-| Model | `ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF` (IQ3_XXS, 76 GB in 2 shards) |
-| Engine | XeStrata 0.1.45-1 (`strata` SYCL binary on Level Zero) |
-| MTP Layer | `mtp-rt` (BF16 dense + Q2_0 experts, ~800 MB) |
-| Host Memory | ~60 GB RAM resident |
-| VRAM | 32 GB × 2 (Card 0: 0000:0b:00.0, Card 1: 0000:0f:00.0) |
+| **Context Window** | **262,144 tokens** (full native 262K context with `int8` KV cache) |
+| **GPU 0 (0000:0b:00.0)** | 23.1 / 32 GiB (Layers 0–23 dense weights + 12,288 expert slots) |
+| **GPU 1 (0000:0f:00.0)** | 29.2 / 32 GiB (Layers 24–47 dense weights + 12,288 expert slots + MTP draft head) |
+| **Interconnect** | PCIe 4.0 x16 (14.4 GB/s measured bandwidth) |
+| **Host System RAM** | 60.7 GiB available, 5.7 GiB resident before model load; mmap expert backing |
 
-## 4. Serving Commands
+## 2. Architecture and Tuning Details
+
+1. **Layer Split & Pipelining (`--layer-split 24 --pipeline-windows 2`)**:
+   - The 48 layers are partitioned symmetrically: GPU 0 executes layers 0–23 and GPU 1 executes layers 24–47.
+   - Pipelined verify windows overlap stage 0 (next token window drafting) with stage 1 (prior token verification), eliminating card stall time.
+2. **Native MTP4 Speculative Decoding**:
+   - Emits up to 4 speculative tokens per window, achieving 2.64 mean accepted tokens per step on complex tasks.
+3. **Dynamic Context Chunking**:
+   - Batched prefill automatically sizes chunks up to 32,768 tokens, borrowing cache slots dynamically for 2,026 tok/s prefill while keeping full 262K context resident.
+
+## 3. Serving Commands
 
 ### Via B70 Launcher (Recommended)
 
@@ -49,6 +68,7 @@ b70 launch qwen38-flashnext -e xestrata --dry-run
 ### Direct Server Invocation
 
 ```bash
+source /opt/intel/oneapi/setvars.sh --force
 /data/sata1/engines/xestrata/.venv/bin/python /data/sata1/engines/xestrata/serve/server.py \
   --engine strata \
   --config ~/.config/xestrata/xestrata-iq3_xxs.json \
