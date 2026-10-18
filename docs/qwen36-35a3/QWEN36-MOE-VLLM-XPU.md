@@ -2,6 +2,9 @@
 
 Native MTP 1/2/4 speculative decoding, 128K context on Intel Arc Pro B70.
 
+Task quality of Qwen3.6-35B-A3B (OpenVINO INT4, official weights) against Bolt 74B-A9B and
+Qwen3.8-27B, and the OVMS 2026.4.1 crash under load: [MODEL-COMPARISON.md](../MODEL-COMPARISON.md).
+
 ![B70 phase-separated input and decode dashboard](../assets/b70-prefill-decode-dashboard.svg)
 
 ## Quick Start (3-Step Setup)
