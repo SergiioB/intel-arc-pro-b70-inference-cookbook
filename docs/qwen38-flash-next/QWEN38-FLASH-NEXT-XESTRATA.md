@@ -205,11 +205,9 @@ IQ3_S fits, with 88 expert slots outside its resident cache and little GPU 1 hea
 | Bolt AutoRound TP2 | [268](https://www.intelinside.ai/results/268)–[271](https://www.intelinside.ai/results/271) published |
 | Qwen3.8-27B FP8 / EXL3 | [272](https://www.intelinside.ai/results/272), [273](https://www.intelinside.ai/results/273) published; FP8 notes identify the synthetic diagnostic workload |
 | Historical Flash-Next llama.cpp | [274](https://www.intelinside.ai/results/274), [275](https://www.intelinside.ai/results/275) published under custom runtime 16; prompt/decode coordinates kept separate |
-| New Strata IQ3 results | Waiting for [catalog PR #116](https://github.com/labscommunity/intelinside/pull/116) and database sync; no Q2_0 or llama.cpp substitution |
+| New Strata IQ3 results | [276](https://www.intelinside.ai/results/276) (IQ3_XXS, 86.8 tok/s) and [277](https://www.intelinside.ai/results/277) (IQ3_S, 86.7 tok/s) published under custom runtime 17 (`XeStrata xe0.1.45-1 SYCL + MTP4`) |
 
-`python3 benchmarks/submit-qwen38-strata-quants.py` prints the prepared native code payload. Add `--submit` only after the catalog sync. The command registers XeStrata under Strata, uses fixed idempotency keys, and submits prompt/decode medians from the same P34/G512 workload. It does not pair 32K prefill with short-prompt decode. The blocked `--submit` path was exercised and refused to post. Correct-runtime live submission remains untested until the missing catalog entries exist.
-
-PR #116's four completed check runs passed; its Vercel preview requires Community Labs team authorization. No Greptile review was attached when checked. Prior launcher PR #4 had no inline review comments; catalog PR #115 had no reviews returned.
+Following maintainer merge of [catalog PR #116](https://github.com/labscommunity/intelinside/pull/116) and database sync, `benchmarks/submit-qwen38-strata-quants.py --submit` registered XeStrata under the new `strata` runtime and submitted the two matched C1 measurements. Both results use the new dedicated `iq3_xxs` and `iq3_s` boards with paired P34/G512 prompt and decode rates from the same runs.
 
 **Not tested:**
 

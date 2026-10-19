@@ -701,5 +701,26 @@
       "confirmationsCount": 0,
       "verificationStatus": "self_reported"
     }
-  ]
+  ],
+  "strata_submission": {
+    "submitted_at": "2026-10-19T10:51:14Z",
+    "results": [
+      {
+        "id": "276",
+        "quant": "iq3_xxs",
+        "decodeTps": 86.8,
+        "promptTps": 144.2,
+        "runtime": "strata",
+        "customRuntimeId": "17"
+      },
+      {
+        "id": "277",
+        "quant": "iq3_s",
+        "decodeTps": 86.7,
+        "promptTps": 143.6,
+        "runtime": "strata",
+        "customRuntimeId": "17"
+      }
+    ]
+  }
 }

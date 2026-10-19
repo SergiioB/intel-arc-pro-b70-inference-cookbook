@@ -48,7 +48,7 @@ if not args.submit:
 if missing:
     raise SystemExit('Catalog sync required before submission (PR #116): ' + ', '.join(missing))
 runtime = call('/custom-runtimes', {'runtimeId': 'strata', 'name': 'XeStrata xe0.1.45-1 SYCL + MTP4',
-               'repoUrl': 'https://github.com/MistvVK/XeStrata',
+               'repoUrl': 'https://github.com/MistVVK/XeStrata',
                'summary': 'XeStrata fork with SYCL, two-GPU layer split and pipelined MTP4.',
                'notes': 'Engine SHA256 d633e321ba22179c9b1515840b922a49d0d426caea4819237fa2350f4c92e450. Reproduction and raw measurements: ' + RECIPE},
                'sergiiob-xestrata-correct-runtime-20261019-v1')
