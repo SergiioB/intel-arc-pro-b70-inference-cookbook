@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-10-17T00:00:00Z",
+ "updated_at": "2026-10-19T08:10:00Z",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -1941,6 +1941,34 @@
     "commit": "c91e1448b17d2117b3fa9613f5eda61725fda091",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c91e1448b17d2117b3fa9613f5eda61725fda091/results/2026/10/model-compare-v1-20261017/summary.json"
    }
+  },
+  {
+   "id": "qwen38-flash-next-xestrata-iq3xxs-p34-g512-c1",
+   "kind": "benchmark",
+   "title": "Flash-Next IQ3_XXS XeStrata",
+   "summary": "Matched native 262K comparison, code generation capped at 512 tokens, thinking off. Engine decode median of 3 after warm-up; no cached prompt tokens. As-found GPU caps 180 W / 230 W, not changed. This is generation speed, not executed-code accuracy.",
+   "evidence_status": "validated",
+   "hardware": {"gpu_model": "Intel Arc Pro B70", "gpu_count": 2, "vram_gib_per_gpu": 32, "power_caps_w": [180, 230]},
+   "engine": {"name": "xestrata", "version": "xe0.1.45-1 SYCL"},
+   "model": {"id": "ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF", "quantization": "IQ3_XXS", "speculation": "MTP4"},
+   "workload": {"concurrency": 1, "prompt_tokens": 34, "output_tokens": 512, "context_limit_tokens": 262144, "cache": "disabled-zero-reported-hit", "reasoning_effort": "none"},
+   "metrics": [{"name": "engine_decode_tps", "value": 86.8, "unit": "token/s"}],
+   "statistics": {"statistic": "median", "samples": 3},
+   "evidence": {"commit": "89487afe95a80187229efe26dcab8428aad9b33f", "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/89487afe95a80187229efe26dcab8428aad9b33f/docs/qwen38-flash-next/QWEN38-FLASH-NEXT-XESTRATA.md"}
+  },
+  {
+   "id": "qwen38-flash-next-xestrata-iq3s-p34-g512-c1",
+   "kind": "benchmark",
+   "title": "Flash-Next IQ3_S XeStrata",
+   "summary": "Matched native 262K comparison, code generation capped at 512 tokens, thinking off. Engine decode median of 3 after warm-up; no cached prompt tokens. As-found GPU caps 180 W / 230 W, not changed. GPU 1 nearly full; small correctness checks do not establish a quality advantage.",
+   "evidence_status": "validated",
+   "hardware": {"gpu_model": "Intel Arc Pro B70", "gpu_count": 2, "vram_gib_per_gpu": 32, "power_caps_w": [180, 230]},
+   "engine": {"name": "xestrata", "version": "xe0.1.45-1 SYCL"},
+   "model": {"id": "ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF", "quantization": "IQ3_S", "speculation": "MTP4"},
+   "workload": {"concurrency": 1, "prompt_tokens": 34, "output_tokens": 512, "context_limit_tokens": 262144, "cache": "disabled-zero-reported-hit", "reasoning_effort": "none"},
+   "metrics": [{"name": "engine_decode_tps", "value": 86.7, "unit": "token/s"}],
+   "statistics": {"statistic": "median", "samples": 3},
+   "evidence": {"commit": "89487afe95a80187229efe26dcab8428aad9b33f", "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/89487afe95a80187229efe26dcab8428aad9b33f/docs/qwen38-flash-next/QWEN38-FLASH-NEXT-XESTRATA.md"}
   }
  ]
 }
