@@ -228,3 +228,9 @@ Reuse the verified lookup shard and MTP files, download only the new first shard
 ## 9. Adapting it
 
 For another quant, regenerate its pack and change both the native shard and tokenizer. Share the lookup only after comparing its complete digest; matching filenames or sizes are insufficient. Preserve prompt text, token caps, effort, cache behavior, GPU selection and power settings before comparing rates. Keep native context as the measured default; treat YaRN capacity and vision accuracy as separate experiments. Publish under the actual quant and runtime, and retain failed attempts with their literal errors.
+
+**Keeper decision (2026-10-19):** the workstation now keeps **IQ3_XXS as its
+only Flash-Next quant**; the IQ3_S first shard and pack were deleted (about
+53 GiB freed). Equal speed, equal check scores, more disk, more VRAM and a
+nearly full second GPU bought nothing measurable. Section 8 restores IQ3_S in
+about 40 minutes if a denser quant is ever wanted again.
