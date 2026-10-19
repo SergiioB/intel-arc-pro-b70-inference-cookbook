@@ -43,6 +43,8 @@ Clock times below are local UTC+02:00 on 2026-10-19. Missing clock measurements 
 | **10:04:49; successful launch elapsed 2m37s** | **Used the IQ3_S-named second-shard symlink for `--ple-gguf`** | **Ready; launcher smoke answered in 0.718s** |
 | 10:07:44–10:09:40 | IQ3_S native measured speed rows | Three measured rows per case after warm-up |
 | After native speed suite | IQ3_S answer checks, none and high effort; generic `loaded` alias | 5/6, 6/6, and `4` for 2+2 |
+| During allocation/client checks; clocks not captured | `ps -C` was unsupported; a remote config write was refused because the read was truncated; unauthenticated UI GET returned 403 | Used the known PID, reconstructed the complete config before writing, and used the documented nonce bootstrap |
+| During XeCores publication; clock not captured | Same-commit cookbook sync reported missing pin constants even though both existed | Fixed presence validation; same-pin sync, pin gate, build and nine-page navigation gate passed |
 
 Native baseline engine-start to final measured IQ3_S speed row: **30m40.51s**. This interval overlaps the weight download and other work; it is not pure benchmark compute time. Exactly timed failed IQ3_S load: **9.91s**. The premature benchmark and dependency failure were not separately clocked, so total time lost to failures and full-session wall time are **not measured**.
 
@@ -140,6 +142,10 @@ Stop this recipe, launch `qwen38-flashnext -e xestrata --ctx 262144 --vision --e
 | 5 | `native dense: duplicate split shard number` | Explicit PLE path used an old alias, so the same split shard was appended twice | Pointed PLE at the IQ3_S-named symlink beside shard 1 | IQ3_S loaded and completed all 36 comparison requests |
 | 6 | Earlier dry-build implementation changed vision in the source config; effort was passed as an unsupported server flag | Launch controls modified shared state / targeted the wrong interface | Temporary per-launch config; effort, context and vision applied there | 348 launcher tests passed, including source-config preservation; native launches and generic-alias request succeeded |
 | 7 | Result 240 classified IQ3_XXS as `q2_0` under llama.cpp | Missing catalog quant/runtime entries had been replaced with incorrect labels | Withdrew result 240; requested proper entries in PR #116 | DELETE returned 200; new submission command refuses to post until catalog sync |
+| 8 | `official-results.js pin constants not found — G-PIN would fail` | Vendor script treated an unchanged replacement as a missing constant | Validate both constant patterns before replacement, not whether the text changes | Same-commit `sync:cookbook` passed; 30 docs and 50 benchmark records vendored; G-PIN and G-NAV passed |
+| 9 | `Refusing to overwrite ... with an incomplete read projection` | Remote config exceeded the read output cap | Read the omitted tail, reconstructed all 52,696 bytes, then changed three context values | Remote YAML parsed; loaded-model context asserted at 262,144; remote models endpoint returned IQ3_S |
+| 10 | `ps: unsupported option '-C'` | The available command wrapper does not support process-name selection | Queried the known engine PID and its `smaps_rollup` | Main-engine resident/file-backed/anonymous/swap figures recorded |
+| 11 | `unauthorized request` on the launcher root URL | Browser had no launcher authentication cookie | Used authenticated `POST /api/window` and its one-use nonce URL | Chromium displayed the new on-disk IQ3_S recipe and its context controls |
 
 ## 6. Verification
 
@@ -154,6 +160,8 @@ Each native quant arm has **36 saved responses**: 12 speed responses (three case
 | Historical upload receipts | [`intelinside-receipts.json`](../../results/qwen38-strata-quant-20261019/intelinside-receipts.json): 11 new results, each read back |
 
 The launcher UI was exercised in Chromium: IQ3_S appeared as a selectable on-disk model with its XeStrata route, 262,144-token default and 350,000-token experimental ceiling. No UI unit tests were added. Launcher release verification checked 76 packaged files.
+
+Publication checks also passed the four existing benchmark-catalog tests and the renderer's 50-record current-output check. XeCores preview rendered the quant guide and linked the 0.6.19 tarball, checksum and manifest. The cookbook document allowlist now includes the Flash-Next family index, this guide and the llama.cpp guide. [Launcher release 0.6.19](https://github.com/SergiioB/b70-launcher/releases/tag/v0.6.19) has SHA256 `fb46ef1e553b9c7a62a2643f562ce54ea246be3c17e04aa8b20f545d859e6594`.
 
 ## 7. Results and claim boundary
 
