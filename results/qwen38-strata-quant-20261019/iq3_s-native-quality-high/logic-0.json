@@ -1,0 +1,61 @@
+{
+  "label": "iq3_s-native262k-high",
+  "case": "logic",
+  "warmup": true,
+  "at": "2026-10-19T08:09:52.245349+00:00",
+  "wall_s": 1.4641190630063647,
+  "request_sha256": "8be8c03c55e061b272b9ac22df8648f27a524e6301f5554326e4f99196dbed90",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run logic-0.\nAll dax are wugs. No wugs are zibs. Can a dax be a zib? Reply only yes or no."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-fad51d9b010f4b3eb518e78a",
+    "object": "chat.completion",
+    "created": 1792397390,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "No",
+          "reasoning_content": "We need answer user: \"Run logic-0.\nAll dax are wugs. No wugs are zibs. Can a dax be a zib? Reply only yes or no.\"\n\nNeed output only yes or no. Logic: All dax are wugs. No wugs are zibs. Therefore no dax are zibs. Can a dax be a zib? No. Need final only No. Ensure no extra.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 85,
+      "completion_tokens": 93,
+      "total_tokens": 178,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 85,
+      "prompt_ms": 415.6,
+      "prompt_per_token_ms": 4.889,
+      "prompt_per_second": 204.5,
+      "predicted_n": 93,
+      "predicted_ms": 1044.8,
+      "predicted_per_token_ms": 11.234,
+      "predicted_per_second": 89.0,
+      "draft_n": 85,
+      "draft_n_accepted": 64
+    }
+  },
+  "expected": "no",
+  "correct": true
+}

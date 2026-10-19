@@ -1,0 +1,61 @@
+{
+  "label": "iq3_s-native262k-high",
+  "case": "json",
+  "warmup": true,
+  "at": "2026-10-19T08:09:54.715112+00:00",
+  "wall_s": 1.0366608539916342,
+  "request_sha256": "ead8039c04dd6fb20b64a427bdc2f9420495af29457c4807c12acbced1f919e9",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run json-0.\nReturn exactly this JSON object with no prose: key answer has integer value 42."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-9dd0337cbdd742b98b2d2e55",
+    "object": "chat.completion",
+    "created": 1792397393,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"answer\":42}",
+          "reasoning_content": "We need to respond to user: \"Run json-0.\nReturn exactly this JSON object with no prose: key answer has integer value 42.\"\n\nNeed output exactly JSON object: {\"answer\":42}. No prose. Ensure final only JSON.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 76,
+      "completion_tokens": 63,
+      "total_tokens": 139,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 380.5,
+      "prompt_per_token_ms": 5.007,
+      "prompt_per_second": 199.7,
+      "predicted_n": 63,
+      "predicted_ms": 652.7,
+      "predicted_per_token_ms": 10.36,
+      "predicted_per_second": 96.5,
+      "draft_n": 56,
+      "draft_n_accepted": 44
+    }
+  },
+  "expected": "{\"answer\":42}",
+  "correct": true
+}

@@ -1,0 +1,60 @@
+{
+  "label": "iq3_xxs-yarn350k-vision-cpu",
+  "case": "logic",
+  "warmup": true,
+  "at": "2026-10-19T07:35:27.228061+00:00",
+  "wall_s": 0.36069283599499613,
+  "request_sha256": "a0b5c8e5ad6136753be37fcdde391a58a11139c6ac217e4b927f5e926d14a280",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run logic-0.\nAll dax are wugs. No wugs are zibs. Can a dax be a zib? Reply only yes or no."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-11f5dd2c41aa4b0497a6b61b",
+    "object": "chat.completion",
+    "created": 1792395326,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "no"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 45,
+      "completion_tokens": 2,
+      "total_tokens": 47,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 45,
+      "prompt_ms": 298.8,
+      "prompt_per_token_ms": 6.64,
+      "prompt_per_second": 150.6,
+      "predicted_n": 2,
+      "predicted_ms": 57.3,
+      "predicted_per_token_ms": 28.65,
+      "predicted_per_second": 34.9,
+      "draft_n": 3,
+      "draft_n_accepted": 3
+    }
+  },
+  "expected": "no",
+  "correct": true
+}

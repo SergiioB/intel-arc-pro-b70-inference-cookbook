@@ -1,0 +1,61 @@
+{
+  "label": "iq3_xxs-native262k-high",
+  "case": "python",
+  "warmup": false,
+  "at": "2026-10-19T07:44:09.651718+00:00",
+  "wall_s": 1.757360115996562,
+  "request_sha256": "ac8ceed3983fe6d97b8ebe0c78ab31b5d7bfa3321d3b20042e3f0d83a3ac9242",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run python-1.\nWhat does Python print for list(range(7))[1::2]? Return only the printed list."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-83af5d467bd34d4bb871d9d5",
+    "object": "chat.completion",
+    "created": 1792395847,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "[1, 3, 5]",
+          "reasoning_content": "We need answer user: \"Run python-1.\nWhat does Python print for list(range(7))[1::2]? Return only the printed list.\"\n\nNeed likely output only list. Need compute: range(7) -> 0..6. list -> [0,1,2,3,4,5,6]. slice [1::2] start index 1 step 2 -> indices 1,3,5 -> values 1,3,5. Printed list [1, 3, 5]. Need only printed list. Ensure no extra.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 78,
+      "completion_tokens": 132,
+      "total_tokens": 210,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 78,
+      "prompt_ms": 389.6,
+      "prompt_per_token_ms": 4.995,
+      "prompt_per_second": 200.2,
+      "predicted_n": 132,
+      "predicted_ms": 1364.3,
+      "predicted_per_token_ms": 10.336,
+      "predicted_per_second": 96.8,
+      "draft_n": 108,
+      "draft_n_accepted": 90
+    }
+  },
+  "expected": "[1,3,5]",
+  "correct": true
+}

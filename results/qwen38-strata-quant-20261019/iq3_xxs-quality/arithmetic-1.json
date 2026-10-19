@@ -1,0 +1,60 @@
+{
+  "label": "iq3_xxs-yarn350k-vision-cpu",
+  "case": "arithmetic",
+  "warmup": false,
+  "at": "2026-10-19T07:35:26.092782+00:00",
+  "wall_s": 0.34445616700395476,
+  "request_sha256": "37a38363ecb3a2b718aa6f319bb996d935d28470a86bb2a4309ef6f6da61dd03",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run arithmetic-1.\nReturn only the integer result of 137 * 29."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-3b4e8b7544b945358381089f",
+    "object": "chat.completion",
+    "created": 1792395325,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "3973"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 33,
+      "completion_tokens": 5,
+      "total_tokens": 38,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 33,
+      "prompt_ms": 250.3,
+      "prompt_per_token_ms": 7.585,
+      "prompt_per_second": 131.8,
+      "predicted_n": 5,
+      "predicted_ms": 89.7,
+      "predicted_per_token_ms": 17.94,
+      "predicted_per_second": 55.7,
+      "draft_n": 5,
+      "draft_n_accepted": 4
+    }
+  },
+  "expected": "3973",
+  "correct": true
+}

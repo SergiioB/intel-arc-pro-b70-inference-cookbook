@@ -1,0 +1,61 @@
+{
+  "label": "iq3_xxs-native262k-high",
+  "case": "arithmetic",
+  "warmup": false,
+  "at": "2026-10-19T07:43:57.279952+00:00",
+  "wall_s": 1.2249670310120564,
+  "request_sha256": "522bd0ded4926df54f3c62c775640341a5498acab0b798e4753ca4a74551071f",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run arithmetic-1.\nReturn only the integer result of 137 * 29."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-3550d3dfbe1b46869622cf23",
+    "object": "chat.completion",
+    "created": 1792395836,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "3973",
+          "reasoning_content": "We need answer user: \"Run arithmetic-1.\nReturn only the integer result of 137 * 29.\" Need compute 137*29 = 137*30 -137 = 4110-137=3973. Need final only integer. Ensure no extra.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 73,
+      "completion_tokens": 81,
+      "total_tokens": 154,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 73,
+      "prompt_ms": 369.2,
+      "prompt_per_token_ms": 5.058,
+      "prompt_per_second": 197.7,
+      "predicted_n": 81,
+      "predicted_ms": 852.0,
+      "predicted_per_token_ms": 10.519,
+      "predicted_per_second": 95.1,
+      "draft_n": 74,
+      "draft_n_accepted": 55
+    }
+  },
+  "expected": "3973",
+  "correct": true
+}

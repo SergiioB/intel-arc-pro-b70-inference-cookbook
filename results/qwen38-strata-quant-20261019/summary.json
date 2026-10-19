@@ -1,0 +1,114 @@
+{
+  "iq3_xxs": {
+    "code": {
+      "n": 3,
+      "prompt_tokens": 34,
+      "output_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tps": 86.8,
+      "prefill_tps": 144.2,
+      "first": "2026-10-19T07:40:57.192063+00:00",
+      "last": "2026-10-19T07:41:09.694262+00:00"
+    },
+    "reasoning": {
+      "n": 3,
+      "prompt_tokens": 59,
+      "output_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tps": 93.3,
+      "prefill_tps": 119.6,
+      "first": "2026-10-19T07:41:21.626448+00:00",
+      "last": "2026-10-19T07:41:33.420701+00:00"
+    },
+    "prefill": {
+      "n": 3,
+      "prompt_tokens": 32429,
+      "output_tokens": [
+        17,
+        13,
+        13
+      ],
+      "decode_tps": 90,
+      "prefill_tps": 1894.2,
+      "first": "2026-10-19T07:42:09.415026+00:00",
+      "last": "2026-10-19T07:42:43.953177+00:00"
+    },
+    "quality": {
+      "correct": 5,
+      "total": 6,
+      "failures": [
+        {
+          "case": "average-speed",
+          "answer": "50"
+        }
+      ]
+    },
+    "quality-high": {
+      "correct": 6,
+      "total": 6,
+      "failures": []
+    }
+  },
+  "iq3_s": {
+    "code": {
+      "n": 3,
+      "prompt_tokens": 34,
+      "output_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tps": 86.7,
+      "prefill_tps": 143.6,
+      "first": "2026-10-19T08:07:44.572939+00:00",
+      "last": "2026-10-19T08:07:58.429967+00:00"
+    },
+    "reasoning": {
+      "n": 3,
+      "prompt_tokens": 59,
+      "output_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tps": 93.2,
+      "prefill_tps": 111.8,
+      "first": "2026-10-19T08:08:10.756711+00:00",
+      "last": "2026-10-19T08:08:22.596175+00:00"
+    },
+    "prefill": {
+      "n": 3,
+      "prompt_tokens": 32429,
+      "output_tokens": [
+        54,
+        36,
+        36
+      ],
+      "decode_tps": 69.1,
+      "prefill_tps": 1879.5,
+      "first": "2026-10-19T08:09:04.842847+00:00",
+      "last": "2026-10-19T08:09:40.505972+00:00"
+    },
+    "quality": {
+      "correct": 5,
+      "total": 6,
+      "failures": [
+        {
+          "case": "average-speed",
+          "answer": "50"
+        }
+      ]
+    },
+    "quality-high": {
+      "correct": 6,
+      "total": 6,
+      "failures": []
+    }
+  }
+}

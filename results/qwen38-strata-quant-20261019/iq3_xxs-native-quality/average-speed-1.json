@@ -1,0 +1,60 @@
+{
+  "label": "iq3_xxs-native262k-vision-cpu",
+  "case": "average-speed",
+  "warmup": false,
+  "at": "2026-10-19T07:42:45.423450+00:00",
+  "wall_s": 0.3752167049970012,
+  "request_sha256": "5f3861ca9a73060eba30a551daf1622dd223cb55c073fba4275b7eac7b3bc1bd",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run average-speed-1.\nTravel 120 km at 60 km/h then 120 km at 40 km/h. Return only the average speed in km/h, as a number."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-dad4345d6ac3423288e0118b",
+    "object": "chat.completion",
+    "created": 1792395765,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "50"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 57,
+      "completion_tokens": 3,
+      "total_tokens": 60,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 57,
+      "prompt_ms": 314.0,
+      "prompt_per_token_ms": 5.509,
+      "prompt_per_second": 181.5,
+      "predicted_n": 3,
+      "predicted_ms": 56.8,
+      "predicted_per_token_ms": 18.933,
+      "predicted_per_second": 52.8,
+      "draft_n": 3,
+      "draft_n_accepted": 3
+    }
+  },
+  "expected": "48",
+  "correct": false
+}

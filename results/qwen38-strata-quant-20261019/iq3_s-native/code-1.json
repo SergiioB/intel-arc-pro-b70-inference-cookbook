@@ -1,0 +1,58 @@
+{
+  "label": "iq3_s-native262k-vision-cpu",
+  "case": "code",
+  "warmup": false,
+  "at": "2026-10-19T08:07:44.572939+00:00",
+  "wall_s": 6.184669827009202,
+  "request_sha256": "cca468d5475f7a5a9214c4a585b7b36e0b2bb08dfdb6fa410866f0e01b2594e5",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run code-1.\nWrite a complete Python implementation of an LRU cache with threading locks and benchmarks."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-89aec0fefd0c47648563e5a0",
+    "object": "chat.completion",
+    "created": 1792397258,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "```python\nimport threading\nfrom collections import OrderedDict\nimport time\nimport random\n\n\nclass LRUCache:\n    \"\"\"Thread-safe LRU Cache implementation using OrderedDict and threading.Lock.\"\"\"\n\n    def __init__(self, capacity: int):\n        if capacity <= 0:\n            raise ValueError(\"Capacity must be positive\")\n        self.capacity = capacity\n        self.cache = OrderedDict()\n        self.lock = threading.Lock()\n\n    def get(self, key):\n        \"\"\"Get value for key. Returns None if not found.\"\"\"\n        with self.lock:\n            if key in self.cache:\n                # Move to end (most recently used)\n                self.cache.move_to_end(key)\n                return self.cache[key]\n            return None\n\n    def put(self, key, value):\n        \"\"\"Put key-value pair into cache. Evicts LRU item if at capacity.\"\"\"\n        with self.lock:\n            if key in self.cache:\n                # Update value and move to end\n                self.cache.move_to_end(key)\n                self.cache[key] = value\n            else:\n                if len(self.cache) >= self.capacity:\n                    # Remove least recently used (first item)\n                    self.cache.popitem(last=False)\n                self.cache[key] = value\n\n    def size(self):\n        \"\"\"Return current number of items in cache.\"\"\"\n        with self.lock:\n            return len(self.cache)\n\n    def clear(self):\n        \"\"\"Clear all items from cache.\"\"\"\n        with self.lock:\n            self.cache.clear()\n\n\ndef benchmark_lru_cache(capacity=1000, num_operations=100000, num_threads=4):\n    \"\"\"Benchmark LRU cache performance with multiple threads.\"\"\"\n    cache = LRUCache(capacity)\n    \n    # Define worker function\n    def worker(thread_id):\n        local_ops = 0\n        for i in range(num_operations // num_threads):\n            key = random.randint(0, capacity * 2)\n            if random.random() < 0.7:\n                cache.get(key)\n            else:\n                cache.put(key, i)\n            local_ops += 1\n        return local_ops\n\n    # Warm up\n    for i in range(min(capacity, 100)):\n        cache.put(i, i)\n\n    start_time = time.time()\n    \n    threads = []\n    results = [None"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 34,
+      "completion_tokens": 512,
+      "total_tokens": 546,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 34,
+      "prompt_ms": 236.5,
+      "prompt_per_token_ms": 6.956,
+      "prompt_per_second": 143.8,
+      "predicted_n": 512,
+      "predicted_ms": 5944.1,
+      "predicted_per_token_ms": 11.61,
+      "predicted_per_second": 86.1,
+      "draft_n": 434,
+      "draft_n_accepted": 346
+    }
+  }
+}

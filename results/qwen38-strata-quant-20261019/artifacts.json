@@ -1,0 +1,10 @@
+{
+  "model_repository": "ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF",
+  "model_revision": "ed59f92082b1e93c0e96d60a8b11aab089b52f09",
+  "iq3_s_shard1_expected_sha256": "4c1eb2ceb4915e1192f4f386021897bde56a97f40a0bb78bb86465e0f7d2aca3",
+  "iq3_s_shard1_verified_sha256": "4c1eb2ceb4915e1192f4f386021897bde56a97f40a0bb78bb86465e0f7d2aca3",
+  "shared_shard2_verified_sha256": "316b46f3a2dbd68c900f43136ab9449f9dcc3725dfd8c794847c204bc161e113",
+  "engine_verified_sha256": "d633e321ba22179c9b1515840b922a49d0d426caea4819237fa2350f4c92e450",
+  "server_verified_sha256": "5167c8116f72095c3ce16401d7bfc1ef441308ad165cc00a179a1d8ee702723c",
+  "expert_profile_verified_sha256": "8f59b4aa8873209dff11c11e37bcda9529a1335b724a1afeea37bf6388975baf"
+}

@@ -1,0 +1,58 @@
+{
+  "label": "iq3_s-native262k-vision-cpu",
+  "case": "reasoning",
+  "warmup": false,
+  "at": "2026-10-19T08:08:10.756711+00:00",
+  "wall_s": 6.047294515010435,
+  "request_sha256": "db54689980c40fa90325521c334ee3a3c43d1f33d0007c8f703d62bab4582d41",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run reasoning-1.\nA train travels 120 km at 60 km/h and returns 120 km at 40 km/h. Explain the average speed for the whole journey, showing the calculation."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-dc083943dc854e38a1b523a1",
+    "object": "chat.completion",
+    "created": 1792397284,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "To find the average speed for the entire journey, we must use the fundamental definition of average speed:\n\n$$ \\text{Average Speed} = \\frac{\\text{Total Distance}}{\\text{Total Time}} $$\n\n**Important Note:** The average speed is **not** simply the arithmetic mean of the two speeds ($\\frac{60 + 40}{2} = 50$ km/h). This is a common misconception. Because the train spends more time traveling at the slower speed, the average speed will be closer to 40 km/h than to 60 km/h.\n\n### Step 1: Calculate Total Distance\nThe train travels 120 km going and 120 km returning.\n$$ \\text{Total Distance} = 120 \\text{ km} + 120 \\text{ km} = 240 \\text{ km} $$\n\n### Step 2: Calculate Total Time\nWe need to calculate the time taken for each leg of the journey using the formula $ \\text{Time} = \\frac{\\text{Distance}}{\\text{Speed}} $.\n\n**Leg 1 (Going):**\n$$ t_1 = \\frac{120 \\text{ km}}{60 \\text{ km/h}} = 2 \\text{ hours} $$\n\n**Leg 2 (Returning):**\n$$ t_2 = \\frac{120 \\text{ km}}{40 \\text{ km/h}} = 3 \\text{ hours} $$\n\n**Total Time:**\n$$ \\text{Total Time} = t_1 + t_2 = 2 \\text{ hours} + 3 \\text{ hours} = 5 \\text{ hours} $$\n\n### Step 3: Calculate Average Speed\nNow, substitute the total distance and total time into the average speed formula:\n\n$$ \\text{Average Speed} = \\frac{240 \\text{ km}}{5 \\text{ hours}} $$\n\n$$ \\text{Average Speed} = 48 \\text{ km/h} $$\n\n### Alternative Method: Harmonic Mean\nWhen distances are equal, the average speed is the **harmonic mean** of the two speeds. The formula for the harmonic mean of two numbers $a$ and $b$ is:\n\n$$ \\text{Average Speed} = \\frac{2ab}{a + b} $$\n\nSubstituting $a"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 59,
+      "completion_tokens": 512,
+      "total_tokens": 571,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 59,
+      "prompt_ms": 529.1,
+      "prompt_per_token_ms": 8.968,
+      "prompt_per_second": 111.5,
+      "predicted_n": 512,
+      "predicted_ms": 5514.6,
+      "predicted_per_token_ms": 10.771,
+      "predicted_per_second": 92.8,
+      "draft_n": 431,
+      "draft_n_accepted": 363
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "label": "iq3_xxs-native262k-vision-cpu",
+  "case": "retrieval",
+  "warmup": true,
+  "at": "2026-10-19T07:42:47.920852+00:00",
+  "wall_s": 0.3762626690004254,
+  "request_sha256": "4a3f9172f1835ecc17644660554536be7d17e67e2a427719a9538b9d07b74eeb",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run retrieval-0.\nRecord A: key=H7, value=5821. Record B: key=J3, value=9184. Return only the value for H7."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-145f5faf27fa4177bbc57a24",
+    "object": "chat.completion",
+    "created": 1792395767,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "5821"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 56,
+      "completion_tokens": 5,
+      "total_tokens": 61,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 56,
+      "prompt_ms": 315.9,
+      "prompt_per_token_ms": 5.641,
+      "prompt_per_second": 177.3,
+      "predicted_n": 5,
+      "predicted_ms": 56.1,
+      "predicted_per_token_ms": 11.22,
+      "predicted_per_second": 89.1,
+      "draft_n": 3,
+      "draft_n_accepted": 3
+    }
+  },
+  "expected": "5821",
+  "correct": true
+}

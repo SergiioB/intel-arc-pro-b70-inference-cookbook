@@ -1,0 +1,61 @@
+{
+  "label": "iq3_xxs-native262k-high",
+  "case": "retrieval",
+  "warmup": false,
+  "at": "2026-10-19T07:44:12.129440+00:00",
+  "wall_s": 1.2126221870130394,
+  "request_sha256": "b6c745eb1729d69892e6393eb2a6754c3b58003d55eb996f76852078150f2b42",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run retrieval-1.\nRecord A: key=H7, value=5821. Record B: key=J3, value=9184. Return only the value for H7."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-c4a08fa481904b27a48e0df0",
+    "object": "chat.completion",
+    "created": 1792395850,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "5821",
+          "reasoning_content": "We need answer user: \"Run retrieval-1.\nRecord A: key=H7, value=5821. Record B: key=J3, value=9184. Return only the value for H7.\"\n\nNeed final only value for H7: 5821. Ensure no extra.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 96,
+      "completion_tokens": 77,
+      "total_tokens": 173,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 96,
+      "prompt_ms": 451.7,
+      "prompt_per_token_ms": 4.705,
+      "prompt_per_second": 212.5,
+      "predicted_n": 77,
+      "predicted_ms": 757.3,
+      "predicted_per_token_ms": 9.835,
+      "predicted_per_second": 101.7,
+      "draft_n": 62,
+      "draft_n_accepted": 55
+    }
+  },
+  "expected": "5821",
+  "correct": true
+}

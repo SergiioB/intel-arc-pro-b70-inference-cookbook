@@ -1,0 +1,61 @@
+{
+  "label": "iq3_s-native262k-high",
+  "case": "python",
+  "warmup": true,
+  "at": "2026-10-19T08:09:57.627273+00:00",
+  "wall_s": 1.8719858410040615,
+  "request_sha256": "226d13dec570c66eee8e47829c5fcd8df6b28b428a53fba770a06bef7a74f739",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run python-0.\nWhat does Python print for list(range(7))[1::2]? Return only the printed list."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-53c1d35c373247628417fd81",
+    "object": "chat.completion",
+    "created": 1792397395,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "[1, 3, 5]",
+          "reasoning_content": "We need answer user: \"Run python-0.\nWhat does Python print for list(range(7))[1::2]? Return only the printed list.\"\n\nNeed compute. list(range(7)) = [0,1,2,3,4,5,6]. Slice [1::2] start index 1 step 2 -> elements at indices 1,3,5 -> [1,3,5]. Return only printed list. Need final only [1, 3, 5]? Python print of list includes spaces after commas: [1, 3, 5]. Ensure only printed list.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 78,
+      "completion_tokens": 141,
+      "total_tokens": 219,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 78,
+      "prompt_ms": 392.6,
+      "prompt_per_token_ms": 5.033,
+      "prompt_per_second": 198.7,
+      "predicted_n": 141,
+      "predicted_ms": 1475.8,
+      "predicted_per_token_ms": 10.467,
+      "predicted_per_second": 95.5,
+      "draft_n": 113,
+      "draft_n_accepted": 91
+    }
+  },
+  "expected": "[1,3,5]",
+  "correct": true
+}

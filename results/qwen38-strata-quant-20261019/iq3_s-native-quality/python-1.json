@@ -1,0 +1,60 @@
+{
+  "label": "iq3_s-native262k-vision-cpu",
+  "case": "python",
+  "warmup": false,
+  "at": "2026-10-19T08:09:44.151475+00:00",
+  "wall_s": 0.386269356997218,
+  "request_sha256": "c54793b3aa56e63eff93c2cf06409897de7d53586f6cafcb484dc45b1ccc34e6",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run python-1.\nWhat does Python print for list(range(7))[1::2]? Return only the printed list."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-85c05dc4750e4297aa7fe959",
+    "object": "chat.completion",
+    "created": 1792397383,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "[1, 3, 5]"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 38,
+      "completion_tokens": 10,
+      "total_tokens": 48,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 38,
+      "prompt_ms": 250.6,
+      "prompt_per_token_ms": 6.595,
+      "prompt_per_second": 151.6,
+      "predicted_n": 10,
+      "predicted_ms": 131.4,
+      "predicted_per_token_ms": 13.14,
+      "predicted_per_second": 76.1,
+      "draft_n": 9,
+      "draft_n_accepted": 9
+    }
+  },
+  "expected": "[1,3,5]",
+  "correct": true
+}

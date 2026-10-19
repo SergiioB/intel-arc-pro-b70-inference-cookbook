@@ -1,0 +1,58 @@
+{
+  "label": "iq3_xxs-yarn350k-vision-cpu",
+  "case": "code",
+  "warmup": false,
+  "at": "2026-10-19T07:29:41.595020+00:00",
+  "wall_s": 6.288252502999967,
+  "request_sha256": "ae0843e3b12439e843589b1c37f3e0da7a232e09e09efb480c66fecf16344e8f",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run code-2.\nWrite a complete Python implementation of an LRU cache with threading locks and benchmarks."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-e6acab6930d64b858da0fd5b",
+    "object": "chat.completion",
+    "created": 1792394975,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "```python\n\"\"\"\nLRU Cache Implementation with Threading Locks and Benchmarks.\n\nThis module provides:\n1. A thread-safe LRU (Least Recently Used) cache using OrderedDict and threading.Lock.\n2. Benchmarking utilities to measure performance under concurrent access.\n\"\"\"\n\nimport time\nimport threading\nfrom collections import OrderedDict\nfrom typing import Any, Optional, Tuple\n\n\nclass LRUCache:\n    \"\"\"\n    Thread-safe LRU Cache implementation.\n    \n    Uses an OrderedDict to maintain insertion/access order and a threading.Lock\n    to ensure thread safety for concurrent get/put operations.\n    \n    Attributes:\n        capacity (int): Maximum number of items the cache can hold.\n        _cache (OrderedDict): Internal storage mapping keys to values, ordered by access time.\n        _lock (threading.Lock): Lock to protect concurrent access to the cache.\n        hits (int): Number of cache hits.\n        misses (int): Number of cache misses.\n    \"\"\"\n\n    def __init__(self, capacity: int):\n        \"\"\"\n        Initialize the LRU Cache with a given capacity.\n        \n        Args:\n            capacity (int): Maximum number of items in the cache. Must be positive.\n            \n        Raises:\n            ValueError: If capacity is not a positive integer.\n        \"\"\"\n        if not isinstance(capacity, int) or capacity <= 0:\n            raise ValueError(\"Capacity must be a positive integer.\")\n        \n        self.capacity = capacity\n        self._cache: OrderedDict[Any, Any] = OrderedDict()\n        self._lock = threading.Lock()\n        self.hits = 0\n        self.misses = 0\n\n    def get(self, key: Any) -> Optional[Any]:\n        \"\"\"\n        Retrieve a value from the cache by key.\n        \n        If the key exists, it is moved to the end (most recently used).\n        If the key does not exist, returns None and increments miss count.\n        \n        Args:\n            key (Any): The key to look up.\n            \n        Returns:\n            Optional[Any]: The cached value if found, otherwise None.\n        \"\"\"\n        with self._lock:\n            if key in self._cache:\n                # Move the accessed item to the end (most recently used)\n                self._cache.move_to_end(key)\n                self.hits += 1\n                return self._cache[key]\n            else:"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 34,
+      "completion_tokens": 512,
+      "total_tokens": 546,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 34,
+      "prompt_ms": 248.6,
+      "prompt_per_token_ms": 7.312,
+      "prompt_per_second": 136.8,
+      "predicted_n": 512,
+      "predicted_ms": 6034.2,
+      "predicted_per_token_ms": 11.786,
+      "predicted_per_second": 84.8,
+      "draft_n": 454,
+      "draft_n_accepted": 340
+    }
+  }
+}

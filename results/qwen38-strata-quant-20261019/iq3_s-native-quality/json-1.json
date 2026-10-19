@@ -1,0 +1,60 @@
+{
+  "label": "iq3_s-native262k-vision-cpu",
+  "case": "json",
+  "warmup": false,
+  "at": "2026-10-19T08:09:43.371195+00:00",
+  "wall_s": 0.33527700600097887,
+  "request_sha256": "02ae9efa2e130b983e335ad8823e7c2d5bccb74da4dad6f0c7252cb04f2c368e",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run json-1.\nReturn exactly this JSON object with no prose: key answer has integer value 42."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-439da08804f9472eb90744ac",
+    "object": "chat.completion",
+    "created": 1792397383,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"answer\": 42}"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 36,
+      "completion_tokens": 8,
+      "total_tokens": 44,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 36,
+      "prompt_ms": 237.4,
+      "prompt_per_token_ms": 6.594,
+      "prompt_per_second": 151.6,
+      "predicted_n": 8,
+      "predicted_ms": 93.8,
+      "predicted_per_token_ms": 11.725,
+      "predicted_per_second": 85.3,
+      "draft_n": 6,
+      "draft_n_accepted": 6
+    }
+  },
+  "expected": "{\"answer\":42}",
+  "correct": true
+}

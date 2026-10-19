@@ -1,0 +1,61 @@
+{
+  "label": "iq3_xxs-native262k-high",
+  "case": "average-speed",
+  "warmup": true,
+  "at": "2026-10-19T07:43:59.381106+00:00",
+  "wall_s": 2.100953130007838,
+  "request_sha256": "e146af0b6aa1d51d899c8e1abafe1c0ff660d8d0c5270477af5048ed5223e129",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run average-speed-0.\nTravel 120 km at 60 km/h then 120 km at 40 km/h. Return only the average speed in km/h, as a number."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-dda0963297a8422cb22e72e6",
+    "object": "chat.completion",
+    "created": 1792395837,
+    "model": "qwen3.8-flash-next-iq3_xxs",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "48",
+          "reasoning_content": "We need answer user: \"Run average-speed-0.\nTravel 120 km at 60 km/h then 120 km at 40 km/h. Return only the average speed in km/h, as a number.\"\n\nNeed compute average speed total distance / total time. Distance 240 km. Time 120/60=2 h, 120/40=3 h total 5 h. Average speed 240/5=48 km/h. Return only number. Ensure no extra. Final: 48.\n"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 97,
+      "completion_tokens": 130,
+      "total_tokens": 227,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 97,
+      "prompt_ms": 606.8,
+      "prompt_per_token_ms": 6.256,
+      "prompt_per_second": 159.9,
+      "predicted_n": 130,
+      "predicted_ms": 1491.1,
+      "predicted_per_token_ms": 11.47,
+      "predicted_per_second": 87.2,
+      "draft_n": 108,
+      "draft_n_accepted": 92
+    }
+  },
+  "expected": "48",
+  "correct": true
+}

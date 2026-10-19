@@ -1,0 +1,58 @@
+{
+  "label": "iq3_s-native262k-vision-cpu",
+  "case": "code",
+  "warmup": false,
+  "at": "2026-10-19T08:07:50.534202+00:00",
+  "wall_s": 5.961063954004203,
+  "request_sha256": "12b9ecb7e82d530dac6d776290a513e550f4f75fe1c4a51cff986c64b6d2994b",
+  "request": {
+    "model": "qwen3.8-flash-next-iq3_s",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Run code-2.\nWrite a complete Python implementation of an LRU cache with threading locks and benchmarks."
+      }
+    ],
+    "max_tokens": 512,
+    "temperature": 0,
+    "reasoning_effort": "none",
+    "cache_prompt": false
+  },
+  "response": {
+    "id": "chatcmpl-a07ea41050884061ba5e39c1",
+    "object": "chat.completion",
+    "created": 1792397264,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "```python\nimport time\nimport threading\nfrom collections import OrderedDict\nfrom typing import Any, Optional\n\n\nclass LRUCache:\n    \"\"\"\n    A thread-safe LRU (Least Recently Used) cache implementation using OrderedDict\n    and threading locks for concurrent access.\n    \"\"\"\n\n    def __init__(self, capacity: int):\n        if capacity <= 0:\n            raise ValueError(\"Capacity must be a positive integer\")\n        self.capacity = capacity\n        self.cache: OrderedDict[Any, Any] = OrderedDict()\n        self.lock = threading.RLock()\n        # Statistics for benchmarking\n        self.hits = 0\n        self.misses = 0\n\n    def get(self, key: Any) -> Optional[Any]:\n        \"\"\"\n        Retrieve a value from the cache. If found, move it to the end (most recently used).\n        Returns None if not found.\n        \"\"\"\n        with self.lock:\n            if key in self.cache:\n                # Move to end to mark as most recently used\n                self.cache.move_to_end(key)\n                self.hits += 1\n                return self.cache[key]\n            else:\n                self.misses += 1\n                return None\n\n    def put(self, key: Any, value: Any) -> None:\n        \"\"\"\n        Insert or update a key-value pair in the cache.\n        If the cache exceeds capacity, evict the least recently used item.\n        \"\"\"\n        with self.lock:\n            if key in self.cache:\n                # Update existing key and move to end\n                self.cache[key] = value\n                self.cache.move_to_end(key)\n            else:\n                # Insert new key\n                self.cache[key] = value\n                self.cache.move_to_end(key)\n                # Evict LRU item if over capacity\n                if len(self.cache) > self.capacity:\n                    self.cache.popitem(last=False)\n\n    def delete(self, key: Any) -> bool:\n        \"\"\"\n        Remove a key from the cache. Returns True if removed, False otherwise.\n        \"\"\"\n        with self.lock:\n            if key in self.cache:\n                del self.cache[key]\n                return True\n            return False\n\n    def clear(self) -> None:\n        \"\"\"Clear all items from the cache.\"\"\"\n        with self.lock:\n            self.cache.clear()\n            self.hits = 0\n            self.m"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 34,
+      "completion_tokens": 512,
+      "total_tokens": 546,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 34,
+      "prompt_ms": 236.7,
+      "prompt_per_token_ms": 6.962,
+      "prompt_per_second": 143.6,
+      "predicted_n": 512,
+      "predicted_ms": 5720.2,
+      "predicted_per_token_ms": 11.172,
+      "predicted_per_second": 89.5,
+      "draft_n": 440,
+      "draft_n_accepted": 354
+    }
+  }
+}

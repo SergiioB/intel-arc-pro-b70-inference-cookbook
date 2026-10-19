@@ -1,0 +1,30 @@
+{
+  "context_tokens": 262144,
+  "kv": "int8",
+  "layer_split": 24,
+  "pipeline_windows": 2,
+  "power_caps_w": [180, 230],
+  "power_caps_changed": false,
+  "memory_note": "GPU values are whole-card launcher dashboard readings, not isolated weight allocations. RSS is the main engine only, excluding the separate CPU vision encoder. File-backed RSS overlaps disk contents and is reclaimable; do not add tiers as unique weights.",
+  "iq3_xxs": {
+    "gpu_used_gib": [23.1, 29.2],
+    "expert_cache_gib": [17.72, 22.24],
+    "expert_slots": [12288, 12288],
+    "engine_rss_kib": 41647236,
+    "engine_pss_file_kib": 41186329,
+    "engine_pss_anon_kib": 430500,
+    "engine_swap_kib": 449432
+  },
+  "iq3_s": {
+    "gpu_used_gib": [27.7, 31.7],
+    "expert_cache_gib": [22.14, 24.51],
+    "expert_slots": [12288, 12200],
+    "engine_rss_kib": 45216552,
+    "engine_pss_file_kib": 44297639,
+    "engine_pss_anon_kib": 888308,
+    "engine_swap_kib": 0,
+    "shard1_bytes": 54817524224,
+    "shared_shard2_bytes": 28800138432,
+    "shard2_storage_note": "Symlink to the verified IQ3_XXS lookup shard; not another 28.80 GB download."
+  }
+}
