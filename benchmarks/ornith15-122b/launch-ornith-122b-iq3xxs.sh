@@ -6,7 +6,7 @@
 set -euo pipefail
 
 GGUF=${1:?usage: $0 GGUF_PATH [CTX] [PORT]}
-CTX=${2:-32768}
+CTX=${2:-131072}
 PORT=${3:-8000}
 IMAGE='ghcr.io/ggml-org/llama.cpp:server-intel-b11429@sha256:3353d968ed8987612b7859828d14d205413567baafed00a90d71d0c23e63d7ba'
 CONTAINER="b70-ornith122-c${CTX}"
@@ -47,5 +47,5 @@ exec docker run --rm --name "$CONTAINER" \
   --split-mode layer --tensor-split 50,50 \
   -fa on \
   --cache-type-k q8_0 --cache-type-v q4_0 \
-  -b 512 -ub 512 -t 6 -tb 14 \
+  -b 2048 -ub 2048 -t 6 \
   --temp 0.6 --top-p 0.95 --top-k 20
