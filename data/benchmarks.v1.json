@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-10-20T00:00:00Z",
+ "updated_at": "2026-10-20T21:34:00Z",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -2042,7 +2042,7 @@
    "id": "ornith15-122b-iq3xxs-llamacpp-dual-b70-v1",
    "kind": "capability",
    "title": "Ornith-1.5-122B UD-IQ3_XXS on two B70s (llama.cpp SYCL)",
-   "summary": "Fit recipe: Unsloth IQ3_XXS (~49.5 GB) layer-split 50/50, 32K, q8/q4 KV. No tok/s yet. DFlash2 is NVIDIA-only.",
+   "summary": "Superseded as ranking cell by ornith15-122b-iq3xxs-pp2048-v1 / tg128-v1. Fit+131K still valid.",
    "evidence_status": "provisional",
    "hardware": {
     "gpu_model": "Intel Arc Pro B70",
@@ -2058,8 +2058,96 @@
     "quantization": "UD-IQ3_XXS"
    },
    "evidence": {
-    "commit": "eb7e7883249b3739f9392d849fe583de4b7cfbd7",
-    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/eb7e7883249b3739f9392d849fe583de4b7cfbd7/docs/ornith15-122b/ORNITH15-122B-LLAMACPP.md"
+    "commit": "8dacd3104b1c854952cfb5dc91574db4ffb9a075",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8dacd3104b1c854952cfb5dc91574db4ffb9a075/results/ornith15-122b/iq3xxs-llamacpp-bench-20261020/README.md"
+   }
+  },
+  {
+   "id": "ornith15-122b-iq3xxs-tg128-v1",
+   "kind": "benchmark",
+   "title": "Ornith-1.5-122B UD-IQ3_XXS llama.cpp SYCL tg128 (two B70s)",
+   "summary": "llama-bench n=5 median tg128 28.10 tok/s. Host F16 SYCL 1692f9e50, -b/-ub 2048, FA, q8/q4 KV, layer 50/50, 150 W/card. Engine-native, not client SSE.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL F16 1692f9e50 b361"
+   },
+   "model": {
+    "id": "unsloth/Ornith-1.5-122B-GGUF",
+    "quantization": "UD-IQ3_XXS",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 128,
+    "context_limit_tokens": 131072,
+    "cache": "disabled"
+   },
+   "metrics": [
+    {
+     "name": "engine_tg128_tps",
+     "value": 28.1,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "8dacd3104b1c854952cfb5dc91574db4ffb9a075",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8dacd3104b1c854952cfb5dc91574db4ffb9a075/results/ornith15-122b/iq3xxs-llamacpp-bench-20261020/README.md"
+   }
+  },
+  {
+   "id": "ornith15-122b-iq3xxs-pp2048-v1",
+   "kind": "benchmark",
+   "title": "Ornith-1.5-122B UD-IQ3_XXS llama.cpp SYCL pp2048 (two B70s)",
+   "summary": "llama-bench n=5 median pp2048 700.07 tok/s (pp512 460.50, pp4096 697.87). Same stack as tg128. Engine-native prefill.",
+   "evidence_status": "official-lab",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 150
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL F16 1692f9e50 b361"
+   },
+   "model": {
+    "id": "unsloth/Ornith-1.5-122B-GGUF",
+    "quantization": "UD-IQ3_XXS",
+    "speculation": "none"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 2048,
+    "output_tokens": 1,
+    "context_limit_tokens": 131072,
+    "cache": "disabled"
+   },
+   "metrics": [
+    {
+     "name": "engine_pp2048_tps",
+     "value": 700.07,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 5
+   },
+   "evidence": {
+    "commit": "8dacd3104b1c854952cfb5dc91574db4ffb9a075",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8dacd3104b1c854952cfb5dc91574db4ffb9a075/results/ornith15-122b/iq3xxs-llamacpp-bench-20261020/README.md"
    }
   }
  ]
