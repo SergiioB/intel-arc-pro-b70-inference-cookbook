@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Issue triage: stop labelling from maintainer replies and from issue-form headings. A reply saying "only acts on TP2 or PP2" kept re-adding `pp:2` to the TP4 report #38, and the bug form's "Logs / dmesg / coredump" heading tagged every bug report `driver-hang` (#15). Re-classifying all 60 issues changes only #38, #15 and #8, each by dropping a false label.
 - Windows Docker kit: update the SHA-256 pins for `patch_draft_lmhead_int4.py` and `patch_draft_mtp_int4.py`. The TP guard commit `d9c95e5` changed both files but not the pins, so `Build-Qwen38Image-Docker.ps1` stopped with a hash mismatch (#15).
 - Windows Docker and WSLC kits: add `patch_xpu_only_platform.py`. On hosts that also have an NVIDIA GPU, WSL exposes NVML in the container and vLLM stopped with `Only one platform plugin can be activated, but got: ['cuda', 'xpu']` (#15). Rebuild with `Upgrade-Qwen38-Docker.ps1`.
 - `patch_vllm_worker_affinity.py`: make the `xpu_worker.py` device-remap hunk idempotent. Its marker never matched the injected text, so a second run in the same container (any restart) failed with `anchor count 0 != 1` and the startup chain exited. Checked on the `f01e24f6` image trees with the #38 order (affinity, accepted-sync, eagle-drop, backward-copy) applied twice: all exit 0, 3/3 backward-copy guards (#38).

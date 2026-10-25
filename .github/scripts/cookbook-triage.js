@@ -31,6 +31,7 @@ module.exports = async function triage({ github, context, core, issueNumber }) {
       body: issue.body,
       comments,
       labels: (issue.labels || []).map((l) => l.name),
+      author: issue.user && issue.user.login,
     },
     policy
   );

@@ -91,18 +91,37 @@ function isBotCorpus(comment) {
   return false;
 }
 
-function userCorpus({ title, body, comments }) {
-  const parts = [title || "", body || ""];
+// Maintainer replies quote configs back to the reporter ("only acts on TP2 or
+// PP2"), so they are not evidence about the reporter's setup. Seen on #38:
+// a reply re-added pp:2 to a TP4 report on every event. A maintainer who
+// opened the issue is the reporter, so their comments still count.
+const MAINTAINER_ASSOCIATIONS = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
+
+function isMaintainerReply(comment, author) {
+  if (!MAINTAINER_ASSOCIATIONS.has(comment.author_association)) return false;
+  const login = comment.user && comment.user.login;
+  return !author || login !== author;
+}
+
+// Issue forms render each field label as a "### " heading in the body. The bug
+// form's "Logs / dmesg / coredump" heading tagged every bug as driver-hang
+// (#15, a platform-plugin crash). Only the reporter's answers are evidence.
+function stripFormHeadings(body) {
+  return String(body || "").replace(/^###[^\n]*$/gm, "");
+}
+
+function userCorpus({ title, body, comments, author }) {
+  const parts = [title || "", stripFormHeadings(body)];
   for (const c of comments || []) {
-    if (isBotCorpus(c)) continue;
+    if (isBotCorpus(c) || isMaintainerReply(c, author)) continue;
     parts.push(c.body || "");
   }
   return parts.join("\n");
 }
 
-function classifyIssue({ title, body, comments, labels }, policy) {
+function classifyIssue({ title, body, comments, labels, author }, policy) {
   const pol = policy || DEFAULT_POLICY;
-  const text = userCorpus({ title, body, comments });
+  const text = userCorpus({ title, body, comments, author });
   const lower = text.toLowerCase();
   const have = new Set(labels || []);
   const add = new Set();
@@ -184,6 +203,7 @@ module.exports = {
   hasCardCount,
   namedC1OnlyPatch,
   isBotCorpus,
+  isMaintainerReply,
   userCorpus,
   classifyIssue,
   classifyPull,

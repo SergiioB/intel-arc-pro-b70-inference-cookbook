@@ -95,6 +95,59 @@ describe("classifyIssue", () => {
     assert.equal(r.add.includes("tp2-draft-block"), false);
     assert.equal(r.isQuestion, true);
   });
+  it("ignores maintainer replies that quote other configs", () => {
+    const r = lib.classifyIssue(
+      {
+        title: "[Hardware]",
+        body: "TP4 on four cards\nsha256:eeeeeeeeeeeeeeee docker run --rm",
+        author: "reporter",
+        comments: [
+          {
+            user: { login: "SergiioB", type: "User" },
+            author_association: "OWNER",
+            body: "The affinity hunks only act on TP2 or PP2. See the coredump note.",
+          },
+        ],
+        labels: [],
+      },
+      policy
+    );
+    assert.deepEqual(
+      ["tp:4", "pp:2", "tp:2", "driver-hang"].filter((l) => r.add.includes(l)),
+      ["tp:4"]
+    );
+  });
+  it("still reads a maintainer's comments on their own issue", () => {
+    const r = lib.classifyIssue(
+      {
+        title: "PP2 notes",
+        body: "sha256:ffffffffffffffff docker run --rm",
+        author: "SergiioB",
+        comments: [
+          {
+            user: { login: "SergiioB", type: "User" },
+            author_association: "OWNER",
+            body: "Same crash on PP2.",
+          },
+        ],
+        labels: [],
+      },
+      policy
+    );
+    assert.equal(r.add.includes("pp:2"), true);
+  });
+  it("does not tag driver-hang from the bug form's log heading", () => {
+    const r = lib.classifyIssue(
+      {
+        title: "[Bug] crash",
+        body: "### Logs / dmesg / coredump\n\nRuntimeError: Only one platform plugin\nsha256:abababababababab docker run",
+        comments: [],
+        labels: [],
+      },
+      policy
+    );
+    assert.equal(r.add.includes("driver-hang"), false);
+  });
   it("does not tag draft-int4 from 'draft' plus GPTQ-Int4", () => {
     const r = lib.classifyIssue(
       {
