@@ -208,7 +208,7 @@ def patch_file(path: Path, anchor: str, inject: str, marker: str) -> bool:
 
 def main() -> int:
     ok1 = patch_file(EXECUTOR, EXECUTOR_ANCHOR, EXECUTOR_INJECT, "B70_WORKER_AFFINITY_SPAWN")
-    ok2 = patch_file(WORKER, WORKER_ANCHOR, WORKER_INJECT, "end B70_WORKER_AFFINITY")
+    ok2 = patch_file(WORKER, WORKER_ANCHOR, WORKER_INJECT, "[B70_WORKER_AFFINITY] pid=")
     ok3 = patch_file(
         WORKER,
         WORKER_ASSERT_ANCHOR,
