@@ -8,6 +8,7 @@ COPY patches/patch_draft_mtp_int4.py /opt/qwen38/patch_draft_mtp_int4.py
 COPY container/start.sh /opt/qwen38/start.sh
 COPY container/diagnose.py /opt/qwen38/diagnose.py
 COPY container/patch_xpu_single_gpu_warmup.py /opt/qwen38/patch_xpu_single_gpu_warmup.py
+COPY container/patch_xpu_only_platform.py /opt/qwen38/patch_xpu_only_platform.py
 COPY container/prepare_low_reasoning_template.py /opt/qwen38/prepare_low_reasoning_template.py
 
 # Git for Windows may COPY CRLF scripts. Strip CR so start.sh has a Unix shebang.
@@ -18,6 +19,7 @@ RUN sed -i 's/\r$//' /opt/qwen38/start.sh /opt/qwen38/*.py \
        /opt/qwen38/patch_draft_lmhead_int4.py /opt/qwen38/patch_draft_mtp_int4.py \
        /opt/qwen38/diagnose.py \
        /opt/qwen38/patch_xpu_single_gpu_warmup.py \
+       /opt/qwen38/patch_xpu_only_platform.py \
        /opt/qwen38/prepare_low_reasoning_template.py
 
 EXPOSE 8000

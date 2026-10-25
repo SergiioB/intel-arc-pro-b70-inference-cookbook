@@ -16,6 +16,7 @@ ENABLE_TOOLS="${ENABLE_TOOLS:-1}"
 TOOL_CALL_PARSER="${TOOL_CALL_PARSER:-qwen3_coder}"
 
 python /opt/qwen38/diagnose.py
+python /opt/qwen38/patch_xpu_only_platform.py
 python /opt/qwen38/patch_mtp_nightly.py
 python /opt/qwen38/patch_mtp_boundary.py
 python /opt/qwen38/patch_gdn_mixed_split_v5.py

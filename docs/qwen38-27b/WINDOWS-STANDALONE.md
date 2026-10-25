@@ -305,6 +305,11 @@ this fix, `git pull` and rebuild (`.\Upgrade-Qwen38-Docker.ps1` or
   IPC path would otherwise fail).
 - **Docker needs only the minimum GPU surface:** `/dev/dxg` plus read-only
   `/usr/lib/wsl/lib` and `/usr/lib/wsl/drivers`. No `--privileged`.
+- **An NVIDIA GPU in the same Windows machine does not take over.** WSL
+  shares `libnvidia-ml.so.1` with the container, so vLLM's CUDA probe sees the
+  NVIDIA card and stops with `Only one platform plugin can be activated, but
+  got: ['cuda', 'xpu']`. `patch_xpu_only_platform.py` returns no CUDA platform
+  when `VLLM_TARGET_DEVICE=xpu`, which both start scripts set (issue #15).
 - **B70 identity check tolerates Windows drivers:** `diagnose.py` accepts the
   marketing name **or** the Battlemage PCI ID `0xe223` (some Windows drivers
   expose only the device ID), then runs a real XPU allocation/compute probe
@@ -422,7 +427,7 @@ windows/
   Qwen38-Docker-Standalone/   Docker Desktop kit: Setup/Build/Download/Start/Stop,
                               Smoke-Test, Test-CookbookDecode
   (both) container/           start.sh, diagnose.py, oneCCL warm-up skip,
-                              low-reasoning template patch
+                              XPU-only platform guard, low-reasoning template patch
   (both) patches/             five hash-pinned files: MTP nightly, MTP boundary,
                               mixed-split v5, draft lmhead INT4, draft MTP INT4
   (both) Upgrade-Qwen38-*.ps1 rebuild image 2026.08.19 and recreate the container

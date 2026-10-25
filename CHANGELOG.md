@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Windows Docker kit: update the SHA-256 pins for `patch_draft_lmhead_int4.py` and `patch_draft_mtp_int4.py`. The TP guard commit `d9c95e5` changed both files but not the pins, so `Build-Qwen38Image-Docker.ps1` stopped with a hash mismatch (#15).
+- Windows Docker and WSLC kits: add `patch_xpu_only_platform.py`. On hosts that also have an NVIDIA GPU, WSL exposes NVML in the container and vLLM stopped with `Only one platform plugin can be activated, but got: ['cuda', 'xpu']` (#15). Rebuild with `Upgrade-Qwen38-Docker.ps1`.
 - Qwen3.8-27B SC5: measure int8 vs fp16 prefill as served. int8 shifts the held-out chat distribution by KL 0.00099, about 70 % of SC5's weight KL to BF16. fp16 prefill reads cold prompts 1.63×/1.54×/1.34×/1.28× slower at 8K/32K/131K/190K. Document the opt-in `--prefill fp16` mode (b70-launcher 0.6.10) and the `--set env.EXL3_INT8_PREFILL=0` serve flag.
 - Put measured wins, failed routes, unpublished lab screens, and ranked stop/go decisions in `docs/WHAT-WORKED.md`; shorten the README chooser to one entry per goal.
 - Qualify historical MoE and TP2 headlines, distinguish the quick-start BF16 drafter from the draft-INT4 result, and add required tool-call parser flags to `START.md`.

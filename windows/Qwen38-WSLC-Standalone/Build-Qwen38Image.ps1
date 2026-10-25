@@ -68,6 +68,7 @@ $linuxSources = @(
     (Join-Path $Root "container\start.sh"),
     (Join-Path $Root "container\diagnose.py"),
     (Join-Path $Root "container\patch_xpu_single_gpu_warmup.py"),
+    (Join-Path $Root "container\patch_xpu_only_platform.py"),
     (Join-Path $Root "container\prepare_low_reasoning_template.py")
 )
 foreach ($path in $linuxSources) {
