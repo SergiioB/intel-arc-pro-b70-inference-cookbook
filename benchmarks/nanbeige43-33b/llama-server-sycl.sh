@@ -10,6 +10,10 @@
 #   --jinja                      use the GGUF template; its markers select the Qwen3-Coder parser
 #   --reasoning-format deepseek  thoughts in reasoning_content, not content
 #   GGML_SYCL_ENABLE_GRAPH=0     SYCL graphs measured ~±1 % on dense models; declared off
+#
+# Optional decode lever (measured +73 % on repeated code, neutral-to-+10 % elsewhere):
+#   SPEC="--spec-type ngram-simple --spec-ngram-simple-size-n 4 --spec-ngram-simple-size-m 7"
+# Keep size_m at 7: size_m 8 makes a 9-wide verify batch and is 31 % slower than plain.
 set -euo pipefail
 
 : "${MODEL:?set MODEL to the Q4_K_M gguf path}"
@@ -17,6 +21,7 @@ set -euo pipefail
 : "${CTX:=32768}"
 : "${PORT:=8084}"
 : "${BIN:=${HOME}/llama.cpp/build-sycl/bin/llama-server}"
+: "${SPEC:=}"           # see the optional block in the header
 
 pgrep -af 'llama-server|llama-bench' | grep -v pgrep || true
 # setvars.sh is not `set -u` safe and exits non-zero when already initialised
@@ -38,4 +43,5 @@ exec "${BIN}" -m "${MODEL}" \
   -fa on -ctk q8_0 -ctv q4_1 \
   -c "${CTX}" -b 2048 -ub 2048 -t 8 -tb 8 -np 1 \
   --mmap --jinja --reasoning-format deepseek \
+  ${SPEC} \
   --host 127.0.0.1 --port "${PORT}" --no-webui

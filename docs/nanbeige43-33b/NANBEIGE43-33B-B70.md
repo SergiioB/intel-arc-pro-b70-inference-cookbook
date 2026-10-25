@@ -25,10 +25,10 @@ context token makes the attention kernel work longer.
 | Server C1, 777-token prompt, 128 output tokens | 21.80 tok/s, 0.095 tokens/J |
 | Server C1, 12,844-token prompt, 128 output tokens | 12.16 tok/s, 0.053 tokens/J |
 
-Two settings do most of the work: an **empty-ish context** for decode, and
-`-ub 2048` for prefill (+43 % at pp8192 over the old `-ub 512` default). One
-setting that everyone reaches for does **not** help here: n-gram speculation is
-31 % slower at short context and neutral at 13K.
+Two settings do most of the work: `-ub 2048` for prefill (+43 % at pp8192 over the
+old `-ub 512` default), and a correctly sized n-gram draft for repetitive work
+(**+73 %** decode on repeated code — but only with `size_m 7`; `size_m 8` is 31 %
+slower, because it makes the verify batch 9 and leaves the 8-wide kernel window).
 
 ## 2. Prerequisites
 
@@ -229,18 +229,42 @@ cell. Above 32K this recipe has **no** measurement — expect decode to keep fal
 (measured slope: −3.26 µs of token time per extra context token, i.e. 6.67 tok/s at
 32K).
 
-## 10. What does not help (measured or closed)
+## 10. Draft-free speculation — the one big decode lever that works
+
+Add these flags and decode on repetitive text jumps; the verify batch must stay at 8:
+
+```bash
+  --spec-type ngram-simple \
+  --spec-ngram-simple-size-n 4 \
+  --spec-ngram-simple-size-m 7      # batch 8. size_m 8 => batch 9 => slower than plain
+```
+
+Matched pair, same prompt and flags, fresh processes, 128 output tokens:
+
+| Prompt | plain | with `size_m 7` |
+|---|---:|---:|
+| 777-token repeated code, acceptance 99/127 | 21.80 tok/s | **37.80 tok/s (+73.3 %)** |
+| 12,844-token log, acceptance varies 0/26–51/104 | 12.16 tok/s | 11.7–15.8 (median ~13.4) |
+
+Scope it honestly: the win comes from text that repeats itself (code, logs, agent
+transcripts pasted back). Novel prose is expected neutral and has not been measured
+with `size_m 7`. Keep the no-spec arm in every comparison, and check that greedy
+output matches the no-spec run before making it a default for a workload.
+
+## 11. What does not help (measured or closed)
 
 | Attempt | Result |
 |---|---|
-| N-gram / draft-free speculation (`--spec-type ngram-simple`, `size_n 4`, `size_m 8`, `n_max 8`) | 21.80 → **15.12 tok/s** on repeated code (777-token prompt); 12.16 → ~11.9 at 12,844 tokens. Drafts fire (144 drafted, 99 accepted) but the ≤9-wide verify batch costs more than it saves on this dense path |
+| N-gram / draft-free speculation with `size_m 8` | 21.80 → **15.12 tok/s**. Negative control: `--spec-draft-n-max` does *not* cap the draft, `--spec-ngram-simple-size-m` does; a 9-wide batch leaves the 8-wide reorder-MMVQ window |
 | F16 KV instead of `q8_0`/`q4_1` at 32K | 6.69 vs 6.66 tok/s — depth cost is attention latency, not KV bytes |
 | `q8_0` K + `q8_0` V, and `q4_0`/`q4_0` at 32K | 4.61 and 4.84 tok/s — worse than the fleet pair |
 | `-b 4096` with `-ub 2048` | no change |
 | Thinking left unbounded | correct but slow: 205 of 256 output tokens were reasoning on a one-line arithmetic question |
+| Verify batches above 8 | every weight matrix is dequantized to f16 and run through oneDNN, so a 9-wide batch loses more than the extra tokens win |
+| `llama-bench` for the dispatch log | it suppresses INFO; use `llama-server -lv 4` with `GGML_SYCL_MKL_FA_DEBUG=1` |
 | A draft model for speculation | none exists: the 3B student is unreleased and older Nanbeige 3B vocabularies (166,144) do not match this one (166,912) |
 
-## 11. Cleanup
+## 12. Cleanup
 
 ```bash
 pkill -f 'llama-server -m /data/models/nanbeige43-33b'   # only your own process
@@ -250,12 +274,15 @@ cat /sys/class/hwmon/hwmon6/power1_cap                   # confirm the as-found 
 
 Delete the run directory only after copying its JSON and logs somewhere you keep.
 
-## 12. Evidence
+## 13. Evidence
 
 Measured 2026-10-25, one B70, `0000:0f:00.0`, build 361 (`1692f9e50`), artifact
 sha256 `2cef7985…4c37`, 230 W cap, no container. Raw llama-bench JSON, server logs,
 quality probe, n-gram A/B samples and energy cells are kept with the run record
-(private lab). Validation tier: measured on one host, one artifact, one build, no
+(private lab). Decode attention is confirmed **VEC** on this path
+(`GGML_SYCL_MKL_FA_DEBUG=1` at `-lv 4`: 104/104 `[FA-DISP] VEC D=128 n_kv=256`, zero
+TILE/MKL/ONEDNN), which is why context costs so much at M=1.
+Validation tier: measured on one host, one artifact, one build, no
 independent reproduction. Quality was smoke-tested only (5/5 short prompts
 including one tool call); no benchmark suite was run, so this page makes **no**
 agentic-quality claim.
