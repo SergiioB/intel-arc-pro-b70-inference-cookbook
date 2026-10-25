@@ -274,12 +274,36 @@ cat /sys/class/hwmon/hwmon6/power1_cap                   # confirm the as-found 
 
 Delete the run directory only after copying its JSON and logs somewhere you keep.
 
-## 13. Evidence
+## 13. Coding quality and the reasoning budget
+
+Greedy, single-file HTML tasks, each verified in Chromium through the app's own handlers
+(not by reading the source):
+
+| Task | Output tokens | Result |
+|---|---:|---|
+| Todo list, `localStorage`, clear-done | 3,239 | **6/6** checks pass |
+| 15×15 BFS visualiser, animation, unreachable case | 7,722 | **6/6** checks pass |
+| Paint: undo, clear, PNG export, pointer-leave | 1,375 | **5/6**: the first `undo` is a no-op (snapshots pushed after the action) |
+
+**Thinking must be budgeted for code emission.** Thinking is on by default and can consume
+the whole completion budget: two of three tasks returned **empty content** after 12,000
+reasoning tokens, and with `--reasoning-budget 1500` the paint task truncated and inserted
+a literal `...` inside a function. Turning thinking off produced the only complete paint
+app, 5–8× faster per finished file:
+
+```bash
+  --reasoning off                 # or --reasoning-budget 1500 for tasks that need planning
+```
+
+## 14. Evidence
 
 Measured 2026-10-25, one B70, `0000:0f:00.0`, build 361 (`1692f9e50`), artifact
 sha256 `2cef7985…4c37`, 230 W cap, no container. Raw llama-bench JSON, server logs,
 quality probe, n-gram A/B samples and energy cells are kept with the run record
-(private lab). Decode attention is confirmed **VEC** on this path
+(private lab). Verified in a real browser: the todo app passed 6/6 acceptance
+checks including a `localStorage` round-trip; the BFS visualiser passed 6/6 including the
+unreachable case; the paint app passed 5/6 with one real state-management defect
+(off-by-one undo). Decode attention is confirmed **VEC** on this path
 (`GGML_SYCL_MKL_FA_DEBUG=1` at `-lv 4`: 104/104 `[FA-DISP] VEC D=128 n_kv=256`, zero
 TILE/MKL/ONEDNN), which is why context costs so much at M=1.
 Validation tier: measured on one host, one artifact, one build, no
