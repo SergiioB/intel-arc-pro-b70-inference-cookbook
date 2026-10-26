@@ -151,17 +151,48 @@ Prefill is bound by the per-ubatch dequant-to-F16 round trip, so a larger ubatch
 halves the number of round trips. The compute buffer grows with it; at 32K context
 the server still left 8.6 GiB free.
 
+## 6b. KV cache: pick the pair by kernel path, not by bytes
+
+Measured on this path (one variable per row, 2 reps each, decode at 32K occupied context):
+
+| KV K / V | KV B/token | Max context at 2 GiB reserve | tg d0 / 8K / 32K |
+|---|---:|---:|---|
+| **q4_1 / q4_1** | 66,560 | **143,360** | **23.48 / 18.76 / 11.03** |
+| q5_1 / q5_1 | 79,872 | 125,952 | — / — / 10.36 |
+| q8_0 / q4_1 | 89,856 | 106,496 | 23.14 / 14.63 / 6.67 |
+| q4_1 / q4_0 | 63,232 | 150,528 | — / — / 6.94 |
+| f16 / f16 | 212,992 | 33,280 | — / — / 6.69 |
+
+The 8-bit K cache was throttling depth decode: going to `q4_1` K makes the cache 25 %
+smaller **and** 65 % faster at 32K. `f16` K, twice the bytes, ties `q8_0`; `q4_0` V is
+the smallest pair and the slowest of the small ones. Capacity is proven end to end —
+`-c 131072` with `q4_1/q4_1` loaded and processed a **93,748-token prompt** (prefill
+438 tok/s, decode 5.53 tok/s, needle at that depth recalled), and the prefill rate by
+depth on that run was 1,413 tok/s at 6K, 929 at 25K, 689 at 49K, 477 at 86K.
+
+Divergence from the `q8_0/q4_1` pair (greedy, 128 tokens per cell): a code cell stayed
+**128/128 identical** (mean |Δlog p| 0.0098); prose diverged at token 12 and reasoning at
+token 2 (mean 0.297 / 0.123), with the top-5 candidate set identical in every cell. No
+KL/perplexity number is claimed: `llama-perplexity` in this build segfaults (it pins a
+compiler version that is no longer installed). If you need a KL guarantee, stay on
+`q8_0` K / `q4_1` V and accept 106K context and 6.67 tok/s at 32K.
+
 ## 7. Serve it
 
 ```bash
 ~/llama.cpp/build-sycl/bin/llama-server -m $M \
   --device SYCL0 --split-mode none -ngl 99 \
-  -fa on -ctk q8_0 -ctv q4_1 \
+  -fa on -ctk q4_1 -ctv q4_1 \
   -c 32768 -b 2048 -ub 2048 -t 8 -tb 8 -np 1 \
   --mmap --jinja --reasoning-format deepseek \
   --host 127.0.0.1 --port 8084 --no-webui
 ```
 
+- **Thinking on with a budget, never "off".** `--reasoning off` does not cleanly
+  disable thinking on this template: the model writes its plan into `content` and
+  derails on short exact answers (3/5 on a five-prompt battery), while
+  `--reasoning-budget 800` scores 5/5. Use a budget, and reserve `--reasoning off` for
+  bulk code emission.
 - **Sampling, exactly as the model card asks.** Agentic and tool use: `temperature 1.0`,
   `top_p 0.95`, up to 65,536 new tokens. Reasoning and chat: `temperature 0.6`, `top_p 0.95`.
   The launcher defaults to the agentic profile; override `TEMP=`/`TOPP=` for chat. Every
@@ -293,6 +324,7 @@ Greedy, single-file HTML tasks, each verified in Chromium through the app's own 
 | 15×15 BFS visualiser, animation, unreachable case | 7,722 | **6/6** checks pass |
 | Paint: undo, clear, PNG export, pointer-leave (greedy) | 1,375 | **5/6**: the first `undo` is a no-op (snapshots pushed after the action) |
 | Paint, same prompt at the card's agentic sampling (T=1.0, top_p=0.95) | 1,584 | **5/6, different defect**: stroke undo now works (2111 → 1214 px), but undo-after-clear still does not restore |
+| Voxel-art pagoda garden, single file, "use any library" | 16,496 | **runs in Chrome**: 39.5 KB, three.js from unpkg, 137,775 voxels, 25 material groups, no elisions. Defects: `pick()` given scalar palette entries leaves three element families in the default colour (3 unique `THREE.Color: Unknown color` warnings), and the default camera starts inside the cherry canopy |
 
 **Thinking must be budgeted for code emission.** Thinking is on by default and can consume
 the whole completion budget: two of three tasks returned **empty content** after 12,000
