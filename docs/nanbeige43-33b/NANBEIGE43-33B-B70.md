@@ -351,3 +351,51 @@ Validation tier: measured on one host, one artifact, one build, no
 independent reproduction. Quality was smoke-tested only (5/5 short prompts
 including one tool call); no benchmark suite was run, so this page makes **no**
 agentic-quality claim.
+
+## 8. Second route: vLLM-XPU + W4A16 (faster, less context)
+
+A compressed-tensors W4A16 pack now exists and vLLM-XPU serves it through its native
+`XPUwNa16LinearKernel`:
+
+```bash
+docker run -d --name nb-vllm --device /dev/dri --group-add render --ipc=host --shm-size 8g \
+  -v /data/sata1/models/nanbeige43-33b-w4a16-ct:/model:ro \
+  -e VLLM_TARGET_DEVICE=xpu -e ZE_AFFINITY_MASK=1 -e ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE \
+  -p 8110:8000 vllm/vllm-openai-xpu:v0.31.0-95ac8150 \
+  --model /model --served-model-name nanbeige43-33b \
+  --max-model-len 32768 --gpu-memory-utilization 0.92 --kv-cache-dtype fp8 --trust-remote-code
+```
+
+| Route | Decode, short prompt | Decode, ~1.2K prompt | Context | Exact-answer battery |
+|---|---:|---:|---:|---|
+| **vLLM W4A16, fp8 KV** | **28.96 tok/s** | 23.47 tok/s | 46,848 tokens | **5/5** |
+| llama.cpp Q4_K_M, KV q4_1/q4_1 | 23.48 tok/s | 18.76 tok/s (at 8K) | 143,360 tokens | 5/5 |
+
+Take vLLM when the work fits in ~45K tokens; stay on llama.cpp beyond that.
+
+Artifact: `jeonghyeon00/Nanbeige4.3-33B-W4A16-AutoRound` (20.63 GB, pack-quantized W4A16
+g128). The default Hugging Face cache lives on `/data/sata2`, which is full — set
+`HF_HOME=/data/sata1/cache/huggingface` before the download or it dies with `Errno 28`.
+Other packs do not fit one card: W8A16 35.99 GB, FP8 35.52 GB, MXFP8 36.47 GB; NVFP4 has no
+XPU consumer.
+
+## 9. Thinking budget is mandatory
+
+With `--reasoning-budget` unset the model spent all 32,000 output tokens reasoning and
+returned **no content** (2,054 s). With a 6,000-token budget it produced a complete 59 KB
+file in 1,597 s. Never leave the budget unset for agent or coding work.
+
+## 10. Task check against Qwen3.8-27B
+
+Same prompt, same sampling (T 1.0, top-p 0.95), same `-c 131072`, same KV, one sample each:
+
+| | Nanbeige4.3-33B (6,000-token budget) | Qwen3.8-27B (6,000-token budget) |
+|---|---|---|
+| Tokens / wall | 26,590 / 1,597 s | 21,164 / 1,128 s |
+| Decode | 16.66 tok/s | 19.31 tok/s |
+| File | 59,046 B, 1,511 lines | 34,697 B |
+| Renders | **no — hangs in its own build loop (>90 s, canvas 300x150)** | **yes — 10,173 voxels, 144 fps, framed** |
+| Console | 6 warnings (3 unique invalid palette colours) | 0 warnings, 0 errors |
+
+Qwen's page also ships working time-of-day, petal-wind, day/night and orbit controls. On
+this task the 33B model was both slower and wrong.
