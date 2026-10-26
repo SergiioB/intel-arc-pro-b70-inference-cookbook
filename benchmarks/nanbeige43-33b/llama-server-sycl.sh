@@ -9,10 +9,16 @@
 #   -ub 2048                     +43 % pp8192 over -ub 512, decode unchanged
 #   --jinja                      use the GGUF template; its markers select the Qwen3-Coder parser
 #   --reasoning-format deepseek  thoughts in reasoning_content, not content
+#   --reasoning-preserve         keep prior turns' reasoning (vendor: preserve_thinking=true
+#                                for multi-turn tool use, office and code-agent work)
+#   --temp/--top-p               vendor agentic sampling; override TEMP= and TOPP= for a chat profile
+#                                (T=0.6) or pass temperature=0 per request for benchmark cells
 #   GGML_SYCL_ENABLE_GRAPH=0     SYCL graphs measured ~±1 % on dense models; declared off
 #
 # Optional decode lever (measured +73 % on repeated code, neutral-to-+10 % elsewhere):
 #   SPEC="--spec-type ngram-simple --spec-ngram-simple-size-n 4 --spec-ngram-simple-size-m 7"
+#   BUDGET: add --reasoning-budget 1500 (or REASONING=off) when emitting code into a fixed
+#   max_tokens: unbounded thinking can consume the whole answer budget and return nothing.
 # Keep size_m at 7: size_m 8 makes a 9-wide verify batch and is 31 % slower than plain.
 set -euo pipefail
 
@@ -22,6 +28,10 @@ set -euo pipefail
 : "${PORT:=8084}"
 : "${BIN:=${HOME}/llama.cpp/build-sycl/bin/llama-server}"
 : "${SPEC:=}"           # see the optional block in the header
+# Vendor card (Nanbeige/Nanbeige4.3-33B): agentic/tool use T=1.0 top_p=0.95 max_new 65536;
+# reasoning/chat T=0.6 top_p=0.95 max_new 262144. These are the agentic defaults.
+: "${TEMP:=1.0}"
+: "${TOPP:=0.95}"
 
 pgrep -af 'llama-server|llama-bench' | grep -v pgrep || true
 # setvars.sh is not `set -u` safe and exits non-zero when already initialised
@@ -43,5 +53,6 @@ exec "${BIN}" -m "${MODEL}" \
   -fa on -ctk q8_0 -ctv q4_1 \
   -c "${CTX}" -b 2048 -ub 2048 -t 8 -tb 8 -np 1 \
   --mmap --jinja --reasoning-format deepseek \
+  --temp "${TEMP}" --top-p "${TOPP}" --reasoning-preserve \
   ${SPEC} \
   --host 127.0.0.1 --port "${PORT}" --no-webui

@@ -162,6 +162,14 @@ the server still left 8.6 GiB free.
   --host 127.0.0.1 --port 8084 --no-webui
 ```
 
+- **Sampling, exactly as the model card asks.** Agentic and tool use: `temperature 1.0`,
+  `top_p 0.95`, up to 65,536 new tokens. Reasoning and chat: `temperature 0.6`, `top_p 0.95`.
+  The launcher defaults to the agentic profile; override `TEMP=`/`TOPP=` for chat. Every
+  number in section 1 was measured with **greedy** decoding instead, which is repeatable for
+  comparison; sampling does not change decode speed.
+- `--reasoning-preserve` keeps previous turns' reasoning, the vendor's
+  `preserve_thinking=true`, recommended for multi-turn tool use, office tasks and code-agent
+  workflows.
 - `--jinja` uses the template inside the GGUF. Its marker triple
   (`<tool_call>`, `<function=`, `<parameter=`) makes llama.cpp select its
   Qwen3-Coder XML parser automatically; there is no `--tool-call-parser` flag here.
@@ -283,7 +291,8 @@ Greedy, single-file HTML tasks, each verified in Chromium through the app's own 
 |---|---:|---|
 | Todo list, `localStorage`, clear-done | 3,239 | **6/6** checks pass |
 | 15×15 BFS visualiser, animation, unreachable case | 7,722 | **6/6** checks pass |
-| Paint: undo, clear, PNG export, pointer-leave | 1,375 | **5/6**: the first `undo` is a no-op (snapshots pushed after the action) |
+| Paint: undo, clear, PNG export, pointer-leave (greedy) | 1,375 | **5/6**: the first `undo` is a no-op (snapshots pushed after the action) |
+| Paint, same prompt at the card's agentic sampling (T=1.0, top_p=0.95) | 1,584 | **5/6, different defect**: stroke undo now works (2111 → 1214 px), but undo-after-clear still does not restore |
 
 **Thinking must be budgeted for code emission.** Thinking is on by default and can consume
 the whole completion budget: two of three tasks returned **empty content** after 12,000
