@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-10-28T15:00:00Z",
+ "updated_at": "2026-10-28T16:00:00Z",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -2384,6 +2384,105 @@
    "evidence": {
     "commit": "11a8f0bf6766270ee67d1d982866149b3a20ecc4",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/11a8f0bf6766270ee67d1d982866149b3a20ecc4/results/nanbeige43-33b/DUAL-B70-20261028.json"
+   }
+  },
+  {
+   "id": "nanbeige43-33b-quality-suite-v2-p40",
+   "kind": "benchmark",
+   "title": "Nanbeige4.3-33B quality suite v2 (40 mechanical items)",
+   "summary": "Deterministic 40-item suite (math, executed coding, JSON, instruction following, 4K-32K retrieval, tool calls, multilingual), one sample each, temperature 0, thinking on. 40/40 on the same build and flags used by the speed cells. The suite saturates for both compared models, so it is a floor, not a ranking; the 8-case exact battery supplies the differing failure modes.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL build 361 (1692f9e50), q4_1/q4_1 KV, -c 65536, -t 4"
+   },
+   "model": {
+    "id": "bartowski/Nanbeige_Nanbeige4.3-33B-GGUF",
+    "quantization": "Q4_K_M",
+    "revision": "9beb68421fdf7be095093a6888325fa2c83ddd38"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 1536,
+    "context_limit_tokens": 65536,
+    "cache": "disabled-zero-hit",
+    "reasoning_effort": "model default (thinking on)"
+   },
+   "metrics": [
+    {
+     "name": "quality_items_passed",
+     "value": 40,
+     "unit": "items of 40"
+    },
+    {
+     "name": "suite_wall_seconds",
+     "value": 331,
+     "unit": "s"
+    }
+   ],
+   "statistics": {
+    "statistic": "single-observation",
+    "samples": 1
+   },
+   "evidence": {
+    "commit": "f5e5081de14bee4e94fed77d0d7bc20633d202b2",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/f5e5081de14bee4e94fed77d0d7bc20633d202b2/results/nanbeige43-33b/quality/nanbeige-q4km-llamacpp.json"
+   }
+  },
+  {
+   "id": "qwen38-27b-quality-suite-v2-p40",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B quality suite v2 (40 mechanical items)",
+   "summary": "Same 40-item deterministic suite, same engine and flags, one card (display card, 180 W cap). 40/40. Not comparable to the private 94-task v1-compare table; recorded as the matched control for the Nanbeige suite run.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 180
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL build 361 (1692f9e50), q4_1/q4_1 KV, -c 65536, -t 4"
+   },
+   "model": {
+    "id": "Qwen3.8-27B UD-Q4_K_M",
+    "quantization": "Q4_K_M"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 512,
+    "output_tokens": 1536,
+    "context_limit_tokens": 65536,
+    "cache": "disabled-zero-hit",
+    "reasoning_effort": "model default (thinking on)"
+   },
+   "metrics": [
+    {
+     "name": "quality_items_passed",
+     "value": 40,
+     "unit": "items of 40"
+    },
+    {
+     "name": "suite_wall_seconds",
+     "value": 448,
+     "unit": "s"
+    }
+   ],
+   "statistics": {
+    "statistic": "single-observation",
+    "samples": 1
+   },
+   "evidence": {
+    "commit": "f5e5081de14bee4e94fed77d0d7bc20633d202b2",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/f5e5081de14bee4e94fed77d0d7bc20633d202b2/results/nanbeige43-33b/quality/qwen38-27b-q4km-llamacpp.json"
    }
   }
  ]
