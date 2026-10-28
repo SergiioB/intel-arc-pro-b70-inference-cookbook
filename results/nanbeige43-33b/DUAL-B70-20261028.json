@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "generation_id": "nanbeige43-33b-dual-b70-20261028",
+  "recorded_utc": "2026-10-28",
+  "question": "How does Nanbeige4.3-33B serve on two Arc Pro B70 cards, and how do the topologies compare?",
+  "host": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "pci": ["0000:0c:00.0", "0000:10:00.0"],
+    "power_cap_w_as_found": [180, 230],
+    "display_attached_gpu": 0,
+    "driver": "xe, oneAPI 2026.1, Level Zero 1.28"
+  },
+  "artifacts": {
+    "gguf": {
+      "id": "bartowski/Nanbeige_Nanbeige4.3-33B-GGUF",
+      "file": "Nanbeige_Nanbeige4.3-33B-Q4_K_M.gguf",
+      "revision": "9beb68421fdf7be095093a6888325fa2c83ddd38",
+      "bytes": 20788825216,
+      "sha256": "2cef79855ca47ee6571e166db32a07089e34f3cf78e0397b262d124ddb814c37"
+    },
+    "w4a16": {
+      "id": "jeonghyeon00/Nanbeige4.3-33B-W4A16-AutoRound",
+      "revision": "d71b1250f4992521d1a39327da29db7341466124",
+      "format": "compressed-tensors pack-quantized W4A16 g128, lm_head bf16",
+      "bytes": 20647819648
+    },
+    "engines": {
+      "llamacpp": "1692f9e50 (build 361), GGML_SYCL_F16=ON, GGML_SYCL_DNN=ON, GGML_SYCL_GRAPH=ON, icpx 2026.1",
+      "vllm": "vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7 (0.31.0)"
+    }
+  },
+  "method": {
+    "c1_cells": "unique-prefix prompt, one discarded same-shape warmup, n measured samples, temperature 0, ignore_eos",
+    "llamacpp_timing": "llama-bench avg_ts with 2-3 reps; server cells report engine timings fields",
+    "vllm_timing": "streamed: ttft = first content chunk, decode = (completion-1)/(last-first); exact prompt and completion counts from usage",
+    "energy": "xe hwmon energy1_input delta over the request; TP2 sums both cards",
+    "cache": "cold every request; vLLM prefix caching enabled but unique prefixes, llama.cpp cache_prompt=false",
+    "power_policy": "as-found caps, not raised"
+  },
+  "routes": {
+    "llamacpp_q4km_one_card": {
+      "config": "-fa on -ctk q4_1 -ctv q4_1 -c 32768 -b 2048 -ub 2048 -ngl 99, card 0000:10:00.0 (230 W)",
+      "engine_decode_tps": {"d0": 23.48, "d8192": 18.79, "d32768": 11.02},
+      "engine_prefill_tps": {"pp512_d0": 700.31, "pp8192_d0": 1083.82, "pp512_d32768": 432.22, "pp8192_d32768": 534.32},
+      "samples": 3,
+      "kv_ceiling_tokens": 143360
+    },
+    "llamacpp_q4km_two_cards_layer_split": {
+      "config": "-sm layer -ctk q4_1 -ctv q4_1, cards 0+1",
+      "engine_decode_tps": {"d0": 22.81, "d32768": 10.58},
+      "engine_prefill_tps": {"pp512_d0": 659.55, "pp512_d32768": 407.51},
+      "samples": 2,
+      "long_context_proof": {
+        "server_ctx": 262144,
+        "prompt_tokens": 131029,
+        "prefill_tps": 302.82,
+        "decode_tps": 3.87,
+        "output_tokens": 64,
+        "cache_n": 0,
+        "measured_card_power_w": 123.0
+      },
+      "verdict": "capacity route: 262,144-token context loads and processes a 131,029-token prompt; decode is 3-4 % below one card at every depth"
+    },
+    "llamacpp_row_split_two_cards": {
+      "verdict": "NO-GO",
+      "symptom": "-sm row aborts immediately with no message (exit 139, empty log) on this SYCL build with both devices visible"
+    },
+    "llamacpp_ctx_probes": {
+      "262144": "loads and serves",
+      "393216": "aborts during load-time warmup decode: UR_RESULT_ERROR_DEVICE_LOST, then ggml_abort in ggml_backend_sycl_buffer_set_tensor",
+      "524288": "did not reach serving; same failure path"
+    },
+    "vllm_w4a16_one_card": {
+      "config": "max-model-len 32768, fp8 KV, gpu-memory-utilization 0.92, card 0000:10:00.0 (230 W)",
+      "cells": [
+        {"prompt_tokens": 236, "decode_tps": 28.87, "ttft_s": 0.145, "avg_w": 230.0, "samples": 5},
+        {"prompt_tokens": 945, "decode_tps": 27.77, "ttft_s": 0.635, "avg_w": 230.0, "samples": 3},
+        {"prompt_tokens": 6189, "decode_tps": 27.69, "ttft_s": 4.766, "avg_w": 230.0, "samples": 3},
+        {"prompt_tokens": 22546, "decode_tps": 25.27, "ttft_s": 22.062, "avg_w": 230.0, "samples": 3}
+      ],
+      "prefill_tps": {"p945": 1488, "p6189": 1299, "p22546": 1022},
+      "kv_ceiling_tokens": 46848,
+      "tokens_per_joule_at_p236": 0.1255
+    },
+    "vllm_w4a16_tp2": {
+      "config": "tensor-parallel-size 2, worker-affinity patch + oneCCL simple thresholds, max-model-len 262144, fp8 KV, util 0.92",
+      "affinity_markers": ["rank=0 mask=0", "rank=1 mask=1", "visible=1 each"],
+      "cells": [
+        {"prompt_tokens": 238, "decode_tps": 41.01, "ttft_s": 0.141, "avg_w_total": 389.8, "samples": 3},
+        {"prompt_tokens": 945, "decode_tps": 38.49, "ttft_s": 0.607, "avg_w_total": 381.2, "samples": 3},
+        {"prompt_tokens": 4688, "decode_tps": 35.98, "ttft_s": 3.303, "avg_w_total": 377.1, "samples": 3},
+        {"prompt_tokens": 98351, "decode_tps": 23.83, "ttft_s": 155.337, "avg_w_total": 397.1, "samples": 1}
+      ],
+      "prefill_tps": {"p4688": 1419, "p98351": 633},
+      "kv_ceiling_tokens": 307072,
+      "tokens_per_joule_at_p238": 0.1052,
+      "verdict": "single-stream gain: +42 % decode at short prompt, +38 % at 945 tokens, +31 % at 4688; 6.6x KV capacity"
+    },
+    "vllm_two_independent_servers": {
+      "config": "two TP1 containers, ZE_AFFINITY_MASK=0 and 1, max-model-len 32768, fp8 KV, simultaneous C1 requests",
+      "per_card": [
+        {"card": 0, "power_cap_w": 180, "decode_tps": 26.17, "avg_w": 180.0, "samples": 3},
+        {"card": 1, "power_cap_w": 230, "decode_tps": 29.05, "avg_w": 230.0, "samples": 3}
+      ],
+      "aggregate_decode_tps": 55.22,
+      "aggregate_avg_w": 410.0,
+      "aggregate_tokens_per_joule": 0.135,
+      "verdict": "throughput and efficiency route: +35 % aggregate decode over TP2 and +28 % tokens/joule, at single-card latency"
+    }
+  },
+  "quality": {
+    "battery": "8 exact-answer cases, greedy, thinking off, thinking-on retry on failure",
+    "nanbeige_llamacpp_q4km": {"strict": "6/8", "semantic": "7/8", "sumsq_14": "pass", "failures": ["sum3 answered 14 (want 20)", "prime answered with a sentence, correct meaning"]},
+    "nanbeige_vllm_w4a16_single": {"strict": "6/8", "semantic": "7/8", "sumsq_14": "pass", "failures": "same two: sum3 wrong at thinking off, prime verbose but correct"},
+    "nanbeige_vllm_w4a16_tp2": {"strict": "6/8", "semantic": "7/8", "sumsq_14": "pass", "failures": "identical to single card"},
+    "qwen38_27b_llamacpp_q4km": {"strict": "7/8", "sumsq_14": "FAIL at thinking off (answered 30); thinking on answered 14", "note": "build- and flag-specific observation on this host, not a new route claim"},
+    "defect_note": "The W4A16 int4 '30' defect documented for Qwen3.8-27B W4A16 exports does not reproduce for Nanbeige4.3-33B W4A16 on these coordinates"
+  },
+  "comparison_vs_qwen38_27b": {
+    "basis": "llama.cpp 1692f9e50, one card (230 W), identical flags (q4_1/q4_1 KV, -b 2048 -ub 2048, -fa on), llama-bench 3 reps",
+    "decode_tps": {"nanbeige_33b": {"d0": 23.48, "d8192": 18.79, "d32768": 11.02}, "qwen38_27b": {"d0": 20.70, "d8192": 19.63, "d32768": 16.98}},
+    "prefill_tps": {"nanbeige_33b": {"pp512_d0": 700.31, "pp8192_d0": 1083.82, "pp512_d32768": 432.22, "pp8192_d32768": 534.32}, "qwen38_27b": {"pp512_d0": 711.20, "pp8192_d0": 1146.11, "pp512_d32768": 624.50, "pp8192_d32768": 899.20}},
+    "reading": "Nanbeige wins short-context decode by 13 %; Qwen holds depth far better (+54 % at 32K) and prefills 41-68 % faster at 32K depth, so Qwen wins anything past a few thousand tokens"
+  },
+  "not_tested": [
+    "concurrency above one stream per engine",
+    "KL or perplexity against the unquantized model",
+    "task-level quality suites (only the 8-case exact battery)",
+    "adjacent dual-card topologies (PP2, TP2 with bf16 KV, TP2 without fp8 KV)",
+    "context between 262,144 and 393,216 on two cards",
+    "power-capped TP2 sweeps",
+    "vLLM W4A16 with 131,072+ prompt on two cards beyond the 98,351-token cell"
+  ]
+}

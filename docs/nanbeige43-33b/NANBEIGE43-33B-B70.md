@@ -1,11 +1,13 @@
-# Nanbeige4.3-33B on one Arc Pro B70 — llama.cpp SYCL recipe
+# Nanbeige4.3-33B on Intel Arc Pro B70 — llama.cpp SYCL and vLLM routes, one and two cards
 
-> **Status: measured on one card, single stream, provisional.** Every number in
-> this page was measured on 2026-10-25 on one Arc Pro B70, `Q4_K_M` GGUF,
-> llama.cpp SYCL build 361 (`1692f9e50`), flash attention on, KV `q8_0` K /
-> `q4_1` V, no speculation, 230 W configured cap (measured draw 230 W).
-> Concurrency, context above 32K, and task-level quality are **not** measured.
-> This page is not in `data/benchmarks.v1.json` yet.
+> **Status: measured on one host, single stream per engine, provisional.** Generation 1
+> was measured on 2026-10-25 on one card: `Q4_K_M` GGUF, llama.cpp SYCL build 361
+> (`1692f9e50`), flash attention on, KV `q8_0` K / `q4_1` V, no speculation, 230 W
+> configured cap (measured draw 230 W). Generation 2 was measured on 2026-10-28 on the
+> same class of host with both cards present: the same GGUF plus a W4A16 compressed-tensors
+> pack on vLLM-XPU 0.31.0, one card and TP2. Concurrency, task-level benchmark suites and
+> contexts above 131K decode are **not** measured.
+> Published records: `data/benchmarks.v1.json` ids starting `nanbeige43-33b-`.
 
 Nanbeige4.3-33B is a dense `LlamaForCausalLM`: 52 layers, hidden 7168, 56 query and
 8 KV heads at head_dim 128, FFN 22016, vocab 166,912, rope theta 1.2e8, 512K
@@ -241,10 +243,15 @@ docker run -d --name nb-vllm --device /dev/dri --group-add render --ipc=host --s
 
 | Route | Decode, short prompt | Decode, ~1.2K prompt | Context | Exact-answer battery |
 |---|---:|---:|---:|---|
-| **vLLM W4A16, fp8 KV** | **28.96 tok/s** | 23.47 tok/s | 46,848 tokens | **5/5** |
-| llama.cpp Q4_K_M, KV q4_1/q4_1 | 23.48 tok/s | 18.76 tok/s (at 8K) | 143,360 tokens | 5/5 |
+| **vLLM W4A16, fp8 KV** | **28.96 tok/s** | 23.47 tok/s | 46,848 tokens | 6/8 strict, 7/8 meaning (8-case battery) |
+| llama.cpp Q4_K_M, KV q4_1/q4_1 | 23.48 tok/s | 18.76 tok/s (at 8K) | 143,360 tokens | 6/8 strict, 7/8 meaning |
 
 Take vLLM when the work fits in ~45K tokens; stay on llama.cpp beyond that.
+
+Reproduced 2026-10-28 on a second session of the same host class: 28.87 tok/s decode at a
+236-token prompt (5 samples, 230 W), 27.77 at 945 tokens, 27.69 at 6.2K, 25.27 at 22.5K,
+KV ceiling 46,848 tokens — within 0.3 % of the generation-1 cell. Energy: 0.126 tokens/J
+at the short prompt, 0.060 at 98K on TP2 (see section 10).
 
 Artifact: `jeonghyeon00/Nanbeige4.3-33B-W4A16-AutoRound` (20.63 GB, pack-quantized W4A16
 g128). The default Hugging Face cache lives on `/data/sata2`, which is full — set
@@ -258,7 +265,57 @@ With `--reasoning-budget` unset the model spent all 32,000 output tokens reasoni
 returned **no content** (2,054 s). With a 6,000-token budget it produced a complete 59 KB
 file in 1,597 s. Never leave the budget unset for agent or coding work.
 
-## 10. Task check against Qwen3.8-27B
+## 10. Two B70 cards — three topologies, pick by what binds
+
+Measured 2026-10-28 on one host with both cards (as-found caps 180 W on the display card
+`0000:0c:00.0`, 230 W on `0000:10:00.0`), same artifacts, fp8 KV for vLLM and
+`q4_1/q4_1` for llama.cpp, one stream per engine:
+
+| Topology | Decode, p≈240 | Decode, p≈950 | Decode, p≈4.7K | Decode, p≈98K | KV ceiling | Card power, measured |
+|---|---:|---:|---:|---:|---:|---:|
+| vLLM W4A16, 1 card | 28.87 | 27.77 | 27.69 (p 6.2K) | — | 46,848 | 230 W |
+| **vLLM W4A16, TP2** | **41.01** | **38.49** | **35.98** | **23.83** | **307,072** | 390 W total |
+| 2× independent vLLM, both busy | 55.22 aggregate (26.17 + 29.05) | — | — | — | 46,848 each | 410 W total |
+| llama.cpp Q4_K_M, 1 card | 23.48 | — | — | — | 143,360 | 230 W |
+| llama.cpp Q4_K_M, `-sm layer` | 22.81 | — | — | 3.87 at 131K | 262,144 | 123 W (one card's counter) |
+
+Read it as three different wins:
+
+1. **Sequential latency and context — use TP2.** +42 % decode at a short prompt, +31 % at
+   4.7K, +5.5× KV capacity. Cost: 390 W total instead of 230 W, and tokens/joule fall from
+   0.126 to 0.105.
+2. **Aggregate throughput — use two independent servers.** 55.22 tok/s combined at
+   single-card latency and 0.135 tokens/joule, 35 % more work than TP2 for the same two
+   cards. Never run TP2 for two unrelated agents.
+3. **Long context on llama.cpp — layer split only.** `-sm layer` costs 3–4 % decode and
+   doubles the KV room: `-c 262144` loads and processed a **131,029-token prompt**
+   (prefill 303 tok/s, decode 3.87 tok/s, `cache_n` 0). `-sm row` is a **no-go** on this
+   build: it aborts immediately with no message at all.
+
+TP2 needs the dual-card infrastructure contract, not just `--tensor-parallel-size 2`:
+`benchmarks/nanbeige43-33b/launch-vllm-tp2.sh` applies
+`patches/patch_vllm_worker_affinity.py` and pins the four oneCCL thresholds from
+[DUAL-B70-TP2.md](../DUAL-B70-TP2.md). Verify the worker lines before trusting a number:
+
+```text
+[B70_WORKER_AFFINITY_SPAWN] rank=0 mask=0
+[B70_WORKER_AFFINITY_SPAWN] rank=1 mask=1
+[B70_WORKER_AFFINITY] pid=... rank=0 visible=1
+[B70_WORKER_AFFINITY] pid=... rank=1 visible=1
+```
+
+Capacity boundary, measured by probe: `-c 262144` serves; `-c 393216` aborts inside the
+load-time warmup decode with `UR_RESULT_ERROR_DEVICE_LOST` →
+`ggml_abort` in `ggml_backend_sycl_buffer_set_tensor`. Do not publish a context number
+above the one you actually loaded.
+
+Quality is unchanged by the topology: the 8-case exact-answer battery scores the same on
+one card, on TP2 and in llama.cpp (6/8 strict, 7/8 on meaning; failures are one arithmetic
+slip at thinking-off, fixed by thinking on, and a verbose-but-correct `no`). The int4
+`sum(i*i for i in range(4)) → 30` defect that the Qwen3.8-27B W4A16 exports show **does not**
+reproduce here: Nanbeige answers `14` in every route.
+
+## 11. Task check against Qwen3.8-27B
 
 Same prompt, same sampling (T 1.0, top-p 0.95), same `-c 131072`, same KV, one sample each:
 
@@ -273,7 +330,34 @@ Same prompt, same sampling (T 1.0, top-p 0.95), same `-c 131072`, same KV, one s
 Qwen's page also ships working time-of-day, petal-wind, day/night and orbit controls. On
 this task the 33B model was both slower and wrong.
 
-## 11. Measure a served cell (C1, with energy)
+### Matched engine throughput
+
+Same build (`1692f9e50`), same flags (`-fa on -ctk q4_1 -ctv q4_1 -b 2048 -ub 2048`),
+one card (230 W), `llama-bench` 3 reps, 2026-10-28 (Nanbeige over its own artifact,
+Qwen3.8-27B over `UD-Q4_K_M`):
+
+| Cell | Nanbeige4.3-33B | Qwen3.8-27B | Winner |
+|---|---:|---:|---|
+| Decode, empty context | **23.48** | 20.70 | Nanbeige +13 % |
+| Decode at 8K occupied | 18.79 | **19.63** | Qwen +4 % |
+| Decode at 32K occupied | 11.02 | **16.98** | Qwen +54 % |
+| Prefill pp512, empty | 700 | 711 | tie |
+| Prefill pp8192, empty | 1,084 | 1,146 | Qwen +6 % |
+| Prefill pp8192 at 32K depth | 534 | **899** | Qwen +68 % |
+
+The crossover is a few thousand tokens: Nanbeige is the faster short-prompt model because
+it does less work per token at low depth, and it is the slower one everywhere context
+grows, because all 52 of its layers are full attention while Qwen3.8-27B is a 27B hybrid
+with gated-DeltaNet layers. For an agent that carries 10K+ tokens of history, Qwen wins on
+this engine; for one-shot generation, Nanbeige wins slightly.
+
+The exact-answer battery separates them too, and not in Nanbeige's favour on count alone:
+Qwen scored 7/8 against Nanbeige's 6/8 — but Qwen produced the known int4 canary answer
+`30` for `sum(i*i for i in range(4))` (correct `14` only with thinking on), while Nanbeige
+answered `14` in every route and failed one other arithmetic item at thinking-off. Treat
+that as a build- and flag-specific observation on this host, not a route-level claim.
+
+## 12. Measure a served cell (C1, with energy)
 
 The client sends `cache_prompt: false`, one discarded same-shape warmup, then five
 samples; it records endpoint token counts, `finish_reason`, `timings` and the card's
@@ -294,7 +378,7 @@ Report the median of the five, the range, the actual completion tokens, the cach
 state, the configured cap, the measured draw, and the timing source. Never mix a
 `llama-bench` rate with a client-observed rate in one column.
 
-## 12. Context ladder (go up slowly)
+## 13. Context ladder (go up slowly)
 
 Each rung needs a real prompt of that size plus a real output, and the reserve
 logged after load:
@@ -316,7 +400,7 @@ cell. Above 32K this recipe has **no** measurement — expect decode to keep fal
 (measured slope: −3.26 µs of token time per extra context token, i.e. 6.67 tok/s at
 32K).
 
-## 13. Draft-free speculation — the one big decode lever that works
+## 14. Draft-free speculation — the one big decode lever that works
 
 Add these flags and decode on repetitive text jumps; the verify batch must stay at 8:
 
@@ -338,7 +422,7 @@ transcripts pasted back). Novel prose is expected neutral and has not been measu
 with `size_m 7`. Keep the no-spec arm in every comparison, and check that greedy
 output matches the no-spec run before making it a default for a workload.
 
-## 14. What does not help (measured or closed)
+## 15. What does not help (measured or closed)
 
 | Attempt | Result |
 |---|---|
@@ -351,7 +435,7 @@ output matches the no-spec run before making it a default for a workload.
 | `llama-bench` for the dispatch log | it suppresses INFO; use `llama-server -lv 4` with `GGML_SYCL_MKL_FA_DEBUG=1` |
 | A draft model for speculation | none exists: the 3B student is unreleased and older Nanbeige 3B vocabularies (166,144) do not match this one (166,912) |
 
-## 15. Cleanup
+## 16. Cleanup
 
 ```bash
 pkill -f 'llama-server -m /data/models/nanbeige43-33b'   # only your own process
@@ -361,7 +445,7 @@ cat /sys/class/hwmon/hwmon6/power1_cap                   # confirm the as-found 
 
 Delete the run directory only after copying its JSON and logs somewhere you keep.
 
-## 16. Coding quality and the reasoning budget
+## 17. Coding quality and the reasoning budget
 
 Greedy, single-file HTML tasks, each verified in Chromium through the app's own handlers
 (not by reading the source):
@@ -384,9 +468,23 @@ app, 5–8× faster per finished file:
   --reasoning off                 # or --reasoning-budget 1500 for tasks that need planning
 ```
 
-## 17. Evidence
+## 18. Evidence
 
-Measured 2026-10-25, one B70, `0000:0f:00.0`, build 361 (`1692f9e50`), artifact
+**Generation 2 — 2026-10-28, one host, both cards.** Record:
+[`results/nanbeige43-33b/DUAL-B70-20261028.json`](../../results/nanbeige43-33b/DUAL-B70-20261028.json).
+Coordinates: 2× Arc Pro B70 (`0000:0c:00.0` display card, 180 W as-found; `0000:10:00.0`,
+230 W), `xe` driver, oneAPI 2026.1; GGUF sha256 `2cef7985…4c37`, bytes 20,788,825,216, rev
+`9beb6842`; W4A16 pack rev `d71b1250`; engines `1692f9e50` build 361 and
+`vllm/vllm-openai-xpu@sha256:95ac8150…62be7`. Harnesses shipped in this repository:
+`benchmarks/nanbeige43-33b/vllm-cells.py` (streamed TTFT/decode, per-card energy, sums both
+cards when given two PCI addresses) and `client.py`; launchers
+`launch-vllm-tp2.sh` and `vllm-tp2-entry.sh`. Every published number in sections 8 and 10
+was recomputed from the raw run files before publication. Validation tier: one host, one
+operator, one session; not independently reproduced. Not tested: concurrency above one
+stream per engine, KL/perplexity, task suites beyond the 8-case battery, PP2, adjacent
+contexts between 262,144 and 393,216, power sweeps.
+
+**Generation 1 — 2026-10-25, one card.** `0000:0f:00.0`, build 361 (`1692f9e50`), artifact
 sha256 `2cef7985…4c37`, 230 W cap, no container. Raw llama-bench JSON, server logs,
 quality probe, n-gram A/B samples and energy cells are kept with the run record
 (private lab). Verified in a real browser: the todo app passed 6/6 acceptance
@@ -397,5 +495,6 @@ unreachable case; the paint app passed 5/6 with one real state-management defect
 TILE/MKL/ONEDNN), which is why context costs so much at M=1.
 Validation tier: measured on one host, one artifact, one build, no
 independent reproduction. Quality was smoke-tested only (5/5 short prompts
-including one tool call); no benchmark suite was run, so this page makes **no**
+including one tool call in generation 1; an 8-case exact-answer battery in
+generation 2); no benchmark suite was run, so this page makes **no**
 agentic-quality claim.

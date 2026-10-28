@@ -1,6 +1,6 @@
 # B70 inference: what to run, what to stop, what to test next
 
-Updated 2026-09-26. Start with this page, then follow **one** model-family route. A speed result applies only to its stated image, model, patch stack, workload, cache state, power cap, and timing method. The [benchmark catalog](BENCHMARK-CATALOG.md) is the generated numeric view; [`data/benchmarks.v1.json`](../data/benchmarks.v1.json) is the authority for public benchmark records. This page is a decision index, not another benchmark table.
+Updated 2026-10-28. Start with this page, then follow **one** model-family route. A speed result applies only to its stated image, model, patch stack, workload, cache state, power cap, and timing method. The [benchmark catalog](BENCHMARK-CATALOG.md) is the generated numeric view; [`data/benchmarks.v1.json`](../data/benchmarks.v1.json) is the authority for public benchmark records. This page is a decision index, not another benchmark table.
 
 ## Use now (measured for the stated route)
 
@@ -10,6 +10,7 @@ Updated 2026-09-26. Start with this page, then follow **one** model-family route
 | GGUF or local vision on one card | [Muse-Glimmer llama.cpp](muse-glimmer/MUSE-GLIMMER-B70.md) | Measured on its own model, engine, and context; do not rank its engine-native rate against vLLM client post-first rates. |
 | MoE with long context | [Qwen3.6-35B-A3B](qwen36-35a3/QWEN36-MOE-VLLM-XPU.md) | The historical MTP4 record belongs to its original pinned session. A [later same-family comparison](qwen36-35a3/MOE-INT4-THREE-ENGINE-CEILING-20260917.md#speculation-verdict-engaged-zero-gain-one-net-loss) did not reproduce its short-prompt speed. Treat MTP4 as stack-specific, not the default win. |
 | Two cards for independent users | Run [one server on each card](DUAL-B70-TP2.md) | This avoids treating tensor parallelism (TP2) as a guaranteed single-request speedup. The [FP8 TP2 route](qwen38-27b/FP8-TP2-W8A16.md) remains research evidence on its own stack, not the default deployment. |
+| Dense 33B, short prompts, one or two cards | [Nanbeige4.3-33B](nanbeige43-33b/README.md) | vLLM W4A16: 28.87 tok/s decode and 46,848-token KV on one card; 41.01 tok/s and a 307,072-token KV ceiling on TP2. llama.cpp layer split reaches 262,144-token context at 3.87 tok/s on a 131K prompt. In a matched llama.cpp run, Qwen3.8-27B beats it past a few thousand tokens of context. |
 | Ornith-1.5-122B on two cards | [UD-IQ3_XXS llama.cpp](ornith15-122b/ORNITH15-122B-LLAMACPP.md) | llama-bench n=5: pp2048 700.07 tok/s, tg128 28.10 tok/s. 131K serves. DFlash2 is NVIDIA SGLang, not this stack. |
 
 **Correctness gate:** A passing [four-canary smoke](../scripts/canary.py) checks basic syntax and arithmetic, not exact code execution or broad answer quality. Do not describe the GPTQ checkpoint as quality-equivalent to another quantization based on those four probes. Before using it for coding decisions, compare exact answers with a reference artifact on your own task set. Do not infer quality from throughput or greedy replay alone.
@@ -36,4 +37,3 @@ Recent lab screens of the external shortlist, the rebuilt own-corpus shortlist, 
 Closed today without GPU spend: Intel `0.26.0-b2` (our pinned 0.27.2rc1 already carries the relevant fixes; the kernels bump already measured as a loss) and Cascadia 0.2.4 (pipeline retains ~100 % of one card, exactly as our PP2 run measured; llama.cpp RPC split retains only 54 % on the same cards — recorded as the never-RPC-split datum; independent per-GPU servers remain the two-card default).
 
 Publish new numbers only through the [benchmark format](BENCHMARK-FORMAT.md) and [recipe confirmation process](CONFIRM-A-RECIPE.md); the three screens above are lab-grade and labeled as such. Preserve old result generations; a failed new stack does not erase a valid historical measurement.
-
