@@ -243,8 +243,8 @@ docker run -d --name nb-vllm --device /dev/dri --group-add render --ipc=host --s
 
 | Route | Decode, short prompt | Decode, ~1.2K prompt | Context | Exact-answer battery |
 |---|---:|---:|---:|---|
-| **vLLM W4A16, fp8 KV** | **28.96 tok/s** | 23.47 tok/s | 46,848 tokens | **5/5** |
-| llama.cpp Q4_K_M, KV q4_1/q4_1 | 23.48 tok/s | 18.76 tok/s (at 8K) | 143,360 tokens | 5/5 |
+| **vLLM W4A16, fp8 KV** | **28.96 tok/s** | 23.47 tok/s | 46,848 tokens | 6/8 strict, 7/8 meaning (8-case battery) |
+| llama.cpp Q4_K_M, KV q4_1/q4_1 | 23.48 tok/s | 18.76 tok/s (at 8K) | 143,360 tokens | 6/8 strict, 7/8 meaning |
 
 Take vLLM when the work fits in ~45K tokens; stay on llama.cpp beyond that.
 
@@ -495,5 +495,6 @@ unreachable case; the paint app passed 5/6 with one real state-management defect
 TILE/MKL/ONEDNN), which is why context costs so much at M=1.
 Validation tier: measured on one host, one artifact, one build, no
 independent reproduction. Quality was smoke-tested only (5/5 short prompts
-including one tool call); no benchmark suite was run, so this page makes **no**
+including one tool call in generation 1; an 8-case exact-answer battery in
+generation 2); no benchmark suite was run, so this page makes **no**
 agentic-quality claim.
