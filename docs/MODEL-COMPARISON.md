@@ -10,6 +10,14 @@ Catalog records in [`data/benchmarks.v1.json`](../data/benchmarks.v1.json):
 `qwen38-27b-exl3-4bpw-quality-v1compare-20261017`,
 `qwen36-35b-a3b-ovms-int4-quality-v1compare-20261017`.
 
+## Suite v2 addition (2026-10-28)
+
+A separate deterministic 40-item suite (`benchmarks/quality-suite.py`) now exists for
+per-route floor checks. Nanbeige4.3-33B Q4_K_M and Qwen3.8-27B UD-Q4_K_M both score **40/40**
+on it, same engine and flags, so it does not rank them and is **not** comparable to the
+94-task v1 table below. Use it to catch mechanical regressions, not to choose a model.
+Details: [`results/nanbeige43-33b/quality/`](../results/nanbeige43-33b/quality/).
+
 ## 1. Pick by job
 
 | Job | Use | Why (from this screen) |

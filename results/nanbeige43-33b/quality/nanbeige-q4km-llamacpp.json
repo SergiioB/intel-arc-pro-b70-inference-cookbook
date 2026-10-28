@@ -1,9 +1,9 @@
 {
  "schema": "quality-suite-v2",
- "label": "Nanbeige4.3-33B Q4_K_M llama.cpp 1 card ctx65536, thinking on",
+ "label": "Nanbeige4.3-33B Q4_K_M llama.cpp, card1, ctx65536, t4",
  "url": "http://127.0.0.1:9101",
  "model": "nanbeige43-33b",
- "date_utc": "2026-10-28T15:25:32Z",
+ "date_utc": "2026-10-28T15:49:46Z",
  "sampling": {
   "temperature": 0,
   "top_p": 1.0,
@@ -11,10 +11,10 @@
   "samples_per_item": 1
  },
  "grading": "mechanical only: exact answers, regex, JSON equality, executed code, needle recall, tool-call args, keywords",
- "wall_seconds": 329.8,
+ "wall_seconds": 330.9,
  "total": [
   40,
-  39
+  40
  ],
  "areas": {
   "coding": {
@@ -31,7 +31,7 @@
   },
   "multilingual": {
    "items": 2,
-   "pass": 1
+   "pass": 2
   },
   "retrieval": {
    "items": 6,
@@ -54,7 +54,7 @@
    "pass": true,
    "detail": "1296",
    "answer_head": "1296",
-   "seconds": 3.8,
+   "seconds": 3.82,
    "prompt_tokens": 50,
    "completion_tokens": 66
   },
@@ -65,7 +65,7 @@
    "pass": true,
    "detail": "14",
    "answer_head": "14",
-   "seconds": 4.55,
+   "seconds": 4.52,
    "prompt_tokens": 61,
    "completion_tokens": 96
   },
@@ -76,7 +76,7 @@
    "pass": true,
    "detail": "48",
    "answer_head": "48",
-   "seconds": 6.14,
+   "seconds": 6.08,
    "prompt_tokens": 73,
    "completion_tokens": 133
   },
@@ -87,7 +87,7 @@
    "pass": true,
    "detail": "143",
    "answer_head": "143",
-   "seconds": 2.88,
+   "seconds": 2.86,
    "prompt_tokens": 52,
    "completion_tokens": 57
   },
@@ -98,7 +98,7 @@
    "pass": true,
    "detail": "8",
    "answer_head": "8",
-   "seconds": 2.22,
+   "seconds": 2.19,
    "prompt_tokens": 55,
    "completion_tokens": 42
   },
@@ -109,7 +109,7 @@
    "pass": true,
    "detail": "36",
    "answer_head": "36",
-   "seconds": 2.82,
+   "seconds": 2.8,
    "prompt_tokens": 52,
    "completion_tokens": 56
   },
@@ -120,7 +120,7 @@
    "pass": true,
    "detail": "no",
    "answer_head": "no",
-   "seconds": 2.76,
+   "seconds": 2.74,
    "prompt_tokens": 45,
    "completion_tokens": 54
   },
@@ -131,7 +131,7 @@
    "pass": true,
    "detail": "32",
    "answer_head": "32",
-   "seconds": 2.3,
+   "seconds": 2.29,
    "prompt_tokens": 59,
    "completion_tokens": 44
   },
@@ -142,7 +142,7 @@
    "pass": true,
    "detail": "5",
    "answer_head": "```python\ndef add(a, b):\n    return a + b\n```",
-   "seconds": 4.17,
+   "seconds": 4.14,
    "prompt_tokens": 58,
    "completion_tokens": 87
   },
@@ -164,7 +164,7 @@
    "pass": true,
    "detail": "[2, 4]",
    "answer_head": "```python\ndef evens(xs):\n    return [x for x in xs if x % 2 == 0]\n```",
-   "seconds": 6.68,
+   "seconds": 6.67,
    "prompt_tokens": 62,
    "completion_tokens": 146
   },
@@ -175,7 +175,7 @@
    "pass": true,
    "detail": "{'a': 2, 'b': 1}",
    "answer_head": "```python\ndef count_words(s):\n    counts = {}\n    for word in s.split():\n        counts[word] = counts.get(word, 0) + 1\n    return counts\n```",
-   "seconds": 9.44,
+   "seconds": 9.43,
    "prompt_tokens": 65,
    "completion_tokens": 210
   },
@@ -186,7 +186,7 @@
    "pass": true,
    "detail": "55",
    "answer_head": "```python\ndef fib(n):\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return",
-   "seconds": 8.19,
+   "seconds": 8.18,
    "prompt_tokens": 64,
    "completion_tokens": 181
   },
@@ -197,7 +197,7 @@
    "pass": true,
    "detail": "[1, 2, 3]",
    "answer_head": "```python\ndef flatten(x):\n    \"\"\"Flatten one level of nested lists.\"\"\"\n    flattened = []\n    for item in x:\n        if isinstance(item, list):\n            flat",
-   "seconds": 21.0,
+   "seconds": 20.99,
    "prompt_tokens": 61,
    "completion_tokens": 477
   },
@@ -219,7 +219,7 @@
    "pass": true,
    "detail": "2.0 None",
    "answer_head": "```python\ndef safe_div(a, b):\n    if b == 0:\n        return None\n    return a / b\n```",
-   "seconds": 6.39,
+   "seconds": 6.38,
    "prompt_tokens": 68,
    "completion_tokens": 139
   },
@@ -241,7 +241,7 @@
    "pass": true,
    "detail": "[1, 2, 3]",
    "answer_head": "[1, 2, 3]",
-   "seconds": 2.59,
+   "seconds": 2.58,
    "prompt_tokens": 51,
    "completion_tokens": 51
   },
@@ -274,7 +274,7 @@
    "pass": true,
    "detail": "{\"items\":[\"a\",\"b\"]}",
    "answer_head": "{\"items\":[\"a\",\"b\"]}",
-   "seconds": 2.85,
+   "seconds": 2.84,
    "prompt_tokens": 58,
    "completion_tokens": 57
   },
@@ -296,7 +296,7 @@
    "pass": true,
    "detail": "- alpha\n- beta\n- gamma",
    "answer_head": "- alpha\n- beta\n- gamma",
-   "seconds": 1.31,
+   "seconds": 1.3,
    "prompt_tokens": 58,
    "completion_tokens": 21
   },
@@ -373,7 +373,7 @@
    "pass": true,
    "detail": "albatross-4417",
    "answer_head": "albatross-4417",
-   "seconds": 12.06,
+   "seconds": 12.09,
    "prompt_tokens": 7742,
    "completion_tokens": 68
   },
@@ -384,9 +384,9 @@
    "pass": true,
    "detail": "pelican-8823",
    "answer_head": "pelican-8823",
-   "seconds": 17.57,
+   "seconds": 17.44,
    "prompt_tokens": 15399,
-   "completion_tokens": 71
+   "completion_tokens": 69
   },
   {
    "id": "ret-04",
@@ -406,7 +406,7 @@
    "pass": true,
    "detail": "31.5",
    "answer_head": "31.5",
-   "seconds": 5.37,
+   "seconds": 5.71,
    "prompt_tokens": 77,
    "completion_tokens": 83
   },
@@ -417,7 +417,7 @@
    "pass": true,
    "detail": "kestrel-6641",
    "answer_head": "kestrel-6641",
-   "seconds": 102.28,
+   "seconds": 102.23,
    "prompt_tokens": 61400,
    "completion_tokens": 72
   },
@@ -428,7 +428,7 @@
    "pass": true,
    "detail": "{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Oslo\"}}",
    "answer_head": "{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Oslo\"}}",
-   "seconds": 5.78,
+   "seconds": 5.94,
    "prompt_tokens": 67,
    "completion_tokens": 63
   },
@@ -439,7 +439,7 @@
    "pass": true,
    "detail": "<tool_call>\n<name>read_file</name>\n<arguments>{\"path\": \"/etc/hosts\"}</arguments>\n</tool_call>",
    "answer_head": "<tool_call>\n<name>read_file</name>\n<arguments>{\"path\": \"/etc/hosts\"}</arguments>\n</tool_call>",
-   "seconds": 4.05,
+   "seconds": 4.06,
    "prompt_tokens": 71,
    "completion_tokens": 85
   },
@@ -480,12 +480,12 @@
    "id": "ml-02",
    "area": "multilingual",
    "kind": "keywords",
-   "pass": false,
-   "detail": "dos cartas",
-   "answer_head": "dos cartas",
-   "seconds": 3.45,
-   "prompt_tokens": 48,
-   "completion_tokens": 71
+   "pass": true,
+   "detail": "El modelo est\u00e1 cargado",
+   "answer_head": "El modelo est\u00e1 cargado",
+   "seconds": 4.48,
+   "prompt_tokens": 50,
+   "completion_tokens": 95
   }
  ]
 }

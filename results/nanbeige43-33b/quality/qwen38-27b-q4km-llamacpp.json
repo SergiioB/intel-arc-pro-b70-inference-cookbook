@@ -1,9 +1,9 @@
 {
  "schema": "quality-suite-v2",
- "label": "Qwen3.8-27B UD-Q4_K_M llama.cpp 1 card ctx65536, thinking on",
+ "label": "Qwen3.8-27B UD-Q4_K_M llama.cpp, card0, ctx65536, t4",
  "url": "http://127.0.0.1:9102",
  "model": "qwen38-27b",
- "date_utc": "2026-10-28T15:32:42Z",
+ "date_utc": "2026-10-28T15:51:43Z",
  "sampling": {
   "temperature": 0,
   "top_p": 1.0,
@@ -11,10 +11,10 @@
   "samples_per_item": 1
  },
  "grading": "mechanical only: exact answers, regex, JSON equality, executed code, needle recall, tool-call args, keywords",
- "wall_seconds": 361.3,
+ "wall_seconds": 447.9,
  "total": [
   40,
-  38
+  40
  ],
  "areas": {
   "coding": {
@@ -23,7 +23,7 @@
   },
   "instruction": {
    "items": 6,
-   "pass": 5
+   "pass": 6
   },
   "math": {
    "items": 8,
@@ -31,7 +31,7 @@
   },
   "multilingual": {
    "items": 2,
-   "pass": 1
+   "pass": 2
   },
   "retrieval": {
    "items": 6,
@@ -54,7 +54,7 @@
    "pass": true,
    "detail": "1296",
    "answer_head": "1296",
-   "seconds": 5.23,
+   "seconds": 6.58,
    "prompt_tokens": 68,
    "completion_tokens": 76
   },
@@ -65,7 +65,7 @@
    "pass": true,
    "detail": "14",
    "answer_head": "14",
-   "seconds": 4.89,
+   "seconds": 6.01,
    "prompt_tokens": 76,
    "completion_tokens": 82
   },
@@ -76,7 +76,7 @@
    "pass": true,
    "detail": "48",
    "answer_head": "48",
-   "seconds": 6.94,
+   "seconds": 8.26,
    "prompt_tokens": 88,
    "completion_tokens": 122
   },
@@ -87,7 +87,7 @@
    "pass": true,
    "detail": "143",
    "answer_head": "143",
-   "seconds": 4.69,
+   "seconds": 5.53,
    "prompt_tokens": 70,
    "completion_tokens": 75
   },
@@ -98,9 +98,9 @@
    "pass": true,
    "detail": "8",
    "answer_head": "8",
-   "seconds": 3.67,
+   "seconds": 4.01,
    "prompt_tokens": 74,
-   "completion_tokens": 55
+   "completion_tokens": 51
   },
   {
    "id": "math-06",
@@ -109,7 +109,7 @@
    "pass": true,
    "detail": "36",
    "answer_head": "36",
-   "seconds": 3.71,
+   "seconds": 4.19,
    "prompt_tokens": 70,
    "completion_tokens": 56
   },
@@ -120,7 +120,7 @@
    "pass": true,
    "detail": "No",
    "answer_head": "No",
-   "seconds": 3.27,
+   "seconds": 3.54,
    "prompt_tokens": 63,
    "completion_tokens": 45
   },
@@ -131,7 +131,7 @@
    "pass": true,
    "detail": "32",
    "answer_head": "32",
-   "seconds": 4.75,
+   "seconds": 4.33,
    "prompt_tokens": 77,
    "completion_tokens": 59
   },
@@ -142,9 +142,9 @@
    "pass": true,
    "detail": "5",
    "answer_head": "```python\ndef add(a, b):\n    return a + b\n```",
-   "seconds": 5.78,
+   "seconds": 6.54,
    "prompt_tokens": 75,
-   "completion_tokens": 97
+   "completion_tokens": 98
   },
   {
    "id": "coding-02",
@@ -153,7 +153,7 @@
    "pass": true,
    "detail": "cba",
    "answer_head": "```python\ndef rev(s):\n    return s[::-1]\n```",
-   "seconds": 5.39,
+   "seconds": 6.09,
    "prompt_tokens": 74,
    "completion_tokens": 90
   },
@@ -164,7 +164,7 @@
    "pass": true,
    "detail": "[2, 4]",
    "answer_head": "```python\ndef evens(xs):\n    return [x for x in xs if x % 2 == 0]\n```",
-   "seconds": 8.91,
+   "seconds": 10.01,
    "prompt_tokens": 78,
    "completion_tokens": 159
   },
@@ -175,7 +175,7 @@
    "pass": true,
    "detail": "{'a': 2, 'b': 1}",
    "answer_head": "```python\ndef count_words(s):\n    counts = {}\n    for word in s.split():\n        counts[word] = counts.get(word, 0) + 1\n    return counts\n```",
-   "seconds": 10.35,
+   "seconds": 11.82,
    "prompt_tokens": 81,
    "completion_tokens": 191
   },
@@ -186,7 +186,7 @@
    "pass": true,
    "detail": "55",
    "answer_head": "```python\ndef fib(n):\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return",
-   "seconds": 13.3,
+   "seconds": 14.71,
    "prompt_tokens": 81,
    "completion_tokens": 242
   },
@@ -196,10 +196,10 @@
    "kind": "code",
    "pass": true,
    "detail": "[1, 2, 3]",
-   "answer_head": "```python\ndef flatten(x):\n    result = []\n    for item in x:\n        if isinstance(item, list):\n            result.extend(item)\n        else:\n            result",
-   "seconds": 10.48,
+   "answer_head": "```python\ndef flatten(x):\n    return [item for sublist in x for item in (sublist if isinstance(sublist, list) else [sublist])]\n```",
+   "seconds": 39.74,
    "prompt_tokens": 77,
-   "completion_tokens": 194
+   "completion_tokens": 683
   },
   {
    "id": "coding-07",
@@ -208,7 +208,7 @@
    "pass": true,
    "detail": "True False",
    "answer_head": "```python\ndef is_pal(s):\n    return s == s[::-1]\n```",
-   "seconds": 6.75,
+   "seconds": 7.67,
    "prompt_tokens": 80,
    "completion_tokens": 117
   },
@@ -219,7 +219,7 @@
    "pass": true,
    "detail": "2.0 None",
    "answer_head": "```python\ndef safe_div(a, b):\n    if b == 0:\n        return None\n    return a / b\n```",
-   "seconds": 15.44,
+   "seconds": 17.7,
    "prompt_tokens": 83,
    "completion_tokens": 294
   },
@@ -230,7 +230,7 @@
    "pass": true,
    "detail": "{\"answer\":42}",
    "answer_head": "{\"answer\":42}",
-   "seconds": 3.98,
+   "seconds": 4.48,
    "prompt_tokens": 72,
    "completion_tokens": 60
   },
@@ -241,7 +241,7 @@
    "pass": true,
    "detail": "[1, 2, 3]",
    "answer_head": "[1, 2, 3]",
-   "seconds": 3.63,
+   "seconds": 4.07,
    "prompt_tokens": 69,
    "completion_tokens": 53
   },
@@ -252,7 +252,7 @@
    "pass": true,
    "detail": "{\"name\":\"b70\",\"cards\":2}",
    "answer_head": "{\"name\":\"b70\",\"cards\":2}",
-   "seconds": 4.36,
+   "seconds": 4.91,
    "prompt_tokens": 78,
    "completion_tokens": 68
   },
@@ -263,7 +263,7 @@
    "pass": true,
    "detail": "{\"ok\": true}",
    "answer_head": "{\"ok\": true}",
-   "seconds": 3.43,
+   "seconds": 3.82,
    "prompt_tokens": 66,
    "completion_tokens": 49
   },
@@ -274,9 +274,9 @@
    "pass": true,
    "detail": "{\"items\":[\"a\",\"b\"]}",
    "answer_head": "{\"items\":[\"a\",\"b\"]}",
-   "seconds": 3.86,
+   "seconds": 4.45,
    "prompt_tokens": 76,
-   "completion_tokens": 58
+   "completion_tokens": 60
   },
   {
    "id": "json-06",
@@ -285,7 +285,7 @@
    "pass": true,
    "detail": "{\"speed\":41.0}",
    "answer_head": "{\"speed\":41.0}",
-   "seconds": 4.55,
+   "seconds": 5.12,
    "prompt_tokens": 71,
    "completion_tokens": 72
   },
@@ -296,9 +296,9 @@
    "pass": true,
    "detail": "- alpha\n- beta\n- gamma",
    "answer_head": "- alpha\n- beta\n- gamma",
-   "seconds": 5.03,
+   "seconds": 5.74,
    "prompt_tokens": 76,
-   "completion_tokens": 82
+   "completion_tokens": 83
   },
   {
    "id": "ifev-02",
@@ -307,9 +307,9 @@
    "pass": true,
    "detail": "ready",
    "answer_head": "ready",
-   "seconds": 2.21,
+   "seconds": 2.76,
    "prompt_tokens": 66,
-   "completion_tokens": 24
+   "completion_tokens": 30
   },
   {
    "id": "ifev-03",
@@ -318,7 +318,7 @@
    "pass": true,
    "detail": "1,2,3,4,5",
    "answer_head": "1,2,3,4,5",
-   "seconds": 3.33,
+   "seconds": 3.79,
    "prompt_tokens": 68,
    "completion_tokens": 55
   },
@@ -329,7 +329,7 @@
    "pass": true,
    "detail": "ack ack ack ack",
    "answer_head": "ack ack ack ack",
-   "seconds": 3.22,
+   "seconds": 3.94,
    "prompt_tokens": 68,
    "completion_tokens": 45
   },
@@ -337,12 +337,12 @@
    "id": "ifev-05",
    "area": "instruction",
    "kind": "regex",
-   "pass": false,
+   "pass": true,
    "detail": "Cache is useful.",
    "answer_head": "Cache is useful.",
-   "seconds": 3.96,
+   "seconds": 4.57,
    "prompt_tokens": 68,
-   "completion_tokens": 60
+   "completion_tokens": 62
   },
   {
    "id": "ifev-06",
@@ -353,7 +353,7 @@
    "answer_head": "DONE",
    "seconds": 3.22,
    "prompt_tokens": 65,
-   "completion_tokens": 45
+   "completion_tokens": 38
   },
   {
    "id": "ret-01",
@@ -362,7 +362,7 @@
    "pass": true,
    "detail": "5821",
    "answer_head": "5821",
-   "seconds": 4.43,
+   "seconds": 4.98,
    "prompt_tokens": 91,
    "completion_tokens": 69
   },
@@ -373,7 +373,7 @@
    "pass": true,
    "detail": "albatross-4417",
    "answer_head": "albatross-4417",
-   "seconds": 11.77,
+   "seconds": 13.2,
    "prompt_tokens": 7424,
    "completion_tokens": 76
   },
@@ -384,9 +384,9 @@
    "pass": true,
    "detail": "pelican-8823",
    "answer_head": "pelican-8823",
-   "seconds": 18.08,
+   "seconds": 22.45,
    "prompt_tokens": 14748,
-   "completion_tokens": 63
+   "completion_tokens": 83
   },
   {
    "id": "ret-04",
@@ -395,7 +395,7 @@
    "pass": true,
    "detail": "condor-1934",
    "answer_head": "condor-1934",
-   "seconds": 34.11,
+   "seconds": 40.29,
    "prompt_tokens": 29423,
    "completion_tokens": 77
   },
@@ -406,7 +406,7 @@
    "pass": true,
    "detail": "31.5",
    "answer_head": "31.5",
-   "seconds": 5.91,
+   "seconds": 6.57,
    "prompt_tokens": 95,
    "completion_tokens": 87
   },
@@ -417,7 +417,7 @@
    "pass": true,
    "detail": "kestrel-6641",
    "answer_head": "kestrel-6641",
-   "seconds": 71.86,
+   "seconds": 85.01,
    "prompt_tokens": 58748,
    "completion_tokens": 115
   },
@@ -428,7 +428,7 @@
    "pass": true,
    "detail": "{\"name\":\"get_weather\",\"arguments\":{\"city\":\"Oslo\"}}",
    "answer_head": "{\"name\":\"get_weather\",\"arguments\":{\"city\":\"Oslo\"}}",
-   "seconds": 11.16,
+   "seconds": 13.81,
    "prompt_tokens": 82,
    "completion_tokens": 183
   },
@@ -439,7 +439,7 @@
    "pass": true,
    "detail": "{\"name\":\"read_file\",\"arguments\":{\"path\":\"/etc/hosts\"}}",
    "answer_head": "{\"name\":\"read_file\",\"arguments\":{\"path\":\"/etc/hosts\"}}",
-   "seconds": 9.82,
+   "seconds": 11.31,
    "prompt_tokens": 86,
    "completion_tokens": 178
   },
@@ -450,7 +450,7 @@
    "pass": true,
    "detail": "{\"name\":\"set_power_limit\",\"arguments\":{\"watts\":180}}",
    "answer_head": "{\"name\":\"set_power_limit\",\"arguments\":{\"watts\":180}}",
-   "seconds": 11.4,
+   "seconds": 13.0,
    "prompt_tokens": 89,
    "completion_tokens": 210
   },
@@ -461,7 +461,7 @@
    "pass": true,
    "detail": "{\"name\":\"search_docs\",\"arguments\":{\"query\":\"b70 kv cache\"}}",
    "answer_head": "{\"name\":\"search_docs\",\"arguments\":{\"query\":\"b70 kv cache\"}}",
-   "seconds": 13.02,
+   "seconds": 14.87,
    "prompt_tokens": 89,
    "completion_tokens": 243
   },
@@ -472,20 +472,20 @@
    "pass": true,
    "detail": "Der Cache ist voll.",
    "answer_head": "Der Cache ist voll.",
-   "seconds": 6.32,
+   "seconds": 6.09,
    "prompt_tokens": 68,
-   "completion_tokens": 107
+   "completion_tokens": 89
   },
   {
    "id": "ml-02",
    "area": "multilingual",
    "kind": "keywords",
-   "pass": false,
-   "detail": "dos cartas",
-   "answer_head": "dos cartas",
-   "seconds": 5.14,
-   "prompt_tokens": 66,
-   "completion_tokens": 83
+   "pass": true,
+   "detail": "El modelo est\u00e1 cargado.",
+   "answer_head": "El modelo est\u00e1 cargado.",
+   "seconds": 8.7,
+   "prompt_tokens": 68,
+   "completion_tokens": 135
   }
  ]
 }
