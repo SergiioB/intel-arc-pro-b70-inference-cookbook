@@ -225,136 +225,9 @@ Expected: a ~8,000-character template with both markers present, and a tool-call
 request returning `tool_calls[0].function.name == "get_weather"` with parsed
 arguments. Measured: that works.
 
-## 8. Measure a served cell (C1, with energy)
-
-The client sends `cache_prompt: false`, one discarded same-shape warmup, then five
-samples; it records endpoint token counts, `finish_reason`, `timings` and the card's
-`energy1_input` delta. Use `--reasoning-budget 0` if you want the decode rate to
-describe content rather than thinking.
-
-```bash
-# two cards installed? name the one llama.cpp is pinned to, or the client refuses to guess
-python3 client.py --port 8084 --out cells.json --n 5 --gen 128 --pci 0000:0f:00.0
-```
-
-With a single Arc card the `--pci` argument can be dropped; with two, a first-match
-`hwmon` search would report the display card's power (this happened during the
-measurement session and produced a false 57 W), so the client errors instead of
-guessing.
-
-Report the median of the five, the range, the actual completion tokens, the cache
-state, the configured cap, the measured draw, and the timing source. Never mix a
-`llama-bench` rate with a client-observed rate in one column.
-
-## 9. Context ladder (go up slowly)
-
-Each rung needs a real prompt of that size plus a real output, and the reserve
-logged after load:
-
-```bash
-for C in 16384 32768 65536; do
-  ~/llama.cpp/build-sycl/bin/llama-server -m $M --device SYCL0 --split-mode none \
-    -ngl 99 -fa on -ctk q8_0 -ctv q4_1 -c $C -b 2048 -ub 2048 -t 8 -tb 8 \
-    --mmap --jinja --host 127.0.0.1 --port 8084 --no-webui &
-  sleep 45   # load; then read the memory-breakdown lines in the log
-  # ... run your 1-request cell at this context, then stop the server ...
-  kill %1; wait
-done
-```
-
-Stop rules: below 500 MiB free abort; 500–1,023 MiB is a capacity observation only;
-1,024–2,047 MiB is staged research; 2,048 MiB or more is required for a performance
-cell. Above 32K this recipe has **no** measurement — expect decode to keep falling
-(measured slope: −3.26 µs of token time per extra context token, i.e. 6.67 tok/s at
-32K).
-
-## 10. Draft-free speculation — the one big decode lever that works
-
-Add these flags and decode on repetitive text jumps; the verify batch must stay at 8:
-
-```bash
-  --spec-type ngram-simple \
-  --spec-ngram-simple-size-n 4 \
-  --spec-ngram-simple-size-m 7      # batch 8. size_m 8 => batch 9 => slower than plain
-```
-
-Matched pair, same prompt and flags, fresh processes, 128 output tokens:
-
-| Prompt | plain | with `size_m 7` |
-|---|---:|---:|
-| 777-token repeated code, acceptance 99/127 | 21.80 tok/s | **37.80 tok/s (+73.3 %)** |
-| 12,844-token log, acceptance varies 0/26–51/104 | 12.16 tok/s | 11.7–15.8 (median ~13.4) |
-
-Scope it honestly: the win comes from text that repeats itself (code, logs, agent
-transcripts pasted back). Novel prose is expected neutral and has not been measured
-with `size_m 7`. Keep the no-spec arm in every comparison, and check that greedy
-output matches the no-spec run before making it a default for a workload.
-
-## 11. What does not help (measured or closed)
-
-| Attempt | Result |
-|---|---|
-| N-gram / draft-free speculation with `size_m 8` | 21.80 → **15.12 tok/s**. Negative control: `--spec-draft-n-max` does *not* cap the draft, `--spec-ngram-simple-size-m` does; a 9-wide batch leaves the 8-wide reorder-MMVQ window |
-| F16 KV instead of `q8_0`/`q4_1` at 32K | 6.69 vs 6.66 tok/s — depth cost is attention latency, not KV bytes |
-| `q8_0` K + `q8_0` V, and `q4_0`/`q4_0` at 32K | 4.61 and 4.84 tok/s — worse than the fleet pair |
-| `-b 4096` with `-ub 2048` | no change |
-| Thinking left unbounded | correct but slow: 205 of 256 output tokens were reasoning on a one-line arithmetic question |
-| Verify batches above 8 | every weight matrix is dequantized to f16 and run through oneDNN, so a 9-wide batch loses more than the extra tokens win |
-| `llama-bench` for the dispatch log | it suppresses INFO; use `llama-server -lv 4` with `GGML_SYCL_MKL_FA_DEBUG=1` |
-| A draft model for speculation | none exists: the 3B student is unreleased and older Nanbeige 3B vocabularies (166,144) do not match this one (166,912) |
-
-## 12. Cleanup
-
-```bash
-pkill -f 'llama-server -m /data/models/nanbeige43-33b'   # only your own process
-pgrep -af 'llama-server|llama-bench'                     # must be empty
-cat /sys/class/hwmon/hwmon6/power1_cap                   # confirm the as-found value
-```
-
-Delete the run directory only after copying its JSON and logs somewhere you keep.
-
-## 13. Coding quality and the reasoning budget
-
-Greedy, single-file HTML tasks, each verified in Chromium through the app's own handlers
-(not by reading the source):
-
-| Task | Output tokens | Result |
-|---|---:|---|
-| Todo list, `localStorage`, clear-done | 3,239 | **6/6** checks pass |
-| 15×15 BFS visualiser, animation, unreachable case | 7,722 | **6/6** checks pass |
-| Paint: undo, clear, PNG export, pointer-leave (greedy) | 1,375 | **5/6**: the first `undo` is a no-op (snapshots pushed after the action) |
-| Paint, same prompt at the card's agentic sampling (T=1.0, top_p=0.95) | 1,584 | **5/6, different defect**: stroke undo now works (2111 → 1214 px), but undo-after-clear still does not restore |
-| Voxel-art pagoda garden, single file, "use any library" | 16,496 | **runs in Chrome**: 39.5 KB, three.js from unpkg, 137,775 voxels, 25 material groups, no elisions. Defects: `pick()` given scalar palette entries leaves three element families in the default colour (3 unique `THREE.Color: Unknown color` warnings), and the default camera starts inside the cherry canopy |
-
-**Thinking must be budgeted for code emission.** Thinking is on by default and can consume
-the whole completion budget: two of three tasks returned **empty content** after 12,000
-reasoning tokens, and with `--reasoning-budget 1500` the paint task truncated and inserted
-a literal `...` inside a function. Turning thinking off produced the only complete paint
-app, 5–8× faster per finished file:
-
-```bash
-  --reasoning off                 # or --reasoning-budget 1500 for tasks that need planning
-```
-
-## 14. Evidence
-
-Measured 2026-10-25, one B70, `0000:0f:00.0`, build 361 (`1692f9e50`), artifact
-sha256 `2cef7985…4c37`, 230 W cap, no container. Raw llama-bench JSON, server logs,
-quality probe, n-gram A/B samples and energy cells are kept with the run record
-(private lab). Verified in a real browser: the todo app passed 6/6 acceptance
-checks including a `localStorage` round-trip; the BFS visualiser passed 6/6 including the
-unreachable case; the paint app passed 5/6 with one real state-management defect
-(off-by-one undo). Decode attention is confirmed **VEC** on this path
-(`GGML_SYCL_MKL_FA_DEBUG=1` at `-lv 4`: 104/104 `[FA-DISP] VEC D=128 n_kv=256`, zero
-TILE/MKL/ONEDNN), which is why context costs so much at M=1.
-Validation tier: measured on one host, one artifact, one build, no
-independent reproduction. Quality was smoke-tested only (5/5 short prompts
-including one tool call); no benchmark suite was run, so this page makes **no**
-agentic-quality claim.
-
 ## 8. Second route: vLLM-XPU + W4A16 (faster, less context)
 
-A compressed-tensors W4A16 pack now exists and vLLM-XPU serves it through its native
+A compressed-tensors W4A16 pack exists and vLLM-XPU serves it through its native
 `XPUwNa16LinearKernel`:
 
 ```bash
@@ -399,3 +272,130 @@ Same prompt, same sampling (T 1.0, top-p 0.95), same `-c 131072`, same KV, one s
 
 Qwen's page also ships working time-of-day, petal-wind, day/night and orbit controls. On
 this task the 33B model was both slower and wrong.
+
+## 11. Measure a served cell (C1, with energy)
+
+The client sends `cache_prompt: false`, one discarded same-shape warmup, then five
+samples; it records endpoint token counts, `finish_reason`, `timings` and the card's
+`energy1_input` delta. Use `--reasoning-budget 0` if you want the decode rate to
+describe content rather than thinking.
+
+```bash
+# two cards installed? name the one llama.cpp is pinned to, or the client refuses to guess
+python3 client.py --port 8084 --out cells.json --n 5 --gen 128 --pci 0000:0f:00.0
+```
+
+With a single Arc card the `--pci` argument can be dropped; with two, a first-match
+`hwmon` search would report the display card's power (this happened during the
+measurement session and produced a false 57 W), so the client errors instead of
+guessing.
+
+Report the median of the five, the range, the actual completion tokens, the cache
+state, the configured cap, the measured draw, and the timing source. Never mix a
+`llama-bench` rate with a client-observed rate in one column.
+
+## 12. Context ladder (go up slowly)
+
+Each rung needs a real prompt of that size plus a real output, and the reserve
+logged after load:
+
+```bash
+for C in 16384 32768 65536; do
+  ~/llama.cpp/build-sycl/bin/llama-server -m $M --device SYCL0 --split-mode none \
+    -ngl 99 -fa on -ctk q8_0 -ctv q4_1 -c $C -b 2048 -ub 2048 -t 8 -tb 8 \
+    --mmap --jinja --host 127.0.0.1 --port 8084 --no-webui &
+  sleep 45   # load; then read the memory-breakdown lines in the log
+  # ... run your 1-request cell at this context, then stop the server ...
+  kill %1; wait
+done
+```
+
+Stop rules: below 500 MiB free abort; 500–1,023 MiB is a capacity observation only;
+1,024–2,047 MiB is staged research; 2,048 MiB or more is required for a performance
+cell. Above 32K this recipe has **no** measurement — expect decode to keep falling
+(measured slope: −3.26 µs of token time per extra context token, i.e. 6.67 tok/s at
+32K).
+
+## 13. Draft-free speculation — the one big decode lever that works
+
+Add these flags and decode on repetitive text jumps; the verify batch must stay at 8:
+
+```bash
+  --spec-type ngram-simple \
+  --spec-ngram-simple-size-n 4 \
+  --spec-ngram-simple-size-m 7      # batch 8. size_m 8 => batch 9 => slower than plain
+```
+
+Matched pair, same prompt and flags, fresh processes, 128 output tokens:
+
+| Prompt | plain | with `size_m 7` |
+|---|---:|---:|
+| 777-token repeated code, acceptance 99/127 | 21.80 tok/s | **37.80 tok/s (+73.3 %)** |
+| 12,844-token log, acceptance varies 0/26–51/104 | 12.16 tok/s | 11.7–15.8 (median ~13.4) |
+
+Scope it honestly: the win comes from text that repeats itself (code, logs, agent
+transcripts pasted back). Novel prose is expected neutral and has not been measured
+with `size_m 7`. Keep the no-spec arm in every comparison, and check that greedy
+output matches the no-spec run before making it a default for a workload.
+
+## 14. What does not help (measured or closed)
+
+| Attempt | Result |
+|---|---|
+| N-gram / draft-free speculation with `size_m 8` | 21.80 → **15.12 tok/s**. Negative control: `--spec-draft-n-max` does *not* cap the draft, `--spec-ngram-simple-size-m` does; a 9-wide batch leaves the 8-wide reorder-MMVQ window |
+| F16 KV instead of `q8_0`/`q4_1` at 32K | 6.69 vs 6.66 tok/s — depth cost is attention latency, not KV bytes |
+| `q8_0` K + `q8_0` V, and `q4_0`/`q4_0` at 32K | 4.61 and 4.84 tok/s — worse than the fleet pair |
+| `-b 4096` with `-ub 2048` | no change |
+| Thinking left unbounded | correct but slow: 205 of 256 output tokens were reasoning on a one-line arithmetic question |
+| Verify batches above 8 | every weight matrix is dequantized to f16 and run through oneDNN, so a 9-wide batch loses more than the extra tokens win |
+| `llama-bench` for the dispatch log | it suppresses INFO; use `llama-server -lv 4` with `GGML_SYCL_MKL_FA_DEBUG=1` |
+| A draft model for speculation | none exists: the 3B student is unreleased and older Nanbeige 3B vocabularies (166,144) do not match this one (166,912) |
+
+## 15. Cleanup
+
+```bash
+pkill -f 'llama-server -m /data/models/nanbeige43-33b'   # only your own process
+pgrep -af 'llama-server|llama-bench'                     # must be empty
+cat /sys/class/hwmon/hwmon6/power1_cap                   # confirm the as-found value
+```
+
+Delete the run directory only after copying its JSON and logs somewhere you keep.
+
+## 16. Coding quality and the reasoning budget
+
+Greedy, single-file HTML tasks, each verified in Chromium through the app's own handlers
+(not by reading the source):
+
+| Task | Output tokens | Result |
+|---|---:|---|
+| Todo list, `localStorage`, clear-done | 3,239 | **6/6** checks pass |
+| 15×15 BFS visualiser, animation, unreachable case | 7,722 | **6/6** checks pass |
+| Paint: undo, clear, PNG export, pointer-leave (greedy) | 1,375 | **5/6**: the first `undo` is a no-op (snapshots pushed after the action) |
+| Paint, same prompt at the card's agentic sampling (T=1.0, top_p=0.95) | 1,584 | **5/6, different defect**: stroke undo now works (2111 → 1214 px), but undo-after-clear still does not restore |
+| Voxel-art pagoda garden, single file, "use any library" | 16,496 | **runs in Chrome**: 39.5 KB, three.js from unpkg, 137,775 voxels, 25 material groups, no elisions. Defects: `pick()` given scalar palette entries leaves three element families in the default colour (3 unique `THREE.Color: Unknown color` warnings), and the default camera starts inside the cherry canopy |
+
+**Thinking must be budgeted for code emission.** Thinking is on by default and can consume
+the whole completion budget: two of three tasks returned **empty content** after 12,000
+reasoning tokens, and with `--reasoning-budget 1500` the paint task truncated and inserted
+a literal `...` inside a function. Turning thinking off produced the only complete paint
+app, 5–8× faster per finished file:
+
+```bash
+  --reasoning off                 # or --reasoning-budget 1500 for tasks that need planning
+```
+
+## 17. Evidence
+
+Measured 2026-10-25, one B70, `0000:0f:00.0`, build 361 (`1692f9e50`), artifact
+sha256 `2cef7985…4c37`, 230 W cap, no container. Raw llama-bench JSON, server logs,
+quality probe, n-gram A/B samples and energy cells are kept with the run record
+(private lab). Verified in a real browser: the todo app passed 6/6 acceptance
+checks including a `localStorage` round-trip; the BFS visualiser passed 6/6 including the
+unreachable case; the paint app passed 5/6 with one real state-management defect
+(off-by-one undo). Decode attention is confirmed **VEC** on this path
+(`GGML_SYCL_MKL_FA_DEBUG=1` at `-lv 4`: 104/104 `[FA-DISP] VEC D=128 n_kv=256`, zero
+TILE/MKL/ONEDNN), which is why context costs so much at M=1.
+Validation tier: measured on one host, one artifact, one build, no
+independent reproduction. Quality was smoke-tested only (5/5 short prompts
+including one tool call); no benchmark suite was run, so this page makes **no**
+agentic-quality claim.
