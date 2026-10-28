@@ -143,8 +143,8 @@ def main():
 
     # ---------------- panel C: quality ----------------
     qx0, qy0, qy1 = 1040, 690, 830
-    out.append(text(qx0, qy0 - 12, "Exact-answer battery (8 cases)", 21, INK))
-    unit = 16
+    out.append(text(qx0, qy0 - 12, "Quality: exact battery + 40-item suite", 21, INK))
+    unit = 14
     for i, (label, exact, verbose, wrong) in enumerate(BATTERY):
         bx = qx0 + 30 + i * 240
         base = qy1
@@ -155,13 +155,14 @@ def main():
         top, bottom = label.split("|")
         out.append(text(bx + 65, qy1 + 20, top, 14, MUTED, anchor="middle"))
         out.append(text(bx + 65, qy1 + 37, bottom, 13, FAINT, anchor="middle"))
+        out.append(text(bx + 65, qy1 + 55, "suite v2: 40/40", 12, GREEN, anchor="middle", weight="bold"))
     out.append(f'<line x1="{qx0 + 20}" y1="{qy1}" x2="{qx0 + 500}" y2="{qy1}" stroke="{MUTED}" stroke-width="1.2"/>')
     for i, (name, color) in enumerate((("exact correct", GREEN), ("correct, not exact", AMBER), ("wrong", RED))):
         lx2 = qx0 + 30 + i * 165
-        out.append(f'<rect x="{lx2}" y="{qy1 + 52}" width="14" height="14" fill="{color}"/>')
-        out.append(text(lx2 + 20, qy1 + 64, name, 13, MUTED))
-    out.append(text(qx0 + 20, qy1 + 100, "Qwen's miss is the int4 canary sum(i*i for i in range(4)) → 30", 12, MUTED))
-    out.append(text(qx0 + 20, qy1 + 116, "(14 only with thinking on); Nanbeige answers 14 everywhere.", 12, MUTED))
+        out.append(f'<rect x="{lx2}" y="{qy1 + 74}" width="13" height="13" fill="{color}"/>')
+        out.append(text(lx2 + 19, qy1 + 85, name, 12, MUTED))
+    out.append(text(qx0 + 20, qy1 + 106, "Battery: Qwen's miss is the int4 canary sum(i*i for i in range(4)) → 30", 11.5, MUTED))
+    out.append(text(qx0 + 20, qy1 + 121, "(14 only with thinking on); Nanbeige answers 14 everywhere.", 11.5, MUTED))
 
     out.append(text(30, 956, "Sources: results/nanbeige43-33b/DUAL-B70-20261028.json · docs/nanbeige43-33b/ · provisional: one host, one operator, not independently reproduced", 12, FAINT))
     out.append("</svg>")
