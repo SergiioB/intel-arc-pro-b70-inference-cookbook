@@ -278,8 +278,9 @@ Measured 2026-10-28 on one host with both cards (as-found caps 180 W on the disp
 | 2× independent vLLM, both busy | 55.22 aggregate (26.17 + 29.05) | — | — | — | 46,848 each | 410 W total |
 | llama.cpp Q4_K_M, 1 card | 23.48 | — | — | — | 143,360 | 230 W |
 | llama.cpp Q4_K_M, `-sm layer` | 22.81 | — | — | 3.87 at 131K | 262,144 | 123 W (one card's counter) |
+| **vLLM TP2 + ngram spec** | — | — | 37.72 (p 49K) | **30.31** | 227,840 at 131K max len | 400 W total |
 
-Read it as three different wins:
+Read it as four different wins:
 
 1. **Sequential latency and context — use TP2.** +42 % decode at a short prompt, +31 % at
    4.7K, +5.5× KV capacity. Cost: 390 W total instead of 230 W, and tokens/joule fall from
@@ -291,6 +292,9 @@ Read it as three different wins:
    doubles the KV room: `-c 262144` loads and processed a **131,029-token prompt**
    (prefill 303 tok/s, decode 3.87 tok/s, `cache_n` 0). `-sm row` is a **no-go** on this
    build: it aborts immediately with no message at all.
+4. **Decode at depth — turn on ngram speculation on TP2.** +27 % at a 98K prompt
+   (23.83 → 30.31) and +41 % on copy-heavy output, with no quality change on the battery.
+   Section 18 has the A/B table and the two failure modes.
 
 TP2 needs the dual-card infrastructure contract, not just `--tensor-parallel-size 2`:
 `benchmarks/nanbeige43-33b/launch-vllm-tp2.sh` applies
@@ -468,7 +472,51 @@ app, 5–8× faster per finished file:
   --reasoning off                 # or --reasoning-budget 1500 for tasks that need planning
 ```
 
-## 18. Evidence
+## 18. Speed levers: what works, what does not exist
+
+**There is no MTP to enable on this model.** All 1,199 tensors of the W4A16 pack and the GGUF
+were scanned: no `mtp`, `eagle`, `draft` or `nextn` tensors, and `config.json` has no
+`num_nextn_predict_layers`. The architecture is plain `LlamaForCausalLM`, and the 3B student
+that would make a draft model is unreleased, with a different vocabulary (166,144 vs
+166,912). Any "enable MTP" instruction for this family is wrong.
+
+What does work, measured on TP2 with the same cells before and after:
+
+| Lever | Cell | Before | After | Verdict |
+|---|---|---:|---:|---|
+| vLLM `--speculative-config` ngram, 5 drafted tokens | echo a 912-token code block, g128 | 38.14 | **53.84** | **+41 %** |
+| same | natural prose, 2.4K prompt, g128 | 37.04 | **48.59** | **+31 %** |
+| same | repetitive filler, 49K prompt, g64 | 30.96 | **37.72** | **+22 %** |
+| same | repetitive filler, 98K prompt, g64 | 23.83 | **30.31** | **+27 %**, and prefill 633 → 694 |
+| `--max-num-batched-tokens 16384` with ngram | 49K prompt | 37.72 | 32.41 | **negative, −14 %** |
+| llama.cpp `-b 4096 -ub 4096` at 64K depth | pp512 / tg128 | 326.90 / 7.14 | 327.13 / 7.15 | neutral |
+
+```bash
+--speculative-config '{"method":"ngram","num_speculative_tokens":5,"prompt_lookup_max":4,"prompt_lookup_min":2}'
+```
+
+Three things to know before you copy that flag:
+
+1. **It needs headroom the one-card placement does not have.** With ngram, a single-card boot
+   on a card with 31,023 MiB free reported `Available KV cache memory: -0.97 GiB` at 32K/0.92
+   and `-0.06 GiB` at 16K/0.95. It fits on TP2 (227,840-token KV at 131K max length, 0.90
+   utilisation). One-card users get the lever from llama.cpp instead
+   (`--spec-type ngram-simple`, section 14), not from vLLM.
+2. **The model runner changes.** `Model Runner V2 does not yet support speculative method
+   'ngram'` and falls back to V1; `min_p` and `logit_bias` stop working, async scheduling is
+   disabled, and the scheduler pins `max_num_scheduled_tokens` to 2048. That is why the
+   larger batched-token setting in the table loses.
+3. **Quality is unchanged on the battery** (6/8 strict before and after), because drafted
+   tokens are verified. The gain is largest where output repeats input: code echoes, logs,
+   refactors. Novel prose still gains here, but on a filler/summary task expect the smaller
+   end of the range.
+
+The figure for the whole campaign — decode versus context, prefill at depth, and the quality
+split against Qwen3.8-27B —
+[`docs/assets/nanbeige43-33b-64k-20261028.png`](../assets/nanbeige43-33b-64k-20261028.png)
+is rendered by `benchmarks/nanbeige43-33b/render-results.py` from the published record.
+
+## 19. Evidence
 
 **Generation 2 — 2026-10-28, one host, both cards.** Record:
 [`results/nanbeige43-33b/DUAL-B70-20261028.json`](../../results/nanbeige43-33b/DUAL-B70-20261028.json).
@@ -479,7 +527,13 @@ Coordinates: 2× Arc Pro B70 (`0000:0c:00.0` display card, 180 W as-found; `0000
 `benchmarks/nanbeige43-33b/vllm-cells.py` (streamed TTFT/decode, per-card energy, sums both
 cards when given two PCI addresses) and `client.py`; launchers
 `launch-vllm-tp2.sh` and `vllm-tp2-entry.sh`. Every published number in sections 8 and 10
-was recomputed from the raw run files before publication. Validation tier: one host, one
+was recomputed from the raw run files before publication. Section 18's ngram A/B is the same
+record's `speculation_and_prefill` block: TP2 booted twice (no-spec, then
+`--speculative-config ngram`), same cells, same host; the single-card ngram attempts are
+recorded there as a no-go with their exact error. The figure
+[`assets/nanbeige43-33b-64k-20261028.png`](../assets/nanbeige43-33b-64k-20261028.png) is
+generated by `benchmarks/nanbeige43-33b/render-results.py`, which reads only the numbers in
+that record. Validation tier: one host, one
 operator, one session; not independently reproduced. Not tested: concurrency above one
 stream per engine, KL/perplexity, task suites beyond the 8-case battery, PP2, adjacent
 contexts between 262,144 and 393,216, power sweeps.

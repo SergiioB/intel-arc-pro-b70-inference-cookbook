@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-10-28T12:00:00Z",
+ "updated_at": "2026-10-28T15:00:00Z",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -2319,6 +2319,71 @@
    "evidence": {
     "commit": "63d85a22c76d53a45daca8d747acec7ca514dc7e",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/63d85a22c76d53a45daca8d747acec7ca514dc7e/results/nanbeige43-33b/DUAL-B70-20261028.json"
+   }
+  },
+  {
+   "id": "nanbeige43-33b-vllm-w4a16-tp2-ngram-c1",
+   "kind": "benchmark",
+   "title": "Nanbeige4.3-33B W4A16 on two B70s, TP2 + ngram speculation",
+   "summary": "Draft-free ngram speculation on the TP2 route: 30.31 tok/s at a 98,351-token prompt (+27 % over the no-spec TP2 cell of 23.83), 37.72 at 49,198 (+22 %), 53.84 on copy-heavy output (+41 %), 48.59 on natural prose (+31 %). Quality unchanged on the 8-case exact battery (6/8 strict). The model has no MTP heads (1,199 tensors scanned), so this is the only speculation lever that applies. Single-card ngram does not fit: negative KV at 16K-32K context. One host, one operator, not independently reproduced.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_caps_w": [
+     180,
+     230
+    ]
+   },
+   "engine": {
+    "name": "vLLM-XPU",
+    "version": "0.31.0 TP2 + ngram spec vllm/vllm-openai-xpu@sha256:95ac815038c4b3537b173798bfe3b89bdf525a52bd653cd14d4deb01f1062be7"
+   },
+   "model": {
+    "id": "jeonghyeon00/Nanbeige4.3-33B-W4A16-AutoRound",
+    "quantization": "compressed-tensors W4A16 g128",
+    "revision": "d71b1250f4992521d1a39327da29db7341466124",
+    "speculation": "ngram, 5 drafted tokens, prompt_lookup 2-4"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 98351,
+    "output_tokens": 64,
+    "context_limit_tokens": 227840,
+    "kv_cache": "fp8",
+    "cache": "disabled-zero-hit",
+    "reasoning_effort": "none"
+   },
+   "metrics": [
+    {
+     "name": "client_decode_tps",
+     "value": 30.31,
+     "unit": "token/s"
+    },
+    {
+     "name": "client_decode_tps_49k_prompt",
+     "value": 37.72,
+     "unit": "token/s"
+    },
+    {
+     "name": "client_decode_tps_copy_workload",
+     "value": 53.84,
+     "unit": "token/s"
+    },
+    {
+     "name": "client_prefill_tps_98k",
+     "value": 694,
+     "unit": "token/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "single-observation",
+    "samples": 1
+   },
+   "evidence": {
+    "commit": "11a8f0bf6766270ee67d1d982866149b3a20ecc4",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/11a8f0bf6766270ee67d1d982866149b3a20ecc4/results/nanbeige43-33b/DUAL-B70-20261028.json"
    }
   }
  ]

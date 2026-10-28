@@ -11,6 +11,7 @@ tokens, and the two-card rows when one card's capacity or latency binds.
 | [vLLM-XPU W4A16, two cards, TP2](NANBEIGE43-33B-B70.md#10-two-b70-cards--three-topologies-pick-by-what-binds) | same W4A16 pack, `--tensor-parallel-size 2` + affinity patch + oneCCL thresholds | **measured, provisional**: 41.01 tok/s at a 238-token prompt, 23.83 at 98K, 307,072-token KV ceiling, 390 W total |
 | [Two independent vLLM servers](NANBEIGE43-33B-B70.md#10-two-b70-cards--three-topologies-pick-by-what-binds) | one W4A16 container per card, `ZE_AFFINITY_MASK=0` and `1` | **measured, provisional**: 55.22 tok/s aggregate while both cards serve, 0.135 tokens/J |
 | [llama.cpp, two cards, `-sm layer`](NANBEIGE43-33B-B70.md#10-two-b70-cards--three-topologies-pick-by-what-binds) | same Q4_K_M GGUF | **measured, provisional**: capacity route, 262,144-token context served a 131,029-token prompt at 3.87 tok/s decode; decode is 3–4 % below one card |
+| [vLLM TP2 + ngram speculation](NANBEIGE43-33B-B70.md#18-speed-levers-what-works-what-does-not-exist) | same W4A16 pack, `--speculative-config` ngram | **measured, provisional**: 30.31 tok/s at a 98K prompt (+27 % over TP2), 53.84 on copy-heavy output (+41 %), battery unchanged |
 
 ## Claim boundary
 
@@ -34,6 +35,8 @@ tokens, and the two-card rows when one card's capacity or latency binds.
   context ceilings. Compare them only in the route table above, which names both.
 - TP2 single-stream rates with the two-independent-server aggregate: one is latency, the
   other is throughput across two requests.
+- **This model has no MTP heads.** Do not advertise MTP for it, and do not treat the ngram
+  gains above as MTP gains; they come from draft-free verification against the prompt.
 - `llama-bench` rates with client-observed rates.
 
 ## Related authorities
