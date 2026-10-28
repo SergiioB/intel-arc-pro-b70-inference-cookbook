@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 960" width="1600" height="960">
+<rect width="1600" height="960" fill="white"/>
+<text x="30.0" y="52.0" font-family="DejaVu Sans, sans-serif" font-size="32" fill="#1a202c" text-anchor="start" font-weight="bold">Nanbeige4.3-33B on Intel Arc Pro B70 — decode, prefill and quality</text>
+<text x="30.0" y="82.0" font-family="DejaVu Sans, sans-serif" font-size="15" fill="#4a5568" text-anchor="start" font-weight="normal">One host, one stream per engine, 2026-10-28. GGUF Q4_K_M (llama.cpp 1692f9e50) and W4A16 compressed-tensors (vLLM-XPU 0.31.0). Caps as found: 180 W display card, 230 W compute card.</text>
+<text x="90.0" y="108.0" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#1a202c" text-anchor="start" font-weight="normal">Decode speed vs context depth</text>
+<rect x="90" y="120" width="890" height="400" fill="none" stroke="#4a5568" stroke-width="1.2"/>
+<rect x="518.9" y="120" width="461.1" height="400" fill="#edf2f7"/>
+<text x="528.9" y="510.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="start" font-weight="normal">64K+ zone</text>
+<line x1="90" y1="520.0" x2="980" y2="520.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="525.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">0</text>
+<line x1="90" y1="451.0" x2="980" y2="451.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="456.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">10</text>
+<line x1="90" y1="382.1" x2="980" y2="382.1" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="387.1" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">20</text>
+<line x1="90" y1="313.1" x2="980" y2="313.1" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="318.1" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">30</text>
+<line x1="90" y1="244.1" x2="980" y2="244.1" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="249.1" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">40</text>
+<line x1="90" y1="175.2" x2="980" y2="175.2" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="180.2" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">50</text>
+<line x1="90.0" y1="120" x2="90.0" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+<text x="90.0" y="542.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">0</text>
+<line x1="220.9" y1="120" x2="220.9" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+<text x="220.9" y="542.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">20K</text>
+<line x1="351.8" y1="120" x2="351.8" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+<text x="351.8" y="542.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">40K</text>
+<line x1="482.6" y1="120" x2="482.6" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+<text x="482.6" y="542.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">60K</text>
+<line x1="613.5" y1="120" x2="613.5" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+<text x="613.5" y="542.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">80K</text>
+<line x1="744.4" y1="120" x2="744.4" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+<text x="744.4" y="542.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">100K</text>
+<line x1="875.3" y1="120" x2="875.3" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+<text x="875.3" y="542.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">120K</text>
+<text x="535.0" y="566.0" font-family="DejaVu Sans, sans-serif" font-size="15" fill="#4a5568" text-anchor="middle" font-weight="normal">Occupied context (tokens)</text>
+<polyline points="90.0,358.1 143.6,390.4 304.4,444.0 518.9,470.8" fill="none" stroke="#8c8c8c" stroke-width="3"/>
+<circle cx="90.0" cy="358.1" r="4.5" fill="#8c8c8c"/>
+<circle cx="143.6" cy="390.4" r="4.5" fill="#8c8c8c"/>
+<circle cx="304.4" cy="444.0" r="4.5" fill="#8c8c8c"/>
+<circle cx="518.9" cy="470.8" r="4.5" fill="#8c8c8c"/>
+<polyline points="90.0,362.7 304.4,447.0 947.5,493.3" fill="none" stroke="#b0b0b0" stroke-width="3"/>
+<circle cx="90.0" cy="362.7" r="4.5" fill="#b0b0b0"/>
+<circle cx="304.4" cy="447.0" r="4.5" fill="#b0b0b0"/>
+<circle cx="947.5" cy="493.3" r="4.5" fill="#b0b0b0"/>
+<polyline points="91.5,320.9 96.2,328.5 130.5,329.0 237.5,345.7" fill="none" stroke="#2b6cb0" stroke-width="3"/>
+<circle cx="91.5" cy="320.9" r="4.5" fill="#2b6cb0"/>
+<circle cx="96.2" cy="328.5" r="4.5" fill="#2b6cb0"/>
+<circle cx="130.5" cy="329.0" r="4.5" fill="#2b6cb0"/>
+<circle cx="237.5" cy="345.7" r="4.5" fill="#2b6cb0"/>
+<polyline points="91.6,237.2 96.2,254.6 120.7,271.9 412.0,306.5 733.6,355.7" fill="none" stroke="#1a202c" stroke-width="3"/>
+<circle cx="91.6" cy="237.2" r="4.5" fill="#1a202c"/>
+<circle cx="96.2" cy="254.6" r="4.5" fill="#1a202c"/>
+<circle cx="120.7" cy="271.9" r="4.5" fill="#1a202c"/>
+<circle cx="412.0" cy="306.5" r="4.5" fill="#1a202c"/>
+<circle cx="733.6" cy="355.7" r="4.5" fill="#1a202c"/>
+<polyline points="412.0,259.9 733.6,311.0" fill="none" stroke="#c53030" stroke-width="3"/>
+<circle cx="412.0" cy="259.9" r="4.5" fill="#c53030"/>
+<circle cx="733.6" cy="311.0" r="4.5" fill="#c53030"/>
+<polyline points="90.0,377.2 143.6,384.6 304.4,402.9 518.9,420.3" fill="none" stroke="#2f855a" stroke-width="3"/>
+<circle cx="90.0" cy="377.2" r="4.5" fill="#2f855a"/>
+<circle cx="143.6" cy="384.6" r="4.5" fill="#2f855a"/>
+<circle cx="304.4" cy="402.9" r="4.5" fill="#2f855a"/>
+<circle cx="518.9" cy="420.3" r="4.5" fill="#2f855a"/>
+<text transform="rotate(-90 28 320.0)" x="28.0" y="320.0" font-family="DejaVu Sans, sans-serif" font-size="15" fill="#4a5568" text-anchor="middle" font-weight="normal">Decode (tokens/s)</text>
+<line x1="90" y1="592" x2="116" y2="592" stroke="#8c8c8c" stroke-width="3"/>
+<circle cx="103" cy="592" r="4.5" fill="#8c8c8c"/>
+<text x="124.0" y="597.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">llama.cpp, 1 card (Q4_K_M)</text>
+<line x1="405" y1="592" x2="431" y2="592" stroke="#b0b0b0" stroke-width="3"/>
+<circle cx="418" cy="592" r="4.5" fill="#b0b0b0"/>
+<text x="439.0" y="597.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">llama.cpp, 2 cards layer (Q4_K_M)</text>
+<line x1="720" y1="592" x2="746" y2="592" stroke="#2b6cb0" stroke-width="3"/>
+<circle cx="733" cy="592" r="4.5" fill="#2b6cb0"/>
+<text x="754.0" y="597.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">vLLM, 1 card (W4A16)</text>
+<line x1="90" y1="618" x2="116" y2="618" stroke="#1a202c" stroke-width="3"/>
+<circle cx="103" cy="618" r="4.5" fill="#1a202c"/>
+<text x="124.0" y="623.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">vLLM TP2 (W4A16)</text>
+<line x1="405" y1="618" x2="431" y2="618" stroke="#c53030" stroke-width="3"/>
+<circle cx="418" cy="618" r="4.5" fill="#c53030"/>
+<text x="439.0" y="623.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">vLLM TP2 + ngram spec</text>
+<line x1="720" y1="618" x2="746" y2="618" stroke="#2f855a" stroke-width="3"/>
+<circle cx="733" cy="618" r="4.5" fill="#2f855a"/>
+<text x="754.0" y="623.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">Qwen3.8-27B, llama.cpp 1 card</text>
+<text x="1040.0" y="120.0" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#1a202c" text-anchor="start" font-weight="normal">Headline</text>
+<text x="1040.0" y="175.0" font-family="DejaVu Sans, sans-serif" font-size="32" fill="#1a202c" text-anchor="start" font-weight="bold">41.0 tok/s</text>
+<text x="1040.0" y="199.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">vLLM TP2, short prompt</text>
+<text x="1040.0" y="217.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">+42 % over one card</text>
+<text x="1040.0" y="267.0" font-family="DejaVu Sans, sans-serif" font-size="32" fill="#c53030" text-anchor="start" font-weight="bold">30.3 tok/s</text>
+<text x="1040.0" y="291.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">vLLM TP2 + ngram at 98K</text>
+<text x="1040.0" y="309.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">+27 % over TP2 alone</text>
+<text x="1040.0" y="359.0" font-family="DejaVu Sans, sans-serif" font-size="32" fill="#2b6cb0" text-anchor="start" font-weight="bold">307,072</text>
+<text x="1040.0" y="383.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">token KV ceiling on TP2</text>
+<text x="1040.0" y="401.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">46,848 on one card</text>
+<text x="1040.0" y="451.0" font-family="DejaVu Sans, sans-serif" font-size="32" fill="#8c8c8c" text-anchor="start" font-weight="bold">3.87 tok/s</text>
+<text x="1040.0" y="475.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">llama.cpp at 131K on two cards</text>
+<text x="1040.0" y="493.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="start" font-weight="normal">capacity route</text>
+<text x="90.0" y="678.0" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#1a202c" text-anchor="start" font-weight="normal">Prefill at depth</text>
+<line x1="90" y1="830" x2="980" y2="830" stroke="#4a5568" stroke-width="1.2"/>
+<line x1="90" y1="830.0" x2="980" y2="830.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="835.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">0</text>
+<line x1="90" y1="810.0" x2="980" y2="810.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="815.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">200</text>
+<line x1="90" y1="790.0" x2="980" y2="790.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="795.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">400</text>
+<line x1="90" y1="770.0" x2="980" y2="770.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="775.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">600</text>
+<line x1="90" y1="750.0" x2="980" y2="750.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="755.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">800</text>
+<line x1="90" y1="730.0" x2="980" y2="730.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="735.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">1000</text>
+<line x1="90" y1="710.0" x2="980" y2="710.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="715.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">1200</text>
+<line x1="90" y1="690.0" x2="980" y2="690.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="78.0" y="695.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="end" font-weight="normal">1400</text>
+<rect x="118.2" y="774.9" width="92.0" height="55.1" fill="#8c8c8c"/>
+<text x="164.2" y="766.9" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#1a202c" text-anchor="middle" font-weight="bold">551</text>
+<text x="164.2" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">llama.cpp 1c</text>
+<text x="164.2" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">cold 64K</text>
+<rect x="266.5" y="738.8" width="92.0" height="91.2" fill="#2f855a"/>
+<text x="312.5" y="730.8" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#1a202c" text-anchor="middle" font-weight="bold">912</text>
+<text x="312.5" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">Qwen 1c</text>
+<text x="312.5" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">cold 64K</text>
+<rect x="414.9" y="708.3" width="92.0" height="121.7" fill="#1a202c"/>
+<text x="460.8" y="700.3" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#1a202c" text-anchor="middle" font-weight="bold">1217</text>
+<text x="460.8" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">TP2</text>
+<text x="460.8" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">49K</text>
+<rect x="563.2" y="734.1" width="92.0" height="95.9" fill="#c53030"/>
+<text x="609.2" y="726.1" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#1a202c" text-anchor="middle" font-weight="bold">959</text>
+<text x="609.2" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">TP2 + ngram</text>
+<text x="609.2" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">49K</text>
+<rect x="711.5" y="766.7" width="92.0" height="63.3" fill="#1a202c"/>
+<text x="757.5" y="758.7" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#1a202c" text-anchor="middle" font-weight="bold">633</text>
+<text x="757.5" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">TP2</text>
+<text x="757.5" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">98K</text>
+<rect x="859.9" y="760.6" width="92.0" height="69.4" fill="#c53030"/>
+<text x="905.8" y="752.6" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#1a202c" text-anchor="middle" font-weight="bold">694</text>
+<text x="905.8" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="middle" font-weight="normal">TP2 + ngram</text>
+<text x="905.8" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">98K</text>
+<text transform="rotate(-90 28 760.0)" x="28.0" y="760.0" font-family="DejaVu Sans, sans-serif" font-size="15" fill="#4a5568" text-anchor="middle" font-weight="normal">Prefill (tokens/s)</text>
+<text x="1040.0" y="678.0" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#1a202c" text-anchor="start" font-weight="normal">Exact-answer battery (8 cases)</text>
+<rect x="1070" y="734" width="130" height="96" fill="#2f855a"/>
+<rect x="1070" y="718" width="130" height="16" fill="#d69e2e"/>
+<rect x="1070" y="702" width="130" height="16" fill="#c53030"/>
+<text x="1135.0" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="middle" font-weight="normal">Nanbeige4.3-33B</text>
+<text x="1135.0" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">all routes</text>
+<rect x="1310" y="718" width="130" height="112" fill="#2f855a"/>
+<rect x="1310" y="718" width="130" height="0" fill="#d69e2e"/>
+<rect x="1310" y="702" width="130" height="16" fill="#c53030"/>
+<text x="1375.0" y="850.0" font-family="DejaVu Sans, sans-serif" font-size="14" fill="#4a5568" text-anchor="middle" font-weight="normal">Qwen3.8-27B</text>
+<text x="1375.0" y="867.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#718096" text-anchor="middle" font-weight="normal">Q4_K_M</text>
+<line x1="1060" y1="830" x2="1540" y2="830" stroke="#4a5568" stroke-width="1.2"/>
+<rect x="1070" y="882" width="14" height="14" fill="#2f855a"/>
+<text x="1090.0" y="894.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">exact correct</text>
+<rect x="1235" y="882" width="14" height="14" fill="#d69e2e"/>
+<text x="1255.0" y="894.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">correct, not exact</text>
+<rect x="1400" y="882" width="14" height="14" fill="#c53030"/>
+<text x="1420.0" y="894.0" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#4a5568" text-anchor="start" font-weight="normal">wrong</text>
+<text x="1060.0" y="930.0" font-family="DejaVu Sans, sans-serif" font-size="12" fill="#4a5568" text-anchor="start" font-weight="normal">Qwen's miss is the int4 canary sum(i*i for i in range(4)) → 30</text>
+<text x="1060.0" y="946.0" font-family="DejaVu Sans, sans-serif" font-size="12" fill="#4a5568" text-anchor="start" font-weight="normal">(14 only with thinking on); Nanbeige answers 14 everywhere.</text>
+<text x="30.0" y="956.0" font-family="DejaVu Sans, sans-serif" font-size="12" fill="#718096" text-anchor="start" font-weight="normal">Sources: results/nanbeige43-33b/DUAL-B70-20261028.json · docs/nanbeige43-33b/ · provisional: one host, one operator, not independently reproduced</text>
+</svg>
