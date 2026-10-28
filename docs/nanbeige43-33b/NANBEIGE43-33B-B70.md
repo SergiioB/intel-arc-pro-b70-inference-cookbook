@@ -536,6 +536,10 @@ before this run (a case-sensitive instruction check, and an ambiguous "two cards
 item that accepted only `tarjetas`); both are unit-checked. Per-item outputs:
 [`results/nanbeige43-33b/quality/`](../../results/nanbeige43-33b/quality/).
 
+Both bars sit on the campaign figure
+([`assets/nanbeige43-33b-64k-20261028.png`](../assets/nanbeige43-33b-64k-20261028.png)),
+next to the decode and prefill panels.
+
 This does not cancel the 8-case battery in section 10: at thinking-off, Nanbeige answered one
 arithmetic item wrong (14 for 20) and Qwen answered the int4 canary wrong (30 for 14). Those
 are single-case observations, this suite is breadth.
