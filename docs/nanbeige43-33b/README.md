@@ -21,6 +21,8 @@ Deterministic suite v2 (40 items: math, executed coding, JSON, instruction follo
 ranking. On the 8-case exact battery the two differ in failure mode, not in count
 (see [section 19](NANBEIGE43-33B-B70.md#19-quality-suite-v2--parity-on-40-mechanical-items)).
 
+![Nanbeige4.3-33B on two Arc Pro B70: decode versus context depth, prefill at depth, and the quality split against Qwen3.8-27B](../assets/nanbeige43-33b-64k-20261028.png)
+
 ## Claim boundary
 
 - Single stream per engine (C1) unless the row says aggregate. One artifact per route, one
