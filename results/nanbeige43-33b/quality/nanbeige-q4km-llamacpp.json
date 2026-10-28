@@ -1,0 +1,491 @@
+{
+ "schema": "quality-suite-v2",
+ "label": "Nanbeige4.3-33B Q4_K_M llama.cpp, card1, ctx65536, t4",
+ "url": "http://127.0.0.1:9101",
+ "model": "nanbeige43-33b",
+ "date_utc": "2026-10-28T15:49:46Z",
+ "sampling": {
+  "temperature": 0,
+  "top_p": 1.0,
+  "max_tokens": 1536,
+  "samples_per_item": 1
+ },
+ "grading": "mechanical only: exact answers, regex, JSON equality, executed code, needle recall, tool-call args, keywords",
+ "wall_seconds": 330.9,
+ "total": [
+  40,
+  40
+ ],
+ "areas": {
+  "coding": {
+   "items": 8,
+   "pass": 8
+  },
+  "instruction": {
+   "items": 6,
+   "pass": 6
+  },
+  "math": {
+   "items": 8,
+   "pass": 8
+  },
+  "multilingual": {
+   "items": 2,
+   "pass": 2
+  },
+  "retrieval": {
+   "items": 6,
+   "pass": 6
+  },
+  "structured": {
+   "items": 6,
+   "pass": 6
+  },
+  "tool": {
+   "items": 4,
+   "pass": 4
+  }
+ },
+ "items": [
+  {
+   "id": "math-01",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "1296",
+   "answer_head": "1296",
+   "seconds": 3.82,
+   "prompt_tokens": 50,
+   "completion_tokens": 66
+  },
+  {
+   "id": "math-02",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "14",
+   "answer_head": "14",
+   "seconds": 4.52,
+   "prompt_tokens": 61,
+   "completion_tokens": 96
+  },
+  {
+   "id": "math-03",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "48",
+   "answer_head": "48",
+   "seconds": 6.08,
+   "prompt_tokens": 73,
+   "completion_tokens": 133
+  },
+  {
+   "id": "math-04",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "143",
+   "answer_head": "143",
+   "seconds": 2.86,
+   "prompt_tokens": 52,
+   "completion_tokens": 57
+  },
+  {
+   "id": "math-05",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "8",
+   "answer_head": "8",
+   "seconds": 2.19,
+   "prompt_tokens": 55,
+   "completion_tokens": 42
+  },
+  {
+   "id": "math-06",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "36",
+   "answer_head": "36",
+   "seconds": 2.8,
+   "prompt_tokens": 52,
+   "completion_tokens": 56
+  },
+  {
+   "id": "math-07",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "no",
+   "answer_head": "no",
+   "seconds": 2.74,
+   "prompt_tokens": 45,
+   "completion_tokens": 54
+  },
+  {
+   "id": "math-08",
+   "area": "math",
+   "kind": "exact",
+   "pass": true,
+   "detail": "32",
+   "answer_head": "32",
+   "seconds": 2.29,
+   "prompt_tokens": 59,
+   "completion_tokens": 44
+  },
+  {
+   "id": "coding-01",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "5",
+   "answer_head": "```python\ndef add(a, b):\n    return a + b\n```",
+   "seconds": 4.14,
+   "prompt_tokens": 58,
+   "completion_tokens": 87
+  },
+  {
+   "id": "coding-02",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "cba",
+   "answer_head": "```python\ndef rev(s):\n    return s[::-1]\n```",
+   "seconds": 3.71,
+   "prompt_tokens": 57,
+   "completion_tokens": 77
+  },
+  {
+   "id": "coding-03",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "[2, 4]",
+   "answer_head": "```python\ndef evens(xs):\n    return [x for x in xs if x % 2 == 0]\n```",
+   "seconds": 6.67,
+   "prompt_tokens": 62,
+   "completion_tokens": 146
+  },
+  {
+   "id": "coding-04",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "{'a': 2, 'b': 1}",
+   "answer_head": "```python\ndef count_words(s):\n    counts = {}\n    for word in s.split():\n        counts[word] = counts.get(word, 0) + 1\n    return counts\n```",
+   "seconds": 9.43,
+   "prompt_tokens": 65,
+   "completion_tokens": 210
+  },
+  {
+   "id": "coding-05",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "55",
+   "answer_head": "```python\ndef fib(n):\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return",
+   "seconds": 8.18,
+   "prompt_tokens": 64,
+   "completion_tokens": 181
+  },
+  {
+   "id": "coding-06",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "[1, 2, 3]",
+   "answer_head": "```python\ndef flatten(x):\n    \"\"\"Flatten one level of nested lists.\"\"\"\n    flattened = []\n    for item in x:\n        if isinstance(item, list):\n            flat",
+   "seconds": 20.99,
+   "prompt_tokens": 61,
+   "completion_tokens": 477
+  },
+  {
+   "id": "coding-07",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "True False",
+   "answer_head": "```python\ndef is_pal(s):\n    return s == s[::-1]\n```",
+   "seconds": 5.45,
+   "prompt_tokens": 64,
+   "completion_tokens": 117
+  },
+  {
+   "id": "coding-08",
+   "area": "coding",
+   "kind": "code",
+   "pass": true,
+   "detail": "2.0 None",
+   "answer_head": "```python\ndef safe_div(a, b):\n    if b == 0:\n        return None\n    return a / b\n```",
+   "seconds": 6.38,
+   "prompt_tokens": 68,
+   "completion_tokens": 139
+  },
+  {
+   "id": "json-01",
+   "area": "structured",
+   "kind": "json",
+   "pass": true,
+   "detail": "{\"answer\": 42}",
+   "answer_head": "{\"answer\": 42}",
+   "seconds": 3.19,
+   "prompt_tokens": 54,
+   "completion_tokens": 65
+  },
+  {
+   "id": "json-02",
+   "area": "structured",
+   "kind": "json",
+   "pass": true,
+   "detail": "[1, 2, 3]",
+   "answer_head": "[1, 2, 3]",
+   "seconds": 2.58,
+   "prompt_tokens": 51,
+   "completion_tokens": 51
+  },
+  {
+   "id": "json-03",
+   "area": "structured",
+   "kind": "json",
+   "pass": true,
+   "detail": "{\"name\":\"b70\",\"cards\":2}",
+   "answer_head": "{\"name\":\"b70\",\"cards\":2}",
+   "seconds": 3.79,
+   "prompt_tokens": 60,
+   "completion_tokens": 79
+  },
+  {
+   "id": "json-04",
+   "area": "structured",
+   "kind": "json",
+   "pass": true,
+   "detail": "{\"ok\": true}",
+   "answer_head": "{\"ok\": true}",
+   "seconds": 2.16,
+   "prompt_tokens": 48,
+   "completion_tokens": 41
+  },
+  {
+   "id": "json-05",
+   "area": "structured",
+   "kind": "json",
+   "pass": true,
+   "detail": "{\"items\":[\"a\",\"b\"]}",
+   "answer_head": "{\"items\":[\"a\",\"b\"]}",
+   "seconds": 2.84,
+   "prompt_tokens": 58,
+   "completion_tokens": 57
+  },
+  {
+   "id": "json-06",
+   "area": "structured",
+   "kind": "json",
+   "pass": true,
+   "detail": "{\"speed\": 41.0}",
+   "answer_head": "{\"speed\": 41.0}",
+   "seconds": 1.81,
+   "prompt_tokens": 53,
+   "completion_tokens": 33
+  },
+  {
+   "id": "ifev-01",
+   "area": "instruction",
+   "kind": "regex",
+   "pass": true,
+   "detail": "- alpha\n- beta\n- gamma",
+   "answer_head": "- alpha\n- beta\n- gamma",
+   "seconds": 1.3,
+   "prompt_tokens": 58,
+   "completion_tokens": 21
+  },
+  {
+   "id": "ifev-02",
+   "area": "instruction",
+   "kind": "regex",
+   "pass": true,
+   "detail": "ready",
+   "answer_head": "ready",
+   "seconds": 1.98,
+   "prompt_tokens": 48,
+   "completion_tokens": 37
+  },
+  {
+   "id": "ifev-03",
+   "area": "instruction",
+   "kind": "regex",
+   "pass": true,
+   "detail": "1,2,3,4,5",
+   "answer_head": "1,2,3,4,5",
+   "seconds": 2.84,
+   "prompt_tokens": 50,
+   "completion_tokens": 57
+  },
+  {
+   "id": "ifev-04",
+   "area": "instruction",
+   "kind": "regex",
+   "pass": true,
+   "detail": "ack ack ack ack",
+   "answer_head": "ack ack ack ack",
+   "seconds": 2.2,
+   "prompt_tokens": 50,
+   "completion_tokens": 42
+  },
+  {
+   "id": "ifev-05",
+   "area": "instruction",
+   "kind": "regex",
+   "pass": true,
+   "detail": "The cache is full.",
+   "answer_head": "The cache is full.",
+   "seconds": 3.66,
+   "prompt_tokens": 50,
+   "completion_tokens": 76
+  },
+  {
+   "id": "ifev-06",
+   "area": "instruction",
+   "kind": "regex",
+   "pass": true,
+   "detail": "DONE",
+   "answer_head": "DONE",
+   "seconds": 2.33,
+   "prompt_tokens": 46,
+   "completion_tokens": 45
+  },
+  {
+   "id": "ret-01",
+   "area": "retrieval",
+   "kind": "exact",
+   "pass": true,
+   "detail": "5821",
+   "answer_head": "5821",
+   "seconds": 3.71,
+   "prompt_tokens": 73,
+   "completion_tokens": 77
+  },
+  {
+   "id": "ret-02",
+   "area": "retrieval",
+   "kind": "needle",
+   "pass": true,
+   "detail": "albatross-4417",
+   "answer_head": "albatross-4417",
+   "seconds": 12.09,
+   "prompt_tokens": 7742,
+   "completion_tokens": 68
+  },
+  {
+   "id": "ret-03",
+   "area": "retrieval",
+   "kind": "needle",
+   "pass": true,
+   "detail": "pelican-8823",
+   "answer_head": "pelican-8823",
+   "seconds": 17.44,
+   "prompt_tokens": 15399,
+   "completion_tokens": 69
+  },
+  {
+   "id": "ret-04",
+   "area": "retrieval",
+   "kind": "needle",
+   "pass": true,
+   "detail": "condor-1934",
+   "answer_head": "condor-1934",
+   "seconds": 38.79,
+   "prompt_tokens": 30741,
+   "completion_tokens": 68
+  },
+  {
+   "id": "ret-05",
+   "area": "retrieval",
+   "kind": "exact",
+   "pass": true,
+   "detail": "31.5",
+   "answer_head": "31.5",
+   "seconds": 5.71,
+   "prompt_tokens": 77,
+   "completion_tokens": 83
+  },
+  {
+   "id": "ret-06",
+   "area": "retrieval",
+   "kind": "needle",
+   "pass": true,
+   "detail": "kestrel-6641",
+   "answer_head": "kestrel-6641",
+   "seconds": 102.23,
+   "prompt_tokens": 61400,
+   "completion_tokens": 72
+  },
+  {
+   "id": "tool-01",
+   "area": "tool",
+   "kind": "tool",
+   "pass": true,
+   "detail": "{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Oslo\"}}",
+   "answer_head": "{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Oslo\"}}",
+   "seconds": 5.94,
+   "prompt_tokens": 67,
+   "completion_tokens": 63
+  },
+  {
+   "id": "tool-02",
+   "area": "tool",
+   "kind": "tool",
+   "pass": true,
+   "detail": "<tool_call>\n<name>read_file</name>\n<arguments>{\"path\": \"/etc/hosts\"}</arguments>\n</tool_call>",
+   "answer_head": "<tool_call>\n<name>read_file</name>\n<arguments>{\"path\": \"/etc/hosts\"}</arguments>\n</tool_call>",
+   "seconds": 4.06,
+   "prompt_tokens": 71,
+   "completion_tokens": 85
+  },
+  {
+   "id": "tool-03",
+   "area": "tool",
+   "kind": "tool",
+   "pass": true,
+   "detail": "{\"name\": \"set_power_limit\", \"arguments\": {\"watts\": 180}}",
+   "answer_head": "{\"name\": \"set_power_limit\", \"arguments\": {\"watts\": 180}}",
+   "seconds": 3.67,
+   "prompt_tokens": 76,
+   "completion_tokens": 76
+  },
+  {
+   "id": "tool-04",
+   "area": "tool",
+   "kind": "tool",
+   "pass": true,
+   "detail": "<tool_call>\n<name>search_docs</name>\n<arguments>{\"query\": \"b70 kv cache\"}</arguments>\n</tool_call>",
+   "answer_head": "<tool_call>\n<name>search_docs</name>\n<arguments>{\"query\": \"b70 kv cache\"}</arguments>\n</tool_call>",
+   "seconds": 4.32,
+   "prompt_tokens": 74,
+   "completion_tokens": 91
+  },
+  {
+   "id": "ml-01",
+   "area": "multilingual",
+   "kind": "keywords",
+   "pass": true,
+   "detail": "Der Cache ist voll.",
+   "answer_head": "Der Cache ist voll.",
+   "seconds": 5.55,
+   "prompt_tokens": 50,
+   "completion_tokens": 120
+  },
+  {
+   "id": "ml-02",
+   "area": "multilingual",
+   "kind": "keywords",
+   "pass": true,
+   "detail": "El modelo est\u00e1 cargado",
+   "answer_head": "El modelo est\u00e1 cargado",
+   "seconds": 4.48,
+   "prompt_tokens": 50,
+   "completion_tokens": 95
+  }
+ ]
+}

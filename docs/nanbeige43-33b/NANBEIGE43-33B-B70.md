@@ -516,7 +516,31 @@ split against Qwen3.8-27B —
 [`docs/assets/nanbeige43-33b-64k-20261028.png`](../assets/nanbeige43-33b-64k-20261028.png)
 is rendered by `benchmarks/nanbeige43-33b/render-results.py` from the published record.
 
-## 19. Evidence
+## 19. Quality suite v2 — parity on 40 mechanical items
+
+`benchmarks/quality-suite.py`, 40 items, one sample each, temperature 0, thinking on,
+`max_tokens` 1536, `-c 65536`, same build and flags, one card per model:
+
+| Model | Card | Wall | Total |
+|---|---|---:|---:|
+| **Nanbeige4.3-33B Q4_K_M** | 1 (`0000:10:00.0`, 230 W) | 331 s | **40 / 40** |
+| Qwen3.8-27B UD-Q4_K_M | 0 (`0000:0c:00.0`, 180 W, display) | 448 s | **40 / 40** |
+
+Areas, graded mechanically only (no model judges): math 8/8, coding 8/8 executed against
+tests, structured output 6/6, instruction following 6/6, retrieval 6/6 with needles at 4K,
+8K, 16K and 32K, tool calls 4/4, multilingual 2/2 — identical for both models.
+
+**The suite saturates, so it is a floor and not a discriminator.** It shows neither model has
+a mechanical defect in these areas; it cannot rank them. Two grader bugs were found and fixed
+before this run (a case-sensitive instruction check, and an ambiguous "two cards" translation
+item that accepted only `tarjetas`); both are unit-checked. Per-item outputs:
+[`results/nanbeige43-33b/quality/`](../../results/nanbeige43-33b/quality/).
+
+This does not cancel the 8-case battery in section 10: at thinking-off, Nanbeige answered one
+arithmetic item wrong (14 for 20) and Qwen answered the int4 canary wrong (30 for 14). Those
+are single-case observations, this suite is breadth.
+
+## 20. Evidence
 
 **Generation 2 — 2026-10-28, one host, both cards.** Record:
 [`results/nanbeige43-33b/DUAL-B70-20261028.json`](../../results/nanbeige43-33b/DUAL-B70-20261028.json).

@@ -13,6 +13,14 @@ tokens, and the two-card rows when one card's capacity or latency binds.
 | [llama.cpp, two cards, `-sm layer`](NANBEIGE43-33B-B70.md#10-two-b70-cards--three-topologies-pick-by-what-binds) | same Q4_K_M GGUF | **measured, provisional**: capacity route, 262,144-token context served a 131,029-token prompt at 3.87 tok/s decode; decode is 3–4 % below one card |
 | [vLLM TP2 + ngram speculation](NANBEIGE43-33B-B70.md#18-speed-levers-what-works-what-does-not-exist) | same W4A16 pack, `--speculative-config` ngram | **measured, provisional**: 30.31 tok/s at a 98K prompt (+27 % over TP2), 53.84 on copy-heavy output (+41 %), battery unchanged |
 
+## Quality
+
+Deterministic suite v2 (40 items: math, executed coding, JSON, instruction following,
+4K-32K retrieval, tool calls, multilingual), same engine and flags for both models:
+**Nanbeige4.3-33B 40/40, Qwen3.8-27B 40/40**. The suite saturates, so it is a floor, not a
+ranking. On the 8-case exact battery the two differ in failure mode, not in count
+(see [section 19](NANBEIGE43-33B-B70.md#19-quality-suite-v2--parity-on-40-mechanical-items)).
+
 ## Claim boundary
 
 - Single stream per engine (C1) unless the row says aggregate. One artifact per route, one
