@@ -5,7 +5,11 @@ then apply **only** that row’s “Apply” list. The last column is a
 **denylist**, not a second patch list.
 
 > **Environment verification:** Run `python3 scripts/doctor.py` to inspect your host driver,
-> GPU count, and Level Zero permissions before pulling containers.
+> GPU count, and Level Zero permissions before pulling containers. Its PCIe section prints the
+> whole path to each card, live and maximum state per hop, and the negotiated host link taken
+> from the narrowest trustworthy hop. The B70's own function and its internal bridge hop always
+> read `2.5 GT/s x1`; that number is not your link, so quote the host link (read at the switch
+> upstream port / root port) instead.
 
 ### Patch Lifecycle Taxonomy
 

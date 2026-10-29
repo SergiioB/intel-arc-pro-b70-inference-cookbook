@@ -12,6 +12,13 @@ import re
 import subprocess
 from typing import Any
 
+PCI_DEVICES_ROOT = "/sys/bus/pci/devices"
+BDF_PATTERN = re.compile(r"^[0-9a-f]{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-7]$")
+# Live and maximum link state of the B70's internal switch hop: always 2.5 GT/s
+# x1, so the GPU function's own link registers never describe the host link.
+PCI_INTERNAL_SPEED = "2.5 GT/s PCIe"
+PCI_INTERNAL_WIDTH = "1"
+
 
 def check_os() -> dict[str, Any]:
     system = platform.system()
@@ -54,53 +61,120 @@ def check_render_nodes() -> dict[str, Any]:
     }
 
 
+def read_attr(path: str) -> str:
+    """Read one sysfs attribute, or an empty string when it is absent."""
+    try:
+        with open(path, errors="replace") as handle:
+            return handle.read().strip()
+    except OSError:
+        return ""
+
+
+def link_width(value: str) -> int:
+    """Numeric lane width from a sysfs width attribute, 0 when unreadable."""
+    return int(value) if value.isdigit() else 0
+
+
+def link_speed_gts(value: str) -> float:
+    """Transfer rate in GT/s from a sysfs speed attribute, 0.0 when unreadable."""
+    match = re.match(r"([0-9]+(?:\.[0-9]+)?)", value)
+    return float(match.group(1)) if match else 0.0
+
+
+def pcie_hop(device_dir: str, role: str) -> dict[str, Any]:
+    """Describe one device on a PCIe path, including its live and maximum link."""
+    speed = read_attr(os.path.join(device_dir, "current_link_speed"))
+    width = read_attr(os.path.join(device_dir, "current_link_width"))
+    return {
+        "bdf": os.path.basename(device_dir),
+        "role": role,
+        "current_speed": speed,
+        "current_width": width,
+        "max_speed": read_attr(os.path.join(device_dir, "max_link_speed")),
+        "max_width": read_attr(os.path.join(device_dir, "max_link_width")),
+        # The B70 GPU function and the card's own bridge sit below an internal
+        # switch hop that always reports 2.5 GT/s x1, live and maximum. Its link
+        # registers describe nothing about the host link, so they are excluded
+        # from the effective-link calculation when a real hop exists.
+        "link_state_reliable": not (speed == PCI_INTERNAL_SPEED and width == PCI_INTERNAL_WIDTH),
+    }
+
+
+def pcie_chain(device_dir: str) -> list[dict[str, Any]]:
+    """Return the root port, every bridge, and the endpoint of one device, top-down."""
+    parts = os.path.realpath(device_dir).split(os.sep)
+    nodes = [
+        os.sep.join(parts[: index + 1])
+        for index, part in enumerate(parts)
+        if BDF_PATTERN.match(part)
+    ]
+    hops: list[dict[str, Any]] = []
+    for position, node in enumerate(nodes):
+        if len(nodes) == 1 or position == len(nodes) - 1:
+            role = "endpoint"
+        elif position == 0:
+            role = "root_port"
+        else:
+            role = "bridge"
+        hops.append(pcie_hop(node, role))
+    return hops
+
+
+def effective_link(hops: list[dict[str, Any]]) -> dict[str, Any]:
+    """Narrowest trustworthy hop: the negotiated host link, not the endpoint's register."""
+    reliable = [hop for hop in hops if hop["link_state_reliable"]]
+    pool = reliable or hops
+    if not pool:
+        return {"speed": "", "width": "", "source_bdf": "", "reference_bdf": "", "degraded": False}
+    narrowest = min(
+        pool,
+        key=lambda hop: (link_width(hop["current_width"]), link_speed_gts(hop["current_speed"])),
+    )
+    reference = next((hop for hop in hops if hop["role"] == "root_port"), narrowest)
+    degraded = link_width(reference["current_width"]) < link_width(reference["max_width"]) or (
+        link_speed_gts(reference["current_speed"]) < link_speed_gts(reference["max_speed"])
+    )
+    return {
+        "speed": narrowest["current_speed"],
+        "width": narrowest["current_width"],
+        "source_bdf": narrowest["bdf"],
+        "reference_bdf": reference["bdf"],
+        "degraded": degraded,
+    }
+
+
+def gpu_entry(dev: str, device_id: str) -> dict[str, Any]:
+    """Describe one graphics PCI function, including its whole PCIe link chain."""
+    driver_link = os.path.join(dev, "driver")
+    driver = os.path.basename(os.readlink(driver_link)) if os.path.islink(driver_link) else "none"
+    hops = pcie_chain(dev)
+    return {
+        "pci_slot": os.path.basename(dev),
+        "device_id": device_id,
+        "driver": driver,
+        "pcie": {"chain": hops, "link": effective_link(hops)},
+    }
+
+
+def is_intel_graphics(dev: str) -> tuple[bool, str]:
+    """True plus the device ID when `dev` is an Intel display-class PCI function."""
+    if read_attr(os.path.join(dev, "vendor")).lower() != "0x8086":
+        return False, ""
+    if not read_attr(os.path.join(dev, "class")).lower().startswith("0x03"):
+        return False, ""
+    return True, read_attr(os.path.join(dev, "device")).lower()
+
+
 def check_intel_gpus() -> dict[str, Any]:
     gpus: list[dict[str, Any]] = []
-    pci_devices = glob.glob("/sys/bus/pci/devices/*")
-    for dev in sorted(pci_devices):
-        vendor_file = os.path.join(dev, "vendor")
-        device_file = os.path.join(dev, "device")
-        if os.path.isfile(vendor_file) and os.path.isfile(device_file):
-            try:
-                with open(vendor_file) as f:
-                    vendor = f.read().strip().lower()
-                with open(device_file) as f:
-                    device_id = f.read().strip().lower()
-                if vendor == "0x8086":
-                    class_file = os.path.join(dev, "class")
-                    dev_class = ""
-                    if os.path.isfile(class_file):
-                        with open(class_file) as f:
-                            dev_class = f.read().strip().lower()
-                    if dev_class.startswith("0x03"):
-                        driver_link = os.path.join(dev, "driver")
-                        driver = (
-                            os.path.basename(os.readlink(driver_link))
-                            if os.path.islink(driver_link)
-                            else "none"
-                        )
-                        max_link_speed = ""
-                        max_link_width = ""
-                        speed_file = os.path.join(dev, "max_link_speed")
-                        width_file = os.path.join(dev, "max_link_width")
-                        if os.path.isfile(speed_file):
-                            with open(speed_file) as f:
-                                max_link_speed = f.read().strip()
-                        if os.path.isfile(width_file):
-                            with open(width_file) as f:
-                                max_link_width = f.read().strip()
-
-                        gpus.append(
-                            {
-                                "pci_slot": os.path.basename(dev),
-                                "device_id": device_id,
-                                "driver": driver,
-                                "max_link_speed": max_link_speed,
-                                "max_link_width": max_link_width,
-                            }
-                        )
-            except (OSError, UnicodeDecodeError):
-                continue
+    for dev in sorted(glob.glob(os.path.join(PCI_DEVICES_ROOT, "*"))):
+        matched, device_id = is_intel_graphics(dev)
+        if not matched:
+            continue
+        try:
+            gpus.append(gpu_entry(dev, device_id))
+        except (OSError, UnicodeDecodeError):
+            continue
     return {
         "count": len(gpus),
         "devices": gpus,
@@ -167,6 +241,41 @@ def run_doctor() -> dict[str, Any]:
     }
 
 
+def print_pcie_hop(hop: dict[str, Any]) -> None:
+    """Print one device on a GPU's PCIe path with live and maximum link state."""
+    marker = "" if hop["link_state_reliable"] else "  [internal hop, not the host link]"
+    print(
+        f"      {hop['bdf']} {hop['role']}: "
+        f"{hop['current_speed']} x{hop['current_width']} live / "
+        f"{hop['max_speed']} x{hop['max_width']} max{marker}"
+    )
+
+
+def print_gpus(gpus: dict[str, Any]) -> bool:
+    """Print the GPU inventory; False when no Intel graphics function was found."""
+    print(f"\nIntel GPUs Detected: {gpus['count']}")
+    if gpus["count"] == 0:
+        print("  [FAIL] No Intel GPUs found via PCI scan (vendor 0x8086, class 0x03*).")
+        return False
+    for idx, gpu in enumerate(gpus["devices"]):
+        link = gpu["pcie"]["link"]
+        print(
+            f"  GPU #{idx}: PCI {gpu['pci_slot']} (ID: {gpu['device_id']}) Driver: {gpu['driver']}"
+        )
+        source = f" (from {link['source_bdf']})"
+        print(f"    PCIe host link: {link['speed']} x{link['width']}{source}")
+        for hop in reversed(gpu["pcie"]["chain"]):
+            print_pcie_hop(hop)
+        if link["degraded"]:
+            print(
+                f"    [WARN] Root port {link['reference_bdf']} trained below its maximum width "
+                "or rate; check the slot, riser, and BIOS lane bifurcation."
+            )
+        if gpu["driver"] != "xe":
+            print(f"    [WARN] Driver is '{gpu['driver']}' (recommend 'xe' for Battlemage).")
+    return True
+
+
 def print_report(diag: dict[str, Any]) -> int:
     print("=== Intel Arc Pro B60/B70 System Doctor ===\n")
     all_ok = True
@@ -177,19 +286,8 @@ def print_report(diag: dict[str, Any]) -> int:
         print("  [WARN] Native Linux kernel recommended for optimal vLLM XPU performance.")
 
     gpus = diag["gpus"]
-    print(f"\nIntel GPUs Detected: {gpus['count']}")
-    if gpus["count"] == 0:
-        print("  [FAIL] No Intel GPUs found via PCI scan (vendor 0x8086, class 0x03*).")
+    if not print_gpus(gpus):
         all_ok = False
-    else:
-        for idx, g in enumerate(gpus["devices"]):
-            slot = g["pci_slot"]
-            dev_id = g["device_id"]
-            driver = g["driver"]
-            link = f"{g['max_link_speed']} x{g['max_link_width']}"
-            print(f"  GPU #{idx}: PCI {slot} (ID: {dev_id}) Driver: {driver} PCIe: {link}")
-            if driver != "xe":
-                print(f"    [WARN] Driver is '{driver}' (recommend 'xe' for Battlemage).")
 
     render = diag["render"]
     r_count = len(render["render_nodes"])
