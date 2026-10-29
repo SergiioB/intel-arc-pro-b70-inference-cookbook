@@ -21,6 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 REJECTED_LEDGER = pathlib.Path("docs/DO-NOT-REPEAT.md")
 RULES_DOC = pathlib.Path("docs/EVIDENCE-LEDGERS.md")
 ACCEPTED_DOC = pathlib.Path("docs/WHAT-WORKED.md")
+LEDGER_FILES = (REJECTED_LEDGER, RULES_DOC, ACCEPTED_DOC)
 
 REQUIRED_COLUMNS = (
     "ID",
@@ -35,8 +36,11 @@ REQUIRED_COLUMNS = (
 
 ID_PATTERN = re.compile(r"^DNR-\d{3}$")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-PLACEHOLDERS = ("tbd", "todo", "fixme", "...", "n/a", "?")
+SEPARATOR_PATTERN = re.compile(r":?-{2,}:?")
 LINK_PATTERN = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+PLACEHOLDERS = ("tbd", "todo", "fixme", "...", "n/a", "?")
+EXTERNAL_PREFIXES = ("http://", "https://", "mailto:")
+UNPUBLISHED_NOTE = "unpublished"
 
 
 def split_row(line: str) -> list[str]:
@@ -51,7 +55,7 @@ def split_row(line: str) -> list[str]:
 
 def is_separator(cells: list[str]) -> bool:
     """True for the `|---|---|` line under a header."""
-    return bool(cells) and all(re.fullmatch(r":?-{2,}:?", cell.replace(" ", "")) for cell in cells)
+    return bool(cells) and all(SEPARATOR_PATTERN.fullmatch(cell.replace(" ", "")) for cell in cells)
 
 
 def table_blocks(text: str) -> list[list[list[str]]]:
@@ -84,89 +88,122 @@ def find_ledger_table(text: str) -> tuple[list[str], list[list[str]]]:
 def check_link(target: str, base: pathlib.Path, label: str) -> list[str]:
     """Verify one markdown link target resolves inside the repository."""
     clean = target.split("#", 1)[0].strip()
-    if not clean or clean.startswith(("http://", "https://", "mailto:")):
+    if not clean or clean.startswith(EXTERNAL_PREFIXES):
         return []
-    candidate = (base / clean).resolve()
-    if candidate.exists():
+    if (base / clean).resolve().exists():
         return []
     return [f"{label}: evidence link does not exist: {clean}"]
 
 
-def validate(root: pathlib.Path = ROOT) -> list[str]:
-    """Return every problem found in the ledgers; empty means valid."""
+def check_cells(cells: list[str], index: dict[str, int], label: str) -> list[str]:
+    """Reject empty cells, placeholder values, and a malformed date."""
     problems: list[str] = []
+    if any(not cell for cell in cells):
+        problems.append(f"{label}: empty cell in a required column")
+    date = cells[index["Date"]]
+    if date and not DATE_PATTERN.match(date):
+        problems.append(f"{label}: date must be YYYY-MM-DD, found {date!r}")
+    for column in REQUIRED_COLUMNS:
+        if cells[index[column]].strip().lower() in PLACEHOLDERS:
+            problems.append(f"{label}: placeholder value in {column!r}")
+    return problems
 
-    for required in (REJECTED_LEDGER, RULES_DOC, ACCEPTED_DOC):
-        if not (root / required).exists():
-            problems.append(f"missing ledger file: {required.as_posix()}")
-    if problems:
-        return problems
 
-    text = (root / REJECTED_LEDGER).read_text(encoding="utf-8")
-    header, rows = find_ledger_table(text)
+def check_evidence(
+    cells: list[str], index: dict[str, int], base: pathlib.Path, label: str
+) -> list[str]:
+    """Require real repository links, or an explicit unpublished-work note."""
+    evidence = cells[index["Evidence"]]
+    links = LINK_PATTERN.findall(evidence)
+    problems: list[str] = []
+    if not links and UNPUBLISHED_NOTE not in evidence.lower():
+        problems.append(
+            f"{label}: evidence needs a repository link or an explicit 'unpublished' note"
+        )
+    for link in links:
+        problems.extend(check_link(link, base, label))
+    return problems
 
-    if not header:
-        return [f"{REJECTED_LEDGER.as_posix()}: no rejected-arm table found (expected a header starting with 'ID')"]
 
-    missing = [column for column in REQUIRED_COLUMNS if column not in header]
-    if missing:
-        return [f"{REJECTED_LEDGER.as_posix()}: table header missing columns: {', '.join(missing)}"]
+def check_row(
+    row: list[str],
+    index: dict[str, int],
+    width: int,
+    base: pathlib.Path,
+    row_number: int,
+) -> tuple[list[str], str]:
+    """Validate one data row. Returns its problems and its ID cell."""
+    cells = (row + [""] * width)[:width]
+    arm = cells[index["Arm"]] or f"row {row_number}"
+    label = f"{REJECTED_LEDGER.as_posix()}:{row_number} ({arm[:48]})"
+    identifier = cells[index["ID"]]
+    problems: list[str] = []
+    if not ID_PATTERN.match(identifier):
+        problems.append(f"{label}: ID must match DNR-nnn, found {identifier!r}")
+    problems.extend(check_cells(cells, index, label))
+    problems.extend(check_evidence(cells, index, base, label))
+    return problems, identifier
 
+
+def check_rows(header: list[str], rows: list[list[str]], root: pathlib.Path) -> list[str]:
+    """Validate every data row, including ID uniqueness."""
     index = {column: header.index(column) for column in REQUIRED_COLUMNS}
     base = (root / REJECTED_LEDGER).parent
-    seen: dict[str, int] = {}
-
+    problems: list[str] = []
     if not rows:
         problems.append(f"{REJECTED_LEDGER.as_posix()}: table has no data rows")
-
+    seen: dict[str, int] = {}
     for offset, row in enumerate(rows, start=2):
-        cells = row + [""] * (len(header) - len(row))
-        arm = cells[index["Arm"]] or f"row {offset}"
-        label = f"{REJECTED_LEDGER.as_posix()}:{offset} ({arm[:48]})"
-
-        if any(not cell for cell in cells[: len(header)]):
-            problems.append(f"{label}: empty cell in a required column")
-
-        identifier = cells[index["ID"]]
-        if not ID_PATTERN.match(identifier):
-            problems.append(f"{label}: ID must match DNR-nnn, found {identifier!r}")
-        elif identifier in seen:
-            problems.append(f"{label}: duplicate ID {identifier} (first used on table row {seen[identifier]})")
+        row_problems, identifier = check_row(row, index, len(header), base, offset)
+        problems.extend(row_problems)
+        if identifier in seen:
+            problems.append(
+                f"{REJECTED_LEDGER.as_posix()}:{offset}: duplicate ID {identifier} "
+                f"(first used on table row {seen[identifier]})"
+            )
         else:
             seen[identifier] = offset
-
-        date = cells[index["Date"]]
-        if date and not DATE_PATTERN.match(date):
-            problems.append(f"{label}: date must be YYYY-MM-DD, found {date!r}")
-
-        for column in REQUIRED_COLUMNS:
-            value = cells[index[column]].strip().lower()
-            if value in PLACEHOLDERS:
-                problems.append(f"{label}: placeholder value in {column!r}")
-
-        evidence = cells[index["Evidence"]]
-        links = LINK_PATTERN.findall(evidence)
-        if not links and "unpublished" not in evidence.lower():
-            problems.append(f"{label}: evidence needs a repository link or an explicit 'unpublished' note")
-        for link in links:
-            problems.extend(check_link(link, base, label))
-
-    if not problems:
-        problems.extend(check_cross_references(root))
     return problems
 
 
 def check_cross_references(root: pathlib.Path) -> list[str]:
     """The rulebook must point at both ledgers, and the index must point at the rulebook."""
-    problems: list[str] = []
     rules = (root / RULES_DOC).read_text(encoding="utf-8")
-    for target in (REJECTED_LEDGER.name, ACCEPTED_DOC.name):
-        if target not in rules:
-            problems.append(f"{RULES_DOC.as_posix()}: does not reference {target}")
     accepted = (root / ACCEPTED_DOC).read_text(encoding="utf-8")
+    problems = [
+        f"{RULES_DOC.as_posix()}: does not reference {target.name}"
+        for target in (REJECTED_LEDGER, ACCEPTED_DOC)
+        if target.name not in rules
+    ]
     if REJECTED_LEDGER.name not in accepted:
         problems.append(f"{ACCEPTED_DOC.as_posix()}: does not link to {REJECTED_LEDGER.name}")
     return problems
+
+
+def validate(root: pathlib.Path = ROOT) -> list[str]:
+    """Return every problem found in the ledgers; empty means valid."""
+    missing = [
+        f"missing ledger file: {item.as_posix()}"
+        for item in LEDGER_FILES
+        if not (root / item).exists()
+    ]
+    if missing:
+        return missing
+
+    text = (root / REJECTED_LEDGER).read_text(encoding="utf-8")
+    header, rows = find_ledger_table(text)
+    if not header:
+        return [
+            f"{REJECTED_LEDGER.as_posix()}: no rejected-arm table found "
+            "(header must start with 'ID')"
+        ]
+
+    absent = [column for column in REQUIRED_COLUMNS if column not in header]
+    if absent:
+        return [f"{REJECTED_LEDGER.as_posix()}: table header missing columns: {', '.join(absent)}"]
+
+    problems = check_rows(header, rows, root)
+    return problems or check_cross_references(root)
 
 
 def main() -> int:
