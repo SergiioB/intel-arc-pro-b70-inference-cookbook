@@ -17,14 +17,15 @@ Updated 2026-10-28. Start with this page, then follow **one** model-family route
 
 ## Do not repeat unchanged
 
-| Attempt | Evidence and scope | Decision |
-|---|---|---|
-| Native MTP4 on the later Qwen3.6 MoE stack | [Short-prompt matched sweep](qwen36-35a3/MOE-INT4-THREE-ENGINE-CEILING-20260917.md#speculation-verdict-engaged-zero-gain-one-net-loss) shows engaged speculation without useful net speed; llama.cpp draft loses at short prompts but helps at long loaded context. | Test by context and stack; do not copy the earlier record as a new default. |
-| DFlash2 in place of native MTP4 for the dense GPTQ route | [DFlash2 comparison](qwen38-27b/MTP-DEPTH-DFLASH2-KNORM-20260914.md) leaves it not ready; changed target precision and topology confound any recovery attribution. | Keep the native route unless a new, matched quality-and-speed comparison passes. |
-| Verify-head quantization or mixed GGUF precision as a free speed win | [Draft and quantization review](QUANTIZATION-AND-DRAFTERS.md) and [format comparison](qwen38-27b/QUANT-FORMAT-SHOWDOWN-B70.md) record quality or decode tradeoffs. | Do not lower target verification precision or mix quants on a speed forecast alone. |
-| TP2, pipeline parallelism, and large-model placement as automatic decode gains | [FP8 TP2](qwen38-27b/FP8-TP2-W8A16.md), [engine comparisons](qwen38-27b/ENGINE-COMPARISON-CTX-20260914.md), and [Flash-Next](qwen38-flash-next/README.md) are different artifacts, workloads, and capacity goals. | Use two independent servers by default. Research TP2 only against a same-session one-card control. |
+[**DO-NOT-REPEAT.md**](DO-NOT-REPEAT.md) is the canonical ledger of closed arms — 15 measured rejections with their
+outcome, cause, scope, the condition that would reopen them, and links to evidence. Read it before starting any
+optimisation or engine port. The method is in [EVIDENCE-LEDGERS.md](EVIDENCE-LEDGERS.md): no speed number without
+its shape, a parity gate before a promotion, unknown tensor formats fail closed, one variable per arm, and a
+same-session control.
 
-Recent lab screens of the external shortlist, the rebuilt own-corpus shortlist, and host-staged TP2 did **not** earn a replacement public recipe. The own-corpus screen failed its matched thermal gate; no finalist ran. Their raw runs are not published in this repository. Do not quote private rates, treat an external B70 result as local reproduction, or change the image/patch matrix from those screens.
+Four of those arms matter most on the decoders: **TP2 as an automatic single-request gain** (DNR-004), the
+**llama.cpp RPC split** (DNR-005), **INT4 W4A16 target conversion** (DNR-009), and **reading tensor formats from a
+filename label** (DNR-014). Recent lab screens of the external shortlist, the rebuilt own-corpus shortlist, and host-staged TP2 did **not** earn a replacement public recipe. The own-corpus screen failed its matched thermal gate; no finalist ran. Their raw runs are not published in this repository. Do not quote private rates, treat an external B70 result as local reproduction, or change the image/patch matrix from those screens.
 
 ## Next decisions, in order — 2026-09-26 status
 

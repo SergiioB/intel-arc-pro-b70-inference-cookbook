@@ -20,6 +20,7 @@ CHECKS = [
     ("todos", [sys.executable, "scripts/check-todos.py"]),
     ("stdlib-only", [sys.executable, "scripts/check-stdlib-only.py"]),
     ("file-sizes", [sys.executable, "scripts/check-file-sizes.py"]),
+    ("ledgers", [sys.executable, "scripts/check-ledgers.py"]),
     ("generated-catalog", [sys.executable, "scripts/render-benchmark-catalog.py", "--check"]),
     ("python-syntax", [sys.executable, "-m", "compileall", "-q", "scripts", "tests"]),
     ("unit-tests", [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"]),
