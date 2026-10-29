@@ -141,7 +141,9 @@ Optional, after those two, still Qwen-only (never Nemotron grouped-topk / SSU):
 Copy-paste launch lines including the optional overlays: [FULL-SETUP-COMMANDS.md §11](../FULL-SETUP-COMMANDS.md).
 
 ## 5. Power cap
-Resolve your `xe` hwmon path (PCI 0000:0b:00.0) and set the 230 W configured cap:
+Resolve your `xe` hwmon path from the display card's PCI address — this desktop enumerated
+`0000:0c:00.0` for it on 2026-10-29, and GPU BDFs change between boots — and set the 230 W
+configured cap:
 ```bash
 # Example path, confirm via /sys/class/hwmon/hwmon*/name == 'xe'
 echo 230000000 | sudo tee /sys/class/hwmon/hwmon4/power1_cap
@@ -738,4 +740,3 @@ Recommend `--reasoning-parser qwen3` as required alongside
 `--tool-call-parser qwen3_xml` for this model family — omitting it is not
 a smaller/simpler config, it's a client-facing parsing bug (raw markup in
 `content`).
-

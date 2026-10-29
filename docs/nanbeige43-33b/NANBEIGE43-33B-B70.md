@@ -378,7 +378,9 @@ describe content rather than thinking.
 
 ```bash
 # two cards installed? name the one llama.cpp is pinned to, or the client refuses to guess
-python3 client.py --port 8084 --out cells.json --n 5 --gen 128 --pci 0000:0f:00.0
+# BDFs change between boots: re-resolve with `lspci -D | grep -i battlemage`.
+# This desktop enumerated the second card as 0000:10:00.0 on 2026-10-29.
+python3 client.py --port 8084 --out cells.json --n 5 --gen 128 --pci 0000:10:00.0
 ```
 
 With a single Arc card the `--pci` argument can be dropped; with two, a first-match
