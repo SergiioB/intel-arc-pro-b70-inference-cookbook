@@ -8,6 +8,12 @@
 
 **Status legend:** ✅ works out of the box · ⚠️ works with documented workaround · ❌ broken / no upstream fix
 
+> **Host-level findings:** freezes, `-EINVAL` at load, peer-capability and idle-state
+> faults are recorded separately in
+> [Host stability and hardware notes](HOST-STABILITY-AND-HARDWARE-NOTES.md). That page is
+> third-party material from another lab, not our reproduction — read its status column
+> before you act on it.
+
 ---
 
 ## TL;DR for Intel ISV teams
