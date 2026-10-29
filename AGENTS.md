@@ -22,6 +22,22 @@ This repository is the public recipe and evidence catalog. Private lab campaigns
 - Historical evidence stays immutable and labeled. Supersede by adding a new generation and linking the old one.
 - A GPU-free patch apply test proves source compatibility only. It does not prove runtime correctness, stability, or speed.
 
+## Ledger discipline (required)
+
+`docs/DO-NOT-REPEAT.md` is the canonical record of closed arms; accepted routes go to the family route plus `data/benchmarks.v1.json` and are indexed in `docs/WHAT-WORKED.md`. The rules are in `docs/EVIDENCE-LEDGERS.md`; `scripts/check-ledgers.py`, run by `scripts/check-repo.py`, enforces the record shape.
+
+Read `docs/DO-NOT-REPEAT.md` **before** starting any optimisation, engine port, image bump, or quantisation swap. If an arm is closed and your situation does not match its **Revisit when** condition, do not run it.
+
+- **No speed number without its shape.** Model revision, quantisation, engine image/commit, patch stack, card count and placement, context depth, concurrency, power cap, timing observer, cold/warm state. A rate without a shape is not a result.
+- **Parity gate before a promotion.** Compare outputs against the reference artifact on a fixed prompt set and record matched *and* unmatched positions. A canary smoke proves the engine runs; it proves nothing about quality. Faster and unverified stays unpromoted.
+- **Unknown tensor formats fail closed.** Read the per-tensor type census; never infer a storage type from a filename or a friendly label (`DNR-014`).
+- **One variable per arm, same-session control.** Two simultaneous changes make attribution impossible and the record must say so.
+- **Record the cause, or write `unexplained`.** A guessed cause closes a door that may be open.
+- **History is immutable.** Supersede by adding a new generation and linking the old one; never rewrite a prior measurement.
+- **Private lab work contributes causes, not rates.** Never import a private rate into a public table, never present an external result as our reproduction.
+
+Closing an arm from a source reading — kernel coverage tables, plugin dispatch, memory arithmetic — is legitimate and costs no GPU time. Say so in the evidence column.
+
 ## Common task routes
 
 - Host setup: `docs/FULL-SETUP-COMMANDS.md`
@@ -30,6 +46,8 @@ This repository is the public recipe and evidence catalog. Private lab campaigns
 - Production operation: `docs/RELIABILITY-REPORT.md`
 - Leaderboard submission: `docs/localmaxxing-submission-schema.md`
 - New or changed recipe: `docs/ADDING-A-RECIPE.md`
+- Before any experiment: `docs/DO-NOT-REPEAT.md`
+- Ledger rules and record shape: `docs/EVIDENCE-LEDGERS.md`
 - Benchmark or capability record: `data/benchmarks.v1.json`
 - Issue or PR triage: `docs/MAINTAINER-PRECHECKS.md`
 
