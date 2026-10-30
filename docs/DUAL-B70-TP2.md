@@ -258,13 +258,15 @@ mirroring is active. The tell during boot is a step at KV-cache sizing.
 ```
 
 `EnableDeferBacking=0` removes the deferred-backing BOs the kernel change
-acts on (the old eager backing path is unaffected). Cost is real: our
-n=160 A/B (same image/model/profile, flag on/off) measured a ~5-6%
-decode-median regression, direction consistent across all eight
-categories (sign test p≈0.004). Upstream reports zero cost; on our
-stack we did not reproduce that. Treat the flag as a memory-for-speed
-trade: set it when the mirroring threatens host RAM, leave it unset
-when it does not. The flag must be
+acts on (the old eager backing path is unaffected). Cost: none measured.
+An initial same-day A/B (n=160) appeared to show a ~5-6% decode-median
+regression, but it was measured against a two-week-old baseline; a
+same-day three-arm re-run (flag on 146.4 vs off 144.6 tok/s median,
+n=160/arm) lands inside noise (95% CI -12.6…+10.3 tok/s, per-category
+split 5/8). The apparent regression was shared-box baseline drift (a
+second workload began occupying the peer GPU after the baseline date).
+Treat the flag as effectively free: set it whenever the mirroring
+threatens host RAM. The flag must be
 set in **every** launch branch: launchers that split `TP=2` from `TP=1`
 carry separate env blocks, and setting it on the single-GPU path only has no
 effect on TP2 containers.
@@ -273,10 +275,10 @@ effect on TP2 containers.
 Verified on the author's dual-B70 host (kernel 7.2.9, container NEO 26.27)
 on two TP2 stacks: host-RAM used at steady state fell from the mid-30s GiB
 with invisible mirroring to ~17 GiB fully accounted, with boot healthy and
-the decode cost stated above applies.
+no measurable decode cost (three-arm A/B above).
 
-**Trade table (author's host, dual-B70 TP2, n=160 harness):** mirroring
-off costs ~5-6% decode median and buys back ~19 GiB of host RAM that the
-mirror consumed. On a host where that RAM is not scarce, running without
-the flag is the faster tested configuration; the flag is the stability
-switch, not a free win.
+**Trade table (author's host, dual-B70 TP2, three-arm n=160 harness):**
+mirroring off buys back ~19 GiB of host RAM that the mirror consumed at a
+decode cost indistinguishable from zero. The flag is a stability switch
+that measured free on this stack; upstream zero-cost reports reproduced
+once the baseline was same-day.

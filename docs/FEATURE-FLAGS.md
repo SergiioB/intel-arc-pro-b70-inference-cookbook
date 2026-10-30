@@ -47,7 +47,7 @@ authoritative watchdog operational envs stay in
 | `SYCL_UR_USE_LEVEL_ZERO_V2=0` | driver default | Remediation switch when Level-Zero V2 enumeration breaks. Documented as a recovery step, not a default. | reliability remediation | [RELIABILITY-REPORT.md](RELIABILITY-REPORT.md) |
 | `SYCL_PI_LEVEL_ZERO_USM_RESIDENT=0` | driver default | Recovery step when the legacy L0 adapter reports false USM residency pressure (a 2 MiB allocation OOMs while tens of GiB are free). Pairs with the switch above. | reliability remediation | [RELIABILITY-REPORT.md](RELIABILITY-REPORT.md) |
 | `NEOReadDebugKeys=1` | off | Master switch that lets the Intel GPU runtime (NEO) read its `Enable*` debug keys, including the one below. Harmless; set whenever `EnableDeferBacking` is used. | dual-B70 TP2 | [§12](FULL-SETUP-COMMANDS.md), [DUAL-B70-TP2.md](DUAL-B70-TP2.md) |
-| `EnableDeferBacking=0` | on (with the kernel populate change) | Disables NEO's deferred-backing buffer objects. Removes the dual-GPU host-RAM mirroring of peer-exported allocations on kernels 7.1+ (intel/compute-runtime#1019). Measured cost: ~5% decode median (n=160 A/B, all 8 categories down; see DUAL-B70-TP2). | dual-B70 TP2 | [§12](FULL-SETUP-COMMANDS.md), [DUAL-B70-TP2.md](DUAL-B70-TP2.md) |
+| `EnableDeferBacking=0` | on (with the kernel populate change) | Disables NEO's deferred-backing buffer objects. Removes the dual-GPU host-RAM mirroring of peer-exported allocations on kernels 7.1+ (intel/compute-runtime#1019). Measured cost: none (three-arm same-day A/B, n=160/arm: on 146.4 vs off 144.6 tok/s, CI straddles zero; see DUAL-B70-TP2). | dual-B70 TP2 | [§12](FULL-SETUP-COMMANDS.md), [DUAL-B70-TP2.md](DUAL-B70-TP2.md) |
 
 ## What is not here
 
