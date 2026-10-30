@@ -393,7 +393,9 @@ Minimum delta vs the single-card launch in §11:
   -e CCL_SYCL_ALLREDUCE_SIMPLE_THRESHOLD=4294967296 \
   -e CCL_SYCL_REDUCE_SCATTER_SIMPLE_THRESHOLD=4294967296 \
   -e CCL_SYCL_ALLGATHERV_SIMPLE_THRESHOLD=4294967296 \
-  -e CCL_SYCL_ALLTOALL_TMP_BUF=1
+  -e CCL_SYCL_ALLTOALL_TMP_BUF=1 \
+  -e NEOReadDebugKeys=1 \
+  -e EnableDeferBacking=0
 ```
 
 Apply `patch_mtp_nightly.py`, `patch_mtp_boundary.py`, then
