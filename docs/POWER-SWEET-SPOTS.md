@@ -84,3 +84,30 @@ this repo is the exception).
 - Decode = best steady-state rep (drops JIT warmup). 2 reps/cell.
 
 Full sweep data: `benchmarks/results/` (see campaign log for the Run 19 reference).
+
+## Field data: cap SKU spread and editability (2026-10-30)
+
+Two independent ASRock B70 systems, same silicon:
+
+| | 180 W SKU (this rig) | 275 W SKU (community report) |
+|---|---|---|
+| default `power1_cap` | 180 W | 275 W |
+| sustained under LLM load | 179-180 W, clocks settle, no thermal events | 275 W (spikes ~300), 2.3-2.4 GHz, 58-60 C |
+| idle | ~46 W | ~50 W |
+| `power1_cap` sysfs write | accepted (200 W written, read back; restored to 180) | accepted (250/275 W, read back) |
+| `power1_cap_min/max` | not exposed | not reported |
+
+Findings:
+- The cap is a **default, not a lock**: hwmon writes succeed on both SKUs
+  (root). No min/max bounds are exposed to constrain the write.
+- The SKU difference is the out-of-box cap - partner defaults vary widely
+  on identical silicon (180 vs 275 W is a ~50% sustained performance axis
+  set at the factory).
+- Writes are **runtime-only**: reset on reboot / driver reload. Persist via
+  a udev rule (`ATTR{power1_cap}="..."` with a `TEST==` match) if desired.
+- Enforcement under load tracks the cap on this rig: the Run 19 power sweep
+  in this repo changes `power1_cap` and measures the load response, and
+  throughput follows the cap monotonically.
+- Buy guidance for dense builds: confirm which cap SKU a listing is - the
+  model name alone does not predict sustained clocks. Cooling on both SKUs
+  runs far under stress at stock cap (67 C peak, this rig).

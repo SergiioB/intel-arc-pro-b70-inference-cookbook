@@ -29,6 +29,12 @@ loading the model and then segfaulting while restoring compiled artifacts;
 separate `VLLM_CACHE_ROOT` and `TORCHINDUCTOR_CACHE_DIR` per worker fixed it.
 Not reproduced on the cookbook dual-B70 hosts; recorded as a community report
 that the default per-container layout already avoids.
+Per-*engine* cache persistence is safe and valuable: bind-mounting one engine's
+cache volume (its own `VLLM_CACHE_ROOT`/inductor dir) into successive
+containers of the same model, image, and profile skips the compile step on
+restart — on the author's host a 27B-class TP2 cold boot dropped from
+~3.5 minutes to ~1 minute. One volume per engine; never shared between
+concurrently running engines.
 
 ## Infrastructure status
 
@@ -211,3 +217,68 @@ confirmations and debugging trail
 [issue #8](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/issues/8),
 and the independently developed
 [humble-b70-llm](https://github.com/JP-devv/humble-b70-llm) host-staged route.
+
+## Host-RAM mirroring of device allocations (NEO #953 / #1019)
+
+**Symptom.** On a TP2 host, `free` Available drops by tens of GiB at model
+load and again at KV-cache sizing, while the serving process RSS accounts for
+far less. Under memory pressure the engine dies with an out-of-memory that
+names the *device* even when VRAM is clearly free — host RAM is what died.
+
+Two stacked regressions produce this; they are independent and additive:
+
+1. **Peer GTT pinning (NEO 26.09 → 26.34).** Every large device-USM
+   allocation on one card was eagerly pinned into the peer card's GTT —
+   ~1 GiB host-pinned per 16 MiB of segment on a 2-GPU topology. Fixed in
+   NEO 26.35 (compute-runtime#953). Check the **container's** NEO, not the
+   host's: serving images ship their own copy in
+   `/usr/lib/x86_64-linux-gnu/` (strings `libze_intel_gpu.so`); the host ICD
+   is irrelevant inside a container.
+2. **Deferred-backing export (kernel 7.1+ + NEO).** Kernel commits
+   (populate-on-dma-buf-export, from 7.1-rc1) make every dma-buf export of a
+   NEO deferred-backing BO allocate a real host-RAM page table. TP2
+   peer-imports every peer allocation, so the KV cache gets an ~1:1 host-RAM
+   mirror (compute-runtime#1019, open).
+
+**Detection.** The mirroring is invisible in process RSS. The honest host
+budget is:
+
+```bash
+awk '/^(VmRSS|Shmem):/{print} /^Rss:|^Shmem:/{s+=$2} END{print "sum "s" kB"}' \
+  /proc/$(pgrep -f "vllm serve")/status; free -m | awk '/^Mem:/{print $7}'
+```
+
+If `free` available dropped by far more than RSS + Shmem across a boot, the
+mirroring is active. The tell during boot is a step at KV-cache sizing.
+
+**Fix (tested).** Pass to the TP2 container:
+
+```text
+-e NEOReadDebugKeys=1 -e EnableDeferBacking=0
+```
+
+`EnableDeferBacking=0` removes the deferred-backing BOs the kernel change
+acts on (the old eager backing path is unaffected). Cost: none measured.
+An initial same-day A/B (n=160) appeared to show a ~5-6% decode-median
+regression, but it was measured against a two-week-old baseline; a
+same-day three-arm re-run (flag on 146.4 vs off 144.6 tok/s median,
+n=160/arm) lands inside noise (95% CI -12.6…+10.3 tok/s, per-category
+split 5/8). The apparent regression was shared-box baseline drift (a
+second workload began occupying the peer GPU after the baseline date).
+Treat the flag as effectively free: set it whenever the mirroring
+threatens host RAM. The flag must be
+set in **every** launch branch: launchers that split `TP=2` from `TP=1`
+carry separate env blocks, and setting it on the single-GPU path only has no
+effect on TP2 containers.
+
+**Scope.** Single-GPU containers do not peer-import and are unaffected.
+Verified on the author's dual-B70 host (kernel 7.2.9, container NEO 26.27)
+on two TP2 stacks: host-RAM used at steady state fell from the mid-30s GiB
+with invisible mirroring to ~17 GiB fully accounted, with boot healthy and
+no measurable decode cost (three-arm A/B above).
+
+**Trade table (author's host, dual-B70 TP2, three-arm n=160 harness):**
+mirroring off buys back ~19 GiB of host RAM that the mirror consumed at a
+decode cost indistinguishable from zero. The flag is a stability switch
+that measured free on this stack; upstream zero-cost reports reproduced
+once the baseline was same-day.
