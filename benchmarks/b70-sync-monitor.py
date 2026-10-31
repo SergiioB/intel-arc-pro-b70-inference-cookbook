@@ -5,12 +5,16 @@ Usage: b70-sync-monitor.py OUTPUT.jsonl [interval_seconds]
 Writes one metadata record, then fixed-cadence samples using monotonic_ns. Card
 power is each interval's energy1_input delta; temperatures remain decimal °C.
 SIGTERM writes a final summary record with exact total energy/time average.
+
+The card is selected by its PCI DBDF, taken from $B70_PCI and defaulting to the
+value recorded with the first published run. DBDFs change between boots, so
+set B70_PCI (or check `python3 scripts/doctor.py`) instead of editing this file.
 """
 import glob, json, os, signal, sys, time
 
 OUT = sys.argv[1]
 INTERVAL = float(sys.argv[2]) if len(sys.argv) > 2 else 0.5
-TARGET_PCI = "0000:0b:00.0"
+TARGET_PCI = os.environ.get("B70_PCI", "0000:0b:00.0").lower()
 running = True
 
 def stop(*_):

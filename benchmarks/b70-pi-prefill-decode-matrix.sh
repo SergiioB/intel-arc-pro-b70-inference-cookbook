@@ -19,6 +19,9 @@ MODEL_DIR=${1:?usage: $0 MODEL_DIR}
 MODEL=$(basename "$MODEL_DIR")
 MODEL_ID=${MODEL_ID:-$MODEL}
 CONFIGURED_CAP_W=${CONFIGURED_CAP_W:-unknown}
+# Card DBDF; DBDFs change between boots, so override it instead of editing the file.
+B70_PCI=${B70_PCI:-0000:0b:00.0}
+export B70_PCI
 IMG=vllm/vllm-openai-xpu@sha256:2c427ef477da092eb6f2cdbbbd24950b5fa171565b916db69d4c7bb10e68ca97
 PATCH_MTP=$ROOT/patches/patch_mtp_nightly.py
 PATCH_BOUNDARY=$ROOT/patches/patch_mtp_boundary.py
@@ -59,7 +62,7 @@ find_hwmon() {
 import glob, os
 matches = [path for path in glob.glob('/sys/class/hwmon/hwmon*')
            if open(path + '/name').read().strip() == 'xe'
-           and '0000:0b:00.0' in os.path.realpath(path + '/device')]
+           and os.environ['B70_PCI'] in os.path.realpath(path + '/device')]
 assert len(matches) == 1, matches
 print(matches[0])
 PY
@@ -69,7 +72,7 @@ HWMON=$(find_hwmon)
 TEMP=$HWMON/temp2_input
 
 visible_free() {
-  sudo -n grep visible_avail /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm |
+  sudo -n grep visible_avail "/sys/kernel/debug/dri/$B70_PCI/tile0/vram_mm" |
     grep -oP '\d+' | sed -n '1p'
 }
 
@@ -224,7 +227,7 @@ run_mode() {
 
   local free capacity
   free=$(visible_free)
-  sudo -n cat /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm > "$mode_out/vram-after-load.txt"
+  sudo -n cat "/sys/kernel/debug/dri/$B70_PCI/tile0/vram_mm" > "$mode_out/vram-after-load.txt"
   capacity=$(sed -n 's/.*GPU KV cache size: \([0-9,]*\) tokens.*/\1/p' "$server_log" | sed -n '$p' | tr -d ',')
   grep -q "'enable_prefix_caching': True" "$server_log" || {
     echo "cache startup state mismatch: $mode" >&2

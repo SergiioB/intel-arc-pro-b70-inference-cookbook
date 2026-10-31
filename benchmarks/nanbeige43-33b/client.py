@@ -32,8 +32,9 @@ def find_energy(pci=None):
     """Locate the energy counter of the card in use.
 
     With two cards installed, a first-match search can report the wrong card's
-    power, so pass --pci 0000:0f:00.0 (the card llama.cpp is pinned to) or
-    --hwmon explicitly.
+    power, so pass --pci <card DBDF> (the card llama.cpp is pinned to) or
+    --hwmon explicitly. DBDFs change between boots; resolve yours with
+    `lspci -D | grep -i battlemage` or `python3 scripts/doctor.py`.
     """
     import glob
     import os
@@ -70,7 +71,7 @@ def main():
     ap.add_argument("--prompt-chars", type=int, default=2000)
     ap.add_argument("--temp", type=float, default=0.0)
     ap.add_argument("--hwmon", default=None)
-    ap.add_argument("--pci", default=None, help="card DBDF, e.g. 0000:0f:00.0")
+    ap.add_argument("--pci", default=None, help="card DBDF as enumerated this boot, e.g. 0000:10:00.0")
     args = ap.parse_args()
 
     props = get(args.port, "/props")

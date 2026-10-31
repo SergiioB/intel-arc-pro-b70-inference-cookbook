@@ -26,6 +26,9 @@ MON=$ROOT/benchmarks/b70-sync-monitor.py
 PI_SYSTEM=$ROOT/benchmarks/pi-system-prompt.txt
 COLD_PROMPTS=$OUT/exact-pi-p130944-six.json
 SESSION_PROMPTS=$OUT/exact-pi-p120000-one.json
+# Card DBDF; DBDFs change between boots, so override it instead of editing the file.
+B70_PCI=${B70_PCI:-0000:0b:00.0}
+export B70_PCI
 PORT=8001
 CURRENT_CONTAINER=
 CURRENT_MONITOR_PID=
@@ -134,8 +137,8 @@ run_cell() {
     echo "cache=$cache"
     echo "logged_kv_capacity_tokens=$capacity"
   } > "$cell/manifest.txt"
-  if [ -r /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm ]; then
-    sudo cat /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm > "$cell/vram-after-load.txt"
+  if [ -r "/sys/kernel/debug/dri/$B70_PCI/tile0/vram_mm" ]; then
+    sudo cat "/sys/kernel/debug/dri/$B70_PCI/tile0/vram_mm" > "$cell/vram-after-load.txt"
   fi
   printf 'milestone=launch_ready mode=%s cache=%s capacity=%s\n' "$mode" "$cache" "$capacity"
 
