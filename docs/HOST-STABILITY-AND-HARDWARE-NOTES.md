@@ -79,7 +79,10 @@ live and maximum state per hop. On this host (2026-10-29): GPU `0000:0c:00.0` an
 report `2.5 GT/s x1` live and maximum at the function and at their card-internal bridge
 (`0000:0b:01.0`, `0000:0f:01.0`), while root ports `0000:00:03.1` / `0000:00:03.2` and the switch
 upstream ports `0000:0a:00.0` / `0000:0e:00.0` train at **16.0 GT/s x8** — the expected real link.
-The BDFs recorded in two runnable examples were also stale (`0b`/`0f` now belong to bridges).
+The BDFs recorded in two runnable examples were also stale (`0b`/`0f` now belong to bridges). The
+benchmark launchers that pinned a card by DBDF now read `$B70_PCI` (default: the recorded value), so
+a re-enumerated host is a variable, not a file edit; a wrong value still fails loudly at discovery
+instead of measuring the other card.
 
 **Verify.**
 ```bash
