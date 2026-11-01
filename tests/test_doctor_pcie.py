@@ -131,6 +131,17 @@ class PcieChainTests(unittest.TestCase):
         self.assertEqual(link["speed"], "")
         self.assertFalse(link["degraded"])
 
+    def test_unreadable_intermediate_hop_does_not_hide_the_host_link(self) -> None:
+        endpoint = build_tree(self.root)
+        # A hop whose attributes cannot be read must not become the "narrowest" hop.
+        bridge = endpoint.resolve().parents[1]  # 0000:0a:00.0, the switch upstream port
+        self.assertEqual(bridge.name, "0000:0a:00.0")
+        for name in ("current_link_speed", "current_link_width"):
+            (bridge / name).unlink()
+        link = doctor.effective_link(doctor.pcie_chain(str(endpoint)))
+        self.assertEqual((link["speed"], link["width"]), ("16.0 GT/s PCIe", "8"))
+        self.assertEqual(link["source_bdf"], "0000:00:03.1")
+
 
 if __name__ == "__main__":
     unittest.main()

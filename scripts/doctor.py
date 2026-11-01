@@ -122,15 +122,18 @@ def pcie_chain(device_dir: str) -> list[dict[str, Any]]:
 
 def effective_link(hops: list[dict[str, Any]]) -> dict[str, Any]:
     """Narrowest trustworthy hop: the negotiated host link, not the endpoint's register."""
-    reliable = [hop for hop in hops if hop["link_state_reliable"]]
-    pool = reliable or hops
+    readable = [
+        hop for hop in hops if hop["current_width"] and link_speed_gts(hop["current_speed"]) > 0
+    ]
+    reliable = [hop for hop in readable if hop["link_state_reliable"]]
+    pool = reliable or readable or hops
     if not pool:
         return {"speed": "", "width": "", "source_bdf": "", "reference_bdf": "", "degraded": False}
     narrowest = min(
         pool,
         key=lambda hop: (link_width(hop["current_width"]), link_speed_gts(hop["current_speed"])),
     )
-    reference = next((hop for hop in hops if hop["role"] == "root_port"), narrowest)
+    reference = next((hop for hop in readable if hop["role"] == "root_port"), narrowest)
     degraded = link_width(reference["current_width"]) < link_width(reference["max_width"]) or (
         link_speed_gts(reference["current_speed"]) < link_speed_gts(reference["max_speed"])
     )
