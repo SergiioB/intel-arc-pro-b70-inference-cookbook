@@ -239,11 +239,11 @@ Speculative decoding should not change greedy output. On this stack it does. Lab
 off, natural EOS. Three single-file canvas/JS prompts, three repeats each. Every page was checked with
 `node --check`, headless-Chromium console errors and a canvas-animation test.
 
-| Arm | Working pages | Repeats identical | Same text as MTP off |
+| Arm | Working pages | Prompts with identical repeats | Same text as MTP off |
 |---|---|---|---|
-| MTP off | **9/9** | yes | — |
-| MTP3, int8 prefill (default) | 6/9 | yes | no |
-| MTP3, fp16 prefill | 5/9 | no | no |
+| MTP off | **9/9** | 2 of 3 (orbits varies, works 3/3) | — |
+| MTP3, int8 prefill (default) | 6/9 | 2 of 3 (orbits varies, works 3/3) | no |
+| MTP3, fp16 prefill | 5/9 | 0 of 3 | no |
 
 1. With MTP3 on, one prompt's output departs from the MTP-off output at character 624. It then loops on
    `lastFullTrailHeadN:null` until the 32,768-token cap, the same way in 3 of 3 repeats.
