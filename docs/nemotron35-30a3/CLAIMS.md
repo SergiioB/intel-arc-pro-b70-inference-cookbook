@@ -91,6 +91,8 @@ n=5 matrix above, and do not restate them as that matrix.
 - Do not quote a single maximum for this model. Acceptance ranged 30–78% and decode
   136–315 t/s on the same config depending on the prompt; a 300+ t/s cell is usually
   a repetition loop, not a fast model.
+- Do not read a raw `/v1/completions` loop as a model defect. Those loops come from skipping
+  the chat template; through `/v1/chat/completions` the same prompts did not loop (DNR-016).
 - Do not claim 230 W as the card default. The documented base envelope stays 150 W.
 
 
