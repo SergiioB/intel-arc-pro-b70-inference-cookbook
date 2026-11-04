@@ -232,6 +232,36 @@ b70 launch qwen38-27b-sc5 --prefill fp16   # UI: Prefill → "fp16 — max quali
 Without the launcher, add `--set env.EXL3_INT8_PREFILL=0` to the `serve.py` command.
 `docker run -e EXL3_INT8_PREFILL=0` does not work: the serve config's `env:` block overrides it.
 
+### MTP3 changes greedy output and can break generated code
+
+Speculative decoding should not change greedy output. On this stack it does. Lab test, 2026-11-04: plain
+4.00bpw, image `exl3xpu-mixedk@sha256:933eda54…`, one card, C1, thinking off, temperature 0, prefix cache
+off, natural EOS. Three single-file canvas/JS prompts, three repeats each. Every page was checked with
+`node --check`, headless-Chromium console errors and a canvas-animation test.
+
+| Arm | Working pages | Repeats identical | Same text as MTP off |
+|---|---|---|---|
+| MTP off | **9/9** | yes | — |
+| MTP3, int8 prefill (default) | 6/9 | yes | no |
+| MTP3, fp16 prefill | 5/9 | no | no |
+
+1. With MTP3 on, one prompt's output departs from the MTP-off output at character 624. It then loops on
+   `lastFullTrailHeadN:null` until the 32,768-token cap, the same way in 3 of 3 repeats.
+2. With fp16 prefill the pages break with the errors seen in sampled use: assignment to a `const`, an
+   undefined variable, `rgba(…,NaN)`. Int8 prefill is not the cause.
+3. The same weights wrote working code in every MTP-off run. Do not read these failures as quantization
+   damage. See DNR-017.
+
+When one-shot code must be correct, serve with MTP off and accept slower decode:
+
+```bash
+serve.py models/qwen3.8-27b-exl3-4.00bpw ... \
+  --set vllm.speculative_config=null --set env.EXL3_DRAFT_VOCAB=null
+```
+
+Unpublished lab measurement: only counts and the cause are published here, no rates. Not tested: SC5,
+the `0xsero/exl3xpu` image, concurrency, or other prompts.
+
 ### SC_5.00bpw_H6_V6 is not a text upgrade
 
 turboderp's `SC_5.00bpw_H6_V6` branch (@ `f33f26d9`) quantizes only the
