@@ -87,6 +87,25 @@ The cold-prefix matrix uses prefix caching enabled so it matches the production 
 
 For MTP modes, diff proposed and accepted token counters and report acceptance. For no-spec, require no proposed MTP tokens. Preserve prompt hashes across modes and report output-text parity separately. Matching prompt shape does not prove matching output.
 
+Output parity is a JSON field, not a footnote. Any row whose model carries a
+drafter must publish `spec_parity`:
+
+```json
+"spec_parity": {
+  "status": "lossless | lossy | unmeasured",
+  "items": 329,
+  "identity": "329/329",
+  "check": "drafted vs serial greedy, thinking off, temp 0",
+  "evidence": {"commit": "<40-hex>", "url": "<commit-pinned link>"}
+}
+```
+
+`items` and `identity` are the number of fixed items run and the count whose
+greedy text matched the undrafted arm exactly. Omit the field and the catalog
+renders `unmeasured`: the speed is then a speed-only observation, never that
+model's answer. A route measured once as lossy stays labelled until a re-run on
+a named stack shows otherwise.
+
 ## 6. Capacity and isolation gates
 
 Before each model load:
