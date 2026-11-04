@@ -5,9 +5,12 @@ engine):** OpenVINO INT4-GDN8 + grafted MTP5 draft leads short context at
 **79.5 tok/s @512** (73.0 @2K); vLLM GPTQ-Int4 + MTP4 is the serving leader
 and decays slowest (**75.6 @512, 61.1 @8K, 45.7 @98K, 34.5 @196K**);
 llama.cpp UD-Q4_K_M + draft is the only engine serving the full **256K**
-(37.8 @512 → 16.0 @256K). OpenVINO's full-protocol ceiling is **128K**
-(196K+ fails `CL_OUT_OF_RESOURCES`; those rows are 40-token capacity probes,
-upstream [openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483)).
+(37.8 @512 → 16.0 @256K). OpenVINO's verified full-protocol envelope is
+**≤163,840** (131,072 and 163,840 full protocols PASS, 2026-09-21);
+**≥196,608 is upstream-blocked** (`CL_OUT_OF_RESOURCES`, per-generation
+growth — one long generation passes at 196608, the second fails at 44 MiB
+free; upstream [openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483)).
+Those ≥196K rows below are 40-token capacity probes, not serving cells.
 
 > **MEASUREMENT CORRECTION (v2, same night):** the first vLLM arm had two
 > defects: decode was computed as tokens/wall including TTFT (understating
@@ -61,7 +64,7 @@ Same model family, one Arc Pro B70 per engine, same filler text and lengths
 | vLLM MTP4 (v2) | 194–229 | 230 W | GPU.0 |
 | llama.cpp Q8_0 | 149.5 (n=53) | 150 W | GPU.0 |
 
-llama.cpp decode is NOT power-bound: at 230W decode stays 15.2 (prefill
+llama.cpp decode is NOT power-bound: at 230W cap decode stays 15.2 (prefill
 +23% to 285). vLLM v1's "~149W" was the 150W cap clipping it, and the
 sweep-JSON watt fields for llama/vLLM-v1 read the idle card — known-bad,
 superseded by v2 single-stream energy on GPU.0. The llama sweep JSON still
@@ -224,9 +227,11 @@ leadership tracks weight bytes more than engine quality.
   prompt-cache, follow-up); llama+MTP 96K untested; OV 64K/96K are n=1–2
   ceiling probes; FP8 TP2 64K decode (65.5) beats its 8K (61.6) on MTP8
   acceptance variance (n=3).
-- 128K on one card: no config fits. vLLM config max 100K; OV blocked >96K
-  (compressed-KV decode defect / f16 VRAM); llama Q8_0 init-crash
-  (weights+KV > 32GB); FP8 weights physically exceed one card.
+- 128K–163,840 on one card: only llama Q4 holds the verified full-protocol
+  envelope to 163,840. vLLM config max 100K; OV full-protocol verified to
+  163,840 and upstream-blocked at ≥196,608 (per-generation growth, #4483);
+  llama Q8_0 init-crash (weights+KV > 32GB); FP8 weights physically exceed
+  one card.
 
 ## INT4-class matrix (2026-09-15) — same weight class, 8-bit KV
 
@@ -268,13 +273,15 @@ Key measured facts:
   (numeric sequence intact). Without an MTP head OV cannot compete in this class.
 - **OV long-context ceiling, honestly split by protocol**: with u4 KV +
   `cache_size=0`, full-protocol requests (128-token output, warmup + measured)
-  run to **128K** (15.9 t/s) and fail at ≥196K with `CL_OUT_OF_RESOURCES`
-  (~33 GB in use during prefill) — filed upstream as
+  are verified to **131,072 and 163,840** (2026-09-21) and fail at ≥196,608
+  with `CL_OUT_OF_RESOURCES` — a per-generation growth bug (one long
+  generation passes at 196608; the second 64-token generation fails at
+  44 MiB free / 16 MiB largest block), not a capacity ceiling — filed upstream as
   [openvino.genai#4483](https://github.com/openvinotoolkit/openvino.genai/issues/4483).
   The 196K/224K/256K rows above are **40-token capacity probes** (11.3 t/s,
   28.8 GB at 256K) — proof the KV fits at rest, not a serving cell. u8 KV
   crashes earlier (-14 at 98K with MTP). The old 64K wall was cache
-  preallocation, not the card; the ≥196K wall is request workspace pressure.
+  preallocation, not the card.
 - llama Q4 is the only engine that holds the full 256K on one card under the
   full protocol (37.8 → 15.9, 2.4× decay) at ~155 W.
 - vLLM's single-card KV budget caps at ≈204K: 256K needs 9.33 GiB KV vs 7.47
