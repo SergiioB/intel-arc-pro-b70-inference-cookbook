@@ -1290,6 +1290,16 @@
    "evidence": {
     "commit": "55eefeaeaa1e47b9e34b2fd20f55ffc1a8125c6c",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/55eefeaeaa1e47b9e34b2fd20f55ffc1a8125c6c/docs/qwen38-27b/EXL3-XPU.md"
+   },
+   "spec_parity": {
+    "status": "lossy",
+    "items": 329,
+    "identity": "229/329",
+    "check": "drafted vs serial greedy, C=1, temp 0 / top_p 1 / seed 4242, thinking off; 89 items stable under MTP3 and different from the undrafted answer",
+    "evidence": {
+     "commit": "b176ec6819f3ff0f9a288271d008605eefd0cb10",
+     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b176ec6819f3ff0f9a288271d008605eefd0cb10/docs/qwen38-27b/EXL3-XPU.md"
+    }
    }
   },
   {
@@ -1377,6 +1387,16 @@
    "evidence": {
     "commit": "c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7/results/qwen38-27b/sc5-mixedk-ab-20261012/summary.json"
+   },
+   "spec_parity": {
+    "status": "lossy",
+    "items": 329,
+    "identity": "229/329",
+    "check": "drafted vs serial greedy, C=1, temp 0 / top_p 1 / seed 4242, thinking off; 89 items stable under MTP3 and different from the undrafted answer",
+    "evidence": {
+     "commit": "b176ec6819f3ff0f9a288271d008605eefd0cb10",
+     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b176ec6819f3ff0f9a288271d008605eefd0cb10/docs/qwen38-27b/EXL3-XPU.md"
+    }
    }
   },
   {
@@ -1438,6 +1458,16 @@
    "evidence": {
     "commit": "c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/c5a6a54f3cfbb549cdfdcf760d17f5b0bf6978e7/results/qwen38-27b/sc5-mixedk-ab-20261012/summary.json"
+   },
+   "spec_parity": {
+    "status": "lossy",
+    "items": 329,
+    "identity": "229/329",
+    "check": "drafted vs serial greedy, C=1, temp 0 / top_p 1 / seed 4242, thinking off; 89 items stable under MTP3 and different from the undrafted answer",
+    "evidence": {
+     "commit": "b176ec6819f3ff0f9a288271d008605eefd0cb10",
+     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b176ec6819f3ff0f9a288271d008605eefd0cb10/docs/qwen38-27b/EXL3-XPU.md"
+    }
    }
   },
   {
