@@ -91,7 +91,7 @@ class BenchmarkCatalogTests(unittest.TestCase):
         self.assertEqual(renderer.validate_spec_parity("records[0]", record), [])
 
     def test_spec_rows_without_parity_render_as_unmeasured(self) -> None:
-        record = {"kind": "benchmark", "model": {"speculation": "MTP4"}}
+        record: dict[str, Any] = {"kind": "benchmark", "model": {"speculation": "MTP4"}}
         self.assertEqual(renderer.parity_text(record), "unmeasured")
         record["model"]["speculation"] = "none"
         self.assertEqual(renderer.parity_text(record), "—")
