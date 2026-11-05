@@ -271,6 +271,11 @@ The effect tracks output length: changed items average 679 completion tokens
 against 187 for unchanged ones. Speed in the same run was 74.8 tok/s client wall
 with MTP3 and 31.7 without.
 
+The mixed-bit quality pick behaves the same way, slightly less: **76 of 329 items
+(23.1 %)** change deterministically on `SC_5.00bpw_H6`, with MTP3 self-identity
+314/329 and cross identity 241/329 and 240/329; changed items average 753
+completion tokens against 188 unchanged.
+
 **Do not measure this at C>1.** With 8 concurrent clients, MTP off against itself
 matches on only 252/329 and MTP3 against itself on 240/329, and the C=8 verdict
 misses 8 items that C=1 proves changed. Parity and quality comparisons on this
