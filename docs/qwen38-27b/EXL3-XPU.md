@@ -252,6 +252,34 @@ off, natural EOS. Three single-file canvas/JS prompts, three repeats each. Every
 3. The same weights wrote working code in every MTP-off run. Do not read these failures as quantization
    damage. See DNR-017.
 
+## Speculative losslessness on the fixed 329-item set (2026-11-05)
+
+The three-prompt check above asked "does code still work". The sharper question is
+"is the greedy text the same". It was measured on the frozen 329-item set used by
+our weight-edit studies (164 code items, 165 regression items), greedy
+`temp 0 / top_p 1 / seed 4242`, thinking off, one B70, `exl3xpu-mixedk`
+`sha256:933eda54…`, plain 4.00bpw weights, fp8 KV, prefix caching on.
+
+| Comparison, C=1, n=329 | Identical |
+|---|---:|
+| MTP3 against itself (two runs) | 316 (96.0 %) |
+| MTP off against MTP3, run A | 229 (69.6 %) |
+| MTP off against MTP3, run B | 230 (69.9 %) |
+
+**89 items (27.1 %) are stable under MTP3 and differ from the MTP-off answer.**
+The effect tracks output length: changed items average 679 completion tokens
+against 187 for unchanged ones. Speed in the same run was 74.8 tok/s client wall
+with MTP3 and 31.7 without.
+
+**Do not measure this at C>1.** With 8 concurrent clients, MTP off against itself
+matches on only 252/329 and MTP3 against itself on 240/329, and the C=8 verdict
+misses 8 items that C=1 proves changed. Parity and quality comparisons on this
+stack are single-request measurements; C=8 remains a serving-throughput cell.
+
+So: MTP3 buys ~2.4× decode and pays with a different answer on 27 % of a fixed
+item set, growing with output length. `spec_parity` on the catalog rows of this
+route carries the same numbers.
+
 When one-shot code must be correct, serve with MTP off and accept slower decode:
 
 ```bash

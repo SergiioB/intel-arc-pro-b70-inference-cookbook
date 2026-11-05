@@ -54,6 +54,56 @@ class BenchmarkCatalogTests(unittest.TestCase):
         self.assertNotIn("metrics", capabilities["dual-b70-tp2-serving-v1"])
         self.assertEqual(capabilities["qwen38-fp8-w8a16-v1"]["evidence_status"], "provisional")
 
+    def test_spec_parity_claims_need_counts_and_pinned_evidence(self) -> None:
+        def pinned(sha: str) -> dict[str, str]:
+            return {"commit": sha * 40, "url": f"https://github.com/o/r/blob/{sha * 40}/x"}
+
+        record = {
+            "id": "fixture-spec-row",
+            "kind": "benchmark",
+            "title": "t",
+            "summary": "s",
+            "evidence_status": "official-lab",
+            "hardware": {"gpu_model": "x", "gpu_count": 1},
+            "engine": {"name": "vllm"},
+            "model": {"speculation": "MTP3"},
+            "evidence": pinned("0"),
+            "spec_parity": {
+                "status": "lossy",
+                "items": 0,
+                "identity": "nearest",
+                "check": "",
+                "evidence": pinned("2"),
+            },
+        }
+        errors = renderer.validate_spec_parity("records[0]", record)
+        self.assertTrue(any("items" in error for error in errors), errors)
+        self.assertTrue(any("identity" in error for error in errors), errors)
+        self.assertTrue(any("check" in error for error in errors), errors)
+
+        record["spec_parity"] = {
+            "status": "lossy",
+            "items": 329,
+            "identity": "293/329",
+            "check": "drafted vs serial greedy",
+            "evidence": pinned("1"),
+        }
+        self.assertEqual(renderer.validate_spec_parity("records[0]", record), [])
+
+    def test_spec_rows_without_parity_render_as_unmeasured(self) -> None:
+        record: dict[str, Any] = {"kind": "benchmark", "model": {"speculation": "MTP4"}}
+        self.assertEqual(renderer.parity_text(record), "unmeasured")
+        record["model"]["speculation"] = "none"
+        self.assertEqual(renderer.parity_text(record), "—")
+        record["model"]["speculation"] = "MTP4"
+        record["spec_parity"] = {
+            "status": "lossless",
+            "identity": "329/329",
+            "items": 329,
+            "check": "x",
+        }
+        self.assertEqual(renderer.parity_text(record), "lossless 329/329")
+
     def test_render_is_deterministic_and_mentions_trust_limits(self) -> None:
         first = renderer.render_catalog(self.catalog)
         second = renderer.render_catalog(self.catalog)

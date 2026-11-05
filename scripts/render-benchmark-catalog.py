@@ -17,6 +17,8 @@ DEFAULT_OUTPUT = ROOT / "docs" / "BENCHMARK-CATALOG.md"
 ALLOWED_KINDS = {"benchmark", "capability"}
 ALLOWED_STATUSES = {"official-lab", "community-reviewed", "validated", "provisional"}
 ALLOWED_CONCURRENCY = {1, 2, 4, 8, 16, 32}
+ALLOWED_PARITY = {"lossless", "lossy", "unmeasured"}
+IDENTITY = re.compile(r"\d+/\d+")
 PRIVATE_PATTERNS = [
     re.compile(pattern, re.I)
     for pattern in [r"/home/", r"B70-DOCS", r"192\.168\.\d+\.\d+", r"(?:api[_-]?key|bearer)\s*[:=]"]
@@ -84,6 +86,48 @@ def validate_benchmark_workload(path: str, record: dict[str, Any]) -> list[str]:
     return errors
 
 
+def speculates(record: dict[str, Any]) -> bool:
+    """True when the route decodes with a drafter, i.e. greedy text may move."""
+    speculation = (record.get("model") or {}).get("speculation")
+    if not isinstance(speculation, str):
+        return False
+    value = speculation.strip().lower()
+    return bool(value) and not value.startswith("none")
+
+
+def validate_spec_parity(path: str, record: dict[str, Any]) -> list[str]:
+    """A spec row may claim parity only with item counts and pinned evidence."""
+    errors: list[str] = []
+    parity = record.get("spec_parity")
+    if parity is None:
+        return errors
+    if not isinstance(parity, dict):
+        return [f"{path}.spec_parity must be an object"]
+    if not speculates(record):
+        errors.append(f"{path}.spec_parity requires a speculative route")
+    if parity.get("status") not in ALLOWED_PARITY:
+        errors.append(f"{path}.spec_parity.status is invalid")
+        return errors
+    if parity["status"] == "unmeasured":
+        return errors
+    items = parity.get("items")
+    if not isinstance(items, int) or items <= 0:
+        errors.append(f"{path}.spec_parity.items must be a positive integer")
+    identity = parity.get("identity")
+    if not isinstance(identity, str) or not IDENTITY.fullmatch(identity):
+        errors.append(f"{path}.spec_parity.identity must look like '329/329'")
+    if not parity.get("check"):
+        errors.append(f"{path}.spec_parity.check is required")
+    evidence = parity.get("evidence") or {}
+    commit = evidence.get("commit", "")
+    url = evidence.get("url", "")
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        errors.append(f"{path}.spec_parity.evidence.commit must be a full SHA")
+    if not isinstance(url, str) or f"/blob/{commit}/" not in url:
+        errors.append(f"{path}.spec_parity.evidence.url must pin its commit")
+    return errors
+
+
 def validate_catalog(catalog: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if catalog.get("schema_version") != "1.0":
@@ -98,6 +142,7 @@ def validate_catalog(catalog: dict[str, Any]) -> list[str]:
             errors.append(f"{path} must be an object")
             continue
         errors.extend(validate_record_identity(path, record, seen))
+        errors.extend(validate_spec_parity(path, record))
         kind = record.get("kind")
         if kind == "benchmark":
             errors.extend(validate_benchmark_workload(path, record))
@@ -126,6 +171,16 @@ def metric_text(record: dict[str, Any]) -> str:
     )
 
 
+def parity_text(record: dict[str, Any]) -> str:
+    """One cell that says whether this speed row's greedy text was compared."""
+    if not speculates(record):
+        return "—"
+    parity = record.get("spec_parity") or {}
+    if parity.get("status") in ("lossless", "lossy"):
+        return f"{parity['status']} {parity['identity']}"
+    return "unmeasured"
+
+
 def render_catalog(catalog: dict[str, Any]) -> str:
     benchmarks = [record for record in catalog["records"] if record["kind"] == "benchmark"]
     capabilities = [record for record in catalog["records"] if record["kind"] == "capability"]
@@ -144,8 +199,8 @@ def render_catalog(catalog: dict[str, Any]) -> str:
         "",
         "## Benchmarks",
         "",
-        "| Model | Hardware | Engine | Workload | Result | Evidence |",
-        "|---|---|---|---|---|---|",
+        "| Model | Hardware | Engine | Workload | Spec parity | Result | Evidence |",
+        "|---|---|---|---|---|---|---|",
     ]
     for record in benchmarks:
         workload = record["workload"]
@@ -158,7 +213,8 @@ def render_catalog(catalog: dict[str, Any]) -> str:
         evidence = f"[{status_label(record['evidence_status'])}]({record['evidence']['url']})"
         lines.append(
             f"| {record['title']} | {hardware['gpu_count']}× {hardware['gpu_model']} "
-            f"| {record['engine']['name']} | {profile} | {metric_text(record)} | {evidence} |"
+            f"| {record['engine']['name']} | {profile} | {parity_text(record)} "
+            f"| {metric_text(record)} | {evidence} |"
         )
     lines.extend(
         [
@@ -188,6 +244,11 @@ def render_catalog(catalog: dict[str, Any]) -> str:
             "any model-specific numeric records are published separately.",
             "- **Provisional:** an early numeric claim is documented but lacks "
             "one or more required workload coordinates.",
+            "- **Spec parity:** `lossless` or `lossy` is a drafted-versus-serial "
+            "greedy comparison on a fixed item set, with the count and the evidence "
+            "link on the row. `unmeasured` means the row's speed came from a drafter "
+            "whose greedy output was never compared with the undrafted answer — "
+            "treat the number as a speed-only observation, not as that model's answer.",
             "",
         ]
     )
