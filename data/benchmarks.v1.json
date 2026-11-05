@@ -1391,11 +1391,11 @@
    "spec_parity": {
     "status": "lossy",
     "items": 329,
-    "identity": "229/329",
-    "check": "drafted vs serial greedy, C=1, temp 0 / top_p 1 / seed 4242, thinking off; 89 items stable under MTP3 and different from the undrafted answer",
+    "identity": "241/329",
+    "check": "drafted vs serial greedy, C=1, temp 0 / top_p 1 / seed 4242, thinking off; 76 items stable under MTP3 and different from the undrafted answer",
     "evidence": {
-     "commit": "b176ec6819f3ff0f9a288271d008605eefd0cb10",
-     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b176ec6819f3ff0f9a288271d008605eefd0cb10/docs/qwen38-27b/EXL3-XPU.md"
+     "commit": "22ecf9665f95290dd06e118cd692c8488e86a1aa",
+     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22ecf9665f95290dd06e118cd692c8488e86a1aa/docs/qwen38-27b/EXL3-XPU.md"
     }
    }
   },
@@ -1462,11 +1462,11 @@
    "spec_parity": {
     "status": "lossy",
     "items": 329,
-    "identity": "229/329",
-    "check": "drafted vs serial greedy, C=1, temp 0 / top_p 1 / seed 4242, thinking off; 89 items stable under MTP3 and different from the undrafted answer",
+    "identity": "241/329",
+    "check": "drafted vs serial greedy, C=1, temp 0 / top_p 1 / seed 4242, thinking off; 76 items stable under MTP3 and different from the undrafted answer",
     "evidence": {
-     "commit": "b176ec6819f3ff0f9a288271d008605eefd0cb10",
-     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b176ec6819f3ff0f9a288271d008605eefd0cb10/docs/qwen38-27b/EXL3-XPU.md"
+     "commit": "22ecf9665f95290dd06e118cd692c8488e86a1aa",
+     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/22ecf9665f95290dd06e118cd692c8488e86a1aa/docs/qwen38-27b/EXL3-XPU.md"
     }
    }
   },
