@@ -3142,6 +3142,134 @@
     "commit": "e85b3cb45d1e74c4948cea167a5e65bfd38802f1",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/e85b3cb45d1e74c4948cea167a5e65bfd38802f1/docs/LLAMACPP-SYCL-KV-AT-DEPTH.md"
    }
+  },
+  {
+   "id": "ripple-65b-iq4xs-llamacpp-2xb70-sm-tensor-f16kv",
+   "kind": "benchmark",
+   "title": "Ripple-65B Preview AD-IQ4_XS on two B70s, llama.cpp -sm tensor, f16 KV",
+   "summary": "Decode tg128 13.3 / 12.25 / 11.66 tok/s at depth 0 / 16K / 32K; pp512 189.16 / 175.69 tok/s at 0 / 32K. llama.cpp b12195-3-gf477f795c. Battery 9/9 on the tensor server. Screen, 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL b12195-3-gf477f795c, -sm tensor, -fa 1, -ctk/-ctv f16, -t 8, caps 180 W + 230 W"
+   },
+   "model": {
+    "id": "AtomicChat/Ripple-65B-Preview-GGUF AD-IQ4_XS",
+    "quantization": "IQ4_XS (AD imatrix layout, 4.78 bpw)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 32768,
+    "output_tokens": 128,
+    "context_limit_tokens": 33280,
+    "cache": "llama-bench depth fill",
+    "note": "prompt_tokens is the deepest cell (depths 0, 16384, 32768)"
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_tg128_depth_0",
+     "value": 13.3,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_16384",
+     "value": 12.25,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_32768",
+     "value": 11.66,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_0",
+     "value": 189.16,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_32768",
+     "value": 175.69,
+     "unit": "tok/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "6510ab8d92744a9a3f6d23216d312d8dcfa6eecb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/6510ab8d92744a9a3f6d23216d312d8dcfa6eecb/docs/ripple-65b/README.md"
+   }
+  },
+  {
+   "id": "ripple-65b-iq4xs-llamacpp-2xb70-sm-layer-q8kv",
+   "kind": "benchmark",
+   "title": "Ripple-65B Preview AD-IQ4_XS on two B70s, llama.cpp -sm layer, q8_0 KV",
+   "summary": "Decode tg128 10.28 / 9.85 / 9.57 tok/s at depth 0 / 16K / 32K; pp512 107.16 / 106.42 tok/s at 0 / 32K. llama.cpp b12195-3-gf477f795c. Battery 9/9 on the tensor server. Screen, 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL b12195-3-gf477f795c, -sm layer, -fa 1, -ctk/-ctv q8_0, -t 8, caps 180 W + 230 W"
+   },
+   "model": {
+    "id": "AtomicChat/Ripple-65B-Preview-GGUF AD-IQ4_XS",
+    "quantization": "IQ4_XS (AD imatrix layout, 4.78 bpw)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 32768,
+    "output_tokens": 128,
+    "context_limit_tokens": 33280,
+    "cache": "llama-bench depth fill",
+    "note": "prompt_tokens is the deepest cell (depths 0, 16384, 32768)"
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_tg128_depth_0",
+     "value": 10.28,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_16384",
+     "value": 9.85,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_32768",
+     "value": 9.57,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_0",
+     "value": 107.16,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_32768",
+     "value": 106.42,
+     "unit": "tok/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "6510ab8d92744a9a3f6d23216d312d8dcfa6eecb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/6510ab8d92744a9a3f6d23216d312d8dcfa6eecb/docs/ripple-65b/README.md"
+   }
   }
  ]
 }
