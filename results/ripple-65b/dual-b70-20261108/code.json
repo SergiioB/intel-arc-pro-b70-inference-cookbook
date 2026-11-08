@@ -1,0 +1,24 @@
+{
+ "wall_s": 21.4,
+ "usage": {
+  "completion_tokens": 167,
+  "prompt_tokens": 38,
+  "total_tokens": 205,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  }
+ },
+ "timings": {
+  "cache_n": 0,
+  "prompt_n": 38,
+  "prompt_ms": 808.443,
+  "prompt_per_token_ms": 21.274815789473685,
+  "prompt_per_second": 47.00393225001639,
+  "predicted_n": 167,
+  "predicted_ms": 12548.26,
+  "predicted_per_token_ms": 75.59192771084338,
+  "predicted_per_second": 13.228925763412617
+ },
+ "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [list(intervals[0])]\n    for start, end in intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], end)\n        else:\n            merged.append([start, end])\n    return [tuple(x) for x in merged]\n\nassert merge_intervals([(1, 3), (2, 6), (8, 10)]) == [(1, 6), (8, 10)]\nassert merge_intervals([(1, 4), (4, 5)]) == [(1, 5)]\nassert merge_intervals([]) == []\n```",
+ "reasoning_len": 0
+}

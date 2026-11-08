@@ -1,0 +1,3 @@
+{"cell":"layer-q8kv","rc":0,"secs":636,"gpu0_j":73370,"gpu1_j":79914}
+{"cell":"layer-f16kv","rc":0,"secs":588,"gpu0_j":71379,"gpu1_j":78012}
+{"cell":"tensor-f16kv","rc":0,"secs":414,"gpu0_j":67562,"gpu1_j":84308}
