@@ -1,1 +1,1 @@
-{"utc":"2026-11-08T02:55:47Z","gpu":1,"hwmon":"/sys/class/hwmon/hwmon8","cap_uw":230000000,"temp_mc":31000,"model":"/data/nvme/models/b70-exl3-qwen38-4bpw-20260926","image":"ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a"}
+{"utc":"2026-11-08T02:55:47Z","gpu":1,"hwmon":"/sys/class/hwmon/hwmon8","cap_uw":230000000,"temp_mc":31000,"model":"$MODELS/b70-exl3-qwen38-4bpw-20260926","image":"ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a"}

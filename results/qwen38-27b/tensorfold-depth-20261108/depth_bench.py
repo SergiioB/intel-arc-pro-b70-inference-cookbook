@@ -19,8 +19,8 @@ Stdlib only.
 import argparse, hashlib, json, os, sys, time, urllib.request
 from pathlib import Path
 
-CODE_ROOT = Path('/data/nvme/engines/llama.cpp-latest')
-PROSE_ROOT = Path('/home/sergio/intel-arc-pro-b70-inference-cookbook/docs')
+CODE_ROOT = Path('$LLAMA_NEW')
+PROSE_ROOT = Path('$COOKBOOK/docs')
 DEPTHS = {'0': 0, '8k': 8192, '32k': 32768, '128k': 131072}
 
 TASKS = {

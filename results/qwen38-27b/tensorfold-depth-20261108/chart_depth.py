@@ -6,7 +6,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-R = Path('/home/sergio/B70-DOCS/results/2026/11/b70-tonight-20261108')
+R = Path('$RUN')
 out = Path(sys.argv[1]) if len(sys.argv) > 1 else R / 'qwen38-27b-depth-20261108'
 
 

@@ -4,10 +4,10 @@
 set -euo pipefail
 OUT=$1; ARM=$2; GPU=${3:-1}
 IMG=ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a
-MODEL=${B70_MODEL:-/data/nvme/models/b70-exl3-qwen38-4bpw-20260926}
+MODEL=${B70_MODEL:-$MODELS/b70-exl3-qwen38-4bpw-20260926}
 NAME=b70-depth-exl3-$ARM; PORT=8034
-HW=$(python3 /home/sergio/B70-DOCS/tools/host_facts.py hwmon "$GPU")
-PROMPTS=/home/sergio/B70-DOCS/results/2026/11/b70-tonight-20261108/prompts-qwen38.json
+HW=$(python3 host_facts.py hwmon "$GPU")
+PROMPTS=$RUN/prompts-qwen38.json
 mkdir -p "$OUT"
 [ -z "$(docker ps -q)" ] || { echo "containers running"; docker ps; exit 1; }
 ! pgrep -f 'tensorfold-native serve .*--port 8036|VLLM::EngineCore' >/dev/null || { echo "inference proc running"; exit 1; }
@@ -27,5 +27,5 @@ for i in $(seq 1 240); do curl -sf http://127.0.0.1:$PORT/health >/dev/null && b
   [ "$(docker inspect -f '{{.State.Running}}' $NAME)" = true ] || { echo "server exited"; exit 1; }; sleep 5; done
 curl -sf http://127.0.0.1:$PORT/health >/dev/null || { echo "startup timeout"; exit 1; }
 MODEL_ID=$(curl -s http://127.0.0.1:$PORT/v1/models | python3 -c 'import json,sys;print(json.load(sys.stdin)["data"][0]["id"])')
-python3 /home/sergio/B70-DOCS/scripts/bench/depth_bench.py run --base http://127.0.0.1:$PORT --model "$MODEL_ID" --prompts $PROMPTS \
+python3 $BENCH/depth_bench.py run --base http://127.0.0.1:$PORT --model "$MODEL_ID" --prompts $PROMPTS \
   --out $OUT --hwmon $HW --cool ${COOL:-55} --depths ${DEPTHS:-0,8k,32k,128k} --reps ${REPS:-2} --arm exl3-$ARM

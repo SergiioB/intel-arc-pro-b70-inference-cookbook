@@ -4,13 +4,13 @@
 # Arms on one server: drafted -> serial ("draft": false) -> drafted2. C=1, greedy, thinking off.
 set -euo pipefail
 OUT=$1; GPU=${2:-1}
-TF=/data/sata1/work/tensorfold-20261104
+TF=$TF
 BIN=${TF_BIN:-$TF/src-v1.2.4/zig-out/xpu/bin/tensorfold-native}
 MODEL=${TF_MODEL:-$TF/models/Qwen3.8-27B-MLX-4bit}
 DRAFT=$TF/models/Qwen3.8-27B-DFlash2
 PORT=8036
-HW=$(python3 /home/sergio/B70-DOCS/tools/host_facts.py hwmon "$GPU")
-PROMPTS=/home/sergio/B70-DOCS/results/2026/11/b70-tonight-20261108/prompts-qwen38.json
+HW=$(python3 host_facts.py hwmon "$GPU")
+PROMPTS=$RUN/prompts-qwen38.json
 mkdir -p "$OUT"
 [ -z "$(docker ps -q)" ] || { echo "containers running"; docker ps; exit 1; }
 ! pgrep -f 'tensorfold-native|llama-server|VLLM::EngineCore' >/dev/null || { echo "inference proc running"; exit 1; }
@@ -30,11 +30,11 @@ for i in $(seq 1 240); do
   sleep 5
 done
 curl -sf http://127.0.0.1:$PORT/health >/dev/null || { echo "startup timeout"; exit 1; }
-B="python3 /home/sergio/B70-DOCS/scripts/bench/depth_bench.py run --base http://127.0.0.1:$PORT --model qwen --prompts $PROMPTS --out $OUT --hwmon $HW --cool ${COOL:-55} --depths ${DEPTHS:-0,8k,32k,128k} --reps ${REPS:-2}"
+B="python3 $BENCH/depth_bench.py run --base http://127.0.0.1:$PORT --model qwen --prompts $PROMPTS --out $OUT --hwmon $HW --cool ${COOL:-55} --depths ${DEPTHS:-0,8k,32k,128k} --reps ${REPS:-2}"
 $B --arm drafted
 $B --arm serial --extra-json '{"draft": false}'
 $B --arm drafted2
 if [ -n "${CANARY:-1}" ]; then
-  python3 /home/sergio/B70-DOCS/scripts/tmp/exl3xpu_mixedk_20261012/tests/canary.py --base http://127.0.0.1:$PORT --model qwen \
-    --prompts /home/sergio/B70-DOCS/scripts/tmp/exl3xpu_mixedk_20261012/tests/prompts_decoded.json > "$OUT/canary.txt" 2>&1 || true
+  python3 $TESTS/canary.py --base http://127.0.0.1:$PORT --model qwen \
+    --prompts $TESTS/prompts_decoded.json > "$OUT/canary.txt" 2>&1 || true
 fi
