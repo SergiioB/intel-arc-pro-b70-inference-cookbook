@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-11-04T00:00:00Z",
+ "updated_at": "2026-11-08",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -2709,6 +2709,566 @@
    "evidence": {
     "commit": "ffb0a055a209899be0cd07e62291d18b8840cc4e",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/ffb0a055a209899be0cd07e62291d18b8840cc4e/docs/qwen38-27b/DRAFT-INT4-S-M1.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-tensorfold-v124-dflash2-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B TensorFold v1.2.4 + DFlash2, decode by context depth (one B70, 230 W)",
+   "summary": "Lossless speculation: drafted output byte-identical to draft:false output in 8/8 cells, repeats identical. 128.3 tok/s at 68 prompt tokens, 85.1 at 8K, 37.3 at 32K, 11.4 at 131K (code prompts). Serial 32.0 / 30.4 / 23.4 / 12.8. Battery 9/9. Screen: 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "TensorFold",
+    "version": "v1.2.4 (00e7ddd lineage) + ocloc 128-GRF flag patch, Level Zero, bf16 KV"
+   },
+   "model": {
+    "id": "TensorFold/Qwen3.8-27B-MLX-4bit @22d8d538 + z-lab/Qwen3.8-27B-DFlash2",
+    "quantization": "MLX affine 4-bit g64"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 130856,
+    "output_tokens": 512,
+    "context_limit_tokens": 139264,
+    "cache": "disabled",
+    "reasoning_effort": "thinking off",
+    "note": "prompt_tokens is the deepest cell; metrics name the prompt length of each cell (68, 7976, 32552, 130856 tokens)"
+   },
+   "sampling": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 4242
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_code_prompt_68",
+     "value": 128.26,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_7976",
+     "value": 85.07,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_32552",
+     "value": 37.31,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_130856",
+     "value": 11.37,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_at_32552",
+     "value": 1475.41,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_j_per_token_code_prompt_68",
+     "value": 1.7,
+     "unit": "J/token"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "8ace492e6c0521ee3d1e97de4f676045f21ea73a",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8ace492e6c0521ee3d1e97de4f676045f21ea73a/docs/qwen38-27b/TENSORFOLD-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-exl3xpu-4bpw-mtp3-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B EXL3 4.00 bpw + MTP3 on exl3xpu, decode by context depth (one B70, 230 W)",
+   "summary": "82.8 tok/s at 68 prompt tokens, 79.4 at 8K, 73.8 at 32K, 48.2 at 131K (code prompts); prefill 2455 tok/s at 32K. MTP3 output differs from MTP-off output in 8/8 cells and MTP-off repeats differ in 7/8. Serial 32.6 / 31.5 / 29.4 / 23.3. Screen: 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "exl3xpu (vLLM 0.26 fork)",
+    "version": "ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a, fp8 KV, prefix cache off"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 4.00bpw",
+    "quantization": "EXL3 4.00 bpw"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 130856,
+    "output_tokens": 512,
+    "context_limit_tokens": 139264,
+    "cache": "disabled",
+    "reasoning_effort": "thinking off",
+    "note": "prompt_tokens is the deepest cell; metrics name the prompt length of each cell (68, 7976, 32552, 130856 tokens)"
+   },
+   "sampling": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 4242
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_code_prompt_68",
+     "value": 82.79,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_7976",
+     "value": 79.39,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_32552",
+     "value": 73.75,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_130856",
+     "value": 48.16,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_at_32552",
+     "value": 2454.74,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_j_per_token_code_prompt_68",
+     "value": 2.79,
+     "unit": "J/token"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "8ace492e6c0521ee3d1e97de4f676045f21ea73a",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8ace492e6c0521ee3d1e97de4f676045f21ea73a/docs/qwen38-27b/TENSORFOLD-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-tensorfold-tree-attn-patch-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B TensorFold v1.2.4 with the tree-attention row-split patch (one B70, 230 W, same-card pair)",
+   "summary": "Same card as its stock pair: code 123.2 -> 123.2 at 68 tokens, 82.8 -> 87.5 at 8K, 36.9 -> 47.3 at 32K (+28 %), 11.4 -> 16.8 at 131K (+48 %); card draw 214 -> 194 W at 131K. Drafted == serial in 8/8 cells, battery 9/9. Serial at 131K 19.0 tok/s. Screen: 1 sample per arm, 180 W repeat agrees.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "TensorFold",
+    "version": "v1.2.4 + results/qwen38-27b/tensorfold-depth-20261108/patches/tree-attn-row-split.patch"
+   },
+   "model": {
+    "id": "TensorFold/Qwen3.8-27B-MLX-4bit @22d8d538 + z-lab/Qwen3.8-27B-DFlash2",
+    "quantization": "MLX affine 4-bit g64"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 130856,
+    "output_tokens": 512,
+    "context_limit_tokens": 139264,
+    "cache": "disabled",
+    "reasoning_effort": "thinking off",
+    "note": "prompt_tokens is the deepest cell; metrics name the prompt length of each cell (68, 7976, 32552, 130856 tokens)"
+   },
+   "sampling": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 4242
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_code_prompt_68",
+     "value": 123.17,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_7976",
+     "value": 87.46,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_32552",
+     "value": 47.33,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_130856",
+     "value": 16.78,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_at_32552",
+     "value": 1463.8,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_j_per_token_code_prompt_68",
+     "value": 1.45,
+     "unit": "J/token"
+    }
+   ],
+   "statistics": {
+    "statistic": "single-observation",
+    "samples": 1
+   },
+   "evidence": {
+    "commit": "8ace492e6c0521ee3d1e97de4f676045f21ea73a",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8ace492e6c0521ee3d1e97de4f676045f21ea73a/docs/qwen38-27b/TENSORFOLD-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-q4km-llamacpp-b12195-kv-q80-q80-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B Q4_K_M llama.cpp SYCL b12195, q8_0 KV, decode at depth (one B70, 230 W)",
+   "summary": "tg128 at depth 0 / 16K / 64K: 27.83 / 25.8 / 22.26 tok/s on b12195-3-gf477f795c vs 28.02 / 21.31 / 12.67 on v0.7.0 (620d2225c), same card. llama-bench synthetic depth, mean of 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL b12195-3-gf477f795c, -fa 1, -ctk/-ctv q8_0, GGML_SYCL_GRAPH=ON, F16=OFF, -t 8"
+   },
+   "model": {
+    "id": "Qwen3.8-27B Q4_K_M GGUF",
+    "quantization": "Q4_K_M"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 65536,
+    "output_tokens": 128,
+    "context_limit_tokens": 66048,
+    "cache": "llama-bench depth fill",
+    "note": "prompt_tokens is the deepest cell (depths 0, 16384, 65536)"
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_tg128_depth_0",
+     "value": 27.83,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_16384",
+     "value": 25.8,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_65536",
+     "value": 22.26,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_0",
+     "value": 28.02,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_16384",
+     "value": 21.31,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_65536",
+     "value": 12.67,
+     "unit": "tok/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "e85b3cb45d1e74c4948cea167a5e65bfd38802f1",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/e85b3cb45d1e74c4948cea167a5e65bfd38802f1/docs/LLAMACPP-SYCL-KV-AT-DEPTH.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-q4km-llamacpp-b12195-kv-q40-q40-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B Q4_K_M llama.cpp SYCL b12195, q4_0 KV, decode at depth (one B70, 230 W)",
+   "summary": "tg128 at depth 0 / 16K / 64K: 27.85 / 26.52 / 23.87 tok/s on b12195-3-gf477f795c vs 27.79 / 20.2 / 11.28 on v0.7.0 (620d2225c), same card. llama-bench synthetic depth, mean of 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL b12195-3-gf477f795c, -fa 1, -ctk/-ctv q4_0, GGML_SYCL_GRAPH=ON, F16=OFF, -t 8"
+   },
+   "model": {
+    "id": "Qwen3.8-27B Q4_K_M GGUF",
+    "quantization": "Q4_K_M"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 65536,
+    "output_tokens": 128,
+    "context_limit_tokens": 66048,
+    "cache": "llama-bench depth fill",
+    "note": "prompt_tokens is the deepest cell (depths 0, 16384, 65536)"
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_tg128_depth_0",
+     "value": 27.85,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_16384",
+     "value": 26.52,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_65536",
+     "value": 23.87,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_0",
+     "value": 27.79,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_16384",
+     "value": 20.2,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_65536",
+     "value": 11.28,
+     "unit": "tok/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "e85b3cb45d1e74c4948cea167a5e65bfd38802f1",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/e85b3cb45d1e74c4948cea167a5e65bfd38802f1/docs/LLAMACPP-SYCL-KV-AT-DEPTH.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-q4km-llamacpp-b12195-kv-q50-q41-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B Q4_K_M llama.cpp SYCL b12195, q5_0/q4_1 KV, decode at depth (one B70, 230 W)",
+   "summary": "tg128 at depth 0 / 16K / 64K: 27.52 / 19.46 / 10.54 tok/s on b12195-3-gf477f795c vs 27.74 / 19.43 / 10.49 on v0.7.0 (620d2225c), same card. llama-bench synthetic depth, mean of 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL b12195-3-gf477f795c, -fa 1, -ctk/-ctv q5_0/q4_1, GGML_SYCL_GRAPH=ON, F16=OFF, -t 8"
+   },
+   "model": {
+    "id": "Qwen3.8-27B Q4_K_M GGUF",
+    "quantization": "Q4_K_M"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 65536,
+    "output_tokens": 128,
+    "context_limit_tokens": 66048,
+    "cache": "llama-bench depth fill",
+    "note": "prompt_tokens is the deepest cell (depths 0, 16384, 65536)"
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_tg128_depth_0",
+     "value": 27.52,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_16384",
+     "value": 19.46,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_65536",
+     "value": 10.54,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_0",
+     "value": 27.74,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_16384",
+     "value": 19.43,
+     "unit": "tok/s"
+    },
+    {
+     "name": "previous_build_decode_tok_s_tg128_depth_65536",
+     "value": 10.49,
+     "unit": "tok/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "e85b3cb45d1e74c4948cea167a5e65bfd38802f1",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/e85b3cb45d1e74c4948cea167a5e65bfd38802f1/docs/LLAMACPP-SYCL-KV-AT-DEPTH.md"
+   }
+  },
+  {
+   "id": "ripple-65b-iq4xs-llamacpp-2xb70-sm-tensor-f16kv",
+   "kind": "benchmark",
+   "title": "Ripple-65B Preview AD-IQ4_XS on two B70s, llama.cpp -sm tensor, f16 KV",
+   "summary": "Decode tg128 13.3 / 12.25 / 11.66 tok/s at depth 0 / 16K / 32K; pp512 189.16 / 175.69 tok/s at 0 / 32K. llama.cpp b12195-3-gf477f795c. Battery 9/9 on the tensor server. Screen, 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL b12195-3-gf477f795c, -sm tensor, -fa 1, -ctk/-ctv f16, -t 8, caps 180 W + 230 W"
+   },
+   "model": {
+    "id": "AtomicChat/Ripple-65B-Preview-GGUF AD-IQ4_XS",
+    "quantization": "IQ4_XS (AD imatrix layout, 4.78 bpw)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 32768,
+    "output_tokens": 128,
+    "context_limit_tokens": 33280,
+    "cache": "llama-bench depth fill",
+    "note": "prompt_tokens is the deepest cell (depths 0, 16384, 32768)"
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_tg128_depth_0",
+     "value": 13.3,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_16384",
+     "value": 12.25,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_32768",
+     "value": 11.66,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_0",
+     "value": 189.16,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_32768",
+     "value": 175.69,
+     "unit": "tok/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "6510ab8d92744a9a3f6d23216d312d8dcfa6eecb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/6510ab8d92744a9a3f6d23216d312d8dcfa6eecb/docs/ripple-65b/README.md"
+   }
+  },
+  {
+   "id": "ripple-65b-iq4xs-llamacpp-2xb70-sm-layer-q8kv",
+   "kind": "benchmark",
+   "title": "Ripple-65B Preview AD-IQ4_XS on two B70s, llama.cpp -sm layer, q8_0 KV",
+   "summary": "Decode tg128 10.28 / 9.85 / 9.57 tok/s at depth 0 / 16K / 32K; pp512 107.16 / 106.42 tok/s at 0 / 32K. llama.cpp b12195-3-gf477f795c. Battery 9/9 on the tensor server. Screen, 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "llama.cpp",
+    "version": "SYCL b12195-3-gf477f795c, -sm layer, -fa 1, -ctk/-ctv q8_0, -t 8, caps 180 W + 230 W"
+   },
+   "model": {
+    "id": "AtomicChat/Ripple-65B-Preview-GGUF AD-IQ4_XS",
+    "quantization": "IQ4_XS (AD imatrix layout, 4.78 bpw)"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 32768,
+    "output_tokens": 128,
+    "context_limit_tokens": 33280,
+    "cache": "llama-bench depth fill",
+    "note": "prompt_tokens is the deepest cell (depths 0, 16384, 32768)"
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_tg128_depth_0",
+     "value": 10.28,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_16384",
+     "value": 9.85,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_tg128_depth_32768",
+     "value": 9.57,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_0",
+     "value": 107.16,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_pp512_depth_32768",
+     "value": 106.42,
+     "unit": "tok/s"
+    }
+   ],
+   "statistics": {
+    "statistic": "mean",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "6510ab8d92744a9a3f6d23216d312d8dcfa6eecb",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/6510ab8d92744a9a3f6d23216d312d8dcfa6eecb/docs/ripple-65b/README.md"
    }
   }
  ]

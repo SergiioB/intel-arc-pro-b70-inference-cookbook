@@ -1,0 +1,160 @@
+diff --git a/zig/kernels/xpu/qwen27/decode.cl b/zig/kernels/xpu/qwen27/decode.cl
+index 5b7bec407..3d5607da6 100644
+--- a/zig/kernels/xpu/qwen27/decode.cl
++++ b/zig/kernels/xpu/qwen27/decode.cl
+@@ -73,15 +73,16 @@ KERNEL(16) void gdn_step(global const ushort *Q, global const ushort *K, global
+ }
+ 
+ // Decode attention by key slices: one subgroup per (slice, K/V head, query part, row). Grid y is AKV * QPARTS.
+-#define SPLIT 32
++#define SPLIT 128
+ KERNEL(16) void attn_decode(global const ushort *Q, global const ushort *KC, global const ushort *VC, global float *PM,
+                             global float *PL, global float *PO, int p0, int NS, float scale, global const int *TREE,
+                             global const ulong *MT, global const int *POS, int cap) {
+   // MT (if non-null): several streams, one row each; with TREE, tree windows; cap > 0: int8 cache (256 bytes per row).
+ #if Q27_QPARTS == 1
+-  const int sp = get_group_id(0), hk = get_group_id(1), t = get_group_id(2), lane = get_sub_group_local_id();
++  // grid (T, heads, slices): the tree rows of one key slice run back to back and share its K/V rows in L2
++  const int sp = get_group_id(2), hk = get_group_id(1), t = get_group_id(0), lane = get_sub_group_local_id();
+ #else
+-  const int sp = get_group_id(0), hk = get_group_id(1) / Q27_QPARTS, t = get_group_id(2), lane = get_sub_group_local_id();
++  const int sp = get_group_id(2), hk = get_group_id(1) / Q27_QPARTS, t = get_group_id(0), lane = get_sub_group_local_id();
+   const int qh0 = hk * Q27_GQA + (get_group_id(1) % Q27_QPARTS) * Q27_QPG; // the first query head held
+ #endif
+   int base = p0, wf = 0;
+@@ -148,6 +149,86 @@ KERNEL(16) void attn_decode(global const ushort *Q, global const ushort *KC, glo
+   }
+ }
+ 
++// Tree verify on one stream with the bf16 cache: one work-group per (slice, K/V head), subgroup t holds tree row t.
++// The slice's prefix rows (below p0, the same for every tree row) are staged in local memory once per round instead
++// of once per row; each row then runs attn_decode's loop in the same order, so its partials are bit-identical.
++#define TTILE 32
++__attribute__((intel_reqd_sub_group_size(16))) __attribute__((reqd_work_group_size(256, 1, 1))) kernel void
++attn_decode_tree(global const ushort *Q, global const ushort *KC, global const ushort *VC, global float *PM,
++                 global float *PL, global float *PO, int p0, int NS, float scale, global const int *TREE, int T) {
++  local ushort sk[TTILE * 256], sv[TTILE * 256];
++  const int sp = get_group_id(0), hk = get_group_id(1), t = get_sub_group_id(), lane = get_sub_group_local_id();
++  const int lid = get_local_id(0);
++  const bool on = t < T;
++  const int base = p0, wf = 0;
++  const int last = on ? p0 + DEPTH(t) : p0, j0 = sp * SPLIT, j1 = min(j0 + SPLIT, last + 1);
++  const int pe = min(j0 + SPLIT, base); // end of the shared prefix rows in this slice (uniform in the group)
++  float q[Q27_QPG][16], o[Q27_QPG][16], m[Q27_QPG], l[Q27_QPG];
++  for (int a = 0; a < Q27_QPG; a++) {
++    for (int i = 0; i < 16; i++) {
++      q[a][i] = on ? bf2f(Q[((long)t * Q27_AQ + hk * Q27_GQA + a) * 256 + i * 16 + lane]) : 0.0f;
++      o[a][i] = 0.0f;
++    }
++    m[a] = -INFINITY;
++    l[a] = 0.0f;
++  }
++#define TREE_ROW(KV_K, KV_V)                                                                                           \
++  {                                                                                                                    \
++    float kv[16];                                                                                                      \
++    for (int i = 0; i < 16; i++) kv[i] = bf2f(KV_K(i));                                                                \
++    float sc[Q27_QPG];                                                                                                 \
++    for (int a = 0; a < Q27_QPG; a++) {                                                                                \
++      float d = 0.0f;                                                                                                  \
++      for (int i = 0; i < 16; i++) d += q[a][i] * kv[i];                                                               \
++      sc[a] = sub_group_reduce_add(d) * scale;                                                                         \
++    }                                                                                                                  \
++    for (int i = 0; i < 16; i++) kv[i] = bf2f(KV_V(i));                                                                \
++    for (int a = 0; a < Q27_QPG; a++) {                                                                                \
++      const float mn = fmax(m[a], sc[a]);                                                                              \
++      const float al = exp(m[a] - mn), p = exp(sc[a] - mn);                                                            \
++      l[a] = l[a] * al + p;                                                                                            \
++      for (int i = 0; i < 16; i++) o[a][i] = o[a][i] * al + p * kv[i];                                                 \
++      m[a] = mn;                                                                                                       \
++    }                                                                                                                  \
++  }
++  for (int jt = j0; jt < pe; jt += TTILE) {
++    const int nt = min(TTILE, pe - jt);
++    for (int e = lid; e < nt * 256; e += 256) {
++      const long g = ((long)(jt + (e >> 8)) * Q27_AKV + hk) * 256 + (e & 255);
++      sk[e] = KC[g];
++      sv[e] = VC[g];
++    }
++    barrier(CLK_LOCAL_MEM_FENCE);
++    if (on)
++      for (int r = 0; r < nt; r++) {
++#define SK(i) sk[r * 256 + (i) * 16 + lane]
++#define SV(i) sv[r * 256 + (i) * 16 + lane]
++        TREE_ROW(SK, SV)
++#undef SK
++#undef SV
++      }
++    barrier(CLK_LOCAL_MEM_FENCE);
++  }
++  if (!on) return;
++  for (int j = max(j0, base); j < j1; j++) {
++    const long kr = base + ANC(t, j - base) - wf; // the tree rows, through the ancestor table
++#define GK(i) KC[(kr * Q27_AKV + hk) * 256 + (i) * 16 + lane]
++#define GV(i) VC[(kr * Q27_AKV + hk) * 256 + (i) * 16 + lane]
++    TREE_ROW(GK, GV)
++#undef GK
++#undef GV
++  }
++#undef TREE_ROW
++  for (int a = 0; a < Q27_QPG; a++) {
++    const long ob = ((long)t * Q27_AQ + hk * Q27_GQA + a) * NS + sp;
++    if (lane == 0) {
++      PM[ob] = m[a];
++      PL[ob] = l[a];
++    }
++    for (int i = 0; i < 16; i++) PO[ob * 256 + i * 16 + lane] = o[a][i];
++  }
++}
++
+ // Merge of the slices, in order: O bf16 [T, Q27_AQ, 256]. One subgroup per (head, row).
+ KERNEL(16) void attn_merge(global const float *PM, global const float *PL, global const float *PO, global ushort *O,
+                            int p0, int NS, global const int *TREE, global const int *POS) {
+diff --git a/zig/src/xpu/dev.zig b/zig/src/xpu/dev.zig
+index 2dff787fc..c8e1e1508 100644
+--- a/zig/src/xpu/dev.zig
++++ b/zig/src/xpu/dev.zig
+@@ -93,6 +93,7 @@ pub const Dev = struct {
+         repack: ze.H,
+         gdn_step: ze.H,
+         attn_decode: ze.H,
++        attn_decode_tree: ze.H,
+         attn_merge: ze.H,
+         kv_move: ze.H,
+         exl3_gemv: ze.H,
+diff --git a/zig/src/xpu/forward.zig b/zig/src/xpu/forward.zig
+index e4bcc7c79..dda2cdf6f 100644
+--- a/zig/src/xpu/forward.zig
++++ b/zig/src/xpu/forward.zig
+@@ -341,7 +341,10 @@ pub fn forward(d: *Dev, m: *Model, a: *Acts, ids: []const i32, p0: u32, mode: Mo
+             } else if (wide) {
+                 try d.launch(d.k.attn_prompt, .{ .x = (T + 7) / 8, .y = 4 }, .{ a.q, l.kc.?, l.vc.?, a.y, @as(i32, @intCast(p0)), t32, @as(f32, 1.0 / 16.0) });
+             } else {
+-                try d.launch(d.k.attn_decode, .{ .x = ns, .y = 4, .z = T }, .{ a.q, l.kc.?, l.vc.?, a.pm, a.pl, a.po, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), @as(f32, 1.0 / 16.0), if (mode.multi != null) tree else table, mt, mpos, kvCap() });
++                if (mode.multi == null and kvCap() == 0 and T > 1)
++                    try d.launch(d.k.attn_decode_tree, .{ .x = ns, .y = 4 }, .{ a.q, l.kc.?, l.vc.?, a.pm, a.pl, a.po, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), @as(f32, 1.0 / 16.0), table, @as(i32, @intCast(T)) })
++                else
++                    try d.launch(d.k.attn_decode, .{ .x = T, .y = 4, .z = ns }, .{ a.q, l.kc.?, l.vc.?, a.pm, a.pl, a.po, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), @as(f32, 1.0 / 16.0), if (mode.multi != null) tree else table, mt, mpos, kvCap() });
+                 try d.launch(d.k.attn_merge, .{ .x = 24, .y = T }, .{ a.pm, a.pl, a.po, a.y, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), table, mpos });
+             }
+             if (q.kv8 & 1 != 0) try d.launch(d.k.rot_heads, .{ .x = T, .y = 24 }, .{a.y});
+diff --git a/zig/src/xpu/qwen27.zig b/zig/src/xpu/qwen27.zig
+index fca104a93..7d7566f1e 100644
+--- a/zig/src/xpu/qwen27.zig
++++ b/zig/src/xpu/qwen27.zig
+@@ -58,7 +58,7 @@ pub fn chunkEnd(at: usize, len: usize) usize {
+     return if (len - at < CHUNK + 128) len else at + CHUNK;
+ }
+ pub var MAX_CTX: u32 = 4096; // KV cache rows (XPU_CTX)
+-pub const SPLIT = 32; // keys per attention split (decode.cl)
++pub const SPLIT = 128; // keys per attention split (decode.cl)
+ pub const EPS: f32 = 1e-6;
+ 
+ // Layout of a GDN layer's stash (bytes): q, k, v, g, β, then the qkv rows of P.
+@@ -271,6 +271,7 @@ pub const Runner = struct {
+             .repack = try d.kernel(mg, "repack", 16),
+             .gdn_step = try d.kernel(md, "gdn_step", 16),
+             .attn_decode = try d.kernel(md, "attn_decode", 16),
++            .attn_decode_tree = try d.kernel(md, "attn_decode_tree", 256),
+             .attn_merge = try d.kernel(md, "attn_merge", 16),
+             .kv_move = try d.kernel(md, "kv_move", 16),
+             .exl3_gemv = try d.kernel(md, "exl3_gemv", 16),

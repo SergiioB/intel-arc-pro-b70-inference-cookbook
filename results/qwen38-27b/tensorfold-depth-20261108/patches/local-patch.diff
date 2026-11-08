@@ -1,0 +1,13 @@
+diff --git a/zig/build/xpu.zig b/zig/build/xpu.zig
+index 0adbbf8..d2f8b56 100644
+--- a/zig/build/xpu.zig
++++ b/zig/build/xpu.zig
+@@ -16,7 +16,7 @@ pub fn steps(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
+     const files = b.addWriteFiles();
+     const opts = "-cl-std=CL3.0 -cl-intel-256-GRF-per-thread";
+     // the Gemma 4 prompt-rows attention: 128 registers a thread, twice the resident threads to hide latency
+-    const opts_rows = "-cl-std=CL3.0 -cl-intel-128-GRF-per-thread";
++    const opts_rows = "-cl-std=CL3.0"; // B70 lab: ocloc 26.05.1 rejects -cl-intel-128-GRF-per-thread; 128 GRF is the Xe2 default
+     for ([_]struct { []const u8, []const u8, []const u8 }{
+         .{ "glue", "zig/kernels/xpu/qwen27/glue.cl", "" },
+         .{ "decode", "zig/kernels/xpu/qwen27/decode.cl", "" },

@@ -1,0 +1,16 @@
+build start 2026-11-08T01:48:57Z
+build end 2026-11-08T01:53:55Z
+2026-11-08T01:54:14Z GPU0 kernel A/B start (overlaps GPU1 TF serial arm)
+build C start 2026-11-08T02:11:47Z
+build C end 2026-11-08T02:14:17Z
+2026-11-08T02:23:40Z queue restarted (exl3 on GPU1)
+build D start 2026-11-08T02:24:07Z (during exl3 boot)
+build D end 2026-11-08T02:26:38Z
+2026-11-08T02:27:04Z GPU0 D-vs-base A/B start (overlaps GPU1 exl3 mtp3)
+build E start 2026-11-08T02:38:02Z
+build E end 2026-11-08T02:40:30Z
+2026-11-08T02:55:35Z GPU0 E drafted/serial start
+2026-11-08T02:55:47Z GPU1 queue: exl3 serial -> llama-ab (overlaps GPU0 E runs)
+2026-11-08T03:27:22Z llama-ab started manually (queue step exited without output)
+2026-11-08T03:31:24Z GPU0 cap 180->230 W for E vs base pair (restore after); overlaps GPU1 llama-ab
+2026-11-08T03:54:49Z GPU0 cap restored 180000000
