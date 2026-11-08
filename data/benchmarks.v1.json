@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "updated_at": "2026-11-04T00:00:00Z",
+ "updated_at": "2026-11-08",
  "source": {
   "repository": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook",
   "branch": "master"
@@ -2709,6 +2709,231 @@
    "evidence": {
     "commit": "ffb0a055a209899be0cd07e62291d18b8840cc4e",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/ffb0a055a209899be0cd07e62291d18b8840cc4e/docs/qwen38-27b/DRAFT-INT4-S-M1.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-tensorfold-v124-dflash2-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B TensorFold v1.2.4 + DFlash2, decode by context depth (one B70, 230 W)",
+   "summary": "Lossless speculation: drafted output byte-identical to draft:false output in 8/8 cells, repeats identical. 128.3 tok/s at 68 prompt tokens, 85.1 at 8K, 37.3 at 32K, 11.4 at 131K (code prompts). Serial 32.0 / 30.4 / 23.4 / 12.8. Battery 9/9. Screen: 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "TensorFold",
+    "version": "v1.2.4 (00e7ddd lineage) + ocloc 128-GRF flag patch, Level Zero, bf16 KV"
+   },
+   "model": {
+    "id": "TensorFold/Qwen3.8-27B-MLX-4bit @22d8d538 + z-lab/Qwen3.8-27B-DFlash2",
+    "quantization": "MLX affine 4-bit g64"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 130856,
+    "output_tokens": 512,
+    "context_limit_tokens": 139264,
+    "cache": "disabled",
+    "reasoning_effort": "thinking off",
+    "note": "prompt_tokens is the deepest cell; metrics name the prompt length of each cell (68, 7976, 32552, 130856 tokens)"
+   },
+   "sampling": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 4242
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_code_prompt_68",
+     "value": 128.26,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_7976",
+     "value": 85.07,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_32552",
+     "value": 37.31,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_130856",
+     "value": 11.37,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_at_32552",
+     "value": 1475.41,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_j_per_token_code_prompt_68",
+     "value": 1.7,
+     "unit": "J/token"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "8ace492e6c0521ee3d1e97de4f676045f21ea73a",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8ace492e6c0521ee3d1e97de4f676045f21ea73a/docs/qwen38-27b/TENSORFOLD-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-exl3xpu-4bpw-mtp3-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B EXL3 4.00 bpw + MTP3 on exl3xpu, decode by context depth (one B70, 230 W)",
+   "summary": "82.8 tok/s at 68 prompt tokens, 79.4 at 8K, 73.8 at 32K, 48.2 at 131K (code prompts); prefill 2455 tok/s at 32K. MTP3 output differs from MTP-off output in 8/8 cells and MTP-off repeats differ in 7/8. Serial 32.6 / 31.5 / 29.4 / 23.3. Screen: 2 repeats.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "exl3xpu (vLLM 0.26 fork)",
+    "version": "ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a, fp8 KV, prefix cache off"
+   },
+   "model": {
+    "id": "turboderp/Qwen3.8-27B-exl3 4.00bpw",
+    "quantization": "EXL3 4.00 bpw"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 130856,
+    "output_tokens": 512,
+    "context_limit_tokens": 139264,
+    "cache": "disabled",
+    "reasoning_effort": "thinking off",
+    "note": "prompt_tokens is the deepest cell; metrics name the prompt length of each cell (68, 7976, 32552, 130856 tokens)"
+   },
+   "sampling": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 4242
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_code_prompt_68",
+     "value": 82.79,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_7976",
+     "value": 79.39,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_32552",
+     "value": 73.75,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_130856",
+     "value": 48.16,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_at_32552",
+     "value": 2454.74,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_j_per_token_code_prompt_68",
+     "value": 2.79,
+     "unit": "J/token"
+    }
+   ],
+   "statistics": {
+    "statistic": "median",
+    "samples": 2
+   },
+   "evidence": {
+    "commit": "8ace492e6c0521ee3d1e97de4f676045f21ea73a",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8ace492e6c0521ee3d1e97de4f676045f21ea73a/docs/qwen38-27b/TENSORFOLD-B70.md"
+   }
+  },
+  {
+   "id": "qwen38-27b-tensorfold-tree-attn-patch-depth-c1",
+   "kind": "benchmark",
+   "title": "Qwen3.8-27B TensorFold v1.2.4 with the tree-attention row-split patch (one B70, 230 W, same-card pair)",
+   "summary": "Same card as its stock pair: code 123.2 -> 123.2 at 68 tokens, 82.8 -> 87.5 at 8K, 36.9 -> 47.3 at 32K (+28 %), 11.4 -> 16.8 at 131K (+48 %); card draw 214 -> 194 W at 131K. Drafted == serial in 8/8 cells, battery 9/9. Serial at 131K 19.0 tok/s. Screen: 1 sample per arm, 180 W repeat agrees.",
+   "evidence_status": "provisional",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "TensorFold",
+    "version": "v1.2.4 + results/qwen38-27b/tensorfold-depth-20261108/patches/tree-attn-row-split.patch"
+   },
+   "model": {
+    "id": "TensorFold/Qwen3.8-27B-MLX-4bit @22d8d538 + z-lab/Qwen3.8-27B-DFlash2",
+    "quantization": "MLX affine 4-bit g64"
+   },
+   "workload": {
+    "concurrency": 1,
+    "prompt_tokens": 130856,
+    "output_tokens": 512,
+    "context_limit_tokens": 139264,
+    "cache": "disabled",
+    "reasoning_effort": "thinking off",
+    "note": "prompt_tokens is the deepest cell; metrics name the prompt length of each cell (68, 7976, 32552, 130856 tokens)"
+   },
+   "sampling": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 4242
+   },
+   "metrics": [
+    {
+     "name": "decode_tok_s_code_prompt_68",
+     "value": 123.17,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_7976",
+     "value": 87.46,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_32552",
+     "value": 47.33,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_tok_s_code_prompt_130856",
+     "value": 16.78,
+     "unit": "tok/s"
+    },
+    {
+     "name": "prefill_tok_s_at_32552",
+     "value": 1463.8,
+     "unit": "tok/s"
+    },
+    {
+     "name": "decode_j_per_token_code_prompt_68",
+     "value": 1.45,
+     "unit": "J/token"
+    }
+   ],
+   "statistics": {
+    "statistic": "single-observation",
+    "samples": 1
+   },
+   "evidence": {
+    "commit": "8ace492e6c0521ee3d1e97de4f676045f21ea73a",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/8ace492e6c0521ee3d1e97de4f676045f21ea73a/docs/qwen38-27b/TENSORFOLD-B70.md"
    }
   }
  ]
