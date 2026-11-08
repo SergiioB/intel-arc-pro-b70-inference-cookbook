@@ -13,14 +13,14 @@ Updated 2026-11-08. Start with this page, then follow **one** model-family route
 | Dense 33B, short prompts, one or two cards | [Nanbeige4.3-33B](nanbeige43-33b/README.md) | vLLM W4A16: 28.87 tok/s decode and 46,848-token KV on one card; 41.01 tok/s and a 307,072-token KV ceiling on TP2. llama.cpp layer split reaches 262,144-token context at 3.87 tok/s on a 131K prompt. In a matched llama.cpp run, Qwen3.8-27B beats it past a few thousand tokens of context. |
 | Lossless fast Qwen3.8-27B at short context | [TensorFold + DFlash2](qwen38-27b/TENSORFOLD-B70.md) | Screen 2026-11-08: 128 tok/s at a 68-token prompt with output byte-identical to non-drafted greedy; falls to 37 at 32K and 11 at 131K, where EXL3+MTP3 (74 / 48, output differs from serial) wins. A two-change attention patch gives +28 % / +48 % at 32K / 131K. |
 | Long prompts on llama.cpp | [q8_0 or q4_0 KV on a post-2026-10-29 build](LLAMACPP-SYCL-KV-AT-DEPTH.md) | Screen 2026-11-08, Qwen3.8-27B Q4_K_M: 64K decode 22.3 (q8_0) / 23.9 (q4_0) vs 10.5 for q5_0/q4_1. Prompt processing unchanged. |
-| 65B dense on two cards | [Ripple-65B `-sm tensor`](ripple-65b/README.md) | Screen 2026-11-08: 13.3 tok/s decode, 189 tok/s pp512, 11.7 at 32K; `-sm tensor` beats `-sm layer` by 29 % decode / 70 % prefill. Battery 9/9. |
+| 65B dense on two cards | [Ripple-65B `-sm tensor` + `GGML_SYCL_F16=ON` build](ripple-65b/README.md) | Screen 2026-11-08: 14.5 tok/s decode, 720 tok/s pp2048 (12.5 / 527 at 32K) on `Q4_K_M`; the F16 build flag is the whole prefill win (218 → 720), decode unchanged. Battery 9/9. |
 | Ornith-1.5-122B on two cards | [UD-IQ3_XXS llama.cpp](ornith15-122b/ORNITH15-122B-LLAMACPP.md) | llama-bench n=5: pp2048 700.07 tok/s, tg128 28.10 tok/s. 131K serves. DFlash2 is NVIDIA SGLang, not this stack. |
 
 **Correctness gate:** A passing [four-canary smoke](../scripts/canary.py) checks basic syntax and arithmetic, not exact code execution or broad answer quality. Do not describe the GPTQ checkpoint as quality-equivalent to another quantization based on those four probes. Before using it for coding decisions, compare exact answers with a reference artifact on your own task set. Do not infer quality from throughput or greedy replay alone.
 
 ## Do not repeat unchanged
 
-[**DO-NOT-REPEAT.md**](DO-NOT-REPEAT.md) is the canonical ledger of closed arms — 15 measured rejections with their
+[**DO-NOT-REPEAT.md**](DO-NOT-REPEAT.md) is the canonical ledger of closed arms — 19 measured rejections with their
 outcome, cause, scope, the condition that would reopen them, and links to evidence. Read it before starting any
 optimisation or engine port. The method is in [EVIDENCE-LEDGERS.md](EVIDENCE-LEDGERS.md): no speed number without
 its shape, a parity gate before a promotion, unknown tensor formats fail closed, one variable per arm, and a
