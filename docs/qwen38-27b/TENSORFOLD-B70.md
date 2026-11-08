@@ -110,4 +110,4 @@ turboderp 4.00 bpw weights, `max_model_len` 139264, prefix cache off), see [EXL3
   (`nice 19`) engine compiles overlapped 11 timed cells (TensorFold serial repeat 1 at
   0–32K, two TensorFold cells around 128K, EXL3+MTP3 repeat 2 at 0–32K). Each of those cells
   matches its non-overlapped repeat within 1.3 %. Timeline:
-  [`host-activity.log`](../../results/qwen38-27b/tensorfold-depth-20261108/host-activity.log).
+  [`host-activity.txt`](../../results/qwen38-27b/tensorfold-depth-20261108/host-activity.txt).
