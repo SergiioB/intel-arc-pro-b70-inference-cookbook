@@ -6,35 +6,63 @@
   "intents": {
     "read": {
       "start": "README.md",
-      "then": ["docs/WHAT-WORKED.md", "START.md", "docs/AGENT-SYSTEM.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md"]
+      "then": [
+        "docs/WHAT-WORKED.md",
+        "START.md",
+        "docs/AGENT-SYSTEM.md",
+        "docs/architecture/architecture.md",
+        "docs/FEATURE-FLAGS.md"
+      ]
     },
     "setup": {
       "start": "docs/FULL-SETUP-COMMANDS.md",
-      "then": ["docs/IMAGE-AND-PATCH-MATRIX.md"]
+      "then": [
+        "docs/IMAGE-AND-PATCH-MATRIX.md"
+      ]
     },
     "reproduce": {
       "start": "docs/IMAGE-AND-PATCH-MATRIX.md",
-      "then": ["docs/<family>/README.md", "docs/<family>/<recipe>.md"]
+      "then": [
+        "docs/<family>/README.md",
+        "docs/<family>/<recipe>.md"
+      ]
     },
     "connect": {
       "start": "docs/CONNECTING-CLIENTS.md",
-      "then": ["docs/<family>/<recipe>.md"]
+      "then": [
+        "docs/<family>/<recipe>.md"
+      ]
     },
     "operate": {
       "start": "docs/RELIABILITY-REPORT.md",
-      "then": ["watchdog/README.md", "docs/POWER-SWEET-SPOTS.md", "docs/DUAL-B70-TP2.md"]
+      "then": [
+        "watchdog/README.md",
+        "docs/POWER-SWEET-SPOTS.md",
+        "docs/DUAL-B70-TP2.md"
+      ]
     },
     "submit": {
       "start": "docs/localmaxxing-submission-schema.md",
-      "then": ["docs/BENCHMARK-FORMAT.md", "data/benchmarks.v1.json"]
+      "then": [
+        "docs/BENCHMARK-FORMAT.md",
+        "data/benchmarks.v1.json"
+      ]
     },
     "publish": {
       "start": "docs/ADDING-A-RECIPE.md",
-      "then": ["docs/CONFIRM-A-RECIPE.md", "docs/BENCHMARK-FORMAT.md", "data/benchmarks.v1.json"]
+      "then": [
+        "docs/CONFIRM-A-RECIPE.md",
+        "docs/BENCHMARK-FORMAT.md",
+        "data/benchmarks.v1.json",
+        "docs/INTEL-REFERENCE-PLAN.md"
+      ]
     },
     "triage": {
       "start": "docs/MAINTAINER-PRECHECKS.md",
-      "then": ["RELEASING.md", "docs/RELIABILITY-REPORT.md"]
+      "then": [
+        "RELEASING.md",
+        "docs/RELIABILITY-REPORT.md"
+      ]
     }
   },
   "authorities": {
@@ -55,14 +83,57 @@
     "reporter_prechecks": "docs/MAINTAINER-PRECHECKS.md",
     "release_process": "RELEASING.md",
     "architecture_reference": "docs/architecture/architecture.md",
-    "feature_flags_registry": "docs/FEATURE-FLAGS.md"
+    "feature_flags_registry": "docs/FEATURE-FLAGS.md",
+    "first_run_selection": "data/first-run.v1.json",
+    "delivery_plan": "docs/INTEL-REFERENCE-PLAN.md"
   },
   "layers": [
-    {"id": "L0", "name": "control", "contains": ["AGENTS.md", "data/system-map.v1.json"]},
-    {"id": "L1", "name": "contracts", "contains": ["docs/BENCHMARK-FORMAT.md", "docs/IMAGE-AND-PATCH-MATRIX.md", "docs/RELIABILITY-REPORT.md", "docs/CONFIRM-A-RECIPE.md"]},
-    {"id": "L2", "name": "family recipes", "contains": ["docs/<family>/", "benchmarks/<family>/"]},
-    {"id": "L3", "name": "evidence", "contains": ["results/", "data/benchmarks.v1.json"]},
-    {"id": "L4", "name": "views", "contains": ["README.md", "START.md", "docs/BENCHMARK-CATALOG.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md", "docs/assets/"]}
+    {
+      "id": "L0",
+      "name": "control",
+      "contains": [
+        "AGENTS.md",
+        "data/system-map.v1.json"
+      ]
+    },
+    {
+      "id": "L1",
+      "name": "contracts",
+      "contains": [
+        "docs/BENCHMARK-FORMAT.md",
+        "docs/IMAGE-AND-PATCH-MATRIX.md",
+        "docs/RELIABILITY-REPORT.md",
+        "docs/CONFIRM-A-RECIPE.md"
+      ]
+    },
+    {
+      "id": "L2",
+      "name": "family recipes",
+      "contains": [
+        "docs/<family>/",
+        "benchmarks/<family>/"
+      ]
+    },
+    {
+      "id": "L3",
+      "name": "evidence",
+      "contains": [
+        "results/",
+        "data/benchmarks.v1.json"
+      ]
+    },
+    {
+      "id": "L4",
+      "name": "views",
+      "contains": [
+        "README.md",
+        "START.md",
+        "docs/BENCHMARK-CATALOG.md",
+        "docs/architecture/architecture.md",
+        "docs/FEATURE-FLAGS.md",
+        "docs/assets/"
+      ]
+    }
   ],
   "invariants": [
     "Generated views are never edited as authorities.",

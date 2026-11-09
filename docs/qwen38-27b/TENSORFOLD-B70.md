@@ -36,7 +36,8 @@ the same on serial ones. Full table with chat rows, power and TTFT:
 Same frozen prompts, greedy, thinking off, compared by sha256 of the answer text:
 
 - **TensorFold:** drafted, drafted again and `"draft": false` gave identical text in 8/8 cells
-  (and repeats were identical). Stock and patched builds also matched across both cards.
+  (and repeats were identical). This agreement is within the same build. The full
+  two-change patch can differ from stock at depth because it changes reduction order.
 - **EXL3:** MTP3 output differed from MTP-off output in 8/8 cells, and two MTP-off runs of the
   same prompt differed in 7/8 cells. Its speed is real; its output is not the model's
   reproducible greedy answer.
@@ -71,8 +72,14 @@ J/token at 131K falls from 18.9 to 11.5. Patched serial decode at 131K is 19.0 t
 repeat on the same card gave the same gains (+29 % / +49 %). A local-memory variant that
 loads each slice once for all rows was 5× slower and is not included.
 
-The patch is offered upstream to TensorFold; until it merges, apply it to v1.2.4 yourself
-(below).
+Upstream status, checked 2026-11-10: [PR #2595](https://github.com/ashhart/TensorFold/pull/2595)
+contains the grid-order change with separate receipts against its named main revision.
+It preserves stock output in those checks. The full local patch in this page also widens
+slices and can change stock output; drafted-versus-serial agreement still holds within
+that patched build on the measured cells. The two artifacts and their speed results
+must stay separate. [Issue #2543](https://github.com/ashhart/TensorFold/issues/2543)
+tracks the broader proposal. Apply the local patch only to the documented v1.2.4 base
+when reproducing the tables below.
 
 ## Reproduce
 

@@ -56,3 +56,11 @@ Dependencies flow downward when deciding and upward when publishing: control sel
 A contribution is complete only when another agent can discover it from the system map, reproduce it from one family route, validate its evidence without private context, and distinguish it from every incompatible or superseded route.
 
 Use `docs/ADDING-A-RECIPE.md` for the complete write path and acceptance gates.
+
+## Keep delivery in step
+
+Follow [the Intel reference plan](INTEL-REFERENCE-PLAN.md) for the boundaries
+between private research, public recipes, XeCores, and the launcher.
+`data/first-run.v1.json` names the reviewed first-run selection; it adds no
+benchmark authority. The repository check rejects a quick start that selects
+an excluded artifact or omits the baseline speculation/cache overrides.
