@@ -33,6 +33,18 @@ replace those authorities or automatically enable a route in the launcher.
 Historical pages stay in place and carry their status. A fix updates entry
 points and adds a correction; it does not erase an inconvenient result.
 
+## Closest alternatives and the remaining question
+
+[Steve's B70 lab](https://github.com/steveseguin/b70-optimization-lab) already
+publishes Intel recipes, receipts and its own engine. The
+[Local AI registry](https://github.com/sybil-solutions/local-ai-registry) already
+links accepted launches to checks and artifact hashes. Mia's
+[recipes](https://mia-ai.net/models) show a short path from hardware to a task.
+Evidence-linked recipes are an established approach. Our proposed contribution
+is a narrow Intel route whose installation and useful task another owner can
+complete, with diagnosis and upstream maintenance when it fails. Independent
+reproduction must establish that value; no uniqueness claim follows from this audit.
+
 ## The working loop
 
 1. Pick one user task and a failure or decision it can resolve. Inspect closed
@@ -73,6 +85,30 @@ useful workflow, and maintain the existing upstream contribution. New model
 families, new kernel mechanisms, and a wider GPU fleet require separate sizing
 and usefulness gates. A new custom engine should proceed only after a measured
 removable cost and an end-to-end benefit justify its long-term maintenance.
+
+## Proposed first task pack and continuation gate
+
+Use one pinned repository fixture for twelve cases: four direct lookups, four
+cross-file questions, two questions the fixture cannot answer, and two five-turn
+change-tracking cases. These produce twenty assistant outputs. Freeze expected
+facts, citation ranges and failure rules before inference. Keep development
+examples separate from the held-out cases.
+
+A proposed pilot gate is ten of twelve complete cases passing, both missing-data
+questions handled correctly, and every configuration value used in the final
+checklist matching the fixture. This is a narrow pilot gate, not general model
+quality. Retain all outputs, setup time, interventions, actual tokens, first-token
+and total task time, cache state and cleanup. Keep energy unmeasured unless aligned
+counters are available. The pack and thresholds are planning proposals.
+
+During days 15–30, repair independent-installation blockers on this same family.
+During days 31–60, repeat the pack when an adopted dependency changes. At day 90,
+expand only for a concrete user need with capacity and maintenance evidence.
+Propose one two-hour maintenance session per week; record actual time. After two
+failed attempts at the same unchanged mechanism, pause expansion and fix or
+withdraw that recipe. No external attempts at day 30 means reproduction remains
+untested and the scope needs review. Downloads and followers cannot substitute
+for successful tasks.
 
 ## Further investigations
 
