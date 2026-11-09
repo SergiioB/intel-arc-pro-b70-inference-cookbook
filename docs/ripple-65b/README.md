@@ -51,11 +51,39 @@ llama-server -m Ripple-65B-Preview-Q4_K_M.gguf -ngl 99 -fa on -sm tensor \
   12 % from empty context to 32K.
 - `--jinja` uses the chat template embedded in the GGUF (reasoning and tools).
 
+## Deep context: 256K serves, and the session does not sag
+
+Measured 2026-11-09 with the real-content depth harness (`depth_bench.py`, code + prose
+corpora, 512-token answers, greedy, 2 reps per cell; spread across reps < 0.5 tok/s).
+Evidence and the session log:
+[`results/ripple-65b/depth-256k-session-20261109/`](../../results/ripple-65b/depth-256k-session-20261109/).
+
+![Decode by context depth, Ripple vs Qwen3.8-27B](../assets/ripple-qwen-depth-256k-20261109.png)
+
+| Prompt depth | 0 | 32K | 128K | 256K |
+|---|---|---|---|---|
+| Decode tok/s | 14.5 | 12.7 | 9.5 | 7.2 |
+| Prefill tok/s (tokens/TTFT, real content) | — | 187 | 228 | 162 |
+| 256K context fits? | | | | yes — `-c 262144`, f16 KV, 39.4 GB weights split over both cards |
+
+- Ripple answers streamed as `reasoning_content` on these cells (its template ignores
+  `enable_thinking`); rates cover all streamed tokens.
+- **Session stability** (the number a long coding session actually feels):
+  one conversation, 128K-token seed document, then 10 follow-up turns. Decode was
+  **9.65–9.71 tok/s on every turn** — 0 % drift end to end — and turn TTFT was ~9 s
+  because the KV prefix cache absorbs the history. Per-64-token windows inside each turn
+  are flat too. No cliff, no ramp-down.
+- Prefill caveat: a cold 256K prompt takes ~24 min at ~162 tok/s. Long-context use wants
+  a warm prefix (server prompt cache), not repeated cold 256K prompts.
+
+
 ## Claim boundary
 
 - Two B70 cards on PCIe 4.0 x8/x8 (CPU lanes), caps 180 W and 230 W as found, single
   stream, `llama-bench -ngl 99 -fa 1 -t 8 -b 2048 -ub 2048 -p 2048 -n 128 -r 2` per cell
-  (F16-ON cells: one repeat at depth, two at 0). Contexts above 32K were not measured.
+  (F16-ON cells: one repeat at depth, two at 0). Depth cells above 32K use the separate
+  real-content harness described in the deep-context section. A background CPU-only
+  service was active during the depth session; GPU work was exclusive.
 - Two files (`Q4_K_M`, `AD-IQ4_XS`). Ricursive publishes no sampling defaults for the
   Preview; the smoke used temperature 0.
 - Card draw during the `-sm tensor` sweep averaged ~367 W for both cards together.

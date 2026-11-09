@@ -34,6 +34,24 @@ Measured 2026-11-08 on one Intel Arc Pro B70 (230 W cap), Qwen3.8-27B `Q4_K_M` G
   host event on the other card; the table uses the higher repeat for that cell only. All
   other cells' two repeats agree within 1 %.
 
+
+## Follow-up (2026-11-09): 128K and 256K on one card, real-content prompts
+
+Same model and build (now the F16-ON rebuild), same card class, but a different harness:
+the real-content `depth_bench.py` (code/prose corpora, 512-token answers, greedy,
+`-fa on -ctk q8_0 -ctv q8_0 -c 262144`, `--parallel 1`). Raw cells:
+[`qwen38-depth-128k-256k-20261109.jsonl`](../results/llamacpp-sycl-kv-depth-20261108/).
+
+| Prompt depth | 0 | 32K | 128K | 256K |
+|---|---|---|---|---|
+| Decode tok/s (2 reps, spread < 0.1) | 26.4 | 23.0 | 17.2 | 13.0 |
+| Prefill tok/s (tokens/TTFT) | — | 267 | 318 | 311* |
+
+*256K mixes cold and prefix-cached cells. The whole 262,144-token context fits one 32 GB
+card with q8_0 KV (16 full-attention layers of 64 carry the cost). Session check at 131K:
+decode 17.1–17.5 tok/s across 11 turns, cached-prefix TTFT 0.6 s — flat, see
+[session stability](SESSION-STABILITY.md).
+
 ## Claim boundary
 
 - One model (Qwen3.8-27B, hybrid attention with 16 full-attention layers of 64), one quant

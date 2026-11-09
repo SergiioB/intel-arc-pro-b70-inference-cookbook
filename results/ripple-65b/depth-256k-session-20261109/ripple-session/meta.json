@@ -1,0 +1,11 @@
+{
+ "model": "ripple",
+ "base": "http://127.0.0.1:8050",
+ "kind": "code",
+ "depth": "128k",
+ "turns": 10,
+ "max_tokens_followups": 384,
+ "seed_prompt_sha256": "f7500614a0414db367c4138d34f16eaf86022ce1feddc15a7507d4d73c90d740",
+ "approx_seed_tokens": 130845,
+ "utc_start": "2026-11-09T02:11:42Z"
+}
