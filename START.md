@@ -45,14 +45,14 @@ after checking that disk's budget.
 ## 4. Preview and start the baseline
 
 ```bash
-b70 launch qwen38-27b -e exl3 --ctx 8192 --port 8100 --prefill fp16 --cache off --extra '--set vllm.speculative_config=null' --dry-run
-b70 launch qwen38-27b -e exl3 --ctx 8192 --port 8100 --prefill fp16 --cache off --extra '--set vllm.speculative_config=null'
+b70 launch qwen38-27b -e exl3 --ctx 8192 --port 8100 --prefill fp16 --extra '--set vllm.speculative_config=null --set vllm.enable_prefix_caching=false' --dry-run
+b70 launch qwen38-27b -e exl3 --ctx 8192 --port 8100 --prefill fp16 --extra '--set vllm.speculative_config=null --set vllm.enable_prefix_caching=false'
 ```
 
 The preview must contain `vllm.speculative_config=null` and
 `vllm.enable_prefix_caching=false`. The explicit `--extra` override works with
-published launchers whose EXL3 builder ignores `--no-mtp`. Once a release
-includes the builder fix, that switch can replace the override. First loading
+published launchers whose EXL3 builder ignores `--no-mtp`. The published 0.6.10 launcher also lacks `--cache`; pass both settings through
+`--extra`. Once a release includes the switches, they can replace the override. First loading
 may take several minutes for compilation and graph capture. Do not start a
 second server while the first loads.
 

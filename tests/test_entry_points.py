@@ -47,6 +47,14 @@ class EntryPointTests(unittest.TestCase):
             errors = checker.check(self.fixture(directory, start))
         self.assertTrue(any("disable the EXL3 drafter" in error for error in errors))
 
+    def test_cache_override_is_required_for_published_launcher(self):
+        start = (
+            (ROOT / "START.md").read_text().replace("--set vllm.enable_prefix_caching=false", "")
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            errors = checker.check(self.fixture(directory, start))
+        self.assertTrue(any("disable prefix reuse" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
