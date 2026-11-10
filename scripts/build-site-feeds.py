@@ -31,7 +31,7 @@ HISTORICAL = re.compile(
     r"^>\s*(status:\s*)?(historical|superseded|legacy)\b|^status:\s*(historical|superseded)",
     re.I | re.M,
 )
-STATUSES = {"recommended", "alternative", "research", "closed"}
+STATUSES = {"recommended", "pending", "alternative", "research", "closed"}
 USE_CASES = {"chat", "coding", "long-context", "vision"}
 
 
