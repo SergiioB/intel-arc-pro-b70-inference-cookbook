@@ -33,18 +33,12 @@ def check(root: Path) -> list[str]:
             errors.append("first-run model differs from the reviewed selection")
         if "-e" not in tokens or tokens[tokens.index("-e") + 1] != policy["launcher_engine"]:
             errors.append("first-run engine differs from the reviewed selection")
-        extra = shlex.split(tokens[tokens.index("--extra") + 1]) if "--extra" in tokens else []
-        overrides = [extra[i + 1] for i, token in enumerate(extra[:-1]) if token == "--set"]
-        if "vllm.enable_prefix_caching=false" not in overrides:
-            errors.append(
-                "first-run command must disable prefix reuse through the released override"
-            )
-        if "vllm.speculative_config=null" not in overrides:
-            errors.append("first-run command must disable the EXL3 drafter explicitly")
-        if "--cache" in tokens:
-            errors.append(
-                "first-run command uses --cache, absent from the published 0.6.10 launcher"
-            )
+        if "--no-mtp" not in tokens:
+            errors.append("first-run command must disable the EXL3 drafter with --no-mtp")
+        if "--cache" not in tokens or tokens[tokens.index("--cache") + 1] != "off":
+            errors.append("first-run command must disable prefix reuse with --cache off")
+    if f"launcher {policy['min_launcher_version']}" not in start:
+        errors.append("START.md must name the minimum launcher version")
     return errors
 
 
