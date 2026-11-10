@@ -75,6 +75,3 @@ Its commands are retained as evidence and are excluded from this first run.
 MTP3 can change the greedy answer; cache-on claims need checks on the selected
 engine, artifact, and cache-hit path. Full context, concurrent clients, and
 speed require separate evidence in the [catalog](docs/BENCHMARK-CATALOG.md).
-
-For contributors, [how the Intel reference work is organized](docs/INTEL-REFERENCE-PLAN.md)
-separates qualified routes, published screens, and future investigations.

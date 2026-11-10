@@ -59,8 +59,6 @@ Use `docs/ADDING-A-RECIPE.md` for the complete write path and acceptance gates.
 
 ## Keep delivery in step
 
-Follow [the Intel reference plan](INTEL-REFERENCE-PLAN.md) for the boundaries
-between private research, public recipes, XeCores, and the launcher.
 `data/first-run.v1.json` names the reviewed first-run selection; it adds no
 benchmark authority. The repository check rejects a quick start that selects
 an excluded artifact or omits the baseline speculation/cache overrides.
