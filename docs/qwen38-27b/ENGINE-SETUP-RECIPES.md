@@ -216,9 +216,10 @@ The measurement script lives in
 3. Reports median TTFT, prefill tok/s, decode tok/s (post-first-token).
 
 ```bash
-# Example: vLLM Int4 lane (server already listening on :8000)
-/mnt/models/.ov-genai-venv/bin/python \
-  /home/sergio/B70-DOCS/scripts/tmp/ov-mtp-20260914/ctx_sweep_vllm_v2.py
+# Example: vLLM Int4 lane (server already listening on :8000).
+# The 2026-09-14 sweep script was a private lab script and is not published;
+# scripts/depth_bench-style sweeps in this repo's results folders are the public equivalent.
+python3 ctx_sweep_vllm_v2.py
 ```
 
 The JSON it writes is the source of truth that feeds the charts.
