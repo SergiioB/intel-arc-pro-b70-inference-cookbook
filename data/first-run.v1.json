@@ -10,5 +10,6 @@
   "excluded_artifacts": [
     "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16"
   ],
-  "scope": "Entry-point consistency only; family routes own commands and the numeric catalog owns measurements."
+  "scope": "Entry-point consistency only; family routes own commands and the numeric catalog owns measurements.",
+  "min_launcher_version": "0.6.20"
 }
