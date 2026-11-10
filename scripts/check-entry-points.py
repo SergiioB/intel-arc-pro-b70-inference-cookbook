@@ -35,8 +35,12 @@ def check(root: Path) -> list[str]:
             errors.append("first-run engine differs from the reviewed selection")
         if "--no-mtp" not in tokens:
             errors.append("first-run command must disable the EXL3 drafter with --no-mtp")
-        if "--cache" not in tokens or tokens[tokens.index("--cache") + 1] != "off":
-            errors.append("first-run command must disable prefix reuse with --cache off")
+        cache = tokens[tokens.index("--cache") + 1] if "--cache" in tokens else "on"
+        if cache != policy["first_run_cache"]:
+            errors.append(
+                f"first-run command must keep prefix caching {policy['first_run_cache']}"
+                " (without it every chat turn re-reads the whole conversation)"
+            )
     if f"launcher {policy['min_launcher_version']}" not in start:
         errors.append("START.md must name the minimum launcher version")
     return errors

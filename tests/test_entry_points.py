@@ -54,11 +54,11 @@ class EntryPointTests(unittest.TestCase):
             errors = checker.check(make_fixture(directory, start))
         self.assertTrue(any("disable the EXL3 drafter" in error for error in errors))
 
-    def test_cache_override_is_required_for_published_launcher(self) -> None:
-        start = start_text().replace(" --cache off", "")
+    def test_turning_prefix_cache_off_is_rejected(self) -> None:
+        start = start_text().replace(" --no-mtp", " --no-mtp --cache off")
         with tempfile.TemporaryDirectory() as directory:
             errors = checker.check(make_fixture(directory, start))
-        self.assertTrue(any("disable prefix reuse" in error for error in errors))
+        self.assertTrue(any("prefix caching on" in error for error in errors))
 
 
 if __name__ == "__main__":
