@@ -1,5 +1,12 @@
 # Qwen3.8-27B vLLM XPU 4-Mode Recipe
 
+> Historical route, reviewed 2026-11-10. This model's GPTQ/W4A16 class failed
+> later quality checks and is excluded from the first-run path. Use the
+> [EXL3 route](EXL3-XPU.md) and [current quick start](../../START.md).
+> Commands and measurements below describe their original stack. Cache-on
+> speculative configurations require fresh cache-hit correctness evidence;
+> they are not current defaults. See [closed arms](../DO-NOT-REPEAT.md).
+
 This page is the **single-B70 GPTQ-INT4 route**. For route selection, including
 the separate dual-B70 FP8 W8A16 TP2 research recipe, start at the
 [Qwen3.8 family hub](README.md). Do not mix the FP8 kernel patches or FP8
@@ -738,4 +745,3 @@ Recommend `--reasoning-parser qwen3` as required alongside
 `--tool-call-parser qwen3_xml` for this model family — omitting it is not
 a smaller/simpler config, it's a client-facing parsing bug (raw markup in
 `content`).
-

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-11-10",
+  "model": "Qwen3.8-27B",
+  "primary_route": "docs/qwen38-27b/EXL3-XPU.md",
+  "launcher_model": "qwen38-27b",
+  "launcher_engine": "exl3",
+  "first_run_speculation": "off",
+  "first_run_cache": "off",
+  "excluded_artifacts": [
+    "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16"
+  ],
+  "scope": "Entry-point consistency only; family routes own commands and the numeric catalog owns measurements."
+}

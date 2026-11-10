@@ -55,7 +55,8 @@
     "reporter_prechecks": "docs/MAINTAINER-PRECHECKS.md",
     "release_process": "RELEASING.md",
     "architecture_reference": "docs/architecture/architecture.md",
-    "feature_flags_registry": "docs/FEATURE-FLAGS.md"
+    "feature_flags_registry": "docs/FEATURE-FLAGS.md",
+    "first_run_selection": "data/first-run.v1.json"
   },
   "layers": [
     {"id": "L0", "name": "control", "contains": ["AGENTS.md", "data/system-map.v1.json"]},

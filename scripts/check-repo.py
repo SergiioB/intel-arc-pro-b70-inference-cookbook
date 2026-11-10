@@ -16,6 +16,7 @@ from cookbook_log import get_logger, new_run_id
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CHECKS = [
     ("system-map", [sys.executable, "scripts/validate-system-map.py"]),
+    ("entry-points", [sys.executable, "scripts/check-entry-points.py"]),
     ("markdown-links", [sys.executable, "scripts/check-markdown-links.py"]),
     ("todos", [sys.executable, "scripts/check-todos.py"]),
     ("stdlib-only", [sys.executable, "scripts/check-stdlib-only.py"]),
