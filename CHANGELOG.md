@@ -12,6 +12,15 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.13.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.12.1...v1.13.0) (2026-11-10)
+
+
+### Features
+
+* Qwen3.8-27B first run is EXL3 + MTP3 at model-card sampling ([abf7b2a](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/abf7b2a94f44ebb1da1ee0bd4569893afbca4120))
+* Qwen3.8-27B first run is EXL3 + MTP3 at model-card sampling ([#80](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/issues/80)) ([abf7b2a](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/abf7b2a94f44ebb1da1ee0bd4569893afbca4120))
+* Qwen3.8-27B first run is EXL3 + MTP3, prefix cache on, at model-card sampling ([abb2cf4](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/abb2cf407ebfc50c854a5225b16e8404c29856d3))
+
 ## [1.12.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.12.0...v1.12.1) (2026-11-10)
 
 
