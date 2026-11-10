@@ -1,0 +1,5 @@
+{"cell":"f16off-tensor-iq4xs","rc":0,"secs":123,"gpu0_j":19078,"gpu1_j":23103}
+{"cell":"f16on-tensor-iq4xs","rc":0,"secs":115,"gpu0_j":13487,"gpu1_j":14406}
+{"cell":"f16on-layer-iq4xs","rc":0,"secs":94,"gpu0_j":11296,"gpu1_j":12906}
+{"cell":"f16off-tensor-q4km","rc":0,"secs":103,"gpu0_j":10631,"gpu1_j":12074}
+{"cell":"f16on-tensor-q4km","rc":0,"secs":39,"gpu0_j":4928,"gpu1_j":5307}
