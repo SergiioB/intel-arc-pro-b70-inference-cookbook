@@ -12,6 +12,19 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.12.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.11.0...v1.12.0) (2026-11-10)
+
+
+### Features
+
+* publish route and docs feeds for XeCores ([#77](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/issues/77)) ([da5a854](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/da5a854be1ba87f394dbd04d3a3240fa67e76696))
+* **ripple:** F16 build, 256K depth and session stability on two B70s ([#73](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/issues/73)) ([57ad5ef](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/57ad5ef3de015702b7fc2a9d0da371f8bc4840f7))
+
+
+### Bug Fixes
+
+* first run keeps prefix caching on, at 32K context ([#75](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/issues/75)) ([226da39](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/226da39f57d096c1e90cf37bd1650c1826b88f40))
+
 ## [1.11.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.10.0...v1.11.0) (2026-11-05)
 
 
