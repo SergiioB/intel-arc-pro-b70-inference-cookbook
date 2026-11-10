@@ -1,9 +1,10 @@
 # Start one model on one Intel Arc Pro B70
 
 Use the [Qwen3.8-27B EXL3 route](docs/qwen38-27b/EXL3-XPU.md) for the first run.
-This is the same primary route selected by the README. Start at 8,192 context
-with speculative decoding and prefix reuse disabled. This reduces the number
-of moving parts during setup; it does not establish general model quality.
+This is the same primary route selected by the README. Start at 32,768 context
+with speculative decoding off and prefix caching on. MTP3 speculation can change
+the greedy answer; the prefix cache keeps long chats from re-reading every turn.
+This does not establish general model quality.
 
 ## 1. Check the host
 
@@ -45,13 +46,14 @@ after checking that disk's budget.
 ## 4. Preview and start the baseline
 
 ```bash
-b70 launch qwen38-27b -e exl3 --ctx 8192 --port 8100 --prefill fp16 --no-mtp --cache off --dry-run
-b70 launch qwen38-27b -e exl3 --ctx 8192 --port 8100 --prefill fp16 --no-mtp --cache off
+b70 launch qwen38-27b -e exl3 --ctx 32768 --port 8100 --prefill fp16 --no-mtp --dry-run
+b70 launch qwen38-27b -e exl3 --ctx 32768 --port 8100 --prefill fp16 --no-mtp
 ```
 
 Use launcher 0.6.20 or newer (`b70 --version`). The preview must contain
-`vllm.speculative_config=null` and `vllm.enable_prefix_caching=false`. Older
-launchers accept `--no-mtp` but leave the EXL3 drafter on; on those, add
+`vllm.speculative_config=null` and `vllm.enable_prefix_caching=true`. Prefix
+caching stays on: without it every chat turn re-reads the whole conversation.
+Older launchers accept `--no-mtp` but leave the EXL3 drafter on; on those, add
 `--extra '--set vllm.speculative_config=null'`. First loading
 may take several minutes for compilation and graph capture. Do not start a
 second server while the first loads.
