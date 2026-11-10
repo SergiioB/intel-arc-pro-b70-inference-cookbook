@@ -44,6 +44,11 @@ llama-server -m Ripple-65B-Preview-Q4_K_M.gguf -ngl 99 -fa on -sm tensor \
 - `Q4_K_M` (38.8 GB) is the speed pick on two cards. `AD-IQ4_XS` (38.7 GB, 4.78 bpw) is
   AtomicChat's imatrix file; their card reports 2.5× lower KL than the plain `Q4_K_M` at
   the same size. Either needs both cards.
+- Open question for long sessions (2026-11-10): a later private run switched to `-sm layer`
+  after seeing host memory (RSS) of `llama-server` grow with every generated token under
+  `-sm tensor` on this build. That observation was not retained, so it is neither proven nor
+  ruled out. If you run long sessions, watch `ps -o rss= -p <pid>` of the server; `-sm layer`
+  avoids the question at about 29 % less decode speed.
 - Keep f16 KV with `-sm tensor`: llama.cpp issue
   [#26409](https://github.com/ggml-org/llama.cpp/issues/26409) reports hangs with quantized
   KV in tensor mode. We did not test quantized KV with `-sm tensor`.
