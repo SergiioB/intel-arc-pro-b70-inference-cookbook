@@ -1,0 +1,643 @@
+{
+ "battery": "hq4-qwen38-27b battery v1",
+ "label": "E3-nothink-3",
+ "utc_start": "2026-11-10T11:28:48Z",
+ "utc_end": "2026-11-10T11:31:16Z",
+ "wall_seconds": 147.381,
+ "parallel": 4,
+ "runtime": {
+  "mode": "http",
+  "base_url": "http://127.0.0.1:8100",
+  "model": "Qwen3.8-27B",
+  "extra_body": {
+   "temperature": 0.7,
+   "top_p": 0.8,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 1.5,
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "seed": 1003
+  },
+  "models_response": null
+ },
+ "inputs": {
+  "fixtures": "~/B70-DOCS/results/2026/11/qwen38-wsp-20261104/fixtures.json",
+  "fixtures_sha256": "a776af599d01dd8adca8e038b40a410328a97526e0d8de77c2add30126bc4013",
+  "graders_sha256": "af62230b76e5874ef3ae6934976888cd3e0d161adb1cca7fe57f2fc29d5edfac",
+  "canaries_sha256": "9623b7191300933529c51ae5ec74ab7c9a94dbc50b434a36342377a50332d5f7",
+  "run_battery_sha256": "61fbd0ff3b63f077d69aa3b01b6274b30653ff2742ae98df057c9c17e645124d",
+  "gates_md_sha256": "0739c4e214bf3ee03e561b29c6c890f2a731e183ae79436ffaf3403e7a7c3185",
+  "reference_sha256": "66cd2610fb6e24d68a5b488a2d8c4dcf0df05b6b1bc6a625e39c8eddaa181ac9"
+ },
+ "canaries": {
+  "batt-arith": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 703,
+   "sha256": "769e881d85fc5d27cb4cbc8382200d95b179cfdeb56e0b439da737069eaf8a5a"
+  },
+  "batt-capital": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": null,
+   "sha256": "5dd272b4f316b776a7b8e3d0894b37e1e42be3d5d3b204b8a5836cc50597a6b1"
+  },
+  "batt-token": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 70,
+   "sha256": "b1634672e6b535320a8b0a9235953fbf1ffad63fac4877ebdee1f22cbda2fbc0"
+  },
+  "batt-sumsq": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 14,
+   "sha256": "da76b4e9237e5298bc68add716a56d193af0778d5f70154bc7ed4699ad3b9d5d"
+  },
+  "batt-logic": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": null,
+   "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d"
+  },
+  "batt-json": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 3,
+   "sha256": "07412e46fa1e29f58bff89ea1f6cd1340f799272f258b813a5b7f00c08e4008e"
+  }
+ },
+ "forge_canaries": {
+  "arith-14": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "ddb834339f13d3c02679e6c30666ad1d49775587ec7334f6c9d1e6a414697930"
+  },
+  "code-bsearch": {
+   "passed": true,
+   "finish": "stop",
+   "match": "latex-normalized",
+   "sha256": "5d63935f59866ee9954d57f7a05a11487e9adbf6b67cf9443050cee03ca83edc"
+  },
+  "code-offbyone": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "2e78c79edceeb0d36843268d6352c69544092d66dd6460268c574e39ad3594be"
+  },
+  "logic-river": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "a41056d56d51ddef4ca1accb137695b5aba6eabd49484119730cfba1adf0d15c"
+  },
+  "recall-context": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "e125300a86951c5789457e8da87d4a2490d90a38e89713e71678632fdb706187"
+  },
+  "math-word": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "bba0682c232a1996bfb5f19d43721fa8a500ba4bfccbef31ee772589abab713b"
+  }
+ },
+ "graded": {
+  "code": {
+   "passed": 20,
+   "of": 20
+  },
+  "regression": {
+   "passed": 16,
+   "of": 20
+  },
+  "total": {
+   "passed": 36,
+   "of": 40
+  }
+ },
+ "items": [
+  {
+   "kind": "canary",
+   "id": "batt-arith",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 4,
+   "sha256": "769e881d85fc5d27cb4cbc8382200d95b179cfdeb56e0b439da737069eaf8a5a",
+   "wall_s": 0.303
+  },
+  {
+   "kind": "canary",
+   "id": "batt-capital",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 2,
+   "sha256": "5dd272b4f316b776a7b8e3d0894b37e1e42be3d5d3b204b8a5836cc50597a6b1",
+   "wall_s": 0.252
+  },
+  {
+   "kind": "canary",
+   "id": "batt-token",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 8,
+   "sha256": "b1634672e6b535320a8b0a9235953fbf1ffad63fac4877ebdee1f22cbda2fbc0",
+   "wall_s": 0.42
+  },
+  {
+   "kind": "canary",
+   "id": "batt-sumsq",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 85,
+   "sha256": "da76b4e9237e5298bc68add716a56d193af0778d5f70154bc7ed4699ad3b9d5d",
+   "wall_s": 1.81
+  },
+  {
+   "kind": "canary",
+   "id": "batt-logic",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 2,
+   "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+   "wall_s": 0.378
+  },
+  {
+   "kind": "canary",
+   "id": "batt-json",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 13,
+   "sha256": "07412e46fa1e29f58bff89ea1f6cd1340f799272f258b813a5b7f00c08e4008e",
+   "wall_s": 0.529
+  },
+  {
+   "kind": "forge_canary",
+   "id": "arith-14",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 242,
+   "sha256": "ddb834339f13d3c02679e6c30666ad1d49775587ec7334f6c9d1e6a414697930",
+   "wall_s": 4.311
+  },
+  {
+   "kind": "forge_canary",
+   "id": "code-bsearch",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 511,
+   "sha256": "5d63935f59866ee9954d57f7a05a11487e9adbf6b67cf9443050cee03ca83edc",
+   "wall_s": 11.333
+  },
+  {
+   "kind": "forge_canary",
+   "id": "code-offbyone",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 13,
+   "sha256": "2e78c79edceeb0d36843268d6352c69544092d66dd6460268c574e39ad3594be",
+   "wall_s": 0.375
+  },
+  {
+   "kind": "forge_canary",
+   "id": "logic-river",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 489,
+   "sha256": "a41056d56d51ddef4ca1accb137695b5aba6eabd49484119730cfba1adf0d15c",
+   "wall_s": 11.703
+  },
+  {
+   "kind": "forge_canary",
+   "id": "recall-context",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 21,
+   "sha256": "e125300a86951c5789457e8da87d4a2490d90a38e89713e71678632fdb706187",
+   "wall_s": 0.556
+  },
+  {
+   "kind": "forge_canary",
+   "id": "math-word",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 326,
+   "sha256": "bba0682c232a1996bfb5f19d43721fa8a500ba4bfccbef31ee772589abab713b",
+   "wall_s": 5.339
+  },
+  {
+   "kind": "code",
+   "id": "he-000",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 173,
+   "sha256": "693c74127c0f8ff0d37eb26261623c8234dc8bbdb3897fcc539e9e4b41f792c8",
+   "wall_s": 2.917
+  },
+  {
+   "kind": "code",
+   "id": "he-001",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 230,
+   "sha256": "b422fbb9991d4325619190d65dd9f0b6d551123478c3ad8e584a963edcd7599b",
+   "wall_s": 4.356
+  },
+  {
+   "kind": "code",
+   "id": "he-002",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 97,
+   "sha256": "029220b47b8f0be3c68c840f5396b450f116e3c6da677a8f5d4853e808b098e4",
+   "wall_s": 2.075
+  },
+  {
+   "kind": "code",
+   "id": "he-003",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 157,
+   "sha256": "6a4eae059484f334f3a2e1c38db1c246e9cde1563e4d6053d594e5285e123065",
+   "wall_s": 3.173
+  },
+  {
+   "kind": "code",
+   "id": "he-004",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 172,
+   "sha256": "4eabc1e4a40c8b1ade0acaea38db187ee0b129d9114dceffec2caeb6f59764aa",
+   "wall_s": 4.129
+  },
+  {
+   "kind": "code",
+   "id": "he-005",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 152,
+   "sha256": "b04f08df1116fce557f322c67c3eb0ba1ed0d22f2c6d1cb2a57de38aaf479fd4",
+   "wall_s": 3.432
+  },
+  {
+   "kind": "code",
+   "id": "he-006",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 209,
+   "sha256": "7b0f22d6d9a2280c62747a366d53ec44987b5f639b0296762feba5b45a123f89",
+   "wall_s": 4.566
+  },
+  {
+   "kind": "code",
+   "id": "he-007",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 112,
+   "sha256": "c5cdf9b7531a6e47b9643d72359f7dec793e83c6b213642fbb46edc8bc18ab24",
+   "wall_s": 2.274
+  },
+  {
+   "kind": "code",
+   "id": "he-008",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 158,
+   "sha256": "8374df6d8de9b5da58f4f1416585f042ad07801db66487ec4ceee4a6981c21ca",
+   "wall_s": 3.458
+  },
+  {
+   "kind": "code",
+   "id": "he-009",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 173,
+   "sha256": "8d403f852f86c2fb12da3d04fd65293cbcf9723421bb85e56fdae59ebf6832ee",
+   "wall_s": 3.775
+  },
+  {
+   "kind": "code",
+   "id": "he-010",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 293,
+   "sha256": "0430ce0e0a024e71709f2079cf13341432e649547306c4d19c878c3e545f4fa5",
+   "wall_s": 6.31
+  },
+  {
+   "kind": "code",
+   "id": "he-011",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 193,
+   "sha256": "327a5b0601077851ed8b4682b44c31c84181e8ca2d25fe6aa9bbc5b10a6503e7",
+   "wall_s": 3.892
+  },
+  {
+   "kind": "code",
+   "id": "he-012",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 160,
+   "sha256": "3f4becd54ef8ef6e7ea28743706ac0138ed96bfbda32108102bf406ce398b01e",
+   "wall_s": 3.098
+  },
+  {
+   "kind": "code",
+   "id": "he-013",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 109,
+   "sha256": "4a1f30026f87e8fdc154bda02ff7d5aee411fe37cfd9e08f3bde19c4750a14ed",
+   "wall_s": 1.802
+  },
+  {
+   "kind": "code",
+   "id": "he-014",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 84,
+   "sha256": "db9f8e8755ff86f80158e9f03e1a117d5dec88c1f44e292353ac86bc4c708553",
+   "wall_s": 1.985
+  },
+  {
+   "kind": "code",
+   "id": "he-015",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 92,
+   "sha256": "bcc39eaea1cfc9ac8ea47588f1ed8430664b461c78d532f2d2d65f33d666b6bd",
+   "wall_s": 2.199
+  },
+  {
+   "kind": "code",
+   "id": "he-016",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 81,
+   "sha256": "9f726030396077cdf445de9f217cb76a5189b29560e0a51306f15cdfad50dc9e",
+   "wall_s": 2.209
+  },
+  {
+   "kind": "code",
+   "id": "he-017",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 302,
+   "sha256": "1b18d67af628c9929722c25e6fabbdb764171e2bfdcd8aec9a11bde40dd69cf1",
+   "wall_s": 6.783
+  },
+  {
+   "kind": "code",
+   "id": "he-018",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 161,
+   "sha256": "1e0761529bac7c3e6e063c9cb5058aea3a7803e659311decd4a9f472dce942b7",
+   "wall_s": 3.272
+  },
+  {
+   "kind": "code",
+   "id": "he-019",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 241,
+   "sha256": "0e8a323e062c83e63b917d3a20120ddf215c8b256d2566f3b99ebb5227cb4120",
+   "wall_s": 4.612
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1453",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1258,
+   "sha256": "017591e0cbe587bc3453fcdd88ffa96c49393ca34b5446e9a7f4461b00da2fb3",
+   "wall_s": 30.288
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-928",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1190,
+   "sha256": "f916e225502ad235373e72af2f79eb6899a83f06f0861d3bfbd9e882e622da6f",
+   "wall_s": 29.075
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1780",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1093,
+   "sha256": "1bc162278705e54d44cc8d45a4d68d18ef41805b1e17a3786e0d2c4f1c94498a",
+   "wall_s": 23.767
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1247",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1060,
+   "sha256": "9a003740290e7d604a487184165e6d6c8fe4504cc1809981804e2c0e84256169",
+   "wall_s": 24.326
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1118",
+   "passed": false,
+   "finish": "stop",
+   "completion_tokens": 1065,
+   "sha256": "bb8990b7b277f841e33fb7600690fd0bd1736bf1258d2f7e8b3ce2af6e712625",
+   "wall_s": 23.436
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1876",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 799,
+   "sha256": "170f8a1c939ddb929cc1ddc19bb2abec9bb367313f110a6c62664ea0aba4047f",
+   "wall_s": 19.199
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1957",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1449,
+   "sha256": "ce4d31e3ad0c50e07ba7446cf8ffedc8e0c4c0a272fc9ac8a7cc86f5b35543b7",
+   "wall_s": 32.395
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1971",
+   "passed": false,
+   "finish": "stop",
+   "completion_tokens": 969,
+   "sha256": "4196d64df27f70b6694896e77eb7db476be2230b2ab76b9b8f4c77da18a6e1b2",
+   "wall_s": 21.614
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1953",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1350,
+   "sha256": "784361c98d469f2a8edb18ae20bce181801713daf82efa40b1990c112a58b780",
+   "wall_s": 32.989
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1555",
+   "passed": false,
+   "finish": "stop",
+   "completion_tokens": 1385,
+   "sha256": "e41671d007577450d6190279744d2f214771c17478c8219c00efbabd4fdff84b",
+   "wall_s": 36.329
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1234",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 948,
+   "sha256": "08e6bf2212bbb645e21b152a702631728472bf4d9d9b17f968b11b2a2fc1a0ce",
+   "wall_s": 21.168
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1862",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 884,
+   "sha256": "e626e0bbf050026e60a71be4de9ca8089da1a0e46f22dabeb42d97b2453f78cd",
+   "wall_s": 22.439
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1935",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "f3c16dfe9b6cd228c76d611c1e07c0de8284b15951576d615e45b688396acf7e",
+   "wall_s": 35.224
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1694",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1359,
+   "sha256": "a7e43975860859113925c874986b8da3685d096e38eb09671739deb734f70a80",
+   "wall_s": 34.61
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1045",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1200,
+   "sha256": "7e09ec0264cfd0fb0a7d86d95c51b128b39ea0ca87dc81fb2c25fe2b62959e4e",
+   "wall_s": 28.664
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6185",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 589,
+   "sha256": "a00a12c0fafc4bb6f29988f14d3b26b97501e1641c411db1dad4f7f9b16f4eef",
+   "wall_s": 12.739
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6734",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 406,
+   "sha256": "0a455fc25d7692c0a0d2375375aac80977ebafbf8c96b5d13234f7a36c6884d2",
+   "wall_s": 9.721
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6193",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 625,
+   "sha256": "ef4639066c6fa4c6329a58d6b10a4fb0c79f91b662590eca1677d6c40291c9ad",
+   "wall_s": 13.92
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6170",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 623,
+   "sha256": "cf31d947c6a45db894911c59a7a5836a964c142e4f4dfe638dc42bc0f353580d",
+   "wall_s": 12.867
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6262",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 347,
+   "sha256": "925420ef19af96d3ef8df615ad9e6f6a2c4c7e8ef00a32ebef3a091093d88922",
+   "wall_s": 7.915
+  }
+ ],
+ "graded_text_identical_to_a_reference_run": 9,
+ "errors": [],
+ "gates": {
+  "speed": "not judged (wall seconds recorded only)",
+  "a": {
+   "verdict": "PASS",
+   "passed": 6,
+   "of": 6,
+   "batt_sumsq_last_integer": 14,
+   "defect_30_observed": false
+  },
+  "a2": {
+   "verdict": "PASS",
+   "passed": 6,
+   "of": 6
+  },
+  "b": {
+   "verdict": "PASS",
+   "passed": 36,
+   "of": 40,
+   "reference_median": 34,
+   "reference_range": [
+    32,
+    36
+   ],
+   "diff": 2,
+   "above_band": true
+  },
+  "c": {
+   "verdict": "PASS",
+   "hq4_length_items": [
+    "prof-law-1935"
+   ],
+   "reference_loop_items": [
+    "prof-law-1045",
+    "prof-law-1118",
+    "prof-law-1453",
+    "prof-law-1555",
+    "prof-law-1694",
+    "prof-law-1935",
+    "prof-law-1953",
+    "prof-law-1957",
+    "prof-law-1971"
+   ],
+   "new_loops": [],
+   "finish_unknown": []
+  },
+  "overall": "PASS"
+ }
+}

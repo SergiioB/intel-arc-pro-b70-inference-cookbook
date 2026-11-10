@@ -1,0 +1,8 @@
+vllm:prefix_cache_queries_total{engine="0",model_name="Qwen3.8-27B"} 125813.0
+vllm:prefix_cache_queries_created{engine="0",model_name="Qwen3.8-27B"} 1.7943087370565543e+09
+vllm:prefix_cache_hits_total{engine="0",model_name="Qwen3.8-27B"} 44800.0
+vllm:prefix_cache_hits_created{engine="0",model_name="Qwen3.8-27B"} 1.794308737056567e+09
+vllm:external_prefix_cache_queries_total{engine="0",model_name="Qwen3.8-27B"} 0.0
+vllm:external_prefix_cache_queries_created{engine="0",model_name="Qwen3.8-27B"} 1.7943087370565796e+09
+vllm:external_prefix_cache_hits_total{engine="0",model_name="Qwen3.8-27B"} 0.0
+vllm:external_prefix_cache_hits_created{engine="0",model_name="Qwen3.8-27B"} 1.794308737056592e+09

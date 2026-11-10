@@ -1,0 +1,133 @@
+{
+ "correct": 9,
+ "degenerate": 0,
+ "n": 9,
+ "rows": [
+  {
+   "q": "What is 17 * 23? Reply with the number only.",
+   "want": "391",
+   "text": "391",
+   "s": 5.81,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7925,
+    "total_tokens": 7929,
+    "completion_tokens": 4,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "What is 144 / 12? Reply with the number only.",
+   "want": "12",
+   "text": "12",
+   "s": 1.29,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7926,
+    "total_tokens": 7929,
+    "completion_tokens": 3,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "What is sum(i*i for i in range(4)) in Python? Reply with the number only.",
+   "want": "14",
+   "text": "14",
+   "s": 1.3,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7930,
+    "total_tokens": 7933,
+    "completion_tokens": 3,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "How many letters are in the word 'kernel'? Reply with the number only.",
+   "want": "6",
+   "text": "6",
+   "s": 1.26,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7925,
+    "total_tokens": 7927,
+    "completion_tokens": 2,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "What is 2 ** 10? Reply with the number only.",
+   "want": "1024",
+   "text": "1024",
+   "s": 1.38,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7924,
+    "total_tokens": 7929,
+    "completion_tokens": 5,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "What is the capital of France? Reply with one word.",
+   "want": "Paris",
+   "text": "Paris",
+   "s": 1.25,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7921,
+    "total_tokens": 7923,
+    "completion_tokens": 2,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "What is 99 + 1? Reply with the number only.",
+   "want": "100",
+   "text": "100",
+   "s": 1.34,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7924,
+    "total_tokens": 7928,
+    "completion_tokens": 4,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "What is 7 * 8? Reply with the number only.",
+   "want": "56",
+   "text": "56",
+   "s": 1.29,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7923,
+    "total_tokens": 7926,
+    "completion_tokens": 3,
+    "prompt_tokens_details": null
+   }
+  },
+  {
+   "q": "Reverse the string 'abc'. Reply with the result only.",
+   "want": "cba",
+   "text": "cba",
+   "s": 1.26,
+   "ok": true,
+   "degenerate": false,
+   "usage": {
+    "prompt_tokens": 7921,
+    "total_tokens": 7923,
+    "completion_tokens": 2,
+    "prompt_tokens_details": null
+   }
+  }
+ ]
+}

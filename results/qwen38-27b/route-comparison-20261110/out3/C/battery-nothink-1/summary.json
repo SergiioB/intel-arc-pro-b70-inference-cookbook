@@ -1,0 +1,652 @@
+{
+ "battery": "hq4-qwen38-27b battery v1",
+ "label": "C-nothink-1",
+ "utc_start": "2026-11-10T09:56:54Z",
+ "utc_end": "2026-11-10T09:59:48Z",
+ "wall_seconds": 173.86,
+ "parallel": 4,
+ "runtime": {
+  "mode": "http",
+  "base_url": "http://127.0.0.1:8036",
+  "model": "qwen",
+  "extra_body": {
+   "temperature": 0.7,
+   "top_p": 0.8,
+   "top_k": 20,
+   "min_p": 0.0,
+   "presence_penalty": 0.0,
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   },
+   "seed": 1001
+  },
+  "models_response": null
+ },
+ "inputs": {
+  "fixtures": "~/B70-DOCS/results/2026/11/qwen38-wsp-20261104/fixtures.json",
+  "fixtures_sha256": "a776af599d01dd8adca8e038b40a410328a97526e0d8de77c2add30126bc4013",
+  "graders_sha256": "af62230b76e5874ef3ae6934976888cd3e0d161adb1cca7fe57f2fc29d5edfac",
+  "canaries_sha256": "9623b7191300933529c51ae5ec74ab7c9a94dbc50b434a36342377a50332d5f7",
+  "run_battery_sha256": "61fbd0ff3b63f077d69aa3b01b6274b30653ff2742ae98df057c9c17e645124d",
+  "gates_md_sha256": "0739c4e214bf3ee03e561b29c6c890f2a731e183ae79436ffaf3403e7a7c3185",
+  "reference_sha256": "66cd2610fb6e24d68a5b488a2d8c4dcf0df05b6b1bc6a625e39c8eddaa181ac9"
+ },
+ "canaries": {
+  "batt-arith": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 703,
+   "sha256": "769e881d85fc5d27cb4cbc8382200d95b179cfdeb56e0b439da737069eaf8a5a"
+  },
+  "batt-capital": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": null,
+   "sha256": "5dd272b4f316b776a7b8e3d0894b37e1e42be3d5d3b204b8a5836cc50597a6b1"
+  },
+  "batt-token": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 70,
+   "sha256": "b1634672e6b535320a8b0a9235953fbf1ffad63fac4877ebdee1f22cbda2fbc0"
+  },
+  "batt-sumsq": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 14,
+   "sha256": "eca3e26e41cc78ad64727cf4d67ccf971ee6893b27158fe81daddcc3ee212500"
+  },
+  "batt-logic": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": null,
+   "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d"
+  },
+  "batt-json": {
+   "passed": true,
+   "finish": "stop",
+   "last_integer": 3,
+   "sha256": "07412e46fa1e29f58bff89ea1f6cd1340f799272f258b813a5b7f00c08e4008e"
+  }
+ },
+ "forge_canaries": {
+  "arith-14": {
+   "passed": false,
+   "finish": "length",
+   "match": "none",
+   "sha256": "4f67402bd078a9849d89517c9ef06cbf771ee35f2bb3318811030a59407874ae"
+  },
+  "code-bsearch": {
+   "passed": true,
+   "finish": "stop",
+   "match": "latex-normalized",
+   "sha256": "b678bc59ee21bad32301dfe1aad24df40fc63470788c7d0bce18087fe3306030"
+  },
+  "code-offbyone": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "2e78c79edceeb0d36843268d6352c69544092d66dd6460268c574e39ad3594be"
+  },
+  "logic-river": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "29394a4c34b6286a992c4e1329bc3e92c3d89d1466157b98f6fd0093d9318302"
+  },
+  "recall-context": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "de50a919de99c3f544cf8ca39fba8f1fd18a7e217015d411c4cb2b07d658fab1"
+  },
+  "math-word": {
+   "passed": true,
+   "finish": "stop",
+   "match": "literal",
+   "sha256": "c410df5ad04a0e98ede3c92511bf9296cf9e7515b3c1bdf0f0e169f4a946665a"
+  }
+ },
+ "graded": {
+  "code": {
+   "passed": 20,
+   "of": 20
+  },
+  "regression": {
+   "passed": 13,
+   "of": 20
+  },
+  "total": {
+   "passed": 33,
+   "of": 40
+  }
+ },
+ "items": [
+  {
+   "kind": "canary",
+   "id": "batt-arith",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 4,
+   "sha256": "769e881d85fc5d27cb4cbc8382200d95b179cfdeb56e0b439da737069eaf8a5a",
+   "wall_s": 0.365
+  },
+  {
+   "kind": "canary",
+   "id": "batt-capital",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 2,
+   "sha256": "5dd272b4f316b776a7b8e3d0894b37e1e42be3d5d3b204b8a5836cc50597a6b1",
+   "wall_s": 0.365
+  },
+  {
+   "kind": "canary",
+   "id": "batt-token",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 8,
+   "sha256": "b1634672e6b535320a8b0a9235953fbf1ffad63fac4877ebdee1f22cbda2fbc0",
+   "wall_s": 0.731
+  },
+  {
+   "kind": "canary",
+   "id": "batt-sumsq",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 146,
+   "sha256": "eca3e26e41cc78ad64727cf4d67ccf971ee6893b27158fe81daddcc3ee212500",
+   "wall_s": 2.498
+  },
+  {
+   "kind": "canary",
+   "id": "batt-logic",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 2,
+   "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+   "wall_s": 0.228
+  },
+  {
+   "kind": "canary",
+   "id": "batt-json",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 13,
+   "sha256": "07412e46fa1e29f58bff89ea1f6cd1340f799272f258b813a5b7f00c08e4008e",
+   "wall_s": 0.556
+  },
+  {
+   "kind": "forge_canary",
+   "id": "arith-14",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 256,
+   "sha256": "4f67402bd078a9849d89517c9ef06cbf771ee35f2bb3318811030a59407874ae",
+   "wall_s": 2.953
+  },
+  {
+   "kind": "forge_canary",
+   "id": "code-bsearch",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 553,
+   "sha256": "b678bc59ee21bad32301dfe1aad24df40fc63470788c7d0bce18087fe3306030",
+   "wall_s": 10.996
+  },
+  {
+   "kind": "forge_canary",
+   "id": "code-offbyone",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 13,
+   "sha256": "2e78c79edceeb0d36843268d6352c69544092d66dd6460268c574e39ad3594be",
+   "wall_s": 1.826
+  },
+  {
+   "kind": "forge_canary",
+   "id": "logic-river",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 744,
+   "sha256": "29394a4c34b6286a992c4e1329bc3e92c3d89d1466157b98f6fd0093d9318302",
+   "wall_s": 10.88
+  },
+  {
+   "kind": "forge_canary",
+   "id": "recall-context",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 20,
+   "sha256": "de50a919de99c3f544cf8ca39fba8f1fd18a7e217015d411c4cb2b07d658fab1",
+   "wall_s": 1.16
+  },
+  {
+   "kind": "forge_canary",
+   "id": "math-word",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 282,
+   "sha256": "c410df5ad04a0e98ede3c92511bf9296cf9e7515b3c1bdf0f0e169f4a946665a",
+   "wall_s": 3.2
+  },
+  {
+   "kind": "code",
+   "id": "he-000",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 173,
+   "sha256": "693c74127c0f8ff0d37eb26261623c8234dc8bbdb3897fcc539e9e4b41f792c8",
+   "wall_s": 4.595
+  },
+  {
+   "kind": "code",
+   "id": "he-001",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 225,
+   "sha256": "140c26b97c3427500be72478018fc67747cdc345f41caef6384816fca25bee6e",
+   "wall_s": 4.119
+  },
+  {
+   "kind": "code",
+   "id": "he-002",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 97,
+   "sha256": "029220b47b8f0be3c68c840f5396b450f116e3c6da677a8f5d4853e808b098e4",
+   "wall_s": 3.671
+  },
+  {
+   "kind": "code",
+   "id": "he-003",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 157,
+   "sha256": "6a4eae059484f334f3a2e1c38db1c246e9cde1563e4d6053d594e5285e123065",
+   "wall_s": 3.233
+  },
+  {
+   "kind": "code",
+   "id": "he-004",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 172,
+   "sha256": "758842a81079164b5474fab419005e95cf421aee5ad11c3b38e2ff1152b3ee3d",
+   "wall_s": 3.173
+  },
+  {
+   "kind": "code",
+   "id": "he-005",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 152,
+   "sha256": "b04f08df1116fce557f322c67c3eb0ba1ed0d22f2c6d1cb2a57de38aaf479fd4",
+   "wall_s": 3.321
+  },
+  {
+   "kind": "code",
+   "id": "he-006",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 209,
+   "sha256": "e6fc6eeb9a4ef7e39c565c3effefb132b40f287fa63a2e346218638ecc80fa29",
+   "wall_s": 3.658
+  },
+  {
+   "kind": "code",
+   "id": "he-007",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 112,
+   "sha256": "c5cdf9b7531a6e47b9643d72359f7dec793e83c6b213642fbb46edc8bc18ab24",
+   "wall_s": 2.227
+  },
+  {
+   "kind": "code",
+   "id": "he-008",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 163,
+   "sha256": "545a0ec81a61cb41f2193884ae8f45130beef02d62945cbc0e8a0ebd2c4789ed",
+   "wall_s": 2.944
+  },
+  {
+   "kind": "code",
+   "id": "he-009",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 170,
+   "sha256": "06bc4c96b35cf3b5b70770cc675292ffe767a68ba52a088c3415dc591a72d383",
+   "wall_s": 3.353
+  },
+  {
+   "kind": "code",
+   "id": "he-010",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 322,
+   "sha256": "713a19ab20a2baaa3387aecc809f77c64a4d6759be9b263076590b811bb6a829",
+   "wall_s": 6.21
+  },
+  {
+   "kind": "code",
+   "id": "he-011",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 123,
+   "sha256": "9d51ecfb42f195755e66c4077986cc80f6806eb24e6195712ac3910fe98efa4f",
+   "wall_s": 2.471
+  },
+  {
+   "kind": "code",
+   "id": "he-012",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 128,
+   "sha256": "750cbeab1375e25cd5ccac1747520d4271ea7e8965c68cc1436799e73b4a0370",
+   "wall_s": 2.523
+  },
+  {
+   "kind": "code",
+   "id": "he-013",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 109,
+   "sha256": "4a1f30026f87e8fdc154bda02ff7d5aee411fe37cfd9e08f3bde19c4750a14ed",
+   "wall_s": 2.086
+  },
+  {
+   "kind": "code",
+   "id": "he-014",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 84,
+   "sha256": "db9f8e8755ff86f80158e9f03e1a117d5dec88c1f44e292353ac86bc4c708553",
+   "wall_s": 2.113
+  },
+  {
+   "kind": "code",
+   "id": "he-015",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 92,
+   "sha256": "fc3e42fdd3afd7bce143dd84fbbb0b79bf8c15b9187bd0ade188a5f1fb4aed04",
+   "wall_s": 1.846
+  },
+  {
+   "kind": "code",
+   "id": "he-016",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 81,
+   "sha256": "9f726030396077cdf445de9f217cb76a5189b29560e0a51306f15cdfad50dc9e",
+   "wall_s": 1.937
+  },
+  {
+   "kind": "code",
+   "id": "he-017",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 248,
+   "sha256": "22ad3ed630d39f60b8c591d7868f95e4c438d55d0b24b5b31ed7aebe7cd289d8",
+   "wall_s": 3.649
+  },
+  {
+   "kind": "code",
+   "id": "he-018",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 161,
+   "sha256": "a124a487bb406afa6b1b65c0c68a636afc27609e7a7b650a0e4c41c0a156c63f",
+   "wall_s": 2.542
+  },
+  {
+   "kind": "code",
+   "id": "he-019",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 245,
+   "sha256": "f2927ca2c94bc49cffa5e27a1b420d5b522c74f7edd7f77e6d9b6debf8cd9dd3",
+   "wall_s": 3.554
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1453",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "9ccfae88c63e6b771be80ebac18b030b7a2460a37ad396215bb720ba41232aff",
+   "wall_s": 34.857
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-928",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "f5daadec4789cd4f5215bd9e25ee9e2d3c446139f142ef0b93e2c1a357884096",
+   "wall_s": 28.767
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1780",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1014,
+   "sha256": "8aa19ea85c6e7e7be01291ee7cced3a72a0aa97670e23ac1ab0926115c7d818d",
+   "wall_s": 16.677
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1247",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 908,
+   "sha256": "4eab86bde45b4e0e4b5840d4f9e74f86b02b0786c80a06501a7baec4b1b077b6",
+   "wall_s": 35.096
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1118",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1058,
+   "sha256": "0eb49a00df1be2ebf089fcd6f4bad34c3e99d59199376c398288a12a755fb7a9",
+   "wall_s": 31.81
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1876",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 904,
+   "sha256": "d1ca05a2d9afcb7bdaf5bac22b4913c34b5c02c2eb9dd65906928931dedaa4d5",
+   "wall_s": 21.953
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1957",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1106,
+   "sha256": "df679db1a467da2b9defc5ddaf92760071398c5ccf9ac97067729cecb737bf87",
+   "wall_s": 21.96
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1971",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "4677583f1c1d1a612de3c9eb12ccadbe267b9cf42ed2b0450205d20669fb3be8",
+   "wall_s": 43.56
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1953",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "988e3b4afa348eef29a7ce75f21ae4388af297e1df65f2fe90ab599d1e7dad0f",
+   "wall_s": 29.341
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1555",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "011d2da3f27ad2fb248d5e077e59034136b9ce0571efa37eca2e05ddee8e195c",
+   "wall_s": 37.118
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1234",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 933,
+   "sha256": "f61530ebd8dc43649c6cc870bc7403edb855498be307060986e3bc01ef7383ac",
+   "wall_s": 40.579
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1862",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1306,
+   "sha256": "e093bb9ceb788f8d6c017b9b76d6a066909988378c2af3c9513b70f192f0ff10",
+   "wall_s": 29.283
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1935",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "84ebb55c2a5b9e9555251b79a69fdfd2d932791fd0b4ef11dd070ca1301a9f80",
+   "wall_s": 34.933
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1694",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1320,
+   "sha256": "ce5f26ee560ecf7301e73d717a9f5c62f8da7fb945fa912968d61d105b3e522b",
+   "wall_s": 35.687
+  },
+  {
+   "kind": "regression",
+   "id": "prof-law-1045",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 1250,
+   "sha256": "a90d1a3a1a0ea8905d7a8d29ae6a5832fa23c4977996f855ee030901d79d6c39",
+   "wall_s": 35.816
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6185",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 723,
+   "sha256": "6f547879a5859e41c0b2ec7b561ec20d6b9b5be361985cb97730338ec55f4533",
+   "wall_s": 21.229
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6734",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 268,
+   "sha256": "713e9fc1d80853955f40cf1c9c723b53389942f71b0b6e128e3201cf6cdc618e",
+   "wall_s": 14.545
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6193",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 631,
+   "sha256": "a58901c16938146c078c2073f938f673d2be9c77094d3cb519614b4db0f3056e",
+   "wall_s": 16.978
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6170",
+   "passed": false,
+   "finish": "length",
+   "completion_tokens": 1536,
+   "sha256": "0a74d691e752fd6bf24b6c60280383fe5b004e59ee765235382deded1187e35d",
+   "wall_s": 20.18
+  },
+  {
+   "kind": "regression",
+   "id": "prof-med-6262",
+   "passed": true,
+   "finish": "stop",
+   "completion_tokens": 335,
+   "sha256": "bea8c97ae6dde54b30d4a5d2605429e7bde92444b5f7b4ce68ee3499bca55cbc",
+   "wall_s": 7.022
+  }
+ ],
+ "graded_text_identical_to_a_reference_run": 11,
+ "errors": [],
+ "gates": {
+  "speed": "not judged (wall seconds recorded only)",
+  "a": {
+   "verdict": "PASS",
+   "passed": 6,
+   "of": 6,
+   "batt_sumsq_last_integer": 14,
+   "defect_30_observed": false
+  },
+  "a2": {
+   "verdict": "FAIL",
+   "passed": 5,
+   "of": 6
+  },
+  "b": {
+   "verdict": "PASS",
+   "passed": 33,
+   "of": 40,
+   "reference_median": 34,
+   "reference_range": [
+    32,
+    36
+   ],
+   "diff": -1,
+   "above_band": false
+  },
+  "c": {
+   "verdict": "FAIL",
+   "hq4_length_items": [
+    "prof-law-1453",
+    "prof-law-1555",
+    "prof-law-1935",
+    "prof-law-1953",
+    "prof-law-1971",
+    "prof-law-928",
+    "prof-med-6170"
+   ],
+   "reference_loop_items": [
+    "prof-law-1045",
+    "prof-law-1118",
+    "prof-law-1453",
+    "prof-law-1555",
+    "prof-law-1694",
+    "prof-law-1935",
+    "prof-law-1953",
+    "prof-law-1957",
+    "prof-law-1971"
+   ],
+   "new_loops": [
+    "prof-law-928",
+    "prof-med-6170"
+   ],
+   "finish_unknown": []
+  },
+  "overall": "FAIL"
+ }
+}
