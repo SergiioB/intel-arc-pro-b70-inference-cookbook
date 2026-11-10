@@ -1,0 +1,173 @@
+[
+ {
+  "depth": "32k",
+  "rep": 0,
+  "wall_s": 27.08,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 32575,
+   "total_tokens": 32606,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "32k",
+  "rep": 1,
+  "wall_s": 2.56,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 32575,
+   "total_tokens": 32606,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "32k",
+  "rep": 2,
+  "wall_s": 2.56,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 32575,
+   "total_tokens": 32606,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "128k",
+  "rep": 0,
+  "wall_s": 150.05,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 130879,
+   "total_tokens": 130910,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "128k",
+  "rep": 1,
+  "wall_s": 5.31,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 130879,
+   "total_tokens": 130910,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "128k",
+  "rep": 2,
+  "wall_s": 5.31,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 130879,
+   "total_tokens": 130910,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "240k",
+  "rep": 0,
+  "wall_s": 380.99,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 245566,
+   "total_tokens": 245597,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "240k",
+  "rep": 1,
+  "wall_s": 6.68,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 245566,
+   "total_tokens": 245597,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ },
+ {
+  "depth": "240k",
+  "rep": 2,
+  "wall_s": 6.66,
+  "found": 3,
+  "detail": {
+   "ALPHA": true,
+   "BRAVO": true,
+   "CHARLIE": true
+  },
+  "text": "ALPHA=7319-QX\nBRAVO=2846-LM\nCHARLIE=5502-TR",
+  "error": null,
+  "usage": {
+   "prompt_tokens": 245566,
+   "total_tokens": 245597,
+   "completion_tokens": 31,
+   "prompt_tokens_details": null
+  }
+ }
+]

@@ -1,0 +1,1 @@
+ONEAPI_DEVICE_SELECTOR=level_zero:1 /data/nvme/engines/llama.cpp-latest/build-sycl-f16/bin/llama-server -m /data/sata2/gguf/qwen38-27b-Q4_K_M.gguf -ngl 99 -fa on -t 8 -lm none -c 131072 -np 4 -ctk q8_0 -ctv q8_0 -b 2048 -ub 2048 --jinja --host 127.0.0.1 --port 8040

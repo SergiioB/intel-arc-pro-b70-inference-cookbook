@@ -1,0 +1,156 @@
+{
+ "conditions": "Qwen3.8-27B, one Arc Pro B70 (GPU 1), 180 W cap, C1, prefix cache on, model-card sampling (thinking T1.0/top_p0.95/top_k20; non-thinking T0.7/top_p0.8/top_k20/presence 1.5, TensorFold presence 0)",
+ "routes": {
+  "E3": {
+   "route": "EXL3 4.00 bpw + MTP3 (exl3xpu, vLLM 0.26.1 fork)",
+   "short_think_0": 49.3,
+   "short_think_8k": 50.3,
+   "short_nothink_0": 59.6,
+   "short_nothink_8k": 61.8,
+   "depth": {
+    "0": {
+     "decode_tok_s": 48.6,
+     "cold_ttft_s": 0.2,
+     "prompt_tokens": 108,
+     "n": 3
+    },
+    "8k": {
+     "decode_tok_s": 46.3,
+     "cold_ttft_s": 6.1,
+     "prompt_tokens": 8016,
+     "n": 3
+    },
+    "32k": {
+     "decode_tok_s": 40.4,
+     "cold_ttft_s": 21.6,
+     "prompt_tokens": 32592,
+     "n": 3
+    },
+    "64k": {
+     "decode_tok_s": 34.8,
+     "cold_ttft_s": 34.5,
+     "prompt_tokens": 65360,
+     "n": 3
+    },
+    "128k": {
+     "decode_tok_s": 28.9,
+     "cold_ttft_s": 88.3,
+     "prompt_tokens": 130896,
+     "n": 3
+    },
+    "240k": {
+     "decode_tok_s": 21.7,
+     "cold_ttft_s": 235.3,
+     "prompt_tokens": 245583,
+     "n": 3
+    }
+   },
+   "battery_40_sampled": [
+    35,
+    35,
+    36
+   ],
+   "session_8k_10turns": {
+    "followup_ttft_median_s": 1.9,
+    "decode_median": 62.7
+   },
+   "needles": {
+    "32k": [
+     3,
+     3,
+     3
+    ],
+    "128k": [
+     3,
+     3,
+     3
+    ],
+    "240k": [
+     3,
+     3,
+     3
+    ]
+   },
+   "prefix_cache_check": "9/9 correct, 0 degenerate"
+  },
+  "E0": {
+   "route": "EXL3 4.00 bpw, MTP off",
+   "short_think_0": 30.2,
+   "short_think_8k": 29.4,
+   "short_nothink_0": 30.3,
+   "short_nothink_8k": 29.2,
+   "depth": {},
+   "battery_40_sampled": [
+    33,
+    34,
+    35
+   ],
+   "session_8k_10turns": {
+    "followup_ttft_median_s": 0.8,
+    "decode_median": 28.9
+   },
+   "prefix_cache_check_warm": "9/9 correct, 0 degenerate",
+   "prefix_cache_check_cache_off": "9/9 correct"
+  },
+  "C": {
+   "route": "TensorFold v1.2.5 + DFlash2 (MLX 4-bit)",
+   "short_think_0": 80.9,
+   "short_think_8k": 56.5,
+   "short_nothink_0": 98.3,
+   "short_nothink_8k": 72.5,
+   "depth": {
+    "0": {
+     "decode_tok_s": 78.2,
+     "cold_ttft_s": 0.2,
+     "prompt_tokens": 108,
+     "n": 1
+    },
+    "8k": {
+     "decode_tok_s": 54.1,
+     "cold_ttft_s": 5.6,
+     "prompt_tokens": 8016,
+     "n": 1
+    },
+    "32k": {
+     "decode_tok_s": 28.2,
+     "cold_ttft_s": 25.3,
+     "prompt_tokens": 32592,
+     "n": 1
+    },
+    "64k": {
+     "decode_tok_s": 15.9,
+     "cold_ttft_s": 58.8,
+     "prompt_tokens": 65360,
+     "n": 2
+    }
+   },
+   "battery_40_sampled": [
+    33,
+    30,
+    34
+   ],
+   "session_8k_10turns": {
+    "followup_ttft_median_s": 0.3,
+    "decode_median": 67.6
+   }
+  },
+  "D": {
+   "route": "llama.cpp b12244 SYCL, Q4_K_M, q8_0 KV",
+   "short_think_0": 26.4,
+   "short_think_8k": 25.3,
+   "short_nothink_0": 26.0,
+   "short_nothink_8k": 25.0,
+   "depth": {},
+   "battery_40_sampled": [
+    33,
+    33,
+    30
+   ],
+   "session_8k_10turns": {
+    "followup_ttft_median_s": 0.4,
+    "decode_median": 24.9
+   }
+  }
+ },
+ "tensorfold_context_limit": "refuses 262144 with a 2 GiB prompt cache and 131072 with 4 GiB on one 32 GB card; runs 131072 with 2 GiB"
+}

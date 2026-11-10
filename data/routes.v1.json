@@ -13,17 +13,16 @@
         "long-context"
       ],
       "engine": "exl3xpu (vLLM 0.26.1 fork)",
-      "format": "EXL3 4.00 bpw",
-      "status": "pending",
+      "format": "EXL3 4.00 bpw + MTP3",
+      "status": "recommended",
       "featured": true,
       "context": 32768,
       "prefix_cache": true,
       "launcher": {
         "model": "qwen38-27b",
         "engine": "exl3",
-        "flags": "--ctx 32768 --port 8100 --prefill fp16 --no-mtp",
+        "flags": "--ctx 32768 --port 8100 --prefill fp16",
         "preview_must_contain": [
-          "vllm.speculative_config=null",
           "vllm.enable_prefix_caching=true"
         ]
       },
@@ -52,9 +51,11 @@
         ],
         "source": "https://huggingface.co/Qwen/Qwen3.8-27B#best-practices"
       },
-      "records": [],
-      "doc": "START.md",
-      "notes": "Recommendation pending. Short-context runs at the model card's sampling are done; the whole-context run (0 to 240K tokens, retrieval at depth) is in progress. The launch command below is the current START.md one."
+      "records": [
+        "qwen38-27b-exl3-mtp3-depth-cardsampling-20261110"
+      ],
+      "doc": "docs/qwen38-27b/ROUTE-COMPARISON-20261110.md",
+      "notes": "Fastest from 32K up, the only route serving 262,144 tokens on one card, retrieval 3/3 at 240K, highest sampled quality. Raise --ctx up to 262144 for long documents. MTP3 changes the greedy answer; use the card's sampling."
     },
     {
       "id": "qwen38-27b-tensorfold",
@@ -87,10 +88,10 @@
         "source": "https://huggingface.co/Qwen/Qwen3.8-27B#best-practices"
       },
       "records": [
-        "qwen38-27b-tensorfold-v124-dflash2-depth-c1"
+        "qwen38-27b-tensorfold-v125-depth-cardsampling-20261110"
       ],
       "doc": "docs/qwen38-27b/TENSORFOLD-B70.md",
-      "notes": "Not in the launcher yet. TensorFold refuses presence_penalty above 0, so the card's non-thinking preset cannot run as written."
+      "notes": "Fastest at 8K and below, slower from 32K; at most 131,072 tokens on one card. Not in the launcher yet. Refuses presence_penalty above 0, so the card's non-thinking preset cannot run as written."
     },
     {
       "id": "qwen38-27b-llamacpp-q4km",
@@ -139,6 +140,7 @@
         "source": "https://huggingface.co/Qwen/Qwen3.8-27B#best-practices"
       },
       "records": [
+        "qwen38-27b-llamacpp-q4km-short-cardsampling-20261110",
         "qwen38-27b-q4km-llamacpp-b12195-kv-q80-q80-depth-c1"
       ],
       "doc": "docs/LLAMACPP-SYCL-KV-AT-DEPTH.md",

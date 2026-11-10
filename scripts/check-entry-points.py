@@ -33,8 +33,14 @@ def check(root: Path) -> list[str]:
             errors.append("first-run model differs from the reviewed selection")
         if "-e" not in tokens or tokens[tokens.index("-e") + 1] != policy["launcher_engine"]:
             errors.append("first-run engine differs from the reviewed selection")
-        if "--no-mtp" not in tokens:
+        speculation_off = policy.get("first_run_speculation") == "off"
+        if speculation_off and "--no-mtp" not in tokens:
             errors.append("first-run command must disable the EXL3 drafter with --no-mtp")
+        if not speculation_off and "--no-mtp" in tokens:
+            selected = policy.get("first_run_speculation")
+            errors.append(
+                f"first-run command turns MTP off, but the reviewed selection is {selected}"
+            )
         cache = tokens[tokens.index("--cache") + 1] if "--cache" in tokens else "on"
         if cache != policy["first_run_cache"]:
             errors.append(

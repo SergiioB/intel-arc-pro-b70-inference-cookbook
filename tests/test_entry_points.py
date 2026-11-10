@@ -48,14 +48,14 @@ class EntryPointTests(unittest.TestCase):
             errors = checker.check(make_fixture(directory, start))
         self.assertTrue(any("excluded artifact" in error for error in errors))
 
-    def test_command_drift_fails_instead_of_silently_promoting_speculation(self) -> None:
-        start = start_text().replace(" --no-mtp", "")
+    def test_command_drift_fails_when_it_turns_off_the_selected_speculation(self) -> None:
+        start = start_text().replace("--prefill fp16\n", "--prefill fp16 --no-mtp\n")
         with tempfile.TemporaryDirectory() as directory:
             errors = checker.check(make_fixture(directory, start))
-        self.assertTrue(any("disable the EXL3 drafter" in error for error in errors))
+        self.assertTrue(any("turns MTP off" in error for error in errors))
 
     def test_turning_prefix_cache_off_is_rejected(self) -> None:
-        start = start_text().replace(" --no-mtp", " --no-mtp --cache off")
+        start = start_text().replace("--prefill fp16\n", "--prefill fp16 --cache off\n")
         with tempfile.TemporaryDirectory() as directory:
             errors = checker.check(make_fixture(directory, start))
         self.assertTrue(any("prefix caching on" in error for error in errors))

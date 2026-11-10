@@ -1,0 +1,4 @@
+✓ port 8100 answered in 1.187s (6 tok, 5.1 tok/s approx)
+  model: Qwen3.8-27B
+
+B70-OK
