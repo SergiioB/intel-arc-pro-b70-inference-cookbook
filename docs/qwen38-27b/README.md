@@ -19,8 +19,8 @@ not share a numeric authority or an interchangeable patch list.
 
 **Latest matched evidence (2026-11-11):** a five-pair one-card confirmation
 compares the deployed EXL3 4.00 bpw + MTP3 and TensorFold 4-bit g64 + DFlash2
-stacks. TensorFold is faster at 0–8K; EXL3 is faster from 16K and is the
-long-context/cache choice. The confirmation does not reproduce the earlier
+stacks. TensorFold is faster at 0–8K (the 8K non-thinking cold cell is
+unresolved); EXL3 is faster from 16K and is the long-context/cache choice. The confirmation does not reproduce the earlier
 screen's 40-item battery ordering under the stricter grader, so quality remains
 unresolved. [ROUTE-CONFIRMATION-20261111.md](ROUTE-CONFIRMATION-20261111.md).
 
