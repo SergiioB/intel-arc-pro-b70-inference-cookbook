@@ -1,0 +1,164 @@
+[
+  {
+    "route": "tf",
+    "item_id": "py-xml",
+    "rep": 0,
+    "passed": true,
+    "finish_reason": "stop",
+    "wall_s": 13.46303053000156,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-diff",
+    "rep": 0,
+    "passed": true,
+    "finish_reason": "stop",
+    "wall_s": 30.805062558996724,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-jsonpath",
+    "rep": 0,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 12.288006635004422,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-xml",
+    "rep": 1,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 19.986839876997692,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-diff",
+    "rep": 1,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 21.788444959005574,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-jsonpath",
+    "rep": 1,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 9.116643189998285,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-xml",
+    "rep": 2,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 20.071340647999023,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-diff",
+    "rep": 2,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 26.70094838699879,
+    "status": "ok"
+  },
+  {
+    "route": "tf",
+    "item_id": "py-jsonpath",
+    "rep": 2,
+    "passed": true,
+    "finish_reason": "stop",
+    "wall_s": 9.688177736999933,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-xml",
+    "rep": 0,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 39.119198521002545,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-diff",
+    "rep": 0,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 25.90424380100012,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-jsonpath",
+    "rep": 0,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 23.97757185700175,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-xml",
+    "rep": 1,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 22.398500278999563,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-diff",
+    "rep": 1,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 32.23619228399912,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-jsonpath",
+    "rep": 1,
+    "passed": true,
+    "finish_reason": "stop",
+    "wall_s": 19.77560049999738,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-xml",
+    "rep": 2,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 20.260282412993547,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-diff",
+    "rep": 2,
+    "passed": false,
+    "finish_reason": "stop",
+    "wall_s": 56.135212862995104,
+    "status": "ok"
+  },
+  {
+    "route": "exl3",
+    "item_id": "py-jsonpath",
+    "rep": 2,
+    "passed": true,
+    "finish_reason": "stop",
+    "wall_s": 15.414102885995817,
+    "status": "ok"
+  }
+]
