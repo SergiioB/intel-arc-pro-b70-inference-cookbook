@@ -1,0 +1,519 @@
+{
+  "regression_floor": [
+    {
+      "mode": "thinking",
+      "paired_outcomes": 120,
+      "distinct_items": 40,
+      "passes": {
+        "tf": 120,
+        "exl3": 119
+      },
+      "api_failures_in_excluded_pairs": {
+        "tf": 0,
+        "exl3": 0
+      },
+      "paired_flips": {
+        "tf_only": 1,
+        "exl3_only": 0,
+        "both_pass": 119,
+        "both_fail": 0
+      },
+      "truncated": {
+        "tf": 0,
+        "exl3": 0
+      },
+      "item_bootstrap_exl3_minus_tf_pass_fraction_95_interval": [
+        -0.025,
+        0.0
+      ],
+      "scope": "40-item floor only; repeats within items are correlated; not a universal quality ranking"
+    },
+    {
+      "mode": "nonthinking",
+      "paired_outcomes": 118,
+      "distinct_items": 40,
+      "passes": {
+        "tf": 114,
+        "exl3": 112
+      },
+      "api_failures_in_excluded_pairs": {
+        "tf": 0,
+        "exl3": 2
+      },
+      "paired_flips": {
+        "tf_only": 3,
+        "exl3_only": 1,
+        "both_pass": 111,
+        "both_fail": 3
+      },
+      "truncated": {
+        "tf": 0,
+        "exl3": 0
+      },
+      "item_bootstrap_exl3_minus_tf_pass_fraction_95_interval": [
+        -0.075,
+        0.025
+      ],
+      "scope": "40-item floor only; repeats within items are correlated; not a universal quality ranking"
+    }
+  ],
+  "broad_quality": {
+    "scope": "Frozen 84-item audited subset, nonthinking, three repeats; API compatibility separate. No universal quality claim.",
+    "health": {
+      "exl3": {
+        "attempted": 252,
+        "api_errors": 0,
+        "http_400": 0,
+        "grader_errors": 0,
+        "truncated": 1,
+        "passed": 227
+      },
+      "tf": {
+        "attempted": 252,
+        "api_errors": 0,
+        "http_400": 0,
+        "grader_errors": 0,
+        "truncated": 4,
+        "passed": 220
+      }
+    },
+    "categories": [
+      {
+        "area": "chemistry_biology",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 16,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 1,
+        "median_success_wall_s": 25.594572636999146,
+        "energy_per_success_j": 9501.9422455625
+      },
+      {
+        "area": "chemistry_biology",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 14,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 3,
+        "median_success_wall_s": 16.178784199000802,
+        "energy_per_success_j": 9470.33264157143
+      },
+      {
+        "area": "coding",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 2.2827489495011832,
+        "energy_per_success_j": 540.6849847916667
+      },
+      {
+        "area": "coding",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 23,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 1.2243714930009446,
+        "energy_per_success_j": 379.3406478260869
+      },
+      {
+        "area": "instruction_following",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 21,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 3.220063634998951,
+        "energy_per_success_j": 1444.993141047619
+      },
+      {
+        "area": "instruction_following",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 21,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 2.6608319190054317,
+        "energy_per_success_j": 1054.4789225714285
+      },
+      {
+        "area": "knowledge_humanities",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 17,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 9.246906680000393,
+        "energy_per_success_j": 3872.598166235294
+      },
+      {
+        "area": "knowledge_humanities",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 16,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 6.152627338997263,
+        "energy_per_success_j": 3707.217163125
+      },
+      {
+        "area": "knowledge_professional",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 21,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 13.98773582099966,
+        "energy_per_success_j": 3301.283860142857
+      },
+      {
+        "area": "knowledge_professional",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 21,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 8.535709564996068,
+        "energy_per_success_j": 2345.2331281904762
+      },
+      {
+        "area": "long_context",
+        "route": "exl3",
+        "attempted": 12,
+        "mechanically_evaluable": 12,
+        "passed": 12,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 48.20548091850105,
+        "energy_per_success_j": 8291.81399525
+      },
+      {
+        "area": "long_context",
+        "route": "tf",
+        "attempted": 12,
+        "mechanically_evaluable": 12,
+        "passed": 12,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 48.903328565000265,
+        "energy_per_success_j": 8420.908970916667
+      },
+      {
+        "area": "math",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 12.704981198499809,
+        "energy_per_success_j": 4513.789214916666
+      },
+      {
+        "area": "math",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 23,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 1,
+        "median_success_wall_s": 7.616212866996648,
+        "energy_per_success_j": 3035.1841802173913
+      },
+      {
+        "area": "multilingual",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 4.476241551499697,
+        "energy_per_success_j": 1029.0842055833334
+      },
+      {
+        "area": "multilingual",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 3.44488144099887,
+        "energy_per_success_j": 846.77875275
+      },
+      {
+        "area": "physics",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 20,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 12.142942375499842,
+        "energy_per_success_j": 2200.35769035
+      },
+      {
+        "area": "physics",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 18,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 6.021764497498225,
+        "energy_per_success_j": 1438.684689111111
+      },
+      {
+        "area": "structured_output",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 1.5667915009998978,
+        "energy_per_success_j": 290.91643533333337
+      },
+      {
+        "area": "structured_output",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 0.9769660310012114,
+        "energy_per_success_j": 178.84449508333333
+      },
+      {
+        "area": "tool_use",
+        "route": "exl3",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 1.4655899169993063,
+        "energy_per_success_j": 264.6045735833333
+      },
+      {
+        "area": "tool_use",
+        "route": "tf",
+        "attempted": 24,
+        "mechanically_evaluable": 24,
+        "passed": 24,
+        "api_errors": 0,
+        "grader_errors": 0,
+        "truncated": 0,
+        "median_success_wall_s": 0.7175545710015285,
+        "energy_per_success_j": 140.63475791666667
+      }
+    ],
+    "paired_comparisons": [
+      {
+        "area": "all",
+        "paired_outcomes": 252,
+        "distinct_items": 84,
+        "paired_flips": {
+          "both_pass": 219,
+          "exl3_only": 8,
+          "both_fail": 24,
+          "tf_only": 1
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.007936507936507936,
+          0.051587301587301584
+        ]
+      },
+      {
+        "area": "chemistry_biology",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 13,
+          "exl3_only": 3,
+          "both_fail": 7,
+          "tf_only": 1
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.20833333333333331
+        ]
+      },
+      {
+        "area": "coding",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 23,
+          "exl3_only": 1
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.125
+        ]
+      },
+      {
+        "area": "instruction_following",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 21,
+          "both_fail": 3
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "area": "knowledge_humanities",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 16,
+          "both_fail": 7,
+          "exl3_only": 1
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.125
+        ]
+      },
+      {
+        "area": "knowledge_professional",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 21,
+          "both_fail": 3
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "area": "long_context",
+        "paired_outcomes": 12,
+        "distinct_items": 4,
+        "paired_flips": {
+          "both_pass": 12
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "area": "math",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 23,
+          "exl3_only": 1
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.125
+        ]
+      },
+      {
+        "area": "multilingual",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 24
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "area": "physics",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 18,
+          "both_fail": 4,
+          "exl3_only": 2
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.25
+        ]
+      },
+      {
+        "area": "structured_output",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 24
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "area": "tool_use",
+        "paired_outcomes": 24,
+        "distinct_items": 8,
+        "paired_flips": {
+          "both_pass": 24
+        },
+        "excluded": {},
+        "item_bootstrap_exl3_minus_tf_pass_fraction_pointwise_95_interval": [
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  }
+}

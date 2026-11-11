@@ -1,0 +1,50 @@
+[
+  {
+    "route": "tf",
+    "concurrency": 2,
+    "batches": 5,
+    "median_aggregate_output_tok_s": 49.09005957503932,
+    "requests": 10,
+    "failed": 0,
+    "ttft_p50_s": 8.437113090498315,
+    "ttft_p95_s": 11.303975766550503,
+    "ttft_p99_s": 11.305930948512906,
+    "scope": "small n; percentile estimates are descriptive, not a tail-latency SLO"
+  },
+  {
+    "route": "tf",
+    "concurrency": 4,
+    "batches": 5,
+    "median_aggregate_output_tok_s": 55.70033231894983,
+    "requests": 20,
+    "failed": 0,
+    "ttft_p50_s": 14.175098163501389,
+    "ttft_p95_s": 22.714853101544215,
+    "ttft_p99_s": 22.715139371509505,
+    "scope": "small n; percentile estimates are descriptive, not a tail-latency SLO"
+  },
+  {
+    "route": "exl3",
+    "concurrency": 2,
+    "batches": 5,
+    "median_aggregate_output_tok_s": 48.16428179604913,
+    "requests": 10,
+    "failed": 0,
+    "ttft_p50_s": 9.838295306497457,
+    "ttft_p95_s": 12.600377461648169,
+    "ttft_p99_s": 12.603584270728025,
+    "scope": "small n; percentile estimates are descriptive, not a tail-latency SLO"
+  },
+  {
+    "route": "exl3",
+    "concurrency": 4,
+    "batches": 5,
+    "median_aggregate_output_tok_s": 56.06509919911392,
+    "requests": 20,
+    "failed": 0,
+    "ttft_p50_s": 17.43353031049992,
+    "ttft_p95_s": 25.719863246149906,
+    "ttft_p99_s": 25.726460200428555,
+    "scope": "small n; percentile estimates are descriptive, not a tail-latency SLO"
+  }
+]

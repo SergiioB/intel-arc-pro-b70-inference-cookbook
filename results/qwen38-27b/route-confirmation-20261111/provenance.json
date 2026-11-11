@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "generation": "qwen38-27b-route-confirmation-20261111",
+  "measured_utc": "2026-11-11",
+  "status": "matched supplemental confirmation; not a catalog record",
+  "hardware": {
+    "host": "one headless Intel Arc Pro B70 workstation",
+    "gpu": "Intel Arc Pro B70 32 GB (Battlemage G31), GPU 1",
+    "pci_id": "0000:10:00.0",
+    "kernel": "7.0.0-28-generic",
+    "cpu_ram": "not part of the comparison; >20 GiB MemAvailable required before each load"
+  },
+  "software": {
+    "os": "Ubuntu 26.04 LTS class",
+    "docker": "29.1.3"
+  },
+  "stacks": {
+    "exl3": {
+      "label": "EXL3 4.00 bpw + MTP3",
+      "engine": "exl3xpu on vLLM 0.26.1 fork",
+      "vllm_observed": "0.26.1.dev0+g568afb3a1.d20260907-cb77c3db",
+      "image": "intel/llm-scaler-vllm:0.26.0-b2",
+      "image_digest": "sha256:52218ad85513ab6686d4c090c83c2bd8c5b02423c63aa4dabd41837fe641fe3b",
+      "model": "Qwen3.8-27B EXL3 4.00 bpw local artifact",
+      "quantization": "EXL3 4.00 bpw",
+      "speculation": "native MTP3",
+      "served_context": 262144,
+      "kv_cache": "fp8",
+      "prefix_cache": true,
+      "model_files": {
+        "config.json": "dab9abc478e1b1b928ef354f27a26fc90e8191a4a3ce5f3d19aa21558216b267",
+        "tokenizer.json": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3"
+      }
+    },
+    "tf": {
+      "label": "TensorFold 4-bit g64 + DFlash2",
+      "engine": "tensorfold-native 1.2.5",
+      "binary_sha256": "25537eb3700a71ae36578f50769bcbcbd42556176186cca644c8e931bacfb989",
+      "model": "Qwen3.8-27B-MLX-4bit",
+      "quantization": "MLX affine 4-bit, group size 64",
+      "drafter": "Qwen3.8-27B-DFlash2",
+      "served_context": 131072,
+      "prompt_cache_gib": 2,
+      "max_tokens": 8192,
+      "model_files": {
+        "config.json": "14b65a0ee06517060a6bbd979bb1a8ff54e7b304b1a1f01d54344b88b8285e85",
+        "model.safetensors.index.json": "13b840162b4cb35c66fef7df072f7dbb4717908204364f5e5d9f9655a2758fa8",
+        "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+        "chat_template.jinja": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041"
+      }
+    }
+  },
+  "power": {
+    "cap_w": 180,
+    "card": "GPU 1",
+    "restored_caps_w": {
+      "gpu0": 180,
+      "gpu1": 230
+    },
+    "restore_verified": true
+  },
+  "protocol": {
+    "speed": "512 generated tokens; one discarded same-shape warmup; five fresh paired prompts per cell where available; cold and same-prompt replay recorded separately",
+    "quality": "8192-token cap; 40-item mechanical floor x3 x2 modes; 84-item audited nonthinking subset x3",
+    "sampling": {
+      "thinking": {
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "top_k": 20,
+        "min_p": 0,
+        "presence_penalty": 0
+      },
+      "nonthinking": {
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0,
+        "presence_penalty": 0
+      }
+    },
+    "note": "TensorFold cannot execute presence_penalty 1.5; both stacks used 0 for the matched nonthinking cells."
+  },
+  "evidence": {
+    "summary": "summary.json",
+    "speed_cells": "speed-cells.csv",
+    "quality": "quality.json",
+    "retrieval": "retrieval.json",
+    "sessions": "sessions.json",
+    "hard_code": "hard-code.json",
+    "parity": "parity.json",
+    "concurrency": "concurrency.json",
+    "charts": [
+      "charts/context-thinking.png",
+      "charts/context-nonthinking.png",
+      "charts/chat-over-time.png",
+      "charts/quality-by-area.png"
+    ]
+  }
+}

@@ -5,6 +5,13 @@ prefix cache on, at the model card's recommended sampling (not greedy). Status: 
 Raw cells, prompts hashes, scripts and logs:
 [`results/qwen38-27b/route-comparison-20261110/`](../../results/qwen38-27b/route-comparison-20261110/).
 
+> **Confirmation generation (2026-11-11):** a matched five-pair confirmation is
+> published at [ROUTE-CONFIRMATION-20261111.md](ROUTE-CONFIRMATION-20261111.md).
+> It bounds the speed crossover to 8K–16K, confirms TensorFold's 2 GiB prompt
+> cache stops retaining at 32K, and does **not** reproduce this screen's 40-item
+> battery ordering under the stricter full-answer grader. This screen is retained
+> as history; read the confirmation before quoting a winner.
+
 ## Result
 
 **Run EXL3 4.00 bpw with MTP3 (the launcher's default) and prefix cache on.** It is the
