@@ -192,13 +192,13 @@ establish universal losslessness.
 
 ## Charts
 
-![Context scaling, thinking](../../results/qwen38-27b/route-confirmation-20261111/charts/context-thinking.png)
+![Context scaling, thinking](../assets/b70-qwen38-route-confirmation-20261111-context-thinking.png)
 
-![Context scaling, non-thinking](../../results/qwen38-27b/route-confirmation-20261111/charts/context-nonthinking.png)
+![Context scaling, non-thinking](../assets/b70-qwen38-route-confirmation-20261111-context-nonthinking.png)
 
-![Follow-up latency over a ten-turn document chat](../../results/qwen38-27b/route-confirmation-20261111/charts/chat-over-time.png)
+![Follow-up latency over a ten-turn document chat](../assets/b70-qwen38-route-confirmation-20261111-chat-over-time.png)
 
-![Quality by area, 84-item non-thinking subset](../../results/qwen38-27b/route-confirmation-20261111/charts/quality-by-area.png)
+![Quality by area, 84-item non-thinking subset](../assets/b70-qwen38-route-confirmation-20261111-quality-by-area.png)
 
 ## Reproduction and evidence
 
