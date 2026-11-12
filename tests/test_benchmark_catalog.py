@@ -2,6 +2,8 @@ import importlib.util
 import json
 import pathlib
 import sys
+import subprocess
+from urllib.parse import unquote, urlparse
 import unittest
 from typing import Any
 
@@ -44,6 +46,28 @@ class BenchmarkCatalogTests(unittest.TestCase):
             self.assertGreater(record["statistics"]["samples"], 0)
             self.assertRegex(record["evidence"]["commit"], r"^[0-9a-f]{40}$")
             self.assertTrue(record["evidence"]["url"].startswith("https://github.com/SergiioB/"))
+
+    def test_evidence_commits_and_paths_exist_in_history(self) -> None:
+        shallow = subprocess.run(
+            ["git", "rev-parse", "--is-shallow-repository"], cwd=ROOT,
+            text=True, capture_output=True, check=True,
+        )
+        if shallow.stdout.strip() == "true":
+            self.skipTest("Evidence history is incomplete in a shallow clone")
+        for record in self.catalog["records"]:
+            with self.subTest(record=record["id"]):
+                evidence = record["evidence"]
+                commit = evidence["commit"]
+                url_path = unquote(urlparse(evidence["url"]).path)
+                marker = f"/blob/{commit}/"
+                self.assertIn(marker, url_path)
+                path = url_path.split(marker, 1)[1]
+                for obj in (f"{commit}^{{commit}}", f"{commit}:{path}"):
+                    result = subprocess.run(
+                        ["git", "cat-file", "-e", obj], cwd=ROOT,
+                        text=True, capture_output=True,
+                    )
+                    self.assertEqual(result.returncode, 0, f"{obj}: {result.stderr}")
 
     def test_capability_notes_cannot_masquerade_as_complete_benchmarks(self) -> None:
         capabilities = {
