@@ -2937,6 +2937,83 @@
       }
     },
     {
+      "id": "qwen38-27b-tensorfold-prefix-attn-depth-c1-20261113",
+      "kind": "benchmark",
+      "title": "Qwen3.8-27B TensorFold with the prefix attention kernel, XPU_ATTN_PREF=256 (one B70, 230 W, same-binary control)",
+      "summary": "Code prompts, drafted, switch unset -> switch: 128.1 -> 128.2 at 68 tokens, 90.0 -> 114.7 at 8K, 45.9 -> 90.1 at 32K, 15.1 -> 50.8 at 131K (4 repeats); J/token at 131K 15.2 -> 4.5. Drafted == draft:false in every cell. Text differs from the switch-unset build on 4 of 6 depth cells and 67 of 329 battery items; battery 282 -> 284 passes, 0 losses. Not in upstream TensorFold. int8 K/V with the switch serves a 249,784-token prompt at 20.7 tok/s (1 repeat). Screen.",
+      "evidence_status": "provisional",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "TensorFold",
+        "version": "SergiioB/TensorFold tag b70-attn-prefix-20261113 (4f7042f2d, upstream PR #2595 head + prefix attention kernel) + ocloc 128-GRF build fix, Level Zero, bf16 KV, XPU_ATTN_PREF=256"
+      },
+      "model": {
+        "id": "TensorFold/Qwen3.8-27B-MLX-4bit @22d8d538 + z-lab/Qwen3.8-27B-DFlash2",
+        "quantization": "MLX affine 4-bit g64",
+        "speculation": "DFlash2"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 130856,
+        "output_tokens": 512,
+        "context_limit_tokens": 139264,
+        "cache": "disabled",
+        "reasoning_effort": "thinking off",
+        "note": "prompt_tokens is the deepest bf16 cell; metrics name the prompt length of each cell. 2 repeats at 68 to 32,552 tokens, 4 at 130,856, 1 for the int8 K/V cell at --context 262144"
+      },
+      "sampling": {
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 4242
+      },
+      "metrics": [
+        {
+          "name": "decode_tok_s_code_prompt_68",
+          "value": 128.16,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_code_prompt_7976",
+          "value": 114.71,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_code_prompt_32552",
+          "value": 90.07,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_code_prompt_130856",
+          "value": 50.78,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_j_per_token_code_prompt_130856",
+          "value": 4.53,
+          "unit": "J/token"
+        },
+        {
+          "name": "decode_tok_s_code_prompt_249784_int8_kv",
+          "value": 20.67,
+          "unit": "tok/s"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 2
+      },
+      "evidence": {
+        "commit": "a986b773c962976b84683d475f10990e3d27c4b3",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/a986b773c962976b84683d475f10990e3d27c4b3/docs/qwen38-27b/TENSORFOLD-B70.md"
+      },
+      "measured_at": "2026-11-13"
+    },
+    {
       "id": "qwen38-27b-q4km-llamacpp-b12195-kv-q80-q80-depth-c1",
       "kind": "benchmark",
       "title": "Qwen3.8-27B Q4_K_M llama.cpp SYCL b12195, q8_0 KV, decode at depth (one B70, 230 W)",
