@@ -1,0 +1,362 @@
+diff --git a/zig/kernels/xpu/qwen27/decode.cl b/zig/kernels/xpu/qwen27/decode.cl
+index 465e8cad3..616777e9f 100644
+--- a/zig/kernels/xpu/qwen27/decode.cl
++++ b/zig/kernels/xpu/qwen27/decode.cl
+@@ -74,9 +74,14 @@ KERNEL(16) void gdn_step(global const ushort *Q, global const ushort *K, global
+ 
+ // Decode attention by key slices: one subgroup per (row, K/V head, query part, slice). Grid y is AKV * QPARTS.
+ #define SPLIT 32
+-KERNEL(16) void attn_decode(global const ushort *Q, global const ushort *KC, global const ushort *VC, global float *PM,
+-                            global float *PL, global float *PO, int p0, int NS, float scale, global const int *TREE,
+-                            global const ulong *MT, global const int *POS, int cap) {
++// XPU_ATTN_PREF: the row at pos takes its keys below pref_base(pos, CH) from attn_pref's chunks, cut by position.
++#define PREW 16
++#define PREMIN 1024 // rows below PREMIN + PREW keep the slices alone
++static inline int pref_base(int pos, int CH) { return pos < PREMIN + PREW ? 0 : ((pos - PREW) / CH) * CH; }
++// The slices of attn_decode (PRE 0) and of attn_tail (PRE: the chunk size, slices start at the row's pref_base).
++static inline void attn_slices(global const ushort *Q, global const ushort *KC, global const ushort *VC, global float *PM,
++                               global float *PL, global float *PO, int p0, int NS, float scale, global const int *TREE,
++                               global const ulong *MT, global const int *POS, int cap, int PRE) {
+   // MT (if non-null): several streams, one row each; with TREE, tree windows; cap > 0: int8 cache (256 bytes per row).
+ #if Q27_QPARTS == 1
+   // Grid (rows, heads, slices): the tree rows of one key slice run back to back and share its K/V rows in L2.
+@@ -92,7 +97,8 @@ KERNEL(16) void attn_decode(global const ushort *Q, global const ushort *KC, glo
+     wf = (int)MT[t * 8 + 6];
+     base = TREE ? POS[wf] : 0x7fffffff;
+   }
+-  const int last = MT ? POS[t] : p0 + DEPTH(t), j0 = sp * SPLIT, j1 = min(j0 + SPLIT, last + 1);
++  const int last = MT ? POS[t] : p0 + DEPTH(t), j0 = sp * SPLIT + (PRE ? pref_base(last, PRE) : 0), j1 = min(j0 + SPLIT, last + 1);
++  if (PRE && j0 > last) return;                         // attn_merge2 reads only the slices a row used
+   float q[Q27_QPG][16], o[Q27_QPG][16], m[Q27_QPG], l[Q27_QPG];
+   for (int a = 0; a < Q27_QPG; a++) {
+     for (int i = 0; i < 16; i++) {
+@@ -149,6 +155,12 @@ KERNEL(16) void attn_decode(global const ushort *Q, global const ushort *KC, glo
+   }
+ }
+ 
++KERNEL(16) void attn_decode(global const ushort *Q, global const ushort *KC, global const ushort *VC, global float *PM,
++                            global float *PL, global float *PO, int p0, int NS, float scale, global const int *TREE,
++                            global const ulong *MT, global const int *POS, int cap) {
++  attn_slices(Q, KC, VC, PM, PL, PO, p0, NS, scale, TREE, MT, POS, cap, 0);
++}
++
+ // Merge of the slices, in order: O bf16 [T, Q27_AQ, 256]. One subgroup per (head, row).
+ KERNEL(16) void attn_merge(global const float *PM, global const float *PL, global const float *PO, global ushort *O,
+                            int p0, int NS, global const int *TREE, global const int *POS) {
+@@ -515,3 +527,5 @@ kernel void attn_prompt8(global const ushort *Q, global const char *KC, global c
+     }
+ }
+ #endif // Q27_GQA == 6
++
++#include "decode_prefix.cl"
+diff --git a/zig/kernels/xpu/qwen27/decode_prefix.cl b/zig/kernels/xpu/qwen27/decode_prefix.cl
+new file mode 100644
+index 000000000..085c77d3d
+--- /dev/null
++++ b/zig/kernels/xpu/qwen27/decode_prefix.cl
+@@ -0,0 +1,185 @@
++// Qwen3.8-27B decode attention with XPU_ATTN_PREF: attn_pref, attn_tail and attn_merge2. Included by decode.cl.
++#if Q27_GQA == 6
++#pragma OPENCL EXTENSION cl_intel_subgroups_short : enable
++// The committed prefix on bf16 DPAS: a subgroup per (tile of 8 queries, K/V head, chunk of CH keys), P in bf16.
++KERNEL(16) void attn_pref(global const ushort *Q, global const ushort *KC, global const ushort *VC, global float *PMP,
++                          global float *PLP, global float *POP, int T, int NCH, int CH, float scale,
++                          global const ulong *MT, global const int *POS) {
++  // Query f = tile * 8 + r is row f / 6, head f % 6; with MT, one row a tile over its own cache and prefix.
++  local short qa[16 * 16 * 8];                            // [dim block][lane][query of the tile]
++  const int tile = get_group_id(0), hk = get_group_id(1), c = get_group_id(2), lane = get_sub_group_local_id();
++  if (MT) {
++    if ((c + 1) * CH > pref_base(POS[tile], CH)) return;
++    KC = (global const ushort *)MT[tile * 8];
++    VC = (global const ushort *)MT[tile * 8 + 1];
++  }
++  for (int i = lane; i < 16 * 16 * 8; i += 16) {
++    const int tb = i >> 7, l = (i >> 3) & 15, r = i & 7, f = tile * 8 + r;
++    const int row = MT ? tile : f / Q27_GQA, a = MT ? r : f % Q27_GQA;
++    qa[i] = row < T && a < Q27_GQA ? (short)Q[((long)row * Q27_AQ + hk * Q27_GQA + a) * 256 + tb * 16 + l] : (short)0;
++  }
++  barrier(CLK_LOCAL_MEM_FENCE);
++  float m[8], ll[8];
++  float8 acc[16];
++  for (int i = 0; i < 8; i++) {
++    m[i] = -INFINITY;
++    ll[i] = 0.0f;
++  }
++  for (int j = 0; j < 16; j++) acc[j] = (float8)(0.0f);
++  const long k0 = (long)c * CH;
++  for (int u = 0; u < CH / 16; u++) {
++    const global uint *krow = (const global uint *)(KC + ((k0 + u * 16 + lane) * Q27_AKV + hk) * 256);
++    float8 s = (float8)(0.0f);
++    __attribute__((opencl_unroll_hint))
++    for (int tb = 0; tb < 16; tb++)
++      s = intel_sub_group_bf16_bf16_matrix_mad_k16(vload8(tb * 16 + lane, qa), as_int8(vload8(0, krow + tb * 8)), s);
++    short8 own;
++    float8 al;
++    __attribute__((opencl_unroll_hint))
++    for (int i = 0; i < 8; i++) {
++      const float x = s[i] * scale;
++      const float mn = fmax(m[i], sub_group_reduce_max(x));
++      const float p = bf2f(f2bf(exp(x - mn)));
++      al[i] = exp(m[i] - mn);
++      ll[i] = ll[i] * al[i] + sub_group_reduce_add(p);
++      own[i] = (short)f2bf(p);
++      m[i] = mn;
++    }
++    __attribute__((opencl_unroll_hint))
++    for (int hb = 0; hb < 4; hb++) {
++      ushort4 vv[16];
++      __attribute__((opencl_unroll_hint))
++      for (int k = 0; k < 16; k++)
++        vv[k] = intel_sub_group_block_read_us4(VC + ((k0 + u * 16 + k) * Q27_AKV + hk) * 256 + hb * 64);
++      __attribute__((opencl_unroll_hint))
++      for (int e = 0; e < 4; e++) {
++        int8 b;
++        __attribute__((opencl_unroll_hint))
++        for (int d = 0; d < 8; d++) b[d] = (int)vv[2 * d][e] | ((int)vv[2 * d + 1][e] << 16);
++        acc[hb * 4 + e] = intel_sub_group_bf16_bf16_matrix_mad_k16(own, b, acc[hb * 4 + e] * al);
++      }
++    }
++  }
++  for (int i = 0; i < 8; i++) {
++    const int f = tile * 8 + i, row = MT ? tile : f / Q27_GQA, a = MT ? i : f % Q27_GQA;
++    if (row >= T || a >= Q27_GQA) break;
++    const long base = ((long)row * Q27_AQ + hk * Q27_GQA + a) * NCH + c;
++    if (lane == 0) {
++      PMP[base] = m[i];
++      PLP[base] = ll[i];
++    }
++    for (int j = 0; j < 16; j++) POP[base * 256 + j * 16 + lane] = acc[j][i];
++  }
++}
++
++#pragma OPENCL EXTENSION cl_intel_subgroups_char : enable
++// attn_pref over the int8 cache: K and V rows widen to bf16 exactly, their scales fold into the score and into P.
++KERNEL(16) void attn_pref8(global const ushort *Q, global const char *KC, global const char *VC, global float *PMP,
++                           global float *PLP, global float *POP, int T, int NCH, int CH, float scale,
++                           global const ulong *MT, global const int *POS, int cap) {
++  local short qa[16 * 16 * 8];                            // [dim block][lane][query of the tile]
++  const int tile = get_group_id(0), hk = get_group_id(1), c = get_group_id(2), lane = get_sub_group_local_id();
++  if (MT) {
++    if ((c + 1) * CH > pref_base(POS[tile], CH)) return;
++    KC = (global const char *)MT[tile * 8];
++    VC = (global const char *)MT[tile * 8 + 1];
++  }
++  global const float *KS = (global const float *)(KC + (long)cap * Q27_KVROW);
++  global const float *VS = (global const float *)(VC + (long)cap * Q27_KVROW);
++  for (int i = lane; i < 16 * 16 * 8; i += 16) {
++    const int tb = i >> 7, l = (i >> 3) & 15, r = i & 7, f = tile * 8 + r;
++    const int row = MT ? tile : f / Q27_GQA, a = MT ? r : f % Q27_GQA;
++    qa[i] = row < T && a < Q27_GQA ? (short)Q[((long)row * Q27_AQ + hk * Q27_GQA + a) * 256 + tb * 16 + l] : (short)0;
++  }
++  barrier(CLK_LOCAL_MEM_FENCE);
++  float m[8], ll[8];
++  float8 acc[16];
++  for (int i = 0; i < 8; i++) {
++    m[i] = -INFINITY;
++    ll[i] = 0.0f;
++  }
++  for (int j = 0; j < 16; j++) acc[j] = (float8)(0.0f);
++  const long k0 = (long)c * CH;
++  for (int u = 0; u < CH / 16; u++) {
++    const long key = (k0 + u * 16 + lane) * Q27_AKV + hk; // the lane's key
++    const global char *krow = KC + key * 256;
++    const float ks = KS[key] * scale, vs = VS[key];
++    float8 s = (float8)(0.0f);
++    __attribute__((opencl_unroll_hint))
++    for (int tb = 0; tb < 16; tb++) {
++      const uint16 kf = as_uint16(convert_float16(vload16(tb, krow))); // an int8 is exact in bf16: its top 16 bits
++      s = intel_sub_group_bf16_bf16_matrix_mad_k16(vload8(tb * 16 + lane, qa), as_int8((kf.even >> 16) | (kf.odd & 0xFFFF0000u)), s);
++    }
++    short8 own;
++    float8 al;
++    __attribute__((opencl_unroll_hint))
++    for (int i = 0; i < 8; i++) {
++      const float x = s[i] * ks;
++      const float mn = fmax(m[i], sub_group_reduce_max(x));
++      const float p = bf2f(f2bf(exp(x - mn)));
++      al[i] = exp(m[i] - mn);
++      ll[i] = ll[i] * al[i] + sub_group_reduce_add(p);
++      own[i] = (short)f2bf(p * vs);
++      m[i] = mn;
++    }
++    __attribute__((opencl_unroll_hint))
++    for (int hb = 0; hb < 4; hb++) {
++      uint4 vv[16];                                       // key k: 4 blocks of 16 dims, the lane's dim of each, as bf16
++      __attribute__((opencl_unroll_hint))
++      for (int k = 0; k < 16; k++) {
++        const uchar4 raw = intel_sub_group_block_read_uc4((global const uchar *)VC + ((k0 + u * 16 + k) * Q27_AKV + hk) * 256 + hb * 64);
++        vv[k] = as_uint4(convert_float4(as_char4(raw))) >> 16;
++      }
++      __attribute__((opencl_unroll_hint))
++      for (int e = 0; e < 4; e++) {
++        int8 b;
++        __attribute__((opencl_unroll_hint))
++        for (int d = 0; d < 8; d++) b[d] = (int)(vv[2 * d][e] | (vv[2 * d + 1][e] << 16));
++        acc[hb * 4 + e] = intel_sub_group_bf16_bf16_matrix_mad_k16(own, b, acc[hb * 4 + e] * al);
++      }
++    }
++  }
++  for (int i = 0; i < 8; i++) {
++    const int f = tile * 8 + i, row = MT ? tile : f / Q27_GQA, a = MT ? i : f % Q27_GQA;
++    if (row >= T || a >= Q27_GQA) break;
++    const long base = ((long)row * Q27_AQ + hk * Q27_GQA + a) * NCH + c;
++    if (lane == 0) {
++      PMP[base] = m[i];
++      PLP[base] = ll[i];
++    }
++    for (int j = 0; j < 16; j++) POP[base * 256 + j * 16 + lane] = acc[j][i];
++  }
++}
++
++// A row's slices past its prefix: attn_decode's arithmetic from pref_base on.
++KERNEL(16) void attn_tail(global const ushort *Q, global const ushort *KC, global const ushort *VC, global float *PM,
++                          global float *PL, global float *PO, int p0, int NS, float scale, global const int *TREE,
++                          global const ulong *MT, global const int *POS, int cap, int PRE) {
++  attn_slices(Q, KC, VC, PM, PL, PO, p0, NS, scale, TREE, MT, POS, cap, PRE);
++}
++
++// Merge of a row's prefix chunks then its slices, in order: O bf16 [T, Q27_AQ, 256]. One subgroup per (head, row).
++KERNEL(16) void attn_merge2(global const float *PMP, global const float *PLP, global const float *POP,
++                            global const float *PM, global const float *PL, global const float *PO, global ushort *O,
++                            int p0, int NCH, int CH, int NS, global const int *TREE, global const int *POS) {
++  const int hh = get_group_id(0), t = get_group_id(1), lane = get_sub_group_local_id();
++  const int last = POS ? POS[t] : p0 + DEPTH(t), pb = pref_base(last, CH), nc = pb / CH, used = (last - pb) / SPLIT + 1;
++  const long bp = ((long)t * Q27_AQ + hh) * NCH, base = ((long)t * Q27_AQ + hh) * NS;
++  float m = -INFINITY;
++  for (int s = 0; s < nc; s++) m = fmax(m, PMP[bp + s]);
++  for (int s = 0; s < used; s++) m = fmax(m, PM[base + s]);
++  float l = 0.0f, o[16];
++  for (int i = 0; i < 16; i++) o[i] = 0.0f;
++  for (int s = 0; s < nc; s++) {
++    const float w = exp(PMP[bp + s] - m);
++    l += PLP[bp + s] * w;
++    for (int i = 0; i < 16; i++) o[i] += POP[(bp + s) * 256 + i * 16 + lane] * w;
++  }
++  for (int s = 0; s < used; s++) {
++    const float w = exp(PM[base + s] - m);
++    l += PL[base + s] * w;
++    for (int i = 0; i < 16; i++) o[i] += PO[(base + s) * 256 + i * 16 + lane] * w;
++  }
++  for (int i = 0; i < 16; i++) O[((long)t * Q27_AQ + hh) * 256 + i * 16 + lane] = f2bf(o[i] / l);
++}
++#endif
+diff --git a/zig/src/xpu/dev.zig b/zig/src/xpu/dev.zig
+index 2dff787fc..8319b2785 100644
+--- a/zig/src/xpu/dev.zig
++++ b/zig/src/xpu/dev.zig
+@@ -94,6 +94,10 @@ pub const Dev = struct {
+         gdn_step: ze.H,
+         attn_decode: ze.H,
+         attn_merge: ze.H,
++        attn_pref: ze.H,
++        attn_pref8: ze.H,
++        attn_tail: ze.H,
++        attn_merge2: ze.H,
+         kv_move: ze.H,
+         exl3_gemv: ze.H,
+         rot_heads: ze.H,
+diff --git a/zig/src/xpu/forward.zig b/zig/src/xpu/forward.zig
+index ac6de63af..bab2e61c5 100644
+--- a/zig/src/xpu/forward.zig
++++ b/zig/src/xpu/forward.zig
+@@ -14,6 +14,7 @@ const MASK_WORDS = q.MASK_WORDS;
+ const Model = loader.Model;
+ const Proj = loader.Proj;
+ const SPLIT = q.SPLIT;
++const PREMIN = 1024; // decode.cl's PREMIN: XPU_ATTN_PREF leaves rows below it on the slices
+ const limits = @import("limits.zig");
+ const ST_B = q.ST_B;
+ const ST_G = q.ST_G;
+@@ -51,6 +52,9 @@ pub const Acts = struct {
+     pm: *anyopaque,
+     pl: *anyopaque,
+     po: *anyopaque,
++    pmp: *anyopaque, // XPU_ATTN_PREF partials of the prefix chunks: fp32 [16, 24, chunks], and pop [.., 256]
++    plp: *anyopaque,
++    pop: *anyopaque,
+     pscr: *anyopaque, // fp32 [maxRows, D] (slice totals of the narrow prompt GEMM)
+     logits: *anyopaque, // fp16 [16, VOCAB]
+     taps: *anyopaque, // bf16 [maxRows, 5 D]: hidden states after TAP_LAYERS, when Mode.taps
+@@ -77,6 +81,7 @@ pub const Acts = struct {
+         const rows = q.maxRows();
+         const nc = limits.chunks(rows);
+         const ns = limits.splits(q.MAX_CTX, SPLIT);
++        const npc: usize = if (q.attn_pref != 0) q.MAX_CTX / q.attn_pref + 1 else 1;
+         return .{
+             .x = try d.alloc_(rows * D * 4),
+             .h = try d.alloc_(rows * FF * 2),
+@@ -99,6 +104,9 @@ pub const Acts = struct {
+             .pm = try d.alloc_(16 * 24 * ns * 4),
+             .pl = try d.alloc_(16 * 24 * ns * 4),
+             .po = try d.alloc_(16 * 24 * ns * 256 * 4),
++            .pmp = try d.alloc_(16 * 24 * npc * 4),
++            .plp = try d.alloc_(16 * 24 * npc * 4),
++            .pop = try d.alloc_(16 * 24 * npc * 256 * 4),
+             .pscr = try d.alloc_(rows * D * 4),
+             .logits = try d.alloc_(16 * VOCAB * 2),
+             .tok = try d.alloc_(16 * 4),
+@@ -341,8 +349,20 @@ pub fn forward(d: *Dev, m: *Model, a: *Acts, ids: []const i32, p0: u32, mode: Mo
+             } else if (wide) {
+                 try d.launch(d.k.attn_prompt, .{ .x = (T + 7) / 8, .y = 4 }, .{ a.q, l.kc.?, l.vc.?, a.y, @as(i32, @intCast(p0)), t32, @as(f32, 1.0 / 16.0) });
+             } else {
+-                try d.launch(d.k.attn_decode, .{ .x = T, .y = 4, .z = ns }, .{ a.q, l.kc.?, l.vc.?, a.pm, a.pl, a.po, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), @as(f32, 1.0 / 16.0), if (mode.multi != null) tree else table, mt, mpos, kvCap() });
+-                try d.launch(d.k.attn_merge, .{ .x = 24, .y = T }, .{ a.pm, a.pl, a.po, a.y, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), table, mpos });
++                const pre: u32 = if (mode.multi == null or !mode.tree) q.attn_pref else 0;
++                const top: u32 = if (mode.multi) |mm| mm.max_pos else p0 + 15; // no row of the round is past it
++                const nch: u32 = if (pre != 0 and top >= PREMIN + 16) (top - 16) / pre else 0; // chunks any row of the round uses
++                if (nch != 0) {
++                    const npc: u32 = q.MAX_CTX / pre + 1;
++                    const nst: u32 = (@max(pre, PREMIN) + 16 + SPLIT - 1) / SPLIT; // a row's slices past its prefix, or all of a row below PREMIN
++                    const pg: ze.GroupCount = .{ .x = if (mode.multi != null) T else (T * 6 + 7) / 8, .y = 4, .z = nch };
++                    if (q.kv_i8) try d.launch(d.k.attn_pref8, pg, .{ a.q, l.kc.?, l.vc.?, a.pmp, a.plp, a.pop, t32, @as(i32, @intCast(npc)), @as(i32, @intCast(pre)), @as(f32, 1.0 / 16.0), mt, mpos, kvCap() }) else try d.launch(d.k.attn_pref, pg, .{ a.q, l.kc.?, l.vc.?, a.pmp, a.plp, a.pop, t32, @as(i32, @intCast(npc)), @as(i32, @intCast(pre)), @as(f32, 1.0 / 16.0), mt, mpos });
++                    try d.launch(d.k.attn_tail, .{ .x = T, .y = 4, .z = nst }, .{ a.q, l.kc.?, l.vc.?, a.pm, a.pl, a.po, @as(i32, @intCast(p0)), @as(i32, @intCast(nst)), @as(f32, 1.0 / 16.0), if (mode.multi != null) tree else table, mt, mpos, kvCap(), @as(i32, @intCast(pre)) });
++                    try d.launch(d.k.attn_merge2, .{ .x = 24, .y = T }, .{ a.pmp, a.plp, a.pop, a.pm, a.pl, a.po, a.y, @as(i32, @intCast(p0)), @as(i32, @intCast(npc)), @as(i32, @intCast(pre)), @as(i32, @intCast(nst)), table, mpos });
++                } else {
++                    try d.launch(d.k.attn_decode, .{ .x = T, .y = 4, .z = ns }, .{ a.q, l.kc.?, l.vc.?, a.pm, a.pl, a.po, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), @as(f32, 1.0 / 16.0), if (mode.multi != null) tree else table, mt, mpos, kvCap() });
++                    try d.launch(d.k.attn_merge, .{ .x = 24, .y = T }, .{ a.pm, a.pl, a.po, a.y, @as(i32, @intCast(p0)), @as(i32, @intCast(ns)), table, mpos });
++                }
+             }
+             if (q.kv8 & 1 != 0) try d.launch(d.k.rot_heads, .{ .x = T, .y = 24 }, .{a.y});
+             try d.launch(d.k.attn_gate, .{ .x = T }, .{ a.y, a.p, a.h, a.ahi, a.alo, gs, q.rot_on, q8oa, q8os, q8ms });
+diff --git a/zig/src/xpu/qwen27.zig b/zig/src/xpu/qwen27.zig
+index fca104a93..3d6ae6274 100644
+--- a/zig/src/xpu/qwen27.zig
++++ b/zig/src/xpu/qwen27.zig
+@@ -84,6 +84,8 @@ pub var a8_group: u32 = 0;
+ pub var kv8: i32 = 0;
+ /// Int8 K/V cache (XPU_KV_INT8=1): 256 int8 per position and head, then float scales after MAX_CTX positions.
+ pub var kv_i8 = false;
++/// XPU_ATTN_PREF=CH (a multiple of 32 from 64 to 4096): decode attention reads the prefix once a round on DPAS.
++pub var attn_pref: u32 = 0;
+ /// Rotated weights (`hadamard128` in the checkpoint): every GEMM input is rotated by blocks of 128 where it is made.
+ pub var rot_on: i32 = 0;
+ /// W4A4 on down (and mixer out projections with XPU_PREFILL_INT4_SITES=10): int4 inputs per row group, DPAS u4 × s4.
+@@ -183,6 +185,8 @@ pub const Runner = struct {
+         if (std.c.getenv("XPU_DUMP")) |v| dump_dir = std.mem.span(v);
+         if (std.c.getenv("XPU_PREFILL_INT8") != null) prefill_int8 = true;
+         if (std.c.getenv("XPU_KV_INT8") != null) kv_i8 = true;
++        if (std.c.getenv("XPU_ATTN_PREF")) |v| attn_pref = try std.fmt.parseInt(u32, std.mem.span(v), 10);
++        if (attn_pref != 0 and (attn_pref % 32 != 0 or attn_pref < 64 or attn_pref > 4096)) return error.AttnPrefNotAMultipleOf32From64To4096;
+         if (std.c.getenv("XPU_PREFILL_INT4") != null) prefill_int4 = true;
+         if (std.c.getenv("XPU_PREFILL_INT4_SITES")) |v| int4_sites = try std.fmt.parseInt(u32, std.mem.span(v), 10);
+         if (std.c.getenv("XPU_KV8")) |v| kv8 = try std.fmt.parseInt(i32, std.mem.span(v), 10);
+@@ -272,6 +276,10 @@ pub const Runner = struct {
+             .gdn_step = try d.kernel(md, "gdn_step", 16),
+             .attn_decode = try d.kernel(md, "attn_decode", 16),
+             .attn_merge = try d.kernel(md, "attn_merge", 16),
++            .attn_pref = try d.kernel(md, "attn_pref", 16),
++            .attn_pref8 = try d.kernel(md, "attn_pref8", 16),
++            .attn_tail = try d.kernel(md, "attn_tail", 16),
++            .attn_merge2 = try d.kernel(md, "attn_merge2", 16),
+             .kv_move = try d.kernel(md, "kv_move", 16),
+             .exl3_gemv = try d.kernel(md, "exl3_gemv", 16),
+             .rot_heads = try d.kernel(mg, "rot_heads", 16),
+@@ -305,7 +313,7 @@ pub const Runner = struct {
+             .ngen_narrow = try d.kernel(mn, "w4g_s4dpb", 256),
+         };
+         // the shared rounds' kernels reach each slot's states through the per-row table (acts.mt)
+-        for ([_]ze.H{ d.k.attn_prep, d.k.attn_decode, d.k.gdn_pre, d.k.gdn_step }) |k| try d.g.indirect(k);
++        for ([_]ze.H{ d.k.attn_prep, d.k.attn_decode, d.k.attn_pref, d.k.attn_pref8, d.k.attn_tail, d.k.gdn_pre, d.k.gdn_step }) |k| try d.g.indirect(k);
+         if (std.c.getenv("XPU_PROFILE") != null) {
+             prof.on = true;
+             prof.events = try d.g.events(4096);

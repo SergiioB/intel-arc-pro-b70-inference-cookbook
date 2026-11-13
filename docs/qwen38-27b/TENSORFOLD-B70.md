@@ -12,6 +12,7 @@ Measured 2026-11-08 on two Intel Arc Pro B70 cards, one stream per card. Status:
 |---|---|---|
 | Up to ~8K tokens (chat, short code tasks) | **TensorFold + DFlash2** | 123–128 tok/s on code, 98–102 on prose, and the drafted output is byte-identical to non-drafted greedy output |
 | 32K and longer (agents with big context, repo dumps) | **EXL3 4.0 bpw + MTP3** (exl3xpu) | 74 tok/s at 32K and 48 at 131K, with 1.5–1.7× TensorFold's prefill, but MTP3 changes the output |
+| 8K–131K, one stream, and an unofficial engine branch is acceptable | **TensorFold + `XPU_ATTN_PREF=256`** ([2026-11-13 screen](#prefix-attention-kernel-2026-11-13-20-at-32k-34-at-131k-262144-context)) | 115 / 90 / 51 tok/s at 8K / 32K / 131K on code, drafted output identical to non-drafted; the text differs from stock TensorFold on some prompts, and the branch is not in upstream |
 | Long context and you need the model's own greedy answer | EXL3 without speculation, or TensorFold with drafts off | 23 tok/s at 131K (EXL3) vs 19 (patched TensorFold, serial) |
 
 ## Results (code prompts, 512-token answers, decode tok/s after the first token)
@@ -80,6 +81,84 @@ that patched build on the measured cells. The two artifacts and their speed resu
 must stay separate. [Issue #2543](https://github.com/ashhart/TensorFold/issues/2543)
 tracks the broader proposal. Apply the local patch only to the documented v1.2.4 base
 when reproducing the tables below.
+
+## Prefix attention kernel (2026-11-13): 2.0× at 32K, 3.4× at 131K, 262,144 context
+
+Status: **screen** (one host; 2 repeats at 0–32K, 4 at 131K, 1 for the int8 cells). Raw cells, scripts, patch:
+[`results/qwen38-27b/tensorfold-prefix-attn-20261113/`](../../results/qwen38-27b/tensorfold-prefix-attn-20261113/).
+Source: [`SergiioB/TensorFold` tag `b70-attn-prefix-20261113`](https://github.com/SergiioB/TensorFold/tree/b70-attn-prefix-20261113)
+(commit `4f7042f2d`, on top of upstream PR #2595). This supersedes the row-split patch above for long prompts; that
+patch and its tables stay as measured on v1.2.4.
+
+What it does: with `XPU_ATTN_PREF=256` a decode round reads the committed prefix once. A new kernel scores it in
+chunks of 256 keys on bf16 DPAS for 8 (tree row, head) queries at a time; the stock scalar kernel keeps each row's
+last keys; a merge joins both in key order. The cut depends on the row's own position, so a drafted row and the
+same row decoded without drafts sum in the same order. Rows below position 1,040 run the stock kernels alone.
+
+Card 1, 230 W, drafted, 512-token answers, decode tok/s (code / prose). Control = the same binary with the switch
+unset, same session:
+
+| Prompt tokens | Switch unset | `XPU_ATTN_PREF=256` | Ratio (code) | J/token (code) |
+|---|---|---|---|---|
+| 68 | 128.1 / 102.4 | 128.2 / 102.4 | 1.00 | 1.72 → 1.72 |
+| 7,976 | 90.0 / 71.6 | **114.7 / 91.5** | 1.27 | 2.48 → 1.87 |
+| 32,552 | 45.9 / 33.9 | **90.1 / 66.5** | 1.96 | 5.00 → 2.53 |
+| 130,856 | 15.1 / 13.6 | **50.8 / 45.7** | 3.36 | 15.2 → 4.53 |
+
+With `"draft": false`: 30.4 / 23.7 / 13.0 → 30.4 / 27.3 / 18.8 at 8K / 32K / 131K. Card 0 at 180 W: 85.1 → 108.9
+at 8K and 42.4 → 84.6 at 32K (code). The control column is #2595's grid-order build, which is why it is above the
+stock v1.2.4 table at the top of this page.
+
+### What stays equal, and what does not
+
+| Check | Result |
+|---|---|
+| Same text on a repeat | yes, every cell |
+| Drafted == `"draft": false` under the switch | yes: every depth cell, and 275 of 275 battery items run both ways |
+| Same text on the second card | yes, 329 of 329 battery items |
+| Same text as the switch-unset build | **no**: 4 of 6 depth cells and 67 of 329 battery items differ |
+| Switch unset | text equal to the stock build at every cell |
+
+The kernel sums the same products in another order and keeps attention weights in bf16. A greedy answer takes
+another path wherever two tokens were nearly tied; a 512-key chunk instead of 256 changes the text again in 3 of 4
+cells. 329 graded items (HumanEval even / odd, knowledge, JSON schema, instruction following), switch unset
+against the switch: 78 / 76 / 40 / 55 / 33 against 78 / 76 / 42 / 55 / 33; two items gained, none lost.
+
+For this reason the change is **not in upstream TensorFold and is not proposed there**: upstream requires a speedup
+to keep main's tokens, opt-ins included. Use it from the tag above if a changed-but-deterministic text is
+acceptable for your work.
+
+### int8 K/V under the switch, and 262,144 context
+
+`XPU_KV_INT8=1 XPU_ATTN_PREF=256`, card 1, 230 W, one repeat, drafted, code / prose:
+
+| Prompt tokens | int8, switch unset | int8 + switch | `"draft": false`, unset → switch |
+|---|---|---|---|
+| 7,976 | 88.8 / 74.3 | 102.6 / 85.0 | 30.4 → 28.0 |
+| 32,552 | 43.6 / 35.0 | 65.2 / 53.5 | 24.0 → 26.4 |
+| 130,856 | not run | 30.8 / 24.6 | – → 19.6 |
+| 249,784 (`--context 262144`) | not run | 20.7 (code) | – → 15.3 |
+
+- A 249,784-token prompt completes on one card: cold TTFT 330 s, 217 W, 10.5 J/token, drafted == `"draft": false`.
+- The int8 kernel is slower than the bf16 one (131K: 30.8 against 50.8) because it widens every K and V byte to
+  bf16. In this 8-bit mode the 2026-11-08 EXL3 + MTP3 cells (79.4 / 73.8 / 48.2, another session) are faster from
+  about 20K up. For sessions whose length is not known at the start, the EXL3 route keeps its place.
+
+### Not run
+
+The 329-item battery with the position floor or with int8 K/V; int8 controls at 131K and 250K; repeats of the
+int8 cells; retrieval probes at depth (the battery only uses short prompts); prompt-cache resumes under the
+switch; concurrent streams (tree rounds of several streams keep the stock path); sampled decoding. The bf16 cells
+were measured on two earlier builds of the same kernels (hashes in each run's `env.txt`); the tagged build was
+checked against them at 0, 8K and 32K (`tag-pref256`).
+
+```bash
+git clone https://github.com/SergiioB/TensorFold && cd TensorFold && git checkout b70-attn-prefix-20261113
+# build as below, then:
+XPU_ATTN_PREF=256 ZE_AFFINITY_MASK=1 zig-out/xpu/bin/tensorfold-native serve Qwen3.8-27B-MLX-4bit \
+  --drafter Qwen3.8-27B-DFlash2 --parallel 1 --context 139264 --no-thinking --no-update-check
+# 262,144 context: add XPU_KV_INT8=1 and --context 262144
+```
 
 ## Reproduce
 
