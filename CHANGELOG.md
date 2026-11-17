@@ -20,10 +20,6 @@
 * **catalog:** make every benchmark evidence link resolve ([#85](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/issues/85)) ([21cd5a0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/21cd5a06908047641a0788e818d2401cd639814a))
 
 
-### Reverts
-
-* git revert this commit. ([21cd5a0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/21cd5a06908047641a0788e818d2401cd639814a))
-
 ## [1.13.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.12.1...v1.13.0) (2026-11-10)
 
 
