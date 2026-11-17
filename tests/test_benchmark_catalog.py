@@ -1,11 +1,11 @@
 import importlib.util
 import json
 import pathlib
-import sys
 import subprocess
-from urllib.parse import unquote, urlparse
+import sys
 import unittest
 from typing import Any
+from urllib.parse import unquote, urlparse
 
 ROOT = pathlib.Path(__file__).parents[1]
 CATALOG = ROOT / "data" / "benchmarks.v1.json"
@@ -49,8 +49,11 @@ class BenchmarkCatalogTests(unittest.TestCase):
 
     def test_evidence_commits_and_paths_exist_in_history(self) -> None:
         shallow = subprocess.run(
-            ["git", "rev-parse", "--is-shallow-repository"], cwd=ROOT,
-            text=True, capture_output=True, check=True,
+            ["git", "rev-parse", "--is-shallow-repository"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
         )
         if shallow.stdout.strip() == "true":
             self.skipTest("Evidence history is incomplete in a shallow clone")
@@ -64,8 +67,10 @@ class BenchmarkCatalogTests(unittest.TestCase):
                 path = url_path.split(marker, 1)[1]
                 for obj in (f"{commit}^{{commit}}", f"{commit}:{path}"):
                     result = subprocess.run(
-                        ["git", "cat-file", "-e", obj], cwd=ROOT,
-                        text=True, capture_output=True,
+                        ["git", "cat-file", "-e", obj],
+                        cwd=ROOT,
+                        text=True,
+                        capture_output=True,
                     )
                     self.assertEqual(result.returncode, 0, f"{obj}: {result.stderr}")
 
