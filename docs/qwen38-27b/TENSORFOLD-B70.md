@@ -109,6 +109,21 @@ With `"draft": false`: 30.4 / 23.7 / 13.0 → 30.4 / 27.3 / 18.8 at 8K / 32K / 1
 at 8K and 42.4 → 84.6 at 32K (code). The control column is #2595's grid-order build, which is why it is above the
 stock v1.2.4 table at the top of this page.
 
+### Prefill does not change
+
+The switch only changes decode rounds; prompt processing runs the same kernels. Cold prefill = prompt tokens /
+TTFT, median of the same cells (card 1, 230 W, bf16 K/V; drafted and `"draft": false` give the same rate):
+
+| Prompt tokens | Switch unset | `XPU_ATTN_PREF=256` | TTFT |
+|---|---|---|---|
+| 7,969 | 1,684 tok/s | 1,687 tok/s | 4.7 s |
+| 32,546 | 1,472 tok/s | 1,473 tok/s | 22.1 s |
+| 130,851 | 977 tok/s | 977 tok/s | 134 s |
+
+int8 K/V with the switch: 1,688 / 1,505 / 1,035 tok/s at 8K / 32K / 131K, and 757 tok/s for the 249,784-token
+prompt (330 s). Card 0 at 180 W: 1,474 / 1,292 at 8K / 32K, also unchanged by the switch. EXL3 + MTP3 still
+prefills 32K at 2,455 tok/s (1.67×), so for long prompts the time to first token still favors EXL3.
+
 ### What stays equal, and what does not
 
 | Check | Result |
