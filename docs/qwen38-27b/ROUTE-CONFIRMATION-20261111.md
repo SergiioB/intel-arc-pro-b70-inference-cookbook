@@ -1,5 +1,7 @@
 # Qwen3.8-27B on one B70: EXL3 vs TensorFold, matched confirmation
 
+> Correction 2026-11-18: the 59.8 s TensorFold follow-up came from the 2 GiB `--prompt-cache-gib` default; with the cache sized to one state, follow-ups start in 0.3–1.1 s up to 131K, see [TENSORFOLD-B70.md](TENSORFOLD-B70.md#warm-follow-up-turns-size-the-prompt-cache).
+
 Measured 2026-11-11 on one headless Intel Arc Pro B70 32 GB (GPU 1, 180 W cap),
 one request at a time unless labelled, prefix cache on. This is a **supplemental
 matched confirmation**, not a catalog record. It does not change

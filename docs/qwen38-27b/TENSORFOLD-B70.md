@@ -14,6 +14,11 @@ Measured 2026-11-08 on two Intel Arc Pro B70 cards, one stream per card. Status:
 | 32K and longer (agents with big context, repo dumps) | **EXL3 4.0 bpw + MTP3** (exl3xpu) | 74 tok/s at 32K and 48 at 131K, with 1.5–1.7× TensorFold's prefill, but MTP3 changes the output |
 | 8K–131K, one stream, and an unofficial engine branch is acceptable | **TensorFold + `XPU_ATTN_PREF=256`** ([2026-11-13 screen](#prefix-attention-kernel-2026-11-13-20-at-32k-34-at-131k-262144-context)) | 115 / 90 / 51 tok/s at 8K / 32K / 131K on code, drafted output identical to non-drafted; the text differs from stock TensorFold on some prompts, and the branch is not in upstream |
 | Long context and you need the model's own greedy answer | EXL3 without speculation, or TensorFold with drafts off | 23 tok/s at 131K (EXL3) vs 19 (patched TensorFold, serial) |
+| One user with two B70s, up to 250K | **TensorFold `--tp 2` (upstream PR #3586) + `XPU_ATTN_PREF=256`** ([2026-11-18 screen](#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)) | 165 / 143 / 118 / 77 tok/s at ~60 / 8K / 32K / 131K on code, 63 at 250K with bf16 K/V, drafted == non-drafted; the PR is unmerged |
+| Multi-turn sessions on TensorFold | size `--prompt-cache-gib` to one full state ([how](#warm-follow-up-turns-size-the-prompt-cache)) | follow-up turns start in 0.3–1.1 s up to 131K instead of re-reading the context (22.5 s at 32K with the 2 GiB default) |
+
+The EXL3 rows above come from 2026-11-08 and 2026-11-11. A same-session EXL3 against TensorFold re-measurement
+was started on 2026-11-18 and has not reported yet.
 
 ## Results (code prompts, 512-token answers, decode tok/s after the first token)
 
@@ -163,7 +168,7 @@ acceptable for your work.
 
 The 329-item battery with the position floor or with int8 K/V; int8 controls at 131K and 250K; repeats of the
 int8 cells; retrieval probes at depth (the battery only uses short prompts); prompt-cache resumes under the
-switch; concurrent streams (tree rounds of several streams keep the stock path); sampled decoding. The bf16 cells
+switch (measured later, 2026-11-18: resumed == fresh at 32K on one card, see the warm-turn table below); concurrent streams (tree rounds of several streams keep the stock path); sampled decoding. The bf16 cells
 were measured on two earlier builds of the same kernels (hashes in each run's `env.txt`); the tagged build was
 checked against them at 0, 8K and 32K (`tag-pref256`).
 
@@ -174,6 +179,66 @@ XPU_ATTN_PREF=256 ZE_AFFINITY_MASK=1 zig-out/xpu/bin/tensorfold-native serve Qwe
   --drafter Qwen3.8-27B-DFlash2 --parallel 1 --context 139264 --no-thinking --no-update-check
 # 262,144 context: add XPU_KV_INT8=1 and --context 262144
 ```
+
+## Two cards for one stream (2026-11-18): 1.3× to 32K, 1.5× at 131K, 250K prompt with bf16 K/V
+
+TensorFold upstream [PR #3586](https://github.com/ashhart/TensorFold/pull/3586) (open, not ours) splits every
+layer across cards over Level Zero peer memory. We built it on two Arc Pro B70 (PCIe 4.0 x8/x8) and carried our
+prefix attention kernel onto it (389-line patch in the evidence folder). One card against two, same binary,
+`XPU_ATTN_PREF=256`, greedy, 512 tokens out, one stream. One card is GPU1 at 230 W. Two cards are GPU0 (180 W,
+clock capped at 2,400 MHz) and GPU1.
+
+| Prompt tokens | One card, code / prose | Two cards, code / prose | Ratio | Serial, one → two | Cold TTFT, one → two |
+|---|---|---|---|---|---|
+| ~60 | 128.1 / 102.3 | 165.5 / 128.0 | 1.29 / 1.25 | 32.4 → 48.4 | 0.1 s |
+| 8K | 114.6 / 91.4 | 143.0 / 107.3 | 1.25 / 1.17 | 30.7 → 44.5 | 4.6 → 3.5 s |
+| 32K | 90.0 / 66.5 | 117.5 / 86.8 | 1.31 / 1.30 | 27.6 → 42.7 | 21.5 → 15.9 s |
+| 131K | 50.8 / 45.7 | 76.8 / 67.4 | 1.51 / 1.47 | 18.9 → 31.2 | 128.8 → 86.0 s |
+| 249,784 (`--context 262144`, bf16 K/V) | does not fit | 63.3 (code) | – | – → 23.4 | 212.6 s |
+
+- The code figures at ~60, 8K and 32K are means of five fresh interleaved pairs (ratio spread under 0.2 %). The
+  other cells are one server a side with two drafted repeats.
+- Drafted text equals serial text in all 16 cells and at 250K. One card and two cards give the same text in 4 of
+  8 prompts.
+- The PR without our kernel gives 56.2 tok/s on two cards at 32K (dev runner, one run); with it, 101.6.
+- 329-item battery on two cards: 281 passes. One card on 2026-11-13: 282 (stock), 284 (kernel). One run each.
+- Energy for the same eight drafted prompts, both cards' counters: 119.7 kJ in 590 s on one card (the idle card
+  included), 108.0 kJ in 381 s on two.
+- Raising GPU0's clock cap to 2,800 MHz adds 4.3 % (dev runner). We left it capped.
+
+Why it works: at a short prompt a decode round on one card is weight streaming at 88 % of the card's 608 GB/s
+(profile in the evidence folder). Two cards halve the bytes each card streams. At 131K they also halve the K/V
+each card reads.
+
+Two users are still better served by two servers (2× aggregate). This is the single-user setting.
+
+### Warm follow-up turns: size the prompt cache
+
+A kept prompt state is 64 KiB a token plus 0.2 GiB in VRAM, and the default budget is 2 GiB, so sessions past
+about 29K tokens re-read their whole context on every turn. With a budget that holds one state:
+
+| Session | Setup | Follow-up time to first token |
+|---|---|---|
+| 32K, one card | default 2 GiB | 22.5–22.8 s |
+| 32K, one card | `--context 40960 --prompt-cache-gib 3` | 0.31–0.57 s |
+| 64K, one card | `--context 73728 --prompt-cache-gib 5.5` | 0.42–0.75 s |
+| 131K, one card | `XPU_KV_INT8=1 --context 139264 --prompt-cache-gib 5.5` | 0.65–1.06 s |
+| 131K, two cards, bf16 K/V | `--tp 2 --context 139264 --prompt-cache-gib 9.5` | 0.62–0.83 s |
+
+Resumed text equals fresh text on all four turns at 32K on one card. Not checked on two cards.
+
+```bash
+git clone https://github.com/ashhart/TensorFold && cd TensorFold
+git fetch origin pull/3586/head:pr-3586-tp && git checkout -b tp2-attn-prefix pr-3586-tp   # head 480167c75
+git am /path/to/attn-prefix-on-pr3586-480167c75.patch
+zig build xpu-native -Doptimize=ReleaseFast -Dngen-include=/path/to/onednn/third_party/ngen
+XPU_ATTN_PREF=256 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-native serve Qwen3.8-27B-MLX-4bit \
+  --drafter Qwen3.8-27B-DFlash2 --tp 2 --parallel 1 --context 139264 --no-thinking --no-update-check
+```
+
+Not run: more than one stream on two cards, sampled decoding, thinking on, retrieval at depth, battery repeats,
+int8 K/V on two cards, hours-long stability. The PR is unmerged and may change. Evidence:
+`results/qwen38-27b/tensorfold-two-card-tp2-20261118/` (`python3 summarize.py` prints the tables).
 
 ## Reproduce
 
