@@ -14,6 +14,11 @@ Measured 2026-11-08 on two Intel Arc Pro B70 cards, one stream per card. Status:
 | 32K and longer (agents with big context, repo dumps) | **EXL3 4.0 bpw + MTP3** (exl3xpu) | 74 tok/s at 32K and 48 at 131K, with 1.5–1.7× TensorFold's prefill, but MTP3 changes the output |
 | 8K–131K, one stream, and an unofficial engine branch is acceptable | **TensorFold + `XPU_ATTN_PREF=256`** ([2026-11-13 screen](#prefix-attention-kernel-2026-11-13-20-at-32k-34-at-131k-262144-context)) | 115 / 90 / 51 tok/s at 8K / 32K / 131K on code, drafted output identical to non-drafted; the text differs from stock TensorFold on some prompts, and the branch is not in upstream |
 | Long context and you need the model's own greedy answer | EXL3 without speculation, or TensorFold with drafts off | 23 tok/s at 131K (EXL3) vs 19 (patched TensorFold, serial) |
+| One user with two B70s, up to 250K | **TensorFold `--tp 2` (upstream PR #3586) + `XPU_ATTN_PREF=256`** ([2026-11-18 screen](#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)) | 165 / 143 / 118 / 77 tok/s at ~60 / 8K / 32K / 131K on code, 63 at 250K with bf16 K/V, drafted == non-drafted; the PR is unmerged |
+| Multi-turn sessions on TensorFold | size `--prompt-cache-gib` to one full state ([how](#warm-follow-up-turns-size-the-prompt-cache)) | follow-up turns start in 0.3–1.1 s up to 131K instead of re-reading the context (22.5 s at 32K with the 2 GiB default) |
+
+The EXL3 rows above come from 2026-11-08 and 2026-11-11. A same-session EXL3 against TensorFold re-measurement
+was started on 2026-11-18 and has not reported yet.
 
 ## Results (code prompts, 512-token answers, decode tok/s after the first token)
 
@@ -163,7 +168,7 @@ acceptable for your work.
 
 The 329-item battery with the position floor or with int8 K/V; int8 controls at 131K and 250K; repeats of the
 int8 cells; retrieval probes at depth (the battery only uses short prompts); prompt-cache resumes under the
-switch; concurrent streams (tree rounds of several streams keep the stock path); sampled decoding. The bf16 cells
+switch (measured later, 2026-11-18: resumed == fresh at 32K on one card, see the warm-turn table below); concurrent streams (tree rounds of several streams keep the stock path); sampled decoding. The bf16 cells
 were measured on two earlier builds of the same kernels (hashes in each run's `env.txt`); the tagged build was
 checked against them at 0, 8K and 32K (`tag-pref256`).
 

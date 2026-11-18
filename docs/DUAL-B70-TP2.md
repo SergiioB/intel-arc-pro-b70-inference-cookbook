@@ -17,6 +17,9 @@ benchmark catalog.
   [IMAGE-AND-PATCH-MATRIX.md](IMAGE-AND-PATCH-MATRIX.md)
 - Published numeric records: [BENCHMARK-CATALOG.md](BENCHMARK-CATALOG.md)
 
+TensorFold's own tensor parallelism (`--tp 2`, upstream PR #3586) does not use vLLM, oneCCL or this page's
+setup; its two-card record is in [qwen38-27b/TENSORFOLD-B70.md](qwen38-27b/TENSORFOLD-B70.md).
+
 For two independent single-card servers, do not use TP2 or PP2. Run one engine
 per card, with `ZE_AFFINITY_MASK=0` and `ZE_AFFINITY_MASK=1` respectively.
 

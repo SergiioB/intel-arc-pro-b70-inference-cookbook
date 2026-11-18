@@ -10,6 +10,7 @@ not share a numeric authority or an interchangeable patch list.
 |---|---|---|---|
 | EXL3 (exl3xpu engine) | One B70 | **Primary route:** trellis 4bpw + native MTP3 + fp8 KV; only route at full 262,144 context; clean correctness | [EXL3-XPU.md](EXL3-XPU.md) |
 | GPTQ-INT4 + native MTP | One B70 | General single-card Linux serving, long context, optional draft-INT4, and the established Pi/agent path — **legacy/reference: the W4A16 class fails the exact-answer battery on this model (all exports answer 30); prefer EXL3** | [QWEN38-VLLM-XPU.md](QWEN38-VLLM-XPU.md) |
+| TensorFold MLX 4-bit + DFlash2 | One B70, or two for one stream (`--tp 2`, upstream PR #3586) | Lossless speculation (drafted == non-drafted); fastest measured at short prompts; prefix attention kernel on our tag for 8K–131K; two cards 1.25–1.5× one card (screen 2026-11-18) | [TENSORFOLD-B70.md](TENSORFOLD-B70.md) |
 | FP8 W8A16 + native MTP8 | Two B70 cards in TP2 | Research recipe for the Xe2 FP8 small-M kernel path; C1 evidence only, self-reported E2 | [FP8-TP2-W8A16.md](FP8-TP2-W8A16.md) |
 | Windows standalone | One display-attached B70 | Docker Desktop and experimental WSLC packaging with display-safe VRAM budgets | [WINDOWS-STANDALONE.md](WINDOWS-STANDALONE.md) |
 | Pi agent backend | Qwen3.8 server | Tool calling, provider configuration, and recommended thinking/non-thinking sampling | [PI-AGENT-BACKEND.md](PI-AGENT-BACKEND.md) |
@@ -23,6 +24,11 @@ stacks. TensorFold is faster at 0–8K (the 8K non-thinking cold cell is
 unresolved); EXL3 is faster from 16K and is the long-context/cache choice. The confirmation does not reproduce the earlier
 screen's 40-item battery ordering under the stricter grader, so quality remains
 unresolved. [ROUTE-CONFIRMATION-20261111.md](ROUTE-CONFIRMATION-20261111.md).
+
+**Since then:** the TensorFold prefix attention kernel (2026-11-13) and a sized prompt cache (2026-11-18) change
+the 16K+ and multi-turn picture: 90 tok/s at 32K and 51 at 131K on one card, follow-up turns in 0.3–1.1 s up to
+131K, and two cards for one stream. See [TENSORFOLD-B70.md](TENSORFOLD-B70.md). A same-session EXL3 against
+TensorFold re-measurement started on 2026-11-18 and has not reported; EXL3 stays the primary route until it does.
 
 Task quality against Nemotron Bolt 74B-A9B and Qwen3.6-35B-A3B on the same 94 tasks (EXL3
 4.0bpw route, one card): [MODEL-COMPARISON.md](../MODEL-COMPARISON.md).
