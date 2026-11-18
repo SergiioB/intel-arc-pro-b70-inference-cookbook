@@ -1,0 +1,516 @@
+From 5ad5b78ccd14fa1191b16d6355f7617a8ba28d6d Mon Sep 17 00:00:00 2001
+From: SergiioB <sergiobarrientose@outlook.com>
+Date: Wed, 18 Nov 2026 01:11:58 +0100
+Subject: [PATCH] xpu(qwen27): XPU_SPLIT runs part of each MLP on a second B70
+ for decode rows
+
+XPU_SPLIT=N puts N x 1,024 of the 17,408 MLP neurons of every layer on a peer
+card. The peer holds only weight slices. The first card stores the MLP input
+into the peer's memory and raises a flag word; the peer stores its part of the
+down projection back. No peer atomics, no host round trip per exchange.
+Prompt chunks stay on the first card. XPU_DEVICE picks the first card.
+
+Screen on two Arc Pro B70 (PCIe 4.0 x8/x8), Qwen3.8-27B MLX 4-bit, 68-token
+prompt, XPU_SPLIT=8: serial 33.1 -> 44.0 tok/s, drafted round 41.4 -> 35.7 ms,
+drafted == serial. The text differs from the unsplit build (the two parts of
+the down projection are rounded to fp16 before they are added).
+---
+ zig/build/xpu.zig               |   2 +
+ zig/kernels/xpu/qwen27/split.cl |  81 ++++++++++++
+ zig/src/xpu/dev.zig             |  10 +-
+ zig/src/xpu/forward.zig         |  14 ++-
+ zig/src/xpu/qwen27.zig          |  11 ++
+ zig/src/xpu/split.zig           | 210 ++++++++++++++++++++++++++++++++
+ zig/src/xpu/ze.zig              |  27 ++++
+ 7 files changed, 348 insertions(+), 7 deletions(-)
+ create mode 100644 zig/kernels/xpu/qwen27/split.cl
+ create mode 100644 zig/src/xpu/split.zig
+
+diff --git a/zig/build/xpu.zig b/zig/build/xpu.zig
+index c0130779a..f65bff487 100644
+--- a/zig/build/xpu.zig
++++ b/zig/build/xpu.zig
+@@ -25,6 +25,7 @@ pub fn steps(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
+         .{ "gemm128", "zig/kernels/xpu/qwen27/gemm.cl", " -DGSZ=128" },
+         .{ "gdn", "zig/kernels/xpu/qwen27/gdn_chunk.cl", "" },
+         .{ "drafter", "zig/kernels/xpu/qwen27/drafter.cl", "" },
++        .{ "split", "zig/kernels/xpu/qwen27/split.cl", "" },
+         .{ "glue_g4s", "zig/kernels/xpu/gemma4/glue_g4.cl", " -I zig/kernels/xpu/gemma4" },
+         .{ "glue_g4g", "zig/kernels/xpu/gemma4/glue_g4.cl", " -DHD=512 -I zig/kernels/xpu/gemma4" },
+         .{ "rows_g4s", "zig/kernels/xpu/gemma4/glue_g4.cl", " -I zig/kernels/xpu/gemma4" },
+@@ -70,6 +71,7 @@ pub fn steps(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
+         \\pub const gemm128 align(8) = @embedFile("gemm128.bin").*;
+         \\pub const gdn align(8) = @embedFile("gdn.bin").*;
+         \\pub const drafter align(8) = @embedFile("drafter.bin").*;
++        \\pub const split align(8) = @embedFile("split.bin").*;
+         \\pub const ngen_wide align(8) = @embedFile("ngen_wide.zebin").*;
+         \\pub const ngen_narrow align(8) = @embedFile("ngen_narrow.zebin").*;
+         \\pub const ngen_wide128 align(8) = @embedFile("ngen_wide128.zebin").*;
+diff --git a/zig/kernels/xpu/qwen27/split.cl b/zig/kernels/xpu/qwen27/split.cl
+new file mode 100644
+index 000000000..ff6866206
+--- /dev/null
++++ b/zig/kernels/xpu/qwen27/split.cl
+@@ -0,0 +1,81 @@
++// XPU_SPLIT: the MLP of a decode row split between two cards (B70 pair). Each card holds a slice of the MLP's
++// neurons; the first card sends the MLP input to the peer and gets the peer's part of the down projection back.
++// The exchange is a plain store into the peer's memory and one flag word; peer atomics are not needed.
++#pragma OPENCL FP_CONTRACT OFF
++
++#ifndef ASC
++#define ASC 256.0f
++#endif
++#define KERNEL(N) __attribute__((intel_reqd_sub_group_size(16))) __attribute__((reqd_work_group_size(N, 1, 1))) kernel
++
++static inline float bf2f(ushort h) { return as_float((uint)h << 16); }
++static inline float rbf(float f) { return bf2f(intel_convert_bfloat16_as_ushort(f)); }
++static inline float silu(float x) { return x / (1.0f + exp(-x)); }
++
++// Up to three buffers as 4-byte words, strided over the launch (16-byte peer stores were slower and wrong: RL-264).
++KERNEL(256) void peer_copy(global const uint *S0, global uint *D0, int n0, global const uint *S1, global uint *D1,
++                           int n1, global const uint *S2, global uint *D2, int n2) {
++  const int gid = get_global_id(0), all = get_global_size(0);
++  for (int i = gid; i < n0; i += all) D0[i] = S0[i];
++  for (int i = gid; i < n1; i += all) D1[i] = S1[i];
++  for (int i = gid; i < n2; i += all) D2[i] = S2[i];
++  atomic_work_item_fence(CLK_GLOBAL_MEM_FENCE, memory_order_release, memory_scope_all_svm_devices);
++}
++
++// Raises the peer's flag to `epoch` once the copy before it on this list is done; not after a timeout here.
++KERNEL(16) void peer_flag(global uint *FLAG, int epoch, global const uint *STAT) {
++  if (get_global_id(0) != 0) return;
++  if (STAT[0] != 0) return;
++  atomic_work_item_fence(CLK_GLOBAL_MEM_FENCE, memory_order_acq_rel, memory_scope_all_svm_devices);
++  *(volatile global uint *)FLAG = (uint)epoch;
++  atomic_work_item_fence(CLK_GLOBAL_MEM_FENCE, memory_order_release, memory_scope_all_svm_devices);
++}
++
++// Waits on this card's flag for the peer's `epoch`, at most `cap` polls; STAT[0] = 1 on a timeout (kept), STAT[1]
++// the polls of the last wait. The payload is read by the NEXT kernel: one that spins does not see fresh plain loads.
++KERNEL(16) void peer_wait(global uint *FLAG, int epoch, int cap, global uint *STAT) {
++  if (get_global_id(0) != 0) return;
++  volatile atomic_uint *f = (volatile atomic_uint *)FLAG;
++  uint v = atomic_load_explicit(f, memory_order_relaxed, memory_scope_all_svm_devices);
++  int spins = 0;
++  while (v < (uint)epoch && spins < cap) {
++    spins++;
++    v = atomic_load_explicit(f, memory_order_relaxed, memory_scope_all_svm_devices);
++  }
++  if (v < (uint)epoch) STAT[0] = 1;
++  STAT[1] = (uint)spins;
++  atomic_work_item_fence(CLK_GLOBAL_MEM_FENCE, memory_order_acquire, memory_scope_all_svm_devices);
++}
++
++// R = fp16(R + RB): the two cards' parts of the down projection, always in this order.
++KERNEL(256) void add_half(global half *R, global const half *RB, int n) {
++  const int all = get_global_size(0);
++  for (int i = get_global_id(0); i < n; i += all) R[i] = convert_half_rte((float)R[i] + (float)RB[i]);
++}
++
++// swiglu (glue_attn.cl) for a slice of `ff` neurons, gate|up interleaved by 16, weights not rotated.
++KERNEL(256) void swiglu_n(global const half *GU, global half *H, global half *AHI, global half *ALO, int gs, int ff) {
++  local half hl[1024];
++  const int t = get_group_id(0), blk = get_group_id(1), lid = get_local_id(0);
++  {
++    const int e = lid * 4, c = blk * 1024 + e;
++    const long gc = (c / 16) * 32 + c % 16, uc = gc + 16;
++    const half4 gv = vload4(0, GU + (long)t * (2 * ff) + gc), uv = vload4(0, GU + (long)t * (2 * ff) + uc);
++    half4 o;
++    for (int i = 0; i < 4; i++) o[i] = convert_half_rte(rbf(silu((float)gv[i]) * (float)uv[i]));
++    vstore4(o, 0, H + (long)t * ff + c);
++    vstore4(o, 0, hl + e);
++  }
++  barrier(CLK_LOCAL_MEM_FENCE);
++  const int lane = get_sub_group_local_id(), per = gs / 16, ng = 1024 / gs;
++  for (int g = get_sub_group_id(); g < ng; g += 16) {
++    float s = 0.0f;
++    for (int k = 0; k < per; k++) s += (float)hl[g * gs + lane * per + k];
++    s = sub_group_reduce_add(s) * (1.0f / gs);
++    if (lane == 0) {
++      const half hi = convert_half_rte(s * ASC);
++      AHI[(long)t * (ff / gs) + blk * ng + g] = hi;
++      ALO[(long)t * (ff / gs) + blk * ng + g] = convert_half_rte(s * ASC - (float)hi);
++    }
++  }
++}
+diff --git a/zig/src/xpu/dev.zig b/zig/src/xpu/dev.zig
+index 8319b2785..5f6208af7 100644
+--- a/zig/src/xpu/dev.zig
++++ b/zig/src/xpu/dev.zig
+@@ -75,6 +75,7 @@ pub const Dev = struct {
+     list: ze.H,
+     staging: []u8 = &.{}, // USM host memory: the driver cannot copy from file-backed mmap pages directly
+     allocated: usize = 0, // device bytes allocated (frees not counted: buffers live as long as the runner)
++    noprof: bool = false, // the peer card of XPU_SPLIT: its launches are not timed (the events are the first card's)
+     k: struct {
+         embed: ze.H,
+         add_rmsnorm_dec: ze.H,
+@@ -129,6 +130,11 @@ pub const Dev = struct {
+         gdn_out: ze.H,
+         ngen_wide: ze.H,
+         ngen_narrow: ze.H,
++        peer_copy: ze.H,
++        peer_flag: ze.H,
++        peer_wait: ze.H,
++        add_half: ze.H,
++        swiglu_n: ze.H,
+     },
+ 
+     /// Waits for the queue, then gives the card back everything made on it (Gpu.close).
+@@ -176,7 +182,7 @@ pub const Dev = struct {
+     pub fn launch(d: *Dev, k: ze.H, groups: ze.GroupCount, args: anytype) !void {
+         inline for (args, 0..) |a, i| try d.g.arg(k, i, a);
+         var ev: ze.H = null;
+-        if (q.prof.on) {
++        if (q.prof.on and !d.noprof) {
+             if (q.prof.used == q.prof.events.len) try d.sync();
+             ev = q.prof.events[q.prof.used];
+             q.prof.kernel[q.prof.used] = k;
+@@ -187,7 +193,7 @@ pub const Dev = struct {
+ 
+     pub fn sync(d: *Dev) !void {
+         d.settle();
+-        if (q.prof.on) {
++        if (q.prof.on and !d.noprof) {
+             for (q.prof.events[0..q.prof.used], q.prof.kernel[0..q.prof.used]) |e, k| {
+                 const t = try d.g.seconds(e);
+                 try ze.check(d.g.api.zeEventHostReset(e));
+diff --git a/zig/src/xpu/forward.zig b/zig/src/xpu/forward.zig
+index bab2e61c5..e658c640e 100644
+--- a/zig/src/xpu/forward.zig
++++ b/zig/src/xpu/forward.zig
+@@ -427,10 +427,14 @@ pub fn forward(d: *Dev, m: *Model, a: *Acts, ids: []const i32, p0: u32, mode: Mo
+         try d.launch(if (wide) d.k.add_rmsnorm else d.k.add_rmsnorm_dec, .{ .x = T }, .{ a.x, a.r, l.post_norm, a.h, a.ahi, a.alo, @as(i32, D), EPS, @as(i32, 1), gs, q8a, q8s, q8ms, q.rot_on });
+         try a8(d, a, a.h, D, T, 4);
+         if (gemm_probe) |f| try f(d, a, l.gu, a.h, T, i, 2);
+-        const act = try mlpIn(d, a, l.gu, T, gs, q8on, wide);
+-        try a8(d, a, act, 17408, T, 8);
+-        try pgemm(d, a, act, l.down, a.r, T, false, if (act == a.p) q.rot_on else 0, q.int4_sites & 8 != 0, wide);
+-        if (gemm_probe) |f| try f(d, a, l.down, act, T, i, 3);
++        if (!wide and gemm_hook == null and q.split != null and q.split.?.on) {
++            try q.split.?.mlp(d, a, i, T); // XPU_SPLIT: part of the neurons on the second card
++        } else {
++            const act = try mlpIn(d, a, l.gu, T, gs, q8on, wide);
++            try a8(d, a, act, 17408, T, 8);
++            try pgemm(d, a, act, l.down, a.r, T, false, if (act == a.p) q.rot_on else 0, q.int4_sites & 8 != 0, wide);
++            if (gemm_probe) |f| try f(d, a, l.down, act, T, i, 3);
++        }
+         if (p0 == 0 and i < 4) try dump(d, a, T, try std.fmt.allocPrint(alloc, "{d}", .{i}), true);
+         if (mode.taps) for (TAP_LAYERS, 0..) |tl, slot| if (tl == i)
+             try d.launch(d.k.tap, .{ .x = D / 256, .y = T }, .{ a.x, a.r, a.taps, @as(i32, D), @as(i32, @intCast(slot)) });
+@@ -457,6 +461,6 @@ pub fn forward(d: *Dev, m: *Model, a: *Acts, ids: []const i32, p0: u32, mode: Mo
+     try d.launch(d.k.argmax, .{ .x = rows }, .{ a.pv, a.pi, a.tok });
+     var toks: [16]i32 = undefined;
+     try ze.check(d.g.api.zeCommandListAppendMemoryCopy(d.list, &toks, a.tok, rows * 4, null, 0, null));
+-    try d.sync();
++    if (!wide and q.split != null and q.split.?.on) try q.split.?.finish(d) else try d.sync();
+     return toks[rows - 1];
+ }
+diff --git a/zig/src/xpu/qwen27.zig b/zig/src/xpu/qwen27.zig
+index 3d6ae6274..f5c5ed2d9 100644
+--- a/zig/src/xpu/qwen27.zig
++++ b/zig/src/xpu/qwen27.zig
+@@ -98,6 +98,10 @@ pub var a8_rot: i32 = 0; // XPU_A8_ROT=1: Hadamard by blocks of 128 before the q
+ pub var a8_levels: i32 = 127; // XPU_A8_BITS=4: int4 activations (7 levels a side)
+ pub var a8_sites4: u32 = 15; // XPU_A8_SITES4: the sites in int4 when XPU_A8_BITS=4 (the others in int8)
+ pub var prof: Prof = .{};
++/// XPU_SPLIT=N: N x 1,024 of each MLP's 17,408 neurons run on the second card for decode rows (two B70s).
++pub var split: ?*split_mod.Split = null;
++pub const split_mod = @import("split.zig");
++pub const kernel_bins = kb;
+ 
+ /// The XPU_* options as the process had them before its first open, put back at every open (Runner.init).
+ const Options = struct {
+@@ -255,6 +259,7 @@ pub const Runner = struct {
+         const mw = try d.g.module(&kb.ngen_wide);
+         const mn = try d.g.module(&kb.ngen_narrow);
+         const mm128 = try d.g.module(&kb.gemm128);
++        const msp = try d.g.module(&kb.split);
+         const mw128 = try d.g.module(&kb.ngen_wide128);
+         const mn128 = try d.g.module(&kb.ngen_narrow128);
+         d.k = .{
+@@ -311,6 +316,11 @@ pub const Runner = struct {
+             .gdn_out = try d.kernel(mgd, "gdn_out", 128),
+             .ngen_wide = try d.kernel(mw, "w4g_dpb", 256),
+             .ngen_narrow = try d.kernel(mn, "w4g_s4dpb", 256),
++            .peer_copy = try d.kernel(msp, "peer_copy", 256),
++            .peer_flag = try d.kernel(msp, "peer_flag", 16),
++            .peer_wait = try d.kernel(msp, "peer_wait", 16),
++            .add_half = try d.kernel(msp, "add_half", 256),
++            .swiglu_n = try d.kernel(msp, "swiglu_n", 256),
+         };
+         // the shared rounds' kernels reach each slot's states through the per-row table (acts.mt)
+         for ([_]ze.H{ d.k.attn_prep, d.k.attn_decode, d.k.attn_pref, d.k.attn_pref8, d.k.attn_tail, d.k.gdn_pre, d.k.gdn_step }) |k| try d.g.indirect(k);
+@@ -322,6 +332,7 @@ pub const Runner = struct {
+         const prof_on = prof.on;
+         prof.on = false; // not during the load
+         r.model = try load(d, &ckpt);
++        if (std.c.getenv("XPU_SPLIT")) |v| split = try split_mod.Split.init(d, &ckpt, try std.fmt.parseInt(u32, std.mem.span(v), 10));
+         prof.on = prof_on;
+         r.acts = try Acts.init(d);
+         r.store(); // slot 0: the states the load allocated
+diff --git a/zig/src/xpu/split.zig b/zig/src/xpu/split.zig
+new file mode 100644
+index 000000000..d4e0b76d4
+--- /dev/null
++++ b/zig/src/xpu/split.zig
+@@ -0,0 +1,210 @@
++//! XPU_SPLIT=N: decode rows run N x 1,024 of every MLP's neurons on a second B70 and the rest on the first.
++//! The peer holds only MLP weight slices: no K/V, no GDN state, no drafter. An exchange is plain stores into the
++//! peer's memory and one flag word (kernels/xpu/qwen27/split.cl). Prompt chunks stay on the first card.
++const std = @import("std");
++const ze = @import("ze");
++const q = @import("qwen27.zig");
++const dev = @import("dev.zig");
++const fwd = @import("forward.zig");
++const loader = @import("load.zig");
++const Checkpoint = dev.Checkpoint;
++const D = q.D;
++const Dev = dev.Dev;
++const FF = q.FF;
++const LAYERS = q.LAYERS;
++const Proj = loader.Proj;
++const alloc = q.alloc;
++const off = dev.off;
++
++const ROWS = 16; // decode and verification rows
++const CAP: i32 = 2_000_000; // polls of one wait (about 0.3 to 0.5 s), under the xe job timeout
++
++pub const Split = struct {
++    b: Dev, // the peer card
++    ffa: u32, // neurons on the first card
++    ffb: u32, // neurons on the peer
++    on: bool = true,
++    epoch: i32 = 0,
++    gu_a: [LAYERS]Proj = undefined,
++    down_a: [LAYERS]Proj = undefined,
++    gu_b: [LAYERS]Proj = undefined,
++    down_b: [LAYERS]Proj = undefined,
++    // on the peer: the inbox the first card writes, then the peer's own activations
++    in_h: *anyopaque,
++    in_hi: *anyopaque,
++    in_lo: *anyopaque,
++    bh: *anyopaque,
++    bahi: *anyopaque,
++    balo: *anyopaque,
++    bp: *anyopaque,
++    bact: *anyopaque,
++    bahi2: *anyopaque,
++    balo2: *anyopaque,
++    br: *anyopaque,
++    bpscr: *anyopaque,
++    bflag: *anyopaque,
++    bstat: *anyopaque,
++    // on the first card: the peer's part of the down projection
++    rb: *anyopaque,
++    aflag: *anyopaque,
++    astat: *anyopaque,
++    host_stat: [2]u32 = .{ 0, 0 },
++
++    pub fn init(d: *Dev, c: *const Checkpoint, n: u32) !*Split {
++        if (q.GS != 64 or q.rot_on != 0) return error.SplitNeedsPlainMlxWeights;
++        if (n == 0 or n >= FF / 1024) return error.SplitOutOfRange;
++        const s = try alloc.create(Split);
++        const ffb = n * 1024;
++        s.* = .{
++            .b = .{ .g = try d.g.openPeer(), .list = undefined, .k = d.k, .noprof = true },
++            .ffa = FF - ffb,
++            .ffb = ffb,
++            .in_h = undefined,
++            .in_hi = undefined,
++            .in_lo = undefined,
++            .bh = undefined,
++            .bahi = undefined,
++            .balo = undefined,
++            .bp = undefined,
++            .bact = undefined,
++            .bahi2 = undefined,
++            .balo2 = undefined,
++            .br = undefined,
++            .bpscr = undefined,
++            .bflag = undefined,
++            .bstat = undefined,
++            .rb = undefined,
++            .aflag = undefined,
++            .astat = undefined,
++        };
++        const b = &s.b;
++        b.list = try b.g.immediate(0, 0);
++        const kb = q.kernel_bins;
++        const mg = try b.g.module(&kb.glue);
++        const mm = try b.g.module(&kb.gemm);
++        const ms = try b.g.module(&kb.split);
++        b.k.repack = try b.kernel(mg, "repack", 16);
++        b.k.dec_wide = try b.kernel(mm, "w4k1_decode", 64);
++        b.k.dec_wide64 = try b.kernel(mm, "w4k1_d64", 64);
++        b.k.dec_narrow = try b.kernel(mm, "w4k_dsplit", 64);
++        b.k.peer_copy = try b.kernel(ms, "peer_copy", 256);
++        b.k.peer_flag = try b.kernel(ms, "peer_flag", 16);
++        b.k.peer_wait = try b.kernel(ms, "peer_wait", 16);
++        b.k.add_half = try b.kernel(ms, "add_half", 256);
++        b.k.swiglu_n = try b.kernel(ms, "swiglu_n", 256);
++        s.in_h = try b.alloc_(ROWS * D * 2);
++        s.in_hi = try b.alloc_(ROWS * (D / 64) * 2);
++        s.in_lo = try b.alloc_(ROWS * (D / 64) * 2);
++        s.bh = try b.alloc_(ROWS * D * 2);
++        s.bahi = try b.alloc_(ROWS * (D / 64) * 2);
++        s.balo = try b.alloc_(ROWS * (D / 64) * 2);
++        s.bp = try b.alloc_(ROWS * 2 * ffb * 2);
++        s.bact = try b.alloc_(ROWS * ffb * 2);
++        s.bahi2 = try b.alloc_(ROWS * (ffb / 64) * 2);
++        s.balo2 = try b.alloc_(ROWS * (ffb / 64) * 2);
++        s.br = try b.alloc_(ROWS * D * 2);
++        s.bpscr = try b.alloc_(ROWS * D * 4);
++        s.bflag = try b.alloc_(4096);
++        s.bstat = try b.alloc_(4096);
++        s.rb = try d.alloc_(ROWS * D * 2);
++        s.aflag = try d.alloc_(4096);
++        s.astat = try d.alloc_(4096);
++        try b.fill(s.bflag, @as(u32, 0), 4096);
++        try b.fill(s.bstat, @as(u32, 0), 4096);
++        try d.fill(s.aflag, @as(u32, 0), 4096);
++        try d.fill(s.astat, @as(u32, 0), 4096);
++        const stage_a = try d.alloc_(128 << 20);
++        const stage_b = try b.alloc_(128 << 20);
++        for (0..LAYERS) |i| {
++            const p = try std.fmt.allocPrint(alloc, "model.layers.{d}.mlp.", .{i});
++            defer alloc.free(p);
++            s.gu_a[i] = try slice(d, c, p, &.{ "gate_proj", "up_proj" }, true, true, stage_a, 0, s.ffa, 0, D);
++            s.down_a[i] = try slice(d, c, p, &.{"down_proj"}, false, false, stage_a, 0, D, 0, s.ffa);
++            s.gu_b[i] = try slice(b, c, p, &.{ "gate_proj", "up_proj" }, true, true, stage_b, s.ffa, ffb, 0, D);
++            s.down_b[i] = try slice(b, c, p, &.{"down_proj"}, false, false, stage_b, 0, D, s.ffa, ffb);
++        }
++        try d.sync();
++        try b.sync();
++        d.g.free(stage_a);
++        d.allocated -= 128 << 20;
++        b.g.free(stage_b);
++        std.debug.print("XPU_SPLIT: MLP neurons {d} on the first card, {d} on the peer ({d:.2} GiB there)\n", .{ s.ffa, ffb, @as(f64, @floatFromInt(b.allocated - (128 << 20))) / (1 << 30) });
++        return s;
++    }
++
++    /// One layer's MLP for `T` decode rows: a.h (the normed residual) in, a.r (the down projection) out.
++    pub fn mlp(s: *Split, d: *Dev, a: *fwd.Acts, i: usize, T: u32) !void {
++        const b = &s.b;
++        s.epoch += 1;
++        const e = s.epoch;
++        const gs: i32 = 64;
++        const nh: i32 = @intCast(T * D / 2); // 4-byte words of T rows of h
++        const ng: i32 = @intCast(T * (D / 64) / 2);
++        const zero: i32 = 0;
++        const cg: ze.GroupCount = .{ .x = (T + 1) / 2 };
++        const one: ze.GroupCount = .{ .x = 1 };
++        // first card: the MLP input to the peer
++        try d.launch(d.k.peer_copy, cg, .{ a.h, s.in_h, nh, a.ahi, s.in_hi, ng, a.alo, s.in_lo, ng });
++        try d.launch(d.k.peer_flag, one, .{ s.bflag, e, s.astat });
++        // peer: its slice of gate|up, SwiGLU and down, and the result into the first card's memory
++        try b.launch(b.k.peer_wait, one, .{ s.bflag, e, CAP, s.bstat });
++        try b.launch(b.k.peer_copy, cg, .{ s.in_h, s.bh, nh, s.in_hi, s.bahi, ng, s.in_lo, s.balo, ng });
++        try fwd.gemmRows(b, s.bpscr, s.bh, s.bahi, s.balo, s.gu_b[i], s.bp, T, false);
++        try b.launch(b.k.swiglu_n, .{ .x = T, .y = s.ffb / 1024 }, .{ s.bp, s.bact, s.bahi2, s.balo2, gs, @as(i32, @intCast(s.ffb)) });
++        try fwd.gemmRows(b, s.bpscr, s.bact, s.bahi2, s.balo2, s.down_b[i], s.br, T, false);
++        try b.launch(b.k.peer_copy, cg, .{ s.br, s.rb, nh, s.br, s.rb, zero, s.br, s.rb, zero });
++        try b.launch(b.k.peer_flag, one, .{ s.aflag, e, s.bstat });
++        // first card: its own slice, then the peer's part added
++        try fwd.gemmRows(d, a.pscr, a.h, a.ahi, a.alo, s.gu_a[i], a.p, T, false);
++        try d.launch(d.k.swiglu_n, .{ .x = T, .y = s.ffa / 1024 }, .{ a.p, a.h, a.ahi, a.alo, gs, @as(i32, @intCast(s.ffa)) });
++        try fwd.gemmRows(d, a.pscr, a.h, a.ahi, a.alo, s.down_a[i], a.r, T, false);
++        try d.launch(d.k.peer_wait, one, .{ s.aflag, e, CAP, s.astat });
++        try d.launch(d.k.add_half, cg, .{ a.r, s.rb, @as(i32, @intCast(T * D)) });
++    }
++
++    /// Waits for both cards and fails closed when an exchange timed out.
++    pub fn finish(s: *Split, d: *Dev) !void {
++        try ze.check(d.g.api.zeCommandListAppendMemoryCopy(d.list, &s.host_stat, s.astat, 8, null, 0, null));
++        try d.sync();
++        s.b.settle();
++        if (s.host_stat[0] != 0) return error.PeerExchangeTimedOut;
++    }
++};
++
++/// Rows r0 .. r0 + rn of each part and columns c0 .. c0 + cn (multiples of 64) of an MLX projection, in the GEMM layout.
++fn slice(d: *Dev, c: *const Checkpoint, prefix: []const u8, parts: []const []const u8, wide: bool, ilv: bool, stage: *anyopaque, r0: u32, rn: u32, c0: u32, cn: u32) !Proj {
++    const n_total: u32 = @intCast(parts.len * rn);
++    if (n_total % 256 != 0 or cn % 256 != 0 or c0 % 64 != 0) return error.BadSplitShape;
++    const out: Proj = .{ .w = try d.alloc_(@as(usize, cn / 8) * n_total * 4), .s = try d.alloc_(@as(usize, cn / 64) * n_total * 2), .bg = try d.alloc_(@as(usize, cn / 64) * n_total * 2), .n = n_total, .k = cn, .wide = wide, .ilv = ilv };
++    const wrow: usize = (cn / 8) * 4;
++    const srow: usize = (cn / 64) * 2;
++    const tw = try alloc.alloc(u8, rn * wrow);
++    defer alloc.free(tw);
++    const ts = try alloc.alloc(u8, rn * srow);
++    defer alloc.free(ts);
++    const tb = try alloc.alloc(u8, rn * srow);
++    defer alloc.free(tb);
++    var n0: u32 = 0;
++    for (parts, 0..) |part, pi| {
++        const w = try c.get(try std.fmt.allocPrint(alloc, "{s}{s}.weight", .{ prefix, part }));
++        const sc = try c.get(try std.fmt.allocPrint(alloc, "{s}{s}.scales", .{ prefix, part }));
++        const bi = try c.get(try std.fmt.allocPrint(alloc, "{s}{s}.biases", .{ prefix, part }));
++        const k: usize = @intCast(w.shape[1] * 8);
++        if (r0 + rn > w.shape[0] or c0 + cn > k) return error.BadSplitShape;
++        for (0..rn) |r| {
++            const row = r0 + r;
++            @memcpy(tw[r * wrow ..][0..wrow], w.bytes[(row * (k / 8) + c0 / 8) * 4 ..][0..wrow]);
++            @memcpy(ts[r * srow ..][0..srow], sc.bytes[(row * (k / 64) + c0 / 64) * 2 ..][0..srow]);
++            @memcpy(tb[r * srow ..][0..srow], bi.bytes[(row * (k / 64) + c0 / 64) * 2 ..][0..srow]);
++        }
++        const ss = off(stage, tw.len);
++        const sb = off(ss, ts.len);
++        try d.copyIn(stage, tw);
++        try d.copyIn(ss, ts);
++        try d.copyIn(sb, tb);
++        try d.launch(d.k.repack, .{ .x = (rn + 15) / 16, .y = cn / 8 }, .{ stage, ss, sb, out.w, out.s, out.bg, @as(i32, @intCast(rn)), @as(i32, @intCast(cn)), @as(i32, @intCast(n_total)), @as(i32, @intCast(n0)), @as(i32, if (ilv) @intCast(pi + 1) else 0) });
++        try d.sync();
++        n0 += rn;
++    }
++    return out;
++}
+diff --git a/zig/src/xpu/ze.zig b/zig/src/xpu/ze.zig
+index 20698c218..132dca5d3 100644
+--- a/zig/src/xpu/ze.zig
++++ b/zig/src/xpu/ze.zig
+@@ -257,7 +257,32 @@ pub const Gpu = struct {
+         return true;
+     }
+ 
++    /// The first device with `device_id`, or the one XPU_DEVICE counts to among them (0 the first).
+     pub fn open(device_id: u32) Error!Gpu {
++        const want: u32 = if (std.c.getenv("XPU_DEVICE")) |v| std.fmt.parseInt(u32, std.mem.span(v), 10) catch 0 else 0;
++        return openNth(device_id, want);
++    }
++
++    /// Another device of this Gpu's driver with the same PCI id, in the SAME context: its memory is peer memory.
++    /// The peer shares the loader and the context: it is never closed (the first Gpu's close ends both).
++    pub fn openPeer(g: *const Gpu) Error!Gpu {
++        var nv: u32 = 0;
++        try check(g.api.zeDeviceGet(g.driver, &nv, null));
++        var devs: [8]H = @splat(null);
++        nv = @min(nv, devs.len);
++        try check(g.api.zeDeviceGet(g.driver, &nv, &devs));
++        for (devs[0..nv]) |dev| {
++            if (dev == null or dev == g.device) continue;
++            var p: DeviceProperties = .{};
++            try check(g.api.zeDeviceGetProperties(dev, &p));
++            if (p.deviceId != g.props.deviceId) continue;
++            return .{ .lib = g.lib, .api = g.api, .driver = g.driver, .device = dev, .context = g.context, .props = p };
++        }
++        return error.NoDevice;
++    }
++
++    fn openNth(device_id: u32, nth: u32) Error!Gpu {
++        var seen: u32 = 0;
+         var lib = std.DynLib.open("libze_loader.so.1") catch return error.LoaderUnavailable;
+         errdefer lib.close();
+         const api = try resolve(Api, &lib);
+@@ -279,6 +304,8 @@ pub const Gpu = struct {
+                 var p: DeviceProperties = .{};
+                 try check(api.zeDeviceGetProperties(dev, &p));
+                 if (p.deviceId != device_id) continue;
++                seen += 1;
++                if (seen <= nth) continue;
+                 var ctx: H = null;
+                 try check(api.zeContextCreate(drv, &.{}, &ctx));
+                 return .{ .lib = lib, .api = api, .driver = drv, .device = dev, .context = ctx, .props = p };
+-- 
+2.53.0
+

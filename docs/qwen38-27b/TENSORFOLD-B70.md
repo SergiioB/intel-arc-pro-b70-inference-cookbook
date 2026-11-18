@@ -175,6 +175,66 @@ XPU_ATTN_PREF=256 ZE_AFFINITY_MASK=1 zig-out/xpu/bin/tensorfold-native serve Qwe
 # 262,144 context: add XPU_KV_INT8=1 and --context 262144
 ```
 
+## Two cards for one stream (2026-11-18): 1.3× to 32K, 1.5× at 131K, 250K prompt with bf16 K/V
+
+TensorFold upstream [PR #3586](https://github.com/ashhart/TensorFold/pull/3586) (open, not ours) splits every
+layer across cards over Level Zero peer memory. We built it on two Arc Pro B70 (PCIe 4.0 x8/x8) and carried our
+prefix attention kernel onto it (389-line patch in the evidence folder). One card against two, same binary,
+`XPU_ATTN_PREF=256`, greedy, 512 tokens out, one stream. One card is GPU1 at 230 W. Two cards are GPU0 (180 W,
+clock capped at 2,400 MHz) and GPU1.
+
+| Prompt tokens | One card, code / prose | Two cards, code / prose | Ratio | Serial, one → two | Cold TTFT, one → two |
+|---|---|---|---|---|---|
+| ~60 | 128.1 / 102.3 | 165.5 / 128.0 | 1.29 / 1.25 | 32.4 → 48.4 | 0.1 s |
+| 8K | 114.6 / 91.4 | 143.0 / 107.3 | 1.25 / 1.17 | 30.7 → 44.5 | 4.6 → 3.5 s |
+| 32K | 90.0 / 66.5 | 117.5 / 86.8 | 1.31 / 1.30 | 27.6 → 42.7 | 21.5 → 15.9 s |
+| 131K | 50.8 / 45.7 | 76.8 / 67.4 | 1.51 / 1.47 | 18.9 → 31.2 | 128.8 → 86.0 s |
+| 249,784 (`--context 262144`, bf16 K/V) | does not fit | 63.3 (code) | – | – → 23.4 | 212.6 s |
+
+- The code figures at ~60, 8K and 32K are means of five fresh interleaved pairs (ratio spread under 0.2 %). The
+  other cells are one server a side with two drafted repeats.
+- Drafted text equals serial text in all 16 cells and at 250K. One card and two cards give the same text in 4 of
+  8 prompts.
+- The PR without our kernel gives 56.2 tok/s on two cards at 32K (dev runner, one run); with it, 101.6.
+- 329-item battery on two cards: 281 passes. One card on 2026-11-13: 282 (stock), 284 (kernel). One run each.
+- Energy for the same eight drafted prompts, both cards' counters: 119.7 kJ in 590 s on one card (the idle card
+  included), 108.0 kJ in 381 s on two.
+- Raising GPU0's clock cap to 2,800 MHz adds 4.3 % (dev runner). We left it capped.
+
+Why it works: at a short prompt a decode round on one card is weight streaming at 88 % of the card's 608 GB/s
+(profile in the evidence folder). Two cards halve the bytes each card streams. At 131K they also halve the K/V
+each card reads.
+
+Two users are still better served by two servers (2× aggregate). This is the single-user setting.
+
+### Warm follow-up turns: size the prompt cache
+
+A kept prompt state is 64 KiB a token plus 0.2 GiB in VRAM, and the default budget is 2 GiB, so sessions past
+about 29K tokens re-read their whole context on every turn. With a budget that holds one state:
+
+| Session | Setup | Follow-up time to first token |
+|---|---|---|
+| 32K, one card | default 2 GiB | 22.5–22.8 s |
+| 32K, one card | `--context 40960 --prompt-cache-gib 3` | 0.31–0.57 s |
+| 64K, one card | `--context 73728 --prompt-cache-gib 5.5` | 0.42–0.75 s |
+| 131K, one card | `XPU_KV_INT8=1 --context 139264 --prompt-cache-gib 5.5` | 0.65–1.06 s |
+| 131K, two cards, bf16 K/V | `--tp 2 --context 139264 --prompt-cache-gib 9.5` | 0.62–0.83 s |
+
+Resumed text equals fresh text on all four turns at 32K on one card. Not checked on two cards.
+
+```bash
+git clone https://github.com/ashhart/TensorFold && cd TensorFold
+git fetch origin pull/3586/head:pr-3586-tp && git checkout -b tp2-attn-prefix pr-3586-tp   # head 480167c75
+git am /path/to/attn-prefix-on-pr3586-480167c75.patch
+zig build xpu-native -Doptimize=ReleaseFast -Dngen-include=/path/to/onednn/third_party/ngen
+XPU_ATTN_PREF=256 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-native serve Qwen3.8-27B-MLX-4bit \
+  --drafter Qwen3.8-27B-DFlash2 --tp 2 --parallel 1 --context 139264 --no-thinking --no-update-check
+```
+
+Not run: more than one stream on two cards, sampled decoding, thinking on, retrieval at depth, battery repeats,
+int8 K/V on two cards, hours-long stability. The PR is unmerged and may change. Evidence:
+`results/qwen38-27b/tensorfold-two-card-tp2-20261118/` (`python3 summarize.py` prints the tables).
+
 ## Reproduce
 
 ```bash
