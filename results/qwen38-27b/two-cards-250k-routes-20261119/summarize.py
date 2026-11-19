@@ -103,7 +103,7 @@ def long_context():
         r = json.loads(line)
         print(f"needles {r['run']} {r['depth']}: {r['hits']} of {r['of']}")
     for run in sorted(glob.glob("kv256k/d*")) + sorted(glob.glob("kv256k/w*")):
-        log = open(f"{run}/server.log").read()
+        log = open(f"{run}/server.log.txt").read()
         refused = re.search(r"cannot hold a stream of \d+ tokens and a [\d.]+ GiB prompt cache", log)
         cmd = open(f"{run}/env.txt").read()
         ctx = re.search(r"--context (\d+)", cmd)
@@ -150,8 +150,8 @@ def tptf():
 def tpdiag():
     h("Why two cards lose time (tpdiag/tf logs, dev runner, 256 steps)")
     runs = collections.defaultdict(list)
-    for path in sorted(glob.glob("tpdiag/tf/*.log")):
-        name = os.path.basename(path)[:-4]
+    for path in sorted(glob.glob("tpdiag/tf/*.log.txt")):
+        name = os.path.basename(path)[:-8]
         text = open(path).read()
         d = re.search(r"drafted: \d+ tokens in \d+ rounds \(([\d.]+) a round\), ([\d.]+) tok/s.*equal to serial: (\w+)", text)
         s = re.search(r"decode: \d+ tokens in [\d.]+ s \(([\d.]+) tok/s\)", text)

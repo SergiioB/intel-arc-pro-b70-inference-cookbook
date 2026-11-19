@@ -1,0 +1,35 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+info: qwen27-xpu: window ms by rows: 1 20.6, 8 24.0, 16 27.1
+info: qwen27-xpu: tp=2, 1 streams of 262144 tokens, DFlash2 trees for a lone stream
+[tensorfold] chat template: the checkpoint's
+[tensorfold] open-file limit raised: soft 1024 -> 524288
+warning: libtfgrammar.so is required for structured output and required tool calls (HTTP 400 when missing); restore the matching release archive's lib/ directory or run zig build grammar -Dxgrammar=DIR; prepare DIR with git clone --branch v0.2.8 --recurse-submodules https://github.com/mlc-ai/xgrammar
+[tensorfold] profile: stable; registered overrides: none
+[tensorfold] serving Qwen3.8-27B-MLX-4bit at http://127.0.0.1:8046/v1 (sampling: temperature 1.0, top_k 20, top_p 0.95; drafts: DFlash2 ($TF/models/Qwen3.8-27B-DFlash2); context: 262144; loaded in 5.8s)
+[tensorfold] 127.0.0.1 "GET /health HTTP/1.1" 200 -
+[tensorfold] 127.0.0.1 "POST /v1/chat/completions HTTP/1.1" 200 -
+[tensorfold] done chatcmpl-e50e5e355078ce32e3cbc7772533fbd3 prompt=15 cached=0 thinking=False effort=none tokens=2 sha=507683b4cbb1 finish=stop rounds=1 accepted=1/15 ttft=0.085 decode=0.033 elapsed=0.117 queued=0.000 tok/s=30.6
+[tensorfold] 127.0.0.1 "POST /v1/chat/completions HTTP/1.1" 200 -
+[tensorfold] done chatcmpl-0f50dffa83196eb0676f59b777c747e5 prompt=249784 cached=0 thinking=False effort=none tokens=512 sha=b08b75173e3c finish=length rounds=88 accepted=424/1320 ttft=204.372 decode=15.424 elapsed=219.796 queued=0.000 tok/s=33.1
+[tensorfold] 127.0.0.1 "POST /v1/chat/completions HTTP/1.1" 200 -
+[tensorfold] done chatcmpl-e1ae23f5c4e202b29608ab3773bd3aaa prompt=250320 cached=0 thinking=False effort=none tokens=128 sha=3a9d7ed2d312 finish=length rounds=44 accepted=84/660 ttft=205.049 decode=7.605 elapsed=212.655 queued=0.000 tok/s=16.7
+[tensorfold] 127.0.0.1 "POST /v1/chat/completions HTTP/1.1" 200 -
+[tensorfold] done chatcmpl-78cdea3a08adba9afee5e481586d1716 prompt=250477 cached=0 thinking=False effort=none tokens=128 sha=0eeed4d2659a finish=length rounds=32 accepted=97/480 ttft=205.405 decode=5.556 elapsed=210.962 queued=0.000 tok/s=22.9
+[tensorfold] 127.0.0.1 "POST /v1/chat/completions HTTP/1.1" 200 -
+[tensorfold] done chatcmpl-5e6c83098e2adaf1aa2071f14c747cd6 prompt=250631 cached=0 thinking=False effort=none tokens=128 sha=4edf6e36c80c finish=length rounds=24 accepted=104/360 ttft=205.495 decode=4.177 elapsed=209.672 queued=0.000 tok/s=30.4
+[tensorfold] shutting down (SIGTERM): draining: new requests get 503; 0 request(s) in progress may finish within 20.0 s
+[tensorfold] shutting down: drained
+[tensorfold] shutting down: stopped

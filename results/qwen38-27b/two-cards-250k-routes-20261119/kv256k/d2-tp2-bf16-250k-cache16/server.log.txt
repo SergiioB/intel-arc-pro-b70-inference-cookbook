@@ -1,0 +1,15 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+tensorfold: the XPU engine cannot hold a stream of 262144 tokens and a 16.0 GiB prompt cache beside $TF/models/Qwen3.8-27B-MLX-4bit on this card

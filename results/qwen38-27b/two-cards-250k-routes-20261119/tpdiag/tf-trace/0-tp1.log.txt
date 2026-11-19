@@ -1,0 +1,20 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.8 s
+drafter loaded in 0.7 s
+tree: 15 nodes a round, 4.94 accepted of 15.0 drafted
+drafted: 101 tokens in 17 rounds (5.94 a round), 128.3 tok/s, draft 0.0 ms + verify 46.3 ms a round, equal to serial: true
+prompt: 68 tokens in 0.099 s (687 tok/s)
+decode: 96 tokens in 3.145 s (30.5 tok/s)
+tokens: 71093 10504 198 5355 423 1658 9802 53 19365 198 1389 423 1658 9802 53 19365 271 1032 361 66 64157 29 198 1032 361 93631 29 198 1032 361 21670 29 198 1032 361 3112 29 198 1032 361 12439 29 198 1032 361 91247 29 198 1032 361 19086 29 198 1032 361 6409 29 271 3537 198 348 554 6449 357 4368 53269 11 8097 35473 3883 9761 4011 364 81726 35464 2424 27437 13 198 348 198 348 1061 523 5004 264 26068 4011 421 10220 220 21 19 14813 2424 45640 13
+[INFO] Log is stored in 0-tp1.867813.stats
+[INFO] Timeline is stored in xpu-qwen27.867813.json

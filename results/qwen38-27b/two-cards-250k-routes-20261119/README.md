@@ -10,7 +10,8 @@ Raw text evidence behind three pages:
 
 Paths were rewritten before publication: `$TF` is the TensorFold work tree (source, models, toolchain),
 `$WORK` the scratch folder of the campaign, `$MODELS` and `$DATA` the model disks, `~` the lab home. Server
-logs and per-request text outputs are kept where they are small. Long prompt texts and streamed chunks are not
+logs and per-request text outputs are kept where they are small. Logs carry a `.log.txt` suffix because the
+repository ignores `*.log`. Long prompt texts and streamed chunks are not
 kept; the prompt files are named by sha256 in each `env.txt`.
 
 | Folder | What | Source run |
