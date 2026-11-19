@@ -302,7 +302,11 @@ Expect (Qwen3.8-27B Q4_K_M, q8_0 K/V, llama-bench `-r 3`, 230/230 W):
 | Two cards, stock `-sm tensor` | 23.28 ± 0.25 | 558.11 ± 2.88 | 23.60 |
 | Two cards, `GGML_SYCL_TP_P2P=2` | **32.18 ± 0.03** | 544.37 ± 1.73 | 31.89 |
 
-- Mode 2 is 1.14× one card and 1.38× stock on tg128. The original short prompt gave the same reply on all three setups. Check text equality on your own prompts before relying on it.
+- Mode 2 is 1.14× one card and 1.38× stock on tg128. Its text is not a drop-in for either control. In a replay on
+  2026-11-19 it gave a different reply from one card and from stock at a 68-token code prompt and a 52-token prose
+  prompt (two repeats an arm, stable inside an arm); one card and stock matched on the code prompt and differed on the
+  prose prompt. The earlier check, at 76 and 78 tokens, matched mode 2 with stock only; the one-card arm used other
+  prompts. The cause is not located. Check text equality on your own prompts before relying on it.
 - Skipping every allreduce (wrong output, a bound for this split) gives 38.09 ± 0.04 tg128.
 - Per allreduce at decode size: stock 49–52 µs, mode 2 25.8–26.5 µs. At prefill size (2,621,440 values) mode 2 is
   slower: 1,175 µs against 789 µs, which is why pp512 drops 2.5 %.

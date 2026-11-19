@@ -208,7 +208,8 @@ stage the weights. The branch contains fix B (`df3baa3ea`) and fix A (`78f42f240
 XPU_ATTN_PREF=256 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-native serve \
   Qwen3.8-27B-MLX-4bit --drafter Qwen3.8-27B-DFlash2 --tp 2 --parallel 4 --context 16384 \
   --prompt-cache-gib 0 --no-thinking --no-update-check --port 8046
-python3 scripts/gates.py conc --base http://127.0.0.1:8046 --prompts prompts-qwen38.json \
+# from the cookbook clone: cd results/qwen38-27b/two-cards-250k-routes-20261119
+python3 scripts/gates.py conc --base http://127.0.0.1:8046 --prompts ../tensorfold-depth-20261108/prompts-qwen38.json \
   --keys code-0,chat-0,code-8k,chat-8k --out out-b      # equal_alone must be true for every stream
 
 # Bug A: a cache-off server, then a cache-on server, same history (check.py resume compares them)
@@ -295,6 +296,10 @@ Measured with a standalone check program on both cards (`llamacpp-tp-patch/evide
 | Stock host-staged allreduce, decode size | 49.36 and 52.24 µs a call at 5,120 values (2,000 calls, two runs), 52.18 µs at 20,480 |
 | Stock, prefill size | 782.42 µs a call at 2,621,440 values (200 calls) |
 | Stock, host memory | resident memory grows 2.58 KiB a call (50,000 calls, two runs) |
+
+**Text:** a replay reproduced the speed (32.30 tg128 against 32.18 here) but not the text. Mode 2 hashed to one value
+across its two repeats and to a different value from both controls at both prompts. Different SHA-256 values prove
+different text; they do not grade which reply is better or locate a kernel fault.
 
 **Speed: measured later the same day, see the [update](#update-2026-11-19-equal-caps-speed-levers-runtime-ab-llamacpp).**
 At the time of this section the peer path's timing run produced no timing lines and the llama-bench baseline
@@ -391,8 +396,10 @@ device passed on 26.05.
 **llama.cpp `-sm tensor`, our local patch** (Qwen3.8-27B Q4_K_M, q8_0 K/V, llama-bench `-r 3`): one card tg128
 28.28 ± 0.02; stock two-card `-sm tensor` 23.28 ± 0.25; `GGML_SYCL_TP_P2P=2` (peer stores and a flag, no host wait)
 32.18 ± 0.03, 1.14× one card and 1.38× stock; pp512 544.37 against stock 558.11. Per allreduce at decode size 25.8–26.5
-µs against stock 49–52 µs; at 2,621,440 values mode 2 is slower (1,175 against 789 µs). Same served text as stock
-and one card at a short prompt. Mode 1 leaks and segfaults ([DNR-032](../DO-NOT-REPEAT.md)). Patches, commands and
+µs against stock 49–52 µs; at 2,621,440 values mode 2 is slower (1,175 against 789 µs). Text is not parity:
+in a replay the same day mode 2 repeated its own output on both prompts but matched neither stock nor one card at a
+68-token code prompt or a 52-token prose prompt; stock and one card matched on the code prompt and differed on the prose
+prompt. The earlier 76/78-token check matched mode 2 with stock only. Mode 1 leaks and segfaults ([DNR-032](../DO-NOT-REPEAT.md)). Patches, commands and
 limits: [RECIPES-B70.md](RECIPES-B70.md#7-llamacpp-gguf-on-two-cards-local-patch).
 
 ## Failures and lost time

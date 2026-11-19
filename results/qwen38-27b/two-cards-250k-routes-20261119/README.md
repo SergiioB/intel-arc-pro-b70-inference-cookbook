@@ -27,7 +27,7 @@ kept; the prompt files are named by sha256 in each `env.txt`.
 | `sweep-tp2-bf16/` | Decode by prompt length on two cards, 512 to 245,760 tokens, `samples.jsonl` (rep -1 is the warm-up) | 2026-11-19 04:35-05:28 UTC |
 | `prefill8/` | int8-activation prefill flag (`XPU_PREFILL_INT8=1`): A/B timing, text parity, both batteries, the patch | 2026-11-18 |
 | `upstream-receipt/` | Combined #2595 + #2799 receipt against upstream main, as posted on issue #2543 | 2026-11-18 |
-| `llamacpp-tp-patch/` | llama.cpp SYCL `-sm tensor` peer-copy allreduce, local patch; correctness and stock-path timing in `evidence/check/`, baseline crash in `evidence/diag/`; speed pending | 2026-11-19 |
+| `llamacpp-tp-patch/` | llama.cpp SYCL `-sm tensor` peer-copy allreduce, local patch; correctness and stock-path timing in `evidence/check/`, baseline crash in `evidence/diag/`; peer-store speed 32.18 tg128 in `docs/qwen38-27b/RECIPES-B70.md` recipe 7, replayed at 32.30; text differs from both controls | 2026-11-19 |
 | `scripts/` | Client scripts the run wrappers call (`gates.py`, `conc.py`, `warm_session.sh`) | |
 
 The per-turn cache-off sessions of the bug-A runs (`tptf/raw/*/fresh/session-turns.jsonl`) keep the measured

@@ -91,7 +91,7 @@
         "qwen38-27b-tensorfold-v125-depth-cardsampling-20261110"
       ],
       "doc": "docs/qwen38-27b/TENSORFOLD-B70.md",
-      "notes": "Fastest at 8K and below, slower from 32K; 131,072 tokens with bf16 K/V on one card, or a 249,784-token cold prompt with int8 K/V and the prompt cache off. Not in the launcher yet. Refuses presence_penalty above 0, so the card's non-thinking preset cannot run as written."
+      "notes": "Fastest at 8K and below, slower from 32K; 131,072 tokens with bf16 K/V on one card, or a 249,784-token cold prompt with int8 K/V and the prompt cache off (measured 2026-11-18). Not in the launcher yet. Refuses presence_penalty above 0, so the card's non-thinking preset cannot run as written."
     },
     {
       "id": "qwen38-27b-llamacpp-q4km",
