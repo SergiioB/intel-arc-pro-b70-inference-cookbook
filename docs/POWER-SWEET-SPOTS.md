@@ -1,5 +1,11 @@
 # Power Sweet Spots — don't waste watts
 
+> **Note (2026-11-19).** For two cards serving one model (`--tp 2`, `-sm tensor`), set both cards to the same cap and
+> clock: the slower card sets the pace of every exchange. Measured: two cards at 230/230 W ran 5–6 % faster than with
+> one card at 180 W / 2,400 MHz, same text ([recipe 0](qwen38-27b/RECIPES-B70.md#0-host-both-cards-at-230-w-and-2800-mhz)).
+> The `hwmon4` path below was this host's number in 2026; hwmon numbers move between boots, so find each card's
+> path through `/sys/class/drm/cardN/device/hwmon/` as the recipe does.
+
 The B70's power cap is a per-workload setting, not a "max it out" setting.
 MoE and Dense want **opposite** configurations.
 

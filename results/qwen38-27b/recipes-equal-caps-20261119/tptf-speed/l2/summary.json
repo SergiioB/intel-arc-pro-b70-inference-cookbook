@@ -1,0 +1,372 @@
+{
+ "cells": [
+  {
+   "depth": "0",
+   "kind": "chat",
+   "off": {
+    "n": 3,
+    "client_tok_s": 134.36,
+    "ms_round": 31.96,
+    "ttft_s": 0.068,
+    "raw_tok_s": [
+     134.32,
+     134.36,
+     134.37
+    ],
+    "hashes": [
+     "596a68a0fce5"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 136.88,
+    "ms_round": 31.37,
+    "ttft_s": 0.068,
+    "raw_tok_s": [
+     136.84,
+     136.9,
+     136.88
+    ],
+    "hashes": [
+     "596a68a0fce5"
+    ]
+   },
+   "gain_pct": 1.88,
+   "ms_round_delta": -0.59,
+   "passes_gate": false
+  },
+  {
+   "depth": "0",
+   "kind": "code",
+   "off": {
+    "n": 3,
+    "client_tok_s": 173.61,
+    "ms_round": 31.99,
+    "ttft_s": 0.086,
+    "raw_tok_s": [
+     173.61,
+     173.73,
+     173.6
+    ],
+    "hashes": [
+     "1e55952eff61"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 176.93,
+    "ms_round": 31.39,
+    "ttft_s": 0.086,
+    "raw_tok_s": [
+     177.03,
+     176.82,
+     176.93
+    ],
+    "hashes": [
+     "1e55952eff61"
+    ]
+   },
+   "gain_pct": 1.91,
+   "ms_round_delta": -0.6,
+   "passes_gate": false
+  },
+  {
+   "depth": "128k",
+   "kind": "chat",
+   "off": {
+    "n": 3,
+    "client_tok_s": 71.68,
+    "ms_round": 58.92,
+    "ttft_s": 82.991,
+    "raw_tok_s": [
+     71.68,
+     71.99,
+     71.68
+    ],
+    "hashes": [
+     "a98ece615c1a"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 76.52,
+    "ms_round": 55.65,
+    "ttft_s": 83.007,
+    "raw_tok_s": [
+     76.52,
+     76.19,
+     76.56
+    ],
+    "hashes": [
+     "a98ece615c1a"
+    ]
+   },
+   "gain_pct": 6.75,
+   "ms_round_delta": -3.27,
+   "passes_gate": true
+  },
+  {
+   "depth": "128k",
+   "kind": "code",
+   "off": {
+    "n": 3,
+    "client_tok_s": 81.63,
+    "ms_round": 59.06,
+    "ttft_s": 83.016,
+    "raw_tok_s": [
+     81.61,
+     81.63,
+     81.69
+    ],
+    "hashes": [
+     "89ddde0370d9"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 85.63,
+    "ms_round": 55.78,
+    "ttft_s": 83.085,
+    "raw_tok_s": [
+     85.32,
+     85.63,
+     85.71
+    ],
+    "hashes": [
+     "89ddde0370d9"
+    ]
+   },
+   "gain_pct": 4.9,
+   "ms_round_delta": -3.28,
+   "passes_gate": true
+  },
+  {
+   "depth": "32k",
+   "kind": "chat",
+   "off": {
+    "n": 3,
+    "client_tok_s": 91.53,
+    "ms_round": 41.36,
+    "ttft_s": 15.599,
+    "raw_tok_s": [
+     91.83,
+     91.51,
+     91.53
+    ],
+    "hashes": [
+     "ec05abfa9700"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 99.78,
+    "ms_round": 37.94,
+    "ttft_s": 15.589,
+    "raw_tok_s": [
+     99.84,
+     99.78,
+     99.18
+    ],
+    "hashes": [
+     "ec05abfa9700"
+    ]
+   },
+   "gain_pct": 9.01,
+   "ms_round_delta": -3.42,
+   "passes_gate": true
+  },
+  {
+   "depth": "32k",
+   "kind": "code",
+   "off": {
+    "n": 3,
+    "client_tok_s": 123.75,
+    "ms_round": 41.29,
+    "ttft_s": 15.607,
+    "raw_tok_s": [
+     124.33,
+     123.75,
+     123.24
+    ],
+    "hashes": [
+     "1aa35e0e100d"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 134.84,
+    "ms_round": 37.9,
+    "ttft_s": 15.598,
+    "raw_tok_s": [
+     134.0,
+     134.84,
+     134.92
+    ],
+    "hashes": [
+     "1aa35e0e100d"
+    ]
+   },
+   "gain_pct": 8.96,
+   "ms_round_delta": -3.39,
+   "passes_gate": true
+  },
+  {
+   "depth": "8k",
+   "kind": "chat",
+   "off": {
+    "n": 3,
+    "client_tok_s": 113.93,
+    "ms_round": 36.76,
+    "ttft_s": 3.505,
+    "raw_tok_s": [
+     113.88,
+     113.99,
+     113.93
+    ],
+    "hashes": [
+     "5b5869d7083a"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 124.95,
+    "ms_round": 33.52,
+    "ttft_s": 3.505,
+    "raw_tok_s": [
+     124.95,
+     124.95,
+     124.88
+    ],
+    "hashes": [
+     "5b5869d7083a"
+    ]
+   },
+   "gain_pct": 9.67,
+   "ms_round_delta": -3.24,
+   "passes_gate": true
+  },
+  {
+   "depth": "8k",
+   "kind": "code",
+   "off": {
+    "n": 3,
+    "client_tok_s": 151.52,
+    "ms_round": 36.66,
+    "ttft_s": 3.509,
+    "raw_tok_s": [
+     151.52,
+     151.63,
+     151.32
+    ],
+    "hashes": [
+     "46ebf41df2f3"
+    ]
+   },
+   "on": {
+    "n": 3,
+    "client_tok_s": 166.05,
+    "ms_round": 33.46,
+    "ttft_s": 3.511,
+    "raw_tok_s": [
+     166.15,
+     166.02,
+     166.05
+    ],
+    "hashes": [
+     "46ebf41df2f3"
+    ]
+   },
+   "gain_pct": 9.59,
+   "ms_round_delta": -3.2,
+   "passes_gate": true
+  }
+ ],
+ "drafted_eq_serial": {
+  "off": [
+   {
+    "depth": "0",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "0",
+    "kind": "code",
+    "equal": true
+   },
+   {
+    "depth": "128k",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "128k",
+    "kind": "code",
+    "equal": true
+   },
+   {
+    "depth": "32k",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "32k",
+    "kind": "code",
+    "equal": true
+   },
+   {
+    "depth": "8k",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "8k",
+    "kind": "code",
+    "equal": true
+   }
+  ],
+  "on": [
+   {
+    "depth": "0",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "0",
+    "kind": "code",
+    "equal": true
+   },
+   {
+    "depth": "128k",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "128k",
+    "kind": "code",
+    "equal": true
+   },
+   {
+    "depth": "32k",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "32k",
+    "kind": "code",
+    "equal": true
+   },
+   {
+    "depth": "8k",
+    "kind": "chat",
+    "equal": true
+   },
+   {
+    "depth": "8k",
+    "kind": "code",
+    "equal": true
+   }
+  ]
+ },
+ "text_changes_off_to_on": 0,
+ "cells_compared": 8
+}

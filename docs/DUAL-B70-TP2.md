@@ -10,6 +10,12 @@ digests, kernel builds, serve flags, context limits, performance numbers, power
 measurements, and evidence belong on model-specific pages and in the generated
 benchmark catalog.
 
+Host prerequisite for any one-model-on-two-cards setup: give both cards the same power cap and clock limit; every
+exchange waits for the slower card. How to set and check it through sysfs, and the measured effect on TensorFold
+`--tp 2`: [Qwen3.8-27B recipe 0](qwen38-27b/RECIPES-B70.md#0-host-both-cards-at-230-w-and-2800-mhz) (2026-11-19).
+vLLM XPU v0.31.0 two-card mode also needs `/dev/dri/by-path` mounted in the container for oneCCL
+([DNR-027](DO-NOT-REPEAT.md)).
+
 - Qwen3.8 family routes: [qwen38-27b/README.md](qwen38-27b/README.md)
 - Qwen3.8 FP8 W8A16 TP2 recipe and evidence:
   [qwen38-27b/FP8-TP2-W8A16.md](qwen38-27b/FP8-TP2-W8A16.md)

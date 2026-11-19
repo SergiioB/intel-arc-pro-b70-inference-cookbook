@@ -6,9 +6,12 @@ not share a numeric authority or an interchangeable patch list.
 
 ## Choose a route
 
+**Copy-paste recipes (2026-11-19):** [RECIPES-B70.md](RECIPES-B70.md): host setting (both cards 230 W /
+2,800 MHz), one card, two cards, 250K, warm sessions, many users, llama.cpp on two cards, and what not to do.
+
 | Route | Hardware | Artifact and serving goal | Start here |
 |---|---|---|---|
-| EXL3 (exl3xpu engine) | One B70 | **Primary route:** trellis 4bpw + native MTP3 + fp8 KV; only route at full 262,144 context; clean correctness | [EXL3-XPU.md](EXL3-XPU.md) |
+| EXL3 (exl3xpu engine) | One B70 | **Primary route:** trellis 4bpw + native MTP3 + fp8 KV; only route that completed a 245,583-token prompt on one card at card sampling (2026-11-10; TensorFold with int8 K/V later served 249,784 tokens greedy); clean correctness | [EXL3-XPU.md](EXL3-XPU.md) |
 | GPTQ-INT4 + native MTP | One B70 | General single-card Linux serving, long context, optional draft-INT4, and the established Pi/agent path — **legacy/reference: the W4A16 class fails the exact-answer battery on this model (all exports answer 30); prefer EXL3** | [QWEN38-VLLM-XPU.md](QWEN38-VLLM-XPU.md) |
 | TensorFold MLX 4-bit + DFlash2 | One B70, or two for one stream (`--tp 2`, upstream PR #3586) | Lossless speculation (drafted == non-drafted); fastest measured at short prompts; prefix attention kernel on our tag for 8K–131K; two cards 1.25–1.5× one card (screen 2026-11-18) | [TENSORFOLD-B70.md](TENSORFOLD-B70.md) |
 | TensorFold on two B70s, root causes and fixes | Two B70s | Why two cards gain 1.25–1.5× and not 2×, two fork fixes, decode by prompt length to 245,760 tokens (screen 2026-11-19) | [TENSORFOLD-TWO-CARDS-20261119.md](TENSORFOLD-TWO-CARDS-20261119.md) |

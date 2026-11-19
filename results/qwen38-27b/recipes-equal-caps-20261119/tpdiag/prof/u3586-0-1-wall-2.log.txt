@@ -1,0 +1,17 @@
+warning: attn_prompt spills 128 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.5 s
+drafter loaded in 0.7 s
+tree: 15 nodes a round, 4.83 accepted of 15.0 drafted
+drafted: 35 tokens in 6 rounds (5.83 a round), 178.8 tok/s, draft 0.0 ms + verify 32.6 ms a round, equal to serial: true
+prompt: 68 tokens in 0.083 s (820 tok/s)
+decode: 32 tokens in 0.629 s (50.8 tok/s)
+tokens: 71093 10504 198 5355 423 1658 9802 53 19365 198 1389 423 1658 9802 53 19365 271 1032 361 66 64157 29 198 1032 361 21670 29 198 1032 361 3112 29 198

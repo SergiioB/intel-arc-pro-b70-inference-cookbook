@@ -1,0 +1,149 @@
+From 3688ed8271a60fbbdf81c5b46fc05df009e1e098 Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 00:12:48 +0100
+Subject: [PATCH 1/2] sycl : opt-in F32 peer-copy allreduce for two-GPU tensor
+ split
+
+GGML_SYCL_TP_P2P=1 replaces the host-staged exchange in the F32 tensor-split
+allreduce with direct peer copies ordered by queue events. Neither queue waits
+on the host, and both ranks add the exact F32 partial (p0 + p1 on both cards).
+---
+ docs/backend/SYCL.md             |  1 +
+ ggml/src/ggml-sycl/ggml-sycl.cpp | 73 +++++++++++++++++++++++++++++---
+ 2 files changed, 69 insertions(+), 5 deletions(-)
+
+diff --git a/docs/backend/SYCL.md b/docs/backend/SYCL.md
+index 8649fca..f7cfad7 100644
+--- a/docs/backend/SYCL.md
++++ b/docs/backend/SYCL.md
+@@ -805,6 +805,7 @@ User can use the device management in [docs/multi-gpu.md](https://github.com/ggm
+ | GGML_SYCL_DEBUG   | 0 (default) or 1 | Enable log function: GGML_SYCL_DEBUG() for common debug. |
+ | GGML_SYCL_DEV_DEBUG   | 0 (default) or 1 | Enable log function: GGML_SYCL_DEV_DEBUG() for developmental purposes by replacing GGML_SYCL_DEBUG() in special codes. Restore to GGML_SYCL_DEBUG() before committing code.|
+ | GGML_SYCL_DEV2DEV_MEMCPY | 0 (default), 1, 2 | Choose the method of dev2dev memory copy.<br>Value: <br>*  0: SYCL API (default), only support dGPUs.<br>* 1: L0 API -- Better performance, only support dGPUs, found to lead to abnormal crash in some case. <br>* 2: Host Forward -- Most stable method for all cases (including iGPU + dGPU*N), but with lower performance (-2% to -5%).<br>SYCL & L0 API are easy to be impacted by Intel GPU driver issue. When you meet the garbled output or crash issues in multiple GPUs case, try with this debug flag to work around or check the issue.|
++| GGML_SYCL_TP_P2P | 0 (default) or 1 | Use FP32 peer copies for tensor-split allreduce on two Level Zero GPUs with mutual peer access in a shared SYCL context. On Linux, set `SYCL_ENABLE_DEFAULT_CONTEXTS=1` to enable the shared context. |
+ | GGML_SYCL_ENABLE_FLASH_ATTN | 1 (default) or 0| Enable Flash-Attention. It can reduce memory usage. The performance impact depends on the LLM.|
+ | GGML_SYCL_ENABLE_OPT | 0 or 1 (default)| Enable optimize features for Intel GPUs. (Recommended to 0 for Intel devices older than Gen 10) |
+ | GGML_SYCL_ENABLE_GRAPH | 0 (default) or 1 | Enable running computations through SYCL Graphs feature. Disabled by default because SYCL Graph is still in development, performance depends on model and device. [1.](#sycl-graph-footnote) |
+diff --git a/ggml/src/ggml-sycl/ggml-sycl.cpp b/ggml/src/ggml-sycl/ggml-sycl.cpp
+index 4fc90e5..2b62b35 100644
+--- a/ggml/src/ggml-sycl/ggml-sycl.cpp
++++ b/ggml/src/ggml-sycl/ggml-sycl.cpp
+@@ -7884,6 +7884,7 @@ struct ggml_backend_sycl_comm_context {
+     std::unique_ptr<ggml_sycl_pool_alloc<uint8_t>> buf0;
+     std::unique_ptr<ggml_sycl_pool_alloc<uint8_t>> buf1;
+     int64_t buf_nelem = 0;
++    bool peer_copy = false;
+ 
+     // pinned host staging per device context, reused across calls (queues are in-order)
+     uint8_t * host_out[2] = { nullptr, nullptr };
+@@ -7967,6 +7968,33 @@ static void ggml_sycl_comm_exchange(ggml_backend_sycl_comm_context * comm, queue
+     q1->memcpy(dst1, comm->host_in[1], nbytes);
+ }
+ 
++static void ggml_sycl_comm_allreduce_peer(queue_ptr q0, queue_ptr q1, float * out0, float * out1,
++                                         float * tmp0, float * tmp1, int64_t nelem, size_t nbytes) try {
++    const sycl::event ready0 = q0->ext_oneapi_submit_barrier();
++    const sycl::event ready1 = q1->ext_oneapi_submit_barrier();
++    const sycl::event copy0 = q0->memcpy(tmp0, out1, nbytes, ready1);
++    const sycl::event copy1 = q1->memcpy(tmp1, out0, nbytes, ready0);
++
++    // Both copies must finish before either rank overwrites its own partial.
++    q0->submit([&](sycl::handler & h) {
++        h.depends_on(copy1);
++        h.parallel_for(sycl::range<1>(nelem), [=](sycl::id<1> i) {
++            out0[i] += tmp0[i];
++        });
++    });
++    q1->submit([&](sycl::handler & h) {
++        h.depends_on(copy0);
++        h.parallel_for(sycl::range<1>(nelem), [=](sycl::id<1> i) {
++            out1[i] += tmp1[i];
++        });
++    });
++} catch (const sycl::exception & e) {
++    // Work may already be queued, so falling back can apply the reduction twice.
++    GGML_ABORT("SYCL peer allreduce failed: %s", e.what());
++} catch (...) {
++    GGML_ABORT("SYCL peer allreduce failed");
++}
++
+ void * ggml_backend_sycl_comm_init(ggml_backend_t * backends, size_t n_backends) try {
+     for (size_t i = 0; i < n_backends; ++i) {
+         if (!ggml_backend_is_sycl(backends[i])) {
+@@ -7980,7 +8008,7 @@ void * ggml_backend_sycl_comm_init(ggml_backend_t * backends, size_t n_backends)
+         return nullptr;
+     }
+ 
+-    auto * ctx = new ggml_backend_sycl_comm_context;
++    auto ctx = std::make_unique<ggml_backend_sycl_comm_context>();
+     ctx->backends.assign(backends, backends + n_backends);
+     auto * sctx0 = (ggml_backend_sycl_context *) backends[0]->context;
+     auto * sctx1 = (ggml_backend_sycl_context *) backends[1]->context;
+@@ -7991,11 +8019,37 @@ void * ggml_backend_sycl_comm_init(ggml_backend_t * backends, size_t n_backends)
+     ctx->comm_exchange = ggml_sycl_comm_exchange;
+ #else
+     // SYCL_ENABLE_DEFAULT_CONTEXTS=1 sets comm_exchange_fast on Linux - PR #30956
+-    ctx->comm_exchange = (sctx0->stream()->get_context() == sctx1->stream()->get_context())
+-                       ? ggml_sycl_comm_exchange_fast
+-                       : ggml_sycl_comm_exchange;
++    queue_ptr q0 = sctx0->stream();
++    queue_ptr q1 = sctx1->stream();
++    const bool shared_context = q0->get_context() == q1->get_context();
++    ctx->comm_exchange = shared_context ? ggml_sycl_comm_exchange_fast : ggml_sycl_comm_exchange;
++    if (ggml_sycl_get_env("GGML_SYCL_TP_P2P", 0) != 0) {
++        sycl::device dev0 = q0->get_device();
++        sycl::device dev1 = q1->get_device();
++        const auto access = sycl::ext::oneapi::peer_access::access_supported;
++        if (shared_context && q0->is_in_order() && q1->is_in_order() && dev0 != dev1 &&
++                q0->get_backend() == sycl::backend::ext_oneapi_level_zero &&
++                dev0.ext_oneapi_can_access_peer(dev1, access) && dev1.ext_oneapi_can_access_peer(dev0, access)) {
++            // Peer access belongs to the device pair, so enable it once per process for each pair.
++            static bool peer_enabled[GGML_SYCL_MAX_DEVICES][GGML_SYCL_MAX_DEVICES] = {};
++            bool & enabled = peer_enabled[sctx0->device][sctx1->device];
++            try {
++                if (!enabled) {
++                    dev0.ext_oneapi_enable_peer_access(dev1);
++                    dev1.ext_oneapi_enable_peer_access(dev0);
++                    enabled = true;
++                }
++                ctx->peer_copy = true;
++                GGML_LOG_INFO("%s: using F32 peer-copy allreduce\n", __func__);
++            } catch (const sycl::exception & e) {
++                GGML_LOG_WARN("%s: enabling peer access failed (%s), using host staging\n", __func__, e.what());
++            }
++        } else {
++            GGML_LOG_WARN("%s: peer-copy allreduce unavailable, using host staging\n", __func__);
++        }
++    }
+ #endif
+-    return ctx;
++    return ctx.release();
+ }
+ catch (const sycl::exception &) { return nullptr; }
+ catch (...)                     { return nullptr; }
+@@ -8062,6 +8116,10 @@ bool ggml_backend_sycl_comm_allreduce_tensor(void * comm_ctx_v, struct ggml_tens
+ 
+     // Grow per-device byte buffers if needed (4 * nelem bytes each).
+     if (comm_ctx->buf_nelem < nelem) {
++        if (comm_ctx->buf_nelem != 0) {
++            q0->wait();
++            q1->wait();
++        }
+         comm_ctx->buf0->realloc(nelem * 4);
+         comm_ctx->buf1->realloc(nelem * 4);
+         comm_ctx->buf_nelem = nelem;
+@@ -8096,6 +8154,11 @@ bool ggml_backend_sycl_comm_allreduce_tensor(void * comm_ctx_v, struct ggml_tens
+     float * out0 = (float *) tensors[0]->data;
+     float * out1 = (float *) tensors[1]->data;
+ 
++    if (comm_ctx->peer_copy) {
++        ggml_sycl_comm_allreduce_peer(q0, q1, out0, out1, (float *) buf0, (float *) buf1, nelem, nbytes);
++        return true;
++    }
++
+     // BF16 threshold: above this, the PCIe savings from halving the
+     // cross-device bytes outweigh the 2 extra compress kernels.
+     // Below: stay on the FP32 fast path.  Threshold mirrors the CUDA
+-- 
+2.53.0
+

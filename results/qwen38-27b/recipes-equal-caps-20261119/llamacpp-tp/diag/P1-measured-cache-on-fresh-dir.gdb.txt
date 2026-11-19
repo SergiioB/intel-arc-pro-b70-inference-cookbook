@@ -1,0 +1,173 @@
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/x86_64-linux-gnu/libthread_db.so.1".
+warning: File "/opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9.0.0-gdb.py" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+	add-auto-load-safe-path /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9.0.0-gdb.py
+line to your configuration file "~/.config/gdb/gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "~/.config/gdb/gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+Build with Macros:
+  GGML_SYCL_DNNL: yes
+  GGML_SYCL_F16: no
+  GGML_SYCL_FORCE_MMQ: no
+  GGML_SYCL_SUPPORT_XMX: yes
+  GGML_SYCL_GRAPH: yes
+  GGML_SYCL_SUPPORT_LEVEL_ZERO_API: yes
+  GGML_SYCL_SUPPORT_VMM: yes
+Running with Environment Variables:
+  GGML_SYCL_DEBUG: 0
+  GGML_SYCL_DEV_DEBUG: 0
+  GGML_SYCL_DEV2DEV_MEMCPY: 0 (SYCL API)
+  GGML_SYCL_GET_MEM_API: 0 (Level Zero API)
+  GGML_SYCL_ENABLE_DNN: 1
+  GGML_SYCL_FA_ONEDNN: 1
+  GGML_SYCL_FA_ONEDNN_MAX_KV: 0
+  GGML_SYCL_ENABLE_MKL_FA: 1
+  GGML_SYCL_FA_DPAS: 1
+  GGML_SYCL_MEMTRACE: 0
+  GGML_SYCL_MEMTRACE_STEP: 64
+  GGML_SYCL_ENABLE_FLASH_ATTN: 1
+  GGML_SYCL_ENABLE_GRAPH: 0
+  GGML_SYCL_GRAPH_EVICTION_TIMEOUT: 10
+  GGML_SYCL_ENABLE_OPT: 1
+  GGML_SYCL_XMX_GATHER_TYPES: -1
+  GGML_SYCL_MMID_SCHED: 1
+  GGML_SYCL_XMX_GATHER_SHAPES: 255
+  GGML_SYCL_DYNAMIC_PRECISION: F32
+  GGML_SYCL_DYNAMIC_REQUIRED_PRECISION: F32
+  GGML_SYCL_ENABLE_VMM: 1
+  GGML_SYCL_ENABLE_FUSION: 1
+  GGML_SYCL_UPLOAD_STAGING_SLOTS: 4
+  GGML_SYCL_ENABLE_ESIMD: 1
+  GGML_SYCL_MMVQ_WIDE: 1
+  GGML_SYCL_ENABLE_XMX_ESIMD: 1
+  GGML_SYCL_XMX_MAX_COLS: 80
+  GGML_SYCL_XMX_GLU_MAX_COLS: 16
+  GGML_SYCL_PRIORITIZE_DMMV: 0
+  GGML_SYCL_USE_ASYNC_MEM_OP: 1
+  GGML_SYCL_USE_LEVEL_ZERO_API: 1
+  GGML_SYCL_USM_SYSTEM: 0
+  GGML_SYCL_BMG_VRAM_CHECK: 1
+  GGML_SYCL_ENABLE_HOST_PINNED_MEM: 1
+  GGML_SYCL_HOST_PINNED_MEM_2G: 0
+  GGML_SYCL_SPARSE_FA: 0
+  GGML_SYCL_SPARSE_FA_DEBUG: 0
+  GGML_SYCL_SPARSE_FA_MARGIN: 256
+Found 1 SYCL devices:
+|  |                   |                                       |       |Max    |        |Max  |Global |                     |
+|  |                   |                                       |       |compute|Max work|sub  |mem    |                     |
+|ID|        Device Type|                                   Name|Version|units  |group   |group|size   |       Driver version|
+|--|-------------------|---------------------------------------|-------|-------|--------|-----|-------|---------------------|
+| 0| [level_zero:gpu:0]|                Intel Graphics [0xe223]|   20.2|    256|    1024|   32| 32530M|           1.14.37020|
+SYCL Optimization Feature:
+|ID|        Device Type|Reorder|
+|--|-------------------|-------|
+| 0| [level_zero:gpu:0]|      Y|
+
+Thread 1 "llama-bench" received signal SIGSEGV, Segmentation fault.
+__strcmp_avx2 () at ../sysdeps/x86_64/multiarch/strcmp-avx2.S:283
+warning: 283	../sysdeps/x86_64/multiarch/strcmp-avx2.S: No such file or directory
+#0  __strcmp_avx2 () at ../sysdeps/x86_64/multiarch/strcmp-avx2.S:283
+#1  0x00007fffe96c4dff in sycl::_V1::detail::getSortedImages(std::vector<sycl::_V1::detail::RTDeviceBinaryImage const*, std::allocator<sycl::_V1::detail::RTDeviceBinaryImage const*> > const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#2  0x00007fffe96c99b4 in sycl::_V1::detail::PersistentDeviceCodeCache::getItemFromDisc(sycl::_V1::detail::devices_range, std::vector<sycl::_V1::detail::RTDeviceBinaryImage const*, std::allocator<sycl::_V1::detail::RTDeviceBinaryImage const*> > const&, std::vector<unsigned char, std::allocator<unsigned char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#3  0x00007fffe96667b9 in sycl::_V1::detail::ProgramManager::getOrCreateURProgram(sycl::_V1::detail::RTDeviceBinaryImage const&, std::vector<sycl::_V1::detail::RTDeviceBinaryImage const*, std::allocator<sycl::_V1::detail::RTDeviceBinaryImage const*> > const&, sycl::_V1::detail::context_impl&, sycl::_V1::detail::devices_range, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<unsigned char, std::allocator<unsigned char> >) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#4  0x00007fffe966ff21 in sycl::_V1::detail::ProgramManager::getBuiltURProgram(sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::RTDeviceBinaryImage const*> const&, sycl::_V1::detail::context_impl&, sycl::_V1::detail::devices_range, sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::device_image_plain> const*, std::vector<unsigned char, std::allocator<unsigned char> > const&)::$_2::operator()() const () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#5  0x00007fffe966ebf2 in sycl::_V1::detail::ProgramManager::getBuiltURProgram(sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::RTDeviceBinaryImage const*> const&, sycl::_V1::detail::context_impl&, sycl::_V1::detail::devices_range, sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::device_image_plain> const*, std::vector<unsigned char, std::allocator<unsigned char> > const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#6  0x00007fffe9669a79 in sycl::_V1::detail::ProgramManager::getBuiltURProgram(sycl::_V1::detail::context_impl&, sycl::_V1::detail::device_impl&, std::basic_string_view<char, std::char_traits<char> >, sycl::_V1::detail::NDRDescT const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#7  0x00007fffe967166d in sycl::_V1::detail::ProgramManager::getOrCreateKernel(sycl::_V1::detail::context_impl&, sycl::_V1::detail::device_impl&, sycl::_V1::detail::DeviceKernelInfo&, sycl::_V1::detail::NDRDescT const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#8  0x00007fffe96ef989 in sycl::_V1::detail::enqueueImpKernel(sycl::_V1::detail::queue_impl&, sycl::_V1::detail::NDRDescT&, std::vector<sycl::_V1::detail::ArgDesc, std::allocator<sycl::_V1::detail::ArgDesc> >&, sycl::_V1::detail::kernel_bundle_impl*, sycl::_V1::detail::kernel_impl const*, sycl::_V1::detail::DeviceKernelInfo&, std::vector<ur_event_handle_t_*, std::allocator<ur_event_handle_t_*> >&, sycl::_V1::detail::event_impl*, std::function<void* (sycl::_V1::detail::AccessorImplHost*)> const&, ur_kernel_cache_config_t, bool, bool, unsigned long, sycl::_V1::detail::RTDeviceBinaryImage const*, void*) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#9  0x00007fffe96b3eeb in sycl::_V1::detail::queue_impl::submit_kernel_scheduler_bypass(sycl::_V1::detail::KernelData&, std::vector<std::shared_ptr<sycl::_V1::detail::event_impl>, std::allocator<std::shared_ptr<sycl::_V1::detail::event_impl> > >&, bool, sycl::_V1::detail::kernel_impl*, sycl::_V1::detail::kernel_bundle_impl*, sycl::_V1::detail::code_location const&, bool)::$_0::operator()() const () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#10 0x00007fffe96b3b69 in sycl::_V1::detail::queue_impl::submit_kernel_scheduler_bypass(sycl::_V1::detail::KernelData&, std::vector<std::shared_ptr<sycl::_V1::detail::event_impl>, std::allocator<std::shared_ptr<sycl::_V1::detail::event_impl> > >&, bool, sycl::_V1::detail::kernel_impl*, sycl::_V1::detail::kernel_bundle_impl*, sycl::_V1::detail::code_location const&, bool) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#11 0x00007fffe96b557f in sycl::_V1::detail::queue_impl::submit_kernel_direct_impl_common(sycl::_V1::detail::KernelData&&, sycl::_V1::detail::HostKernelRefBase&, bool, sycl::_V1::span<sycl::_V1::event const, 18446744073709551615ul>, sycl::_V1::detail::code_location const&, bool) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#12 0x00007fffe97798b9 in sycl::_V1::detail::queue_impl::submit_kernel_direct_impl(sycl::_V1::detail::NDRDescT const&, sycl::_V1::detail::HostKernelRefBase&, sycl::_V1::detail::DeviceKernelInfo*, bool, sycl::_V1::span<sycl::_V1::event const, 18446744073709551615ul>, sycl::_V1::detail::kernel_launch_properties_v1::PropsHolder<sycl::_V1::ext::oneapi::experimental::work_group_scratch_size, sycl::_V1::ext::intel::experimental::cache_config, sycl::_V1::ext::oneapi::experimental::use_root_sync_key, sycl::_V1::ext::oneapi::experimental::work_group_progress_key, sycl::_V1::ext::oneapi::experimental::sub_group_progress_key, sycl::_V1::ext::oneapi::experimental::work_item_progress_key, sycl::_V1::ext::oneapi::experimental::cuda::cluster_size<1>, sycl::_V1::ext::oneapi::experimental::cuda::cluster_size<2>, sycl::_V1::ext::oneapi::experimental::cuda::cluster_size<3> > const&, sycl::_V1::detail::code_location const&, bool) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#13 0x00007fffe9778f8a in sycl::_V1::submit_kernel_direct_with_event_impl(sycl::_V1::queue const&, sycl::_V1::detail::nd_range_view_v1::nd_range_view const&, sycl::_V1::detail::HostKernelRefBase&, sycl::_V1::detail::DeviceKernelInfo*, sycl::_V1::span<sycl::_V1::event const, 18446744073709551615ul>, sycl::_V1::detail::kernel_launch_properties_v1::PropsHolder<sycl::_V1::ext::oneapi::experimental::work_group_scratch_size, sycl::_V1::ext::intel::experimental::cache_config, sycl::_V1::ext::oneapi::experimental::use_root_sync_key, sycl::_V1::ext::oneapi::experimental::work_group_progress_key, sycl::_V1::ext::oneapi::experimental::sub_group_progress_key, sycl::_V1::ext::oneapi::experimental::work_item_progress_key, sycl::_V1::ext::oneapi::experimental::cuda::cluster_size<1>, sycl::_V1::ext::oneapi::experimental::cuda::cluster_size<2>, sycl::_V1::ext::oneapi::experimental::cuda::cluster_size<3> > const&, sycl::_V1::detail::code_location const&, bool) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#14 0x00007ffff2cf74eb in ggml_sycl_op_get_rows(ggml_backend_sycl_context&, ggml_tensor*) () from $WORK/tpllama/llama.cpp/build/bin/libggml-sycl.so.1
+#15 0x00007ffff2aae812 in ggml_sycl_get_rows(ggml_backend_sycl_context&, ggml_tensor*) () from $WORK/tpllama/llama.cpp/build/bin/libggml-sycl.so.1
+#16 0x00007ffff2a9dfbc in ggml_backend_sycl_graph_compute_impl(ggml_backend_sycl_context*, ggml_cgraph*) () from $WORK/tpllama/llama.cpp/build/bin/libggml-sycl.so.1
+#17 0x00007ffff2a9bf76 in ggml_backend_sycl_graph_compute(ggml_backend*, ggml_cgraph*) () from $WORK/tpllama/llama.cpp/build/bin/libggml-sycl.so.1
+#18 0x00007ffff79190a3 in ggml_backend_sched_graph_compute_async () from $WORK/tpllama/llama.cpp/build/bin/libggml-base.so.1
+#19 0x00007ffff7629f5c in llama_context::graph_compute(ggml_cgraph*, bool) () from $WORK/tpllama/llama.cpp/build/bin/libllama.so.1
+#20 0x00007ffff76296e4 in llama_context::process_ubatch(llama_ubatch const&, llm_graph_type, llama_memory_context_i*, ggml_status&) () from $WORK/tpllama/llama.cpp/build/bin/libllama.so.1
+#21 0x00007ffff762b4a9 in llama_context::decode(llama_batch_ext const&) () from $WORK/tpllama/llama.cpp/build/bin/libllama.so.1
+#22 0x00007ffff7f74edc in test_prompt(llama_context*, int, int, int) () from $WORK/tpllama/llama.cpp/build/bin/libllama-bench-impl.so
+#23 0x00007ffff7f6f2bc in llama_bench(int, char**) () from $WORK/tpllama/llama.cpp/build/bin/libllama-bench-impl.so
+#24 0x00007ffff202a601 in __libc_start_call_main (main=main@entry=0x4064e0 <main>, argc=argc@entry=31, argv=argv@entry=0x7fffffffd2b8) at ../sysdeps/nptl/libc_start_call_main.h:59
+#25 0x00007ffff202a718 in __libc_start_main_impl (main=0x4064e0 <main>, argc=31, argv=0x7fffffffd2b8, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffd2a8) at ../csu/libc-start.c:360
+#26 0x0000000000406415 in _start ()
+rip            0x7ffff219a02b      0x7ffff219a02b <__strcmp_avx2+27>
+
+Thread 9 (Thread 0x7fff71116a40 (LWP 1330872) "openmp_worker"):
+#0  0x00007fffef484d7e in __kmp_wait_template<kmp_flag_64<false, true>, true, false, true> (this_thr=0x7fff99d0a000, flag=0x7fff71113c60, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:680
+#1  kmp_flag_64<false, true>::wait (this=0x7fff71113c60, this_thr=0x7fff99d0a000, final_spin=1, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:964
+#2  0x00007fffef47f1b7 in __kmp_hyper_barrier_release (bt=bt@entry=bs_forkjoin_barrier, this_thr=this_thr@entry=0x7fff99d0a000, gtid=gtid@entry=7, tid=tid@entry=-2, propagate_icvs=propagate_icvs@entry=1, itt_sync_obj=itt_sync_obj@entry=0x0) at ../../src/kmp_barrier.cpp:1214
+#3  0x00007fffef482ced in __kmp_fork_barrier (gtid=7, tid=-2) at ../../src/kmp_barrier.cpp:2569
+#4  0x00007fffef4d0bfd in __kmp_launch_thread (this_thr=0x7fff99d0a000) at ../../src/kmp_runtime.cpp:7002
+#5  0x00007fffef552e62 in __kmp_launch_worker (thr=0x7fff99d0a000) at ../../src/z_Linux_util.cpp:742
+
+Thread 8 (Thread 0x7fff719189c0 (LWP 1330871) "openmp_worker"):
+#0  0x00007fffef484d7e in __kmp_wait_template<kmp_flag_64<false, true>, true, false, true> (this_thr=0x7fff99d05000, flag=0x7fff71915c20, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:680
+#1  kmp_flag_64<false, true>::wait (this=0x7fff71915c20, this_thr=0x7fff99d05000, final_spin=1, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:964
+#2  0x00007fffef47f1b7 in __kmp_hyper_barrier_release (bt=bt@entry=bs_forkjoin_barrier, this_thr=this_thr@entry=0x7fff99d05000, gtid=gtid@entry=6, tid=tid@entry=-2, propagate_icvs=propagate_icvs@entry=1, itt_sync_obj=itt_sync_obj@entry=0x0) at ../../src/kmp_barrier.cpp:1214
+#3  0x00007fffef482ced in __kmp_fork_barrier (gtid=6, tid=-2) at ../../src/kmp_barrier.cpp:2569
+#4  0x00007fffef4d0bfd in __kmp_launch_thread (this_thr=0x7fff99d05000) at ../../src/kmp_runtime.cpp:7002
+#5  0x00007fffef552e62 in __kmp_launch_worker (thr=0x7fff99d05000) at ../../src/z_Linux_util.cpp:742
+
+Thread 7 (Thread 0x7fff7211a940 (LWP 1330870) "openmp_worker"):
+#0  0x00007fffef484d7e in __kmp_wait_template<kmp_flag_64<false, true>, true, false, true> (this_thr=0x7fff99d02000, flag=0x7fff72117be0, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:680
+#1  kmp_flag_64<false, true>::wait (this=0x7fff72117be0, this_thr=0x7fff99d02000, final_spin=1, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:964
+#2  0x00007fffef47f1b7 in __kmp_hyper_barrier_release (bt=bt@entry=bs_forkjoin_barrier, this_thr=this_thr@entry=0x7fff99d02000, gtid=gtid@entry=5, tid=tid@entry=-2, propagate_icvs=propagate_icvs@entry=1, itt_sync_obj=itt_sync_obj@entry=0x0) at ../../src/kmp_barrier.cpp:1214
+#3  0x00007fffef482ced in __kmp_fork_barrier (gtid=5, tid=-2) at ../../src/kmp_barrier.cpp:2569
+#4  0x00007fffef4d0bfd in __kmp_launch_thread (this_thr=0x7fff99d02000) at ../../src/kmp_runtime.cpp:7002
+#5  0x00007fffef552e62 in __kmp_launch_worker (thr=0x7fff99d02000) at ../../src/z_Linux_util.cpp:742
+
+Thread 6 (Thread 0x7fff7291c8c0 (LWP 1330869) "openmp_worker"):
+#0  0x00007ffff211a9eb in __GI_sched_yield () at ../sysdeps/unix/syscall-template.S:120
+#1  0x00007fffef484cbe in __kmp_wait_template<kmp_flag_64<false, true>, true, false, true> (this_thr=0x7fff99cfd000, flag=0x7fff72919ba0, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:608
+#2  kmp_flag_64<false, true>::wait (this=0x7fff72919ba0, this_thr=0x7fff99cfd000, final_spin=1, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:964
+#3  0x00007fffef47f1b7 in __kmp_hyper_barrier_release (bt=bt@entry=bs_forkjoin_barrier, this_thr=this_thr@entry=0x7fff99cfd000, gtid=gtid@entry=4, tid=tid@entry=-2, propagate_icvs=propagate_icvs@entry=1, itt_sync_obj=itt_sync_obj@entry=0x0) at ../../src/kmp_barrier.cpp:1214
+#4  0x00007fffef482ced in __kmp_fork_barrier (gtid=4, tid=-2) at ../../src/kmp_barrier.cpp:2569
+#5  0x00007fffef4d0bfd in __kmp_launch_thread (this_thr=0x7fff99cfd000) at ../../src/kmp_runtime.cpp:7002
+
+Thread 5 (Thread 0x7fff7311e840 (LWP 1330868) "openmp_worker"):
+#0  0x00007ffff211a9eb in __GI_sched_yield () at ../sysdeps/unix/syscall-template.S:120
+#1  0x00007fffef484cbe in __kmp_wait_template<kmp_flag_64<false, true>, true, false, true> (this_thr=0x7fff99cfa000, flag=0x7fff7311bb60, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:608
+#2  kmp_flag_64<false, true>::wait (this=0x7fff7311bb60, this_thr=0x7fff99cfa000, final_spin=1, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:964
+#3  0x00007fffef47f1b7 in __kmp_hyper_barrier_release (bt=bt@entry=bs_forkjoin_barrier, this_thr=this_thr@entry=0x7fff99cfa000, gtid=gtid@entry=3, tid=tid@entry=-2, propagate_icvs=propagate_icvs@entry=1, itt_sync_obj=itt_sync_obj@entry=0x0) at ../../src/kmp_barrier.cpp:1214
+#4  0x00007fffef482ced in __kmp_fork_barrier (gtid=3, tid=-2) at ../../src/kmp_barrier.cpp:2569
+#5  0x00007fffef4d0bfd in __kmp_launch_thread (this_thr=0x7fff99cfa000) at ../../src/kmp_runtime.cpp:7002
+
+Thread 4 (Thread 0x7fff739207c0 (LWP 1330867) "openmp_worker"):
+#0  0x00007fffef484c79 in __kmp_wait_template<kmp_flag_64<false, true>, true, false, true> (this_thr=0x7fff99cf5000, flag=0x7fff7391db20, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:608
+#1  kmp_flag_64<false, true>::wait (this=0x7fff7391db20, this_thr=0x7fff99cf5000, final_spin=1, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:964
+#2  0x00007fffef47f1b7 in __kmp_hyper_barrier_release (bt=bt@entry=bs_forkjoin_barrier, this_thr=this_thr@entry=0x7fff99cf5000, gtid=gtid@entry=2, tid=tid@entry=-2, propagate_icvs=propagate_icvs@entry=1, itt_sync_obj=itt_sync_obj@entry=0x0) at ../../src/kmp_barrier.cpp:1214
+#3  0x00007fffef482ced in __kmp_fork_barrier (gtid=2, tid=-2) at ../../src/kmp_barrier.cpp:2569
+#4  0x00007fffef4d0bfd in __kmp_launch_thread (this_thr=0x7fff99cf5000) at ../../src/kmp_runtime.cpp:7002
+#5  0x00007fffef552e62 in __kmp_launch_worker (thr=0x7fff99cf5000) at ../../src/z_Linux_util.cpp:742
+
+Thread 3 (Thread 0x7fff74122740 (LWP 1330866) "openmp_worker"):
+#0  0x00007fffef484c79 in __kmp_wait_template<kmp_flag_64<false, true>, true, false, true> (this_thr=0x7fff99cf2000, flag=0x7fff7411fae0, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:608
+#1  kmp_flag_64<false, true>::wait (this=0x7fff7411fae0, this_thr=0x7fff99cf2000, final_spin=1, itt_sync_obj=0x0) at ../../src/kmp_wait_release.h:964
+#2  0x00007fffef47f1b7 in __kmp_hyper_barrier_release (bt=bt@entry=bs_forkjoin_barrier, this_thr=this_thr@entry=0x7fff99cf2000, gtid=gtid@entry=1, tid=tid@entry=-2, propagate_icvs=propagate_icvs@entry=1, itt_sync_obj=itt_sync_obj@entry=0x0) at ../../src/kmp_barrier.cpp:1214
+#3  0x00007fffef482ced in __kmp_fork_barrier (gtid=1, tid=-2) at ../../src/kmp_barrier.cpp:2569
+#4  0x00007fffef4d0bfd in __kmp_launch_thread (this_thr=0x7fff99cf2000) at ../../src/kmp_runtime.cpp:7002
+#5  0x00007fffef552e62 in __kmp_launch_worker (thr=0x7fff99cf2000) at ../../src/z_Linux_util.cpp:742
+
+Thread 2 (Thread 0x7fffc81ff6c0 (LWP 1330651) "llama-bench"):
+#0  __syscall_cancel_arch () at ../sysdeps/unix/sysv/linux/x86_64/syscall_cancel.S:56
+#1  0x00007ffff20a02cc in __internal_syscall_cancel (a1=a1@entry=71301480, a2=<optimized out>, a3=a3@entry=3357527216, a4=a4@entry=140736550915648, a5=a5@entry=0, a6=a6@entry=4294967295, nr=202) at ./nptl/cancellation.c:49
+#2  0x00007ffff20a06a7 in __futex_abstimed_wait_common64 (private=32767, futex_word=0x43ff968, expected=3357527216, op=32630, abstime=0x7fffc81fce40, cancel=true) at ./nptl/futex-internal.c:57
+#3  __futex_abstimed_wait_common (futex_word=0x43ff968, expected=3357527216, clockid=1, abstime=0x7fffc81fce40, private=32767, cancel=true) at ./nptl/futex-internal.c:87
+#4  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x43ff968, expected=expected@entry=1316, clockid=clockid@entry=1, abstime=abstime@entry=0x7fffc81fce40, private=private@entry=0) at ./nptl/futex-internal.c:139
+#5  0x00007ffff20a3649 in __pthread_cond_wait_common (cond=<optimized out>, mutex=0x43ff978, clockid=1, abstime=<optimized out>) at ./nptl/pthread_cond_wait.c:421
+
+Thread 1 (Thread 0x7ffff7877740 (LWP 1330616) "llama-bench"):
+#0  __strcmp_avx2 () at ../sysdeps/x86_64/multiarch/strcmp-avx2.S:283
+#1  0x00007fffe96c4dff in sycl::_V1::detail::getSortedImages(std::vector<sycl::_V1::detail::RTDeviceBinaryImage const*, std::allocator<sycl::_V1::detail::RTDeviceBinaryImage const*> > const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#2  0x00007fffe96c99b4 in sycl::_V1::detail::PersistentDeviceCodeCache::getItemFromDisc(sycl::_V1::detail::devices_range, std::vector<sycl::_V1::detail::RTDeviceBinaryImage const*, std::allocator<sycl::_V1::detail::RTDeviceBinaryImage const*> > const&, std::vector<unsigned char, std::allocator<unsigned char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#3  0x00007fffe96667b9 in sycl::_V1::detail::ProgramManager::getOrCreateURProgram(sycl::_V1::detail::RTDeviceBinaryImage const&, std::vector<sycl::_V1::detail::RTDeviceBinaryImage const*, std::allocator<sycl::_V1::detail::RTDeviceBinaryImage const*> > const&, sycl::_V1::detail::context_impl&, sycl::_V1::detail::devices_range, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<unsigned char, std::allocator<unsigned char> >) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#4  0x00007fffe966ff21 in sycl::_V1::detail::ProgramManager::getBuiltURProgram(sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::RTDeviceBinaryImage const*> const&, sycl::_V1::detail::context_impl&, sycl::_V1::detail::devices_range, sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::device_image_plain> const*, std::vector<unsigned char, std::allocator<unsigned char> > const&)::$_2::operator()() const () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9
+#5  0x00007fffe966ebf2 in sycl::_V1::detail::ProgramManager::getBuiltURProgram(sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::RTDeviceBinaryImage const*> const&, sycl::_V1::detail::context_impl&, sycl::_V1::detail::devices_range, sycl::_V1::detail::ObjectWithDeps<sycl::_V1::detail::device_image_plain> const*, std::vector<unsigned char, std::allocator<unsigned char> > const&) () from /opt/intel/oneapi/compiler/2026.1/lib/libsycl.so.9

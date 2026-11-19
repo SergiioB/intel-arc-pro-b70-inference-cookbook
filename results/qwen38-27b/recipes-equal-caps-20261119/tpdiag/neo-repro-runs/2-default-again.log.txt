@@ -1,0 +1,3 @@
+driverVersion 17010844, 2 device(s)
+batch 0 done: out=384, 16720 timestamp ticks
+HANG: no progress for 30 s in batch 1 step 127

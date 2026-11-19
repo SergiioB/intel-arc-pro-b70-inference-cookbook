@@ -1,0 +1,739 @@
+   1267036:	find library=libc.so.6 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/glibc-hwcaps/x86-64-v3:$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/glibc-hwcaps/x86-64-v2:$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib/glibc-hwcaps/x86-64-v3:$WORK/tpdiag/neo-26.40/root/usr/local/lib/glibc-hwcaps/x86-64-v2:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/tcm/1.5/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/umf/1.1/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/tcm/1.5/env/../lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/mpi/2021.18/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/mkl/2026.1/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/ippcp/2026.0/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/ipp/2026.0/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/dnnl/2026.0/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/dal/2026.1/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/compiler/2026.1/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib/glibc-hwcaps/x86-64-v3:/opt/intel/oneapi/ccl/2022.1/lib/glibc-hwcaps/x86-64-v2:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/glibc-hwcaps/x86-64-v3/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/glibc-hwcaps/x86-64-v2/libc.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libc.so.6
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libc.so.6
+   1267036:	
+   1267036:	
+   1267036:	calling init: /lib64/ld-linux-x86-64.so.2
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libc.so.6
+   1267036:	
+   1267036:	
+   1267036:	initialize program: $WORK/tpdiag/tf-prof/zig-out/bin/xpu-qwen27
+   1267036:	
+   1267036:	
+   1267036:	transferring control: $WORK/tpdiag/tf-prof/zig-out/bin/xpu-qwen27
+   1267036:	
+   1267036:	find library=libze_loader.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libze_loader.so.1
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libze_loader.so.1
+   1267036:	
+   1267036:	find library=libstdc++.so.6 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libstdc++.so.6
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+   1267036:	
+   1267036:	find library=libgcc_s.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libgcc_s.so.1
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+   1267036:	
+   1267036:	find library=libm.so.6 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libm.so.6
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libm.so.6
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libm.so.6
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libze_loader.so.1
+   1267036:	
+   1267036:	find library=libze_tracing_layer.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libze_tracing_layer.so.1
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libze_tracing_layer.so.1
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libze_tracing_layer.so.1
+   1267036:	
+   1267036:	find library=libze_intel_gpu.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libze_intel_gpu.so.1
+   1267036:	
+   1267036:	find library=libigdgmm.so.12 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libigdgmm.so.12
+   1267036:	
+   1267036:	
+   1267036:	calling init: $WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libigdgmm.so.12
+   1267036:	
+   1267036:	
+   1267036:	calling init: $WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libze_intel_gpu.so.1
+   1267036:	
+   1267036:	find library=libigdfcl.so.2 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libigdfcl.so.2
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libigdfcl.so.2
+   1267036:	
+   1267036:	find library=libopencl-clang.so.16 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libopencl-clang.so.16
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libopencl-clang.so.16
+   1267036:	
+   1267036:	find library=libz.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	 search path=/usr/lib/x86_64-linux-gnu/../lib/glibc-hwcaps/x86-64-v3:/usr/lib/x86_64-linux-gnu/../lib/glibc-hwcaps/x86-64-v2:/usr/lib/x86_64-linux-gnu/../lib:glibc-hwcaps/x86-64-v3:glibc-hwcaps/x86-64-v2:		(RUNPATH from file /usr/lib/x86_64-linux-gnu/libopencl-clang.so.16)
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/../lib/glibc-hwcaps/x86-64-v3/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/../lib/glibc-hwcaps/x86-64-v2/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/../lib/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=glibc-hwcaps/x86-64-v3/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=glibc-hwcaps/x86-64-v2/libz.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=libz.so.1
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libz.so.1
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libz.so.1
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libopencl-clang.so.16
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libigdfcl.so.2
+   1267036:	
+   1267036:	find library=libigc.so.2 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libigc.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libigc.so.2
+   1267036:	
+   1267036:	find library=libzstd.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libzstd.so.1
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libzstd.so.1
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libzstd.so.1
+   1267036:	
+   1267036:	
+   1267036:	calling init: $WORK/tpdiag/neo-26.40/root/usr/local/lib/libigc.so.2
+   1267036:	
+   1267036:	find library=libigdml.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libigdml.so.1
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libigdml.so.1
+   1267036:	
+   1267036:	find library=libdrm.so.2 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libdrm.so.2
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libdrm.so.2
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libdrm.so.2
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libigdml.so.1
+   1267036:	
+   1267036:	find library=libze_intel_gpu_legacy1.so.1 [0]; searching
+   1267036:	 search path=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu:$WORK/tpdiag/neo-26.40/root/usr/local/lib:/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.18/lib:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/ippcp/2026.0/lib:/opt/intel/oneapi/ipp/2026.0/lib:/opt/intel/oneapi/dnnl/2026.0/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/dal/2026.1/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/opt/intel/oneapi/compiler/2026.1/lib:/opt/intel/oneapi/ccl/2022.1/lib		(LD_LIBRARY_PATH)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=$WORK/tpdiag/neo-26.40/root/usr/local/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/umf/1.1/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tcm/1.5/env/../lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/opt/mpi/libfabric/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mpi/2021.18/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/mkl/2026.1/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ippcp/2026.0/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ipp/2026.0/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dnnl/2026.0/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/dal/2026.1/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/compiler/2026.1/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	  trying file=/opt/intel/oneapi/ccl/2022.1/lib/libze_intel_gpu_legacy1.so.1
+   1267036:	    (no such file)
+   1267036:	 search cache=/etc/ld.so.cache
+   1267036:	  trying file=/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1
+   1267036:	
+   1267036:	
+   1267036:	calling init: /usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1
+   1267036:	
+   1267036:	/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1: error: symbol lookup error: undefined symbol: zeGetRTASBuilderProcAddrTable (fatal)
+   1267036:	/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1: error: symbol lookup error: undefined symbol: zeGetRTASParallelOperationProcAddrTable (fatal)
+   1267036:	/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1: error: symbol lookup error: undefined symbol: zetGetMetricDecoderExpProcAddrTable (fatal)
+   1267036:	/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1: error: symbol lookup error: undefined symbol: zetGetMetricTracerExpProcAddrTable (fatal)
+   1267036:	/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1: error: symbol lookup error: undefined symbol: zetGetDeviceExpProcAddrTable (fatal)
+   1267036:	/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1: error: symbol lookup error: undefined symbol: zetGetCommandListExpProcAddrTable (fatal)
+   1267036:	/usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1: error: symbol lookup error: undefined symbol: zerGetGlobalProcAddrTable (fatal)
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.9 s
+drafter loaded in 0.8 s
+tree: 15 nodes a round, 4.12 accepted of 15.0 drafted
+drafted: 256 tokens in 50 rounds (5.12 a round), 124.0 tok/s, draft 0.0 ms + verify 41.3 ms a round, equal to serial: true
+prompt: 68 tokens in 0.106 s (640 tok/s)
+decode: 256 tokens in 7.730 s (33.1 tok/s)
+tokens: 71093 10504 198 5355 423 1658 9802 53 19365 198 1389 423 1658 9802 53 19365 271 1032 361 66 64157 29 198 1032 361 93631 29 198 1032 361 21670 29 198 1032 361 3112 29 198 1032 361 12439 29 198 1032 361 91247 29 198 1032 361 19086 29 198 1032 361 6409 29 271 3537 198 348 554 6449 357 4368 53269 11 8097 35473 3883 9761 4011 364 81726 35464 2424 27437 13 198 348 198 348 1061 523 5004 264 26068 4011 421 10220 220 21 19 14813 2424 45640 13 198 348 1049 369 5995 364 958 303 436 10673 42903 20459 1332 81726 35464 9714 513 198 348 19591 321 26642 303 264 45438 11233 13 198 348 198 348 8487 18139 25 198 348 256 471 1942 569 5245 513 4368 53269 13 198 348 256 471 1510 8804 52434 9714 413 279 4011 369 2400 318 37488 1510 1485 13812 63 369 1429 553 198 348 256 471 1510 8115 52434 9714 413 279 4011 369 4147 318 37488 1510 1485 16558 63 369 1429 553 198 348 256 471 1510 28156 52434 4523 279 3929 2315 1973 17068 424 11 466 307 62406 409 413 4147 13 198 348 256 471 1510 16836 52434 72346 279 8410 1906 314 6149 5255 13 198 348 198 348 38778 25 198 348 256 471 561 8390 369 8097 506 7832 854 321 4021 381 5324 13 198 348 256 471 1510 16836 52434 1503 4045 2222 279 8390
+   1267036:	
+   1267036:	calling fini:  [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libze_tracing_layer.so.1 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: $WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libze_intel_gpu.so.1 [0]
+   1267036:	
+   1267036:	$WORK/tpdiag/tf-prof/zig-out/bin/xpu-qwen27: error: symbol lookup error: undefined symbol: zelSetDriverTeardown (fatal)
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libigdfcl.so.2 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libopencl-clang.so.16 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: $WORK/tpdiag/neo-26.40/root/usr/local/lib/libigc.so.2 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libz.so.1 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libzstd.so.1 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libigdml.so.1 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libdrm.so.2 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libze_intel_gpu_legacy1.so.1 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: $WORK/tpdiag/neo-26.40/root/usr/lib/x86_64-linux-gnu/libigdgmm.so.12 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libze_loader.so.1 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libstdc++.so.6 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libm.so.6 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /usr/lib/x86_64-linux-gnu/libc.so.6 [0]
+   1267036:	
+   1267036:	
+   1267036:	calling fini: /lib64/ld-linux-x86-64.so.2 [0]
+   1267036:	

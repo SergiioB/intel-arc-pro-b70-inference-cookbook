@@ -1,0 +1,82 @@
+# MEASURED LOSS, NOT CARRIED. XPU_GU_WIDE64 (lever L1): -1.1 to -1.9 % on two cards at 230/230 W, 3 pairs (raw/l1, SPEED-REPORT.md).
+From 737fc1ad2158a5c860c081f5a53673c02ec83e2d Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 08:51:46 +0100
+Subject: [PATCH] xpu(qwen27): XPU_GU_WIDE64 runs the MLP gate|up decode GEMM
+ on dec_wide64 at any width
+
+Decode rows of a wide projection take dec_wide64 from 30,000 output columns
+and dec_wide below that. One card's gate|up has 2 x 17,408 = 34,816 columns
+and takes dec_wide64. On two cards each rank holds 17,408, so gate|up falls to
+dec_wide. tpdiag's per-rank profile (TP-ROOT-CAUSES.md, "Measured budget")
+puts the cost at +1.8 ms per drafted round and +1.15 ms per serial step at
+68 tokens.
+
+With XPU_GU_WIDE64=1, mlpIn sends gate|up decode rows to dec_wide64 whenever
+the column count divides by 256. Other projections keep the 30,000-column
+rule. Default off. The two kernels differ only in tile width (64 against 32
+columns a subgroup) over the same group loop.
+---
+ zig/src/xpu/forward.zig | 10 ++++++++--
+ zig/src/xpu/qwen27.zig  |  3 +++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/zig/src/xpu/forward.zig b/zig/src/xpu/forward.zig
+index c60934752..4fa6edf7a 100644
+--- a/zig/src/xpu/forward.zig
++++ b/zig/src/xpu/forward.zig
+@@ -156,7 +156,8 @@ pub fn mlpIn(d: *Dev, a: *Acts, w: Proj, T: u32, gs: i32, pre: bool, wide: bool)
+         try d.launch(d.k.rowsums_ff, .{ .x = T }, .{ a.p, a.ahi, a.alo, gs, q.rot_on });
+         return a.p;
+     }
+-    try gemmRows(d, a.pscr, a.h, a.ahi, a.alo, w, a.p, T, wide);
++    // XPU_GU_WIDE64: gate|up decode rows on dec_wide64 at any width (a TP rank's half width falls below 30000)
++    try gemmRowsFrom(d, a.pscr, a.h, a.ahi, a.alo, w, a.p, T, wide, if (q.gu_wide64) 0 else 30000);
+     try d.launch(d.k.swiglu, .{ .x = T, .y = (sh.ff + 1023) / 1024 }, .{ a.p, a.h, a.ahi, a.alo, gs, @as(i32, @intFromBool(w.ilv)), q.rot_on });
+     return a.h;
+ }
+@@ -177,6 +178,11 @@ pub fn gemm(d: *Dev, pscr: *anyopaque, h: *anyopaque, ahi: *anyopaque, alo: *any
+ }
+ 
+ pub fn gemmRows(d: *Dev, pscr: *anyopaque, h: *anyopaque, ahi: *anyopaque, alo: *anyopaque, w: Proj, out: *anyopaque, m: u32, wide: bool) !void {
++    return gemmRowsFrom(d, pscr, h, ahi, alo, w, out, m, wide, 30000);
++}
++
++/// gemmRows, with decode rows of a wide projection taking dec_wide64 from `wide64_from` columns (gemmRows: 30000).
++fn gemmRowsFrom(d: *Dev, pscr: *anyopaque, h: *anyopaque, ahi: *anyopaque, alo: *anyopaque, w: Proj, out: *anyopaque, m: u32, wide: bool, wide64_from: u32) !void {
+     const M: i32 = @intCast(m);
+     const N: i32 = @intCast(w.n);
+     const K: i32 = @intCast(w.k);
+@@ -192,7 +198,7 @@ pub fn gemmRows(d: *Dev, pscr: *anyopaque, h: *anyopaque, ahi: *anyopaque, alo:
+     const mp: i32 = @intCast((m + 7) / 8 * 8);
+     if (!wide) {
+         if (w.wide)
+-            if (w.n >= 30000)
++            if (w.n >= wide64_from and w.n % 256 == 0)
+                 try d.launch(dec_wide64, .{ .x = 1, .y = w.n / 256 }, .{ h, w.w, w.s, w.bg, out, M, N, K, ahi, alo, mp, G })
+             else
+                 try d.launch(dec_wide, .{ .x = 1, .y = w.n / 128 }, .{ h, w.w, w.s, w.bg, out, M, N, K, ahi, alo, mp, G })
+diff --git a/zig/src/xpu/qwen27.zig b/zig/src/xpu/qwen27.zig
+index 7e4104eff..0e1552e89 100644
+--- a/zig/src/xpu/qwen27.zig
++++ b/zig/src/xpu/qwen27.zig
+@@ -152,6 +152,8 @@ pub var kv8: i32 = 0;
+ pub var kv_i8 = false;
+ /// XPU_ATTN_PREF=CH (a multiple of 32 from 64 to 4096): decode attention reads the prefix once a round on DPAS.
+ pub var attn_pref: u32 = 0;
++/// XPU_GU_WIDE64=1: the MLP gate|up decode GEMM takes dec_wide64 at any width (forward.mlpIn).
++pub var gu_wide64 = false;
+ pub var rot_on: i32 = 0;
+ pub var prefill_int4 = false;
+ pub var int4_sites: u32 = 8;
+@@ -376,6 +378,7 @@ pub const Runner = struct {
+         if (std.c.getenv("XPU_PREFILL_INT8") != null) prefill_int8 = true;
+         if (std.c.getenv("XPU_KV_INT8") != null) kv_i8 = true;
+         if (std.c.getenv("XPU_ATTN_PREF")) |v| attn_pref = try std.fmt.parseInt(u32, std.mem.span(v), 10);
++        gu_wide64 = std.c.getenv("XPU_GU_WIDE64") != null;
+         if (attn_pref != 0 and (attn_pref % 32 != 0 or attn_pref < 64 or attn_pref > 4096)) return error.AttnPrefNotAMultipleOf32From64To4096;
+         if (std.c.getenv("XPU_PREFILL_INT4") != null) prefill_int4 = true;
+         if (std.c.getenv("XPU_PREFILL_INT4_SITES")) |v| int4_sites = try std.fmt.parseInt(u32, std.mem.span(v), 10);
+-- 
+2.53.0
+

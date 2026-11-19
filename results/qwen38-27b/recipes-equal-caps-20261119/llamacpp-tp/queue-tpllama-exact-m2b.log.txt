@@ -1,0 +1,148 @@
+== start 2026-11-19T11:07:46 cards [0, 1] cmd ['sudo', '-n', 'systemd-run', '--scope', '--quiet', '-p', 'MemoryMax=20G', '-p', 'MemorySwapMax=0', '--uid=sergio', '--gid=sergio', 'env', 'SCHED=1', 'bash', '$WORK/tpllama/run.sh', 'check', 'bash', '$WORK/tpllama/check.sh', 'sums']
++ cd $WORK/tpllama
+++ date -d '2026-11-19 13:50 CET' +%s
++ deadline=1795092600
++ bin=$WORK/tpllama/llama-m2/build/bin
++ docs=~/B70-DOCS
++ model=$DATA/sata2/gguf/qwen38-27b-Q4_K_M.gguf
++ kv=q8_0
++ ctx=40960
++ one_card=1
++ one_port=8051
++ export 'ONEAPI_DEVICE_SELECTOR=level_zero:*' SYCL_ENABLE_DEFAULT_CONTEXTS=1 ZE_ENABLE_PCI_ID_DEVICE_ORDER=1
++ ONEAPI_DEVICE_SELECTOR='level_zero:*'
++ SYCL_ENABLE_DEFAULT_CONTEXTS=1
++ ZE_ENABLE_PCI_ID_DEVICE_ORDER=1
++ export UR_LOADER_USE_LEVEL_ZERO_V2=0 SYCL_CACHE_PERSISTENT=0 GGML_SYCL_ENABLE_GRAPH=0
++ UR_LOADER_USE_LEVEL_ZERO_V2=0
++ SYCL_CACHE_PERSISTENT=0
++ GGML_SYCL_ENABLE_GRAPH=0
++ unset ZE_AFFINITY_MASK GGML_SYCL_TP_P2P GGML_SYCL_TP_DIAG_SKIP
+++ python3 ~/B70-DOCS/tools/host_facts.py hwmon 0
++ hw0=/sys/class/hwmon/hwmon6
+++ python3 ~/B70-DOCS/tools/host_facts.py hwmon 1
++ hw1=/sys/class/hwmon/hwmon7
+++ python3 ~/B70-DOCS/tools/host_facts.py hwmon 1
++ hwc=/sys/class/hwmon/hwmon7
++ server_pid=
++ trap cleanup EXIT
++ trap 'exit 143' TERM
++ [[ check == check ]]
++ shift
++ preflight
++ local other
+++ ps -eo pid,comm
+++ awk '$2 ~ /^(tensorfold|llama-server|llama-bench|llama-perplexit|vllm|VLLM)/ { print }'
++ other=
++ [[ -z '' ]]
++ sudo -n docker ps --format '{{.ID}} {{.Image}} {{.Names}}'
+++ sudo -n docker ps -q
++ [[ -z '' ]]
+++ vram 0b:00.0
+++ sudo -n cat /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm
+++ awk '/^visible_avail:/ { sub(/MiB$/, "", $2); print $2 }'
++ [[ 31745 -ge 31000 ]]
+++ vram 0f:00.0
+++ sudo -n cat /sys/kernel/debug/dri/0000:0f:00.0/tile0/vram_mm
+++ awk '/^visible_avail:/ { sub(/MiB$/, "", $2); print $2 }'
++ [[ 32482 -ge 31000 ]]
++ awk '/MemAvailable:/ { if ($2 < 20 * 1024 * 1024) exit 1 }' /proc/meminfo
++ record_gpu
++ date -Is
+2026-11-19T11:07:47+01:00
++ for hw in "$hw0" "$hw1"
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon6/power1_cap
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon6 power1_cap 230000000
+/sys/class/hwmon/hwmon6 power1_cap 230000000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon6/temp2_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon6 temp2_input 54000
+/sys/class/hwmon/hwmon6 temp2_input 54000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon6/energy1_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon6 energy1_input 1494458299560
+/sys/class/hwmon/hwmon6 energy1_input 1494458299560
++ for hw in "$hw0" "$hw1"
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon7/power1_cap
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon7 power1_cap 230000000
+/sys/class/hwmon/hwmon7 power1_cap 230000000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon7/temp2_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon7 temp2_input 63000
+/sys/class/hwmon/hwmon7 temp2_input 63000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon7/energy1_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon7 energy1_input 2847338243041
+/sys/class/hwmon/hwmon7 energy1_input 2847338243041
+++ vram 0b:00.0
+++ sudo -n cat /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm
+++ awk '/^visible_avail:/ { sub(/MiB$/, "", $2); print $2 }'
+++ vram 0f:00.0
+++ sudo -n cat /sys/kernel/debug/dri/0000:0f:00.0/tile0/vram_mm
+++ awk '/^visible_avail:/ { sub(/MiB$/, "", $2); print $2 }'
++ printf 'visible_avail_MiB 0=%s 1=%s\n' 31745 32482
+visible_avail_MiB 0=31745 1=32482
++ bash $WORK/tpllama/check.sh sums
+$WORK/tpllama/check.sh: line 26: 1469706 Segmentation fault         (core dumped) GGML_SYCL_TP_P2P=$arm timeout --foreground --kill-after=10s 240s "$campaign/check_allreduce_m2" time > "$campaign/evidence/check-m2/time-p2p$arm.log" 2>&1
+time p2p1 rc=139
+timing n=5120 calls=2000 total_us=98658.0 us_per_call=49.33
+rss n=5120 calls=50000 before_kib=258540 after_kib=387704
+timing n=5120 calls=2000 total_us=103329.5 us_per_call=51.66
+rss n=5120 calls=50000 before_kib=398040 after_kib=526796
+timing n=20480 calls=2000 total_us=104892.9 us_per_call=52.45
+timing n=2621440 calls=200 total_us=157777.3 us_per_call=788.89
+timing n=5120 calls=2000 total_us=86330.1 us_per_call=43.17
+rss n=5120 calls=50000 before_kib=268108 after_kib=526324
+timing n=5120 calls=2000 total_us=77468.5 us_per_call=38.73
+time p2p1 rc=139
+timing n=5120 calls=2000 total_us=51513.9 us_per_call=25.76
+rss n=5120 calls=50000 before_kib=252648 after_kib=303432
+timing n=5120 calls=2000 total_us=51766.7 us_per_call=25.88
+rss n=5120 calls=50000 before_kib=307496 after_kib=358276
+timing n=20480 calls=2000 total_us=52955.5 us_per_call=26.48
+timing n=2621440 calls=200 total_us=234944.4 us_per_call=1174.72
+$WORK/tpllama/check.sh: line 32: 1470188 Segmentation fault         (core dumped) GGML_SYCL_TP_P2P=$arm UR_L0_LEAKS_DEBUG=1 timeout --foreground --kill-after=10s 300s "$campaign/check_allreduce_m2" time > "$campaign/evidence/check-m2/leaks-p2p$arm.log" 2>&1
++ exit
++ cleanup
++ stop_server
++ [[ -n '' ]]
++ record_gpu
++ date -Is
+2026-11-19T11:08:20+01:00
++ for hw in "$hw0" "$hw1"
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon6/power1_cap
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon6 power1_cap 230000000
+/sys/class/hwmon/hwmon6 power1_cap 230000000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon6/temp2_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon6 temp2_input 59000
+/sys/class/hwmon/hwmon6 temp2_input 59000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon6/energy1_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon6 energy1_input 1497122726806
+/sys/class/hwmon/hwmon6 energy1_input 1497122726806
++ for hw in "$hw0" "$hw1"
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon7/power1_cap
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon7 power1_cap 230000000
+/sys/class/hwmon/hwmon7 power1_cap 230000000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon7/temp2_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon7 temp2_input 52000
+/sys/class/hwmon/hwmon7 temp2_input 52000
++ for sensor in power1_cap temp2_input energy1_input
+++ cat /sys/class/hwmon/hwmon7/energy1_input
++ printf '%s %s %s\n' /sys/class/hwmon/hwmon7 energy1_input 2849920357116
+/sys/class/hwmon/hwmon7 energy1_input 2849920357116
+++ vram 0b:00.0
+++ sudo -n cat /sys/kernel/debug/dri/0000:0b:00.0/tile0/vram_mm
+++ awk '/^visible_avail:/ { sub(/MiB$/, "", $2); print $2 }'
+++ vram 0f:00.0
+++ sudo -n cat /sys/kernel/debug/dri/0000:0f:00.0/tile0/vram_mm
+++ awk '/^visible_avail:/ { sub(/MiB$/, "", $2); print $2 }'
++ printf 'visible_avail_MiB 0=%s 1=%s\n' 31725 32482
+visible_avail_MiB 0=31725 1=32482
+== end 2026-11-19T11:08:39 rc=0

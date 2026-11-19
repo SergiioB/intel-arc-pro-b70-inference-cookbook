@@ -1,0 +1,30 @@
+From 1626bf594cb7d3e2b2c22a2487b82f82d8bf0379 Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 00:12:54 +0100
+Subject: [PATCH] DIAG: GGML_SYCL_TP_DIAG_SKIP skips the allreduce (measurement
+ only)
+
+---
+ ggml/src/ggml-sycl/ggml-sycl.cpp | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/ggml/src/ggml-sycl/ggml-sycl.cpp b/ggml/src/ggml-sycl/ggml-sycl.cpp
+index 20da0fe..aa92f12 100644
+--- a/ggml/src/ggml-sycl/ggml-sycl.cpp
++++ b/ggml/src/ggml-sycl/ggml-sycl.cpp
+@@ -8207,6 +8207,12 @@ bool ggml_backend_sycl_comm_allreduce_tensor(void * comm_ctx_v, struct ggml_tens
+         return true;
+     }
+ 
++    // DIAGNOSTIC ONLY (not for upstream): skip the exchange to bound its share of decode time. Output is wrong.
++    static const bool diag_skip = ggml_sycl_get_env("GGML_SYCL_TP_DIAG_SKIP", 0) != 0;
++    if (diag_skip) {
++        return true;
++    }
++
+     auto * ctx0 = (ggml_backend_sycl_context *) comm_ctx->backends[0]->context;
+     auto * ctx1 = (ggml_backend_sycl_context *) comm_ctx->backends[1]->context;
+     queue_ptr q0 = ctx0->stream();
+-- 
+2.53.0
+

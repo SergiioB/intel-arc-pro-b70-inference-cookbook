@@ -1,0 +1,181 @@
+From f352f8c8903a2895f8b21f1a5bee93cb0f657098 Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 09:16:52 +0100
+Subject: [PATCH] xpu(qwen27): XPU_DATTN_SPLIT splits the drafter's block
+ attention over key chunks
+
+The DFlash2 drafter's dattn runs one subgroup per (block row, K/V head):
+16 x 8 = 128 subgroups. Each walks its whole window, up to 2,047 context keys
+plus the block, one key after another. tpdiag's per-rank profile puts it at
+7.4 ms per round at 32K tokens on one card (0.46 ms at 68 tokens). On two
+cards it runs on rank 0 only while rank 1 waits. Its work is about 2.7 GFLOP
+and 42 MB a round, so it is bound by latency, not by the GPU.
+
+With XPU_DATTN_SPLIT=1, dattn_part takes the same arithmetic over chunks of
+128 keys as a third grid dimension (17 chunks at most: 2,047 + 16 keys).
+It writes each chunk's max, sum and output per query head. dattn_merge then
+combines the chunks in order, like the target's attn_merge.
+
+Default off. The drafter only proposes tokens and the target's verify picks
+them, so greedy text should not depend on it; drafted == serial checks that.
+---
+ zig/kernels/xpu/qwen27/drafter.cl | 74 +++++++++++++++++++++++++++++++
+ zig/src/xpu/drafter.zig           | 19 ++++++--
+ 2 files changed, 90 insertions(+), 3 deletions(-)
+
+diff --git a/zig/kernels/xpu/qwen27/drafter.cl b/zig/kernels/xpu/qwen27/drafter.cl
+index 6c8945169..c77a41d32 100644
+--- a/zig/kernels/xpu/qwen27/drafter.cl
++++ b/zig/kernels/xpu/qwen27/drafter.cl
+@@ -151,6 +151,80 @@ KERNEL(16) void dattn(global const ushort *Q, global const ushort *KC, global co
+     for (int i = 0; i < 8; i++) O[(long)r * NH * HD + (h * 4 + a) * HD + i * 16 + lane] = convert_half_rte(rbf(o[a][i] / l[a]));
+ }
+ 
++#define DCH 128   // keys a dattn_part chunk holds
++#define DSPLIT 17 // chunks at most: (WIN 2047 + 16 block rows) / DCH, rounded up
++// dattn split over the keys (XPU_DATTN_SPLIT): chunk z of DCH keys, dattn's arithmetic, partial max, sum and output a
++// query head; dattn_merge combines the chunks in order. Grid (rows, NKV, DSPLIT); empty chunks write (-inf, 0, 0).
++KERNEL(16) void dattn_part(global const ushort *Q, global const ushort *KC, global const ushort *VC, int CAP, int c0,
++                           int pos0, int L, int WIN, float scale, global float *PM, global float *PL, global float *PO,
++                           global const int4 *ROWS, global const ulong *PTRS) {
++  const int r = get_group_id(0), h = get_group_id(1), sp = get_group_id(2), lane = get_sub_group_local_id();
++  int p = pos0 + r, bs = pos0;
++  if (ROWS) {
++    const int4 ri = ROWS[r];
++    p = ri.x;
++    c0 = ri.y;
++    bs = ri.z;
++    KC = (global const ushort *)PTRS[ri.w * 2];
++    VC = (global const ushort *)PTRS[ri.w * 2 + 1];
++  }
++  float q[4][8], o[4][8], m[4], l[4];
++  for (int a = 0; a < 4; a++) {
++    for (int i = 0; i < 8; i++) {
++      q[a][i] = bf2f(Q[((long)r * NH + h * 4 + a) * HD + i * 16 + lane]);
++      o[a][i] = 0.0f;
++    }
++    m[a] = -INFINITY;
++    l[a] = 0.0f;
++  }
++  const int j0 = max(c0, p - WIN) + sp * DCH, j1 = min(j0 + DCH, bs + L);
++  for (int j = j0; j < j1; j++) {
++    float kv[8];
++    const long jr = (long)h * CAP + j % CAP;
++    for (int i = 0; i < 8; i++) kv[i] = bf2f(KC[jr * HD + i * 16 + lane]);
++    float sc[4];
++    for (int a = 0; a < 4; a++) {
++      float d = 0.0f;
++      for (int i = 0; i < 8; i++) d += q[a][i] * kv[i];
++      sc[a] = sub_group_reduce_add(d) * scale;
++    }
++    for (int i = 0; i < 8; i++) kv[i] = bf2f(VC[jr * HD + i * 16 + lane]);
++    for (int a = 0; a < 4; a++) {
++      const float mn = fmax(m[a], sc[a]);
++      const float al = exp(m[a] - mn), pr = exp(sc[a] - mn);
++      l[a] = l[a] * al + pr;
++      for (int i = 0; i < 8; i++) o[a][i] = o[a][i] * al + pr * kv[i];
++      m[a] = mn;
++    }
++  }
++  for (int a = 0; a < 4; a++) {
++    const long base = ((long)r * NH + h * 4 + a) * DSPLIT + sp;
++    if (lane == 0) {
++      PM[base] = m[a];
++      PL[base] = l[a];
++    }
++    for (int i = 0; i < 8; i++) PO[base * HD + i * 16 + lane] = o[a][i];
++  }
++}
++
++// dattn_part's chunks in order: O as dattn writes it. Grid (rows, NKV); chunk 0 always holds a key.
++KERNEL(16) void dattn_merge(global const float *PM, global const float *PL, global const float *PO, global half *O) {
++  const int r = get_group_id(0), h = get_group_id(1), lane = get_sub_group_local_id();
++  for (int a = 0; a < 4; a++) {
++    const long base = ((long)r * NH + h * 4 + a) * DSPLIT;
++    float m = -INFINITY;
++    for (int s = 0; s < DSPLIT; s++) m = fmax(m, PM[base + s]);
++    float l = 0.0f, o[8];
++    for (int i = 0; i < 8; i++) o[i] = 0.0f;
++    for (int s = 0; s < DSPLIT; s++) {
++      const float w = exp(PM[base + s] - m);
++      l += PL[base + s] * w;
++      for (int i = 0; i < 8; i++) o[i] += PO[(base + s) * HD + i * 16 + lane] * w;
++    }
++    for (int i = 0; i < 8; i++) O[(long)r * NH * HD + (h * 4 + a) * HD + i * 16 + lane] = convert_half_rte(rbf(o[i] / l));
++  }
++}
++
+ // Row sums for a fp16 matrix already written (o_proj's input after dattn): grid L, groups of 256.
+ KERNEL(256) void rowsums_rows(global const half *H, int K, global half *AHI, global half *ALO) {
+   local half hl[25600];
+diff --git a/zig/src/xpu/drafter.zig b/zig/src/xpu/drafter.zig
+index 9a2eff6f6..17f2c5371 100644
+--- a/zig/src/xpu/drafter.zig
++++ b/zig/src/xpu/drafter.zig
+@@ -50,6 +50,9 @@ pub const Ctx = struct {
+     end: u32 = 0,
+ };
+ const CAP = WIN + MAXL + 17; // 2 080
++const DSPLIT = 17; // drafter.cl's DSPLIT: dattn_part's key chunks of 128 at most
++/// XPU_DATTN_SPLIT=1: the block attention runs as dattn_part (key chunks of 128 across the grid) and dattn_merge.
++pub var dattn_split = false;
+ 
+ /// One block's lattice: per depth the top 16 candidates (target ids), their logits, the selector projection.
+ const Lat = struct {
+@@ -70,7 +73,7 @@ const Mlx = struct { w: *anyopaque, s: *anyopaque, b: *anyopaque, n: u32 };
+ pub const Drafter = struct {
+     r: *q.Runner,
+     ckpt: q.Checkpoint = .{}, // the codebooks (pred, succ) are read from its mapping
+-    k: struct { dconv: ze.H, dprep: ze.H, dattn: ze.H, rowsums_rows: ze.H, taps_in: ze.H, to_res: ze.H, topk_part: ze.H, quantize4: ze.H, swiglu: ze.H },
++    k: struct { dconv: ze.H, dprep: ze.H, dattn: ze.H, dattn_part: ze.H, dattn_merge: ze.H, rowsums_rows: ze.H, taps_in: ze.H, to_res: ze.H, topk_part: ze.H, quantize4: ze.H, swiglu: ze.H },
+     layers: [LAYERS]Layer,
+     fc: q.Proj,
+     hidden_norm: *anyopaque,
+@@ -106,6 +109,9 @@ pub const Drafter = struct {
+     dyn: *anyopaque, // fp16 [MAXL, 1 280]
+     qb: *anyopaque, // bf16 [MAXL, 32, 128]
+     o: *anyopaque, // fp16 [MAXL, 4 096]
++    dpm: *anyopaque, // XPU_DATTN_SPLIT partials: fp32 [MAXB, NH, DSPLIT], and dpo [.., HD]
++    dpl: *anyopaque,
++    dpo: *anyopaque,
+     logits: *anyopaque, // fp16 [MAXL, head.n]
+     selp: *anyopaque, // fp16 [MAXL, 256]
+     pv: *anyopaque,
+@@ -175,13 +181,14 @@ pub const Drafter = struct {
+             }
+         }.f;
+         const rows = @max(q.CHUNK, MAXB);
++        dattn_split = std.c.getenv("XPU_DATTN_SPLIT") != null;
+         const pv_host = try alloc.alloc(f32, MAXB * 256 * 16);
+         errdefer alloc.free(pv_host);
+         const pi_host = try alloc.alloc(i32, MAXB * 256 * 16);
+         errdefer alloc.free(pi_host);
+         dr.* = .{
+             .r = r,
+-            .k = .{ .dconv = try kern(d, m, "dconv", 512), .dprep = try kern(d, m, "dprep", 16), .dattn = try kern(d, m, "dattn", 16), .rowsums_rows = try kern(d, m, "rowsums_rows", 256), .taps_in = try kern(d, m, "taps_in", 256), .to_res = try kern(d, m, "to_res", 256), .topk_part = try kern(d, m, "topk_part", 16), .quantize4 = try kern(d, m, "quantize4", 16), .swiglu = try kern(d, mg_tp1, "swiglu", 256) },
++            .k = .{ .dconv = try kern(d, m, "dconv", 512), .dprep = try kern(d, m, "dprep", 16), .dattn = try kern(d, m, "dattn", 16), .dattn_part = try kern(d, m, "dattn_part", 16), .dattn_merge = try kern(d, m, "dattn_merge", 16), .rowsums_rows = try kern(d, m, "rowsums_rows", 256), .taps_in = try kern(d, m, "taps_in", 256), .to_res = try kern(d, m, "to_res", 256), .topk_part = try kern(d, m, "topk_part", 16), .quantize4 = try kern(d, m, "quantize4", 16), .swiglu = try kern(d, mg_tp1, "swiglu", 256) },
+             .layers = undefined,
+             .fc = undefined,
+             .hidden_norm = undefined,
+@@ -201,6 +208,9 @@ pub const Drafter = struct {
+             .dyn = try d.alloc_(MAXB * 1280 * 2),
+             .qb = try d.alloc_(MAXB * NH * HD * 2),
+             .o = try d.alloc_(MAXB * NH * HD * 2),
++            .dpm = try d.alloc_(if (dattn_split) MAXB * NH * DSPLIT * 4 else 64),
++            .dpl = try d.alloc_(if (dattn_split) MAXB * NH * DSPLIT * 4 else 64),
++            .dpo = try d.alloc_(if (dattn_split) MAXB * NH * DSPLIT * HD * 4 else 64),
+             .logits = undefined,
+             .selp = try d.alloc_(MAXB * RANK * 2),
+             .pv = try d.alloc_(MAXB * 256 * 16 * 4),
+@@ -523,7 +533,10 @@ pub const Drafter = struct {
+             try d.launch(dr.k.dconv, .{ .x = R, .y = D / 512 }, .{ dr.h, dr.dyn, @as(i32, @intCast(l.kp_attn.n)), l.base_attn, @as(i32, 0), dr.x, @as(i32, 0), dr.h2, dr.ahi, dr.alo, l32 });
+             try q.gemm(d, dr.pscr, dr.h2, dr.ahi, dr.alo, l.qkv, dr.p, R);
+             try d.launch(dr.k.dprep, .{ .x = R, .y = 48 }, .{ dr.p, @as(i32, @intCast(l.qkv.n)), @as(i32, 0), l.qn, l.kn, dr.invf, dr.qb, kc, vc, @as(i32, CAP), end_, HIDDEN_NORM_EPS, rows_t, ptrs_t });
+-            try d.launch(dr.k.dattn, .{ .x = R, .y = NKV }, .{ dr.qb, kc, vc, @as(i32, CAP), c0, end_, l32, @as(i32, WIN), @as(f32, 1.0 / @sqrt(@as(f32, HD))), dr.o, rows_t, ptrs_t });
++            if (dattn_split) {
++                try d.launch(dr.k.dattn_part, .{ .x = R, .y = NKV, .z = DSPLIT }, .{ dr.qb, kc, vc, @as(i32, CAP), c0, end_, l32, @as(i32, WIN), @as(f32, 1.0 / @sqrt(@as(f32, HD))), dr.dpm, dr.dpl, dr.dpo, rows_t, ptrs_t });
++                try d.launch(dr.k.dattn_merge, .{ .x = R, .y = NKV }, .{ dr.dpm, dr.dpl, dr.dpo, dr.o });
++            } else try d.launch(dr.k.dattn, .{ .x = R, .y = NKV }, .{ dr.qb, kc, vc, @as(i32, CAP), c0, end_, l32, @as(i32, WIN), @as(f32, 1.0 / @sqrt(@as(f32, HD))), dr.o, rows_t, ptrs_t });
+             try d.launch(dr.k.rowsums_rows, .{ .x = R }, .{ dr.o, @as(i32, NH * HD), dr.ahi, dr.alo });
+             try q.gemm(d, dr.pscr, dr.o, dr.ahi, dr.alo, l.o, dr.r16, R);
+             try d.launch(dr.k.dconv, .{ .x = R, .y = D / 512 }, .{ dr.r16, dr.dyn, @as(i32, @intCast(l.kp_attn.n)), l.base_attn, @as(i32, 1), dr.x, @as(i32, 1), dr.h2, dr.ahi, dr.alo, l32 });

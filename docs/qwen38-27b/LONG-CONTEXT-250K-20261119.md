@@ -4,9 +4,14 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards with TensorFol
 **screen** (one repeat a cell unless stated). Raw files and `summarize.py`:
 [`results/qwen38-27b/two-cards-250k-routes-20261119/`](../../results/qwen38-27b/two-cards-250k-routes-20261119/README.md).
 
+> **Cap setting (added 2026-11-19).** Every two-card cell on this page ran with card 0 at 180 W / 2,400 MHz and card 1
+> at 230 W / 2,800 MHz; one-card cells ran on card 1 at 230 W. At equal caps (both 230 W / 2,800 MHz) the served
+> two-card rates rose 5–6 % at 0–131K with the same text; the 250K cells were not rerun yet (pending, 2026-11-19).
+> Recipes at the current setting: [RECIPES-B70.md](RECIPES-B70.md#4-250k-context-on-two-cards).
+
 ## Result
 
-1. **Fastest 250K setup measured: TensorFold on two cards with bf16 K/V**, 62.31 tok/s drafted at a 249,784-token
+1. **Fastest 250K setup measured: TensorFold on two cards with bf16 K/V** (180/230 W), 62.31 tok/s drafted at a 249,784-token
    prompt, first token in 218.8 s. On one card, exl3xpu is fastest (36.69 tok/s, 239.1 s); TensorFold needs int8
    K/V there and gives 20.67 tok/s.
 2. **Warm 250K sessions work only on two cards with int8 K/V and our fork's fix.** Follow-up turns start in
@@ -20,7 +25,9 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards with TensorFol
 
 ## What you need
 
-- One or two Intel Arc Pro B70 32 GB. Card 0 at 180 W with a 2,400 MHz clock cap, card 1 at 230 W.
+- One or two Intel Arc Pro B70 32 GB. Measured with card 0 at 180 W and a 2,400 MHz clock cap and card 1 at 230 W,
+  before 2026-11-19 09:45 CET. Set today: both cards 230 W / 2,800 MHz
+  ([recipe 0](RECIPES-B70.md#0-host-both-cards-at-230-w-and-2800-mhz)).
 - TensorFold [`tp2-attn-prefix`](https://github.com/SergiioB/TensorFold/tree/tp2-attn-prefix) (`2286abc0c`) for the
   measurements; [`xpu-tp2-fixes-20261119`](https://github.com/SergiioB/TensorFold/tree/xpu-tp2-fixes-20261119)
   (`ac346900b`, approved after three review rounds) for warm sessions past about 131K with int8 K/V.
@@ -47,12 +54,15 @@ stream plus a 4.1 GiB cache does not fit beside the model and the drafter.
 
 ## Decode at 250K
 
-249,784-token code prompt, greedy, 512 tokens out, prompt cache off, one repeat.
+249,784-token code prompt, greedy, 512 tokens out, prompt cache off, one repeat. Two-card rows at 180/230 W; one-card
+rows on card 1 at 230 W. An earlier two-card bf16 run of the same prompt on 2026-11-18 (a different server start, n=1)
+gave 63.29 drafted and 23.40 serial ([TENSORFOLD-B70](TENSORFOLD-B70.md#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)).
+The 230/230 W rerun is pending (2026-11-19).
 
 | Setup | Drafted tok/s | Serial tok/s | First token | J a token, drafted | Text (drafted == serial) |
 |---|---|---|---|---|---|
-| TensorFold two cards, bf16 | **62.31** | 23.07 | 218.8 s | **3.56** | `c0ba6e57…` (yes) |
-| TensorFold two cards, int8 | 32.46 | 22.84 | 206.9 s | 5.73 | `27aae358…` (yes) |
+| TensorFold two cards, bf16 (180/230 W) | **62.31** | 23.07 | 218.8 s | **3.56** | `c0ba6e57…` (yes) |
+| TensorFold two cards, int8 (180/230 W) | 32.46 | 22.84 | 206.9 s | 5.73 | `27aae358…` (yes) |
 | exl3xpu one card, fp8, MTP3 / off | 36.69 | 18.85 | 239.1 / 227.9 s | 6.26 | differ |
 | TensorFold one card, int8 | 20.67 | 15.37 | 314.9 s | 10.47 | `27aae358…` (yes) |
 
@@ -79,7 +89,7 @@ over the document.
 
 ## Warm follow-up turns on two cards
 
-Seed turn at the depth below (512 tokens out), then follow-ups of 128 tokens (`scripts/gates.py session`). The
+Seed turn at the depth below (512 tokens out), then follow-ups of 128 tokens (`scripts/gates.py session`), 180/230 W. The
 fresh check replays each turn's exact messages to a cache-off server and compares the text.
 
 | Session | Server | Follow-up first token | Resumed == fresh |

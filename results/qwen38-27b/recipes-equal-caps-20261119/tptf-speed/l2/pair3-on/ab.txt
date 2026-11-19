@@ -1,0 +1,4 @@
+flag XPU_DATTN_SPLIT=1
+arms drafted depths 0,8k,32k,128k
+af46fe6211331b0fba78f87ed9903914c61f5a237285c086e692c20f85398a11  $WORK/tptf/src-l2/zig-out/xpu/bin/tensorfold-native
+2026-11-19T11:49:06+01:00

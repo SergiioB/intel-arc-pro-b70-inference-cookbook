@@ -10,6 +10,9 @@ unless a row says two. Status: **screen**. Raw cells and `summarize.py`:
 > Greedy and sampled rates are different metric classes and cannot be converted. The first-run route
 > ([START.md](../../START.md), `data/routes.v1.json`) stays EXL3 + MTP3 until the sampled rerun reports.
 
+> **Cap setting (added 2026-11-19).** One-card cells ran on card 1 at 230 W. The two-card rows ran with card 0 at
+> 180 W / 2,400 MHz; at equal caps the two-card rates are 5–6 % higher ([RECIPES-B70.md](RECIPES-B70.md)).
+
 ## Result
 
 | Workload | Faster here | Numbers (code prompt, decode tok/s after the first token) | Measured reason |
@@ -17,15 +20,16 @@ unless a row says two. Status: **screen**. Raw cells and `summarize.py`:
 | One user, prompts up to 8K | **TensorFold, one card** | 127.8 vs 83.2 at 68 tokens; 114.6 vs 77.8 at 8K | Serial decode is level (32.4 vs 32.7). The DFlash2 tree gives 3.94× over serial, MTP3 2.54× |
 | One user, one cold prompt of 32K–131K | **Decode: TensorFold. First token: exl3xpu** | Decode 90.0 vs 66.5 at 32K, 50.7 vs 48.2 at 131K. First token 21.5 vs 13.3 s at 32K (exl3xpu 1.6× faster), 128.9 vs 85.4 s at 131K (1.5×) | exl3xpu prefills 2,449 tok/s at 32K against 1,511. Its fp8 K/V is half the bytes of TensorFold's bf16, so its serial cost grows 12.2 ms a token from 68 to 131K tokens against 22.0 |
 | 250K, one card | **exl3xpu** | 36.7 vs 20.7 drafted, 18.9 vs 15.4 serial; first token 239 / 228 s vs 315 s | TensorFold fits 250K on one card only with int8 K/V, and its int8 attention is slower (two cards: int8 32.5 vs bf16 62.3 at the same prompt) |
-| 250K, two cards | **TensorFold `--tp 2`, bf16 K/V** | 62.3 drafted, 23.1 serial, 218.8 s to first token | Two cards halve the K/V each card reads. exl3xpu has no measured two-card route here |
+| 250K, two cards | **TensorFold `--tp 2`, bf16 K/V** | 62.3 drafted, 23.1 serial, 218.8 s to first token (180/230 W) | Two cards halve the K/V each card reads. exl3xpu has no measured two-card route here |
 | Many streams, one card | **exl3xpu on throughput, TensorFold on repeatable text** | Three passes a level: 342.2 vs 270.9 tok/s aggregate at 8 streams, 333.3 vs 297.7 at 16, 374.8 vs 297.5 at 32; TensorFold leads at 4 (242.4 vs 220.0) | Cause not measured. Every TensorFold stream equals its solo text (183 of 183); exl3xpu 49 of 183 |
-| Many streams, both cards free | **level** | TensorFold `--tp 2 --parallel 8`: 329.2 and 335.4 at 8 streams (two passes), 0.47 J a token, against exl3xpu's one-card 342.2 at 0.67 J | Same aggregate at about 30 % less energy a token. Three-pass two-card and two-server arms are pending |
-| Same answer for the same request | **TensorFold** | Drafted == serial on 8 of 8 prompts; two 329-item runs on two cards gave the same text on 329 of 329 | exl3xpu MTP3 text equals a serial text on 2 of 16 requests; with MTP off, 1 of 8 prompts gave one text on every repeat |
+| Many streams, both cards free | **level** | TensorFold `--tp 2 --parallel 8`: 329.2 and 335.4 at 8 streams (two passes, 180/230 W), 0.47 J a token, against exl3xpu's one-card 342.2 at 0.67 J | Same aggregate at about 30 % less energy a token. Three-pass two-card and two-server arms are pending |
+| Same answer for the same request | **TensorFold** | Drafted == serial on 8 of 8 prompts; two 329-item runs on two cards (180/230 W) gave the same text on 329 of 329 | exl3xpu MTP3 text equals a serial text on 2 of 16 requests; with MTP off, 1 of 8 prompts gave one text on every repeat |
 | Answers right (329 items, greedy) | **level** | exl3xpu MTP3 286 (one run); TensorFold 281 (two cards, two runs), 282 and 283 (one card, one run each) | A 2–5 item spread on one run each does not separate the routes |
 
 ## What you need
 
-- One Intel Arc Pro B70 32 GB (card 1 here, 230 W, 2,800 MHz). Two for the two-card rows.
+- One Intel Arc Pro B70 32 GB (card 1 here, 230 W, 2,800 MHz). Two for the two-card rows, which ran with card 0 at
+  180 W / 2,400 MHz before 2026-11-19 09:45 CET (both cards are 230 W / 2,800 MHz since).
 - TensorFold: our branch [`tp2-attn-prefix`](https://github.com/SergiioB/TensorFold/tree/tp2-attn-prefix)
   (`2286abc0c`, binary sha256 `e6e59bfd…5383`), `XPU_ATTN_PREF=256`, bf16 K/V unless a row says int8. Model
   `TensorFold/Qwen3.8-27B-MLX-4bit` + `z-lab/Qwen3.8-27B-DFlash2`.
@@ -62,7 +66,7 @@ unless a row says two. Status: **screen**. Raw cells and `summarize.py`:
 |---|---|---|---|---|---|---|
 | exl3xpu, `max_model_len` 262144 | fp8 | **36.69** | 18.85 | 239.1 s (MTP3), 227.9 s (off) | 6.26 | no (`c1d0a0ec…` vs `9d4294f2…`) |
 | TensorFold, `--context 262144` | int8 | 20.67 | 15.37 | 314.9 s | 10.47 | yes |
-| TensorFold two cards (for scale) | bf16 | 62.31 | 23.07 | 218.8 s | 3.56 | yes |
+| TensorFold two cards (for scale, 180/230 W) | bf16 | 62.31 | 23.07 | 218.8 s | 3.56 | yes |
 
 More at 250K, including retrieval and warm follow-ups: [LONG-CONTEXT-250K-20261119.md](LONG-CONTEXT-250K-20261119.md).
 
@@ -77,7 +81,7 @@ compared with the same prompt run alone on the same server.
 
 | Streams | TensorFold aggregate tok/s | exl3xpu aggregate tok/s | Per-stream median, TF / exl3xpu | Slowest first token, TF / exl3xpu | J a token, TF / exl3xpu | Text equal to solo, TF / exl3xpu |
 |---|---|---|---|---|---|---|
-| 1 | 130.1 (130.0–130.1) | 82.5 (81.5–84.8) | 133.9 / 84.5 | 0.12 / 0.18 s | 1.69 / 2.79 | 3 of 3 / 2 of 3 |
+| 1 | 130.1 (130.0–130.1) | 82.5 (81.5–84.8) | 133.9 / 84.5 | 0.12 / 0.18 s | 1.69 / 2.79 | 3 of 3 / 2 of 3 (the third pass differed) |
 | 4 | **242.4** (240.7–242.5) | 220.0 (118.4–220.4) | 66.9 / 63.3 | 0.46 / 7.88 s | 0.89 / 1.05 | 12 of 12 / 5 of 12 |
 | 8 | 270.9 (268.5–272.7) | **342.2** (334.7–350.7) | 41.4 / 48.1 | 0.91 / 0.41 s | 0.81 / 0.67 | 24 of 24 / 8 of 24 |
 | 16 | 297.7 (295.0–297.8) | **333.3** (318.6–334.3) | 19.2 / 32.2 | 1.82 / 16.48 s | 0.74 / 0.69 | 48 of 48 / 7 of 48 |
@@ -97,11 +101,11 @@ Earlier one-pass and two-pass screens (2026-11-18/19), kept for the two-card row
 |---|---|---|---|---|---|
 | TensorFold one card `--parallel 8` (one pass) | 131.4 | 228.9 | 279.8 | – | 0.78 |
 | TensorFold one card `--parallel 16 --context 8192` (two passes) | 130.8 / 131.6 | 222.4 / 231.3 | 269.3 / 278.4 | 294.2 / 297.2 | 0.79 / 0.78 |
-| TensorFold two cards `--tp 2 --parallel 8 --context 16384` (two passes) | – | – | 329.2 / 335.4 | – | 0.47 / 0.47 |
+| TensorFold two cards `--tp 2 --parallel 8 --context 16384` (two passes, 180/230 W) | – | – | 329.2 / 335.4 | – | 0.47 / 0.47 |
 | exl3xpu MTP3 one card, `max_num_seqs` 16 (one pass) | 82.5 | 119.6 | 337.2 | 320.9 | 0.68 |
 
-At 4 streams, two independent one-card TensorFold servers (two streams each) gave 160.99 / 159.15 tok/s against
-129.27 / 130.23 for one two-card server ([two-card page](TENSORFOLD-TWO-CARDS-20261119.md)). For several users,
+At 4 streams (180/230 W), two independent one-card TensorFold servers (two streams each) gave 160.99 / 159.15 tok/s
+against 129.27 / 130.23 for one two-card server ([two-card page](TENSORFOLD-TWO-CARDS-20261119.md)). For several users,
 one server a card stays the default.
 
 ## Same text for the same request
@@ -112,7 +116,7 @@ one server a card stays the default.
 | Two drafted repeats of one prompt | same text | two texts on 7 of 8 prompts |
 | Repeats with speculation off | same text | one text on every repeat for 1 of 8 prompts (3 repeats to 32K, 2 at 131K) |
 | 250K, drafted against serial | equal | different |
-| 329 items, run twice on two cards (01:46 and 22:08 UTC) | 329 of 329 outputs identical | not run twice |
+| 329 items, run twice on two cards (01:46 and 22:08 UTC, 180/230 W) | 329 of 329 outputs identical | not run twice |
 
 TensorFold is exact within one configuration, not across them: at 250K int8 K/V gives one text (`27aae358…`) and
 bf16 another (`c0ba6e57…`), each with drafted == serial. Nothing here shows that the EXL3 format causes exl3xpu's

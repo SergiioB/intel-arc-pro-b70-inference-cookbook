@@ -2,9 +2,12 @@
 
 Use the [Qwen3.8-27B EXL3 route](docs/qwen38-27b/EXL3-XPU.md) for the first run:
 EXL3 4.00 bpw with MTP3 and prefix caching on, at the model card's sampling. Measured
-across the whole context on 2026-11-10 it was the fastest route from 32K up, the only one
-serving 262,144 tokens on one card, and the highest on a 40-item task battery; see the
-[route comparison](docs/qwen38-27b/ROUTE-COMPARISON-20261110.md). Start at 32,768 context;
+across the whole context on 2026-11-10 at the model card's sampling, it was the fastest route from 32K up, the
+only route in that comparison that completed its longest prompt on one card (245,583 tokens in, 512 out, at a
+262,144-token context), and the highest on a 40-item task battery; see the
+[route comparison](docs/qwen38-27b/ROUTE-COMPARISON-20261110.md). Later greedy tests also served a 249,784-token
+prompt on one card with TensorFold and int8 K/V ([250K page](docs/qwen38-27b/LONG-CONTEXT-250K-20261119.md)); the
+card-sampling comparison that would rank the two is pending (2026-11-19). Start at 32,768 context;
 raise `--ctx` up to 262144 for long documents. This does not establish general model quality.
 
 ## 1. Check the host
