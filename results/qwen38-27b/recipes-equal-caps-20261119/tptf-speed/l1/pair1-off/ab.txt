@@ -1,0 +1,4 @@
+flag XPU_GU_WIDE64=unset
+arms drafted serial depths 0,8k,32k,128k
+d3b9d92859352ca70b6dd7b3fa8bc9846ee19f94e034dbf62553f98c130febee  $WORK/tptf/src/zig-out/xpu/bin/tensorfold-native
+2026-11-19T10:29:49+01:00

@@ -1,0 +1,168 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.5 s
+GPU time, prompt, rank 0: 74.7 ms busy, 27.0 ms idle between kernels, 101.7 ms span, 0 launches unprofiled
+  embed              0.05 ms   0.1 %        1 calls      0.00 ms idle before
+  add_rmsnorm        2.27 ms   3.0 %      129 calls     23.72 ms idle before
+  gdn_pre_rows       1.09 ms   1.5 %       48 calls      0.02 ms idle before
+  gated_norm         0.46 ms   0.6 %       48 calls      0.01 ms idle before
+  attn_prep          0.11 ms   0.1 %       16 calls      1.85 ms idle before
+  attn_gate          0.10 ms   0.1 %       16 calls      0.00 ms idle before
+  argmax             0.01 ms   0.0 %        1 calls      0.00 ms idle before
+  argmax_part        0.04 ms   0.1 %        1 calls      0.03 ms idle before
+  attn_prompt        0.26 ms   0.3 %       16 calls      0.06 ms idle before
+  ngen_swiglu       22.24 ms  29.8 %       64 calls      0.01 ms idle before
+  rowsums_ff         0.58 ms   0.8 %       64 calls      0.03 ms idle before
+  dec_wide64         0.63 ms   0.8 %        1 calls      0.00 ms idle before
+  gdn_prep           2.85 ms   3.8 %       48 calls      1.18 ms idle before
+  gdn_state          2.52 ms   3.4 %       48 calls      0.01 ms idle before
+  gdn_out            1.30 ms   1.7 %       48 calls      0.01 ms idle before
+  ngen_wide         13.02 ms  17.4 %       64 calls      0.07 ms idle before
+  ngen_narrow       27.18 ms  36.4 %      128 calls      0.02 ms idle before
+  tp_ar2_f16         0.01 ms   0.0 %        2 calls      0.01 ms idle before
+GPU time, prompt, rank 1: 53.8 ms busy, 47.8 ms idle between kernels, 101.6 ms span, 0 launches unprofiled
+  embed              0.01 ms   0.0 %        1 calls      0.00 ms idle before
+  add_rmsnorm        1.72 ms   3.2 %      129 calls     34.01 ms idle before
+  gdn_pre_rows       0.77 ms   1.4 %       48 calls      0.09 ms idle before
+  gated_norm         0.34 ms   0.6 %       48 calls      0.01 ms idle before
+  attn_prep          0.09 ms   0.2 %       16 calls     12.59 ms idle before
+  attn_gate          0.08 ms   0.1 %       16 calls      0.00 ms idle before
+  attn_prompt        0.20 ms   0.4 %       16 calls      0.08 ms idle before
+  ngen_swiglu       15.94 ms  29.6 %       64 calls      0.01 ms idle before
+  rowsums_ff         0.44 ms   0.8 %       64 calls      0.02 ms idle before
+  dec_wide64         0.62 ms   1.2 %        1 calls      0.00 ms idle before
+  gdn_prep           2.06 ms   3.8 %       48 calls      0.66 ms idle before
+  gdn_state          1.91 ms   3.6 %       48 calls      0.03 ms idle before
+  gdn_out            0.97 ms   1.8 %       48 calls      0.01 ms idle before
+  ngen_wide          9.36 ms  17.4 %       64 calls      0.09 ms idle before
+  ngen_narrow       19.30 ms  35.8 %      128 calls      0.05 ms idle before
+  tp_ar2_f16         0.01 ms   0.0 %        2 calls      0.11 ms idle before
+GPU time, decode, rank 0: 4785.4 ms busy, 160.5 ms idle between kernels, 4945.9 ms span, 0 launches unprofiled
+  embed              1.78 ms   0.0 %      256 calls      0.00 ms idle before
+  add_rmsnorm_dec   338.78 ms   7.1 %    33024 calls      5.42 ms idle before
+  gdn_pre           54.82 ms   1.1 %    12288 calls      4.36 ms idle before
+  gated_norm        41.96 ms   0.9 %    12288 calls      1.75 ms idle before
+  attn_prep         10.69 ms   0.2 %     4096 calls      1.86 ms idle before
+  attn_gate         10.66 ms   0.2 %     4096 calls      0.58 ms idle before
+  swiglu            47.76 ms   1.0 %    16384 calls      7.37 ms idle before
+  argmax             3.40 ms   0.1 %      256 calls      0.04 ms idle before
+  argmax_part       10.35 ms   0.2 %      256 calls      8.73 ms idle before
+  gdn_step          78.93 ms   1.6 %    12288 calls      1.77 ms idle before
+  attn_decode      223.11 ms   4.7 %     4096 calls      0.59 ms idle before
+  attn_merge        11.71 ms   0.2 %     4096 calls      0.57 ms idle before
+  dec_wide        2549.38 ms  53.3 %    32768 calls      4.84 ms idle before
+  dec_wide64       159.69 ms   3.3 %      256 calls      0.04 ms idle before
+  dec_narrow      1114.88 ms  23.3 %    32768 calls      5.03 ms idle before
+  tp_ar2_f16       127.50 ms   2.7 %    32768 calls    117.56 ms idle before
+GPU time, decode, rank 1: 4557.6 ms busy, 363.8 ms idle between kernels, 4921.4 ms span, 0 launches unprofiled
+  embed              1.56 ms   0.0 %      256 calls      0.00 ms idle before
+  add_rmsnorm_dec   308.81 ms   6.8 %    33024 calls      9.18 ms idle before
+  gdn_pre           48.36 ms   1.1 %    12288 calls      3.64 ms idle before
+  gated_norm        36.25 ms   0.8 %    12288 calls      1.51 ms idle before
+  attn_prep          9.01 ms   0.2 %     4096 calls      0.83 ms idle before
+  attn_gate          8.99 ms   0.2 %     4096 calls      0.50 ms idle before
+  swiglu            44.97 ms   1.0 %    16384 calls      6.02 ms idle before
+  gdn_step          74.72 ms   1.6 %    12288 calls      1.50 ms idle before
+  attn_decode      197.93 ms   4.3 %     4096 calls      0.50 ms idle before
+  attn_merge        10.00 ms   0.2 %     4096 calls      0.50 ms idle before
+  dec_wide        2447.42 ms  53.7 %    32768 calls      3.95 ms idle before
+  dec_wide64       159.24 ms   3.5 %      256 calls      0.03 ms idle before
+  dec_narrow      1086.56 ms  23.8 %    32768 calls      3.96 ms idle before
+  tp_ar2_f16       123.78 ms   2.7 %    32768 calls    331.66 ms idle before
+drafter loaded in 0.8 s
+GPU time, drafter prompt (discarded), rank 0: 101.4 ms busy, 13.8 ms idle between kernels, 115.2 ms span, 0 launches unprofiled
+  embed              0.01 ms   0.0 %        1 calls      0.00 ms idle before
+  add_rmsnorm        1.92 ms   1.9 %      129 calls     12.74 ms idle before
+  gdn_pre_rows       0.89 ms   0.9 %       48 calls      0.02 ms idle before
+  gated_norm         0.38 ms   0.4 %       48 calls      0.01 ms idle before
+  attn_prep          0.10 ms   0.1 %       16 calls      0.01 ms idle before
+  attn_gate          0.09 ms   0.1 %       16 calls      0.00 ms idle before
+  argmax             0.01 ms   0.0 %        1 calls      0.00 ms idle before
+  argmax_part        0.04 ms   0.0 %        1 calls      0.03 ms idle before
+  tap                0.07 ms   0.1 %        5 calls      0.58 ms idle before
+  repack            24.69 ms  24.4 %       59 calls      0.00 ms idle before
+  attn_prompt        0.23 ms   0.2 %       16 calls      0.00 ms idle before
+  ngen_swiglu       18.33 ms  18.1 %       64 calls      0.01 ms idle before
+  rowsums_ff         0.50 ms   0.5 %       64 calls      0.03 ms idle before
+  dec_wide64         0.62 ms   0.6 %        1 calls      0.00 ms idle before
+  gdn_prep           2.35 ms   2.3 %       48 calls      0.37 ms idle before
+  gdn_state          2.10 ms   2.1 %       48 calls      0.01 ms idle before
+  gdn_out            1.08 ms   1.1 %       48 calls      0.01 ms idle before
+  ngen_wide         10.60 ms  10.5 %       64 calls      0.01 ms idle before
+  ngen_narrow       22.50 ms  22.2 %      128 calls      0.02 ms idle before
+  tp_ar2_f16         0.01 ms   0.0 %        2 calls      0.01 ms idle before
+  (other)           14.85 ms  14.7 %       57 calls      0.00 ms idle before
+GPU time, drafter prompt (discarded), rank 1: 59.9 ms busy, 15.7 ms idle between kernels, 75.6 ms span, 0 launches unprofiled
+  embed              0.02 ms   0.0 %        1 calls      0.00 ms idle before
+  add_rmsnorm        1.88 ms   3.1 %      129 calls     15.09 ms idle before
+  gdn_pre_rows       0.86 ms   1.4 %       48 calls      0.02 ms idle before
+  gated_norm         0.38 ms   0.6 %       48 calls      0.01 ms idle before
+  attn_prep          0.10 ms   0.2 %       16 calls      0.00 ms idle before
+  attn_gate          0.08 ms   0.1 %       16 calls      0.00 ms idle before
+  attn_prompt        0.22 ms   0.4 %       16 calls      0.00 ms idle before
+  ngen_swiglu       17.82 ms  29.7 %       64 calls      0.01 ms idle before
+  rowsums_ff         0.49 ms   0.8 %       64 calls      0.03 ms idle before
+  dec_wide64         0.62 ms   1.0 %        1 calls      0.00 ms idle before
+  gdn_prep           2.29 ms   3.8 %       48 calls      0.37 ms idle before
+  gdn_state          2.07 ms   3.5 %       48 calls      0.01 ms idle before
+  gdn_out            1.06 ms   1.8 %       48 calls      0.01 ms idle before
+  ngen_wide         10.34 ms  17.3 %       64 calls      0.01 ms idle before
+  ngen_narrow       21.65 ms  36.1 %      128 calls      0.02 ms idle before
+  tp_ar2_f16         0.01 ms   0.0 %        2 calls      0.11 ms idle before
+GPU time, drafted rounds, rank 0: 1560.7 ms busy, 74.3 ms idle between kernels, 1634.9 ms span, 0 launches unprofiled
+  embed              0.76 ms   0.0 %      102 calls      0.36 ms idle before
+  add_rmsnorm_dec    73.43 ms   4.7 %     6579 calls      1.35 ms idle before
+  add_rmsnorm        6.64 ms   0.4 %      612 calls      0.09 ms idle before
+  gdn_pre           25.98 ms   1.7 %     2448 calls      0.84 ms idle before
+  gated_norm        12.20 ms   0.8 %     2448 calls      0.40 ms idle before
+  attn_prep          3.79 ms   0.2 %      816 calls      0.22 ms idle before
+  attn_gate          3.40 ms   0.2 %      816 calls      0.12 ms idle before
+  swiglu            16.48 ms   1.1 %     3264 calls      1.51 ms idle before
+  argmax             0.67 ms   0.0 %       51 calls      0.01 ms idle before
+  argmax_part       17.28 ms   1.1 %       51 calls     19.40 ms idle before
+  tap                1.05 ms   0.1 %      255 calls      0.03 ms idle before
+  conv_commit        6.44 ms   0.4 %     2448 calls      0.35 ms idle before
+  gdn_step         163.42 ms  10.5 %     4896 calls     22.34 ms idle before
+  attn_decode       46.19 ms   3.0 %      816 calls      0.12 ms idle before
+  attn_merge         2.71 ms   0.2 %      816 calls      0.12 ms idle before
+  kv_move            3.77 ms   0.2 %      512 calls      0.07 ms idle before
+  dec_wide         587.26 ms  37.6 %     6528 calls      0.93 ms idle before
+  dec_wide64       106.72 ms   6.8 %      357 calls      0.28 ms idle before
+  dec_narrow       304.23 ms  19.5 %     8154 calls      1.16 ms idle before
+  ngen_narrow        1.48 ms   0.1 %        6 calls      0.00 ms idle before
+  tp_ar2_f16       119.88 ms   7.7 %     6528 calls     24.06 ms idle before
+  (other)           56.92 ms   3.6 %     2448 calls      0.52 ms idle before
+GPU time, drafted rounds, rank 1: 1264.1 ms busy, 120.7 ms idle between kernels, 1384.7 ms span, 0 launches unprofiled
+  embed              0.32 ms   0.0 %       51 calls      0.00 ms idle before
+  add_rmsnorm_dec    65.83 ms   5.2 %     6579 calls      2.58 ms idle before
+  gdn_pre           22.49 ms   1.8 %     2448 calls      0.75 ms idle before
+  gated_norm        10.59 ms   0.8 %     2448 calls      0.31 ms idle before
+  attn_prep          3.35 ms   0.3 %      816 calls      0.16 ms idle before
+  attn_gate          2.96 ms   0.2 %      816 calls      0.10 ms idle before
+  swiglu            14.41 ms   1.1 %     3264 calls      1.18 ms idle before
+  conv_commit        5.78 ms   0.5 %     2448 calls      0.29 ms idle before
+  gdn_step         142.24 ms  11.3 %     4896 calls     19.79 ms idle before
+  attn_decode       40.95 ms   3.2 %      816 calls      0.10 ms idle before
+  attn_merge         2.40 ms   0.2 %      816 calls      0.10 ms idle before
+  kv_move            3.32 ms   0.3 %      512 calls      0.06 ms idle before
+  dec_wide         563.46 ms  44.6 %     6528 calls      0.79 ms idle before
+  dec_wide64        33.13 ms   2.6 %       51 calls      0.01 ms idle before
+  dec_narrow       231.99 ms  18.4 %     6528 calls      0.78 ms idle before
+  tp_ar2_f16       120.84 ms   9.6 %     6528 calls     93.67 ms idle before
+tree: 15 nodes a round, 4.02 accepted of 15.0 drafted
+drafted: 256 tokens in 51 rounds (5.02 a round), 134.5 tok/s, draft 0.0 ms + verify 37.3 ms a round, equal to serial: true
+prompt: 68 tokens in 0.106 s (641 tok/s)
+decode: 256 tokens in 6.124 s (41.8 tok/s)
+tokens: 71093 10504 198 5355 423 1658 9802 53 19365 198 1389 423 1658 9802 53 19365 271 1032 361 66 64157 29 198 1032 361 21670 29 198 1032 361 3112 29 198 1032 361 12439 29 198 1032 361 91247 29 198 1032 361 19086 29 198 1032 361 93631 29 271 3537 198 348 554 6449 357 4368 53269 11 8097 35473 3883 9761 4011 364 81726 35464 2424 27437 13 198 348 198 348 1061 523 5004 264 26068 4011 421 10220 7308 2424 45640 13 198 348 1049 369 5902 364 32907 2528 494 5081 14145 4417 449 5138 29851 13 198 348 198 348 5141 4275 25 198 348 471 19536 8390 25 561 4011 1331 369 10521 506 7832 321 4021 2222 198 348 256 3525 4417 1510 16836 363 7561 864 72346 279 19214 1906 314 6149 5255 13 198 348 471 8487 53269 25 1942 569 5245 513 2530 539 264 1510 1771 476 21670 27653 198 348 471 11248 76068 50921 25 1510 8804 52434 4523 1510 3721 63 413 279 4011 369 2400 26 198 348 256 1510 8115 52434 4523 1510 1771 476 77 62406 409 63 413 279 4011 369 4147 13 198 348 471 6991 44026 25 33027 513 9476 303 45438 1906 13 1510 16836 52434 30941 198 348 256 279 8410 1906 314 6149 5255 13 198 348 198 348 554 65773 345 561 913 314 279 9476 869 318 83113 1510 390 63 466 1510 2416 18 17 516 63 364

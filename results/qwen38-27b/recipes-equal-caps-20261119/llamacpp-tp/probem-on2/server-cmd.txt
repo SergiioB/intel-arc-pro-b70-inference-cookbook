@@ -1,0 +1,1 @@
+$WORK/tpllama/llama-m2/build/bin/llama-server -m $DATA/sata2/gguf/qwen38-27b-Q4_K_M.gguf -ngl 99 -fa on -ctk q8_0 -ctv q8_0 -b 512 -ub 512 -t 8 -lm none -dev SYCL0\,SYCL1 -sm tensor -ts 1\,1 --fit off -c 40960 -np 1 --no-cache-prompt --cache-ram 0 --reasoning off --alias qwen38 --host 127.0.0.1 --port 8046 

@@ -1,0 +1,1 @@
+$WORK/tpllama/llama-m2/build/bin/llama-bench -m $DATA/sata2/gguf/qwen38-27b-Q4_K_M.gguf -ngl 99 -fa on -ctk q8_0 -ctv q8_0 -b 512 -ub 512 -t 8 -lm none -dev SYCL0/SYCL1 -ts 1/1 -sm tensor -p 512 -n 128 -r 3 -o json 

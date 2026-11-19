@@ -1,0 +1,5 @@
+driverVersion 17010844, 1 device(s)
+batch 0 done: out=256, 3496 timestamp ticks
+batch 1 done: out=512, 3368 timestamp ticks
+batch 2 done: out=768, 3264 timestamp ticks
+PASS: 3 batches x 128 steps on 1 device(s)
