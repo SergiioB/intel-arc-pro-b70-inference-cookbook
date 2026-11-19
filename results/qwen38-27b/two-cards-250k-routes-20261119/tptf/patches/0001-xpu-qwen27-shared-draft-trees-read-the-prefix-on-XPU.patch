@@ -1,7 +1,7 @@
 From df3baa3eaec172b3feac8c2a2ed4664a295dbf02 Mon Sep 17 00:00:00 2001
 From: SergiioB <119968745+SergiioB@users.noreply.github.com>
 Date: Thu, 19 Nov 2026 00:14:50 +0100
-Subject: [PATCH 1/3] xpu(qwen27): shared draft trees read the prefix on
+Subject: [PATCH 1/4] xpu(qwen27): shared draft trees read the prefix on
  XPU_ATTN_PREF too
 
 With XPU_ATTN_PREF set, a lone stream's draft tree took attn_pref +

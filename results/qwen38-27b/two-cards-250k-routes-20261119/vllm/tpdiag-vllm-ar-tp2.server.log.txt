@@ -1,0 +1,278 @@
+W1119 06:31:46.640000 1 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1119 06:31:46.640000 1 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1119 06:31:46.640000 1 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(APIServer pid=1) INFO 11-19 06:32:11 [api_utils.py:347] 
+(APIServer pid=1) INFO 11-19 06:32:11 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 11-19 06:32:11 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.31.0
+(APIServer pid=1) INFO 11-19 06:32:11 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /model
+(APIServer pid=1) INFO 11-19 06:32:11 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 11-19 06:32:11 [api_utils.py:347] 
+(APIServer pid=1) INFO 11-19 06:32:11 [api_utils.py:286] non-default args: {'model_tag': '/model', 'host': '127.0.0.1', 'port': 8046, 'model': '/model', 'max_model_len': 2048, 'served_model_name': ['qwen36-ar'], 'tensor_parallel_size': 2, 'gpu_memory_utilization': 0.85, 'enable_prefix_caching': False, 'language_model_only': True, 'max_num_seqs': 1}
+(APIServer pid=1) INFO 11-19 06:32:31 [model.py:699] Resolved architecture: Qwen3_5ForConditionalGeneration
+(APIServer pid=1) INFO 11-19 06:32:31 [model.py:2109] Using max model len 2048
+(APIServer pid=1) INFO 11-19 06:32:33 [model.py:917] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=1) INFO 11-19 06:32:33 [model.py:974] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=1) WARNING 11-19 06:32:33 [indexer_topk.py:35] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(APIServer pid=1) INFO 11-19 06:32:33 [kernel.py:408] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['native'])
+(APIServer pid=1) INFO 11-19 06:32:33 [xpu.py:419] XPU platform: set server shutdown_timeout=5.
+W1119 06:32:38.720000 137 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1119 06:32:38.721000 137 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1119 06:32:38.721000 137 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(EngineCore pid=137) INFO 11-19 06:32:47 [core.py:129] Initializing a V1 LLM engine (v0.31.0) with config: model='/model', speculative_config=None, tokenizer='/model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=2048, download_dir=None, load_format=auto, tensor_parallel_size=2, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=inc, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=xpu, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=qwen36-ar, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 2, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=137) INFO 11-19 06:32:47 [multiproc_executor.py:153] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=<lan> (local), world_size=2, local_world_size=2
+W1119 06:32:48.380000 201 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1119 06:32:48.381000 201 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1119 06:32:48.381000 201 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1119 06:32:48.382000 200 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1119 06:32:48.382000 200 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1119 06:32:48.383000 200 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(VllmWorker-1 pid=201) WARNING 11-19 06:32:57 [indexer_topk.py:35] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(VllmWorker-0 pid=200) WARNING 11-19 06:32:57 [indexer_topk.py:35] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(Worker pid=200) INFO 11-19 06:32:58 [parallel_state.py:1825] world_size=2 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_c5b7d3fc33044adf8857956e59517baa backend=xccl
+(Worker pid=201) INFO 11-19 06:32:58 [parallel_state.py:1825] world_size=2 rank=1 local_rank=1 distributed_init_method=file:///tmp/vllm_dist_c5b7d3fc33044adf8857956e59517baa backend=xccl
+(Worker pid=200) INFO 11-19 06:32:59 [parallel_state.py:2269] rank 0 in world size 2 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+2026:11:19-06:32:59:  200 |CCL_WARN| value of CCL_ATL_TRANSPORT changed to be ofi (default:mpi)
+2026:11:19-06:32:59:  200 |CCL_WARN| could not get local_idx/count from environment variables, trying to get them from ATL
+2026:11:19-06:32:59:  201 |CCL_WARN| value of CCL_ATL_TRANSPORT changed to be ofi (default:mpi)
+2026:11:19-06:32:59:  201 |CCL_WARN| could not get local_idx/count from environment variables, trying to get them from ATL
+2026:11:19-06:33:00:  315:[1] |CCL_WARN| no membind support for NUMA node 0, skip thread membind
+2026:11:19-06:33:00:  314:[0] |CCL_WARN| no membind support for NUMA node 0, skip thread membind
+2026:11:19-06:33:00:  200:[0] |CCL_WARN| topology recognition shows PCIe connection between devices. If this is not correct, you can disable topology recognition, with CCL_TOPO_FABRIC_VERTEX_CONNECTION_CHECK=0. This will assume XeLinks across devices
+2026:11:19-06:33:00:  201:[1] |CCL_WARN| topology recognition shows PCIe connection between devices. If this is not correct, you can disable topology recognition, with CCL_TOPO_FABRIC_VERTEX_CONNECTION_CHECK=0. This will assume XeLinks across devices
+2026:11:19-06:33:00:  200:[0] |CCL_WARN| pidfd is not supported, fallbacks to drmfd exchange mode
+2026:11:19-06:33:00:  201:[1] |CCL_WARN| pidfd is not supported, fallbacks to drmfd exchange mode
+2026:11:19-06:33:00:  200:[0] |CCL_ERROR| ze_fd_manager.cpp:144 init_device_fds: condition dir failed
+opendir failed: could not open device directory
+2026:11:19-06:33:00:  201:[1] |CCL_ERROR| ze_fd_manager.cpp:144 init_device_fds: condition dir failed
+opendir failed: could not open device directory
+2026-11-19 06:33:00:(200) |ERROR| [__safe_call_impl:51] [init_comm] caught std::exception: oneCCL: ze_fd_manager.cpp:144 init_device_fds: EXCEPTION: opendir failed: could not open device directory
+2026-11-19 06:33:00:(201) |ERROR| [__safe_call_impl:51] [init_comm] caught std::exception: oneCCL: ze_fd_manager.cpp:144 init_device_fds: EXCEPTION: opendir failed: could not open device directory
+  [oneCCL ERROR Stacktrace]:
+    /opt/venv/lib/python3.12/site-packages/torch/lib/../../../../libccl.so.2(onecclCommInitRank+0x73) [0x780c72605f23]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(_ZN4c10d16ProcessGroupXCCL12initXCCLCommERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERN3c106DeviceENS_6OpTypeEib+0x2f6) [0x780c7acf3986]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(+0x76dc39f) [0x780c7acf739f]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(_ZN4c10d16ProcessGroupXCCL14allreduce_implERN2at6TensorEPKcRKNS_16AllreduceOptionsE+0xf2) [0x780c7acf76c2]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(_ZN4c10d16ProcessGroupXCCL9allreduceERSt6vectorIN2at6TensorESaIS3_EERKNS_16AllreduceOptionsE+0x8a5) [0x780c7acffe05]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(+0x770c74c) [0x780c7ad2774c]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(+0x7712a80) [0x780c7ad2da80]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so(+0x5b423c4) [0x780cab35c3c4]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so(+0x667f181) [0x780cabe99181]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so(+0xf6ca5b) [0x780cbe4c4a5b]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so(+0x1047e12) [0x780cbe59fe12]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so(+0x3f61a2) [0x780cbd94e1a2]
+    VLLM::Worker() [0x581fed]
+    VLLM::Worker(PyObject_Vectorcall+0x35) [0x5499b5]
+    VLLM::Worker(_PyEval_EvalFrameDefault+0xadf) [0x5d710f]
+    VLLM::Worker(_PyObject_Call_Prepend+0x18a) [0x54a8ca]
+    VLLM::Worker() [0x59e0ff]
+    VLLM::Worker() [0x599bd3]
+    VLLM::Worker(PyObject_Call+0x6c) [0x54b12c]
+    VLLM::Worker(_PyEval_EvalFrameDefault+0x4cbe) [0x5db2ee]
+    VLLM::Worker(PyEval_EvalCode+0x15b) [0x5d55eb]
+    VLLM::Worker(PyRun_StringFlags+0xd3) [0x608733]
+    VLLM::Worker(PyRun_SimpleStringFlags+0x3e) [0x6b40de]
+    VLLM::Worker(Py_RunMain+0x481) [0x6bcda1]
+    VLLM::Worker(Py_BytesMain+0x2d) [0x6bc7bd]
+    /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca) [0x780cbfa6f1ca]
+    /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x780cbfa6f28b]
+    VLLM::Worker(_start+0x25) [0x657a05]
+  [oneCCL ERROR Stacktrace End]
+Plugin could not initialize communicator!
+  [oneCCL ERROR Stacktrace]:
+    /opt/venv/lib/python3.12/site-packages/torch/lib/../../../../libccl.so.2(onecclCommInitRank+0x73) [0x7bfc8f605f23]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(_ZN4c10d16ProcessGroupXCCL12initXCCLCommERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERN3c106DeviceENS_6OpTypeEib+0x2f6) [0x7bfc97cf3986]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(+0x76dc39f) [0x7bfc97cf739f]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(_ZN4c10d16ProcessGroupXCCL14allreduce_implERN2at6TensorEPKcRKNS_16AllreduceOptionsE+0xf2) [0x7bfc97cf76c2]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(_ZN4c10d16ProcessGroupXCCL9allreduceERSt6vectorIN2at6TensorESaIS3_EERKNS_16AllreduceOptionsE+0x8a5) [0x7bfc97cffe05]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(+0x770c74c) [0x7bfc97d2774c]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_xpu.so(+0x7712a80) [0x7bfc97d2da80]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so(+0x5b423c4) [0x7bfcc835c3c4]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_cpu.so(+0x667f181) [0x7bfcc8e99181]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so(+0xf6ca5b) [0x7bfcdb4c4a5b]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so(+0x1047e12) [0x7bfcdb59fe12]
+    /opt/venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so(+0x3f61a2) [0x7bfcda94e1a2]
+    VLLM::Worker() [0x581fed]
+    VLLM::Worker(PyObject_Vectorcall+0x35) [0x5499b5]
+    VLLM::Worker(_PyEval_EvalFrameDefault+0xadf) [0x5d710f]
+    VLLM::Worker(_PyObject_Call_Prepend+0x18a) [0x54a8ca]
+    VLLM::Worker() [0x59e0ff]
+    VLLM::Worker() [0x599bd3]
+    VLLM::Worker(PyObject_Call+0x6c) [0x54b12c]
+    VLLM::Worker(_PyEval_EvalFrameDefault+0x4cbe) [0x5db2ee]
+    VLLM::Worker(PyEval_EvalCode+0x15b) [0x5d55eb]
+    VLLM::Worker(PyRun_StringFlags+0xd3) [0x608733]
+    VLLM::Worker(PyRun_SimpleStringFlags+0x3e) [0x6b40de]
+    VLLM::Worker(Py_RunMain+0x481) [0x6bcda1]
+    VLLM::Worker(Py_BytesMain+0x2d) [0x6bc7bd]
+    /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca) [0x7bfcdca2d1ca]
+    /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x7bfcdca2d28b]
+    VLLM::Worker(_start+0x25) [0x657a05]
+  [oneCCL ERROR Stacktrace End]
+Plugin could not initialize communicator!
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948] WorkerProc failed to start.
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948] Traceback (most recent call last):
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 915, in worker_main
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     worker = WorkerProc(*args, **kwargs)
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     return func(*args, **kwargs)
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 674, in __init__
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     self.worker.init_device()
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/worker_base.py", line 343, in init_device
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     self.worker.init_device()  # type: ignore
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/xpu_worker.py", line 193, in init_device
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     torch.distributed.all_reduce(torch.zeros(1).xpu())
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/torch/distributed/c10d_logger.py", line 83, in wrapper
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     return func(*args, **kwargs)
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py", line 3906, in all_reduce
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     work = group.allreduce([tensor], opts)
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=200) ERROR 11-19 06:33:00 [multiproc_executor.py:948] RuntimeError: xccl: onecclCommInitRank failed with code 11
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948] WorkerProc failed to start.
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948] Traceback (most recent call last):
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 915, in worker_main
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     worker = WorkerProc(*args, **kwargs)
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     return func(*args, **kwargs)
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 674, in __init__
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     self.worker.init_device()
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/worker_base.py", line 343, in init_device
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     self.worker.init_device()  # type: ignore
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/xpu_worker.py", line 193, in init_device
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     torch.distributed.all_reduce(torch.zeros(1).xpu())
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/torch/distributed/c10d_logger.py", line 83, in wrapper
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     return func(*args, **kwargs)
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]   File "/opt/venv/lib/python3.12/site-packages/torch/distributed/distributed_c10d.py", line 3906, in all_reduce
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]     work = group.allreduce([tensor], opts)
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker pid=201) ERROR 11-19 06:33:00 [multiproc_executor.py:948] RuntimeError: xccl: onecclCommInitRank failed with code 11
+(EngineCore pid=137) INFO 11-19 06:33:00 [multiproc_executor.py:474] [shutdown] Executor: waiting for worker exit count=2
+(EngineCore pid=137) INFO 11-19 06:33:02 [multiproc_executor.py:481] [shutdown] Executor: all workers exited gracefully
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433] EngineCore failed to start.
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433] Traceback (most recent call last):
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core.py", line 1395, in run_engine_core
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     return func(*args, **kwargs)
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core.py", line 1151, in __init__
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     super().__init__(
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core.py", line 140, in __init__
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 116, in __init__
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     super().__init__(vllm_config)
+Process EngineCore:
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     return func(*args, **kwargs)
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/abstract.py", line 113, in __init__
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     self._init_executor()
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 214, in _init_executor
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     self.workers = WorkerProc.wait_for_ready(unready_workers)
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]   File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 810, in wait_for_ready
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433]     raise e from None
+(EngineCore pid=137) ERROR 11-19 06:33:02 [core.py:1433] Exception: WorkerProc initialization failed due to an exception in a background process. See stack trace for root cause.
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core.py", line 1437, in run_engine_core
+    raise e
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core.py", line 1395, in run_engine_core
+    engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core.py", line 1151, in __init__
+    super().__init__(
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core.py", line 140, in __init__
+    self.model_executor = executor_class(vllm_config)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 116, in __init__
+    super().__init__(vllm_config)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/abstract.py", line 113, in __init__
+    self._init_executor()
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 214, in _init_executor
+    self.workers = WorkerProc.wait_for_ready(unready_workers)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/executor/multiproc_executor.py", line 810, in wait_for_ready
+    raise e from None
+Exception: WorkerProc initialization failed due to an exception in a background process. See stack trace for root cause.
+(APIServer pid=1) INFO 11-19 06:33:03 [utils.py:638] [shutdown] Process manager: send sigterm to process EngineCore
+Traceback (most recent call last):
+  File "/opt/venv/bin/vllm", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/cli/main.py", line 118, in main
+    args.dispatch_function(args)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+    uvloop.run(run_server(args))
+  File "/opt/venv/lib/python3.12/site-packages/uvloop/__init__.py", line 96, in run
+    return __asyncio.run(
+           ^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/opt/venv/lib/python3.12/site-packages/uvloop/__init__.py", line 48, in wrapper
+    return await main
+           ^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 172, in run_server
+    await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 185, in run_server_worker
+    async with build_async_engine_client(
+  File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+    async with build_async_engine_client_from_engine_args(
+  File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 92, in build_async_engine_client_from_engine_args
+    async_llm = AsyncLLM.from_vllm_config(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py", line 248, in from_vllm_config
+    return cls(
+           ^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py", line 180, in __init__
+    self.engine_core = EngineCoreClient.make_async_mp_client(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core_client.py", line 167, in make_async_mp_client
+    return AsyncMPClient(
+           ^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core_client.py", line 1100, in __init__
+    super().__init__(
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core_client.py", line 674, in __init__
+    with launch_core_engines(
+  File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1268, in launch_core_engines
+    wait_for_engine_startup(
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1348, in wait_for_engine_startup
+    raise RuntimeError(
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

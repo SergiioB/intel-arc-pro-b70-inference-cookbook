@@ -200,6 +200,64 @@ def sweep():
               f"| {st.mean(r['ttft_s'] for r in d + s):.2f} | {st.mean(r['prompt_tps'] for r in d + s):.0f} | {eq} of {len(d)} | {st.mean(tpr):.2f} |")
 
 
+def deep():
+    h("Several streams, one card, three passes a level (routecmp/deep; median and range over passes)")
+    print("| arm | streams | passes | aggregate median (min-max) | per-stream min / median / max | TTFT p50 s | TTFT max s | J/token | texts equal to solo |")
+    print("|---|---|---|---|---|---|---|---|---|")
+    groups = collections.defaultdict(list)
+    for f in sorted(glob.glob("routecmp/deep/*/conc.jsonl")):
+        for r in jl(f):
+            groups[(r["arm"], r["concurrency"])].append(r)
+    total = collections.defaultdict(lambda: [0, 0])
+    for (arm, c), rs in sorted(groups.items()):
+        agg = [r["aggregate_tok_s"] for r in rs]
+        ps = [r["per_stream_decode_min_med_max"] for r in rs]
+        eq = [tuple(map(int, r["solo_match"].split("/"))) for r in rs]
+        total[arm][0] += sum(a for a, _ in eq)
+        total[arm][1] += sum(b for _, b in eq)
+        print(f"| {arm} | {c} | {len(rs)} | {st.median(agg):.1f} ({min(agg):.1f}-{max(agg):.1f}) | {min(x[0] for x in ps):.1f} / "
+              f"{st.median(x[1] for x in ps):.1f} / {max(x[2] for x in ps):.1f} | {st.median(r['ttft_p50_s'] for r in rs):.2f} | "
+              f"{max(r['ttft_max_s'] for r in rs):.2f} | {st.median(r['j_per_tok'] for r in rs):.2f} | {sum(a for a, _ in eq)}/{sum(b for _, b in eq)} |")
+    for arm, (a, b) in sorted(total.items()):
+        print(f"{arm}: texts equal to solo {a} of {b}")
+
+
+def tptf_round2():
+    h("Fork follow-ups: eviction churn and the scratch run (tptf/raw)")
+    for run in ("churn-head-tp2-int8", "churn-old-tp2-int8", "churn-head-tp1-bf16"):
+        rows = [r for r in jl(f"tptf/raw/{run}/check.jsonl") if r.get("conv")]
+        last = rows[-1]
+        print(f"{run}: {sum(r['pass'] for r in rows)} of {len(rows)} requests equal cache-off (text and hash), "
+              f"evicted {last['evicted']}, failed saves {last['failed']}, "
+              f"resumed first token {[r['ttft_cached_s'] for r in rows if r.get('cached')]}")
+    log = open("tptf/raw/a-scratch-160k-2/cached/server.log.txt").read()
+    print("a-scratch-160k-2:", re.findall(r"resumed at \d+", log)[-1], "|",
+          re.findall(r"ended \S+ reason=error \(\w+\)[^\n]*", log))
+
+
+def llamacpp():
+    h("llama.cpp peer-copy allreduce (llamacpp-tp-patch/evidence/check)")
+    t = open("llamacpp-tp-patch/evidence/check/sums.log.txt").read()
+    print("\n".join(re.findall(r"verified n=\d+ [^\n]*|checked \d+ F32 values", t)))
+    t = open("llamacpp-tp-patch/evidence/check/time-p2p0.log.txt").read()
+    for line in re.findall(r"(?:timing|rss) [^\n]*", t):
+        m = re.search(r"rss n=(\d+) calls=(\d+) before_kib=(\d+) after_kib=(\d+)", line)
+        print(line + (f"  -> {(int(m[4]) - int(m[3])) / int(m[2]):.2f} KiB a call" if m else ""))
+    t = open("llamacpp-tp-patch/evidence/check/time-p2p1.log.txt").read()
+    print("peer path timing lines:", len(re.findall(r"^timing ", t, re.M)))
+
+
+def health():
+    h("GPU fault and health canary (health/)")
+    for line in open("health/kernel-0724.txt"):
+        if "CAT error" in line or "Engine reset" in line:
+            print(line.split("kernel: ", 1)[-1].strip())
+    for arm in ("tp1", "tp2"):
+        c = jl(f"health/canary-0740/{arm}/cells.jsonl")[0]
+        t = open(f"health/canary-0740/{arm}/canary.txt").read()
+        print(f"{arm}: {c['decode_tok_s']} tok/s, sha {c['sha256'][:12]}, canary PASS {t.count('[PASS]')} FAIL {t.count('[FAIL]')}")
+
+
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     route_depth()
@@ -211,3 +269,7 @@ if __name__ == "__main__":
     tptf()
     tpdiag()
     sweep()
+    deep()
+    tptf_round2()
+    llamacpp()
+    health()

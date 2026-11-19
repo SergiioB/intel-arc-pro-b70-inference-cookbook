@@ -38,5 +38,5 @@ cool() {
   # always ran into the 240 s bound (4 min lost per arm). Card 0 <= 55 C, card 1 <= 68 C, bound 120 s.
   run_bounded 120 bash -c '
     while (( $(cat "$1/temp2_input") > 55000 || $(cat "$2/temp2_input") > 68000 )); do sleep 2; done
-  ' _ "${hw[@]}"
+  ' _ "${hw[@]}" || echo "cool-down bound reached: $(cat "${hw[0]}/temp2_input") / $(cat "${hw[1]}/temp2_input") mC"
 }

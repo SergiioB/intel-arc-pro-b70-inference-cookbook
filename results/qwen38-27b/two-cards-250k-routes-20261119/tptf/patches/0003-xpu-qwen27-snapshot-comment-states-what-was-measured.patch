@@ -1,7 +1,7 @@
 From 15adb58cf258bd279b4a73d572c7ae52bc846e7a Mon Sep 17 00:00:00 2001
 From: SergiioB <119968745+SergiioB@users.noreply.github.com>
 Date: Thu, 19 Nov 2026 05:39:00 +0100
-Subject: [PATCH 3/3] xpu(qwen27): snapshot comment states what was measured;
+Subject: [PATCH 3/4] xpu(qwen27): snapshot comment states what was measured;
  one drain per rank on drop
 
 Review of 78f42f240. The Snap comment claimed the B70 driver aliased pages past

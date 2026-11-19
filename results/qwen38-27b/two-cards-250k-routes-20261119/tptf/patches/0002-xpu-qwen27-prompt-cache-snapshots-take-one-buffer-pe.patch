@@ -1,7 +1,7 @@
 From 78f42f240e648b0708355a64daefb90050fab900 Mon Sep 17 00:00:00 2001
 From: SergiioB <119968745+SergiioB@users.noreply.github.com>
 Date: Thu, 19 Nov 2026 04:11:02 +0100
-Subject: [PATCH 2/3] xpu(qwen27): prompt-cache snapshots take one buffer per
+Subject: [PATCH 2/4] xpu(qwen27): prompt-cache snapshots take one buffer per
  layer
 
 saveSlot put a slot's whole state in one device buffer per TP rank. On

@@ -1,0 +1,1 @@
+Nov 19 07:34:45 b70-host kernel: traps: VLLM::EngineCor[1090687] trap invalid opcode ip:721efc05e241 sp:7fff56d48c70 error:0 in auto_round_kernel_xpu.cpython-312-x86_64-linux-gnu.so[73241,721efc041000+169000]

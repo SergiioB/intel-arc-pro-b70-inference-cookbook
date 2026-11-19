@@ -33,7 +33,7 @@ the 16K+ and multi-turn picture: 90 tok/s at 32K and 51 at 131K on one card, fol
 
 **Same session, greedy (2026-11-19):** TensorFold is faster for one user to 32K (1.35–1.54× on code) and level at
 131K; exl3xpu reaches the first token 1.5–1.6× sooner from 32K, leads on one card at 250K (36.7 against 20.7 tok/s)
-and at 8–16 streams on one card; only TensorFold repeats its text.
+and at 8–32 streams on one card; only TensorFold repeats its text.
 [ROUTE-GREEDY-SAME-SESSION-20261119.md](ROUTE-GREEDY-SAME-SESSION-20261119.md). The route decision of 2026-11-10
 was made at the model card's sampling, and that rerun is pending. EXL3 stays the primary route until it reports.
 

@@ -23,7 +23,8 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards with TensorFol
 - One or two Intel Arc Pro B70 32 GB. Card 0 at 180 W with a 2,400 MHz clock cap, card 1 at 230 W.
 - TensorFold [`tp2-attn-prefix`](https://github.com/SergiioB/TensorFold/tree/tp2-attn-prefix) (`2286abc0c`) for the
   measurements; [`xpu-tp2-fixes-20261119`](https://github.com/SergiioB/TensorFold/tree/xpu-tp2-fixes-20261119)
-  (`15adb58cf`) for warm sessions past about 131K with int8 K/V. `XPU_ATTN_PREF=256` everywhere.
+  (`ac346900b`, approved after three review rounds) for warm sessions past about 131K with int8 K/V.
+  `XPU_ATTN_PREF=256` everywhere.
 - exl3xpu `ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54…d3a`, EXL3 4.00 bpw, fp8 K/V, `max_model_len` 262144.
 - The 249,784-token prompt is key `code-256k` of the lab file `prompts-deep.json` (sha256 `a3220647…`, 1.4 MB of
   C/C++ inference-engine source with a closing instruction; not published here, same file as the 2026-11-13 int8
@@ -38,7 +39,7 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards with TensorFol
 | TensorFold, two cards | bf16 | 0 | yes | no cache |
 | TensorFold, two cards | bf16 | 16 | **refused** | – (smaller bf16 budgets not tried) |
 | TensorFold, two cards, `2286abc0c` | int8 | 5 | yes | **fails**: three cache hits, then `InvalidQwenToken` after one token, empty reply (bug A) |
-| TensorFold, two cards, fix branch `78f42f240` | int8 | 5 | yes | **works**: 4 of 4 turns equal fresh, 1.07–1.63 s |
+| TensorFold, two cards, fix branch (measured at `78f42f240`) | int8 | 5 | yes | **works**: 4 of 4 turns equal fresh, 1.07–1.63 s |
 | exl3xpu, one card | fp8 | prefix cache off in these cells | yes, 9.58 GiB K/V reserved | not measured |
 
 The two-card int8 server logged one kept state of 4,077 MiB at 249,784 tokens. On one card a 262,144-token int8
@@ -114,7 +115,8 @@ XPU_ATTN_PREF=256 XPU_KV_INT8=1 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/b
 
 - Warm sessions at 250K on one card (they do not fit with int8 and a one-state cache).
 - bf16 warm sessions on two cards with a cache budget between 9.5 and 16 GiB past 131K.
-- Cache eviction with more than one session; `--parallel` above 1 with the cache.
+- Cache eviction at depth: the eviction test ran three ~32K conversations (18 of 18 requests equal to cache-off
+  text, 5 evictions an arm, 0 failed saves), not 131K or 250K states. `--parallel` above 1 with the cache.
 - exl3xpu warm sessions and retrieval at 250K; exl3xpu with prefix cache on at 250K.
 - More than one repeat of any 250K cell; a retrieval task harder than five planted codes.
 - Sampled decoding at depth; thinking on with a budget large enough to answer.

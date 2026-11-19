@@ -1,0 +1,306 @@
+From ac9ddd5c0f9defc2ceb120354e016b3cf7a5da41 Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 07:31:02 +0100
+Subject: [PATCH 1/2] xpu(qwen27): XPU_PROFILE works on --tp 2
+
+Each rank gets its own timestamped event pool and its own kernel-name table, so
+rank 1's launches no longer take events from rank 0's single-device pool (the
+cause of the hang on two cards). The one-shot TP reduce kernels are profiled
+through a TpComm hook. A full pool leaves a launch unprofiled and counts it
+instead of draining one rank mid-forward, which could wait on a peer event that
+has not been appended yet. The report adds, per rank and kernel, the idle time
+on the in-order list right before the kernel (a wait on the peer shows there),
+and the drafter's own kernels as (other). Without XPU_PROFILE nothing changes.
+---
+ zig/src/xpu/dev.zig    | 126 ++++++++++++++++++++++++++++++-----------
+ zig/src/xpu/qwen27.zig |  27 +++++++--
+ zig/src/xpu/tp.zig     |  14 +++--
+ 3 files changed, 127 insertions(+), 40 deletions(-)
+
+diff --git a/zig/src/xpu/dev.zig b/zig/src/xpu/dev.zig
+index 2dff787fc..ee1ff752a 100644
+--- a/zig/src/xpu/dev.zig
++++ b/zig/src/xpu/dev.zig
+@@ -73,6 +73,7 @@ fn exitLost(rc: u32) void {
+ pub const Dev = struct {
+     g: ze.Gpu,
+     list: ze.H,
++    rank: u8 = 0, // tensor-parallel rank of this card: XPU_PROFILE keeps one event pool per rank
+     staging: []u8 = &.{}, // USM host memory: the driver cannot copy from file-backed mmap pages directly
+     allocated: usize = 0, // device bytes allocated (frees not counted: buffers live as long as the runner)
+     k: struct {
+@@ -171,31 +172,13 @@ pub const Dev = struct {
+ 
+     pub fn launch(d: *Dev, k: ze.H, groups: ze.GroupCount, args: anytype) !void {
+         inline for (args, 0..) |a, i| try d.g.arg(k, i, a);
+-        var ev: ze.H = null;
+-        if (q.prof.on) {
+-            if (q.prof.used == q.prof.events.len) try d.sync();
+-            ev = q.prof.events[q.prof.used];
+-            q.prof.kernel[q.prof.used] = k;
+-            q.prof.used += 1;
+-        }
++        const ev: ze.H = if (q.prof.on) q.prof.take(d.rank, k) else null;
+         try ze.check(d.g.api.zeCommandListAppendLaunchKernel(d.list, k, &groups, ev, 0, null));
+     }
+ 
+     pub fn sync(d: *Dev) !void {
+         d.settle();
+-        if (q.prof.on) {
+-            for (q.prof.events[0..q.prof.used], q.prof.kernel[0..q.prof.used]) |e, k| {
+-                const t = try d.g.seconds(e);
+-                try ze.check(d.g.api.zeEventHostReset(e));
+-                for (&q.prof.names, &q.prof.total) |n, *tot| {
+-                    if (n.k == k) {
+-                        tot.* += t;
+-                        break;
+-                    }
+-                }
+-            }
+-            q.prof.used = 0;
+-        }
++        if (q.prof.on) try q.prof.drain(d);
+     }
+ 
+     pub fn fill(d: *Dev, p: *anyopaque, pattern: anytype, bytes: usize) !void {
+@@ -215,23 +198,102 @@ pub fn off(p: *anyopaque, bytes: usize) *anyopaque {
+     return @ptrFromInt(@intFromPtr(p) + bytes);
+ }
+ 
+-/// XPU_PROFILE=1: GPU time per kernel, summed over the run.
++/// Timestamped events a rank can hold between two drains (one forward needs about 1,500 on a rank).
++pub const PROF_EVENTS = 8192;
++const NAMES = 80;
++
++/// One rank's XPU_PROFILE state: its own event pool (events cannot cross cards), its kernel handles, and per kernel
++/// the GPU time and the idle time on this rank's in-order list right before it (a wait on the peer shows up there).
++pub const ProfRank = struct {
++    events: [PROF_EVENTS]ze.H = @splat(null),
++    kernel: [PROF_EVENTS]ze.H = @splat(null),
++    used: usize = 0,
++    dropped: usize = 0, // launches left unprofiled because the pool was full: a mid-forward drain could deadlock on a peer
++    names: [NAMES]struct { k: ze.H = null, name: []const u8 = "" } = @splat(.{}),
++    total: [NAMES + 1]f64 = @splat(0), // slot NAMES: kernels with no name here (the drafter's own kernels)
++    gap: [NAMES + 1]f64 = @splat(0),
++    calls: [NAMES + 1]usize = @splat(0),
++    span: f64 = 0, // first kernel start to last kernel end of each drain, summed
++
++    pub fn name(p: *ProfRank, k: ze.H, label: []const u8) void {
++        for (&p.names) |*n| if (n.k == null) {
++            n.* = .{ .k = k, .name = label };
++            return;
++        };
++    }
++
++    fn slot(p: *const ProfRank, k: ze.H) usize {
++        for (p.names, 0..) |n, i| if (n.k == k) return i;
++        return NAMES;
++    }
++};
++
++/// XPU_PROFILE=1: GPU time per kernel and rank, summed over the run.
+ pub const Prof = struct {
+     on: bool = false,
+-    events: [4096]ze.H = @splat(null),
+-    kernel: [4096]ze.H = @splat(null),
+-    used: usize = 0,
+-    names: [64]struct { k: ze.H = null, name: []const u8 = "" } = @splat(.{}),
+-    total: [64]f64 = @splat(0),
++    ranks: usize = 1,
++    rank: [4]ProfRank = @splat(.{}),
++
++    /// The event to signal for launch `k` on `rank`, or null when the pool is full (never drains mid-forward).
++    pub fn take(p: *Prof, rank: u8, k: ze.H) ze.H {
++        const pr = &p.rank[rank];
++        if (pr.used == PROF_EVENTS) {
++            pr.dropped += 1;
++            return null;
++        }
++        const e = pr.events[pr.used];
++        pr.kernel[pr.used] = k;
++        pr.used += 1;
++        return e;
++    }
++
++    /// Reads and resets the events of `d`'s rank; `d`'s list must be idle (Dev.sync settles it first).
++    pub fn drain(p: *Prof, d: *Dev) !void {
++        const pr = &p.rank[d.rank];
++        const hz: f64 = @floatFromInt(d.g.props.timerResolution);
++        var first: u64 = 0;
++        var prev: ?u64 = null;
++        for (pr.events[0..pr.used], pr.kernel[0..pr.used]) |e, k| {
++            var t: ze.KernelTimestampResult = .{};
++            try ze.check(d.g.api.zeEventQueryKernelTimestamp(e, &t));
++            try ze.check(d.g.api.zeEventHostReset(e));
++            const i = pr.slot(k);
++            pr.total[i] += @as(f64, @floatFromInt(t.global_end -% t.global_start)) / hz;
++            pr.calls[i] += 1;
++            if (prev) |end| {
++                if (t.global_start > end) pr.gap[i] += @as(f64, @floatFromInt(t.global_start - end)) / hz;
++            } else first = t.global_start;
++            prev = t.global_end;
++        }
++        if (prev) |end| pr.span += @as(f64, @floatFromInt(end -% first)) / hz;
++        pr.used = 0;
++    }
+ };
+ 
+ pub fn profReport(label: []const u8) void {
+     if (!q.prof.on) return;
+-    var sum: f64 = 0;
+-    for (q.prof.total) |t| sum += t;
+-    std.debug.print("GPU time, {s}: {d:.1} ms\n", .{ label, sum * 1e3 });
+-    for (q.prof.names, &q.prof.total) |n, *t| {
+-        if (t.* > 0) std.debug.print("  {s:<14} {d:8.2} ms {d:5.1} %\n", .{ n.name, t.* * 1e3, t.* / sum * 100 });
+-        t.* = 0;
++    for (q.prof.rank[0..q.prof.ranks], 0..) |*pr, rk| {
++        var sum: f64 = 0;
++        var idle: f64 = 0;
++        for (pr.total, pr.gap) |t, g| {
++            sum += t;
++            idle += g;
++        }
++        if (q.prof.ranks == 1) {
++            std.debug.print("GPU time, {s}: {d:.1} ms\n", .{ label, sum * 1e3 });
++        } else {
++            std.debug.print("GPU time, {s}, rank {d}: {d:.1} ms busy, {d:.1} ms idle between kernels, {d:.1} ms span, {d} launches unprofiled\n", .{ label, rk, sum * 1e3, idle * 1e3, pr.span * 1e3, pr.dropped });
++        }
++        for (0..NAMES + 1) |i| {
++            if (pr.calls[i] > 0) {
++                const nm = if (i == NAMES) "(other)" else pr.names[i].name;
++                std.debug.print("  {s:<14} {d:8.2} ms {d:5.1} %  {d:7} calls  {d:8.2} ms idle before\n", .{ nm, pr.total[i] * 1e3, pr.total[i] / sum * 100, pr.calls[i], pr.gap[i] * 1e3 });
++            }
++            pr.total[i] = 0;
++            pr.gap[i] = 0;
++            pr.calls[i] = 0;
++        }
++        pr.span = 0;
++        pr.dropped = 0;
+     }
+ }
+diff --git a/zig/src/xpu/qwen27.zig b/zig/src/xpu/qwen27.zig
+index 3f677b56c..5ee95d324 100644
+--- a/zig/src/xpu/qwen27.zig
++++ b/zig/src/xpu/qwen27.zig
+@@ -160,6 +160,11 @@ pub var a8_levels: i32 = 127;
+ pub var a8_sites4: u32 = 15;
+ pub var prof: Prof = .{};
+ 
++/// TpComm's hook: the reduce kernels on `rank` signal an event of that rank's profile pool.
++fn profTake(rank: usize, k: ze.H) ze.H {
++    return prof.take(@intCast(rank), k);
++}
++
+ const Options = struct {
+     dump_dir: ?[]const u8,
+     dump_h: ?c_int,
+@@ -348,7 +353,7 @@ pub const Runner = struct {
+         for (0..r.tp) |rk| {
+             try ze.check(r.d.g.api.zeEventHostReset(r.logits_ev[rk]));
+         }
+-        if (prof.on) try r.d.sync();
++        if (prof.on) for (0..r.tp) |rk| try r.devAt(rk).sync();
+     }
+ 
+     pub fn init(dir: []const u8, context: u32) !*Runner {
+@@ -444,7 +449,7 @@ pub const Runner = struct {
+             .ckpt = ckpt,
+         };
+         for (1..tp_deg) |rk| {
+-            r.peers_d[rk - 1] = .{ .g = open_gpus[rk], .list = undefined, .k = undefined };
++            r.peers_d[rk - 1] = .{ .g = open_gpus[rk], .list = undefined, .k = undefined, .rank = @intCast(rk) };
+         }
+ 
+         // Partition VOCAB across TP ranks in multiples of 256 (970 tiles total: 970, 485+485, or 243+243+242+242)
+@@ -463,8 +468,12 @@ pub const Runner = struct {
+ 
+         if (std.c.getenv("XPU_PROFILE") != null) {
+             prof.on = true;
+-            prof.events = try r.d.g.events(4096);
+-            inline for (@typeInfo(@TypeOf(r.d.k)).@"struct".field_names, 0..) |name, i| prof.names[i] = .{ .k = @field(r.d.k, name), .name = name };
++            prof.ranks = tp_deg;
++            for (0..tp_deg) |rk| {
++                const d = r.devAt(rk);
++                prof.rank[rk].events = try d.g.events(dev.PROF_EVENTS);
++                inline for (@typeInfo(@TypeOf(d.k)).@"struct".field_names) |name| prof.rank[rk].name(@field(d.k, name), name);
++            }
+         }
+         const prof_on = prof.on;
+         prof.on = false;
+@@ -483,6 +492,16 @@ pub const Runner = struct {
+             var gpus_slice: [4]ze.Gpu = undefined;
+             for (0..tp_deg) |rk| gpus_slice[rk] = r.devAt(rk).g;
+             r.comm = try tp_mod.TpComm.init(gpus_slice[0..tp_deg], &kb.tp, @as(usize, maxRows()) * D * 2);
++            if (prof.on) {
++                for (0..tp_deg) |rk| {
++                    const ck = r.comm.k[rk];
++                    prof.rank[rk].name(ck.ar2_f16, "tp_ar2_f16");
++                    prof.rank[rk].name(ck.ar4_f16, "tp_ar4_f16");
++                    prof.rank[rk].name(ck.ar2_f32, "tp_ar2_f32");
++                    prof.rank[rk].name(ck.ar4_f32, "tp_ar4_f32");
++                }
++                r.comm.prof_take = profTake;
++            }
+             // Copy newly appended pools/events back onto rank 0's Gpu ownership list
+             r.d.g = gpus_slice[0];
+             for (1..tp_deg) |rk| r.peers_d[rk - 1].g = gpus_slice[rk];
+diff --git a/zig/src/xpu/tp.zig b/zig/src/xpu/tp.zig
+index d339333e9..f7e03a95f 100644
+--- a/zig/src/xpu/tp.zig
++++ b/zig/src/xpu/tp.zig
+@@ -29,6 +29,8 @@ pub const TpComm = struct {
+     // [step * 2 * MAX_TP + kind * MAX_TP + rank], kind 0 = send ready, kind 1 = rs ready
+     events: [MAX_PIPE_STEPS * 2 * MAX_TP]ze.H = @splat(null),
+     step: usize = 0,
++    /// XPU_PROFILE hook: the event a one-shot reduce kernel on a rank signals (null: no profiling).
++    prof_take: ?*const fn (rank: usize, k: ze.H) ze.H = null,
+ 
+     pub fn init(gpus: []ze.Gpu, tp_bin: []const u8, max_bytes: usize) !TpComm {
+         if (gpus.len != 1 and gpus.len != 2 and gpus.len != 4) return error.InvalidTpDegree;
+@@ -82,6 +84,10 @@ pub const TpComm = struct {
+         return c.send_buf[r][c.step % RING_SLOTS];
+     }
+ 
++    fn profEv(c: *const TpComm, r: usize, k: ze.H) ze.H {
++        return if (c.prof_take) |f| f(r, k) else null;
++    }
++
+     fn readyEv(c: *TpComm, s: usize, r: usize) ze.H {
+         return c.events[(s * 2 + 0) * c.tp + r];
+     }
+@@ -144,7 +150,7 @@ pub const TpComm = struct {
+                     try g.arg(k, 1, c.send_buf[1][slot]);
+                     try g.arg(k, 2, dst[r]);
+                     try g.arg(k, 3, @as(i32, @intCast(n4)));
+-                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, null, 2, &waits));
++                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, c.profEv(r, k), 2, &waits));
+                 } else {
+                     const k = c.k[r].ar4_f16;
+                     try g.arg(k, 0, c.send_buf[0][slot]);
+@@ -153,7 +159,7 @@ pub const TpComm = struct {
+                     try g.arg(k, 3, c.send_buf[3][slot]);
+                     try g.arg(k, 4, dst[r]);
+                     try g.arg(k, 5, @as(i32, @intCast(n4)));
+-                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, null, 4, &waits));
++                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, c.profEv(r, k), 4, &waits));
+                 }
+             }
+         } else {
+@@ -235,7 +241,7 @@ pub const TpComm = struct {
+                     try g.arg(k, 1, c.send_buf[1][slot]);
+                     try g.arg(k, 2, dst[r]);
+                     try g.arg(k, 3, @as(i32, @intCast(n4)));
+-                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, null, 2, &waits));
++                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, c.profEv(r, k), 2, &waits));
+                 } else {
+                     const k = c.k[r].ar4_f32;
+                     try g.arg(k, 0, c.send_buf[0][slot]);
+@@ -244,7 +250,7 @@ pub const TpComm = struct {
+                     try g.arg(k, 3, c.send_buf[3][slot]);
+                     try g.arg(k, 4, dst[r]);
+                     try g.arg(k, 5, @as(i32, @intCast(n4)));
+-                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, null, 4, &waits));
++                    try ze.check(g.api.zeCommandListAppendLaunchKernel(lists[r], k, &groups, c.profEv(r, k), 4, &waits));
+                 }
+             }
+         } else {

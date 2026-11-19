@@ -1,0 +1,44 @@
+From 98f0814841501059b7497ad1a1f0faed5aee06f4 Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 08:18:09 +0100
+Subject: [PATCH 2/2] xpu(qwen27): XPU_PROFILE turns off NEO's implicit
+ counter-based events
+
+With them on, the profiled run on two cards hangs in its first decode forward:
+the blocking token copy at the end of forward never returns because rank 0's
+list never drains (gdb: forward.zig:583). The events XPU_PROFILE reuses after a
+host reset are converted to counter-based events by compute-runtime 26.05.
+NEOReadDebugKeys=1 EnableImplicitConvertionToCounterBasedEvents=0 in the
+environment makes the same binary complete with drafted == serial, so the
+runner sets both before zeInit when XPU_PROFILE is on, without overwriting an
+explicit setting. Unprofiled runs are unchanged.
+---
+ zig/src/xpu/qwen27.zig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/zig/src/xpu/qwen27.zig b/zig/src/xpu/qwen27.zig
+index 045edd3ce..8db29c7f9 100644
+--- a/zig/src/xpu/qwen27.zig
++++ b/zig/src/xpu/qwen27.zig
+@@ -20,6 +20,7 @@ extern "c" fn mmap(addr: ?*anyopaque, len: usize, prot: c_int, flags: c_int, fd:
+ extern "c" fn open(path: [*:0]const u8, flags: c_int, ...) c_int;
+ extern "c" fn close(fd: c_int) c_int;
+ extern "c" fn munmap(addr: *anyopaque, len: usize) c_int;
++extern "c" fn setenv(name: [*:0]const u8, value: [*:0]const u8, overwrite: c_int) c_int;
+ pub const MAX_SLOTS = loader.MAX_SLOTS;
+ pub const freeAfterQueue = slot_states.freeAfterQueue;
+ pub const Tensor = dev.Tensor;
+@@ -443,6 +444,13 @@ pub const Runner = struct {
+         }
+ 
+         var open_gpus: [4]ze.Gpu = undefined;
++        // XPU_PROFILE reuses its timestamped events after a host reset. With NEO's implicit conversion of such events to
++        // counter-based ones, the first decode forward on two cards never drains (runtime 26.05). Turn the conversion
++        // off before zeInit reads the keys; profiling only, an explicit setting in the environment wins.
++        if (std.c.getenv("XPU_PROFILE") != null) {
++            _ = setenv("NEOReadDebugKeys", "1", 0);
++            _ = setenv("EnableImplicitConvertionToCounterBasedEvents", "0", 0);
++        }
+         try ze.Gpu.openPeers(0xe223, open_gpus[0..tp_deg]);
+         errdefer ze.Gpu.closePeers(open_gpus[0..tp_deg]);
+ 

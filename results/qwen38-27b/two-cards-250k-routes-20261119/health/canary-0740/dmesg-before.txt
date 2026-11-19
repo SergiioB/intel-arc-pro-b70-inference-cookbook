@@ -1,0 +1,5 @@
+[Thu Nov 19 07:31:11 2026] xe 0000:0f:00.0: [drm] Tile0: GT0: Fault response: Unsuccessful -EINVAL
+[Thu Nov 19 07:31:11 2026] xe 0000:0f:00.0: [drm] Tile0: GT0: Engine reset: engine_class=bcs, logical_mask: 0x1, guc_id=6, state=0x289
+[Thu Nov 19 07:31:32 2026] xe 0000:0b:00.0: [drm] Tile0: GT0: 
+[Thu Nov 19 07:31:32 2026] xe 0000:0b:00.0: [drm] Tile0: GT0: Fault response: Unsuccessful -EINVAL
+[Thu Nov 19 07:31:32 2026] xe 0000:0b:00.0: [drm] Tile0: GT0: Engine reset: engine_class=bcs, logical_mask: 0x1, guc_id=63, state=0x289

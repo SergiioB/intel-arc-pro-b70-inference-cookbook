@@ -1,0 +1,14 @@
+Nov 19 07:24:44 b70-host kernel: xe 0000:0b:00.0: [drm] Tile0: GT0: 
+Nov 19 07:24:44 b70-host kernel: xe 0000:0b:00.0: [drm] Tile0: GT0: Fault response: Unsuccessful -EINVAL
+Nov 19 07:24:44 b70-host kernel: xe 0000:0f:00.0: [drm] Tile0: GT0: 
+Nov 19 07:24:44 b70-host kernel: xe 0000:0f:00.0: [drm] Tile0: GT0: Fault response: Unsuccessful -EINVAL
+Nov 19 07:24:44 b70-host kernel: xe 0000:0b:00.0: [drm] Tile0: GT0: Engine memory CAT error [18]: class=ccs, logical_mask: 0x1, guc_id=46
+Nov 19 07:24:44 b70-host kernel: xe 0000:0f:00.0: [drm] Tile0: GT0: Engine memory CAT error [18]: class=ccs, logical_mask: 0x1, guc_id=2
+Nov 19 07:24:44 b70-host kernel: xe 0000:0f:00.0: [drm] Tile0: GT0: Engine reset: engine_class=ccs, logical_mask: 0x1, guc_id=2, state=0x249
+Nov 19 07:24:44 b70-host kernel: xe 0000:0f:00.0: [drm] Tile0: GT0: Timedout job: seqno=4294967174, lrc_seqno=4294967174, guc_id=2, flags=0x20 in xpu-qwen27 [1062327]
+Nov 19 07:24:44 b70-host kernel: xe 0000:0b:00.0: [drm] Tile0: GT0: Engine reset: engine_class=ccs, logical_mask: 0x1, guc_id=46, state=0x249
+Nov 19 07:24:44 b70-host kernel: xe 0000:0b:00.0: [drm] Tile0: GT0: Timedout job: seqno=4294967178, lrc_seqno=4294967178, guc_id=46, flags=0x20 in xpu-qwen27 [1062327]
+Nov 19 07:24:44 b70-host kernel: xe 0000:0f:00.0: [drm] Xe device coredump has been created
+Nov 19 07:24:44 b70-host kernel: xe 0000:0f:00.0: [drm] Check your /sys/class/drm/card1/device/devcoredump/data
+Nov 19 07:24:44 b70-host kernel: xe 0000:0b:00.0: [drm] Xe device coredump has been created
+Nov 19 07:24:44 b70-host kernel: xe 0000:0b:00.0: [drm] Check your /sys/class/drm/card0/device/devcoredump/data

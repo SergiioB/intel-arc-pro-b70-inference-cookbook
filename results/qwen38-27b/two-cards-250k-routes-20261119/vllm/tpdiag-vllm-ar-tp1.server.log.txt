@@ -1,0 +1,124 @@
+W1119 06:33:08.076000 1 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1119 06:33:08.077000 1 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1119 06:33:08.077000 1 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(APIServer pid=1) INFO 11-19 06:33:30 [api_utils.py:347] 
+(APIServer pid=1) INFO 11-19 06:33:30 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 11-19 06:33:30 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.31.0
+(APIServer pid=1) INFO 11-19 06:33:30 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /model
+(APIServer pid=1) INFO 11-19 06:33:30 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 11-19 06:33:30 [api_utils.py:347] 
+(APIServer pid=1) INFO 11-19 06:33:30 [api_utils.py:286] non-default args: {'model_tag': '/model', 'host': '127.0.0.1', 'port': 8046, 'model': '/model', 'max_model_len': 2048, 'served_model_name': ['qwen36-ar'], 'gpu_memory_utilization': 0.85, 'enable_prefix_caching': False, 'language_model_only': True, 'max_num_seqs': 1}
+(APIServer pid=1) INFO 11-19 06:33:30 [model.py:699] Resolved architecture: Qwen3_5ForConditionalGeneration
+(APIServer pid=1) INFO 11-19 06:33:30 [model.py:2109] Using max model len 2048
+(APIServer pid=1) INFO 11-19 06:33:38 [model.py:917] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=1) INFO 11-19 06:33:38 [model.py:974] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=1) WARNING 11-19 06:33:38 [indexer_topk.py:35] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(APIServer pid=1) INFO 11-19 06:33:39 [kernel.py:408] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['native'])
+(APIServer pid=1) INFO 11-19 06:33:39 [xpu.py:419] XPU platform: set server shutdown_timeout=5.
+W1119 06:33:43.756000 82 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1119 06:33:43.757000 82 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1119 06:33:43.757000 82 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(EngineCore pid=82) INFO 11-19 06:33:51 [core.py:129] Initializing a V1 LLM engine (v0.31.0) with config: model='/model', speculative_config=None, tokenizer='/model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=2048, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=inc, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=xpu, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=qwen36-ar, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 2, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=82) WARNING 11-19 06:33:52 [indexer_topk.py:35] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(EngineCore pid=82) INFO 11-19 06:33:52 [parallel_state.py:1825] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_54f4b87046384d1c8e4c6fc77ff37786 backend=xccl
+(EngineCore pid=82) INFO 11-19 06:33:52 [parallel_state.py:2269] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=82) INFO 11-19 06:33:52 [xpu_worker.py:196] Using V2 Model Runner
+(EngineCore pid=82) INFO 11-19 06:33:53 [model_runner.py:375] Loading model from scratch...
+(EngineCore pid=82) INFO 11-19 06:33:54 [xpu.py:252] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(EngineCore pid=82) INFO 11-19 06:33:54 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(EngineCore pid=82) INFO 11-19 06:33:54 [inc_ark_ops.py:25] Successfully imported auto_round_kernel.
+(EngineCore pid=82) INFO 11-19 06:33:54 [inc_ark_ops.py:37] Successfully loaded auto_round_kernel backend library.
+(EngineCore pid=82) INFO 11-19 06:33:54 [qwen_gdn_linear_attn.py:533] GDN decode kernel: XPU
+(EngineCore pid=82) INFO 11-19 06:33:55 [xpu.py:218] Using Flash Attention backend.
+(EngineCore pid=82) INFO 11-19 06:33:55 [flash_attn.py:1167] Using FlashAttention version 2
+(EngineCore pid=82) INFO 11-19 06:33:55 [weight_utils.py:1063] Filesystem type for checkpoints: EXT4. Checkpoint size: 17.69 GiB. Available RAM: 26.84 GiB.
+(EngineCore pid=82) INFO 11-19 06:33:55 [weight_utils.py:1086] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+
+Loading safetensors checkpoint shards:   0% Completed | 0/11 [00:00<?, ?it/s]
+
+Loading safetensors checkpoint shards:   9% Completed | 1/11 [00:05<00:55,  5.54s/it]
+
+Loading safetensors checkpoint shards:  18% Completed | 2/11 [00:10<00:48,  5.39s/it]
+
+Loading safetensors checkpoint shards:  27% Completed | 3/11 [00:16<00:42,  5.37s/it]
+
+Loading safetensors checkpoint shards:  36% Completed | 4/11 [00:21<00:37,  5.32s/it]
+
+Loading safetensors checkpoint shards:  45% Completed | 5/11 [00:26<00:31,  5.31s/it]
+
+Loading safetensors checkpoint shards:  55% Completed | 6/11 [00:31<00:26,  5.24s/it]
+
+Loading safetensors checkpoint shards:  64% Completed | 7/11 [00:31<00:14,  3.56s/it]
+
+Loading safetensors checkpoint shards:  73% Completed | 8/11 [00:42<00:17,  5.78s/it]
+
+Loading safetensors checkpoint shards:  82% Completed | 9/11 [00:42<00:08,  4.02s/it]
+
+Loading safetensors checkpoint shards:  91% Completed | 10/11 [00:48<00:04,  4.58s/it]
+
+Loading safetensors checkpoint shards: 100% Completed | 11/11 [00:48<00:00,  4.40s/it]
+
+(EngineCore pid=82) INFO 11-19 06:34:44 [default_loader.py:484] Loading weights took 48.67 seconds
+(APIServer pid=1) INFO 11-19 06:34:45 [utils.py:638] [shutdown] Process manager: send sigterm to process EngineCore
+Traceback (most recent call last):
+  File "/opt/venv/bin/vllm", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/cli/main.py", line 118, in main
+    args.dispatch_function(args)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+    uvloop.run(run_server(args))
+  File "/opt/venv/lib/python3.12/site-packages/uvloop/__init__.py", line 96, in run
+    return __asyncio.run(
+           ^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/opt/venv/lib/python3.12/site-packages/uvloop/__init__.py", line 48, in wrapper
+    return await main
+           ^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 172, in run_server
+    await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 185, in run_server_worker
+    async with build_async_engine_client(
+  File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+    async with build_async_engine_client_from_engine_args(
+  File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/entrypoints/launchers/api_server/entry.py", line 92, in build_async_engine_client_from_engine_args
+    async_llm = AsyncLLM.from_vllm_config(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py", line 248, in from_vllm_config
+    return cls(
+           ^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/async_llm.py", line 180, in __init__
+    self.engine_core = EngineCoreClient.make_async_mp_client(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core_client.py", line 167, in make_async_mp_client
+    return AsyncMPClient(
+           ^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/tracing/otel.py", line 175, in sync_wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core_client.py", line 1100, in __init__
+    super().__init__(
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/core_client.py", line 674, in __init__
+    with launch_core_engines(
+  File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1268, in launch_core_engines
+    wait_for_engine_startup(
+  File "/opt/venv/lib/python3.12/site-packages/vllm/v1/engine/utils.py", line 1348, in wait_for_engine_startup
+    raise RuntimeError(
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

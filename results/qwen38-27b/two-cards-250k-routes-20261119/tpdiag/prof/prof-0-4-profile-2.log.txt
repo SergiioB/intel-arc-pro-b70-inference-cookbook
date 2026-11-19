@@ -1,0 +1,52 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.5 s
+GPU time, prompt, rank 0: 68.4 ms busy, 18.9 ms idle between kernels, 87.4 ms span, 0 launches unprofiled
+  embed              0.02 ms   0.0 %        1 calls      0.00 ms idle before
+  add_rmsnorm        2.08 ms   3.0 %      129 calls     17.24 ms idle before
+  gdn_pre_rows       0.99 ms   1.4 %       48 calls      0.02 ms idle before
+  gated_norm         0.44 ms   0.6 %       48 calls      0.01 ms idle before
+  attn_prep          0.11 ms   0.2 %       16 calls      0.67 ms idle before
+  attn_gate          0.10 ms   0.1 %       16 calls      0.00 ms idle before
+  argmax             0.01 ms   0.0 %        1 calls      0.00 ms idle before
+  argmax_part        0.04 ms   0.1 %        1 calls      0.03 ms idle before
+  attn_prompt        0.26 ms   0.4 %       16 calls      0.05 ms idle before
+  ngen_swiglu       20.45 ms  29.9 %       64 calls      0.01 ms idle before
+  rowsums_ff         0.55 ms   0.8 %       64 calls      0.03 ms idle before
+  dec_wide64         0.63 ms   0.9 %        1 calls      0.00 ms idle before
+  gdn_prep           2.66 ms   3.9 %       48 calls      0.75 ms idle before
+  gdn_state          2.29 ms   3.3 %       48 calls      0.01 ms idle before
+  gdn_out            1.24 ms   1.8 %       48 calls      0.01 ms idle before
+  ngen_wide         11.67 ms  17.1 %       64 calls      0.08 ms idle before
+  ngen_narrow       24.91 ms  36.4 %      128 calls      0.02 ms idle before
+  tp_ar2_f16         0.01 ms   0.0 %        2 calls      0.01 ms idle before
+GPU time, prompt, rank 1: 54.0 ms busy, 33.1 ms idle between kernels, 87.1 ms span, 0 launches unprofiled
+  embed              0.01 ms   0.0 %        1 calls      0.00 ms idle before
+  add_rmsnorm        1.74 ms   3.2 %      129 calls     26.50 ms idle before
+  gdn_pre_rows       0.77 ms   1.4 %       48 calls      0.02 ms idle before
+  gated_norm         0.34 ms   0.6 %       48 calls      0.01 ms idle before
+  attn_prep          0.09 ms   0.2 %       16 calls      5.54 ms idle before
+  attn_gate          0.08 ms   0.1 %       16 calls      0.00 ms idle before
+  attn_prompt        0.21 ms   0.4 %       16 calls      0.05 ms idle before
+  ngen_swiglu       16.03 ms  29.7 %       64 calls      0.01 ms idle before
+  rowsums_ff         0.46 ms   0.8 %       64 calls      0.02 ms idle before
+  dec_wide64         0.62 ms   1.2 %        1 calls      0.00 ms idle before
+  gdn_prep           2.07 ms   3.8 %       48 calls      0.63 ms idle before
+  gdn_state          1.94 ms   3.6 %       48 calls      0.03 ms idle before
+  gdn_out            0.99 ms   1.8 %       48 calls      0.01 ms idle before
+  ngen_wide          9.35 ms  17.3 %       64 calls      0.09 ms idle before
+  ngen_narrow       19.32 ms  35.8 %      128 calls      0.03 ms idle before
+  tp_ar2_f16         0.01 ms   0.0 %        2 calls      0.11 ms idle before
+prof-0-4-profile-2 exit 124
