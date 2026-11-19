@@ -1,0 +1,131 @@
+{
+ "cells": [
+  {
+   "depth": "0",
+   "kind": "chat",
+   "off": {
+    "n": 1,
+    "client_tok_s": 134.2,
+    "ms_round": 32.0,
+    "ttft_s": 0.067,
+    "raw_tok_s": [
+     134.2
+    ],
+    "hashes": [
+     "596a68a0fce5"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 126.24,
+    "ms_round": 34.02,
+    "ttft_s": 0.068,
+    "raw_tok_s": [
+     126.24
+    ],
+    "hashes": [
+     "596a68a0fce5"
+    ]
+   },
+   "gain_pct": -5.93,
+   "ms_round_delta": 2.02,
+   "passes_gate": false
+  },
+  {
+   "depth": "0",
+   "kind": "code",
+   "off": {
+    "n": 1,
+    "client_tok_s": 173.48,
+    "ms_round": 32.02,
+    "ttft_s": 0.086,
+    "raw_tok_s": [
+     173.48
+    ],
+    "hashes": [
+     "1e55952eff61"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 162.99,
+    "ms_round": 34.08,
+    "ttft_s": 0.086,
+    "raw_tok_s": [
+     162.99
+    ],
+    "hashes": [
+     "1e55952eff61"
+    ]
+   },
+   "gain_pct": -6.05,
+   "ms_round_delta": 2.06,
+   "passes_gate": false
+  },
+  {
+   "depth": "32k",
+   "kind": "chat",
+   "off": {
+    "n": 1,
+    "client_tok_s": 91.89,
+    "ms_round": 41.19,
+    "ttft_s": 15.58,
+    "raw_tok_s": [
+     91.89
+    ],
+    "hashes": [
+     "ec05abfa9700"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 87.2,
+    "ms_round": 43.41,
+    "ttft_s": 15.581,
+    "raw_tok_s": [
+     87.2
+    ],
+    "hashes": [
+     "ec05abfa9700"
+    ]
+   },
+   "gain_pct": -5.1,
+   "ms_round_delta": 2.22,
+   "passes_gate": false
+  },
+  {
+   "depth": "32k",
+   "kind": "code",
+   "off": {
+    "n": 1,
+    "client_tok_s": 124.65,
+    "ms_round": 41.0,
+    "ttft_s": 15.564,
+    "raw_tok_s": [
+     124.65
+    ],
+    "hashes": [
+     "1aa35e0e100d"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 118.0,
+    "ms_round": 43.31,
+    "ttft_s": 15.576,
+    "raw_tok_s": [
+     118.0
+    ],
+    "hashes": [
+     "1aa35e0e100d"
+    ]
+   },
+   "gain_pct": -5.33,
+   "ms_round_delta": 2.31,
+   "passes_gate": false
+  }
+ ],
+ "drafted_eq_serial": {},
+ "text_changes_off_to_on": 0,
+ "cells_compared": 4
+}

@@ -67,19 +67,19 @@ def devrunner():
 
 def levers():
     h("TensorFold two-card speed levers, 3 interleaved pairs, equal caps (tptf-speed)")
-    for lever in ("l1", "l2"):
+    for lever in ("l1", "l2", "l1b-d16", "l1b-v32", "l1b-w8"):
         s = json.load(open(f"tptf-speed/{lever}/summary.json"))
         flag = open(f"tptf-speed/{lever}/pair1-on/ab.txt").readline().strip()
         print(f"{lever}: {flag}; text changes off -> on {s['text_changes_off_to_on']} of {s['cells_compared']}; "
-              f"drafted == serial off {all(c['equal'] for c in s['drafted_eq_serial']['off'])}, on {all(c['equal'] for c in s['drafted_eq_serial']['on'])}")
-        print("| depth | kind | off median (3) | on median (3) | gain % | same token hash |")
+              + (f"drafted == serial off {all(c['equal'] for c in s['drafted_eq_serial']['off'])}, on {all(c['equal'] for c in s['drafted_eq_serial']['on'])}"
+                 if s["drafted_eq_serial"].get("off") else "no serial arm in this screen"))
+        print("| depth | kind | off median (raw) | on median (raw) | gain % | same token hash |")
         print("|---|---|---|---|---|---|")
         order = {"0": 0, "8k": 1, "32k": 2, "128k": 3}
         for c in sorted(s["cells"], key=lambda c: (order[c["depth"]], c["kind"])):
             print(f"| {c['depth']} | {c['kind']} | {c['off']['client_tok_s']} {c['off']['raw_tok_s']} | {c['on']['client_tok_s']} {c['on']['raw_tok_s']} | "
                   f"{c['gain_pct']} | {c['off']['hashes'] == c['on']['hashes']} |")
         print("caps:", caps(f"tptf-speed/{lever}/pair1-on/env.txt"))
-    print("l2-tp1 (one card) arms on disk:", sorted(os.listdir("tptf-speed/l2-tp1")))
 
 
 def llamacpp():

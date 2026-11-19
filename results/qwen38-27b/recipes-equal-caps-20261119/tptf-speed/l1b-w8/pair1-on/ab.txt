@@ -1,0 +1,4 @@
+flag XPU_GU_KERNEL=w8
+tp 2 (TP=1 serves on card 1) arms drafted depths 0,32k
+e6fdde694d0936d0c8226f8dbe3419aebd8f9f279656010bdd134bc2e4044f8f  $WORK/tptf/src/zig-out/xpu/bin/tensorfold-native
+2026-11-19T12:00:00+01:00

@@ -1,0 +1,131 @@
+{
+ "cells": [
+  {
+   "depth": "0",
+   "kind": "chat",
+   "off": {
+    "n": 1,
+    "client_tok_s": 134.46,
+    "ms_round": 31.93,
+    "ttft_s": 0.068,
+    "raw_tok_s": [
+     134.46
+    ],
+    "hashes": [
+     "596a68a0fce5"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 133.29,
+    "ms_round": 32.22,
+    "ttft_s": 0.068,
+    "raw_tok_s": [
+     133.29
+    ],
+    "hashes": [
+     "596a68a0fce5"
+    ]
+   },
+   "gain_pct": -0.87,
+   "ms_round_delta": 0.29,
+   "passes_gate": false
+  },
+  {
+   "depth": "0",
+   "kind": "code",
+   "off": {
+    "n": 1,
+    "client_tok_s": 173.68,
+    "ms_round": 31.98,
+    "ttft_s": 0.086,
+    "raw_tok_s": [
+     173.68
+    ],
+    "hashes": [
+     "1e55952eff61"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 172.25,
+    "ms_round": 32.25,
+    "ttft_s": 0.086,
+    "raw_tok_s": [
+     172.25
+    ],
+    "hashes": [
+     "1e55952eff61"
+    ]
+   },
+   "gain_pct": -0.82,
+   "ms_round_delta": 0.27,
+   "passes_gate": false
+  },
+  {
+   "depth": "32k",
+   "kind": "chat",
+   "off": {
+    "n": 1,
+    "client_tok_s": 91.66,
+    "ms_round": 41.3,
+    "ttft_s": 15.602,
+    "raw_tok_s": [
+     91.66
+    ],
+    "hashes": [
+     "ec05abfa9700"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 90.97,
+    "ms_round": 41.61,
+    "ttft_s": 15.588,
+    "raw_tok_s": [
+     90.97
+    ],
+    "hashes": [
+     "ec05abfa9700"
+    ]
+   },
+   "gain_pct": -0.75,
+   "ms_round_delta": 0.31,
+   "passes_gate": false
+  },
+  {
+   "depth": "32k",
+   "kind": "code",
+   "off": {
+    "n": 1,
+    "client_tok_s": 124.13,
+    "ms_round": 41.17,
+    "ttft_s": 15.599,
+    "raw_tok_s": [
+     124.13
+    ],
+    "hashes": [
+     "1aa35e0e100d"
+    ]
+   },
+   "on": {
+    "n": 1,
+    "client_tok_s": 123.09,
+    "ms_round": 41.52,
+    "ttft_s": 15.589,
+    "raw_tok_s": [
+     123.09
+    ],
+    "hashes": [
+     "1aa35e0e100d"
+    ]
+   },
+   "gain_pct": -0.84,
+   "ms_round_delta": 0.35,
+   "passes_gate": false
+  }
+ ],
+ "drafted_eq_serial": {},
+ "text_changes_off_to_on": 0,
+ "cells_compared": 4
+}

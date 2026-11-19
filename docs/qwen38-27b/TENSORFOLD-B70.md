@@ -18,7 +18,7 @@ at equal caps they are 5–6 % higher (2026-11-19).
 | 32K and longer (agents with big context, repo dumps) | **EXL3 4.0 bpw + MTP3** (exl3xpu) | 74 tok/s at 32K and 48 at 131K, with 1.5–1.7× TensorFold's prefill, but MTP3 changes the output |
 | 8K–131K, one stream, and an unofficial engine branch is acceptable | **TensorFold + `XPU_ATTN_PREF=256`** ([2026-11-13 screen](#prefix-attention-kernel-2026-11-13-20-at-32k-34-at-131k-262144-context)) | 115 / 90 / 51 tok/s at 8K / 32K / 131K on code, drafted output identical to non-drafted; the text differs from stock TensorFold on some prompts, and the branch is not in upstream |
 | Long context and you need the model's own greedy answer | EXL3 without speculation, or TensorFold with drafts off | 23 tok/s at 131K (EXL3) vs 19 (patched TensorFold, serial) |
-| One user with two B70s, up to 250K | **TensorFold `--tp 2` (upstream PR #3586) + `XPU_ATTN_PREF=256`** ([2026-11-18 screen](#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)) | 165 / 143 / 118 / 77 tok/s at ~60 / 8K / 32K / 131K on code, 63 at 250K with bf16 K/V, drafted == non-drafted; the PR is unmerged |
+| One user with two B70s, up to 250K | **TensorFold `--tp 2` (upstream PR #3586) + `XPU_ATTN_PREF=256`** ([2026-11-18 screen](#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)) | 165 / 143 / 118 / 77 tok/s at ~60 / 8K / 32K / 131K on code (card 0 at 180 W; 173 / 151 / 124 / 82 with both cards at 230 W), 63 at 250K with bf16 K/V (180/230 W), drafted == non-drafted; the PR is unmerged |
 | Multi-turn sessions on TensorFold | size `--prompt-cache-gib` to one full state ([how](#warm-follow-up-turns-size-the-prompt-cache)) | follow-up turns start in 0.3–1.1 s up to 131K instead of re-reading the context (22.5 s at 32K with the 2 GiB default) |
 | Warm sessions to 250K on two cards | int8 K/V + `--prompt-cache-gib 5` on [our fix branch](https://github.com/SergiioB/TensorFold/tree/xpu-tp2-fixes-20261119) ([2026-11-19](LONG-CONTEXT-250K-20261119.md)) | follow-ups in 1.1–1.6 s instead of 205 s, resumed == fresh; without the branch, resumed turns past about 131K fail |
 
@@ -196,7 +196,11 @@ prefix attention kernel onto it (389-line patch in the evidence folder). One car
 `XPU_ATTN_PREF=256`, greedy, 512 tokens out, one stream. One card is GPU1 at 230 W. Two cards are GPU0 (180 W,
 clock capped at 2,400 MHz) and GPU1.
 
-| Prompt tokens | One card, code / prose | Two cards, code / prose | Ratio | Serial, one → two | Cold TTFT, one → two |
+Both cards at 230 W / 2,800 MHz (since 2026-11-19 09:45 CET) give 173.3 / 151.4 / 123.8 / 81.6 tok/s at ~60 / 8K /
+32K / 131K on code with the same text ([recipe 3](RECIPES-B70.md#3-one-user-two-cards)). The table below is the
+180/230 W record.
+
+| Prompt tokens | One card, code / prose | Two cards (180/230 W), code / prose | Ratio | Serial, one → two | Cold TTFT, one → two |
 |---|---|---|---|---|---|
 | ~60 | 128.1 / 102.3 | 165.5 / 128.0 | 1.29 / 1.25 | 32.4 → 48.4 | 0.1 s |
 | 8K | 114.6 / 91.4 | 143.0 / 107.3 | 1.25 / 1.17 | 30.7 → 44.5 | 4.6 → 3.5 s |

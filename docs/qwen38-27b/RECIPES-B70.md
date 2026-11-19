@@ -21,7 +21,7 @@ comparison that would decide between it and TensorFold is still pending (2026-11
 
 ## 0. Host: both cards at 230 W and 2,800 MHz
 
-Both cards run the same power cap and clock limit. Until 2026-11-19 09:40 CET this host ran card 0 at 180 W with a
+Both cards run the same power cap and clock limit. Until 2026-11-19 09:45 CET this host ran card 0 at 180 W with a
 2,400 MHz clock cap (a cooler profile that a tuning script applied to the first xe card only) and card 1 at 230 W.
 On two cards every exchange waits for the slower card.
 
@@ -54,8 +54,19 @@ Measured effect, served, same binary (`2286abc0c`), two cards, greedy, 512 token
 - Dev runner, 68 tokens: a two-card drafted round 33.1 → 31.65 ms (151.3 → 158.6 tok/s); the "card 0 slower" part
   of the round goes from 1.5 ms to 0. One card unchanged (123.4 → 123.6 tok/s).
 
+**Host cleanup on 2026-11-19.** One boot service now applies 230 W / 2,800 MHz to every xe GPU (it had applied the
+180 W / 2,400 MHz cooler profile to the first card only). A user-level unit that wrote 180 W to both cards at login
+and two user-level units that restarted an old overnight sweep at login were disabled the same day (all three show
+`disabled`; the cap unit stays loaded for the login it already ran in, and the live caps read 230 W). If you copied an
+older setup from this host, check for login-time units that write `power1_cap` and keep one authority:
+
+```bash
+systemctl --user list-unit-files --state=enabled | grep -i -E 'power|cap|b70'
+grep -l power1_cap ~/.config/systemd/user/*.service /etc/systemd/system/*.service 2>/dev/null
+```
+
 **Which numbers were measured at which setting.** One-card numbers on these pages ran on card 1 at 230 W and are
-not affected. Two-card numbers measured **before 2026-11-19 09:40 CET ran at 180/230 W**: the first two-card record
+not affected. Two-card numbers measured **before 2026-11-19 09:45 CET ran at 180/230 W**: the first two-card record
 ([TENSORFOLD-B70](TENSORFOLD-B70.md#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)),
 everything two-card on [the 250K page](LONG-CONTEXT-250K-20261119.md), the prompt-length sweep and its
 [intelinside.ai submission](https://intelinside.ai/runtimes/tensorfold/custom/29), the several-stream two-card screens
@@ -196,7 +207,7 @@ Short prompts, 512 tokens a stream, all streams at once, three passes a level, c
 
 | Streams | TensorFold `--parallel 32 --context 4096` | exl3xpu MTP3, `max_num_seqs` 32 | Text equal to the solo run, TF / exl3xpu |
 |---|---|---|---|
-| 1 | 130.1 (130.0–130.1) | 82.5 (81.5–84.8) | 3 of 3 / 2 of 3 |
+| 1 | 130.1 (130.0–130.1) | 82.5 (81.5–84.8) | 3 of 3 / 2 of 3 (the third pass differed) |
 | 4 | **242.4** (240.7–242.5) | 220.0 (118.4–220.4) | 12 of 12 / 5 of 12 |
 | 8 | 270.9 (268.5–272.7) | **342.2** (334.7–350.7) | 24 of 24 / 8 of 24 |
 | 16 | 297.7 (295.0–297.8) | **333.3** (318.6–334.3) | 48 of 48 / 7 of 48 |
@@ -282,12 +293,12 @@ Expect (Qwen3.8-27B Q4_K_M, q8_0 K/V, llama-bench `-r 3`, 230/230 W):
 | `NEOReadDebugKeys=1 EnableDirectSubmission=0` (Intel direct submission off) | TensorFold −17 to −23 % on two cards, −6 % on one ([DNR-020](../DO-NOT-REPEAT.md)) |
 | `SYCL_CACHE_PERSISTENT=1` with DPC++ 2026.1 for llama.cpp | llama-bench segfaults in `PersistentDeviceCodeCache::getItemFromDisc` on its first kernel load; `SYCL_CACHE_PERSISTENT=0` runs ([DNR-031](../DO-NOT-REPEAT.md)) |
 | Cards at different caps for `--tp 2` | the slower card sets the pace; 1.5 ms of a 33.1 ms round ([recipe 0](#0-host-both-cards-at-230-w-and-2800-mhz)) |
-| `XPU_GU_WIDE64=1` (another gate/up kernel on two cards) | −1.1 to −1.9 % in every cell ([DNR-030](../DO-NOT-REPEAT.md)) |
+| `XPU_GU_WIDE64=1` or `XPU_GU_KERNEL=d16/v32/w8` (other gate/up kernels on two cards) | slower in every cell: −1.1 to −1.9 % (3 pairs), −0.6 to −6.1 % (1 pair each) ([DNR-030](../DO-NOT-REPEAT.md)) |
 | unitrace `--device-timing` on `--tp 2` | segfault, and once an xe engine fault on both cards ([DNR-022](../DO-NOT-REPEAT.md), [DNR-028](../DO-NOT-REPEAT.md)) |
 | vLLM XPU v0.31.0 AutoRound int4 on an AMD Zen 3 CPU | `invalid opcode` (AVX-512) in its kernel library ([DNR-027](../DO-NOT-REPEAT.md)) |
 | llama.cpp `GGML_SYCL_TP_P2P=1` | leaks and segfaults ([DNR-032](../DO-NOT-REPEAT.md)) |
 
-## Pending (2026-11-19)
+## Pending (as of 2026-11-19 12:25 CET; queued or running)
 
 The model card's sampling comparison; 250K and warm-session reruns at 230/230 W; `XPU_DATTN_SPLIT` confirmation and
 one-card run; two-card many-user arms; llama.cpp depth runs and confirmation; one-card and exl3xpu prompt-length

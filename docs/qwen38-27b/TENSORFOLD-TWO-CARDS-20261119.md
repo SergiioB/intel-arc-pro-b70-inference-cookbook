@@ -4,23 +4,24 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards, TensorFold `-
 [PR #3586](https://github.com/ashhart/TensorFold/pull/3586), open) with our prefix attention kernel
 (`XPU_ATTN_PREF=256`). Status: **screen**. This page follows the first two-card record in
 [TENSORFOLD-B70.md](TENSORFOLD-B70.md#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)
-(128.1 → 165.5 tok/s). Raw files and `summarize.py`:
+(128.1 → 165.5 tok/s, two cards at 180/230 W). Raw files and `summarize.py`:
 [`results/qwen38-27b/two-cards-250k-routes-20261119/`](../../results/qwen38-27b/two-cards-250k-routes-20261119/README.md).
 
 > **Cap setting (added 2026-11-19).** Every two-card number on this page above the
 > [update section](#update-2026-11-19-equal-caps-speed-levers-runtime-ab-llamacpp) ran with card 0 at 180 W and a
-> 2,400 MHz clock cap and card 1 at 230 W / 2,800 MHz. Since 09:40 CET both cards run 230 W / 2,800 MHz; the served
+> 2,400 MHz clock cap and card 1 at 230 W / 2,800 MHz. Since 09:45 CET both cards run 230 W / 2,800 MHz; the served
 > two-card rates rose 5–6 % with the same text. Copy-paste recipes at the current setting:
 > [RECIPES-B70.md](RECIPES-B70.md).
 
 ## Result
 
 1. **Serial decode splits well, a drafted round does not.** One card to two cards: serial 1.54× at a 68-token
-   prompt and 1.59× at 32K; a drafted round 1.25× and 1.27×. Same binary, interleaved runs.
-2. **The two-card round is now fully measured.** At 68 tokens, 33.1 ms = 18.3 half of the one-card work + 4.4
+   prompt and 1.59× at 32K; a drafted round 1.25× and 1.27×. Same binary, interleaved runs, 180/230 W. At
+   230/230 W: 1.59× serial and 1.31× a round.
+2. **The two-card round is now fully measured.** At 68 tokens and 180/230 W, 33.1 ms = 18.3 half of the one-card work + 4.4
    kernels that do not halve + 4.3 rank-0-only drafter and argmax + 1.5 card 0 slower under its cap + 2.4 exchange
    kernels + 2.2 idle and host. Host submission is rejected as the main cause. At 32K the drafter's attention on
-   rank 0 is the largest single item (8.5 ms a round).
+   rank 0 is the largest single item (8.5 ms a round). At 230/230 W the round is 31.65 ms and the card-0 term is 0.
 3. **Leave Intel's direct submission on.** It is on by default. Forcing it off cost one card 6 % and two cards
    17–23 %.
 4. **Two bugs on our fork, both closed for the tested cases.** Bug B (a draft tree that shares a round gave other
@@ -28,13 +29,14 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards, TensorFold `-
    K/V fail `InvalidQwenToken`) has a **tested mitigation, cause unknown**: resumed == fresh at 165K (3 of 3) and
    250K (4 of 4), follow-ups start in 1.1–1.6 s instead of 205 s. Three review rounds approved the branch at
    `ac346900b`; an eviction test gave 18 of 18 requests equal to cache-off text.
-5. **Decode by prompt length on two cards** falls from 121.6 tok/s at 512 tokens to 54.7 at 131,072 and 39.3 at
-   245,760, drafted == serial in 21 of 21 pairs ([table](#decode-by-prompt-length-two-cards)).
+5. **Decode by prompt length on two cards** (180/230 W) falls from 121.6 tok/s at 512 tokens to 54.7 at 131,072 and
+   39.3 at 245,760, drafted == serial in 21 of 21 pairs; not rerun at 230/230 W (pending, 2026-11-19) ([table](#decode-by-prompt-length-two-cards)).
 
 ## What you need
 
-- Two Arc Pro B70 32 GB on PCIe 4.0 x8/x8 (CPU root ports). Card 0 at 180 W with a 2,400 MHz clock cap (the
-  operator's cooler profile), card 1 at 230 W and 2,800 MHz. Card 1 drives the desktop.
+- Two Arc Pro B70 32 GB on PCIe 4.0 x8/x8 (CPU root ports). Card 1 drives the desktop. **Measured** with card 0 at
+  180 W and a 2,400 MHz clock cap (a cooler profile) and card 1 at 230 W / 2,800 MHz, until 2026-11-19 09:45 CET.
+  **Set today:** both cards 230 W / 2,800 MHz ([recipe 0](RECIPES-B70.md#0-host-both-cards-at-230-w-and-2800-mhz)).
 - Linux 7.0.0-28, Intel compute-runtime 26.05.37020.3, Level Zero loader 1.28.2, Zig 0.17.0, ocloc 26.05.
 - TensorFold: our branch [`tp2-attn-prefix`](https://github.com/SergiioB/TensorFold/tree/tp2-attn-prefix)
   (`2286abc0c`, PR #3586 at `480167c75` plus the prefix kernel) for the measurements;
@@ -45,7 +47,8 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards, TensorFold `-
 
 ## What scales and what does not
 
-Dev runner (`xpu-qwen27`), 256 decode steps, greedy, DFlash2 tree of 15. Rates are the runner's own decode rates.
+Dev runner (`xpu-qwen27`), 256 decode steps, greedy, DFlash2 tree of 15. Rates are the runner's own decode rates. Two-card rows at 180/230 W
+(card 0 / card 1), 2026-11-19 02:16–03:06 CET; the 230/230 W rows are in the [update](#update-2026-11-19-equal-caps-speed-levers-runtime-ab-llamacpp).
 Drafted == serial in every completed run (13 of 13 in job 110, 8 of 8 in job 111).
 
 | Prompt | Cards | n | Drafted tok/s | ms a drafted round | Serial tok/s | Serial ms a token |
@@ -66,7 +69,7 @@ times from the profiled runs, wall times from unprofiled runs in the same job. O
 second 68-token pair agreed within 0.1 ms a round. Rank 0 (card 0) is the critical path. This replaces the
 arithmetic budget of the first version of this page, which left 8.6 ms of the round unexplained.
 
-**Drafted round, 68 tokens: 33.1 ms on two cards, 41.4 ms on one.**
+**Drafted round, 68 tokens: 33.1 ms on two cards at 180/230 W, 41.4 ms on one.** (230/230 W: 31.65 ms, in the update.)
 
 | Part (rank 0) | ms a round |
 |---|---:|
@@ -112,7 +115,7 @@ host per exchange lose; that is the llama.cpp `-sm tensor` case below.
 ## The driver setting that must stay on
 
 Intel's compute runtime submits work through direct submission (NEO ULLS) by default on these cards: 23
-`DRM_IOCTL_XE_EXEC` calls per host test with the default, 544 with it forced off. Interleaved, 68 tokens, job 111:
+`DRM_IOCTL_XE_EXEC` calls per host test with the default, 544 with it forced off. Interleaved, 68 tokens, job 111, 180/230 W:
 
 | Cards | Default drafted | `EnableDirectSubmission=0` drafted | Change | Serial default → off |
 |---|---|---|---|---|
@@ -257,8 +260,8 @@ Branch [`xpu-qwen27-w4a8-g64-prefill`](https://github.com/SergiioB/TensorFold/tr
 
 | Setup | Prompt tokens | Flag off | Flag on | Ratio | Decode off → on |
 |---|---|---|---|---|---|
-| Two cards | 7,976 | 3.604 s | 3.155 s | 1.14× | 140.7 → 142.7 |
-| Two cards | 32,552 | 16.170 s | 14.201 s | 1.14× | 115.8 → 116.8 |
+| Two cards (180/230 W) | 7,976 | 3.604 s | 3.155 s | 1.14× | 140.7 → 142.7 |
+| Two cards (180/230 W) | 32,552 | 16.170 s | 14.201 s | 1.14× | 115.8 → 116.8 |
 | One card (GPU1, 230 W) | 7,976 | 4.652 s | 3.827 s | 1.22× | 114.5 → 111.0 |
 | One card | 32,552 | 21.567 s | 18.144 s | 1.19× | 89.9 → 88.9 |
 | One card, one diagnostic run | 130,856 | 128.918 s | 115.176 s | 1.12× | 50.7 → 50.7 |
@@ -377,6 +380,7 @@ round; what remains is card 1 idling while card 0 runs the drafter and argmax (4
 | Lever | Code tok/s off → on at 68 / 8K / 32K / 128K | Result |
 |---|---|---|
 | `XPU_GU_WIDE64=1` (`dec_wide64`-class kernel for the per-card gate/up shape) | 173.67 → 170.39, 151.53 → 149.23, 123.88 → 122.02, 81.68 → 80.81 | **loss** of 1.07–1.94 % in all 8 cells; not carried ([DNR-030](../DO-NOT-REPEAT.md)) |
+| `XPU_GU_KERNEL=d16`, `v32`, `w8` (three more gate/up kernels, one pair each, 68 tokens and 32K) | d16 173.48 → 162.99, v32 173.68 → 172.25, w8 173.68 → 172.25 at 68 tokens | **loss** in all 12 cells (−0.57 to −6.05 %), same hashes; not carried |
 | `XPU_DATTN_SPLIT=1` (drafter attention split over key chunks, commit `f352f8c89`, not pushed) | 173.61 → 176.93, 151.52 → 166.05, 123.75 → 134.84, 81.63 → 85.63 | **+1.9 / +9.6 / +9.0 / +4.9 %**, prose +1.9 to +9.7 %; same token hash 8 of 8; drafted == serial. Screen; five-pair confirmation and one-card run pending (2026-11-19) |
 
 **Runtime 26.05 against 26.40** (dev runner, 68 tokens, 3 pairs, at 180/230 W): two cards 151.3 → 153.8 tok/s

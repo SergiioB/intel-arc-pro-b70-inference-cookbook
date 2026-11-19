@@ -15,7 +15,7 @@ intelinside response has the account ids removed.
 | `tp2-prefix-180-230/tp2/` | The same cells from 2026-11-18 (published in PR #90), the "before" column | 180/230 W, 2,400/2,800 MHz |
 | `tpdiag/prof/` | Dev-runner logs: `eq230-*` equal-cap budget (job 2195-c), `n40-*` runtime 26.05 against 26.40 (job 2195), `prof2-*` the 180/230 W budget; `.telemetry` files hold caps and temperatures per run | per run |
 | `tpdiag/neo-repro-runs/` | Profiler-hang reproducer runs on 26.05.37020.3 and 26.40.40196.8 | – |
-| `tptf-speed/` | Lever screens `l1` (`XPU_GU_WIDE64`, loss) and `l2` (`XPU_DATTN_SPLIT`, gain), 3 interleaved pairs each, `summary.json` from `speed_sum.py`; `l2-tp1` holds the one-card run's first arm only; the L2a commit as a patch; the L1 patch | 230/230 W |
+| `tptf-speed/` | Lever screens `l1` (`XPU_GU_WIDE64`, loss) and `l2` (`XPU_DATTN_SPLIT`, gain), 3 interleaved pairs each; `l1b-*` (three more gate/up kernels, one pair each, loss); `summary.json` from `speed_sum.py`; the L2a commit as a patch; the L1 patch. The one-card L2a run was still running at publication and is not included | 230/230 W |
 | `build/ocloc-26.05-build.diff` | One-line build change for ocloc 26.05 (Gemma 4 kernels only); applies on `ac346900b` | – |
 | `llamacpp-tp/` | llama.cpp `-sm tensor`: patches and APPLY, llama-bench and served cells (`base-single` one card, `probem-off` stock, `probem-on2` mode 2, `probem-diag` skip-allreduce bound), allreduce checks (`check-m2/`), crash stacks for `SYCL_CACHE_PERSISTENT` (`diag/`), the queue log with the mode-1 segfaults | 230/230 W |
 | `intelinside/` | Response of the intelinside.ai submission: custom runtime 29, results 364–377 | 180/230 W |
