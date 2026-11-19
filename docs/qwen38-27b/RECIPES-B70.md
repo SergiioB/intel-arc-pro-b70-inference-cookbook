@@ -75,17 +75,26 @@ the llama.cpp two-card runs below.
 
 ## 1. Build TensorFold (one build for every TensorFold recipe)
 
+Start in a directory with room for the checkout, build, and weights. If a `cookbook` checkout is already there, use
+it and skip the first clone.
+
 ```bash
+git clone https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook cookbook   # for the diff and patches
+git clone --filter=blob:none --no-checkout https://github.com/uxlfoundation/oneDNN onednn
+git -C onednn checkout --detach 86fb2323cdbecbbc596462923dbaad0ac6034dc6                # nGEN headers
 git clone https://github.com/SergiioB/TensorFold && cd TensorFold
-git checkout xpu-tp2-fixes-20261119        # ac346900b: PR #3586 (--tp 2) + prefix attention kernel + two fixes
-# ocloc 26.05 rejects one 128-GRF flag used only by Gemma 4 kernels; skip if your ocloc accepts it:
-git apply /path/to/results/qwen38-27b/recipes-equal-caps-20261119/build/ocloc-26.05-build.diff
-zig build xpu-native -Doptimize=ReleaseFast -Dngen-include=/path/to/onednn/third_party/ngen   # Zig 0.17.0
-# weights (the measured revision of the target is 22d8d538):
-hf download TensorFold/Qwen3.8-27B-MLX-4bit --local-dir Qwen3.8-27B-MLX-4bit
-hf download z-lab/Qwen3.8-27B-DFlash2 --local-dir Qwen3.8-27B-DFlash2
+# xpu-tp2-fixes-20261119: PR #3586 (--tp 2), prefix attention, and both fixes
+git checkout --detach ac346900b1266133dd0602a8b2afe50dc0f8079e
+# ocloc 26.05 rejects one 128-GRF flag used only by Gemma 4 kernels (build error "run ocloc (ocloc-rows_g4s)
+# failure ... exited with code 245"); skip this line if your ocloc accepts the flag:
+git apply ../cookbook/patches/tensorfold/ocloc-26.05-build.diff
+zig build xpu-native -Doptimize=ReleaseFast -Dngen-include="$PWD/../onednn/third_party/ngen"   # Zig 0.17.0 on PATH
+# weights, into this folder (the recipes below run from here):
+hf download TensorFold/Qwen3.8-27B-MLX-4bit --revision 22d8d538154e0e5b6f8dcb1fcc74a60a0798104c --local-dir Qwen3.8-27B-MLX-4bit
+hf download z-lab/Qwen3.8-27B-DFlash2 --revision 50307d4c4cde6860d4eee73e2547cd786fe8e8a4 --local-dir Qwen3.8-27B-DFlash2
 ```
 
+- [ocloc patch](../../patches/tensorfold/ocloc-26.05-build.diff).
 - Host stack measured: Linux 7.0.0-28, Intel compute-runtime 26.05.37020.3, Level Zero loader 1.28.2.
 - The served numbers were taken on `2286abc0c` (the same tree without the two fixes). Builds on top of `ac346900b`
   ran at the same speed: 173.6 / 151.5 / 123.8 / 81.6 tok/s at 68 / 8K / 32K / 128K in the flag-off arms of the
@@ -222,9 +231,15 @@ streams two one-card TensorFold servers gave 159–161 tok/s against 129–130 f
 XPU_ATTN_PREF=256 ZE_AFFINITY_MASK=1 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-native serve \
   Qwen3.8-27B-MLX-4bit --drafter Qwen3.8-27B-DFlash2 --tp 1 --parallel 32 --context 4096 \
   --prompt-cache-gib 0 --no-thinking --no-update-check --host 127.0.0.1 --port 8051
-# exl3xpu, one card, MTP3
+```
+
+Stop the TensorFold server before starting EXL3. Both commands use port 8051 and card 1.
+
+```bash
+# exl3xpu, one card, MTP3, turboderp 4.00 bpw
+hf download turboderp/Qwen3.8-27B-exl3 --revision 113cf7ab958054860e43fb7f3063b1af19171095 --local-dir exl3-4.00bpw
 docker run -d --network=host --device=/dev/dri -v /dev/dri/by-path:/dev/dri/by-path:ro --shm-size=8g \
-  -v /path/to/exl3-4.00bpw:/mnt/exl3model:ro -e ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE \
+  -v "$PWD/exl3-4.00bpw:/mnt/exl3model:ro" -e ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE \
   -e UR_L0_USE_COPY_ENGINE=0 -e SYCL_PI_LEVEL_ZERO_USE_COPY_ENGINE=0 \
   ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54bb51a2e8a6669a70f5a2d7696fabd12a5f8b7c469df02fdfecc79d3a \
   models/qwen3.8-27b-exl3-4.00bpw --gpu 1 --port 8051 --model-path /mnt/exl3model \
@@ -232,9 +247,16 @@ docker run -d --network=host --device=/dev/dri -v /dev/dri/by-path:/dev/dri/by-p
   --set vllm.enable_prefix_caching=false --set vllm.reasoning_parser=qwen3
 ```
 
+For one two-card server, use recipe 3 with `--parallel 4 --context 16384` and the build from recipe 1.
+[Fix B](TENSORFOLD-TWO-CARDS-20261119.md#fix-b-a-shared-draft-tree-took-another-attention-path) covers shared draft
+trees when several requests run together.
+
 Two-card and two-server arms with three passes: **pending** (2026-11-19).
 
 ## 7. llama.cpp GGUF on two cards (local patch)
+
+Use the `cookbook` clone from recipe 1 for the two patches. A Bash shell with `set -u` enabled can fail in oneAPI
+setup with `OCL_ICD_FILENAMES: unbound variable`.
 
 Stock llama.cpp `-sm tensor` is slower on two B70s than one card. Our local patch adds a peer-store allreduce
 (`GGML_SYCL_TP_P2P=2`): each card stores its F32 partial into the other card's memory and the add kernel waits on a
@@ -242,10 +264,12 @@ flag, with no host wait. Patches and checks: [`patches/llamacpp-sycl/`](../../pa
 [image and patch matrix](../IMAGE-AND-PATCH-MATRIX.md). Not proposed to llama.cpp.
 
 ```bash
+# Run from the parent of the cookbook checkout.
 git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp
 git checkout 78e05298f0d68abff41d08d79fa7469264b2aff0
-git apply /path/to/cookbook/patches/llamacpp-sycl/sycl-tp-p2p-0001-peer-copy-allreduce.patch
-git apply /path/to/cookbook/patches/llamacpp-sycl/sycl-tp-p2p-0002-peer-store-mode-2.patch
+git apply ../cookbook/patches/llamacpp-sycl/sycl-tp-p2p-0001-peer-copy-allreduce.patch
+git apply ../cookbook/patches/llamacpp-sycl/sycl-tp-p2p-0002-peer-store-mode-2.patch
+# If Bash has set -u enabled, use set +u before sourcing oneAPI. Restore set -u afterward.
 source /opt/intel/oneapi/setvars.sh
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx \
   -DGGML_SYCL=ON -DGGML_SYCL_F16=OFF -DGGML_SYCL_DNN=ON -DGGML_SYCL_GRAPH=ON \
@@ -253,9 +277,13 @@ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=icx -
 cmake --build build --parallel 10 --target llama-bench llama-server
 export SYCL_ENABLE_DEFAULT_CONTEXTS=1 UR_LOADER_USE_LEVEL_ZERO_V2=0 ONEAPI_DEVICE_SELECTOR='level_zero:*'
 export ZE_ENABLE_PCI_ID_DEVICE_ORDER=1 SYCL_CACHE_PERSISTENT=0 GGML_SYCL_ENABLE_GRAPH=0 GGML_SYCL_TP_P2P=2
+# Put the Qwen3.8-27B Q4_K_M GGUF at ./qwen38-27b-Q4_K_M.gguf or change -m.
 ./build/bin/llama-server -m qwen38-27b-Q4_K_M.gguf -ngl 99 -fa on -ctk q8_0 -ctv q8_0 -b 512 -ub 512 -t 8 \
   -lm none -dev SYCL0,SYCL1 -sm tensor -ts 1,1 --fit off -c 40960 -np 1 --reasoning off --host 127.0.0.1 --port 8046
 ```
+
+Check the GGUF against the SHA-256 in the [one-card baseline](../../results/qwen38-27b/recipes-equal-caps-20261119/llamacpp-tp/BASELINE.md)
+if you want to reproduce the table.
 
 | Patch (verbatim, apply in this order on `78e05298f`) | sha256 |
 |---|---|
@@ -274,7 +302,7 @@ Expect (Qwen3.8-27B Q4_K_M, q8_0 K/V, llama-bench `-r 3`, 230/230 W):
 | Two cards, stock `-sm tensor` | 23.28 ± 0.25 | 558.11 ± 2.88 | 23.60 |
 | Two cards, `GGML_SYCL_TP_P2P=2` | **32.18 ± 0.03** | 544.37 ± 1.73 | 31.89 |
 
-- Mode 2 is 1.14× one card and 1.38× stock on tg128. The served reply is the same text on all three setups.
+- Mode 2 is 1.14× one card and 1.38× stock on tg128. The original short prompt gave the same reply on all three setups. Check text equality on your own prompts before relying on it.
 - Skipping every allreduce (wrong output, a bound for this split) gives 38.09 ± 0.04 tg128.
 - Per allreduce at decode size: stock 49–52 µs, mode 2 25.8–26.5 µs. At prefill size (2,621,440 values) mode 2 is
   slower: 1,175 µs against 789 µs, which is why pp512 drops 2.5 %.

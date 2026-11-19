@@ -180,13 +180,9 @@ switch (measured later, 2026-11-18: resumed == fresh at 32K on one card, see the
 were measured on two earlier builds of the same kernels (hashes in each run's `env.txt`); the tagged build was
 checked against them at 0, 8K and 32K (`tag-pref256`).
 
-```bash
-git clone https://github.com/SergiioB/TensorFold && cd TensorFold && git checkout b70-attn-prefix-20261113
-# build as below, then:
-XPU_ATTN_PREF=256 ZE_AFFINITY_MASK=1 zig-out/xpu/bin/tensorfold-native serve Qwen3.8-27B-MLX-4bit \
-  --drafter Qwen3.8-27B-DFlash2 --parallel 1 --context 139264 --no-thinking --no-update-check
-# 262,144 context: add XPU_KV_INT8=1 and --context 262144
-```
+The prefix-kernel check used `b70-attn-prefix-20261113`. For a new setup, use the current
+[build](RECIPES-B70.md#1-build-tensorfold-one-build-for-every-tensorfold-recipe) and
+[one-card command](RECIPES-B70.md#2-one-user-one-card).
 
 ## Two cards for one stream (2026-11-18): 1.3× to 32K, 1.5× at 131K, 250K prompt with bf16 K/V
 
@@ -240,14 +236,10 @@ about 29K tokens re-read their whole context on every turn. With a budget that h
 Resumed text equals fresh text on all four turns at 32K on one card. Two cards, checked later on 2026-11-18: 5 of 5
 turns at 32K and 5 of 5 at 131K ([250K and warm sessions](LONG-CONTEXT-250K-20261119.md#warm-follow-up-turns-on-two-cards)).
 
-```bash
-git clone https://github.com/ashhart/TensorFold && cd TensorFold
-git fetch origin pull/3586/head:pr-3586-tp && git checkout -b tp2-attn-prefix pr-3586-tp   # head 480167c75
-git am /path/to/attn-prefix-on-pr3586-480167c75.patch
-zig build xpu-native -Doptimize=ReleaseFast -Dngen-include=/path/to/onednn/third_party/ngen
-XPU_ATTN_PREF=256 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-native serve Qwen3.8-27B-MLX-4bit \
-  --drafter Qwen3.8-27B-DFlash2 --tp 2 --parallel 1 --context 139264 --no-thinking --no-update-check
-```
+The original two-card build used PR #3586 at `480167c75` plus
+[the prefix-attention patch](../../results/qwen38-27b/tensorfold-two-card-tp2-20261118/patch/attn-prefix-on-pr3586-480167c75.patch).
+For a new setup, use the current [build](RECIPES-B70.md#1-build-tensorfold-one-build-for-every-tensorfold-recipe),
+[two-card command](RECIPES-B70.md#3-one-user-two-cards), and [cache sizes](RECIPES-B70.md#5-warm-multi-turn-sessions).
 
 Not run: more than one stream on two cards, sampled decoding, thinking on, retrieval at depth, battery repeats,
 int8 K/V on two cards, hours-long stability. The PR is unmerged and may change. Measured since, except stability
@@ -257,21 +249,9 @@ and [250K and warm sessions](LONG-CONTEXT-250K-20261119.md). Evidence:
 
 ## Reproduce
 
-```bash
-# TensorFold v1.2.4, Intel Level Zero build (Zig 0.17.0, ocloc 26.05)
-git clone https://github.com/ashhart/TensorFold && cd TensorFold && git checkout v1.2.4
-git apply /path/to/local-patch.diff            # drops a 128-GRF flag ocloc 26.05 rejects (Gemma 4 kernels only)
-git apply /path/to/tree-attn-row-split.patch   # optional: the long-context patch above
-zig build xpu-native -Doptimize=ReleaseFast -Dngen-include=/path/to/onednn/third_party/ngen   # ~2.5 min
-
-# weights: TensorFold/Qwen3.8-27B-MLX-4bit @22d8d538, drafter z-lab/Qwen3.8-27B-DFlash2
-ZE_AFFINITY_MASK=1 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-native serve \
-  Qwen3.8-27B-MLX-4bit --drafter Qwen3.8-27B-DFlash2 --parallel 1 --context 139264 \
-  --prompt-cache-gib 0 --no-thinking --no-update-check --port 8036
-# loads in ~7 s, 28.8 GB VRAM at 139K context
-python3 depth_bench.py run --base http://127.0.0.1:8036 --model qwen --prompts prompts-qwen38.json \
-  --out out --arm drafted --hwmon /sys/class/hwmon/hwmonN --depths 0,8k,32k,128k --reps 2
-```
+Use the [current recipes](RECIPES-B70.md) to build and serve TensorFold. The early single-card baseline used
+upstream v1.2.4. Its optional [row-split patch](../../results/qwen38-27b/tensorfold-depth-20261108/patches/tree-attn-row-split.patch)
+belongs to that historical comparison.
 
 EXL3 rows: `exl3_depth_run.sh` (image `ghcr.io/sergiiob/exl3xpu-mixedk@sha256:933eda54…`,
 turboderp 4.00 bpw weights, `max_model_len` 139264, prefix cache off), see [EXL3-XPU.md](EXL3-XPU.md).

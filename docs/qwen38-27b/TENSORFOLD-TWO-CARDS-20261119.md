@@ -200,12 +200,10 @@ with the cause and the default's allocation cost left as follow-up. Nothing was 
 
 ### Reproduce both fixes
 
-```bash
-git clone https://github.com/SergiioB/TensorFold && cd TensorFold
-git checkout xpu-tp2-fixes-20261119            # ac346900b: df3baa3ea (B); 78f42f240, 15adb58cf, ac346900b (A)
-zig build xpu-native -Doptimize=ReleaseFast -Dngen-include=/path/to/onednn/third_party/ngen
-# or apply results/qwen38-27b/two-cards-250k-routes-20261119/tptf/patches/000{1,2,3,4}-*.patch on 2286abc0c
+Use [recipe 1](RECIPES-B70.md#1-build-tensorfold-one-build-for-every-tensorfold-recipe) to build TensorFold and
+stage the weights. The branch contains fix B (`df3baa3ea`) and fix A (`78f42f240`, `15adb58cf`, `ac346900b`).
 
+```bash
 # Bug B: four prompts alone, then together, 3 repeats, drafted and "draft": false
 XPU_ATTN_PREF=256 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-native serve \
   Qwen3.8-27B-MLX-4bit --drafter Qwen3.8-27B-DFlash2 --tp 2 --parallel 4 --context 16384 \
@@ -281,7 +279,7 @@ hash is equal in all 8 cells and the accepted-draft counts are equal. Drafted co
 route. Posted on [issue #2543](https://github.com/ashhart/TensorFold/issues/2543#issuecomment-6978350342); tables in
 `upstream-receipt/receipt-tables.md`.
 
-## llama.cpp `-sm tensor`: local patch, correctness measured, speed pending
+## llama.cpp `-sm tensor`: peer-copy checks and peer-store benchmarks
 
 Stock llama.cpp `-sm tensor` on two B70s stages every allreduce through pinned host memory and blocks the CPU until
 both cards drain (two waits per layer). Our patch adds an opt-in F32 peer-copy allreduce (`GGML_SYCL_TP_P2P=1`): no
