@@ -11,6 +11,8 @@ not share a numeric authority or an interchangeable patch list.
 | EXL3 (exl3xpu engine) | One B70 | **Primary route:** trellis 4bpw + native MTP3 + fp8 KV; only route at full 262,144 context; clean correctness | [EXL3-XPU.md](EXL3-XPU.md) |
 | GPTQ-INT4 + native MTP | One B70 | General single-card Linux serving, long context, optional draft-INT4, and the established Pi/agent path — **legacy/reference: the W4A16 class fails the exact-answer battery on this model (all exports answer 30); prefer EXL3** | [QWEN38-VLLM-XPU.md](QWEN38-VLLM-XPU.md) |
 | TensorFold MLX 4-bit + DFlash2 | One B70, or two for one stream (`--tp 2`, upstream PR #3586) | Lossless speculation (drafted == non-drafted); fastest measured at short prompts; prefix attention kernel on our tag for 8K–131K; two cards 1.25–1.5× one card (screen 2026-11-18) | [TENSORFOLD-B70.md](TENSORFOLD-B70.md) |
+| TensorFold on two B70s, root causes and fixes | Two B70s | Why two cards gain 1.25–1.5× and not 2×, two fork fixes, decode by prompt length to 245,760 tokens (screen 2026-11-19) | [TENSORFOLD-TWO-CARDS-20261119.md](TENSORFOLD-TWO-CARDS-20261119.md) |
+| 250K context and warm sessions | One or two B70s | What fits at 262,144 context, int8 against bf16 K/V, retrieval, warm 250K follow-ups in 1.1–1.6 s on two cards (screen 2026-11-19) | [LONG-CONTEXT-250K-20261119.md](LONG-CONTEXT-250K-20261119.md) |
 | FP8 W8A16 + native MTP8 | Two B70 cards in TP2 | Research recipe for the Xe2 FP8 small-M kernel path; C1 evidence only, self-reported E2 | [FP8-TP2-W8A16.md](FP8-TP2-W8A16.md) |
 | Windows standalone | One display-attached B70 | Docker Desktop and experimental WSLC packaging with display-safe VRAM budgets | [WINDOWS-STANDALONE.md](WINDOWS-STANDALONE.md) |
 | Pi agent backend | Qwen3.8 server | Tool calling, provider configuration, and recommended thinking/non-thinking sampling | [PI-AGENT-BACKEND.md](PI-AGENT-BACKEND.md) |
@@ -27,8 +29,13 @@ unresolved. [ROUTE-CONFIRMATION-20261111.md](ROUTE-CONFIRMATION-20261111.md).
 
 **Since then:** the TensorFold prefix attention kernel (2026-11-13) and a sized prompt cache (2026-11-18) change
 the 16K+ and multi-turn picture: 90 tok/s at 32K and 51 at 131K on one card, follow-up turns in 0.3–1.1 s up to
-131K, and two cards for one stream. See [TENSORFOLD-B70.md](TENSORFOLD-B70.md). A same-session EXL3 against
-TensorFold re-measurement started on 2026-11-18 and has not reported; EXL3 stays the primary route until it does.
+131K, and two cards for one stream. See [TENSORFOLD-B70.md](TENSORFOLD-B70.md).
+
+**Same session, greedy (2026-11-19):** TensorFold is faster for one user to 32K (1.35–1.54× on code) and level at
+131K; exl3xpu reaches the first token 1.5–1.6× sooner from 32K, leads on one card at 250K (36.7 against 20.7 tok/s)
+and at 8–16 streams on one card; only TensorFold repeats its text.
+[ROUTE-GREEDY-SAME-SESSION-20261119.md](ROUTE-GREEDY-SAME-SESSION-20261119.md). The route decision of 2026-11-10
+was made at the model card's sampling, and that rerun is pending. EXL3 stays the primary route until it reports.
 
 Task quality against Nemotron Bolt 74B-A9B and Qwen3.6-35B-A3B on the same 94 tasks (EXL3
 4.0bpw route, one card): [MODEL-COMPARISON.md](../MODEL-COMPARISON.md).

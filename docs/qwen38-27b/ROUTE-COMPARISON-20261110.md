@@ -12,6 +12,11 @@ Raw cells, prompts hashes, scripts and logs:
 > battery ordering under the stricter full-answer grader. This screen is retained
 > as history; read the confirmation before quoting a winner.
 
+> **Greedy same-session data (2026-11-19):** TensorFold with the prefix attention kernel against exl3xpu, one
+> card, greedy, thinking off: [ROUTE-GREEDY-SAME-SESSION-20261119.md](ROUTE-GREEDY-SAME-SESSION-20261119.md).
+> It does not replace this page: this page measured the model card's sampling, and the rerun at card sampling is
+> pending (queued 2026-11-19, not run). The route below is unchanged until it reports.
+
 ## Result
 
 **Run EXL3 4.00 bpw with MTP3 (the launcher's default) and prefix cache on.** It is the
