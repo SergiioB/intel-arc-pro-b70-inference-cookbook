@@ -1,0 +1,123 @@
+From 78f42f240e648b0708355a64daefb90050fab900 Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 04:11:02 +0100
+Subject: [PATCH 2/3] xpu(qwen27): prompt-cache snapshots take one buffer per
+ layer
+
+saveSlot put a slot's whole state in one device buffer per TP rank. On
+two B70s with XPU_KV_INT8=1 that buffer reaches 2.8 GB at 165K tokens
+and 4.2 GB at 250K, and every resumed turn there failed with
+InvalidQwenToken after one token: the first 2 MiB of rank 0's snapshot
+(layer 0's GDN state, part of layer 1's) did not hold what the save
+copied, so the restored state carried NaN and the argmax returned
+0x7fffffff. A 2.25 GB state at 131K resumed without an error.
+
+Each layer now gets its own buffer (at most 2 x tokens x 520 bytes for
+an int8 attention layer per rank, 170 MB at 165K). Same bytes, same copy
+order. Measured on two B70s, 262,144-token context, 5 GiB cache, a
+165,109-token prompt and two follow-ups: the resumed text equals the
+cache-off text on all three turns, with 165,056 and 165,632 tokens
+resumed (it errored on both follow-ups before).
+
+Open: the cause of the bad 2 MiB in the single buffer. Standalone
+Level Zero copies of the same 160 regions into one 2.8 GB buffer are
+exact, so it is not the copy path alone.
+---
+ zig/src/xpu/slot_states.zig | 39 +++++++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
+
+diff --git a/zig/src/xpu/slot_states.zig b/zig/src/xpu/slot_states.zig
+index 71367d9b9..0bd2fbd58 100644
+--- a/zig/src/xpu/slot_states.zig
++++ b/zig/src/xpu/slot_states.zig
+@@ -15,8 +15,10 @@ pub fn slotBytes(_: *const Runner) usize {
+     return 48 * (2 * rec_b + 2 * conv_b) + 16 * 2 * kvBytes();
+ }
+ 
+-/// A slot's state after `at` prompt tokens (prompt cache): one device buffer per TP rank.
+-pub const Snap = struct { at: u32, bufs: [4]?*anyopaque = @splat(null), bytes: usize };
++/// A slot's state after `at` prompt tokens (prompt cache): one device buffer per layer and TP rank. One buffer per
++/// rank put a whole state past 2 GiB in a single allocation, where the B70's driver aliased its pages (TP2 int8 K/V
++/// from about 140K tokens on; see layerSnapBytes).
++pub const Snap = struct { at: u32, bufs: [4][q.LAYERS]?*anyopaque = @splat(@splat(null)), bytes: usize };
+ 
+ pub fn recBytes() usize {
+     return @as(usize, q.tpShape().gv) * 128 * 128 * 4;
+@@ -35,10 +37,15 @@ pub fn kvScalesRow() usize {
+     return @as(usize, q.tpShape().akv) * 4;
+ }
+ 
++/// A layer's bytes in a state at `at` tokens: K and V rows (and int8 scales) for attention, else GDN and conv states.
++fn layerSnapBytes(attn: bool, at: u32) usize {
++    return if (attn) 2 * @as(usize, at) * (kvRow() + if (q.kv_i8) kvScalesRow() else 0) else recBytes() + convBytes();
++}
++
+ /// Per-rank bytes saveSlot takes at `at` tokens.
+ pub fn snapBytes(r: *const Runner, at: u32) usize {
+     var n: usize = 0;
+-    for (&r.model.layers) |*l| n += if (l.attn) 2 * @as(usize, at) * (kvRow() + if (q.kv_i8) kvScalesRow() else 0) else recBytes() + convBytes();
++    for (&r.model.layers) |*l| n += layerSnapBytes(l.attn, at);
+     return n;
+ }
+ 
+@@ -57,10 +64,10 @@ pub fn saveSlot(r: *Runner, slot: u32, at: u32) !Snap {
+     for (0..r.tp) |rk| {
+         const d = r.devAt(rk);
+         const m = r.modelAt(rk);
+-        const buf = try d.alloc_(bytes);
+-        snap.bufs[rk] = buf;
+-        var o: usize = 0;
+-        for (&m.layers) |*l| {
++        for (&m.layers, &snap.bufs[rk]) |*l, *slot_buf| {
++            const buf = try d.alloc_(layerSnapBytes(l.attn, at));
++            slot_buf.* = buf;
++            var o: usize = 0;
+             if (l.attn) {
+                 for ([_]*anyopaque{ l.kc.?, l.vc.? }) |c| {
+                     try copy(d, off(buf, o), c, @as(usize, at) * kvr);
+@@ -72,9 +79,8 @@ pub fn saveSlot(r: *Runner, slot: u32, at: u32) !Snap {
+                 }
+                 continue;
+             }
+-            try copy(d, off(buf, o), l.rec.?, rb);
+-            try copy(d, off(buf, o + rb), l.conv[l.conv_cur].?, cb);
+-            o += rb + cb;
++            try copy(d, buf, l.rec.?, rb);
++            try copy(d, off(buf, rb), l.conv[l.conv_cur].?, cb);
+         }
+     }
+     return snap;
+@@ -91,9 +97,9 @@ pub fn restoreSlot(r: *Runner, slot: u32, snap: Snap) !void {
+     for (0..r.tp) |rk| {
+         const d = r.devAt(rk);
+         const m = r.modelAt(rk);
+-        const buf = snap.bufs[rk].?;
+-        var o: usize = 0;
+-        for (&m.layers) |*l| {
++        for (&m.layers, snap.bufs[rk]) |*l, slot_buf| {
++            const buf = slot_buf.?;
++            var o: usize = 0;
+             if (l.attn) {
+                 for ([_]*anyopaque{ l.kc.?, l.vc.? }) |c| {
+                     try copy(d, c, off(buf, o), @as(usize, at) * kvr);
+@@ -105,9 +111,8 @@ pub fn restoreSlot(r: *Runner, slot: u32, snap: Snap) !void {
+                 }
+                 continue;
+             }
+-            try copy(d, l.rec.?, off(buf, o), rb);
+-            try copy(d, l.conv[l.conv_cur].?, off(buf, o + rb), cb);
+-            o += rb + cb;
++            try copy(d, l.rec.?, buf, rb);
++            try copy(d, l.conv[l.conv_cur].?, off(buf, rb), cb);
+         }
+     }
+     r.pos = at;
+@@ -117,7 +122,7 @@ pub fn restoreSlot(r: *Runner, slot: u32, snap: Snap) !void {
+ }
+ 
+ pub fn dropSnap(r: *Runner, snap: Snap) void {
+-    for (0..r.tp) |rk| if (snap.bufs[rk]) |p| freeAfterQueue(r.devAt(rk), p);
++    for (0..r.tp) |rk| for (snap.bufs[rk]) |b| if (b) |p| freeAfterQueue(r.devAt(rk), p);
+ }
+ 
+ /// Frees `p` once the queue has drained; kept (until the device closes) when the queue cannot be waited for.

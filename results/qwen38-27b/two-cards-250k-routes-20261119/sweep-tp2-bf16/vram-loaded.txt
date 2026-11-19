@@ -1,0 +1,2 @@
+gpu0 visible_avail_mib=11810
+gpu1 visible_avail_mib=14179

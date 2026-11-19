@@ -1,0 +1,6 @@
+server 684902 up on 8046
+{"turn": 0, "prompt_tokens": 32552, "cached_tokens": 0, "ttft_s": 15.962, "decode_tok_s": 117.32, "equal": true}
+{"turn": 1, "prompt_tokens": 33088, "cached_tokens": 0, "ttft_s": 16.254, "decode_tok_s": 77.47, "equal": true}
+{"turn": 2, "prompt_tokens": 33272, "cached_tokens": 0, "ttft_s": 16.406, "decode_tok_s": 84.15, "equal": true}
+{"turn": 3, "prompt_tokens": 33534, "cached_tokens": 0, "ttft_s": 16.581, "decode_tok_s": 139.03, "equal": true}
+{"turn": 4, "prompt_tokens": 33815, "cached_tokens": 0, "ttft_s": 16.843, "decode_tok_s": 160.14, "equal": true}

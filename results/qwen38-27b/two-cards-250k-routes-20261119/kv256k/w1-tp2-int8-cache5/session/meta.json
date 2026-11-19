@@ -1,0 +1,11 @@
+{
+ "model": "qwen",
+ "base": "http://127.0.0.1:8046",
+ "kind": "code",
+ "depth": "256k",
+ "turns": 3,
+ "max_tokens_followups": 128,
+ "seed_prompt_sha256": "1968ad131a603a19e61dff5654b8af016189b505a359b10e30b6d86da56c8b49",
+ "approx_seed_tokens": 249773,
+ "utc_start": "2026-11-18T14:20:07Z"
+}

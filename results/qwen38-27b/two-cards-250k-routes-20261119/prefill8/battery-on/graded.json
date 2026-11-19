@@ -1,0 +1,2307 @@
+{
+"drafted": {
+"he-000": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "693c74127c0f8ff0d37eb26261623c8234dc8bbdb3897fcc539e9e4b41f792c8",
+"detail": "PASS"
+},
+"he-001": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "0aa99d9f4c34c10fb8bd367e5552cb196105e873e656b0a9bad1d0e76a04b414",
+"detail": "PASS"
+},
+"he-002": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "029220b47b8f0be3c68c840f5396b450f116e3c6da677a8f5d4853e808b098e4",
+"detail": "PASS"
+},
+"he-003": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "6a4eae059484f334f3a2e1c38db1c246e9cde1563e4d6053d594e5285e123065",
+"detail": "PASS"
+},
+"he-004": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "eb1c93df786e16b7484af6dbc86636b51dbb5076ebb96cce7a3369ad70646310",
+"detail": "PASS"
+},
+"he-005": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "b04f08df1116fce557f322c67c3eb0ba1ed0d22f2c6d1cb2a57de38aaf479fd4",
+"detail": "PASS"
+},
+"he-006": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "e6fc6eeb9a4ef7e39c565c3effefb132b40f287fa63a2e346218638ecc80fa29",
+"detail": "PASS"
+},
+"he-007": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "c5cdf9b7531a6e47b9643d72359f7dec793e83c6b213642fbb46edc8bc18ab24",
+"detail": "PASS"
+},
+"he-008": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "545a0ec81a61cb41f2193884ae8f45130beef02d62945cbc0e8a0ebd2c4789ed",
+"detail": "PASS"
+},
+"he-009": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "8d403f852f86c2fb12da3d04fd65293cbcf9723421bb85e56fdae59ebf6832ee",
+"detail": "PASS"
+},
+"he-010": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "0e5af46a8a9ae7b9087c1c270a573f7ff1bda79045443af351fe43a8edee5014",
+"detail": "PASS"
+},
+"he-011": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "44bc621dc6b3d2b921be10eafa45e3b49be95e1f99aa282173b9efa83dc82cd4",
+"detail": "PASS"
+},
+"he-012": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "750cbeab1375e25cd5ccac1747520d4271ea7e8965c68cc1436799e73b4a0370",
+"detail": "PASS"
+},
+"he-013": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "4fb98e93faec83901182a841b4bdc99904ee50713bc9bda76bbd5fb1982546a3",
+"detail": "PASS"
+},
+"he-014": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "db9f8e8755ff86f80158e9f03e1a117d5dec88c1f44e292353ac86bc4c708553",
+"detail": "PASS"
+},
+"he-015": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "fc3e42fdd3afd7bce143dd84fbbb0b79bf8c15b9187bd0ade188a5f1fb4aed04",
+"detail": "PASS"
+},
+"he-016": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "9f726030396077cdf445de9f217cb76a5189b29560e0a51306f15cdfad50dc9e",
+"detail": "PASS"
+},
+"he-017": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "84263e099af1a81151561dcdccce7e42c34c1224f24d9531ce4d8b3f1a0580fd",
+"detail": "PASS"
+},
+"he-018": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "a124a487bb406afa6b1b65c0c68a636afc27609e7a7b650a0e4c41c0a156c63f",
+"detail": "PASS"
+},
+"he-019": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "e46f74adf82698314e3ae06cc5d839d6a7f58e20b0e75abd0822fac5988a4372",
+"detail": "PASS"
+},
+"he-020": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "e53c19774c597fd5852ae9cfd5d82629eb56dcd0ca930fbec953fdcf63f355a6",
+"detail": "PASS"
+},
+"he-021": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "6a0fc7b7c700c5f6d4c7220b662405c2cdcf2154356c05bcc18eaaba9f60b4be",
+"detail": "PASS"
+},
+"he-022": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "6f15a01615688056b57997cf2025930e9d6571bc8b2e830103cd145288b83dde",
+"detail": "PASS"
+},
+"he-023": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "d4da8209ed4da3bd540867af01d1f8143dd365bf7f3e08410c0d0d7be1a8aed3",
+"detail": "PASS"
+},
+"he-024": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "ba690e90cc14372740c9e6c079653cac1e6691600dbd61a6f9aa44dc02dcc7d3",
+"detail": "PASS"
+},
+"he-025": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "0c21fdce707bd99b80fe48e57dfd3f2c3e5998f5f918ff44dd26b745c81f60e8",
+"detail": "PASS"
+},
+"he-026": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "b9f396a11915f258d92bcad9005064ae924b068717706d51ec0bafb4054d02cf",
+"detail": "PASS"
+},
+"he-027": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "14450aede34d5abfcf278e5a15756f294ee6d5e817aba7f41c83cafa4a4acd30",
+"detail": "PASS"
+},
+"he-028": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "b4ced1017c7f45299223d8221fabe8e92bbb08aedac0ad03ca6ea6bc69443b73",
+"detail": "PASS"
+},
+"he-029": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "4b0b13c1ed099ef1c79dbae8f0def3ff678bfddbedfe798501311de107fc2fdf",
+"detail": "PASS"
+},
+"he-030": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "c6040d2674a5f5669c433d1642fde0eb7d84df11fbcdaa39e30cd0fc6a4fccc4",
+"detail": "PASS"
+},
+"he-031": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "f439ac2b087692c0a211f8bc45afccf45702a628c4f5461c479f4a403c64b7c8",
+"detail": "PASS"
+},
+"he-032": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "8f32e5906b43e3d49a651de8f05700d97377e221cbd03c8cc9fe38ed6d2fb6d1",
+"detail": "PASS"
+},
+"he-033": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "1f4878fde2a6710601d4100b872c4731d6f5b959ccee738f4ed5bf918cf5691d",
+"detail": "PASS"
+},
+"he-034": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "3b64bd4ab02ecde345860107e9e1cffe060f6bce7c4b6cf312b7b9c57196761a",
+"detail": "PASS"
+},
+"he-035": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "8fbfb93f4ed7dcd31f27a5242e77a4b21f58a0b89991ef4c99124890db66f58d",
+"detail": "PASS"
+},
+"he-036": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "7e0cdbc51ce6bb6a20fd6f859ee050bd690b51b593a85e06c44ca2a9405081ca",
+"detail": "PASS"
+},
+"he-037": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "f0d2f2a3c3a0a01abbdf6710b8b492a47d674ed2ab758abbc7d20868c5dff151",
+"detail": "PASS"
+},
+"he-038": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "10cf1fc2ecf9a1a2c48f6f02bff51f79974ac044e61f6fcf14d14e770abe4629",
+"detail": "PASS"
+},
+"he-039": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "d3226425f070c5521e1a684f536330b5f851dc89edcd95ff715853b26bcf5534",
+"detail": "PASS"
+},
+"he-040": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "a0b8c6f8cae6962fa99020dd664827a6d2523243e843693175dc835faac993a7",
+"detail": "PASS"
+},
+"he-041": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "a8ee047bd2f5276817cd02c48d4f9ba3f8c263791eb77a19ea732b68c49d6ceb",
+"detail": "PASS"
+},
+"he-042": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "92763bf2e56be2c46a803320f13d00f2bd8a09db5686c746a0a23b8023c069f0",
+"detail": "PASS"
+},
+"he-043": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "897f30aad9417fe19f969b8257a8764436d23a17738c266b329ddc9f897aedbc",
+"detail": "PASS"
+},
+"he-044": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "1bcf39d5e6b7f2cd09f20308a041c66b13a8739c442fb7b26b2b1d4b2c191635",
+"detail": "PASS"
+},
+"he-045": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "d186f2f1a0a296f9f0e9e36c63c103b6ecd5c53df2e8c1913463bdfb718c14e7",
+"detail": "PASS"
+},
+"he-046": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "a70f50a77892777150e6c290cf2145c9bde99980f09257f3d3a00c81566efda0",
+"detail": "PASS"
+},
+"he-047": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "37c93056fd121c56a3a11d6610d2c6cd66738c56ee1dee3dbc9f32b392ed3c85",
+"detail": "PASS"
+},
+"he-048": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "01683a4bd71f62d692ae7cf902430ede0ff6cf4570ddd8daa855cfd0335e94b7",
+"detail": "PASS"
+},
+"he-049": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "0b6ae7e48820c3acb0c1be8e219bb8666e32308385703f42083b47a6d17bd99c",
+"detail": "PASS"
+},
+"he-050": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "25b6701578292b02f5537f0aae758bb87efebcb40c4fe1c4d4675f4ce4a98bdc",
+"detail": "PASS"
+},
+"he-051": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "0ca00f39b6d93a62b66f084639ed8e85587044ba57e291cbf6ac93df3d95314e",
+"detail": "PASS"
+},
+"he-052": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "32b2d6d62c0a4eda842ecc3e2988684d669855eb5bb7c707d13a5d733a741d33",
+"detail": "PASS"
+},
+"he-053": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "4c69312cd1bcb683c45ecaa60cdc8a761d2890de4e2685b9d61c50014ca906fe",
+"detail": "PASS"
+},
+"he-054": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "ffe0128653e2fdcbb89309561443aafcf22a9d6acd6f012d2130ec696835bd6a",
+"detail": "PASS"
+},
+"he-055": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "7b390012a96665d58e602c5323f76167a706f0ee9c47b26476c87e887b4ffe54",
+"detail": "PASS"
+},
+"he-056": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "52172cb3a5f8c720f466bac6c9e990d187c2cdbea4e5ee14b525120ce75e3b33",
+"detail": "PASS"
+},
+"he-057": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "66110a6ad5c6e3b1fb3afd8393c89c8a949411f5b0c6bd39bdac62edc571476d",
+"detail": "PASS"
+},
+"he-058": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "f03f6d1d32d99b2707b5268e84f18e23bedf00fa75e11505f44bfc53ab4024b3",
+"detail": "PASS"
+},
+"he-059": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "c22699231b8ed802baf7a2c574278805ee8a36a217e4c229f277709957ae231d",
+"detail": "PASS"
+},
+"he-060": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "929c9b5d4ec1140f7000cb9e71b9fe9f88011c2ad2f5a251cb8d497a1501db05",
+"detail": "PASS"
+},
+"he-061": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "96150fd8399b62e67a59fcccc6ce874532dfba23c9ae74a4b8b7f0648f3b0fab",
+"detail": "PASS"
+},
+"he-062": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "19c02b9b80245edd5d30a9d8c4d46ae96396292d96d4ca57526949c2fedd605f",
+"detail": "PASS"
+},
+"he-063": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "cdb020a4836be72bd291ce599a3377be12744312fa51404f03d5be24f739a018",
+"detail": "PASS"
+},
+"he-064": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "19c279ef70ea824aef677a6712b5430757e740d31f67f65ec3051eb12dce5dfc",
+"detail": "PASS"
+},
+"he-065": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "5da54164f4904a3933b0b63b5fe28b2d1e598c104e4df66d56b41d020ddfb86a",
+"detail": "PASS"
+},
+"he-066": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "41371fc04c3c025650f2f5d236720a6b01e89cc81969188fec34b32113640111",
+"detail": "PASS"
+},
+"he-067": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "11fc01b0c051c759f402c3ba3b191ca39c6f4eaf204253db3645cb967ed93767",
+"detail": "PASS"
+},
+"he-068": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "87d117b6f92e3ea9109cf4e46dc99f82d2409b6887dde6b9d9e1c49e9f0e974b",
+"detail": "PASS"
+},
+"he-069": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "4614b6d5ebf51e8b76bfe1ee4f203acdf9612d1b385615efb7d01f5d214d5475",
+"detail": "PASS"
+},
+"he-070": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "a318827a82d8e31e2de710bc5e2dd55e3a18d61832da65fa8bd93519e45e5942",
+"detail": "PASS"
+},
+"he-071": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "eb575129a8a02211679684807a68ecdaaf078c383ce56c3bc472ac4113ec0b57",
+"detail": "PASS"
+},
+"he-072": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "4692d415ddfe6a12cbd878ce36c75e8e70922edfc82dc82843c49de35b4bca6a",
+"detail": "PASS"
+},
+"he-073": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "1bbb3405efd4557c4b76ba3aaef9b799817fe4527c97d7bf829c1db29390cb50",
+"detail": "PASS"
+},
+"he-074": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "1eb27d40e05067e9c9d8f6f9bb1ec43c8e22758772a4a46fbb56ffca410677a6",
+"detail": "PASS"
+},
+"he-075": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "307df69384d8aacb50400a85717bc8fba86826a64a36cf722cfc239cfa2f4b71",
+"detail": "PASS"
+},
+"he-076": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "c45d453fe90ce6e94518749e7d9be75d2951100d8322c8d1850c0e40d90b38c6",
+"detail": "PASS"
+},
+"he-077": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "1b33fd8eb0b3dc2208478fd8365489d9057f766b81ab9635d0e5a8b2723e94a9",
+"detail": "PASS"
+},
+"he-078": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "814d677f299ab9175d670af7fa8ee9e2f338b6f837be5d7914c4f9719a3e26d1",
+"detail": "PASS"
+},
+"he-079": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "fdce294b274bfdd866ac07e315d611ac9e477508d26f47afbef604bac6323f61",
+"detail": "PASS"
+},
+"he-080": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "bfda2bf643c44254c2f441ab1fc7818e7783180eefcb09d55e8f1859ab868cae",
+"detail": "PASS"
+},
+"he-081": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "10e795af24631696a523d9ffcbeb7f76d2a702e8545caba81d9916c4a826e339",
+"detail": "PASS"
+},
+"he-082": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "d7f7ce461e23a999f6f8ace46be48ba0cc6d26605d602a4eebae5f0972918814",
+"detail": "PASS"
+},
+"he-083": {
+"split": "test",
+"passed": false,
+"finish": "stop",
+"sha256": "019366594c9612560cce8185d4a01b7c3e0eca3b57a63b50299e5924397750b9",
+"detail": "File \"/tmp/tmpx81k6iay.py\", line 32, in check\n    assert candidate(2) == 18\n           ^^^^^^^^^^^^^^^^^^\nAssertionError"
+},
+"he-084": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "9cd5b48683c2c770c81d22bcd9a8a63754f28486e4611eaba5a5ece2bedcdbdd",
+"detail": "PASS"
+},
+"he-085": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "bb3db05d4afff0421df99e132936efb82a41de641324ff4cf51ecd5a8bb1851c",
+"detail": "PASS"
+},
+"he-086": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "d7bf06c46d0055ce2807afeb6068e762e5b5c629e9f401240314ab0631018b2c",
+"detail": "PASS"
+},
+"he-087": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "065824d9d942b059473c077b02a6d67f9bda45375dd05184b5a358b38a7846e8",
+"detail": "PASS"
+},
+"he-088": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "0c5fb914f08f4724057698b6222a967e566f51170bf2f1c27f244bc0e901851a",
+"detail": "PASS"
+},
+"he-089": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "eeeb33e45df3c028406d1297e2976d74b08ac0c0b7ac6079b5f5b58e904edf02",
+"detail": "PASS"
+},
+"he-090": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "b8718b0d425cc83c01bac437371ab3e74cb45aa0a59305abe1d64c47abdb2753",
+"detail": "PASS"
+},
+"he-091": {
+"split": "test",
+"passed": false,
+"finish": "stop",
+"sha256": "e82b3e152113b923ea00735e1e4d94f83794c318421ef52ce454588ea0877d4b",
+"detail": "assert candidate(\"Is the sky blue?\") == 0, \"Test 2\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Test 2"
+},
+"he-092": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "925376630c4c9f76c401d2459adbe9c416265fde5ffa4af9ea908096325713aa",
+"detail": "PASS"
+},
+"he-093": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "03a5df1e92ec47cf955a6f9096414076d4e0d70cc52ee8ede4125bce812892c5",
+"detail": "PASS"
+},
+"he-094": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "1bac37cb05c9c59178b0e9f1d72530a7dc5ee88c50c748a694cfb79421c141ea",
+"detail": "PASS"
+},
+"he-095": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "ff43ecc43991a32484873747130df41520e8f5d147f19bf77ca97826c9b7baf0",
+"detail": "PASS"
+},
+"he-096": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "cebd0a2dbeb53f8869535728ce10c7e01fbe04043581ddd7930dd16baa7c1527",
+"detail": "PASS"
+},
+"he-097": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "75da26ef823f6c373208beac4e74386b596b15a274ebbe875bca6462c8f08cdd",
+"detail": "PASS"
+},
+"he-098": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "85ec33194da6ee37e08354176167597efd55fc25e1ec84bce4f777953f6f76c3",
+"detail": "PASS"
+},
+"he-099": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "da33de983605453e25728f446e05134a7e3f7274409b4776f95a0ac2c3af2b58",
+"detail": "PASS"
+},
+"he-100": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "328b92d7e0cf2616d0335e36ee95bb23cc4916c7ec7add77dc468723ba676009",
+"detail": "PASS"
+},
+"he-101": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "5ec9a7c8b1d67a816ed7e04b6e43c2daf9e9530a4219965d02fcd98db7e7f9e9",
+"detail": "PASS"
+},
+"he-102": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "40a543b9a6772d0f775cfb4958af15207d28a12837f76d98cc68d92f64982cf8",
+"detail": "PASS"
+},
+"he-103": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "e2cd52567b7bf022ddeb5717e2a7c77dd200d38c6d1dcb2e92647afd431baf42",
+"detail": "PASS"
+},
+"he-104": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "8356c9b83ca3826e3019a0db2c7d79adbafd605d19876511d4edcea5845b17a3",
+"detail": "PASS"
+},
+"he-105": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "c419e97cc474f9eb1b0b83093b6051fd193dad6c6f7358722cf89040c2b9d3b6",
+"detail": "PASS"
+},
+"he-106": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "1d0df499a0155c1a0119493819d684fa75a4f7f79ea0f3520def1a609d200d11",
+"detail": "PASS"
+},
+"he-107": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "fdd408e1e582b17e31a4bd810dcedd875cde948e0ed85395fc96241a7aa48083",
+"detail": "PASS"
+},
+"he-108": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "c884391dc78e1bbee1e51034ecf4f6e6a865bfae9673ccfc6bd545b40ddfc24f",
+"detail": "PASS"
+},
+"he-109": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "8ae8677a5f509b2c3f1eed2653d65507533a2d9cb32c1a75d0df47095a06eca7",
+"detail": "PASS"
+},
+"he-110": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "67f781edb746e2ef54e6b11583ccd8ef3d089563551f6707e12ece7622246a7c",
+"detail": "PASS"
+},
+"he-111": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "33512be87c2d219f93a2dead3b0219289b9a7b3eabee760e53ef82092be2b3f5",
+"detail": "PASS"
+},
+"he-112": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "24fa2cd5c629a6fbf38dd358ad77c6a021407e9aeed67980b79b7b82463bc36f",
+"detail": "PASS"
+},
+"he-113": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "ecb4866a4af09e40d0f8b1dfeb9a8fbc4ad16f6e3c036906e001749b42dad322",
+"detail": "PASS"
+},
+"he-114": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "33328f56a12ff74a16b8baf364377e4667fb45f8a1514d8635b4b4de3369b57b",
+"detail": "PASS"
+},
+"he-115": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "b759f3b7f8b1593dd6e5d5f93c976abf2a776523b5ea9403668fa110e9ef898d",
+"detail": "PASS"
+},
+"he-116": {
+"split": "tune",
+"passed": false,
+"finish": "length",
+"sha256": "28f8ccbf46e4e630c530d7d5196030294e2b05a031a34f0a7df73b3fa0f0566f",
+"detail": "File \"/tmp/tmpo8ljkuwt.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax"
+},
+"he-117": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "f6a42de17e4073678e674c2b46c2dee3f2dda3d73c3a399faa7b3346123b783d",
+"detail": "PASS"
+},
+"he-118": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "f75cf0e7237085604e750cf4174578bad9e66b1c798a16a52a1e37f0a6081608",
+"detail": "PASS"
+},
+"he-119": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "73a59abc7331237af14605feb68e7dfcd9c07648618189f337c106c404c9cbc1",
+"detail": "PASS"
+},
+"he-120": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "44528d7cefc1b1a992f5be292fb8266246e39c4689c45148a91297db33c1dd4a",
+"detail": "PASS"
+},
+"he-121": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "f9edc127cf0bf82c0337a752cb490a558d092fe71042aa91e13087d9c757c136",
+"detail": "PASS"
+},
+"he-122": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "0d9404f017f8a6c4b29b3e4214d59b1c270378c0197becad84b32c55dfa9d43a",
+"detail": "PASS"
+},
+"he-123": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "e53bdb998aa5fd3c33c4047a0854e6d7a4e182becef46f410240206469633f71",
+"detail": "PASS"
+},
+"he-124": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "f4d31fa0f3d0fa7f7a2fb17aa21dba245853808fc0c443136ab7e395c50ddc07",
+"detail": "PASS"
+},
+"he-125": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "5319c4cd4a3d513dc316f7136c13c57b84aacd8031edfcbd2d555910116cd6a6",
+"detail": "PASS"
+},
+"he-126": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "5b2d1229812ed3b8628f46f834b66570971ed601a4aec73bd50342fe10e1890c",
+"detail": "PASS"
+},
+"he-127": {
+"split": "test",
+"passed": false,
+"finish": "stop",
+"sha256": "51f83dc00ad7c730b58c9b6ff0064ccbfe5d8680fe5ae5e1090e124dd49f9a0a",
+"detail": " 61, in check\n    assert candidate((-1, 1), (0, 4)) == \"NO\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
+},
+"he-128": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "0caaa1bd561979082946fd8c9347ab4a27854f3199f64678865b482667cfb73e",
+"detail": "PASS"
+},
+"he-129": {
+"split": "test",
+"passed": false,
+"finish": "length",
+"sha256": "eed0c991566936489ec4deabbbad2d31fbc5e02c42ef8384b2dfaa18eddde4d6",
+"detail": "                                                         ^\nSyntaxError: unterminated string literal (detected at line 8)"
+},
+"he-130": {
+"split": "tune",
+"passed": false,
+"finish": "length",
+"sha256": "d6f3ebc2341b97241a39623fb42e34fa2f6c0cf9cd196de2ed932b70c3b6899e",
+"detail": "File \"/tmp/tmp9wkx7_be.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax"
+},
+"he-131": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "9cf1ba1aac8fe490af0743ce85eeffbb57959a87a184aa739208246ee86f5029",
+"detail": "PASS"
+},
+"he-132": {
+"split": "tune",
+"passed": false,
+"finish": "stop",
+"sha256": "16afb8cf2fadeb14baabb196fbf61ba7489aec521932a15fe529892bc5ef81bc",
+"detail": " in check\n    assert candidate('[]]]]]]][[[[[]') == False\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
+},
+"he-133": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "c94726283ddcaa266b5dd220327ae018ce13ad5466ba3c0b50c6543837966f3a",
+"detail": "PASS"
+},
+"he-134": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "09f3583b677af64fc78f4f90c4b54317361fc1b0e5832f6b0f712188b694820d",
+"detail": "PASS"
+},
+"he-135": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "534b5038e30ed783d5b48fc6602d7ddfd5636c950f8532f3f1c16b7a24dfa1de",
+"detail": "PASS"
+},
+"he-136": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "0bc05eb9f9477087c142e4e4d0516b6ea66b3db2b29eaa2b66a19154fb4ddc55",
+"detail": "PASS"
+},
+"he-137": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "73b303fa85b6dc8e83c769409fde21d87a7028d630b39ffed15813ce1422109e",
+"detail": "PASS"
+},
+"he-138": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "0ba9de2ca001e2a1afbc0c63caa88c244b87a747788d9d5e9c742c2e83bc3b88",
+"detail": "PASS"
+},
+"he-139": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "d340e82dff4319b22893ce10fd4322d25a9fbd883e9a7b08424a8a2b16685a44",
+"detail": "PASS"
+},
+"he-140": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "adcb69f06a5c32dfb453b8708bbf522f974fd6b3c3bdfa5a35e31fc2c9687cbf",
+"detail": "PASS"
+},
+"he-141": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "98e998a790c4c7097f2e6eb3fa31ffdaeef7f93743f6bda03eb771b90cff13f6",
+"detail": "PASS"
+},
+"he-142": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "a09a153766481a7458a12bc8a6a4ff4dafbbf786d97244bfa688845b9b864c20",
+"detail": "PASS"
+},
+"he-143": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "9baca8641ed4b128925416ebd828789b71a83d1f4acda6c306ca5fc26b9dd089",
+"detail": "PASS"
+},
+"he-144": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "8cf588265c7de64df91c72488c19bb7e938b38a091ab048852af95689d5438a4",
+"detail": "PASS"
+},
+"he-145": {
+"split": "test",
+"passed": false,
+"finish": "stop",
+"sha256": "a838c8e0f23ab17be49329b08e4299041e9755e4af3e9db7039ec4094dd7ba7c",
+"detail": " -11, -12]) == [-1, -11, 1, -12, 11]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
+},
+"he-146": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "aab1be03ad1c60b8cb2809c3f6ad77ec574467f7ad7d6c86ad65d298cebd3203",
+"detail": "PASS"
+},
+"he-147": {
+"split": "test",
+"passed": false,
+"finish": "length",
+"sha256": "2847da664e59c01c7432c5aca27f1f9a070d2227649674c9a8c527708477869a",
+"detail": "File \"/tmp/tmpwv1rwjn7.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax"
+},
+"he-148": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "f2e388bc0182d9dad586466f41fcf8c945ef37cb146d5f5ed60ba174dd772a49",
+"detail": "PASS"
+},
+"he-149": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "d03713e4ee3ce5f4627d55680d7fc626897c3ee0885eebe85db984cb176069ff",
+"detail": "PASS"
+},
+"he-150": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "1c2ca3e1d0fd2af4deef0332cfea98b19ec8f644dea5a99a1944cd5999e4d39a",
+"detail": "PASS"
+},
+"he-151": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "aefacca3f11208648969cbbebb5a368da840e6d02bda09a7f259c98de68757ac",
+"detail": "PASS"
+},
+"he-152": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "6ed454a66e408c02a559eb0b6dfbad46df89041f6df048d4ed5c62e915f784b7",
+"detail": "PASS"
+},
+"he-153": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "c9888a9df67bfc12a535e991dfd5923df772d8192c4ae3c6c20290ecfd74b98b",
+"detail": "PASS"
+},
+"he-154": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "eb7a6085889a20ced85fc8fb19b588d41fa5d04a3e82a439e76ed0a98b69608d",
+"detail": "PASS"
+},
+"he-155": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "071d0f20d1e0e472932f93f31d506ecf78ec7003d996f0441ce1ce267adfd248",
+"detail": "PASS"
+},
+"he-156": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "555fc8437edb1f7be32b06f17c68c94ff0faed70825b2b20ca30ec6f36434952",
+"detail": "PASS"
+},
+"he-157": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "e9f4ac99e791373b636a5eed347286697ea0670eaceb9f333cdc33fd1d858438",
+"detail": "PASS"
+},
+"he-158": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "7b1a945615d272b6271e620707f907fbe858bca5113e2f398fce3d93a2823c7c",
+"detail": "PASS"
+},
+"he-159": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "b769528d99f760e413003acb0db5f24e8e2053e57881e24274ab1a711015d8d0",
+"detail": "PASS"
+},
+"he-160": {
+"split": "tune",
+"passed": false,
+"finish": "stop",
+"sha256": "eb3f225bf06dc3962a0c6f85936d5080528c22cfe55c0a29ac11d0e35b3b0a5f",
+"detail": "rt candidate(['+', '*', '-'], [2, 3, 4, 5]) == 9\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
+},
+"he-161": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "f910d3df864fb2e61272d991aafb788ab6fa0393e01f91df4493c9020106aa65",
+"detail": "PASS"
+},
+"he-162": {
+"split": "tune",
+"passed": true,
+"finish": "stop",
+"sha256": "c6f97dd0f9d138a3b580396d66734b4d12e3d3ef51d5acd248cde984f9f57b39",
+"detail": "PASS"
+},
+"he-163": {
+"split": "test",
+"passed": true,
+"finish": "stop",
+"sha256": "f82ca76912900354406e0a783d6b8cf8f5280414b67aee8186531e22ddd457ee",
+"detail": "PASS"
+},
+"prof-law-1453": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "95ea5f0c44e783064ef2bf6bf4a07dc5369cc85ccdb0d7e0cdb7213a8f6790cf",
+"detail": "got='F' gold='B'"
+},
+"prof-law-928": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "3b472bcb708436e21bb99040081b6336606e1f8af05fc06df34ded66b4e43fcd",
+"detail": "got='B' gold='B'"
+},
+"prof-law-1780": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "4037e249701970b841712c38d4393779ac1a21d61598e4732d039543b76adefc",
+"detail": "got='F' gold='F'"
+},
+"prof-law-1247": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "8613b8450889af128415706ff84d484f3dc4932e267d933b09f80a64d4b24455",
+"detail": "got='B' gold='B'"
+},
+"prof-law-1118": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "6f86b30b20518dd4bb518b69c9f6b77f99e892fe953500f81d052586142554de",
+"detail": "got='D' gold='D'"
+},
+"prof-law-1876": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "ce30d52aca6b4e7463a0c9cf49687e6191f97d7534bce6ece5186566bac5e215",
+"detail": "got='E' gold='E'"
+},
+"prof-law-1957": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "c801fb155bd271996b7edd406d576c5936eea8073640ab11f7f9c8074cab8254",
+"detail": "got='E' gold='E'"
+},
+"prof-law-1971": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "19250be22993af6e177d6213a02a3cf58f716a3b18ebc71d745ae822a0de0469",
+"detail": "got='C' gold='D'"
+},
+"prof-law-1953": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "758e93e1d9eca87705172890489b497b960fc66a496d7921b7cc9e174be11355",
+"detail": "got='J' gold='A'"
+},
+"prof-law-1555": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "03c313f6ec38fbf521de53af3995aa5ad9c850f22bb334958e99e4dc08832092",
+"detail": "got='G' gold='F'"
+},
+"prof-law-1234": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "13d5685679fb26e220f76b495039fd313be0d70c1990712e0e215a13c25e25f9",
+"detail": "got='C' gold='C'"
+},
+"prof-law-1862": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "68826e6185a25b892b7b62083f70e41ced2754b0755921aa99c7b8da7bdc4ca7",
+"detail": "got='D' gold='D'"
+},
+"prof-law-1935": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "62885e05ce211d672ed8b37a9a37a123a9879c9c92bd5796ac74213d943440ae",
+"detail": "got='H' gold='H'"
+},
+"prof-law-1694": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "93bf8d376dd48e4619f78d1508b55b87f4e700d5525c4953e18161c3eb40e23d",
+"detail": "got='I' gold='I'"
+},
+"prof-law-1045": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "bd52116cf491ebf54e6eb9c4f8eca76b1b1e076b649cc7a3e567156ab16b5d24",
+"detail": "got='E' gold='E'"
+},
+"prof-med-6185": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "84586edf0dd9d5147cb1e01482fe97270a5621d416e8ee4802c2cbb6e017b558",
+"detail": "got='B' gold='B'"
+},
+"prof-med-6734": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "6d66094abafcdea70dba4c590d6b0073f3881f0314cad3a49076201eb3a88d37",
+"detail": "got='C' gold='C'"
+},
+"prof-med-6193": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "d00c7d6a54612076b279bf06383d6200260f75de30623452a4ab81b8e9ffeb24",
+"detail": "got='D' gold='D'"
+},
+"prof-med-6170": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "194bb750b6f1a7c87399122a9b6aba0381eb67e6ef5203a1f268144d0ab941ed",
+"detail": "got='F' gold='J'"
+},
+"prof-med-6262": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "6f3fe605f5745f44ebbf539770450142977301aa96a6b4812778d4301bf7352d",
+"detail": "got='J' gold='J'"
+},
+"prof-med-6327": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "stop",
+"sha256": "d744f79ee652e1d68daaac93c200ffae27a68176e82d01edca6bc24fe71ac676",
+"detail": "got='E' gold='A'"
+},
+"prof-med-6466": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "7544228624b4f18030ae1e6004debab07be1420c28c6ba05c609b8c51aa467c9",
+"detail": "got='D' gold='D'"
+},
+"prof-med-6789": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "31b2f81645c440e5cdcdf8f9e309be643b5e5489e739b2e0fd39970ad30e4bb7",
+"detail": "got='H' gold='H'"
+},
+"prof-med-6585": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "906af095a183a19b5f9069f2c20a2e0fda4e960a96b3a4643558b9a53c315a6c",
+"detail": "got='J' gold='J'"
+},
+"prof-med-6142": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "stop",
+"sha256": "3a78b8ccad498bc8ce622a19308562d382e962f18c64c1de909f034e5ae52f96",
+"detail": "got='F' gold='A'"
+},
+"prof-med-6005": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "6fceefdb3c220f13e3156bd76f6b18bf658d858737980f19c9437d60902ac7bb",
+"detail": "got='D' gold='D'"
+},
+"prof-med-6339": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "57487939d57fa74d1bd16ba037678e94f1872f72945e730331fdc007a2856d78",
+"detail": "got='J' gold='J'"
+},
+"prof-med-6013": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "f95edc3ddabe43bbc56faf0442f66f8409fff62deabd72ee249e82fdb6cf9e47",
+"detail": "got='G' gold='G'"
+},
+"prof-med-6575": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "f363786b7f0f8d398c9c8b4bc17d0a3954bd390d8f1ba32bb6369b0f07e55be7",
+"detail": "got='J' gold='J'"
+},
+"prof-med-6089": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "88f463c7bde9c588797cd048f140e561c048826003c3db9f1662f3b7fe7420c8",
+"detail": "got='B' gold='B'"
+},
+"prof-econ-7643": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "7c090e9152bbd7f298bdc20d0d72f596722dff6954ffbbb92468bf80aa9dcd03",
+"detail": "got='F' gold='F'"
+},
+"prof-econ-7201": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "7f6fbdf2174138f11bcac4485e6bd21b11a711af264e38b35b66c4e4ece948f9",
+"detail": "got='H' gold='H'"
+},
+"prof-econ-7162": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "5610a42821fa76c012a4e7d1315cefefe1b9cb96fb85d0cc0a7128c7943fa456",
+"detail": "got='C' gold='B'"
+},
+"prof-econ-7222": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "964e26e64accc467e25e8ac564add0512c7e333b30ff6bfd33edc81507f529a6",
+"detail": "got='C' gold='C'"
+},
+"prof-econ-7359": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "735ef7e84ee2ba40c10ab1a0de90ba6a1233184b292e4b714afd59e08ac49ba5",
+"detail": "got='B' gold='B'"
+},
+"prof-econ-7181": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "a9ceafb8e62fe97aebe256c17c93bd7fefbc2d0afe0fbaaf401ec95f155fd072",
+"detail": "got='D' gold='D'"
+},
+"prof-econ-7343": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "6ffa6c81149647d6e924bc641b0a063498fc6cd15b67dba0f18c751300f53f05",
+"detail": "got='H' gold='H'"
+},
+"prof-econ-7220": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "5bcd0fcff786c88276dc4caacf1eb947e15a52ca4d9ea7fcf97a4891be3c8116",
+"detail": "got='G' gold='G'"
+},
+"prof-econ-7629": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "af5112c6bf665b686fa6b12b5296da37b43252429aec0646dc4895443e91b0f7",
+"detail": "got='E' gold='A'"
+},
+"prof-econ-6996": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "a571ade155b42bcac010394fa903c1cd4ad27e9dccb8d32006088d743ae62be7",
+"detail": "got='A' gold='A'"
+},
+"prof-econ-7076": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "12a2a71ff0a2ad30f0022c4b314d09b0b1743f5a08f73e73c881b76315f368dd",
+"detail": "got='J' gold='J'"
+},
+"prof-econ-7146": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "ed27cc30b6372a08ecaa818c4e73cff260f12a1c66465724bb59185806aa2387",
+"detail": "got='D' gold='D'"
+},
+"prof-econ-7161": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "d9cc4c42f253799a90553bdf83a618c5b72b51fec21e2e77bdc5e5ee57930609",
+"detail": "got='E' gold='E'"
+},
+"prof-biz-435": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "4762231150f7a3369ac82763e71c52a02349665463fd68f82bc5c6d07a6f5302",
+"detail": "got='I' gold='I'"
+},
+"prof-biz-484": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "85da41f67dd57654b747f3c553cf91956d67947d8e34d8c6d7e679478cd6cc1d",
+"detail": "got='J' gold='C'"
+},
+"prof-biz-401": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "5359744c9906acd8ff5d4e2280de729da23eddfa5dcd149eeaded9fa7e325f35",
+"detail": "got='I' gold='I'"
+},
+"prof-biz-513": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "941a96f94fa9b2b10238f3680ebc1ed6ec743243430fdb1716b454a7fe8b60db",
+"detail": "got='H' gold='H'"
+},
+"prof-biz-382": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "1ba4977eb25c629427587a1e5f7ec20d5e5ef6706cd3d13f46eed30a9786f32b",
+"detail": "got='A' gold='A'"
+},
+"prof-biz-448": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "21c4dd2c26797f41bb3816409b55c437ca2a207e0524d8d9f470ffd62fd33577",
+"detail": "got='A' gold='A'"
+},
+"prof-biz-143": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "61109dadc29c0c7825b5616392b9713c70eb916b9a14069fe6f566b91ca01ab7",
+"detail": "got='I' gold='I'"
+},
+"prof-biz-212": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "bc76cb22c47fdd7b2d0ae67a8a114cdb104285041c5e3fd322b0a926079c0e3a",
+"detail": "got='E' gold='J'"
+},
+"prof-biz-661": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "4511780d4a3ae14d669491f70172a79c8b10f9df643d72d9e7905944c373c29e",
+"detail": "got='F' gold='F'"
+},
+"prof-biz-249": {
+"split": "knowledge_professional",
+"passed": true,
+"finish": "stop",
+"sha256": "8446d7e1fef13de041284667052434b25817aab07f2604ae381b897ef1e48181",
+"detail": "got='H' gold='H'"
+},
+"prof-biz-657": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "6643c9e2decda7c7475684eb8a57ec4311b88d9d0501ac893d42e4b35c74c811",
+"detail": "got='J' gold='E'"
+},
+"prof-biz-815": {
+"split": "knowledge_professional",
+"passed": false,
+"finish": "length",
+"sha256": "fb77fd4b91ab9b000158bd8c4f86c290f8e3e59d83d2336f3b22f8a83e3582ad",
+"detail": "got='C' gold='D'"
+},
+"struct-nested-01": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "5ac7a0b88f2c4a83a42d4a4ca6ceae32ec8239873d763b24bba0323439426fb8",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-02": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "1939ce9312ef9ced07d1b550fe4fd8e262d4c50923f1f70629163c999983fb89",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-03": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "0caa20d845a08904d5831d2891aca99ca03627a2ffae1ad31f4e2a15826896d0",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-04": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "708a77c97e3be5eb8e7dc359b7ff30a5931fd5a78aa22f215ac08d5c82e4d0d7",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-05": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "5e5da2f327aa96f052060a25ee873eaa30090fea6ce98eca4b2453889dfaebe0",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-06": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "e4bda1b811cacd20daf10c78168f3598a05d4d2a31d61bedc9b6b81e92c5d9f0",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-07": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "fc832b03f93493f511f81d704f73f851067dedfccfea3f4c014a20ff2ba700e6",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-08": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "dd45e9ac9da04b43ed10d6dbab6db30dde24865a13963037c5decf8b6d7af41a",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-09": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "cad80e88f5eb8368ddc9314ee1763ba755518b3c0d109bbb63b74d96b8c40229",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-10": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "c69e76ad3de3fb45b7f945d7922eb97b89bfc82adba1c7327d8397ab93c843d6",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-11": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "7cd62041a06ba5c93cfc0a9ffc7a921d1b2a91c746227be87f1602f3bc720191",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-12": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "63a746e24918d8f6aea664503526c04b2b377771e10c7e41c8d6d68b4ed02017",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-13": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "d671c0b75ef6d903047aa8d7d817efd5faa2d5722e32d2809c1241169949da72",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-14": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "802ef6e05207ff949e523dc2b843daed2af08be9ce9cf32750c0f2b31bba0112",
+"detail": "valid JSON matching schema"
+},
+"struct-nested-15": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "ef360a08d25e61cf4fb02f28c8fd2040adb34ee583274c51d1cce384781c1aec",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-01": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "27bdb967ba53fdc7c7043f60c2baade0d4c7dd86c428d0596dbc1b355e504364",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-02": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "95dde9cb9d605d6fc53e8a2d006fbcda54a5f4472f5111cca53893cec8ec42b2",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-03": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "af029365a88635bc105a6c3f0aaa8b1d19df363bd78a1cac864a6a6a9ca47ecb",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-04": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "4a616d6dbd9ee0245896f032fe120c222d1137655f2c970aad8eb00d7786096e",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-05": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "e89d5cfb94d311388ea456e2b4fa811cbfbcbe067fac9eb032b05c372efc13ae",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-06": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "db4187980326ee075203ee6d8627645a6e732a172e7550df3a2897434abb9f1c",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-07": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "bac7ca76977075fb3187ba170d6680ae74b40b27de5e446bdee027d207fcbdf7",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-08": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "72ce503ad393044dcc9b090fe5faf03abbb53e4bb2c161df03d013e6ad4728b3",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-09": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "11d6a5bed195ce6d1815b0be07a3b6cbadc3f8bbf98a8fb1d27f8668c536b74e",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-10": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "4d06b7978d4311223917b20a7624c611ad3fc5e3617034b36b6f7c022602959c",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-11": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "33b3652ef94035c537ac12edf563e01c155f3c6c009422a031138e91196dd1e2",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-12": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "d681af1e8d6de385c9305dc688e4dcfc9db76e106fcb6917459bab32a91f58a0",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-13": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "42e16f09f8f7bbfab4b8d0c0d1821f0709f0c7fc24676e8778f77bae686b5171",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-14": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "959b214370f4a76f53bfde2fc4b274bd24604edf121f60e2428e6cbb2277c04c",
+"detail": "valid JSON matching schema"
+},
+"struct-constraints-15": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "005ff671c633c13c477c3e7b9b69a4b79a1cd05678e41ed2c437dc4944aa2092",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-01": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "192e7d258a957763bd164dcb3598d4803a218b454a075e9b79e518b4a340f9e6",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-02": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "046aa42e100f5fc408b63f6bb846eae46af2bb79614b0dfca65817d22bb6a94b",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-03": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "6fe66b98fb90f88678d670c984de09a27aaeb855c00ed93bfbc3ccb5dc22b9cd",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-04": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "80c1bc0426be1c5ff4f3fa36d10967bb8f60db29fe73b21e7c9c1ae083516e87",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-05": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "0bbd90664b912b17edec4eab1ef7b979e5765b4eb1baf3a89dadf63d35b26692",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-06": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "0f6e901464de8f9cc245c8aee4a41d732663ca5d7fbc0896b53cdb2df865e572",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-07": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "a4ad5ed8775f3a2ff2f60ddcf601ebd495006262f54298d7dbc077bbbb8d8c6b",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-08": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "f3398e84d362e461a8389c3bd816ee7815288bd47cb013f602ff4d4100d5a562",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-09": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "c600f5c295cae149f83df210493d3a4c73215340c544c6407863436a04b87ea1",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-10": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "02bea883861ae05ba98d25b4a1d789e64a28cd901b84460e118431ca9d360b79",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-11": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "f2c89a5b58ac4649de21887170181da274ab397c514888845a6d2b31d73480e9",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-12": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "4b278123e4984e2119843c47c0752e144c93bb57a3710307e6390bcdb8532060",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-13": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "4ce3a370a839782c6d4b52c3fc4d4cfc05721a572dadddb064951baccf8d6da7",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-14": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "6f609afc6aeff8b9cfe08f59d27e084924a15342166a814bc2a82869441a290d",
+"detail": "valid JSON matching schema"
+},
+"struct-enum-15": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "84ba3c99046429ff4a2d56f3766bc51714ae237d67abe4bd352bf23e01b43bda",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-01": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "f595026dcab7385394372bd4f2ec602a136db1edf1e8ed4b400aafad2b0c9af1",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-02": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "8850cdbecd0ded3464dbeca35105f24113ad87454d8de6e9ac0b4761983fd234",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-03": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "b375e192494182653959204696a04081679f802579b5c67972fa83c87d29355c",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-04": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "2af4fcb544791dc94810794b679870c3208fec172ba8963cbdd7c1886cd71c7b",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-05": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "1000c7508f689429c2b930b71d22b19c9e45df1fa6e45ffe991e6a984f73664a",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-06": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "d262109989a6e1a1c1f8075266f8f692f52b7b22c1922661a60fba8f77cc2e00",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-07": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "5409df0100cb7fa8c1250e6e49bf1f2f778754f0b87d305512f8c7080d668da3",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-08": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "3aa1e17cff2f07dea52cfac58c5b431f63c02b5315ce8aa46ab4570fd2d97980",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-09": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "f258c95130968aea1e9bcd72bc117eaa349cda7f9a87c567d8e3f8201d0b3bd9",
+"detail": "valid JSON matching schema"
+},
+"struct-relation-10": {
+"split": "structured_output",
+"passed": true,
+"finish": "stop",
+"sha256": "286d856d046e0c98b57bce95debdae7dc223f0830780e2ca9d891baf90e7d89f",
+"detail": "valid JSON matching schema"
+},
+"ifeval-1001": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "e8914c931c6e804477ab9a8e951e38ae4de3c0bd098cfef145ce711e7da9eb45",
+"detail": "1/1 rules followed"
+},
+"ifeval-1075": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "6ef5dc2301b147f9784b7c6d22db3604dccae2009f5c8d67de31762379c81bd3",
+"detail": "1/1 rules followed"
+},
+"ifeval-1128": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "544f7d0b766c99f899a88bbcab8ca06a6e6b609af3b67544cd21aaa96dce8fb0",
+"detail": "1/1 rules followed"
+},
+"ifeval-1139": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "e70d05c44f818a9afc377a41d322ec2448bc08c5801a6b19f0fe4b2be91b90dd",
+"detail": "2/2 rules followed"
+},
+"ifeval-0122": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "5c619b6d3ec6749d30db0c40d5b129cc2579e67740e27e67868fd4c197a10895",
+"detail": "1/1 rules followed"
+},
+"ifeval-1305": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "34039ff97e3e257704b3fc7d0e8dc64af947f3c938747f4563f8e311d2b0b550",
+"detail": "2/2 rules followed"
+},
+"ifeval-1402": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "52c5e00bb8d7f1c85fb3cc11ab76e23a936740a7b3b76ce77927a9eb0d363920",
+"detail": "1/2 rules followed"
+},
+"ifeval-1512": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "ff3a3bbac35fe2dbd4fe1b90c060a98aa95bd67757367ad729e20a237db3ea31",
+"detail": "2/2 rules followed"
+},
+"ifeval-1546": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "022e532f34dc6d9af959df8b590ca372c289f6a0f859af7dfdae0a358ab1c6d3",
+"detail": "0/2 rules followed"
+},
+"ifeval-1571": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "926d9a7b60700bf0ef69a8d654b3a0c15c2dbc5aec42fde118e78da97a46bf10",
+"detail": "2/3 rules followed; change_case:english_lowercase: IFEval language checking requires langdetect"
+},
+"ifeval-1582": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "b8375c5d76905eec6d34ae75097effd0d2b0861db0788346697b1a9ba6e18ad1",
+"detail": "2/3 rules followed; language:response_language: IFEval language checking requires langdetect"
+},
+"ifeval-1609": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "885abe5a6a2a533611a4ddde18f1f2a7767098aa8b8b97cb37ffe172d9e14c52",
+"detail": "2/2 rules followed"
+},
+"ifeval-1645": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "64994aa7d1f4182530e9f2d8da8f19e7b05cc2994f51d7c603e916400342f5ca",
+"detail": "0/1 rules followed; change_case:english_capital: IFEval language checking requires langdetect"
+},
+"ifeval-1667": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "f4c0ef1a269e1debd8db8584bf2e69ff2898fc01b18d3ad81ecc7130c0c1cc27",
+"detail": "0/1 rules followed; change_case:english_lowercase: IFEval language checking requires langdetect"
+},
+"ifeval-1675": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "590c8c08ded44a083bf55d671390db27a9b5f500354dacb305cdaf8e8694898d",
+"detail": "0/1 rules followed"
+},
+"ifeval-1759": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "9259a525aa4a38e4c303e74ff9fc8c4884c0f40629701dea5842154c4bc2d2ab",
+"detail": "1/1 rules followed"
+},
+"ifeval-1779": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "9ed57f409e69e07acb7162c4dd336f7e09df14cff848b6094c5497a8e47fc3bb",
+"detail": "1/2 rules followed; change_case:english_capital: IFEval language checking requires langdetect"
+},
+"ifeval-1897": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "baf49b43be11bc42a9f49ab38fc91b62d905615d0b07ad26f04cf5e553fca594",
+"detail": "2/2 rules followed"
+},
+"ifeval-1902": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "8cf2f601a94a866e1fddc625b503ee273f9b1caf1e5a0ae66d3232337ee17fb0",
+"detail": "1/1 rules followed"
+},
+"ifeval-1927": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "9fddc03ed62cb5e43ba78e0878f5056c7e0badd7f094d18271d39cb423f08909",
+"detail": "1/1 rules followed"
+},
+"ifeval-1939": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "ee1a43d0c546e67ed8507d259a4f091a9d45d6a93c2e37019ea504f16870737e",
+"detail": "1/1 rules followed"
+},
+"ifeval-1999": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "88a47b8353ce4a7ba9494a1e9ded68181c65aa11b89f900d9b1503bc8a2062f1",
+"detail": "0/1 rules followed; change_case:english_capital: IFEval language checking requires langdetect"
+},
+"ifeval-2139": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "ab7838f4d70d91d435b7c2ed207be0fa5d1befb6760f32c85d402ae5a0862e69",
+"detail": "/lib/nltk_data'\n    - '/usr/local/lib/nltk_data'\n**********************************************************************\n"
+},
+"ifeval-2143": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "5390efff8ea66b9449d8380f6761f6ab6ea3c587f82075df4be9dfe8d60205a5",
+"detail": "/lib/nltk_data'\n    - '/usr/local/lib/nltk_data'\n**********************************************************************\n"
+},
+"ifeval-2225": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "6cb0daf48ade190e0f8afc711c1b2034c4119fc7a4abc7610980082d96efc408",
+"detail": "0/1 rules followed; language:response_language: IFEval language checking requires langdetect"
+},
+"ifeval-2229": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "23bcc4c23f93381591b62345344c6ec80e7a86e22b41adba0d336441b725080a",
+"detail": "1/1 rules followed"
+},
+"ifeval-2395": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "477e72f2ce3564e2114c47faa6119e7d9bc9aa72d201dd53a5bd688638000412",
+"detail": "2/2 rules followed"
+},
+"ifeval-2482": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "8ff1bdc749c397760cdd6830eb3ff228e5347d8d2e775afc2ec3ba920b1f4985",
+"detail": "1/1 rules followed"
+},
+"ifeval-2505": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "8b8546e704769fd232843e7562ff8a796038fdc4a032b2bf4ce850024eda8402",
+"detail": "1/1 rules followed"
+},
+"ifeval-0260": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "b2f448f334644a6df63cd36a08afe3ab5baadba7ff7a7c11e1196b060c0b46e9",
+"detail": "2/2 rules followed"
+},
+"ifeval-2605": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "4037056ff3092e4df697e346d8a64ddcc781c6d8db3fcf4fc8cacd2c8af46422",
+"detail": "1/2 rules followed"
+},
+"ifeval-2704": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "13c657731c873327ec7f14267fff83c9d0590d6682fbfb3cea0ee24725270fec",
+"detail": "3/3 rules followed"
+},
+"ifeval-2768": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "8b81bc602a90d0743607d050cb207a301c8e420195f1e71d5625ed4052efaaa1",
+"detail": "1/1 rules followed"
+},
+"ifeval-2801": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "1c591bafc107e77a9e21f34165dbb00faeba4eb1eb87fc1631e31dbfb08e4eb5",
+"detail": "1/1 rules followed"
+},
+"ifeval-2811": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "36730862c3ac176eb6b2ade48ba6845bf5c2576c3d61c39c3202cae5303c8b32",
+"detail": "0/1 rules followed"
+},
+"ifeval-2887": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "e0f35c8c10750c9d2860da9a253a34d25d5ad8fcabab709e2e87e19b3fce399f",
+"detail": "2/2 rules followed"
+},
+"ifeval-2889": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "f7be647355dbeef48578a2ee4a378640a56f4dc51deec773548d95b12f52edf2",
+"detail": "2/2 rules followed"
+},
+"ifeval-2941": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "8f7279c658a587f8120209e748c77996c30428dbc33b6e7a5c1a054ce7538c67",
+"detail": "1/1 rules followed"
+},
+"ifeval-3079": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "9fc8f243d24c08367de9f65bac9c89d8776a11b2c1319a1e5df39660e8f597d1",
+"detail": "1/1 rules followed"
+},
+"ifeval-3089": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "78295fc3b2752bfe542c1e1f2b5ff7aaf15c800d68da338787555dfe688ef376",
+"detail": "/lib/nltk_data'\n    - '/usr/local/lib/nltk_data'\n**********************************************************************\n"
+},
+"ifeval-3203": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "d89a4bacfadbeddeb86005a83580ef9858d130cf8d70f5a7624e70a1c1a24640",
+"detail": "1/1 rules followed"
+},
+"ifeval-3243": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "919b4f8168ef50c13e0fbb2b193b274a28c54fcb730a17f66f8df5fdbd47a21c",
+"detail": "2/2 rules followed"
+},
+"ifeval-3287": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "18733fb3f08ba34dc1a6db73db99831a2426299febd9ff54d6bc15b177003e00",
+"detail": "2/2 rules followed"
+},
+"ifeval-3329": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "e7a27ed9f8afc5378570322f12f3a63f1cdececac4a8b2997b5739dfdb4370ad",
+"detail": "/lib/nltk_data'\n    - '/usr/local/lib/nltk_data'\n**********************************************************************\n"
+},
+"ifeval-0334": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "d1708e8a75c9aeddec585d00de340ac5058051fba0d34cb40bcc16481093466d",
+"detail": "2/2 rules followed"
+},
+"ifeval-3350": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "86e842adbb4fb6fa518a7ee953da6eda94de78084088c00ff1b36e12e0b22a2a",
+"detail": "1/2 rules followed"
+},
+"ifeval-3362": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "34f7868ac715e0cee323069ee2bf26abfef8a8c7a2455778fbe1d51cf2840672",
+"detail": "/lib/nltk_data'\n    - '/usr/local/lib/nltk_data'\n**********************************************************************\n"
+},
+"ifeval-0337": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "ed4f8a31fdf4d7d063a966a6f957f9f34ae8f1b3815a6c4ead43e73f1ac96c4f",
+"detail": "2/2 rules followed"
+},
+"ifeval-3407": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "806f343106da58f68d5da1f51169e5ddff74ae575f7f0eca693dacd3c3de25d7",
+"detail": "/lib/nltk_data'\n    - '/usr/local/lib/nltk_data'\n**********************************************************************\n"
+},
+"ifeval-3409": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "0b35c0fa501b588dd504be67108b2ee24f4b1c9e1d6c672820899d821dd105b3",
+"detail": "2/2 rules followed"
+},
+"ifeval-3567": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "12d9cda79a705fad54ab7cf685a9d52d2beba55e87a6e2727c5ea3fc8d27dc35",
+"detail": "0/1 rules followed; language:response_language: IFEval language checking requires langdetect"
+},
+"ifeval-3653": {
+"split": "instruction_following",
+"passed": false,
+"finish": "length",
+"sha256": "353bb3314b3093ab5a5990401f81892b0387d0534b7a36589ac345f165a54758",
+"detail": "0/1 rules followed; language:response_language: IFEval language checking requires langdetect"
+},
+"ifeval-3718": {
+"split": "instruction_following",
+"passed": false,
+"finish": "stop",
+"sha256": "b889c37c63b1cb385cc5f998956c515b40e4f2b1fec37a30e112bb0d9730b1d3",
+"detail": "2/3 rules followed"
+},
+"ifeval-3750": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "0fe957a11c9be7dc0b1dd17984d07a9f7e55024bdcee0a91c585741795ba4147",
+"detail": "1/1 rules followed"
+},
+"ifeval-3755": {
+"split": "instruction_following",
+"passed": true,
+"finish": "stop",
+"sha256": "b66268b8c3158fb3aad0e9c49b4eba87fe2a823e9bdc20e1b6defd6d98c8cb7b",
+"detail": "1/1 rules followed"
+}
+}
+}

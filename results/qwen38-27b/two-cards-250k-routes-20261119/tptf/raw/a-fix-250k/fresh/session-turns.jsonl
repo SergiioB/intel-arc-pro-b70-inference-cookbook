@@ -1,0 +1,4 @@
+{"turn": 0, "prompt_tokens": 249784, "cached_tokens": 0, "completion_tokens": 512, "ttft_s": 204.375, "decode_tok_s": 33.13, "sha256": "27aae3586f56dc2e6e0045295a406efdea8fbac97f072b3d41591d799f6d844e", "wall_s": 219.799, "finish": "length"}
+{"turn": 1, "prompt_tokens": 250320, "cached_tokens": 0, "completion_tokens": 128, "ttft_s": 205.051, "decode_tok_s": 16.7, "sha256": "97dd3a277fe8f73eb1dbacc77ca09bd5385b1bfe232c20f6f881e6cbe7668cd1", "wall_s": 212.657, "finish": "length"}
+{"turn": 2, "prompt_tokens": 250477, "cached_tokens": 0, "completion_tokens": 128, "ttft_s": 205.408, "decode_tok_s": 22.86, "sha256": "9309f46361a122452d4e26b964fe3b0c4c53877461216c26e788a6713f3d97a4", "wall_s": 210.964, "finish": "length"}
+{"turn": 3, "prompt_tokens": 250631, "cached_tokens": 0, "completion_tokens": 128, "ttft_s": 205.497, "decode_tok_s": 30.41, "sha256": "95b669ba97d1fec1aca96052bb66428cde8de0aa7c5f50b57cc2fa84e607e904", "wall_s": 209.674, "finish": "length"}

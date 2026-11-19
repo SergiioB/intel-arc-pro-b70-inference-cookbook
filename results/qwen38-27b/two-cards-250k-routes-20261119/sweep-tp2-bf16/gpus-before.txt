@@ -1,0 +1,2 @@
+gpu0 pci=0000:0b:00.0 cap_uw=180000000 max_freq_mhz=2400 temp_mc=51000
+gpu1 pci=0000:0f:00.0 cap_uw=230000000 max_freq_mhz=2800 temp_mc=60000

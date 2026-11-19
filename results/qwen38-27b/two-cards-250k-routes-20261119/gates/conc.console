@@ -1,0 +1,60 @@
+server 771065 up on 8046
+{"phase": "alone", "key": "code-0", "ttft_s": 0.094, "decode_tok_s": 163.17, "sha256": "232d30dd4bf76a2f3be0f61dacf460dd9c7a2d36bcdebbde086b5c3b2c4e5164"}
+{"phase": "alone", "key": "chat-0", "ttft_s": 0.072, "decode_tok_s": 125.99, "sha256": "0f57311d07de498ddc5d8cef2b6cd93710e801f33f7bb3b25bb6098be6c4dff8"}
+{"phase": "alone", "key": "code-8k", "ttft_s": 3.562, "decode_tok_s": 141.72, "sha256": "bd39879d57c77a83ca02c14a57a76bf55b7471ae742c1728dc2bb12096d7aec2"}
+{"phase": "alone", "key": "chat-8k", "ttft_s": 3.563, "decode_tok_s": 106.08, "sha256": "fab2e88135f04a4da4655c243819f8d798717b10c50d89680510f1084e3b10c6"}
+{"phase": "concurrent", "key": "code-0", "ttft_s": 0.17, "decode_tok_s": 37.03, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-0", "ttft_s": 0.072, "decode_tok_s": 33.5, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "code-8k", "ttft_s": 3.797, "decode_tok_s": 53.72, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-8k", "ttft_s": 7.437, "decode_tok_s": 60.8, "completion_tokens": 512, "equal_alone": false}
+{"tag": "tp2-par4-drafted", "rep": 0, "streams": 4, "completion_tokens": 2048, "span_s": 15.843, "aggregate_tok_s_wall": 129.27, "aggregate_tok_s_decode_window": 129.87, "ttft_s": [0.072, 0.17, 3.797, 7.437], "per_stream_tok_s": [37.03, 33.5, 53.72, 60.8], "equal_alone": [true, true, true, false]}
+{"phase": "concurrent", "key": "code-0", "ttft_s": 0.171, "decode_tok_s": 37.29, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-0", "ttft_s": 0.073, "decode_tok_s": 33.33, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "code-8k", "ttft_s": 7.341, "decode_tok_s": 86.96, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-8k", "ttft_s": 3.744, "decode_tok_s": 42.65, "completion_tokens": 512, "equal_alone": false}
+{"tag": "tp2-par4-drafted", "rep": 1, "streams": 4, "completion_tokens": 2048, "span_s": 15.726, "aggregate_tok_s_wall": 130.23, "aggregate_tok_s_decode_window": 130.84, "ttft_s": [0.073, 0.171, 3.744, 7.341], "per_stream_tok_s": [37.29, 33.33, 86.96, 42.65], "equal_alone": [true, true, true, false]}
+{"phase": "alone", "key": "code-0", "ttft_s": 0.093, "decode_tok_s": 48.09, "sha256": "232d30dd4bf76a2f3be0f61dacf460dd9c7a2d36bcdebbde086b5c3b2c4e5164"}
+{"phase": "alone", "key": "chat-0", "ttft_s": 0.072, "decode_tok_s": 48.12, "sha256": "0f57311d07de498ddc5d8cef2b6cd93710e801f33f7bb3b25bb6098be6c4dff8"}
+{"phase": "alone", "key": "code-8k", "ttft_s": 3.557, "decode_tok_s": 44.28, "sha256": "bd39879d57c77a83ca02c14a57a76bf55b7471ae742c1728dc2bb12096d7aec2"}
+{"phase": "alone", "key": "chat-8k", "ttft_s": 3.558, "decode_tok_s": 43.22, "sha256": "fab2e88135f04a4da4655c243819f8d798717b10c50d89680510f1084e3b10c6"}
+{"phase": "concurrent", "key": "code-0", "ttft_s": 0.094, "decode_tok_s": 25.71, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-0", "ttft_s": 0.164, "decode_tok_s": 25.81, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "code-8k", "ttft_s": 3.729, "decode_tok_s": 31.47, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-8k", "ttft_s": 7.323, "decode_tok_s": 40.42, "completion_tokens": 512, "equal_alone": true}
+{"tag": "tp2-par4-serial", "rep": 0, "streams": 4, "completion_tokens": 2048, "span_s": 19.967, "aggregate_tok_s_wall": 102.57, "aggregate_tok_s_decode_window": 103.06, "ttft_s": [0.094, 0.164, 3.729, 7.323], "per_stream_tok_s": [25.71, 25.81, 31.47, 40.42], "equal_alone": [true, true, true, true]}
+server 773962 up on 8047
+server 774110 up on 8048
+{"phase": "alone", "key": "code-0", "ttft_s": 0.133, "decode_tok_s": 121.59, "sha256": "85a0ea08885800a7184ab0b943cbcdfc7b29ff5fba5e5b4a9c5e9a7c983c6bf2"}
+{"phase": "alone", "key": "chat-0", "ttft_s": 0.088, "decode_tok_s": 102.17, "sha256": "0f57311d07de498ddc5d8cef2b6cd93710e801f33f7bb3b25bb6098be6c4dff8"}
+{"phase": "alone", "key": "code-8k", "ttft_s": 5.394, "decode_tok_s": 108.41, "sha256": "bd39879d57c77a83ca02c14a57a76bf55b7471ae742c1728dc2bb12096d7aec2"}
+{"phase": "alone", "key": "chat-8k", "ttft_s": 4.644, "decode_tok_s": 91.31, "sha256": "49963cdd4e673c697904fef15572dd103bb0efdccd6bd3a4e23eb37e29973770"}
+{"phase": "concurrent", "key": "code-0", "ttft_s": 0.149, "decode_tok_s": 43.04, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-0", "ttft_s": 0.086, "decode_tok_s": 41.42, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "code-8k", "ttft_s": 5.514, "decode_tok_s": 82.58, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-8k", "ttft_s": 4.757, "decode_tok_s": 64.17, "completion_tokens": 512, "equal_alone": false}
+{"tag": "two-servers-drafted", "rep": 0, "streams": 4, "completion_tokens": 2048, "span_s": 12.721, "aggregate_tok_s_wall": 160.99, "aggregate_tok_s_decode_window": 162.11, "ttft_s": [0.086, 0.149, 4.757, 5.514], "per_stream_tok_s": [43.04, 41.42, 82.58, 64.17], "equal_alone": [true, true, true, false]}
+{"phase": "concurrent", "key": "code-0", "ttft_s": 0.141, "decode_tok_s": 42.63, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-0", "ttft_s": 0.086, "decode_tok_s": 41.09, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "code-8k", "ttft_s": 5.607, "decode_tok_s": 81.78, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-8k", "ttft_s": 4.769, "decode_tok_s": 63.1, "completion_tokens": 512, "equal_alone": true}
+{"tag": "two-servers-drafted", "rep": 1, "streams": 4, "completion_tokens": 2048, "span_s": 12.868, "aggregate_tok_s_wall": 159.15, "aggregate_tok_s_decode_window": 160.24, "ttft_s": [0.086, 0.141, 4.769, 5.607], "per_stream_tok_s": [42.63, 41.09, 81.78, 63.1], "equal_alone": [true, true, true, true]}
+{"phase": "alone", "key": "code-0", "ttft_s": 0.131, "decode_tok_s": 31.5, "sha256": "85a0ea08885800a7184ab0b943cbcdfc7b29ff5fba5e5b4a9c5e9a7c983c6bf2"}
+{"phase": "alone", "key": "chat-0", "ttft_s": 0.089, "decode_tok_s": 32.4, "sha256": "0f57311d07de498ddc5d8cef2b6cd93710e801f33f7bb3b25bb6098be6c4dff8"}
+{"phase": "alone", "key": "code-8k", "ttft_s": 5.367, "decode_tok_s": 29.69, "sha256": "bd39879d57c77a83ca02c14a57a76bf55b7471ae742c1728dc2bb12096d7aec2"}
+{"phase": "alone", "key": "chat-8k", "ttft_s": 4.64, "decode_tok_s": 30.75, "sha256": "49963cdd4e673c697904fef15572dd103bb0efdccd6bd3a4e23eb37e29973770"}
+{"phase": "concurrent", "key": "code-0", "ttft_s": 0.148, "decode_tok_s": 22.13, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-0", "ttft_s": 0.085, "decode_tok_s": 23.46, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "code-8k", "ttft_s": 5.494, "decode_tok_s": 28.8, "completion_tokens": 512, "equal_alone": true}
+{"phase": "concurrent", "key": "chat-8k", "ttft_s": 4.729, "decode_tok_s": 29.81, "completion_tokens": 512, "equal_alone": true}
+{"tag": "two-servers-serial", "rep": 0, "streams": 4, "completion_tokens": 2048, "span_s": 23.235, "aggregate_tok_s_wall": 88.14, "aggregate_tok_s_decode_window": 88.47, "ttft_s": [0.085, 0.148, 4.729, 5.494], "per_stream_tok_s": [22.13, 23.46, 28.8, 29.81], "equal_alone": [true, true, true, true]}
+server 777401 up on 8046
+{"tag": "sampled-t0.7-seed7", "rep": 0, "ttft_s": 0.096, "decode_tok_s": 139.8, "completion_tokens": 512, "reasoning_chars": 0, "finish": "length", "sha256": "776e23893d1754d9138a66a071fa12c5d5d445766ba334d9d403484139a92107"}
+{"tag": "sampled-t0.7-seed7", "rep": 1, "ttft_s": 0.095, "decode_tok_s": 140.17, "completion_tokens": 512, "reasoning_chars": 0, "finish": "length", "sha256": "776e23893d1754d9138a66a071fa12c5d5d445766ba334d9d403484139a92107"}
+{"tag": "sampled-t0.7-seed7-serial", "rep": 0, "ttft_s": 0.094, "decode_tok_s": 46.71, "completion_tokens": 512, "reasoning_chars": 0, "finish": "length", "sha256": "776e23893d1754d9138a66a071fa12c5d5d445766ba334d9d403484139a92107"}
+{"tag": "sampled-t0.7-seed7", "rep": 0, "ttft_s": 3.572, "decode_tok_s": 128.25, "completion_tokens": 512, "reasoning_chars": 0, "finish": "length", "sha256": "15159156056a7b3f622adabf501c169e886d095f1232ec415db282b0f513d491"}
+{"tag": "sampled-t0.7-seed7", "rep": 1, "ttft_s": 3.571, "decode_tok_s": 128.75, "completion_tokens": 512, "reasoning_chars": 0, "finish": "length", "sha256": "15159156056a7b3f622adabf501c169e886d095f1232ec415db282b0f513d491"}
+{"tag": "sampled-t0.7-seed7-serial", "rep": 0, "ttft_s": 3.562, "decode_tok_s": 42.66, "completion_tokens": 512, "reasoning_chars": 0, "finish": "length", "sha256": "15159156056a7b3f622adabf501c169e886d095f1232ec415db282b0f513d491"}
+{"tag": "thinking-greedy", "rep": 0, "ttft_s": 0.088, "decode_tok_s": 105.76, "completion_tokens": 2048, "reasoning_chars": 8266, "finish": "length", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+{"tag": "thinking-greedy-serial", "rep": 0, "ttft_s": 0.089, "decode_tok_s": 46.16, "completion_tokens": 2048, "reasoning_chars": 8266, "finish": "length", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+{"tag": "thinking-greedy", "rep": 0, "ttft_s": 0.091, "decode_tok_s": 109.39, "completion_tokens": 2048, "reasoning_chars": 5412, "finish": "length", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+{"tag": "thinking-greedy-serial", "rep": 0, "ttft_s": 0.09, "decode_tok_s": 46.05, "completion_tokens": 2048, "reasoning_chars": 5412, "finish": "length", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}

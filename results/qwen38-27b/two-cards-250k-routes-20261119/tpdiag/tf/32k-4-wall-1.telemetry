@@ -1,0 +1,18 @@
+2026-11-19T02:52:37+01:00
+card 0 /sys/class/hwmon/hwmon6
+180000000
+51000
+2400
+card 1 /sys/class/hwmon/hwmon7
+230000000
+62000
+2800
+2026-11-19T02:53:37+01:00
+card 0 /sys/class/hwmon/hwmon6
+180000000
+51000
+2400
+card 1 /sys/class/hwmon/hwmon7
+230000000
+69000
+2800

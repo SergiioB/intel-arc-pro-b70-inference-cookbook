@@ -1,0 +1,6 @@
+server 564678 up on 8046
+{"turn": 0, "prompt_tokens": 32552, "cached_tokens": 0, "ttft_s": 16.756, "decode_tok_s": 115.73, "sha256": "3dda4e1dd9a10574e0e8d65ed2eb0dda09e9a33ecb07de43646b20b07f94e324"}
+{"turn": 1, "prompt_tokens": 33088, "cached_tokens": 32512, "ttft_s": 0.49, "decode_tok_s": 83.88, "sha256": "286d59083e99cb4fd285500b22ca545fc50606058ae1cd43f3b3a57445986406"}
+{"turn": 2, "prompt_tokens": 33272, "cached_tokens": 33024, "ttft_s": 0.297, "decode_tok_s": 85.19, "sha256": "b8662470bf97138fd05150e21da0d239d588c2d0bbf910741df4e9d2bf8b75f1"}
+{"turn": 3, "prompt_tokens": 33534, "cached_tokens": 33216, "ttft_s": 0.336, "decode_tok_s": 141.38, "sha256": "8331b1ec1b51e125e362423f302f6e7b0c077f6293d3cf6a75850d8fdda5e99d"}
+{"turn": 4, "prompt_tokens": 33815, "cached_tokens": 33472, "ttft_s": 0.357, "decode_tok_s": 149.75, "sha256": "ac51406691e2a7074197ede4db0437d838b427e38a7f2b894766f91727974615"}

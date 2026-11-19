@@ -1,0 +1,1 @@
+XPU_ATTN_PREF=256 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE ZE_AFFINITY_MASK='' XPU_KV_INT8='' $TF/src-tp3586/zig-out/xpu/bin/tensorfold-native serve $TF/models/Qwen3.8-27B-MLX-4bit --drafter $TF/models/Qwen3.8-27B-DFlash2 --parallel 1 --context 262144 --tp 2 --host 127.0.0.1 --port 8046 --prompt-cache-gib 0 --no-thinking --no-update-check 
