@@ -7,6 +7,12 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards, TensorFold `-
 (128.1 → 165.5 tok/s). Raw files and `summarize.py`:
 [`results/qwen38-27b/two-cards-250k-routes-20261119/`](../../results/qwen38-27b/two-cards-250k-routes-20261119/README.md).
 
+> **Cap setting (added 2026-11-19).** Every two-card number on this page above the
+> [update section](#update-2026-11-19-equal-caps-speed-levers-runtime-ab-llamacpp) ran with card 0 at 180 W and a
+> 2,400 MHz clock cap and card 1 at 230 W / 2,800 MHz. Since 09:40 CET both cards run 230 W / 2,800 MHz; the served
+> two-card rates rose 5–6 % with the same text. Copy-paste recipes at the current setting:
+> [RECIPES-B70.md](RECIPES-B70.md).
+
 ## Result
 
 1. **Serial decode splits well, a drafted round does not.** One card to two cards: serial 1.54× at a 68-token
@@ -218,7 +224,11 @@ XPU_ATTN_PREF=256 XPU_KV_INT8=1 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/b
 Both cards, bf16 K/V, `--context 262144 --prompt-cache-gib 0`, binary `2286abc0c`, greedy, 256 tokens out with
 `ignore_eos`, code prompts with a fresh nonce at the start of each repeat, prompt cache hits 0. One full-shape
 warm-up per length (discarded) and three measured repeats, serial and drafted on the same prompt. Mean, minimum and
-maximum of the three repeats, computed from `sweep-tp2-bf16/samples.jsonl` by `summarize.py`.
+maximum of the three repeats, computed from `sweep-tp2-bf16/samples.jsonl` by `summarize.py`. **Measured at
+180/230 W** (card 0 / card 1), 2026-11-19 04:35–05:28 UTC. The same 14 points are published on intelinside.ai under
+custom runtime [29](https://intelinside.ai/runtimes/tensorfold/custom/29): drafted run from
+[result 364](https://intelinside.ai/results/364) (results 364–370), serial run from
+[result 371](https://intelinside.ai/results/371) (371–377); self-reported, with the caps in each result's notes.
 
 | Prompt tokens | Drafted tok/s, mean (min–max) | Serial tok/s, mean (min–max) | Time to first token | Prompt tok/s | Drafted == serial | Tokens a round |
 |---|---|---|---|---|---|---|
@@ -285,10 +295,11 @@ Measured with a standalone check program on both cards (`llamacpp-tp-patch/evide
 | Stock, prefill size | 782.42 µs a call at 2,621,440 values (200 calls) |
 | Stock, host memory | resident memory grows 2.58 KiB a call (50,000 calls, two runs) |
 
-**Speed: pending (2026-11-19).** The peer path's own timing run produced no timing lines, and the llama-bench
-baseline crashes (exit 139; under diagnosis, `evidence/diag/`). Earlier the first build failed to compile (4
-errors, `ext_oneapi_can_access_peer` on a `const sycl::device`) and run jobs failed their preflight on `docker ps`
-permission. No decode or prefill rate exists yet for stock or patched `-sm tensor` on this model.
+**Speed: measured later the same day, see the [update](#update-2026-11-19-equal-caps-speed-levers-runtime-ab-llamacpp).**
+At the time of this section the peer path's timing run produced no timing lines and the llama-bench baseline
+crashed (exit 139). The crash was `SYCL_CACHE_PERSISTENT=1` ([DNR-031](../DO-NOT-REPEAT.md)). Earlier the first
+build failed to compile (4 errors, `ext_oneapi_can_access_peer` on a `const sycl::device`) and run jobs failed their
+preflight on `docker ps` permission.
 
 ## Profiling on two cards: a driver hang and its fix
 
@@ -336,6 +347,52 @@ A standalone Level Zero reproducer (`tpdiag/neo-repro/`, no TensorFold) shows th
   A dummy-weight two-card run failed the same way before the mount was added.
 - A dummy-weight two-card mechanics run with the mount: **pending** (queued 2026-11-19).
 
+## Update 2026-11-19: equal caps, speed levers, runtime A/B, llama.cpp
+
+Raw files and `summarize.py`: [`results/qwen38-27b/recipes-equal-caps-20261119/`](../../results/qwen38-27b/recipes-equal-caps-20261119/README.md). Both cards
+230 W / 2,800 MHz unless a row says otherwise.
+
+**Equal caps, served** (same binary `2286abc0c`, 2 drafted runs a cell): code 165.2 → 173.3 tok/s at 68 tokens,
+142.6 → 151.4 at 8K, 117.3 → 123.8 at 32K, 76.8 → 81.6 at 131K; same text in 24 of 24 cells. Full table:
+[RECIPES-B70.md](RECIPES-B70.md#0-host-both-cards-at-230-w-and-2800-mhz).
+
+**Equal caps, dev-runner round budget** (68 tokens, 2 unprofiled and 2 profiled runs, interleaved):
+
+| Part (rank 0, ms a drafted round) | 180/230 W | 230/230 W |
+|---|---:|---:|
+| Half of the one-card target work | 18.3 | 18.3 |
+| Kernels that do not halve | 4.4 | 4.4 |
+| Work on card 0 only (drafter GEMMs and kernels, argmax) | 4.3 | 4.2 |
+| Card 0 slower on the same work | 1.5 | 0.0 |
+| Exchange kernels (128 × 18.6 µs) | 2.4 | 2.4 |
+| Idle and host | 2.2 | 2.5 |
+| **Sum / measured wall** | **33.1 / 33.1** | **31.7 / 31.65** |
+
+Two cards 158.9 / 158.3 tok/s (was 151.3 mean), serial 19.0 ms a token (was 19.7); one card unchanged at 123.6 /
+123.5. Two cards over one: 1.31× a round, 1.59× serial. Rank 1's idle before the exchanges fell from 2.0 to 0.61 ms a
+round; what remains is card 1 idling while card 0 runs the drafter and argmax (4.2 ms a round).
+
+**Speed levers, same binary, flag off against on, 3 interleaved pairs, both cards:**
+
+| Lever | Code tok/s off → on at 68 / 8K / 32K / 128K | Result |
+|---|---|---|
+| `XPU_GU_WIDE64=1` (`dec_wide64`-class kernel for the per-card gate/up shape) | 173.67 → 170.39, 151.53 → 149.23, 123.88 → 122.02, 81.68 → 80.81 | **loss** of 1.07–1.94 % in all 8 cells; not carried ([DNR-030](../DO-NOT-REPEAT.md)) |
+| `XPU_DATTN_SPLIT=1` (drafter attention split over key chunks, commit `f352f8c89`, not pushed) | 173.61 → 176.93, 151.52 → 166.05, 123.75 → 134.84, 81.63 → 85.63 | **+1.9 / +9.6 / +9.0 / +4.9 %**, prose +1.9 to +9.7 %; same token hash 8 of 8; drafted == serial. Screen; five-pair confirmation and one-card run pending (2026-11-19) |
+
+**Runtime 26.05 against 26.40** (dev runner, 68 tokens, 3 pairs, at 180/230 W): two cards 151.3 → 153.8 tok/s
+(+1.6 %), one card 123.4 → 124.0 (+0.5 %), serial hashes identical. Below a 2 % gate and measured with a mixed library
+set (runtime 26.40, IGC core 2.42.6, kernels compiled by ocloc 26.05.1): not a speed lever ([DNR-033](../DO-NOT-REPEAT.md)).
+The profiler-hang reproducer: on 26.05.37020.3 all three two-device runs hung (default twice, direct submission off
+once); with the key off on 26.05 it passed; on 26.40.40196.8 both two-device runs passed (default and key off); one
+device passed on 26.05.
+
+**llama.cpp `-sm tensor`, our local patch** (Qwen3.8-27B Q4_K_M, q8_0 K/V, llama-bench `-r 3`): one card tg128
+28.28 ± 0.02; stock two-card `-sm tensor` 23.28 ± 0.25; `GGML_SYCL_TP_P2P=2` (peer stores and a flag, no host wait)
+32.18 ± 0.03, 1.14× one card and 1.38× stock; pp512 544.37 against stock 558.11. Per allreduce at decode size 25.8–26.5
+µs against stock 49–52 µs; at 2,621,440 values mode 2 is slower (1,175 against 789 µs). Same served text as stock
+and one card at a short prompt. Mode 1 leaks and segfaults ([DNR-032](../DO-NOT-REPEAT.md)). Patches, commands and
+limits: [RECIPES-B70.md](RECIPES-B70.md#7-llamacpp-gguf-on-two-cards-local-patch).
+
 ## Failures and lost time
 
 | What happened | Cost | Fix |
@@ -351,13 +408,14 @@ A standalone Level Zero reproducer (`tpdiag/neo-repro/`, no TensorFold) shows th
 
 - More than two cards, TP4, or another host or link.
 - The served path's two-card profile (the measured budget is the dev runner).
-- The push exchange, a `dattn` split or a `dec_wide64` gate/up choice in a timed run (priced only).
-- Card 0 without its 180 W / 2,400 MHz cap in the profile.
+- The push exchange in a timed run (priced only). The `dattn` split and the `dec_wide64` choice were measured later
+  ([update](#update-2026-11-19-equal-caps-speed-levers-runtime-ab-llamacpp)).
 - Bug A: its cause; bf16 K/V with the cache beyond 131K, `--parallel` above 1 with the cache, eviction with more
   than one resumed request an arm, the cost of 64 allocations a snapshot, a soak.
-- Compute-runtime 26.40.40196.8 for serving (loaded only for the reproducer).
+- Compute-runtime 26.40.40196.8 installed for serving (the A/B loaded it beside 26.05 with kernels built by ocloc
+  26.05).
 - vLLM XPU two-card mechanics with `/dev/dri/by-path` mounted (pending).
 - Bug B: speed of shared trees after the fix; `--parallel 8` correctness.
 - Sampled decoding and thinking on for the sweep and the fixes.
-- Card 0 at 2,800 MHz for the root-cause runs.
-- llama.cpp `-sm tensor` decode and prefill speed, stock or patched (pending).
+- 250K, warm sessions and the prompt-length sweep at 230/230 W (pending, 2026-11-19).
+- llama.cpp `-sm tensor` at 8K and deeper, repeated screens and a confirmation (pending, 2026-11-19).

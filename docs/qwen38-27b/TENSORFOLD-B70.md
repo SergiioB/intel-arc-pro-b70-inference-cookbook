@@ -8,6 +8,10 @@ Measured 2026-11-08 on two Intel Arc Pro B70 cards, one stream per card. Status:
 
 ## Pick a route
 
+Copy-paste recipes with today's build, flags and host setting (both cards 230 W / 2,800 MHz):
+[RECIPES-B70.md](RECIPES-B70.md). Two-card numbers on this page were measured with card 0 at 180 W / 2,400 MHz;
+at equal caps they are 5–6 % higher (2026-11-19).
+
 | Your prompts | Use | Why |
 |---|---|---|
 | Up to ~8K tokens (chat, short code tasks) | **TensorFold + DFlash2** | 123–128 tok/s on code, 98–102 on prose, and the drafted output is byte-identical to non-drafted greedy output |

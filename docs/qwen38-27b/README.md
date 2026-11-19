@@ -6,6 +6,9 @@ not share a numeric authority or an interchangeable patch list.
 
 ## Choose a route
 
+**Copy-paste recipes (2026-11-19):** [RECIPES-B70.md](RECIPES-B70.md): host setting (both cards 230 W /
+2,800 MHz), one card, two cards, 250K, warm sessions, many users, llama.cpp on two cards, and what not to do.
+
 | Route | Hardware | Artifact and serving goal | Start here |
 |---|---|---|---|
 | EXL3 (exl3xpu engine) | One B70 | **Primary route:** trellis 4bpw + native MTP3 + fp8 KV; only route at full 262,144 context; clean correctness | [EXL3-XPU.md](EXL3-XPU.md) |

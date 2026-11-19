@@ -10,6 +10,9 @@ unless a row says two. Status: **screen**. Raw cells and `summarize.py`:
 > Greedy and sampled rates are different metric classes and cannot be converted. The first-run route
 > ([START.md](../../START.md), `data/routes.v1.json`) stays EXL3 + MTP3 until the sampled rerun reports.
 
+> **Cap setting (added 2026-11-19).** One-card cells ran on card 1 at 230 W. The two-card rows ran with card 0 at
+> 180 W / 2,400 MHz; at equal caps the two-card rates are 5–6 % higher ([RECIPES-B70.md](RECIPES-B70.md)).
+
 ## Result
 
 | Workload | Faster here | Numbers (code prompt, decode tok/s after the first token) | Measured reason |

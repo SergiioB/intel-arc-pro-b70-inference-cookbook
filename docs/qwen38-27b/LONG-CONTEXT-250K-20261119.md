@@ -4,6 +4,11 @@ Measured 2026-11-18 and 2026-11-19 on two Intel Arc Pro B70 cards with TensorFol
 **screen** (one repeat a cell unless stated). Raw files and `summarize.py`:
 [`results/qwen38-27b/two-cards-250k-routes-20261119/`](../../results/qwen38-27b/two-cards-250k-routes-20261119/README.md).
 
+> **Cap setting (added 2026-11-19).** Every two-card cell on this page ran with card 0 at 180 W / 2,400 MHz and card 1
+> at 230 W / 2,800 MHz; one-card cells ran on card 1 at 230 W. At equal caps (both 230 W / 2,800 MHz) the served
+> two-card rates rose 5–6 % at 0–131K with the same text; the 250K cells were not rerun yet (pending, 2026-11-19).
+> Recipes at the current setting: [RECIPES-B70.md](RECIPES-B70.md#4-250k-context-on-two-cards).
+
 ## Result
 
 1. **Fastest 250K setup measured: TensorFold on two cards with bf16 K/V**, 62.31 tok/s drafted at a 249,784-token
