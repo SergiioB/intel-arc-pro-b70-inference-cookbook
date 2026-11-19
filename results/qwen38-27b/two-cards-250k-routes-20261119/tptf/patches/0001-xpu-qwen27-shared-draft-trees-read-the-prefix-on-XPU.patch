@@ -1,0 +1,35 @@
+From df3baa3eaec172b3feac8c2a2ed4664a295dbf02 Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 00:14:50 +0100
+Subject: [PATCH 1/4] xpu(qwen27): shared draft trees read the prefix on
+ XPU_ATTN_PREF too
+
+With XPU_ATTN_PREF set, a lone stream's draft tree took attn_pref +
+attn_tail + attn_merge2, but a tree verified beside other streams
+(--parallel N) fell back to attn_decode + attn_merge. The two paths sum
+the keys in a different order, so a stream's greedy text depended on
+whether it shared its round: on two B70s with --tp 2 --parallel 4, the
+7,963-token chat-8k prompt returned a different 512-token reply in both
+concurrent repeats than alone (wave2/gates/conc/tp2-par4).
+
+Shared serial rows already took the prefix path. A tree row's prefix
+ends at pref_base(pos) <= pos - 16 < its root, so the prefix chunks read
+only committed rows and the tree lookup stays in attn_tail, which the
+shared path already passes the tree table.
+---
+ zig/src/xpu/forward.zig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/zig/src/xpu/forward.zig b/zig/src/xpu/forward.zig
+index 3f418ccea..c60934752 100644
+--- a/zig/src/xpu/forward.zig
++++ b/zig/src/xpu/forward.zig
+@@ -418,7 +418,7 @@ pub fn forwardRunner(r: *q.Runner, ids: []const i32, p0: u32, mode: Mode) !?i32
+                     try d.launch(d.k.attn_prompt, .{ .x = (wr + 7) / 8, .y = sh.akv }, .{ wa.q, l.kc.?, l.vc.?, wa.y, @as(i32, @intCast(ap0)), @as(i32, @intCast(wr)), @as(f32, 1.0 / 16.0) });
+                 } else {
+                     const multi = mode.multi_max_pos != null;
+-                    const pre: u32 = if (!multi or !mode.tree) q.attn_pref else 0;
++                    const pre: u32 = q.attn_pref; // every row of a shared tree keeps its committed prefix before its root, as a lone row's does
+                     const top: u32 = if (mode.multi_max_pos) |mp_top| mp_top else p0 + 15; // no row of the round is past it
+                     const nch: u32 = if (pre != 0 and top >= PREMIN + 16) (top - 16) / pre else 0; // chunks any row of the round uses
+                     if (nch != 0) {

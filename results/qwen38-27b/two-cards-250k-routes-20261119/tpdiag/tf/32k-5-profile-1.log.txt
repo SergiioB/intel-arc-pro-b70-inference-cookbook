@@ -1,0 +1,95 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.8 s
+GPU time, prompt: 21286.4 ms
+  embed              2.06 ms   0.0 %
+  add_rmsnorm      576.42 ms   2.7 %
+  gdn_pre_rows     250.39 ms   1.2 %
+  gated_norm       156.06 ms   0.7 %
+  attn_prep         39.17 ms   0.2 %
+  attn_gate         40.53 ms   0.2 %
+  argmax             0.01 ms   0.0 %
+  argmax_part        0.04 ms   0.0 %
+  attn_prompt     3888.95 ms  18.3 %
+  ngen_swiglu     6778.89 ms  31.8 %
+  rowsums_ff       257.46 ms   1.2 %
+  dec_wide64         1.26 ms   0.0 %
+  gdn_prep         484.14 ms   2.3 %
+  gdn_state        647.03 ms   3.0 %
+  gdn_out          425.65 ms   2.0 %
+  ngen_wide       3114.19 ms  14.6 %
+  ngen_narrow     4624.16 ms  21.7 %
+GPU time, decode: 9089.3 ms
+  embed              1.79 ms   0.0 %
+  add_rmsnorm_dec   347.56 ms   3.8 %
+  gdn_pre           49.75 ms   0.5 %
+  gated_norm        64.16 ms   0.7 %
+  attn_prep         26.99 ms   0.3 %
+  attn_gate         19.23 ms   0.2 %
+  swiglu            41.66 ms   0.5 %
+  argmax             2.91 ms   0.0 %
+  argmax_part        9.35 ms   0.1 %
+  gdn_step         109.09 ms   1.2 %
+  attn_pref       1147.49 ms  12.6 %
+  attn_tail        206.84 ms   2.3 %
+  attn_merge2      178.08 ms   2.0 %
+  dec_wide        1346.73 ms  14.8 %
+  dec_wide64      3413.81 ms  37.6 %
+  dec_narrow      2123.89 ms  23.4 %
+drafter loaded in 0.7 s
+GPU time, drafter prompt (discarded): 21546.1 ms
+  embed              2.08 ms   0.0 %
+  add_rmsnorm      579.71 ms   2.7 %
+  gdn_pre_rows     251.12 ms   1.2 %
+  gated_norm       156.69 ms   0.7 %
+  attn_prep         39.35 ms   0.2 %
+  attn_gate         40.74 ms   0.2 %
+  argmax             0.01 ms   0.0 %
+  argmax_part        0.04 ms   0.0 %
+  tap               31.57 ms   0.1 %
+  repack            24.49 ms   0.1 %
+  attn_prompt     3908.50 ms  18.1 %
+  ngen_swiglu     6804.64 ms  31.6 %
+  rowsums_ff       258.92 ms   1.2 %
+  dec_wide64         1.28 ms   0.0 %
+  gdn_prep         486.62 ms   2.3 %
+  gdn_state        648.98 ms   3.0 %
+  gdn_out          426.37 ms   2.0 %
+  ngen_wide       3128.28 ms  14.5 %
+  ngen_narrow     4756.66 ms  22.1 %
+GPU time, drafted rounds: 2845.6 ms
+  embed              0.78 ms   0.0 %
+  add_rmsnorm_dec    73.12 ms   2.6 %
+  add_rmsnorm        6.78 ms   0.2 %
+  gdn_pre           40.34 ms   1.4 %
+  gated_norm        14.87 ms   0.5 %
+  attn_prep          6.20 ms   0.2 %
+  attn_gate          4.25 ms   0.1 %
+  swiglu            24.86 ms   0.9 %
+  argmax             0.63 ms   0.0 %
+  argmax_part       16.61 ms   0.6 %
+  tap                1.16 ms   0.0 %
+  conv_commit        6.59 ms   0.2 %
+  gdn_step         188.01 ms   6.6 %
+  attn_pref        539.06 ms  18.9 %
+  attn_tail         46.81 ms   1.6 %
+  attn_merge2      116.12 ms   4.1 %
+  kv_move            3.77 ms   0.1 %
+  dec_wide         309.86 ms  10.9 %
+  dec_wide64       831.61 ms  29.2 %
+  dec_narrow       610.84 ms  21.5 %
+  ngen_narrow        3.30 ms   0.1 %
+tree: 15 nodes a round, 3.69 accepted of 15.0 drafted
+drafted: 258 tokens in 55 rounds (4.69 a round), 74.6 tok/s, draft 0.0 ms + verify 62.8 ms a round, equal to serial: true
+prompt: 32552 tokens in 21.369 s (1523 tok/s)
+decode: 256 tokens in 9.632 s (26.6 tok/s)
+tokens: 71093 10504 198 5355 423 1658 9802 53 19365 198 1389 423 1658 9802 53 19365 271 1032 361 93631 29 198 1032 361 21670 29 198 1032 361 3112 29 198 1032 361 91247 29 198 1032 361 12439 29 271 3537 198 348 554 6449 357 4368 53269 8097 35473 3883 9761 4011 364 81726 35464 2424 27437 13 198 348 695 348 1061 523 5004 264 5339 30463 12 5170 81600 318 37 25166 8 6951 440 264 8097 6966 8390 13 198 348 1049 369 5995 310 9791 279 45924 314 5141 12 1094 318 79852 8 6297 9714 303 42903 20459 11 198 348 1332 9714 513 19591 318 8804 290 8 321 9297 26642 318 79 17049 8 303 279 1906 781 998 198 348 10897 13 198 348 695 348 8487 18139 25 198 348 471 1942 569 5245 513 4368 53269 13 198 348 471 1510 8804 63 321 1510 8115 63 513 21500 7289 413 279 4011 369 2400 14 3092 15119 30 695 348 256 2233 11 303 411 7873 11 1510 8804 63 4523 867 413 2400 11 321 1510 8115 63 4523 307 62406 409 413 4147 13 198 348 256 1061 369 2397 76068 13 198 348 695 348 554 65773 345 561 913 314 279 2315 9476 303 279 9761 4011 318 83113 514 18 17 516 466 514 21 19 516 364 2424 27437 553 198 621 198 4075 361 8759 345 29 198 1005 20865 79852 313 198 860 25 198

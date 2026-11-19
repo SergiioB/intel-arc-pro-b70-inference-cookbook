@@ -1,0 +1,32 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.9 s
+int4 (ours)  K  5120 N 34816 rows  1:  0.183 ms,   488 GB/s
+exl3 4 bits  K  5120 N 34816 rows  1:  5.037 ms,    18 GB/s (1 K slices)
+exl3 3 bits  K  5120 N 34816 rows  1:  5.095 ms,    13 GB/s (1 K slices)
+exl3 2 bits  K  5120 N 34816 rows  1:  5.105 ms,     9 GB/s (1 K slices)
+int4 (ours)  K  5120 N 34816 rows  8:  0.185 ms,   482 GB/s
+exl3 4 bits  K  5120 N 34816 rows  8: 11.817 ms,     8 GB/s (1 K slices)
+exl3 3 bits  K  5120 N 34816 rows  8: 11.823 ms,     6 GB/s (1 K slices)
+exl3 2 bits  K  5120 N 34816 rows  8: 11.783 ms,     4 GB/s (1 K slices)
+int4 (ours)  K 17408 N  5120 rows  1:  0.092 ms,   483 GB/s
+exl3 4 bits  K 17408 N  5120 rows  1:  2.858 ms,    16 GB/s (4 K slices)
+exl3 3 bits  K 17408 N  5120 rows  1:  2.905 ms,    12 GB/s (4 K slices)
+exl3 2 bits  K 17408 N  5120 rows  1:  2.886 ms,     8 GB/s (4 K slices)
+int4 (ours)  K 17408 N  5120 rows  8:  0.094 ms,   473 GB/s
+exl3 4 bits  K 17408 N  5120 rows  8:  5.454 ms,     8 GB/s (4 K slices)
+exl3 3 bits  K 17408 N  5120 rows  8:  5.453 ms,     6 GB/s (4 K slices)
+exl3 2 bits  K 17408 N  5120 rows  8:  6.561 ms,     3 GB/s (4 K slices)
+prompt: 68 tokens in 0.096 s (711 tok/s)
+decode: 2 tokens in 0.061 s (32.9 tok/s)
+tokens: 71093 10504 198
+rc=0

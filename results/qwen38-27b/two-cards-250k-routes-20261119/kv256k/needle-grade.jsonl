@@ -1,0 +1,9 @@
+{"run": "a-tp1-int8-262k", "depth": "32k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "a-tp1-int8-262k", "depth": "120k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "a-tp1-int8-262k", "depth": "250k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "b-tp2-int8-262k", "depth": "32k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "b-tp2-int8-262k", "depth": "120k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "b-tp2-int8-262k", "depth": "250k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "c-tp2-bf16-262k", "depth": "32k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "c-tp2-bf16-262k", "depth": "120k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}
+{"run": "c-tp2-bf16-262k", "depth": "250k", "hits": 5, "of": 5, "missed": {}, "sha256": "913397660712"}

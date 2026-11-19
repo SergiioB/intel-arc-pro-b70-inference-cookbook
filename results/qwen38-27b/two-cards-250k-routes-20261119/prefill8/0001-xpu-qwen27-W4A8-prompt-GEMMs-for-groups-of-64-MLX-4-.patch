@@ -1,0 +1,452 @@
+From 4b21412ba2dd28c5cbabea07d8f9004e6dfd9a3e Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Wed, 18 Nov 2026 23:39:56 +0100
+Subject: [PATCH] xpu(qwen27): W4A8 prompt GEMMs for groups of 64 (MLX 4-bit)
+
+XPU_PREFILL_INT8=1 now also covers the MLX g64 checkpoint. The int8 kernel
+folds its int32 partial sums once per weight group, so the group is a
+generator option (64 or 128): words, A reads, scales and the bias pass follow
+it. The activation quantizer scales and sums per group of q.GS (64: two groups
+per 128-value block, reduced within each half of the subgroup). The runner
+gates on w.gs == q.GS instead of 128; W4A4 stays at 128. The g128 zebins are
+byte-identical to before. The option stays off by default.
+
+One Arc Pro B70, dev runner, 7,976-token prompt: 4.59 s off, 3.75 s on.
+With the option on, drafted == serial, the verify test and the seam test
+pass. Int8 activations can change greedy text against fp16 activations.
+---
+ docs/xpu/NAVIGATION.md               |  6 ++--
+ docs/xpu/README.md                   |  2 +-
+ zig/build/xpu.zig                    |  8 +++--
+ zig/kernels/xpu/qwen27/glue_quant.cl | 49 +++++++++++++++++-----------
+ zig/src/xpu/dev.zig                  |  2 ++
+ zig/src/xpu/forward.zig              | 19 ++++++-----
+ zig/src/xpu/qwen27.zig               |  2 ++
+ zig/src/xpu/qwen27_main.zig          |  6 ++--
+ zig/tools/xpu/w4_ngen.cpp            |  8 +++--
+ zig/tools/xpu/w4a8_prompt.hpp        | 41 ++++++++++++-----------
+ 10 files changed, 85 insertions(+), 58 deletions(-)
+
+diff --git a/docs/xpu/NAVIGATION.md b/docs/xpu/NAVIGATION.md
+index 217ad8cfa..f819dc8c7 100644
+--- a/docs/xpu/NAVIGATION.md
++++ b/docs/xpu/NAVIGATION.md
+@@ -57,9 +57,9 @@ What the two XPU steps do (they share the same embedded kernels):
+ 1. Each `.cl` file is compiled by `ocloc` with `-cl-std=CL3.0 -cl-intel-256-GRF-per-thread`:
+    `glue`, `decode`, `gemm` (with `-DGSZ=64`), `gemm128` (the same file with `-DGSZ=128`), `gdn` (from
+    `gdn_chunk.cl`) and `drafter`.
+-2. `w4_ngen.cpp` is built for the host and **run at build time** to produce the nine prompt-GEMM binaries (zebin):
++2. `w4_ngen.cpp` is built for the host and **run at build time** to produce the eleven prompt-GEMM binaries (zebin):
+    `ngen_wide`, `ngen_narrow`, `ngen_wide128`, `ngen_narrow128`, `ngen_swiglu`, `ngen_swiglu128`, `ngen_a8`,
+-   `ngen_a8_swiglu`, `ngen_a4` (the options each gets are listed in `zig/build/xpu.zig`).
++   `ngen_a8_swiglu`, `ngen_a8_64`, `ngen_a8_swiglu64`, `ngen_a4` (the options each gets are listed in `zig/build/xpu.zig`).
+ 3. Everything is embedded with `@embedFile` into the `xpu_qwen27_kernels` module that `qwen27.zig` imports as `kb`.
+ 
+ `xpu-native` is `tensorfold-native` with the XPU engines linked in (`native/xpu.zig`).
+@@ -265,7 +265,7 @@ GEMMs have the same arithmetic and tiling as the OpenCL reference `w4n_prompt`,
+   subnormals) and the bias term.
+ - Families (kernel names in the zebin): `w4g_dpb` (wide shapes), `w4g_s4dpb` (narrow shapes: K in four slices of groups
+   summed separately, `((t0 + t1) + t2) + t3`), `w4g_dpb_swiglu` (gate|up interleaved, SwiGLU in the epilogue), `w4a8`
+-  and `w4a8_swiglu` (int8 activations, int8 DPAS, GPTQ g128 only) and `w4a4` (int4 activations on rotated weights).
++  and `w4a8_swiglu` (int8 activations, int8 DPAS, groups of 128 or, `ngen_a8*64`, 64) and `w4a4` (int4 activations on rotated weights).
+ - Option words: `b3` (B over three buffers), `s4` (the sliced family), `asplit` (A read in two halves, overlapping the
+   DPAS), `swiglu`, and `a8` / `a4` for the integer-activation kernels. The register map is documented in each header.
+ - In `w4_prompt.hpp` a subgroup's tile is two 16-column tiles (8 accumulators). A group's DPAS partial is folded into
+diff --git a/docs/xpu/README.md b/docs/xpu/README.md
+index edddef116..7acd50276 100644
+--- a/docs/xpu/README.md
++++ b/docs/xpu/README.md
+@@ -74,7 +74,7 @@ Options through environment variables:
+ |---|---|
+ | `XPU_PREFILL_INT4=1` | **Local option**, with `XPU_PREFILL_INT8=1` and a rotated checkpoint (`zig/tools/xpu/rotate_w4.py`, marker `hadamard128`): `down` input in int4 (DPAS u4 × s4), +8 % prefill at equal quality to GPTQ W4A8; `XPU_PREFILL_INT4_SITES=10` adds the mixer outputs (+12 %, perplexity +1 %). |
+ | `XPU_KV_INT8=1` | **Option** (the default stays bf16): K/V cache in int8 (scale per position and K/V head): half the memory, 12 streams instead of 7 at 16 k tokens, 7 instead of 3 at 32 k; perplexity unchanged (±0.04 %), DFlash2 acceptance unchanged. Answers are not bit-identical to those of the bf16 cache (15 of 24 greedy answers identical over 256 tokens, the others diverge on near-ties); the drafted == serial and multi-stream == serial contracts hold in this mode. Prompt attention `attn_prompt8`: Q·Kᵀ in int8 DPAS, P·V in fp16. |
+-| `XPU_PREFILL_INT8=1` | **Local option**: prompt GEMMs in W4A8, int8 activations per (row, group of 128), GPTQ only. Decoding stays in fp16. |
++| `XPU_PREFILL_INT8=1` | **Local option**: prompt GEMMs in W4A8, int8 activations per (row, weight group: 64 for MLX, 128 for GPTQ). Decoding stays in fp16. |
+ | `XPU_TREE=N` | DFlash2 tree nodes per round (15 by default; 0: a chain) |
+ | `XPU_BLOCK=N` | Rows of the drafter block (8) |
+ | `XPU_FP64_REF=1` | `xpu-qwen27` runner only: on the prompt's real activations, each int4 GEMM of layers 0, 1, 31, 63 and the head (decode on 1 and 8 rows, prompt) against FP64 references of the same int4 weights (`core/quant` MLX affine; GPTQ as affine with bias −8·scale), worst column and error over the outputs' rms (`zig/src/xpu/fp64_ref.zig`) |
+diff --git a/zig/build/xpu.zig b/zig/build/xpu.zig
+index 5decdcfc2..4bf8e39a4 100644
+--- a/zig/build/xpu.zig
++++ b/zig/build/xpu.zig
+@@ -59,6 +59,8 @@ pub fn steps(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
+         .{ "ngen_geglu", "64", &.{ "b3", "geglu" } },
+         .{ "ngen_a8", "128", &.{"a8"} },
+         .{ "ngen_a8_swiglu", "128", &.{ "a8", "swiglu" } },
++        .{ "ngen_a8_64", "64", &.{"a8"} },
++        .{ "ngen_a8_swiglu64", "64", &.{ "a8", "swiglu" } },
+         .{ "ngen_a4", "128", &.{"a4"} },
+     }) |z| {
+         const run = std.Build.Step.Run.create(b, b.fmt("nGEN {s}", .{z[0]}));
+@@ -88,6 +90,8 @@ pub fn steps(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
+         \\pub const ngen_swiglu128 align(8) = @embedFile("ngen_swiglu128.zebin").*;
+         \\pub const ngen_a8 align(8) = @embedFile("ngen_a8.zebin").*;
+         \\pub const ngen_a8_swiglu align(8) = @embedFile("ngen_a8_swiglu.zebin").*;
++        \\pub const ngen_a8_64 align(8) = @embedFile("ngen_a8_64.zebin").*;
++        \\pub const ngen_a8_swiglu64 align(8) = @embedFile("ngen_a8_swiglu64.zebin").*;
+         \\pub const ngen_a4 align(8) = @embedFile("ngen_a4.zebin").*;
+         \\
+     ) });
+@@ -342,7 +346,7 @@ pub fn hostTests(b: *std.Build, step: *std.Build.Step) void {
+     const ze = xpu.import_table.get("ze").?;
+     const tp_host = b.createModule(.{ .root_source_file = b.path("zig/src/xpu/tp.zig"), .target = host, .optimize = .debug, .link_libc = true });
+     tp_host.addImport("ze", ze);
+-    const empty = b.createModule(.{ .root_source_file = b.addWriteFiles().add("draft_xpu_images.zig", "pub const drafter = [_]u8{};\npub const glue_g = [_]u8{};\npub const glue = [_]u8{};\npub const glue_tp2 = [_]u8{};\npub const glue_tp4 = [_]u8{};\npub const rows = [_]u8{};\npub const rows_g = [_]u8{};\npub const decode = [_]u8{};\npub const decode_tp2 = [_]u8{};\npub const decode_tp4 = [_]u8{};\npub const gemm = [_]u8{};\npub const gdn = [_]u8{};\npub const tp = [_]u8{};\npub const ngen_wide = [_]u8{};\npub const ngen_narrow = [_]u8{};\npub const gemm128 = [_]u8{};\npub const ngen_wide128 = [_]u8{};\npub const ngen_narrow128 = [_]u8{};\npub const ngen_swiglu = [_]u8{};\npub const ngen_swiglu128 = [_]u8{};\npub const ngen_a8 = [_]u8{};\npub const ngen_a8_swiglu = [_]u8{};\npub const ngen_a4 = [_]u8{};\npub const ngen_geglu = [_]u8{};\n") });
++    const empty = b.createModule(.{ .root_source_file = b.addWriteFiles().add("draft_xpu_images.zig", "pub const drafter = [_]u8{};\npub const glue_g = [_]u8{};\npub const glue = [_]u8{};\npub const glue_tp2 = [_]u8{};\npub const glue_tp4 = [_]u8{};\npub const rows = [_]u8{};\npub const rows_g = [_]u8{};\npub const decode = [_]u8{};\npub const decode_tp2 = [_]u8{};\npub const decode_tp4 = [_]u8{};\npub const gemm = [_]u8{};\npub const gdn = [_]u8{};\npub const tp = [_]u8{};\npub const ngen_wide = [_]u8{};\npub const ngen_narrow = [_]u8{};\npub const gemm128 = [_]u8{};\npub const ngen_wide128 = [_]u8{};\npub const ngen_narrow128 = [_]u8{};\npub const ngen_swiglu = [_]u8{};\npub const ngen_swiglu128 = [_]u8{};\npub const ngen_a8 = [_]u8{};\npub const ngen_a8_swiglu = [_]u8{};\npub const ngen_a8_64 = [_]u8{};\npub const ngen_a8_swiglu64 = [_]u8{};\npub const ngen_a4 = [_]u8{};\npub const ngen_geglu = [_]u8{};\n") });
+     const qwen = b.createModule(.{ .root_source_file = b.path("zig/src/xpu/qwen27.zig"), .target = host, .optimize = .debug, .link_libc = true, .imports = &.{ .{ .name = "ze", .module = ze }, .{ .name = "xpu_tp", .module = tp_host }, .{ .name = "core", .module = core }, .{ .name = "xpu_qwen27_kernels", .module = empty } } });
+     const api = b.createModule(.{ .root_source_file = b.path("zig/src/core/engine_api.zig"), .target = host, .optimize = .debug, .link_libc = true, .imports = &.{.{ .name = "lanes", .module = lanes }} });
+     const sources = b.createModule(.{ .root_source_file = b.path("zig/src/native/draft_sources_xpu_test.zig"), .target = host, .optimize = .debug, .link_libc = true, .imports = &.{ .{ .name = "lanes", .module = lanes }, .{ .name = "engine_api", .module = api }, .{ .name = "xpu", .module = xpu }, .{ .name = "xpu_qwen27", .module = qwen }, .{ .name = "nemotron_xpu", .module = mods.nemotron } } });
+@@ -409,7 +413,7 @@ pub fn hostTests(b: *std.Build, step: *std.Build.Step) void {
+     const ze_linux = zeModule(b, linux, .ReleaseFast);
+     const tp_linux = b.createModule(.{ .root_source_file = b.path("zig/src/xpu/tp.zig"), .target = linux, .optimize = .ReleaseFast, .link_libc = true });
+     tp_linux.addImport("ze", ze_linux);
+-    const empty_linux = b.createModule(.{ .root_source_file = b.addWriteFiles().add("draft_xpu_images.zig", "pub const drafter = [_]u8{};\npub const glue_g = [_]u8{};\npub const glue = [_]u8{};\npub const glue_tp2 = [_]u8{};\npub const glue_tp4 = [_]u8{};\npub const rows = [_]u8{};\npub const rows_g = [_]u8{};\npub const decode = [_]u8{};\npub const decode_tp2 = [_]u8{};\npub const decode_tp4 = [_]u8{};\npub const gemm = [_]u8{};\npub const gdn = [_]u8{};\npub const tp = [_]u8{};\npub const ngen_wide = [_]u8{};\npub const ngen_narrow = [_]u8{};\npub const gemm128 = [_]u8{};\npub const ngen_wide128 = [_]u8{};\npub const ngen_narrow128 = [_]u8{};\npub const ngen_swiglu = [_]u8{};\npub const ngen_swiglu128 = [_]u8{};\npub const ngen_a8 = [_]u8{};\npub const ngen_a8_swiglu = [_]u8{};\npub const ngen_a4 = [_]u8{};\npub const ngen_geglu = [_]u8{};\n"), .target = linux });
++    const empty_linux = b.createModule(.{ .root_source_file = b.addWriteFiles().add("draft_xpu_images.zig", "pub const drafter = [_]u8{};\npub const glue_g = [_]u8{};\npub const glue = [_]u8{};\npub const glue_tp2 = [_]u8{};\npub const glue_tp4 = [_]u8{};\npub const rows = [_]u8{};\npub const rows_g = [_]u8{};\npub const decode = [_]u8{};\npub const decode_tp2 = [_]u8{};\npub const decode_tp4 = [_]u8{};\npub const gemm = [_]u8{};\npub const gdn = [_]u8{};\npub const tp = [_]u8{};\npub const ngen_wide = [_]u8{};\npub const ngen_narrow = [_]u8{};\npub const gemm128 = [_]u8{};\npub const ngen_wide128 = [_]u8{};\npub const ngen_narrow128 = [_]u8{};\npub const ngen_swiglu = [_]u8{};\npub const ngen_swiglu128 = [_]u8{};\npub const ngen_a8 = [_]u8{};\npub const ngen_a8_swiglu = [_]u8{};\npub const ngen_a8_64 = [_]u8{};\npub const ngen_a8_swiglu64 = [_]u8{};\npub const ngen_a4 = [_]u8{};\npub const ngen_geglu = [_]u8{};\n"), .target = linux });
+     const tail_linux = b.createModule(.{ .root_source_file = b.path("zig/src/xpu/tail_test.zig"), .target = linux, .optimize = .ReleaseFast, .link_libc = true, .imports = &.{ .{ .name = "ze", .module = ze_linux }, .{ .name = "xpu_tp", .module = tp_linux }, .{ .name = "core", .module = core_linux }, .{ .name = "xpu_qwen27_kernels", .module = empty_linux } } });
+     b.step("compile-xpu-qwen27-tail-linux", "Cross-compile the XPU 27B prompt-tail device check for Linux").dependOn(&b.addExecutable(.{ .name = "tf-xpu-qwen27-tail-test", .root_module = tail_linux }).step);
+ }
+diff --git a/zig/kernels/xpu/qwen27/glue_quant.cl b/zig/kernels/xpu/qwen27/glue_quant.cl
+index ec006bfe1..2e4e87f54 100644
+--- a/zig/kernels/xpu/qwen27/glue_quant.cl
++++ b/zig/kernels/xpu/qwen27/glue_quant.cl
+@@ -40,13 +40,17 @@ KERNEL(256) void fakequant_rows(global half *X, global half *AHI, global half *A
+   rowsums(hl, K, AHI, ALO, t, gs);
+ }
+ 
+-// Prompt W4A8 activation quantization: row t to int8 per group of 128 in A8; AHI, ALO: hi/lo sum of dequantized.
+-static void q8_block(half8 xv, int K, int g, global char *A8, global float *SA, int MS, global half *AHI,
++// Prompt W4A8 activation quantization: block g of 128 of row t to int8 in A8, one scale per group of gs (64: lanes
++// 0-7 and 8-15 hold one group each); AHI, ALO: hi/lo sum of the dequantized values per group of gs.
++static void q8_block(half8 xv, int K, int g, int gs, global char *A8, global float *SA, int MS, global half *AHI,
+                      global half *ALO, int t) {
+   const int lane = get_sub_group_local_id();
+   float m = 0.0f;
+   for (int j = 0; j < 8; j++) m = fmax(m, fabs((float)xv[j]));
+-  m = sub_group_reduce_max(m);
++  if (gs == 64)
++    for (int o = 1; o < 8; o <<= 1) m = fmax(m, sub_group_shuffle_xor(m, o));
++  else
++    m = sub_group_reduce_max(m);
+   const float s = m > 0.0f ? m / 127.0f : 1.0f, r = 1.0f / s; // one division per block, not per value
+   char4 q0, q1;                                       // double word (w & m), then ((w >> 4) & m)
+   int qs = 0;
+@@ -59,21 +63,25 @@ static void q8_block(half8 xv, int K, int g, global char *A8, global float *SA,
+   global char *blk = A8 + (long)t * K + g * 128 + (lane / 2) * 16;
+   vstore4(q0, 0, blk + (lane % 2) * 4);
+   vstore4(q1, 0, blk + 8 + (lane % 2) * 4);
+-  qs = sub_group_reduce_add(qs);
+-  if (lane == 0) {
+-    SA[(long)g * MS + t] = s;
+-    const float a = s * (float)qs * (1.0f / 128.0f);
++  if (gs == 64)
++    for (int o = 1; o < 8; o <<= 1) qs += sub_group_shuffle_xor(qs, o);
++  else
++    qs = sub_group_reduce_add(qs);
++  if (lane % (gs / 8) == 0) {
++    const int gg = g * (128 / gs) + lane / 8;         // the group of gs
++    SA[(long)gg * MS + t] = s;
++    const float a = s * (float)qs * (1.0f / gs);
+     const half hi = convert_half_rte(a * ASC);
+-    const int gp = Q27_GSTRIDE(K / 128);
+-    AHI[(long)t * gp + g] = hi;
+-    ALO[(long)t * gp + g] = convert_half_rte(a * ASC - (float)hi);
++    const int gp = Q27_GSTRIDE(K / gs);
++    AHI[(long)t * gp + gg] = hi;
++    ALO[(long)t * gp + gg] = convert_half_rte(a * ASC - (float)hi);
+   }
+ }
+ static void quant_row(local const half *hl, int K, global char *A8, global float *SA, int MS, global half *AHI,
+                       global half *ALO, int t) {
+   const int ng = K / 128, gp = Q27_GSTRIDE(ng), nsg = get_num_sub_groups();
+   for (int g = get_sub_group_id(); g < ng; g += nsg)
+-    q8_block(vload8(0, hl + g * 128 + get_sub_group_local_id() * 8), K, g, A8, SA, MS, AHI, ALO, t);
++    q8_block(vload8(0, hl + g * 128 + get_sub_group_local_id() * 8), K, g, 128, A8, SA, MS, AHI, ALO, t);
+   if (get_sub_group_local_id() == 0) {
+     for (int g = ng + get_sub_group_id(); g < gp; g += nsg) {
+       AHI[(long)t * gp + g] = 0.0h;
+@@ -82,14 +90,16 @@ static void quant_row(local const half *hl, int K, global char *A8, global float
+   }
+ }
+ 
+-// Output of a kernel that stored row t in local memory: rotate 128-blocks if rot, then W4A8 (A8) or row sums per gs.
++// Output of a kernel that stored row t in local memory: rotate 128-blocks if rot, then W4A8 (A8, per group of gs) or
++// row sums (per gs; per 128 if rot).
+ static void out_rows(local const half *hl, int K, global half *H, int t, int rot, int gs, global char *A8,
+                      global float *SA, int MS, global half *AHI, global half *ALO) {
+   if (!rot && !A8) {
+     rowsums(hl, K, AHI, ALO, t, gs);
+     return;
+   }
+-  const int lane = get_sub_group_local_id(), ng = K / 128, gp = Q27_GSTRIDE(ng), nsg = get_num_sub_groups();
++  const int lane = get_sub_group_local_id(), ng = K / 128, nsg = get_num_sub_groups();
++  const int sg = A8 ? gs : 128, gp = Q27_GSTRIDE(K / sg); // groups of the sums written below
+   for (int g = get_sub_group_id(); g < ng; g += nsg) {
+     half8 xv = vload8(0, hl + g * 128 + lane * 8);
+     if (rot) {
+@@ -97,7 +107,7 @@ static void out_rows(local const half *hl, int K, global half *H, int t, int rot
+       vstore8(xv, 0, H + (long)t * K + g * 128 + lane * 8);
+     }
+     if (A8) {
+-      q8_block(xv, K, g, A8, SA, MS, AHI, ALO, t);
++      q8_block(xv, K, g, gs, A8, SA, MS, AHI, ALO, t);
+       continue;
+     }
+     float s = 0.0f;
+@@ -110,7 +120,7 @@ static void out_rows(local const half *hl, int K, global half *H, int t, int rot
+     }
+   }
+   if (lane == 0) {
+-    for (int g = ng + get_sub_group_id(); g < gp; g += nsg) {
++    for (int g = K / sg + get_sub_group_id(); g < gp; g += nsg) {
+       AHI[(long)t * gp + g] = 0.0h;
+       ALO[(long)t * gp + g] = 0.0h;
+     }
+@@ -161,16 +171,17 @@ KERNEL(128) void quant_a4(global const half *X, global uint *A4, global float *S
+   }
+ }
+ 
++// Quantization alone, row X fp16 [T, K], K a multiple of 128: scales and sums per group of gs (64 or 128).
+ KERNEL(128) void quant_a8(global const half *X, global char *A8, global float *SA, global half *AHI, global half *ALO,
+-                          int K, int MS, int rot) {
+-  const int t = get_group_id(0), ng = K / 128, gp = Q27_GSTRIDE(ng), nsg = get_num_sub_groups();
++                          int K, int MS, int rot, int gs) {
++  const int t = get_group_id(0), ng = K / 128, gp = Q27_GSTRIDE(K / gs), nsg = get_num_sub_groups();
+   for (int g = get_sub_group_id(); g < ng; g += nsg) {
+     half8 xv = vload8(0, X + (long)t * K + g * 128 + get_sub_group_local_id() * 8);
+     if (rot) xv = rot128_reg(xv);
+-    q8_block(xv, K, g, A8, SA, MS, AHI, ALO, t);
++    q8_block(xv, K, g, gs, A8, SA, MS, AHI, ALO, t);
+   }
+   if (get_sub_group_local_id() == 0) {
+-    for (int g = ng + get_sub_group_id(); g < gp; g += nsg) {
++    for (int g = K / gs + get_sub_group_id(); g < gp; g += nsg) {
+       AHI[(long)t * gp + g] = 0.0h;
+       ALO[(long)t * gp + g] = 0.0h;
+     }
+diff --git a/zig/src/xpu/dev.zig b/zig/src/xpu/dev.zig
+index 8319b2785..86cdef42f 100644
+--- a/zig/src/xpu/dev.zig
++++ b/zig/src/xpu/dev.zig
+@@ -118,6 +118,8 @@ pub const Dev = struct {
+         fakequant_rows: ze.H,
+         a8: ze.H,
+         a8_swiglu: ze.H,
++        a8_g64: ze.H,
++        a8_swiglu_g64: ze.H,
+         quant_a8: ze.H,
+         a4: ze.H,
+         quant_a4: ze.H,
+diff --git a/zig/src/xpu/forward.zig b/zig/src/xpu/forward.zig
+index 3f418ccea..c803ab287 100644
+--- a/zig/src/xpu/forward.zig
++++ b/zig/src/xpu/forward.zig
+@@ -123,7 +123,7 @@ pub const Acts = struct {
+             .mt = try d.alloc_(LAYERS * 16 * 8 * 8),
+             .mpos = try d.alloc_(16 * 4),
+             .a8 = try d.alloc_(rows * h_cols),
+-            .sa = try d.alloc_((h_cols / 128) * (rows + 32) * 4),
++            .sa = try d.alloc_((h_cols / 64) * (rows + 32) * 4),
+         };
+     }
+ 
+@@ -143,9 +143,9 @@ pub fn chainTable() [16 * 17]i32 {
+ 
+ pub fn mlpIn(d: *Dev, a: *Acts, w: Proj, T: u32, gs: i32, pre: bool, wide: bool) !*anyopaque {
+     const sh = q.tpShape();
+-    if (q.prefill_int8 and wide and w.ilv and w.gs == 128) {
++    if (q.prefill_int8 and wide and w.ilv and w.gs == q.GS) {
+         if (!pre) try quantA8(d, a, a.h, w.k, T, 0);
+-        try d.launch(d.k.a8_swiglu, a8Groups(w, T), a8Args(a, w, a.p, T));
++        try d.launch(if (w.gs == 64) d.k.a8_swiglu_g64 else d.k.a8_swiglu, a8Groups(w, T), a8Args(a, w, a.p, T));
+         return a.p;
+     }
+     if (wide and w.ilv and gemm_hook == null) {
+@@ -283,17 +283,18 @@ pub fn kvCap() i32 {
+ pub const no_q8: ?*anyopaque = null;
+ 
+ pub fn pgemm(d: *Dev, a: *Acts, x: *anyopaque, w: Proj, out: *anyopaque, T: u32, pre: bool, qrot: i32, int4: bool, wide: bool) !void {
+-    if (!q.prefill_int8 or !wide or w.gs != 128) return gemmRows(d, a.pscr, x, a.ahi, a.alo, w, out, T, wide);
+-    if (int4 and q.prefill_int4) {
++    // int8 activations are quantized per group of q.GS (64 or 128), the projection's own group
++    if (!q.prefill_int8 or !wide or w.gs != q.GS) return gemmRows(d, a.pscr, x, a.ahi, a.alo, w, out, T, wide);
++    if (int4 and q.prefill_int4 and w.gs == 128) {
+         try d.launch(d.k.quant_a4, .{ .x = T }, .{ x, a.a8, a.sa, a.ahi, a.alo, @as(i32, @intCast(w.k)), @as(i32, @intCast(q.maxRows() + 32)), qrot });
+         return d.launch(d.k.a4, a8Groups(w, T), a8Args(a, w, out, T));
+     }
+     if (!pre) try quantA8(d, a, x, w.k, T, qrot);
+-    try d.launch(d.k.a8, a8Groups(w, T), a8Args(a, w, out, T));
++    try d.launch(if (w.gs == 64) d.k.a8_g64 else d.k.a8, a8Groups(w, T), a8Args(a, w, out, T));
+ }
+ 
+ pub fn quantA8(d: *Dev, a: *Acts, x: *anyopaque, K: u32, T: u32, rot: i32) !void {
+-    try d.launch(d.k.quant_a8, .{ .x = T }, .{ x, a.a8, a.sa, a.ahi, a.alo, @as(i32, @intCast(K)), @as(i32, @intCast(q.maxRows() + 32)), rot });
++    try d.launch(d.k.quant_a8, .{ .x = T }, .{ x, a.a8, a.sa, a.ahi, a.alo, @as(i32, @intCast(K)), @as(i32, @intCast(q.maxRows() + 32)), rot, @as(i32, @intCast(q.GS)) });
+ }
+ 
+ pub fn a8Groups(w: Proj, T: u32) ze.GroupCount {
+@@ -302,7 +303,7 @@ pub fn a8Groups(w: Proj, T: u32) ze.GroupCount {
+ }
+ 
+ pub fn a8Args(a: *Acts, w: Proj, out: *anyopaque, T: u32) struct { *anyopaque, *anyopaque, *anyopaque, *anyopaque, *anyopaque, i32, i32, i32, *anyopaque, *anyopaque, i32, i32, *anyopaque } {
+-    return .{ a.a8, w.w, w.s, w.bg, out, @intCast(T), @intCast(w.n), @intCast(w.k), a.ahi, a.alo, @intCast(q.maxRows() + 32), @intCast(w.k / 128), a.sa };
++    return .{ a.a8, w.w, w.s, w.bg, out, @intCast(T), @intCast(w.n), @intCast(w.k), a.ahi, a.alo, @intCast(q.maxRows() + 32), @intCast(w.k / w.gs), a.sa };
+ }
+ 
+ pub fn a8(d: *Dev, a: *Acts, x: *anyopaque, K: u32, T: u32, site: u32) !void {
+@@ -329,7 +330,7 @@ pub fn forwardRunner(r: *q.Runner, ids: []const i32, p0: u32, mode: Mode) !?i32
+     const tp_rows = (T + 63) / 64 * 64;
+     const nul: ?*anyopaque = null;
+     const gs: i32 = @intCast(q.GS);
+-    const q8on = q.prefill_int8 and wide and q.GS == 128 and q.a8_group == 0;
++    const q8on = q.prefill_int8 and wide and q.a8_group == 0;
+     const q8ms: i32 = @intCast(q.maxRows() + 32);
+     const q8out = q8on and !(q.prefill_int4 and q.int4_sites & 2 != 0);
+ 
+diff --git a/zig/src/xpu/qwen27.zig b/zig/src/xpu/qwen27.zig
+index 7e4104eff..73be0bae8 100644
+--- a/zig/src/xpu/qwen27.zig
++++ b/zig/src/xpu/qwen27.zig
+@@ -275,6 +275,8 @@ fn initDevKernels(d: *Dev, tp: u32) !void {
+         .fakequant_rows = try d.kernel(mg, "fakequant_rows", 256),
+         .a8 = try d.kernel(try d.g.module(&kb.ngen_a8), "w4a8", 256),
+         .a8_swiglu = try d.kernel(try d.g.module(&kb.ngen_a8_swiglu), "w4a8_swiglu", 256),
++        .a8_g64 = try d.kernel(try d.g.module(&kb.ngen_a8_64), "w4a8", 256),
++        .a8_swiglu_g64 = try d.kernel(try d.g.module(&kb.ngen_a8_swiglu64), "w4a8_swiglu", 256),
+         .quant_a8 = try d.kernel(mg, "quant_a8", 128),
+         .quant_a4 = try d.kernel(mg, "quant_a4", 128),
+         .a4 = try d.kernel(try d.g.module(&kb.ngen_a4), "w4a4", 256),
+diff --git a/zig/src/xpu/qwen27_main.zig b/zig/src/xpu/qwen27_main.zig
+index 224d893fd..1949a04f8 100644
+--- a/zig/src/xpu/qwen27_main.zig
++++ b/zig/src/xpu/qwen27_main.zig
+@@ -238,15 +238,15 @@ fn a8Loop(r: *q.Runner, path: []const u8) !void {
+     const bin: [*]const u8 = @ptrCast(mmap(null, size, 1, 2, fd, 0) orelse return error.MmapFailed);
+     const copy = try alloc.alignedAlloc(u8, .@"8", size);
+     @memcpy(copy, bin[0..size]);
+-    const k = try d.kernel(try d.g.module(copy), "w4a8", 256);
++    const k = try d.kernel(try d.g.module(copy), "w4a8", 256); // a zebin of the projection's group (q.GS)
+     // XPU_A8_PROJ: gu (default), in (gdn.in), out (gdn.out), down
+     const which = if (std.c.getenv("XPU_A8_PROJ")) |v| std.mem.span(v) else "gu";
+     const l0 = &r.model.layers[0];
+     const w = if (std.mem.eql(u8, which, "in")) l0.mixer_in else if (std.mem.eql(u8, which, "out")) l0.mixer_out else if (std.mem.eql(u8, which, "down")) l0.down else l0.gu;
+     const T = q.CHUNK;
+     const tiles = (T + 63) / 64;
+-    try d.launch(d.k.quant_a8, .{ .x = T }, .{ a.h, a.a8, a.sa, a.ahi, a.alo, @as(i32, @intCast(w.k)), @as(i32, @intCast(T + 32)), @as(i32, 0) });
+-    const args = .{ a.a8, w.w, w.s, w.bg, a.p, @as(i32, @intCast(T)), @as(i32, @intCast(w.n)), @as(i32, @intCast(w.k)), a.ahi, a.alo, @as(i32, @intCast(T + 32)), @as(i32, @intCast(w.k / 128)), a.sa };
++    try d.launch(d.k.quant_a8, .{ .x = T }, .{ a.h, a.a8, a.sa, a.ahi, a.alo, @as(i32, @intCast(w.k)), @as(i32, @intCast(T + 32)), @as(i32, 0), @as(i32, @intCast(w.gs)) });
++    const args = .{ a.a8, w.w, w.s, w.bg, a.p, @as(i32, @intCast(T)), @as(i32, @intCast(w.n)), @as(i32, @intCast(w.k)), a.ahi, a.alo, @as(i32, @intCast(T + 32)), @as(i32, @intCast(w.k / w.gs)), a.sa };
+     const groups: q.ze.GroupCount = .{ .x = 8, .y = w.n / 256, .z = (tiles + 7) / 8 };
+     for (0..20) |_| try d.launch(k, groups, args);
+     try d.sync();
+diff --git a/zig/tools/xpu/w4_ngen.cpp b/zig/tools/xpu/w4_ngen.cpp
+index 3fbec6b06..ba7d82829 100644
+--- a/zig/tools/xpu/w4_ngen.cpp
++++ b/zig/tools/xpu/w4_ngen.cpp
+@@ -26,8 +26,12 @@ int main(int argc, char **argv) {
+         if (!std::strcmp(argv[i], "a4")) a4 = true;
+     }
+     std::vector<uint8_t> bin;
+-    if (a8 || a4)                                      // W4A8 / W4A4 (GPTQ g128): the only option is swiglu (W4A8)
+-        bin = W4A8Prompt<HW::Xe2>(Product(ProductFamily::GenericXe2, 0, PlatformType::Discrete), swiglu, a4).getBinary();
++    if ((gsz != 64 && gsz != 128) || (a4 && gsz != 128)) {
++        std::fprintf(stderr, "groups of 64 or 128 (a4: 128 only)\n");
++        return 2;
++    }
++    if (a8 || a4)                                      // W4A8 (groups of 64 or 128) / W4A4 (128): the only option is swiglu (W4A8)
++        bin = W4A8Prompt<HW::Xe2>(Product(ProductFamily::GenericXe2, 0, PlatformType::Discrete), swiglu, a4, gsz).getBinary();
+     else if (std::strcmp(argv[1], "xe2") == 0)
+         bin = W4Prompt<HW::Xe2>(Product(ProductFamily::GenericXe2, 0, PlatformType::Discrete), gsz, s4, asplit, b3,
+                                 swiglu, geglu).getBinary();
+diff --git a/zig/tools/xpu/w4a8_prompt.hpp b/zig/tools/xpu/w4a8_prompt.hpp
+index ce6679e20..141d7fc34 100644
+--- a/zig/tools/xpu/w4a8_prompt.hpp
++++ b/zig/tools/xpu/w4a8_prompt.hpp
+@@ -1,10 +1,11 @@
+-// Prompt int4 GEMM with int8 or int4 activations (w4a8, w4a8_swiglu, w4a4) on integer DPAS, GPTQ g128.
++// Prompt int4 GEMM with int8 or int4 activations (w4a8, w4a8_swiglu, w4a4) on integer DPAS, groups of 64 or 128.
+ #pragma once
+ #include "w4_prompt.hpp"
+ 
+ namespace w4 {
+ 
+-// W4A8 prompt GEMM C = A8 · Wᵀ on int8 DPAS (A8 scaled per row and 128 K group); swiglu epilogue as w4g_dpb_swiglu.
++// W4A8 prompt GEMM C = A8 · Wᵀ on int8 DPAS (A8 scaled per row and K group of gsz, the weights' group: 64 or 128);
++// swiglu epilogue as w4g_dpb_swiglu.
+ template <HW hw>
+ class W4A8Prompt : public ELFCodeGenerator<hw> {
+     NGEN_FORWARD_ELF(hw)
+@@ -26,7 +27,9 @@ class W4A8Prompt : public ELFCodeGenerator<hw> {
+ 
+ public:
+     // a4: W4A4 with rotated int4 activations [M, K/2] bytes; per group one 128 K A tile, two u4 x s4 DPAS on raw words.
+-    W4A8Prompt(Product product, bool swiglu, bool a4 = false) : ELFCodeGenerator<hw>(product) {
++    // gsz: 64 or 128 (a4: 128); the caller checks.
++    W4A8Prompt(Product product, bool swiglu, bool a4 = false, int gsz = 128) : ELFCodeGenerator<hw>(product) {
++        const int wrows = gsz / 8, halves = gsz / 64, lg = gsz == 64 ? 6 : 7;   // rows of words and 64 K halves a group
+         newArgument("A", ExternalArgumentType::GlobalPtr);
+         newArgument("W", ExternalArgumentType::GlobalPtr);
+         newArgument("S", ExternalArgumentType::GlobalPtr);
+@@ -92,8 +95,8 @@ public:
+         add(1, t.d(4), t.d(4), -1);                       // N·4 − 1
+         shr(1, t.d(5), K, 3);
+         add(1, t.d(5), t.d(5), -1);                       // K/8 − 1
+-        header(hW, W, t.d(4), t.d(5), 16, 16, 1);
+-        header(hPW, W, t.d(4), t.d(5), 16, 16, 1);
++        header(hW, W, t.d(4), t.d(5), 16, wrows, 1);
++        header(hPW, W, t.d(4), t.d(5), 16, wrows, 1);
+         if (swiglu)
+             add(1, t.d(6), N, -1);
+         else {
+@@ -105,30 +108,30 @@ public:
+ 
+         for (int r = 0; r < 64; r++) mov(16, GRF(ACC + r).f(), 0.0f);
+         mov(1, g, 0);
+-        shr(1, groups, K, 7);
++        shr(1, groups, K, lg);
+ 
+         mark(lGroup);
+-        // Words of the group (16 rows of words per tile), prefetch of the next group (words and A).
+-        shl(1, hW.ud(6), g, 4);
++        // Words of the group (gsz / 8 rows of words per tile), prefetch of the next group (words and A).
++        shl(1, hW.ud(6), g, lg - 3);
+         mov(1, hW.ud(5), n0);
+-        load(1, GRF(W0), block_2d(DataSizeLSC::D32, 16, 16), A64, hW);
++        load(1, GRF(W0), block_2d(DataSizeLSC::D32, 16, wrows), A64, hW);
+         add(1, hW.ud(5), n0, 16);
+-        load(1, GRF(W0 + 16), block_2d(DataSizeLSC::D32, 16, 16), A64, hW);
+-        add(1, hPW.ud(6), hW.ud(6), 16);
++        load(1, GRF(W0 + 16), block_2d(DataSizeLSC::D32, 16, wrows), A64, hW);
++        add(1, hPW.ud(6), hW.ud(6), wrows);
+         mov(1, hPW.ud(5), n0);
+-        load(1, null, block_2d(DataSizeLSC::D32, 16, 16), A64, hPW);
++        load(1, null, block_2d(DataSizeLSC::D32, 16, wrows), A64, hPW);
+         add(1, hPW.ud(5), n0, 16);
+-        load(1, null, block_2d(DataSizeLSC::D32, 16, 16), A64, hPW);
++        load(1, null, block_2d(DataSizeLSC::D32, 16, wrows), A64, hPW);
+         if (a4) {
+             shl(1, kx, g, 6);                             // bytes of A4 before this group
+             add(1, hPA.ud(5), kx, 64);
+             load(1, null, block_2d(DataSizeLSC::D8, 32, 32, 2), A64, hPA);
+         } else {
+-            shl(1, kx, g, 7);
+-            add(1, hPA.ud(5), kx, 128);
+-            load(1, null, block_2d(DataSizeLSC::D8, 32, 32, 2), A64, hPA);
+-            add(1, hPA.ud(5), kx, 192);
+-            load(1, null, block_2d(DataSizeLSC::D8, 32, 32, 2), A64, hPA);
++            shl(1, kx, g, lg);
++            for (int h = 0; h < halves; h++) {
++                add(1, hPA.ud(5), kx, gsz + 64 * h);
++                load(1, null, block_2d(DataSizeLSC::D8, 32, 32, 2), A64, hPA);
++            }
+         }
+         // Scales of the weights (32 columns, fp16 → fp32) and of the activations (32 rows, fp32).
+         mul32(t.d(0), g, N, t.d(5));
+@@ -157,7 +160,7 @@ public:
+                             dpas(16, 8, 8, part.d(), part.d(), bw.u4(), a.s4());
+                     }
+         }
+-        for (int h = 0; h < 2 && !a4; h++) {
++        for (int h = 0; h < halves && !a4; h++) {
+             add(1, hA.ud(5), kx, 64 * h);
+             load(1, GRF(A0), block_2d(DataSizeLSC::D8, 32, 32, 2), A64, hA);
+             for (int st = 0; st < 2; st++) {

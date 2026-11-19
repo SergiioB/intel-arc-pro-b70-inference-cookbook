@@ -1,0 +1,7 @@
+info: qwen27-xpu: prompt cache of 9.5 GiB
+info: prompt cache: 15 tokens, resumed at 0, kept 0; 0 states, 0 MiB and 0 MiB spare of 9728 MiB (hits 0, misses 1, evicted 0, refused 0, failed 0, trimmed 0)
+info: prompt cache: 130856 tokens, resumed at 0, kept 2; 2 states, 8340 MiB and 0 MiB spare of 9728 MiB (hits 0, misses 2, evicted 0, refused 0, failed 0, trimmed 0)
+info: prompt cache: 131392 tokens, resumed at 130816, kept 1; 2 states, 8420 MiB and 0 MiB spare of 9728 MiB (hits 1, misses 2, evicted 1, refused 0, failed 0, trimmed 0)
+info: prompt cache: 131555 tokens, resumed at 131328, kept 1; 2 states, 8442 MiB and 0 MiB spare of 9728 MiB (hits 2, misses 2, evicted 2, refused 0, failed 0, trimmed 0)
+info: prompt cache: 131772 tokens, resumed at 131520, kept 1; 2 states, 8454 MiB and 0 MiB spare of 9728 MiB (hits 3, misses 2, evicted 3, refused 0, failed 0, trimmed 0)
+info: prompt cache: 132051 tokens, resumed at 131712, kept 1; 2 states, 8470 MiB and 0 MiB spare of 9728 MiB (hits 4, misses 2, evicted 4, refused 0, failed 0, trimmed 1)

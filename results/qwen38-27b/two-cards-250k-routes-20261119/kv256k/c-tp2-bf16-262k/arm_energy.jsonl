@@ -1,0 +1,3 @@
+{"step":"deep:256k:code:drafted:512","gpu0_energy_j":40842,"gpu1_energy_j":49044,"wall_s":227.154941107}
+{"step":"deep:256k:code:serial:512","gpu0_energy_j":44370,"gpu1_energy_j":52914,"wall_s":273.214689260}
+{"step":"ret:32k,120k,250k:ret:drafted:160","gpu0_energy_j":61731,"gpu1_energy_j":72012,"wall_s":412.863883284}

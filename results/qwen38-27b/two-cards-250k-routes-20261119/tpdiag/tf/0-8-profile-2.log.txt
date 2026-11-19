@@ -1,0 +1,34 @@
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+warning: attn_pref spills 64 bytes of registers
+warning: attn_pref8 spills 5696 bytes of registers
+warning: attn_prompt spills 128 bytes of registers
+  layers loaded: 8/64
+  layers loaded: 16/64
+  layers loaded: 24/64
+  layers loaded: 32/64
+  layers loaded: 40/64
+  layers loaded: 48/64
+  layers loaded: 56/64
+  layers loaded: 64/64
+loaded in 3.4 s
+GPU time, prompt: 81.0 ms
+  embed              0.03 ms   0.0 %
+  add_rmsnorm        2.41 ms   3.0 %
+  gdn_pre_rows       1.18 ms   1.5 %
+  gated_norm         0.51 ms   0.6 %
+  attn_prep          0.12 ms   0.1 %
+  attn_gate          0.11 ms   0.1 %
+  argmax             0.01 ms   0.0 %
+  argmax_part        0.04 ms   0.1 %
+  attn_prompt        0.29 ms   0.4 %
+  ngen_swiglu       24.43 ms  30.2 %
+  rowsums_ff         0.67 ms   0.8 %
+  dec_wide64         0.62 ms   0.8 %
+  gdn_prep           3.14 ms   3.9 %
+  gdn_state          2.67 ms   3.3 %
+  gdn_out            1.48 ms   1.8 %
+  ngen_wide         13.81 ms  17.1 %
+  ngen_narrow       29.45 ms  36.4 %
+0-8-profile-2 exit 124

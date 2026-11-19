@@ -1,0 +1,68 @@
+From 15adb58cf258bd279b4a73d572c7ae52bc846e7a Mon Sep 17 00:00:00 2001
+From: SergiioB <119968745+SergiioB@users.noreply.github.com>
+Date: Thu, 19 Nov 2026 05:39:00 +0100
+Subject: [PATCH 3/4] xpu(qwen27): snapshot comment states what was measured;
+ one drain per rank on drop
+
+Review of 78f42f240. The Snap comment claimed the B70 driver aliased pages past
+2 GiB from about 140K tokens. Later tests found no aliasing, and a 2.25 GB state
+at 131K resumed. It now says what was measured: one buffer per rank failed from
+about 165K tokens, and one buffer per layer was free of that failure in the two
+replays tested (165K and 250K). The cause is unknown. Every configuration keeps
+this layout: with the trigger unknown, none can be shown to be outside it.
+
+dropSnap waited on a rank's queue once per buffer (up to 64 per rank). It now
+waits once per rank, then frees that rank's buffers.
+
+snapBytes documents that the cache charges payload bytes. Per-allocation
+rounding and bookkeeping are not counted.
+---
+ zig/src/xpu/slot_states.zig | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/zig/src/xpu/slot_states.zig b/zig/src/xpu/slot_states.zig
+index 0bd2fbd58..b563935bd 100644
+--- a/zig/src/xpu/slot_states.zig
++++ b/zig/src/xpu/slot_states.zig
+@@ -15,9 +15,12 @@ pub fn slotBytes(_: *const Runner) usize {
+     return 48 * (2 * rec_b + 2 * conv_b) + 16 * 2 * kvBytes();
+ }
+ 
+-/// A slot's state after `at` prompt tokens (prompt cache): one device buffer per layer and TP rank. One buffer per
+-/// rank put a whole state past 2 GiB in a single allocation, where the B70's driver aliased its pages (TP2 int8 K/V
+-/// from about 140K tokens on; see layerSnapBytes).
++/// A slot's state after `at` prompt tokens (prompt cache): one device buffer per layer and TP rank.
++/// With one buffer per rank, two-card int8 K/V resumes failed from about 165K tokens (131K resumed): the first 2 MiB of
++/// rank 0's buffer did not hold what the save copied. With one buffer per layer that failure was absent in the two
++/// replays tested (165K and 250K tokens, two B70s); its cause is unknown (B70-DOCS
++/// results/2026/11/b70-breakthrough-20261118/tp/tptf/REPORT.md). Every configuration takes this layout: with the
++/// trigger unknown, none can be shown to be outside it, and one layout keeps save and restore a single code path.
+ pub const Snap = struct { at: u32, bufs: [4][q.LAYERS]?*anyopaque = @splat(@splat(null)), bytes: usize };
+ 
+ pub fn recBytes() usize {
+@@ -42,7 +45,8 @@ fn layerSnapBytes(attn: bool, at: u32) usize {
+     return if (attn) 2 * @as(usize, at) * (kvRow() + if (q.kv_i8) kvScalesRow() else 0) else recBytes() + convBytes();
+ }
+ 
+-/// Per-rank bytes saveSlot takes at `at` tokens.
++/// Per-rank payload bytes saveSlot copies at `at` tokens: what the prompt cache charges against --prompt-cache-gib.
++/// The driver's rounding and bookkeeping for each of the LAYERS buffers is not counted (not measured).
+ pub fn snapBytes(r: *const Runner, at: u32) usize {
+     var n: usize = 0;
+     for (&r.model.layers) |*l| n += layerSnapBytes(l.attn, at);
+@@ -121,8 +125,14 @@ pub fn restoreSlot(r: *Runner, slot: u32, snap: Snap) !void {
+     try r.syncAll();
+ }
+ 
++/// Frees a snapshot once each rank's queue has drained (one wait per rank); a rank whose queue cannot be waited for
++/// keeps its buffers until the device closes.
+ pub fn dropSnap(r: *Runner, snap: Snap) void {
+-    for (0..r.tp) |rk| for (snap.bufs[rk]) |b| if (b) |p| freeAfterQueue(r.devAt(rk), p);
++    for (0..r.tp) |rk| {
++        const d = r.devAt(rk);
++        d.sync() catch continue;
++        for (snap.bufs[rk]) |b| if (b) |p| d.g.free(p);
++    }
+ }
+ 
+ /// Frees `p` once the queue has drained; kept (until the device closes) when the queue cannot be waited for.

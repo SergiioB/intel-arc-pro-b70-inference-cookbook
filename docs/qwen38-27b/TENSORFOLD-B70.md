@@ -16,9 +16,11 @@ Measured 2026-11-08 on two Intel Arc Pro B70 cards, one stream per card. Status:
 | Long context and you need the model's own greedy answer | EXL3 without speculation, or TensorFold with drafts off | 23 tok/s at 131K (EXL3) vs 19 (patched TensorFold, serial) |
 | One user with two B70s, up to 250K | **TensorFold `--tp 2` (upstream PR #3586) + `XPU_ATTN_PREF=256`** ([2026-11-18 screen](#two-cards-for-one-stream-2026-11-18-13-to-32k-15-at-131k-250k-prompt-with-bf16-kv)) | 165 / 143 / 118 / 77 tok/s at ~60 / 8K / 32K / 131K on code, 63 at 250K with bf16 K/V, drafted == non-drafted; the PR is unmerged |
 | Multi-turn sessions on TensorFold | size `--prompt-cache-gib` to one full state ([how](#warm-follow-up-turns-size-the-prompt-cache)) | follow-up turns start in 0.3–1.1 s up to 131K instead of re-reading the context (22.5 s at 32K with the 2 GiB default) |
+| Warm sessions to 250K on two cards | int8 K/V + `--prompt-cache-gib 5` on [our fix branch](https://github.com/SergiioB/TensorFold/tree/xpu-tp2-fixes-20261119) ([2026-11-19](LONG-CONTEXT-250K-20261119.md)) | follow-ups in 1.1–1.6 s instead of 205 s, resumed == fresh; without the branch, resumed turns past about 131K fail |
 
-The EXL3 rows above come from 2026-11-08 and 2026-11-11. A same-session EXL3 against TensorFold re-measurement
-was started on 2026-11-18 and has not reported yet.
+The EXL3 rows above come from 2026-11-08 and 2026-11-11. The same-session greedy comparison reported on
+2026-11-19: [ROUTE-GREEDY-SAME-SESSION-20261119.md](ROUTE-GREEDY-SAME-SESSION-20261119.md). The sampled comparison
+behind the 2026-11-10 route decision is pending.
 
 ## Results (code prompts, 512-token answers, decode tok/s after the first token)
 
@@ -85,7 +87,9 @@ slices and can change stock output; drafted-versus-serial agreement still holds 
 that patched build on the measured cells. The two artifacts and their speed results
 must stay separate. [Issue #2543](https://github.com/ashhart/TensorFold/issues/2543)
 tracks the broader proposal. Apply the local patch only to the documented v1.2.4 base
-when reproducing the tables below.
+when reproducing the tables below. On 2026-11-18 we posted the combined #2595 + #2799 receipt there: same token
+hash as main in all 8 cells, 1.06× / 1.22× / 1.31× drafted at 8K / 32K / 131K
+([summary](TENSORFOLD-TWO-CARDS-20261119.md#upstream-receipt-for-one-card-posted-2026-11-18)).
 
 ## Prefix attention kernel (2026-11-13): 2.0× at 32K, 3.4× at 131K, 262,144 context
 
@@ -225,7 +229,8 @@ about 29K tokens re-read their whole context on every turn. With a budget that h
 | 131K, one card | `XPU_KV_INT8=1 --context 139264 --prompt-cache-gib 5.5` | 0.65–1.06 s |
 | 131K, two cards, bf16 K/V | `--tp 2 --context 139264 --prompt-cache-gib 9.5` | 0.62–0.83 s |
 
-Resumed text equals fresh text on all four turns at 32K on one card. Not checked on two cards.
+Resumed text equals fresh text on all four turns at 32K on one card. Two cards, checked later on 2026-11-18: 5 of 5
+turns at 32K and 5 of 5 at 131K ([250K and warm sessions](LONG-CONTEXT-250K-20261119.md#warm-follow-up-turns-on-two-cards)).
 
 ```bash
 git clone https://github.com/ashhart/TensorFold && cd TensorFold
@@ -237,7 +242,9 @@ XPU_ATTN_PREF=256 ZE_FLAT_DEVICE_HIERARCHY=COMPOSITE zig-out/xpu/bin/tensorfold-
 ```
 
 Not run: more than one stream on two cards, sampled decoding, thinking on, retrieval at depth, battery repeats,
-int8 K/V on two cards, hours-long stability. The PR is unmerged and may change. Evidence:
+int8 K/V on two cards, hours-long stability. The PR is unmerged and may change. Measured since, except stability
+(2026-11-18/19): [why two cards gain 1.25–1.5×, two fork fixes, decode by prompt length](TENSORFOLD-TWO-CARDS-20261119.md)
+and [250K and warm sessions](LONG-CONTEXT-250K-20261119.md). Evidence:
 `results/qwen38-27b/tensorfold-two-card-tp2-20261118/` (`python3 summarize.py` prints the tables).
 
 ## Reproduce

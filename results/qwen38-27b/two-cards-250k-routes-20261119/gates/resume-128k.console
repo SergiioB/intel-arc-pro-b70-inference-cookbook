@@ -1,0 +1,12 @@
+server 973824 up on 8046
+{"turn": 0, "prompt_tokens": 130856, "cached_tokens": 0, "ttft_s": 88.734, "decode_tok_s": 75.36, "sha256": "80862a72f3c6dfd666c1585d4961ffea19827253f87b25f573bc3b638df61f0b"}
+{"turn": 1, "prompt_tokens": 131392, "cached_tokens": 130816, "ttft_s": 0.831, "decode_tok_s": 51.15, "sha256": "a472a9c6cc7f26ca2a29fa36dfd041cdbc3430ac67a2f9e5ec1989f6107aaea1"}
+{"turn": 2, "prompt_tokens": 131555, "cached_tokens": 131328, "ttft_s": 0.646, "decode_tok_s": 62.93, "sha256": "9d7eb2a624ffb8d6fdb2e86544dd3640c3d7a0125fbb9ed2b337e32722a76cb5"}
+{"turn": 3, "prompt_tokens": 131772, "cached_tokens": 131520, "ttft_s": 0.657, "decode_tok_s": 93.28, "sha256": "e50652fbc152e22ff1a1de260f8813a37fcea4c898c4367eaf0cd1ed5cdbb8cc"}
+{"turn": 4, "prompt_tokens": 132051, "cached_tokens": 131712, "ttft_s": 0.729, "decode_tok_s": 95.15, "sha256": "fa9490864914739ac686d3e6d30509556809d52b8ef09831a5ed5beb0721742e"}
+server 975803 up on 8046
+{"turn": 0, "prompt_tokens": 130856, "cached_tokens": 0, "ttft_s": 88.435, "decode_tok_s": 75.46, "equal": true}
+{"turn": 1, "prompt_tokens": 131392, "cached_tokens": 0, "ttft_s": 88.841, "decode_tok_s": 52.19, "equal": true}
+{"turn": 2, "prompt_tokens": 131555, "cached_tokens": 0, "ttft_s": 90.738, "decode_tok_s": 60.19, "equal": true}
+{"turn": 3, "prompt_tokens": 131772, "cached_tokens": 0, "ttft_s": 89.516, "decode_tok_s": 91.05, "equal": true}
+{"turn": 4, "prompt_tokens": 132051, "cached_tokens": 0, "ttft_s": 89.411, "decode_tok_s": 118.92, "equal": true}

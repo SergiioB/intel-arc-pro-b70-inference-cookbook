@@ -1,0 +1,35 @@
+draft_outputs_full_run	101
+complete_trace_rounds	16
+window	topk_part start to next topk_part start
+device	metric	count	ms_per_round	pct_of_trace_window
+0:f:0:0	trace-wall	16	46.2208	100.00
+0:f:0:0	device-activity-union		40.0758	86.71
+0:f:0:0	unattributed-gap		6.1450	13.29
+0:f:0:0	gap-before-reduce	0	0.0000	0.00
+0:f:0:0	w4k1_d64	1136	14.9970	32.45
+0:f:0:0	w4k_dsplit	2560	10.7955	23.36
+0:f:0:0	w4k1_decode	1024	5.6158	12.15
+0:f:0:0	gdn_step	1536	3.3105	7.16
+0:f:0:0	add_rmsnorm_dec	2064	1.3137	2.84
+0:f:0:0	attn_decode	256	0.8040	1.74
+0:f:0:0	gdn_pre	768	0.7276	1.57
+0:f:0:0	swiglu	1104	0.4650	1.01
+0:f:0:0	dattn	80	0.4594	0.99
+0:f:0:0	zeCommandListAppendMemoryCopy	4768	0.3577	0.77
+0:f:0:0	argmax_part	16	0.2993	0.65
+0:f:0:0	gated_norm	768	0.2665	0.58
+0:f:0:0	add_rmsnorm	192	0.1206	0.26
+0:f:0:0	conv_commit	768	0.1198	0.26
+0:f:0:0	attn_prep	256	0.0989	0.21
+0:f:0:0	topk_part	16	0.0827	0.18
+0:f:0:0	dconv	320	0.0768	0.17
+0:f:0:0	attn_gate	256	0.0633	0.14
+0:f:0:0	kv_move	144	0.0625	0.14
+0:f:0:0	attn_merge	256	0.0478	0.10
+0:f:0:0	taps_in	16	0.0372	0.08
+0:f:0:0	dprep	160	0.0272	0.06
+0:f:0:0	tap	80	0.0207	0.04
+0:f:0:0	rowsums_rows	80	0.0165	0.04
+0:f:0:0	embed	32	0.0142	0.03
+0:f:0:0	argmax	16	0.0113	0.02
+0:f:0:0	to_res	16	0.0013	0.00

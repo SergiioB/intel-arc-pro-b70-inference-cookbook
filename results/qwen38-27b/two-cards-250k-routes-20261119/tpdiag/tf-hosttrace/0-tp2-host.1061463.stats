@@ -1,0 +1,35 @@
+
+=== API Timing Summary ===
+
+             Total Execution Time (ns):          11004882544
+    Total API Time for L0 backend (ns):           8340281680
+
+== L0 Backend ==
+
+                       Function,        Calls,            Time (ns),      Time (%),         Average (ns),             Min (ns),             Max (ns)
+  zeCommandListAppendMemoryCopy,        39996,           4469860078,     53.593632,               111757,                 1960,             63092456
+   zeCommandListHostSynchronize,         7331,           1916594411,     22.979971,               261436,                  250,             37559578
+zeCommandListAppendLaunchKernel,       504745,           1312335263,     15.734902,                 2599,                 1590,              5919840
+       zeKernelSetArgumentValue,      5392400,            387850756,      4.650331,                   71,                   20,                17050
+ zeCommandListAppendSignalEvent,        79722,            103181758,      1.237150,                 1294,                  810,                26260
+               zeMemAllocDevice,         3085,             62707608,      0.751864,                20326,                 7140,              1147210
+                 zeMemAllocHost,            2,             51945057,      0.622821,             25972528,             24976359,             26968698
+                 zeModuleCreate,           32,             18992939,      0.227725,               593529,                44140,              2206130
+               zeEventHostReset,       158928,              8973320,      0.107590,                   56,                   30,                 8810
+   zeCommandListCreateImmediate,            2,              3174140,      0.038058,              1587070,              1371270,              1802870
+    zeContextMakeMemoryResident,           34,              2302920,      0.027612,                67732,                33970,               221020
+zeCommandListAppendWaitOnEvents,          813,              1195660,      0.014336,                 1470,                 1040,                 6720
+                      zeMemFree,            3,               754190,      0.009043,               251396,               243100,               262450
+                  zeEventCreate,         1026,               146030,      0.001751,                  142,                  110,                10080
+                 zeKernelCreate,          133,               129020,      0.001547,                  970,                  490,                13120
+              zeEventPoolCreate,            2,               114620,      0.001374,                57310,                49140,                65480
+          zeKernelGetProperties,          133,                 8500,      0.000102,                   63,                   30,                  610
+           zeKernelSetGroupSize,          133,                 6630,      0.000079,                   49,                   20,                  270
+                    zeDriverGet,            2,                 3190,      0.000038,                 1595,                  180,                 3010
+                zeContextCreate,            1,                 1710,      0.000021,                 1710,                 1710,                 1710
+      zeKernelSetIndirectAccess,           32,                 1480,      0.000018,                   46,                   20,                  280
+          zeDeviceGetProperties,            2,                 1200,      0.000014,                  600,                  260,                  940
+          zeDeviceCanAccessPeer,            2,                  630,      0.000008,                  315,                   70,                  560
+                    zeDeviceGet,            2,                  570,      0.000007,                  285,                  120,                  450
+
+

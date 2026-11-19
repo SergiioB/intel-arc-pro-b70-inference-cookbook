@@ -1,0 +1,1 @@
+exl3-mtp3 {'tune': [80, 82], 'test': [77, 82], 'knowledge_professional': [41, 55], 'structured_output': [55, 55], 'instruction_following': [33, 55]}

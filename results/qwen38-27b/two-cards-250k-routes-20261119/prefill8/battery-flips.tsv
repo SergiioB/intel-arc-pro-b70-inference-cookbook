@@ -1,0 +1,55 @@
+from	to	set	id	before	after	before_sha256	after_sha256	before_detail	after_detail
+off	on	tune	he-032	False	True	dd1b8346ec3c590b32cecac77675b24f552d3aafae62c8dbdd8485c121ed4446	8f32e5906b43e3d49a651de8f05700d97377e221cbd03c8cc9fe38ed6d2fb6d1	"k
+    assert math.fabs(poly(coeffs, solution)) < 1e-4
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError"	PASS
+off	on	test	he-093	False	True	8db964add4f70666f0daf94212a300800357070c5b2428f8d4a1da8f153b8b37	03a5df1e92ec47cf955a6f9096414076d4e0d70cc52ee8ede4125bce812892c5	"gging!)""
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: This prints if this assert fails 1 (good for debugging!)"	PASS
+off	on	tune	he-116	True	False	650e421d708261f1d180a8a5b389ca4d55d19ed39c07e2cf2a7cc2fbeec3b5a4	28f8ccbf46e4e630c530d7d5196030294e2b05a031a34f0a7df73b3fa0f0566f	PASS	"File ""/tmp/tmpo8ljkuwt.py"", line 2
+    ```python
+    ^
+SyntaxError: invalid syntax"
+off	on	test	he-127	True	False	112fca57b082a0f2bbaa420585fb09512e37bc8a597e4c2f7a309974488d20e6	51f83dc00ad7c730b58c9b6ff0064ccbfe5d8680fe5ae5e1090e124dd49f9a0a	PASS	" 61, in check
+    assert candidate((-1, 1), (0, 4)) == ""NO""
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError"
+off	on	knowledge_professional	prof-biz-401	False	True	709013bfa287faba0aa6a36d259d846ccef74532a78d5aefc0772551356a41fa	5359744c9906acd8ff5d4e2280de729da23eddfa5dcd149eeaded9fa7e325f35	got='J' gold='I'	got='I' gold='I'
+off	on	knowledge_professional	prof-biz-484	True	False	cbaac78296f486c24f18c4c3bcc053d2d8f4b9df81839968c711d6877314eb83	85da41f67dd57654b747f3c553cf91956d67947d8e34d8c6d7e679478cd6cc1d	got='C' gold='C'	got='J' gold='C'
+off	on	knowledge_professional	prof-law-1935	False	True	510e675da9e13560f815577470c48c390883505a922bf3566cf112204ffa373c	62885e05ce211d672ed8b37a9a37a123a9879c9c92bd5796ac74213d943440ae	got='H' gold='H'	got='H' gold='H'
+stock	on	tune	he-032	False	True	dd1b8346ec3c590b32cecac77675b24f552d3aafae62c8dbdd8485c121ed4446	8f32e5906b43e3d49a651de8f05700d97377e221cbd03c8cc9fe38ed6d2fb6d1	"k
+    assert math.fabs(poly(coeffs, solution)) < 1e-4
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError"	PASS
+stock	on	test	he-093	False	True	8db964add4f70666f0daf94212a300800357070c5b2428f8d4a1da8f153b8b37	03a5df1e92ec47cf955a6f9096414076d4e0d70cc52ee8ede4125bce812892c5	"gging!)""
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: This prints if this assert fails 1 (good for debugging!)"	PASS
+stock	on	tune	he-116	True	False	650e421d708261f1d180a8a5b389ca4d55d19ed39c07e2cf2a7cc2fbeec3b5a4	28f8ccbf46e4e630c530d7d5196030294e2b05a031a34f0a7df73b3fa0f0566f	PASS	"File ""/tmp/tmpo8ljkuwt.py"", line 2
+    ```python
+    ^
+SyntaxError: invalid syntax"
+stock	on	test	he-127	True	False	112fca57b082a0f2bbaa420585fb09512e37bc8a597e4c2f7a309974488d20e6	51f83dc00ad7c730b58c9b6ff0064ccbfe5d8680fe5ae5e1090e124dd49f9a0a	PASS	" 61, in check
+    assert candidate((-1, 1), (0, 4)) == ""NO""
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError"
+stock	on	knowledge_professional	prof-biz-401	False	True	1aa8ba2a2593fd6cbe45c1670a931310c27628835ca0d59e4e4325137a355ee5	5359744c9906acd8ff5d4e2280de729da23eddfa5dcd149eeaded9fa7e325f35	got='J' gold='I'	got='I' gold='I'
+stock	on	knowledge_professional	prof-biz-484	True	False	cbaac78296f486c24f18c4c3bcc053d2d8f4b9df81839968c711d6877314eb83	85da41f67dd57654b747f3c553cf91956d67947d8e34d8c6d7e679478cd6cc1d	got='C' gold='C'	got='J' gold='C'
+stock	on	knowledge_professional	prof-law-1935	False	True	2ed029dec88dfaca0ba205b55582580ec195ff917b30433438d8c93faacf9d5d	62885e05ce211d672ed8b37a9a37a123a9879c9c92bd5796ac74213d943440ae	got='I' gold='H'	got='H' gold='H'
+prefix	off	knowledge_professional	prof-biz-401	True	False	2fa1948040cfd62476f6dd96ff40562166dab3053412619d41d678f71cd3fda5	709013bfa287faba0aa6a36d259d846ccef74532a78d5aefc0772551356a41fa	got='I' gold='I'	got='J' gold='I'
+prefix	off	knowledge_professional	prof-law-1935	True	False	37e1d4797f7b0f6ae022149d6918033123a64e4fc67d484f5dc28a1f8ef460b1	510e675da9e13560f815577470c48c390883505a922bf3566cf112204ffa373c	got='H' gold='H'	got='H' gold='H'
+prefix	on	tune	he-032	False	True	301a904e9e20e11913d62c2e458b06d3e3691c4c9727ee54db8fe65358b5280e	8f32e5906b43e3d49a651de8f05700d97377e221cbd03c8cc9fe38ed6d2fb6d1	"k
+    assert math.fabs(poly(coeffs, solution)) < 1e-4
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError"	PASS
+prefix	on	test	he-093	False	True	8db964add4f70666f0daf94212a300800357070c5b2428f8d4a1da8f153b8b37	03a5df1e92ec47cf955a6f9096414076d4e0d70cc52ee8ede4125bce812892c5	"gging!)""
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: This prints if this assert fails 1 (good for debugging!)"	PASS
+prefix	on	tune	he-116	True	False	650e421d708261f1d180a8a5b389ca4d55d19ed39c07e2cf2a7cc2fbeec3b5a4	28f8ccbf46e4e630c530d7d5196030294e2b05a031a34f0a7df73b3fa0f0566f	PASS	"File ""/tmp/tmpo8ljkuwt.py"", line 2
+    ```python
+    ^
+SyntaxError: invalid syntax"
+prefix	on	test	he-127	True	False	112fca57b082a0f2bbaa420585fb09512e37bc8a597e4c2f7a309974488d20e6	51f83dc00ad7c730b58c9b6ff0064ccbfe5d8680fe5ae5e1090e124dd49f9a0a	PASS	" 61, in check
+    assert candidate((-1, 1), (0, 4)) == ""NO""
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError"
+prefix	on	knowledge_professional	prof-biz-484	True	False	d11708172a1294869e11af23ccdd35b686ea20c1fb60f3eebf52e51f23b9d186	85da41f67dd57654b747f3c553cf91956d67947d8e34d8c6d7e679478cd6cc1d	got='C' gold='C'	got='J' gold='C'
