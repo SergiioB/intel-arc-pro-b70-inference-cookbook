@@ -8,6 +8,7 @@
 # the code (.text), constants with both kernel binaries (.rodata) and .data must match the hashes below.
 set -euo pipefail
 DIR=${1:?new directory}
+mkdir -p "$DIR"; DIR=$(cd "$DIR" && pwd)   # absolute: the build runs inside $DIR/tf
 ZIG=${ZIG:-zig}
 TAG=b70-inkling2-mini-20261121
 COMMIT=e47dc7ae8e06c9cdefb846e01cf4671bad6cb3db
