@@ -1,6 +1,6 @@
 # B70 inference: what to run, what to stop, what to test next
 
-Updated 2026-11-19. Start with this page, then follow **one** model-family route. A speed result applies only to its stated image, model, patch stack, workload, cache state, power cap, and timing method. The [benchmark catalog](BENCHMARK-CATALOG.md) is the generated numeric view; [`data/benchmarks.v1.json`](../data/benchmarks.v1.json) is the authority for public benchmark records. This page is a decision index, not another benchmark table.
+Updated 2026-11-21. Start with this page, then follow **one** model-family route. A speed result applies only to its stated image, model, patch stack, workload, cache state, power cap, and timing method. The [benchmark catalog](BENCHMARK-CATALOG.md) is the generated numeric view; [`data/benchmarks.v1.json`](../data/benchmarks.v1.json) is the authority for public benchmark records. This page is a decision index, not another benchmark table.
 
 ## Use now (measured for the stated route)
 
@@ -20,12 +20,13 @@ Updated 2026-11-19. Start with this page, then follow **one** model-family route
 | 65B dense on two cards | [Ripple-65B `-sm tensor` + `GGML_SYCL_F16=ON` build](ripple-65b/README.md) | Screen 2026-11-08: 14.5 tok/s decode, 720 tok/s pp2048 (12.5 / 527 at 32K) on `Q4_K_M`; the F16 build flag is the whole prefill win (218 → 720), decode unchanged. Battery 9/9. |
 | Long-context usability verdicts | [Session stability trace](SESSION-STABILITY.md) | One decode cell is not a verdict. Ripple-65B (2 cards, 118K seed) and Qwen3.8-27B q8_0 KV (1 card, 131K seed) both held decode flat across 11-turn sessions (0.0 % / −0.5 % sag); cached TTFT 9 s vs 0.6 s. Screen-grade (11 turns, single stream). |
 | Ornith-1.5-122B on two cards | [UD-IQ3_XXS llama.cpp](ornith15-122b/ORNITH15-122B-LLAMACPP.md) | llama-bench n=5: pp2048 700.07 tok/s, tg128 28.10 tok/s. 131K serves. DFlash2 is NVIDIA SGLang, not this stack. |
+| Inkling 2 Mini on one card | [llama.cpp SYCL research recipe](inkling2-mini/INKLING2-MINI-LLAMACPP.md) (graph replay + 2 upstream PRs + 6 local patches) | Research recipe 2026-11-21, 3 seeds a cell, 230 W / 2,800 MHz: 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens at model-card sampling, output identical to the engine without the patches (KL 0, greedy 5/5). About 23 % of the computed byte ceiling; 32K not re-measured; exact-default prompt speed not measured. The prefill patch 0002 is lossy and opt-in. A TensorFold port is in progress, not a recipe ([status](inkling2-mini/README.md#what-is-running-now)). |
 
 **Correctness gate:** A passing [four-canary smoke](../scripts/canary.py) checks basic syntax and arithmetic, not exact code execution or broad answer quality. Do not describe the GPTQ checkpoint as quality-equivalent to another quantization based on those four probes. Before using it for coding decisions, compare exact answers with a reference artifact on your own task set. Do not infer quality from throughput or greedy replay alone.
 
 ## Do not repeat unchanged
 
-[**DO-NOT-REPEAT.md**](DO-NOT-REPEAT.md) is the canonical ledger of closed arms — 33 closed arms with their
+[**DO-NOT-REPEAT.md**](DO-NOT-REPEAT.md) is the canonical ledger of closed arms — 40 closed arms with their
 outcome, cause, scope, the condition that would reopen them, and links to evidence. Read it before starting any
 optimisation or engine port. The method is in [EVIDENCE-LEDGERS.md](EVIDENCE-LEDGERS.md): no speed number without
 its shape, a parity gate before a promotion, unknown tensor formats fail closed, one variable per arm, and a
