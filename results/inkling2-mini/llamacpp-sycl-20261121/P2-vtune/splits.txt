@@ -1,0 +1,5 @@
+0.02.684.909 I sched_reserve: reserving ...
+0.02.730.535 I sched_reserve:      SYCL0 compute buffer size =  1379.22 MiB
+0.02.730.543 I sched_reserve:  SYCL_Host compute buffer size =    47.02 MiB
+0.02.730.545 I sched_reserve: graph: nodes = 12802, splits = 2, input objects = 4, input tensors = 12
+0.02.730.547 I sched_reserve: reserve took 45.64 ms, sched copies = 1

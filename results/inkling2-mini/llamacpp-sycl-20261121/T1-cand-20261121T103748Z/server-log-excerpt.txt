@@ -1,0 +1,2 @@
+0.02.256.462 W resolve_fused_ops: layer 0 is assigned to device SYCL0 but Flash Attention is assigned to device CPU (usually due to missing support)
+0.02.256.465 W resolve_fused_ops: Flash Attention not supported, set to disabled

@@ -1,0 +1,5 @@
+4f7e3142f02193aa63be63f37d967b8feb249c62c065f031c6dd6d775ae30dbc  $LLAMA_CPP/build-sycl-loc/bin/llama-server
+e90f111307862ab5472d9fdeb11c1994f74c3ae15a830f6f680e1f4c862e35cf  $LLAMA_CPP/build-sycl-loc/bin/llama-bench
+78115f0510a2176f138d3238a9d87c416eda6b164fb95b8e9fd1e63b5cbdeef6  $LLAMA_CPP/build-sycl-loc/bin/llama-perplexity
+a8a090ff42a9e1118bce45e319001468b7cba4bfdd8c2344506e49b32c782506  $LLAMA_CPP/build-sycl-loc/bin/libggml-sycl.so
+7301e66499cf19785bfb50734e03fba45b66891f369d0cb3d31d35245892b9ec  $LLAMA_CPP/build-sycl-loc/bin/libllama.so
