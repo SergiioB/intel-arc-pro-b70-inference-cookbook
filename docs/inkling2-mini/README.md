@@ -12,7 +12,7 @@ patch was not compared on these prompts. Work on both continues.
 |---|---|---|
 | TensorFold XPU, tag `b70-inkling2-mini-20261121`, one card | Research build, numbers will change; not upstream TensorFold. 71.48 / 64.05 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 2,048-token replies). Per-pass error against a float32 reference passes; greedy output equals llama.cpp's on 1 of 5 prompts; KL not yet measured. Prompt reading slower than llama.cpp (TTFT 104.8 s at 9,172 tokens) | [below](#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121) |
 | llama.cpp SYCL + 2 upstream PRs + 6 local patches, one card | Research recipe; output bit-exact against the 0001-only build (KL 0, greedy 5/5). 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 1,024-token replies) | [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md) |
-| llama.cpp with patch 0002 active (fast-prefill variant) | Lossy, opt-in only. Prompt reading 2.4x at 76 tokens and 1.55x at 9,172 against the patch-0001 build; fails the KL gate | [§6 of the recipe](INKLING2-MINI-LLAMACPP.md#6-prompt-reading-and-time-to-first-token) |
+| llama.cpp with patch 0002 active (fast-prefill variant) | Lossy, opt-in only. Prompt reading 2.4x at 76 tokens and 1.55x at 9,172 against the 0001-only control A; fails the KL gate | [§6 of the recipe](INKLING2-MINI-LLAMACPP.md#6-prompt-reading-and-time-to-first-token) |
 
 Do not mix: both routes read the same GGUF file, but engines, patches and numbers belong to their own route. The
 llama.cpp patch stack in [`patches/inkling2-mini-llamacpp/`](../../patches/inkling2-mini-llamacpp/APPLY.md) applies to

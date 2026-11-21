@@ -116,7 +116,8 @@ Prompt reading was measured only for these builds (engine timing field, median o
 
 | Build | 76 tokens | 9,172 tokens | 38,955 tokens |
 |---|---|---|---|
-| 0001 only, graph on (controls A/B, 1,024-token replies) | 65.6 tok/s, TTFT 1.36 s | 169.5 tok/s, TTFT 54.4 s | – |
+| 0001 only, graph on, control A (1,024-token replies) | 65.6 tok/s, TTFT 1.36 s | 169.5 tok/s, TTFT 54.4 s | – |
+| 0001 only, graph on, control B (1,024-token replies) | 65.2 tok/s, TTFT 1.37 s | 169.1 tok/s, TTFT 54.6 s | – |
 | 0001 only, graph on (2,048-token replies) | 64.7 tok/s, TTFT 1.39 s | 169.1 tok/s, TTFT 54.5 s | 150.0 tok/s, TTFT 259.9 s |
 | 0001–0006 with 0002 active = **lossy fast-prefill variant** | 157.6 tok/s, TTFT 0.67 s | 263.1 tok/s, TTFT 35.1 s | – |
 
