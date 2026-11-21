@@ -23,7 +23,7 @@ Labels used on this page: **measured** (a raw file in
 
 The file keeps the release's NVFP4 expert weights unchanged (layers 0–19); the 4 MXFP8 layers (20–23) are Q8_0;
 attention and the LM head are Q8_0. It is the root-folder file of the unsloth repository (24 stored layers,
-`inkling2.block_count = 48`). Upstream `master` after PR #32694 does not load it (DNR-038).
+`inkling2.block_count = 48`). Upstream `master` after PR #32694 does not load it (copied: a user report, not run here; DNR-038).
 
 ## 2. Build
 

@@ -156,7 +156,7 @@ Copied from the repository listings and model cards; only the chosen file was do
 | Repository / file | Size | Experts | Engine it needs | Bytes a token vs the chosen file | Note |
 |---|---|---|---|---|---|
 | **unsloth `Inkling-2-Mini-UD-Q4_K_XL.gguf` (chosen)** | 17.63 GB | NVFP4 as released + Q8_0 for the 4 MXFP8 layers | llama.cpp + PR #32695 (root-folder layout) | 1.00 | the release's expert bits unchanged |
-| unsloth UD-Q8_K_XL, UD-Q4_K_M, UD-IQ4_XS | 22.87 / 16.61 / 15.73 GB | NVFP4 kept down to UD-IQ4_XS | same; `Mainline_Support/` copies for upstream | UD-IQ4_XS about 2.6 % fewer | the 4 Q8_0 layers and the head are smaller |
+| unsloth UD-Q8_K_XL, UD-Q4_K_M, UD-IQ4_XS | 22.87 / 16.61 / 15.73 GB | NVFP4 kept down to UD-IQ4_XS | same; `Mainline_Support/` copies for upstream | UD-IQ4_XS about 2.6 % fewer (computed in the lab from the file headers; arithmetic not in this repository) | the 4 Q8_0 layers and the head are smaller |
 | nace-ai `Inkling-2-Mini-NVFP4.gguf` | 19.10 GB | NVFP4 repacked, not re-quantized | upstream + PR #32704 | more (larger dense parts) | card reports KL 0.004 vs the original with BF16 activations (2,040 positions) |
 | Xylolabs `NVFP4-Q8_0` / `NVFP4` | 17.63 / 22.92 GB | NVFP4 | upstream `29b52d398` or later | equal / more | no accuracy table yet |
 | bartowski IQ2 … Q6_K_L | – | re-quantized (imatrix) | upstream b12600 | – | expert down tensor is 1,152 wide, so only 32-wide block types apply |
@@ -167,8 +167,10 @@ Copied from the repository listings and model cards; only the chosen file was do
 Conclusion: no file reads fewer bytes a token while keeping the NVFP4 expert weights, so UD-Q4_K_XL stays. Pending,
 not run: KL of the chosen file against nace-ai's NVFP4 file with their method.
 
-**EXL3: not converted, and no engine runs it on this card.** exllamav3 upstream has no Inkling architecture (checked
-2026-11-21), the exl3xpu engine has none, and upstream TensorFold runs Inkling only with CUDA kernels. Arithmetic
+**EXL3: not converted, and no engine runs it on this card.** exllamav3 upstream has no Inkling architecture (lab source
+check of its `architecture/` folder at v1.6.7, 2026-11-21), the exl3xpu engine has none (same check of the fork),
+and upstream TensorFold `main` (`ea5576501`) has only an `inkling2` host package for Inkling 2 Small, with no loop,
+loader or XPU forward (lab reading of that commit, 2026-11-21). Arithmetic
 (computed): EXL3 at about 4 bpw for every matrix reads about 3.1 GB a token, a ceiling near 170 tok/s, against about
 162 for a GGUF that keeps the NVFP4 experts and shrinks attention and the head to Q4_K: +5 %, with extra error from
 re-quantizing 4-bit expert weights. Re-entry: exllamav3 adds `inkling2_loop`, or a measured profile shows the

@@ -68,6 +68,7 @@ It does not prove runtime correctness, stability or speed. Those come from the m
 
 ## Never apply
 
-- On upstream `master` after PR #32694 (merged 2026-11-20): that tree reads only the `Mainline_Support` GGUF layout,
-  and its loop path loses the per-expert NVFP4 scales without PR #32704 (see DNR-038).
+- On upstream `master` after PR #32694 (merged 2026-11-20). Copied, not run here: a user report says that tree fails
+  to load the root-folder file, and unsloth's `Mainline_Support` README says its loop path loses the per-expert NVFP4
+  scales without PR #32704 (see DNR-038).
 - On any other model family's llama.cpp tree in this cookbook.
