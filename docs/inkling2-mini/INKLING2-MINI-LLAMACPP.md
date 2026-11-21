@@ -2,8 +2,9 @@
 
 > Status: research recipe. One card, one stream, measured 2026-11-21 with 3 seeds a cell. Bit-exact with the
 > unpatched engine. Decode is 29 tok/s at a short prompt, about 23 % of the computed byte ceiling. Work on a
-> faster build continues ([what is running now](README.md#what-is-running-now)); numbers here will be superseded
-> by a new generation, not edited.
+> TensorFold XPU research build decodes faster but is not yet shown to give the same output
+> ([TensorFold route](README.md#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121)); numbers here will be
+> superseded by a new generation, not edited.
 
 Labels used on this page: **measured** (a raw file in
 [`results/inkling2-mini/llamacpp-sycl-20261121/`](../../results/inkling2-mini/llamacpp-sycl-20261121/README.md)),
@@ -168,7 +169,7 @@ What limits it instead:
 - Host submit cost: graph replay removes it, which is why it gave the largest single gain.
 
 The kernel time table for the remaining gap is not measured: unitrace hung, and VTune's GPU modes refused this AMD
-host. Fused decode kernels are being built in a separate engine (README, "What is running now").
+host. Fused decode kernels for this model run in the TensorFold XPU research build ([hub](README.md#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121)).
 
 ## 10. Claim boundary
 

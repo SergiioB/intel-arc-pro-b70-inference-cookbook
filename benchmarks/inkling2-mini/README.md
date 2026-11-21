@@ -1,6 +1,6 @@
 # Inkling 2 Mini benchmark slice
 
-Scripts for the [Inkling 2 Mini llama.cpp recipe](../../docs/inkling2-mini/INKLING2-MINI-LLAMACPP.md).
+Scripts for the Inkling 2 Mini routes: [TensorFold XPU research build](../../docs/inkling2-mini/README.md#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121) and [llama.cpp recipe](../../docs/inkling2-mini/INKLING2-MINI-LLAMACPP.md).
 
 | File | Does | GPU |
 |---|---|---|

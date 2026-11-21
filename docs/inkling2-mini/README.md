@@ -1,20 +1,131 @@
 # Inkling 2 Mini on Intel Arc Pro B70
 
 Thinking Machines' [Inkling 2 Mini](https://huggingface.co/thinkingmachines/Inkling-2-Mini) on one B70.
-Status 2026-11-21: **one research recipe on llama.cpp SYCL, 29 tok/s decode at a short prompt, bit-exact with the
-unpatched engine. A faster build is in progress and is not a recipe yet.**
+Status 2026-11-21: **two routes, both research.** A TensorFold XPU research build decodes 71.48 tok/s at a short
+prompt (tagged and rebuildable, not upstream, output not yet shown equal to llama.cpp). The llama.cpp SYCL recipe
+decodes 29.09 tok/s and is bit-exact with the unpatched engine. Work on both continues.
 
 ## Pick a route
 
-| Route | Status | Page |
+| Route | Status | Section |
 |---|---|---|
-| llama.cpp SYCL + 2 upstream PRs + 6 local patches, one card | Research recipe. Measured 2026-11-21, 3 seeds a cell. 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 1,024-token replies). Output identical to the engine without the patches | [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md) |
-| Same, with patch 0002 active (fast-prefill variant) | Lossy, opt-in only. Prompt reading 2.4x at 76 tokens and 1.55x at 9,172 against the patch-0001 build; fails the KL gate | [§6 of the recipe](INKLING2-MINI-LLAMACPP.md#6-prompt-reading-and-time-to-first-token) |
-| TensorFold XPU port | Unreleased research, not reproducible from this repository | [What is running now](#what-is-running-now) |
+| TensorFold XPU, tag `b70-inkling2-mini-20261121`, one card | Research build, numbers will change; not upstream TensorFold. 71.48 / 64.05 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 2,048-token replies). Per-pass error against a float32 reference passes; greedy output equals llama.cpp's on 1 of 5 prompts; KL not yet measured. Prompt reading slower than llama.cpp (TTFT 104.8 s at 9,172 tokens) | [below](#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121) |
+| llama.cpp SYCL + 2 upstream PRs + 6 local patches, one card | Research recipe, bit-exact. 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 1,024-token replies) | [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md) |
+| llama.cpp with patch 0002 active (fast-prefill variant) | Lossy, opt-in only. Prompt reading 2.4x at 76 tokens and 1.55x at 9,172 against the patch-0001 build; fails the KL gate | [§6 of the recipe](INKLING2-MINI-LLAMACPP.md#6-prompt-reading-and-time-to-first-token) |
 
-Do not mix: the patch stack in [`patches/inkling2-mini-llamacpp/`](../../patches/inkling2-mini-llamacpp/APPLY.md)
-applies to one base tree only, and the GGUF layout of the unsloth root file loads only on that tree. Numbers on this
-page belong to this model, this file and this engine build.
+Do not mix: both routes read the same GGUF file, but engines, patches and numbers belong to their own route. The
+llama.cpp patch stack in [`patches/inkling2-mini-llamacpp/`](../../patches/inkling2-mini-llamacpp/APPLY.md) applies to
+one base tree only.
+
+## TensorFold XPU (research build, tag b70-inkling2-mini-20261121)
+
+> Research build, numbers will change; not upstream TensorFold. Its output is not yet shown to equal llama.cpp's
+> (see the correctness box). Use the llama.cpp recipe when you need output identical to the reference engine.
+
+A TensorFold model family for Inkling 2 Mini with its own XPU kernels for this model's shapes (decode one token at a
+time, prompt in 64-row chunks, sampling on the card). Code: [`SergiioB/TensorFold` tag
+`b70-inkling2-mini-20261121`](https://github.com/SergiioB/TensorFold/tree/b70-inkling2-mini-20261121) = commit
+`e47dc7ae8e06c9cdefb846e01cf4671bad6cb3db`, 21 commits on upstream `ea5576501`, 8 files (runner
+`zig/src/families/inkling2/xpu_main.zig`, kernels `zig/kernels/xpu/inkling2/ink2.cl`, build step
+`zig/build/xpu_inkling2.zig`, `build.zig`, `zig/src/core/gguf_tensor.zig`, `tools/xpu/inkling2_{ref,cmp,serve}.py`).
+
+### What you need
+
+- One Arc Pro B70; measured at 230 W cap and 2,800 MHz. Ubuntu 26.04, kernel 7.0.0-29, compute-runtime and `ocloc`
+  26.05.37020.3, Zig 0.17.0, Python 3 with `transformers` (measured 5.15.0, `tokenizers` 0.22.2).
+- The same model file as the llama.cpp route: `unsloth/Inkling-2-Mini-GGUF` @ `b08906e3`,
+  `Inkling-2-Mini-UD-Q4_K_XL.gguf`, sha256 `e62d463c135ffe283df8d94b279a96ca145ac128b52ce854478613045bf4de15`
+  ([download line](INKLING2-MINI-LLAMACPP.md#3-serve)).
+- The release's `tokenizer.json` (sha256 `7f332727f9a3f093dd452a39cc978e6757627e5dad1b0673aa4e75174f236dd6`) and
+  `chat_template.jinja` (sha256 `53a9035f3255945704b5857657cfb00c1165090c0641c4f782a0cbf268cc16dc`) from
+  `thinkingmachines/Inkling-2-Mini` @ `ed40e7da625f594fc9c4990f5f66be24873c22d7`, in one folder (`META` below).
+
+### Build (GPU-free, about 2 minutes)
+
+```bash
+ZIG=/path/to/zig-0.17.0/zig benchmarks/inkling2-mini/build-tensorfold-xpu.sh "$PWD/tf-inkling2"
+```
+
+The script clones the tag, runs `zig build xpu-inkling2 -Doptimize=ReleaseFast --prefix <dir>/out`, and compares
+the binary with the measured one. The build step `xpu-inkling2` (from `zig/build/xpu_inkling2.zig`) compiles
+`ink2.cl` twice with `ocloc compile -device bmg` (`-cl-std=CL3.0`, and `-cl-std=CL3.0 -cl-intel-256-GRF-per-thread`
+for the 256-register variant), embeds both kernel binaries, and links the runner. No ngen or oneDNN step. Option
+`-Dink2-ocloc=<path>` picks another `ocloc`.
+
+Reproducibility (measured 2026-11-21): a clean clone of the tag built this way gives a runner whose `.text`,
+`.rodata` (with both kernel binaries) and `.data` are byte-identical to the binary that produced the table below;
+only the debug sections differ, because they hold build paths
+([`binary-identity.txt`](../../results/inkling2-mini/tensorfold-xpu-20261121/binary-identity.txt)).
+
+### Serve
+
+```bash
+TF="$PWD/tf-inkling2" MODEL=/path/to/Inkling-2-Mini-UD-Q4_K_XL.gguf META=/path/to/meta \
+  benchmarks/inkling2-mini/launch-inkling2-mini-tensorfold.sh
+# = ZE_AFFINITY_MASK=0 python3 tf-inkling2/tf/tools/xpu/inkling2_serve.py --runner tf-inkling2/out/bin/xpu-inkling2 \
+#     --model Inkling-2-Mini-UD-Q4_K_XL.gguf --meta META --port 18452 --ctx 16384
+```
+
+- Environment: none beyond `ZE_AFFINITY_MASK` (one card). The measured cell used the defaults of `e47dc7ae8`; no
+  `INK2_*` variable is needed (the job set `INK2_X=0`, a name the runner never reads).
+- `--ctx 16384` is the measured context; prompt plus reply must fit, or the request fails (the 9,172-token cells of an
+  8,192-token run failed this way).
+- The wrapper serves OpenAI-style `/v1/chat/completions` on 127.0.0.1. It accepts `temperature` and `seed`; `top_p`
+  must be 1 and penalties 0, `top_k 1` means greedy; anything else is refused. `chat_template_kwargs.reasoning_effort`
+  goes to the template (default 0.9); reasoning cannot be turned off.
+
+### Measured: decode at model-card sampling
+
+One card (card 0, 230 W / 2,800 MHz), one request at a time, a fresh server a cell, cold prompt, code prompts,
+`temperature 1.0`, `top_p 1.0`, `reasoning_effort 0.9`, 3 seeds (4242–4244), one discarded warmup, median of 3.
+Decode = streamed rate after the first token. Energy = card counter over the decode phase.
+
+| Build and settings | Reply budget | Prompt tokens | Decode tok/s (range) | TTFT | Card W | J/token | Reasoning / answer tokens |
+|---|---|---|---|---|---|---|---|
+| **Tag `e47dc7ae8`, defaults** | 2,048 | 76 | **71.48** (71.35–71.49) | 0.68 s | 204 | 2.86 (2.83–2.86) | 2,046 / 0 in all 3 |
+| **Tag `e47dc7ae8`, defaults** | 2,048 | 9,172 | **64.05** (64.03–64.05) | 104.8 s | 207 | 3.24 | 2,046 / 0 in all 3 |
+| Same binary, check2's settings (control, interleaved by seed) | 2,048 | 76 | 39.92 | 0.68 s | 164 | 4.11 | 2,046 / 0 in all 3 |
+| Same binary, check2's settings (control) | 2,048 | 9,172 | 33.47 | 104.9 s | 165 | 4.93 | 2,046 / 0 in all 3 |
+| Older untagged build `889fdb304` (2 uncommitted files) | 8,192 | 76 | 55.83 | 0.68 s | 194 | 3.48 | 4,209 / 3,978; 8,190 / 0; 5,239 / 2,948 |
+
+Raw rows: [`results/inkling2-mini/tensorfold-xpu-20261121/`](../../results/inkling2-mini/tensorfold-xpu-20261121/README.md).
+
+- **No answer arrived inside 2,048 tokens:** at effort 0.9 the code prompt reasons past the budget. With 8,192
+  tokens, on the older build, 2 of 3 seeds answered (at 4,209 and 5,239 reasoning tokens). That row is an older build
+  and cannot be rebuilt exactly; it shows that answers arrive, not the tag's speed over long replies.
+- Same-binary gain from the new defaults: +79 % at 76 tokens, +91 % at 9,172 (control rows above).
+- Prompt reading is the weak side: 117 tok/s at 76 tokens and 87.6 tok/s at 9,172 (engine timing), TTFT 104.8 s at
+  9,172 tokens against 54.4 s on the llama.cpp recipe's 0001 build. A faster prompt path is being built separately and
+  is not in the tag.
+
+> **Correctness (plain):**
+> - Per-layer-pass output against a float32 reference on prompt p0: worst relative L2 error 9.8e-4, **pass** (rule
+>   < 2e-2). Measured on the tagged binary.
+> - Greedy decode of prompt p0: 24 of 24 tokens equal to the float32 reference. Measured on the tagged binary.
+> - Greedy streams against llama.cpp: equal on 1 of 5 prompts; the other four diverge after 12, 43, 28 and 88 tokens
+>   (measured on older builds of the port, not re-run on the tag). At each divergence the float32 reference ranks the
+>   port's token first, by 0.045–0.215 logits; llama.cpp's side of that margin analysis is pending. So the output is
+>   **not shown to be equal** to llama.cpp's.
+> - KL against llama.cpp: **not yet measured.**
+> - Sampler: on-card Gumbel-max at temperature 1.0 after the logit softcap, noise from a hash of (seed, step, token).
+>   Distribution test pending.
+> - Status: research build, numbers will change; not upstream TensorFold.
+
+**Against the llama.cpp recipe (different token budgets):** llama.cpp's 29.09 / 25.14 tok/s were measured with
+1,024-token replies, this cell with 2,048. Longer replies decode deeper into context and run slower, so the budget
+difference does not favour TensorFold. Ratios: 71.48 / 29.09 = 2.46x at 76 prompt tokens, 64.05 / 25.14 = 2.55x at
+9,172 (different token budgets; not a same-session A/B). Prompt reading goes the other way (TTFT 104.8 s against
+54.4 s at 9,172 tokens).
+
+Not tested on the tag: 32K and longer context, retrieval, context fit, concurrency, DSpark, tool calls, KL, answers on
+long tasks within the budget.
+
+## llama.cpp SYCL (research recipe, bit-exact)
+
+The exact route: llama.cpp `master` `919794500` + PR #32695 + PR #32218 + six local SYCL patches, SYCL graph replay,
+patch 0002 masked. 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens, KL 0 and greedy 5/5 identical against the
+engine without the patches. Full recipe, build, launch line, controls and quality:
+[INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md).
 
 ## The model (copied from the model card and config, read 2026-11-20 at revision `6e7c8248`)
 
@@ -59,33 +170,22 @@ attention kernels (not bytes) limit decode and exl3xpu kernels are faster on the
 
 ## What is running now
 
-> **Research build, numbers will change, do not cite as a recipe.** Unpublished lab measurements: the code is a
-> local branch, not in upstream TensorFold, and cannot be reproduced from this repository yet. No catalog record.
+> Unpublished lab work in progress. No catalog record; nothing here is a recipe.
 
-A TensorFold XPU model family for Inkling 2 Mini (own decode and prompt kernels for this shape, same GGUF file):
-
-- **Correctness so far.** Per-layer-pass output against a float32 reference: worst relative L2 error 9.8e-4 (pass
-  rule < 2e-2). Greedy streams equal llama.cpp's on 1 of 5 prompts; the other four diverge after 12, 43, 28 and 88
-  common tokens. At each divergence the float32 reference ranks the port's token first, with a top-2 margin of
-  0.045–0.215 logits. Whether llama.cpp was equally unsure at those positions is pending, so the divergences are not
-  yet explained. No KL gate has run yet.
-- **Decode at model-card sampling** (card 0, 230 W / 2,800 MHz, on-card sampler, code prompt, 3 seeds, one stream):
-  - an earlier build: 39.9 / 33.4 tok/s at 76 / 9,172 prompt tokens, 2,048-token replies (no answer inside 2,048);
-  - a later build: 55.8 tok/s at 76 prompt tokens over 8,192-token replies; 2 of 3 seeds answered within 8,192;
-  - a later build again: 71.5 / 64.1 tok/s at 76 / 9,172 prompt tokens, 2,048-token replies.
-- **Prompt reading** (first integrated build, greedy, cold, 3 repeats): 1,260 / 1,325 / 1,191 tok/s at 512 / 4,096 /
-  32,768 tokens. That build failed the per-layer correctness check (a wrong constant, fixed afterwards), so these are
-  kernel throughput numbers, not a working engine's.
-- **Targets** (operator): 100 tok/s decode on the model-card cell above, 10,000 tok/s prompt reading.
-
-When a build passes the KL gate and the same-session controls, it gets its own recipe page and catalog records; this
-block is then replaced.
+- TensorFold prompt path: a separate branch with batched expert, dense and attention kernels. Its first integrated
+  build read 1,260 / 1,325 / 1,191 tok/s at 512 / 4,096 / 32,768 prompt tokens (greedy, cold, 3 repeats), but that
+  build failed the per-layer correctness check (a wrong constant, fixed afterwards), so these are kernel throughput
+  numbers, not a working engine's. Not in the tag.
+- TensorFold decode: further changes after the tag; the next tagged build replaces the table above as a new
+  generation.
+- Pending checks: KL against llama.cpp, llama.cpp's side of the greedy margins, a sampling distribution test.
+- Targets (operator): 100 tok/s decode on the model-card cell, 10,000 tok/s prompt reading.
 
 Hy4-flash: queued, nothing measured.
 
 ## Evidence and records
 
-- Raw rows: [`results/inkling2-mini/llamacpp-sycl-20261121/`](../../results/inkling2-mini/llamacpp-sycl-20261121/README.md)
+- Raw rows: [`results/inkling2-mini/tensorfold-xpu-20261121/`](../../results/inkling2-mini/tensorfold-xpu-20261121/README.md) (TensorFold), [`results/inkling2-mini/llamacpp-sycl-20261121/`](../../results/inkling2-mini/llamacpp-sycl-20261121/README.md) (llama.cpp)
 - Scripts: [`benchmarks/inkling2-mini/`](../../benchmarks/inkling2-mini/README.md)
-- Catalog records: `inkling2-mini-llamacpp-*` in [`data/benchmarks.v1.json`](../../data/benchmarks.v1.json)
+- Catalog records: `inkling2-mini-tensorfold-*` and `inkling2-mini-llamacpp-*` in [`data/benchmarks.v1.json`](../../data/benchmarks.v1.json)
 - Closed arms: DNR-034 to DNR-040 in [DO-NOT-REPEAT.md](../DO-NOT-REPEAT.md)
