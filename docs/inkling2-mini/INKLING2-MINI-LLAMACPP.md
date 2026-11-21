@@ -1,7 +1,8 @@
 # Inkling 2 Mini on one Arc Pro B70: llama.cpp SYCL recipe (research, 2026-11-21)
 
-> Status: research recipe. One card, one stream, measured 2026-11-21 with 3 seeds a cell. Bit-exact with the
-> unpatched engine. Decode is 29 tok/s at a short prompt, about 23 % of the computed byte ceiling. Work on a
+> Status: research recipe. One card, one stream, measured 2026-11-21 with 3 seeds a cell. Output bit-exact with
+> the same tree carrying only patch 0001 (the crash fix): KL 0, greedy 5/5. The engine without any local patch was
+> not compared on these prompts. Decode is 29 tok/s at a short prompt, about 23 % of the computed byte ceiling. Work on a
 > TensorFold XPU research build decodes faster but is not yet shown to give the same output
 > ([TensorFold route](README.md#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121)); numbers here will be
 > superseded by a new generation, not edited.
@@ -57,7 +58,7 @@ for normal use.
 | Setting | Why |
 |---|---|
 | `GGML_SYCL_ENABLE_GRAPH=1` | SYCL graph replay. Compiled in by `GGML_SYCL_GRAPH=ON` but off at run time unless set. Decode +34.1 / +26.6 / +19.8 % at 76 / 9,172 / 38,955 prompt tokens, greedy output identical (measured, §5) |
-| `GGML_SYCL_XMX_GATHER_TYPES=32767` | Keeps patch 0002 off. 32767 sets bits 0–14 (every type the upstream switch already handles) and clears bit 15, the NVFP4 bit patch 0002 adds. With it, output is identical to the build without 0002. **Dropping it gives the lossy fast-prefill variant** (§6) |
+| `GGML_SYCL_XMX_GATHER_TYPES=32767` | Keeps patch 0002 off. 32767 sets bits 0–14 (every type the upstream switch already handles) and clears bit 15, the NVFP4 bit patch 0002 adds. With it, output equals the build with patch 0001 only (KL 0, greedy 5/5; §7). **Dropping it gives the lossy fast-prefill variant** (§6) |
 | `SYCL_CACHE_PERSISTENT=0` | The persistent kernel cache crashes llama.cpp with this DPC++ release (DNR-031) |
 | `ZE_AFFINITY_MASK=0` | One card. Use `1` for the second card; one server per card |
 | `-ngl 99 -lm none -c 49152 -t 8 -np 1` | All layers on the card, no mmap, 49,152-token context, 8 CPU threads (1 thread measured the same, DNR-037), one slot |

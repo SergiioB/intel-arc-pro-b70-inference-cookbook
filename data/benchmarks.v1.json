@@ -3663,7 +3663,7 @@
       "id": "inkling2-mini-llamacpp-p0001-0006-decode-cardsampling-20261121",
       "kind": "benchmark",
       "title": "Inkling 2 Mini UD-Q4_K_XL, llama.cpp SYCL + patches 0001-0006, graph replay, decode at model-card sampling (one B70, 230 W)",
-      "summary": "Research recipe decode: 29.09 tok/s at 76 prompt tokens, 25.14 at 9,172; 1,024-token code replies, all reasoning (0/3 answers in budget). Ran with patch 0002 active; 0002 is off the decode path (source reading), and greedy output with 0002 masked equals the unpatched-0002 build 5/5. 38,955-token cell not re-measured.",
+      "summary": "Research recipe decode: 29.09 tok/s at 76 prompt tokens, 25.14 at 9,172; 1,024-token code replies, all reasoning (0/3 answers in budget). Ran with patch 0002 active; 0002 is off the decode path (source reading), and greedy output with 0002 masked equals the 0001-only build 5/5 (the engine without local patches was not compared). 38,955-token cell not re-measured.",
       "evidence_status": "provisional",
       "measured_at": "2026-11-21",
       "hardware": {

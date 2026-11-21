@@ -3,14 +3,15 @@
 Thinking Machines' [Inkling 2 Mini](https://huggingface.co/thinkingmachines/Inkling-2-Mini) on one B70.
 Status 2026-11-21: **two routes, both research.** A TensorFold XPU research build decodes 71.48 tok/s at a short
 prompt (tagged and rebuildable, not upstream, output not yet shown equal to llama.cpp). The llama.cpp SYCL recipe
-decodes 29.09 tok/s and is bit-exact with the unpatched engine. Work on both continues.
+decodes 29.09 tok/s with output bit-exact against the same tree with only patch 0001 (the crash fix); the engine without any local
+patch was not compared on these prompts. Work on both continues.
 
 ## Pick a route
 
 | Route | Status | Section |
 |---|---|---|
 | TensorFold XPU, tag `b70-inkling2-mini-20261121`, one card | Research build, numbers will change; not upstream TensorFold. 71.48 / 64.05 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 2,048-token replies). Per-pass error against a float32 reference passes; greedy output equals llama.cpp's on 1 of 5 prompts; KL not yet measured. Prompt reading slower than llama.cpp (TTFT 104.8 s at 9,172 tokens) | [below](#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121) |
-| llama.cpp SYCL + 2 upstream PRs + 6 local patches, one card | Research recipe, bit-exact. 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 1,024-token replies) | [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md) |
+| llama.cpp SYCL + 2 upstream PRs + 6 local patches, one card | Research recipe; output bit-exact against the 0001-only build (KL 0, greedy 5/5). 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 1,024-token replies) | [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md) |
 | llama.cpp with patch 0002 active (fast-prefill variant) | Lossy, opt-in only. Prompt reading 2.4x at 76 tokens and 1.55x at 9,172 against the patch-0001 build; fails the KL gate | [§6 of the recipe](INKLING2-MINI-LLAMACPP.md#6-prompt-reading-and-time-to-first-token) |
 
 Do not mix: both routes read the same GGUF file, but engines, patches and numbers belong to their own route. The
@@ -20,7 +21,7 @@ one base tree only.
 ## TensorFold XPU (research build, tag b70-inkling2-mini-20261121)
 
 > Research build, numbers will change; not upstream TensorFold. Its output is not yet shown to equal llama.cpp's
-> (see the correctness box). Use the llama.cpp recipe when you need output identical to the reference engine.
+> (see the correctness box). Use the llama.cpp recipe when you need output checked against a reference (its reference is the 0001-only build).
 
 A TensorFold model family for Inkling 2 Mini with its own XPU kernels for this model's shapes (decode one token at a
 time, prompt in 64-row chunks, sampling on the card). Code: [`SergiioB/TensorFold` tag
@@ -120,11 +121,11 @@ difference does not favour TensorFold. Ratios: 71.48 / 29.09 = 2.46x at 76 promp
 Not tested on the tag: 32K and longer context, retrieval, context fit, concurrency, DSpark, tool calls, KL, answers on
 long tasks within the budget.
 
-## llama.cpp SYCL (research recipe, bit-exact)
+## llama.cpp SYCL (research recipe, checked against the 0001-only build)
 
-The exact route: llama.cpp `master` `919794500` + PR #32695 + PR #32218 + six local SYCL patches, SYCL graph replay,
-patch 0002 masked. 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens, KL 0 and greedy 5/5 identical against the
-engine without the patches. Full recipe, build, launch line, controls and quality:
+The checked route: llama.cpp `master` `919794500` + PR #32695 + PR #32218 + six local SYCL patches, SYCL graph replay,
+patch 0002 masked. 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens, KL 0 and greedy 5/5 identical against
+the same tree with only patch 0001 (the crash fix). The engine without any local patch was not compared on these prompts. Full recipe, build, launch line, controls and quality:
 [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md).
 
 ## The model (copied from the model card and config, read 2026-11-20 at revision `6e7c8248`)
