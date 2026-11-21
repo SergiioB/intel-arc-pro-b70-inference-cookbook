@@ -1,0 +1,30 @@
+
+loaded layer 1/24, 1.59 GB on the card
+loaded layer 2/24, 2.19 GB on the card
+loaded layer 3/24, 2.80 GB on the card
+loaded layer 4/24, 3.40 GB on the card
+loaded layer 5/24, 4.00 GB on the card
+loaded layer 6/24, 4.61 GB on the card
+loaded layer 7/24, 5.22 GB on the card
+loaded layer 8/24, 5.83 GB on the card
+loaded layer 9/24, 6.44 GB on the card
+loaded layer 10/24, 7.06 GB on the card
+loaded layer 11/24, 7.67 GB on the card
+loaded layer 12/24, 8.28 GB on the card
+loaded layer 13/24, 8.90 GB on the card
+loaded layer 14/24, 9.51 GB on the card
+loaded layer 15/24, 10.12 GB on the card
+loaded layer 16/24, 10.74 GB on the card
+loaded layer 17/24, 11.35 GB on the card
+loaded layer 18/24, 11.96 GB on the card
+loaded layer 19/24, 12.57 GB on the card
+loaded layer 20/24, 13.17 GB on the card
+loaded layer 21/24, 14.28 GB on the card
+loaded layer 22/24, 15.39 GB on the card
+loaded layer 23/24, 16.51 GB on the card
+loaded layer 24/24, 17.62 GB on the card
+load 11.7 s, 17.62 GB on the card
+prompt 27 tokens (chunks of 64 rows): 0.286 s
+generated: 200001 200008 371 150409 159306 150130 149876 153223 13 158596 220 68388 9 68028 13 220 68388 9 68020 196977 220 93964 11 165583
+decode 23 steps: 0.365 s, 63.08 tok/s (host sync every step, no graph replay)
+rc=0

@@ -11,7 +11,7 @@ python3 benchmarks/inkling2-mini/summarize.py results/inkling2-mini/tensorfold-x
 
 Copied on 2026-11-21 from the port's scratch folder in the lab (these runs are not tracked in a lab repository).
 Local paths were replaced: `$MODELS` = model folder, `$TF` = TensorFold source tree, `$TF_WORK` = the port's scratch
-folder, `$WORK` = other scratch, `$HOME` = home folder. Nothing else was edited.
+folder, `$WORK` = other scratch, `$HOME` = home folder. Nothing else was edited. Two logs carry a `.log.txt` suffix because the repository ignores `*.log`.
 
 ## Which binary
 
@@ -39,10 +39,10 @@ folder, `$WORK` = other scratch, `$HOME` = home folder. Nothing else was edited.
 |---|---|
 | `check4-*/cell-after/cells.jsonl` | Tagged build, defaults (the `after` arm set only `INK2_X=0`, a name the runner never reads): 2,048-token replies |
 | `check4-*/cell-before/cells.jsonl` | Same binary with check2's settings (`INK2_CH256=1 INK2_SPLIT=2048 INK2_SPLITSWA=100000 INK2_ROWS=2 INK2_DOWN1=1 INK2_CONV256=1`), interleaved by seed with `after`: same-binary control |
-| `check4-*/cmp-v2.txt`, `cmp-fd2.txt`, `check-v2.log` | Tagged build: per-layer-pass check against the float32 reference (worst relative L2 9.82e-4) and 24 greedy tokens of prompt p0 |
+| `check4-*/cmp-v2.txt`, `cmp-fd2.txt`, `check-v2.log.txt` (generated token ids) | Tagged build: per-layer-pass check against the float32 reference (worst relative L2 9.82e-4) and 24 greedy tokens of prompt p0 |
 | `check4-*/ab-short.txt`, `ab-long.txt` | Greedy step-speed A/Bs on the tagged build (not published as speeds) |
 | `speed3-*/depth/cells.jsonl` | Older build: 76-token prompt, 8,192-token replies. The three 9,172-token cells failed: server context 16,384 < 9,172 + 8,192 |
 | `speed3-*/exact.jsonl`, `exact-vs-llamacpp.txt` | Older build: 5 greedy prompts against llama.cpp's greedy file: 1 of 5 equal |
-| `tmp/diag/margins.log` | Float32 reference at each divergence, teacher-forced on the common prefix |
+| `tmp/diag/margins.log.txt` | Float32 reference at each divergence, teacher-forced on the common prefix |
 | `ref/p0.ids.json`, `ref/p0.gen.json` | Prompt p0 tokens and the reference's 24 greedy tokens |
 | `binary-identity.txt` | Tag rebuild against the measured binary |

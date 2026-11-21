@@ -36,6 +36,6 @@ TensorFold XPU research build, in [`results/inkling2-mini/tensorfold-xpu-2026112
 | 71.48 / 64.05 tok/s decode, TTFT, J/token (tagged build) | `check4-20261121T134525Z/cell-after/cells.jsonl` |
 | 39.92 / 33.47 tok/s, same binary with older settings | `check4-20261121T134525Z/cell-before/cells.jsonl` |
 | 55.83 tok/s over 8,192-token replies (older build) | `speed3-20261121T133350Z/depth/cells.jsonl` |
-| Per-pass error 9.82e-4, 24/24 tokens | `check4-20261121T134525Z/cmp-v2.txt`, `check-v2.log` |
-| Greedy 1 of 5 equal to llama.cpp | `speed3-20261121T133350Z/exact-vs-llamacpp.txt`, `tmp/diag/margins.log` |
+| Per-pass error 9.82e-4, 24/24 tokens | `check4-20261121T134525Z/cmp-v2.txt`, `check-v2.log.txt` |
+| Greedy 1 of 5 equal to llama.cpp | `speed3-20261121T133350Z/exact-vs-llamacpp.txt`, `tmp/diag/margins.log.txt` |
 | Tag rebuild = measured binary | `binary-identity.txt` |
