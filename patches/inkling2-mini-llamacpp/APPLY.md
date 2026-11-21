@@ -37,13 +37,16 @@ git clone https://github.com/ggml-org/llama.cpp.git llama.cpp
 benchmarks/inkling2-mini/prepare-llamacpp.sh llama.cpp llama.cpp-inkling2
 ```
 
-The script fetches the base and both PR heads, merges them, checks `SHA256SUMS`, runs `git am` on 0001–0006 and
-compares both tree hashes above. It exits 1 on any difference. If a PR head has moved since 2026-11-21, the script
-fetches the pinned commit by its SHA.
+The script fetches the base and both pinned PR commits by SHA (PR #32218's head moved to `88025eb` on 2026-11-21;
+the pinned `78d77942` is fetched by its SHA, with the PR ref as a fallback), merges them, checks `SHA256SUMS`, runs
+`git am` on 0001–0006 and compares both tree hashes above. It exits 1 on any difference. Relative paths are
+resolved against the current directory, so the new tree lands beside the clone.
 
-## Apply test (GPU-free, run 2026-11-21 15:23 UTC)
+## Apply test (GPU-free)
 
-Run against an existing clone that already held all three commits (no network fetch was needed):
+2026-11-21 16:42 UTC, exactly the commands above, run in an empty folder: a fresh full clone of
+`ggml-org/llama.cpp` (master `19bc41dbb`, which does not contain `78d77942`), then the script with relative paths.
+Exit 0 in 5 s:
 
 ```text
 OK   merged base tree 9998cc28d9e06bc342397065fd324d2d6c4589c9
@@ -55,6 +58,10 @@ OK   merged base tree 9998cc28d9e06bc342397065fd324d2d6c4589c9
 0006-local-SYCL-fusion-of-the-Inkling-clip-chain-SQR.MUL-.patch: OK
 OK   patched (0001-0006) tree b1d97b7bfd0f2b997c53db4a96f2b76f1dec4597
 ```
+
+The first version of this script (head `a5ba80d`) failed on a fresh clone: the relative target path resolved inside
+the clone, and it fetched only the moved PR head. An earlier run against the lab clone, which already held all
+commits, had hidden both defects.
 
 This proves source compatibility only: the patched tree is byte-identical to the tree of the measured build.
 It does not prove runtime correctness, stability or speed. Those come from the measured runs in the recipe.
