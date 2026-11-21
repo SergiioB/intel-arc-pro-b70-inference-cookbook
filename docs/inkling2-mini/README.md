@@ -128,7 +128,12 @@ patch 0002 masked. 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens, KL 0 
 the same tree with only patch 0001 (the crash fix). The engine without any local patch was not compared on these prompts. Full recipe, build, launch line, controls and quality:
 [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md).
 
-## The model (copied from the model card and config, read 2026-11-20 at revision `6e7c8248`)
+## The model (copied from the model card and `config.json` at revision `ed40e7da`)
+
+Revision `ed40e7da625f594fc9c4990f5f66be24873c22d7` of `thinkingmachines/Inkling-2-Mini` (last modified
+2026-11-20 22:55 UTC), re-read 2026-11-21. An earlier version of this page cited `6e7c8248`, which does not resolve
+on Hugging Face; the facts below are unchanged at `ed40e7da`.
+
 
 | Property | Value |
 |---|---|
@@ -139,7 +144,7 @@ the same tree with only patch 0001 (the crash fix). The engine without any local
 | Release format | Experts NVFP4 (layers 0–19) and MXFP8 (layers 20–23); attention, embeddings, LM head BF16. No BF16 release |
 | Drafter | DSpark block drafter, 3 layers, block 8 (closed on llama.cpp for now: DNR-034) |
 | Sampling (card) | `temperature 1.0`, no `top_p`/`top_k` (`generation_config.json`); `reasoning_effort` 0.9 by default; the card says the lowest effort does not turn reasoning off |
-| Licence | Apache-2.0. The model card also links an acceptable-use policy; read it on the [model page](https://huggingface.co/thinkingmachines/Inkling-2-Mini) before use |
+| Licence | Apache-2.0. The model card also links the [Model Acceptable Use Policy](https://thinkingmachines.ai/model-acceptable-use-policy/) |
 
 The release runs NVFP4 activations too (W4A4), which needs FP4 matrix units this card does not have. The GGUF route
 keeps the NVFP4 weights and does not use FP4 activations.
