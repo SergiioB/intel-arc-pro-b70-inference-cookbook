@@ -1,0 +1,38 @@
+From b470eb589b10c04fd42c366b8b6fb17a0e72ac56 Mon Sep 17 00:00:00 2001
+From: newmodels <newmodels@localhost>
+Date: Sat, 21 Nov 2026 05:10:18 +0100
+Subject: [PATCH 1/6] local: SYCL get_rows (float): size the work-group to the
+ row; fixes int range overflow of the Inkling relative-bias gather at n_kv >=
+ 16384
+
+---
+ ggml/src/ggml-sycl/getrows.cpp | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/ggml/src/ggml-sycl/getrows.cpp b/ggml/src/ggml-sycl/getrows.cpp
+index 7b53e3dcc..7528b2e2b 100644
+--- a/ggml/src/ggml-sycl/getrows.cpp
++++ b/ggml/src/ggml-sycl/getrows.cpp
+@@ -388,9 +388,17 @@ static void get_rows_sycl_float(ggml_backend_sycl_context & ctx, const ggml_tens
+ 
+     GGML_TENSOR_BINARY_OP_LOCALS
+ 
+-    const sycl::range<3> block_dims(1, 1, SYCL_GET_ROWS_BLOCK_SIZE);
+-    const int block_num_x = (ne00 + SYCL_GET_ROWS_BLOCK_SIZE - 1) / SYCL_GET_ROWS_BLOCK_SIZE;
++    // local patch (newmodels, 2026-11-21): size the work-group to the row. Short rows (Inkling's relative-bias
++    // gather has ne00 = 24 heads and n_kv x n_ubatch rows) launched 256 work-items per row: 90 % idle, and the
++    // global range passed INT_MAX at n_kv >= 16384 with ubatch 512 ("Provided range ... does not fit in int").
++    int bs = 32;
++    while (bs < ne00 && bs < SYCL_GET_ROWS_BLOCK_SIZE) {
++        bs *= 2;
++    }
++    const sycl::range<3> block_dims(1, 1, bs);
++    const int block_num_x = (ne00 + bs - 1) / bs;
+     const sycl::range<3> block_nums(ne11 * ne12, ne10, block_num_x);
++    GGML_ASSERT((int64_t) ne11 * ne12 * ne10 * block_num_x * bs <= INT32_MAX);
+ 
+     // strides in elements
+     //const size_t s0 = nb0 / ggml_element_size(dst);
+-- 
+2.53.0
+

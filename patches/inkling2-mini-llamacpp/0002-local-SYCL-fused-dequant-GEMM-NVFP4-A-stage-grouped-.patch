@@ -1,0 +1,116 @@
+From 24bb5b491acdfc0867bfae3a637cfd3652ec89e6 Mon Sep 17 00:00:00 2001
+From: newmodels <newmodels@localhost>
+Date: Sat, 21 Nov 2026 05:10:19 +0100
+Subject: [PATCH 2/6] local: SYCL fused dequant GEMM: NVFP4 A stage (grouped
+ MUL_MAT_ID for n_tokens > 1); test-backend-ops cases with Inkling 2 Mini
+ expert shapes
+
+---
+ ggml/src/ggml-sycl/common.hpp     |  1 +
+ ggml/src/ggml-sycl/fused-gemm.cpp | 23 +++++++++++++++++++++++
+ ggml/src/ggml-sycl/fused-gemm.hpp |  5 +++++
+ tests/test-backend-ops.cpp        |  5 +++++
+ 4 files changed, 34 insertions(+)
+
+diff --git a/ggml/src/ggml-sycl/common.hpp b/ggml/src/ggml-sycl/common.hpp
+index 75e783d12..e54441e08 100644
+--- a/ggml/src/ggml-sycl/common.hpp
++++ b/ggml/src/ggml-sycl/common.hpp
+@@ -96,6 +96,7 @@ enum ggml_sycl_xmx_gather_type {
+     GGML_SYCL_XMX_GATHER_Q6_K     = 1 << 12,
+     GGML_SYCL_XMX_GATHER_Q2_K     = 1 << 13,
+     GGML_SYCL_XMX_GATHER_Q3_K     = 1 << 14,
++    GGML_SYCL_XMX_GATHER_NVFP4    = 1 << 15, // local patch (newmodels): Inkling 2 Mini experts
+ };
+ static constexpr int GGML_SYCL_XMX_GATHER_TYPES_DEFAULT = ~0;
+ extern int g_ggml_sycl_xmx_gather_types;
+diff --git a/ggml/src/ggml-sycl/fused-gemm.cpp b/ggml/src/ggml-sycl/fused-gemm.cpp
+index 803a994c0..392de3b29 100644
+--- a/ggml/src/ggml-sycl/fused-gemm.cpp
++++ b/ggml/src/ggml-sycl/fused-gemm.cpp
+@@ -368,6 +368,27 @@ static __dpct_inline__ void fg_stage_a(const block_iq4_nl * __restrict__ xrow, c
+     }
+ }
+ 
++// nvfp4 (local patch, newmodels): a 64-value block is two k steps; step kb reads sub-blocks 2*(kb%2) and
++// 2*(kb%2)+1 of block kb/2, each 16 values with its own UE4M3 scale. Within a sub-block, value j < 8 is the low
++// nibble of qs[8*s + j] and value j >= 8 the high nibble of qs[8*s + j - 8]; same decode as dequantize_nvfp4.
++// The per-tensor NVFP4 scale is a separate .scale tensor the graph multiplies in afterwards.
++template <typename E>
++static __dpct_inline__ void fg_stage_a(const block_nvfp4 * __restrict__ xrow, const int kb, typename E::pair * a) {
++    const block_nvfp4 * blk = xrow + kb / 2;
++    const int           s0  = 2 * (kb % 2);
++#pragma unroll
++    for (int h = 0; h < 2; ++h) {
++        const int       s = s0 + h;
++        const float     d = ggml_sycl_ue4m3_to_fp32(blk->d[s]);
++        const uint8_t * q = blk->qs + s * (QK_NVFP4_SUB / 2);
++#pragma unroll
++        for (int t = 0; t < 4; ++t) {
++            a[8 * h + t]     = E::make(d * kvalues_mxfp4[q[2 * t] & 0xf], d * kvalues_mxfp4[q[2 * t + 1] & 0xf]);
++            a[8 * h + t + 4] = E::make(d * kvalues_mxfp4[q[2 * t] >> 4], d * kvalues_mxfp4[q[2 * t + 1] >> 4]);
++        }
++    }
++}
++
+ // iq3_s: k step kb is sub-block kb % 8 of superblock kb / 8. The superblock is 110 bytes, so read
+ // only the fields of that sub-block instead of copying the block. Same decode as
+ // dequantize_block_iq3_s: grid entries are taken as dwords and the sign bit is a plain shift.
+@@ -402,6 +423,7 @@ static __dpct_inline__ void fg_stage_a(const block_iq3_s * __restrict__ xrow, co
+ // values per stored block, so a row of K values is K/qk blocks
+ template <typename block_q_t> struct fg_block_traits;
+ template <> struct fg_block_traits<block_iq4_nl> { static constexpr int qk = QK4_NL; };
++template <> struct fg_block_traits<block_nvfp4>  { static constexpr int qk = QK_NVFP4; };
+ template <> struct fg_block_traits<block_iq3_s>  { static constexpr int qk = QK_K; };
+ template <> struct fg_block_traits<block_iq3_xxs> { static constexpr int qk = QK_K; };
+ template <> struct fg_block_traits<block_iq4_xs>  { static constexpr int qk = QK_K; };
+@@ -1083,6 +1105,7 @@ template <typename F> static bool fg_visit_type(ggml_type type, bool reordered,
+         case GGML_TYPE_Q4_K:    return fg_visit_layout<block_q4_K>(reordered, f);
+         case GGML_TYPE_Q5_K:    return fg_visit_layout<block_q5_K>(reordered, f);
+         case GGML_TYPE_Q6_K:    return fg_visit_layout<block_q6_K>(reordered, f);
++        case GGML_TYPE_NVFP4:   return fg_visit_layout<block_nvfp4>(reordered, f);
+         default:                return false;
+     }
+ }
+diff --git a/ggml/src/ggml-sycl/fused-gemm.hpp b/ggml/src/ggml-sycl/fused-gemm.hpp
+index 0e807a2c0..210935228 100644
+--- a/ggml/src/ggml-sycl/fused-gemm.hpp
++++ b/ggml/src/ggml-sycl/fused-gemm.hpp
+@@ -26,6 +26,10 @@ constexpr bool ggml_sycl_fused_dequant_gemm_type_ok(ggml_type src0_type, int64_t
+     if (src0_type == GGML_TYPE_IQ4_NL || src0_type == GGML_TYPE_Q8_0) {
+         return K % 32 == 0;
+     }
++    // local patch (newmodels): nvfp4 stores 64 values per block (4 sub-blocks of 16), two k steps per block
++    if (src0_type == GGML_TYPE_NVFP4) {
++        return K % 64 == 0;
++    }
+     const bool superblock =
+            src0_type == GGML_TYPE_Q2_K ||
+            src0_type == GGML_TYPE_Q3_K ||
+@@ -73,6 +77,7 @@ inline bool ggml_sycl_xmx_gather_type_enabled(ggml_type src0_type) {
+         case GGML_TYPE_Q8_0:    return (g_ggml_sycl_xmx_gather_types & GGML_SYCL_XMX_GATHER_Q8_0    ) != 0;
+         case GGML_TYPE_Q2_K:    return (g_ggml_sycl_xmx_gather_types & GGML_SYCL_XMX_GATHER_Q2_K    ) != 0;
+         case GGML_TYPE_Q3_K:    return (g_ggml_sycl_xmx_gather_types & GGML_SYCL_XMX_GATHER_Q3_K    ) != 0;
++        case GGML_TYPE_NVFP4:   return (g_ggml_sycl_xmx_gather_types & GGML_SYCL_XMX_GATHER_NVFP4   ) != 0;
+         case GGML_TYPE_Q4_K:    return (g_ggml_sycl_xmx_gather_types & GGML_SYCL_XMX_GATHER_Q4_K    ) != 0;
+         case GGML_TYPE_Q5_K:    return (g_ggml_sycl_xmx_gather_types & GGML_SYCL_XMX_GATHER_Q5_K    ) != 0;
+         case GGML_TYPE_Q6_K:    return (g_ggml_sycl_xmx_gather_types & GGML_SYCL_XMX_GATHER_Q6_K    ) != 0;
+diff --git a/tests/test-backend-ops.cpp b/tests/test-backend-ops.cpp
+index 11bfa42a9..30a9c2be2 100644
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -12171,6 +12171,11 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
+         test_cases.emplace_back(new test_mul_mat_id(type_a, GGML_TYPE_F32, 16, 4, true,   72, 13, 2048));
+         test_cases.emplace_back(new test_mul_mat_id(type_a, GGML_TYPE_F32,  4, 2, false, 202, 24,  512));
+     }
++    // local patch (newmodels): Inkling 2 Mini expert shapes in NVFP4 (128 experts, 8 used): gate_up 2304x2304, down 2304x1152
++    for (int n : {1, 8, 13, 64, 512}) {
++        test_cases.emplace_back(new test_mul_mat_id(GGML_TYPE_NVFP4, GGML_TYPE_F32, 128, 8, false, 2304, n, 2304));
++        test_cases.emplace_back(new test_mul_mat_id(GGML_TYPE_NVFP4, GGML_TYPE_F32, 128, 8, false, 2304, n, 1152));
++    }
+     // permuted and broadcast src0/src1 for the 2 byte aligned types
+     test_cases.emplace_back(new test_mul_mat(GGML_TYPE_Q6_K,  GGML_TYPE_F32, 64, 13, 2304, {2, 3}, {1, 1}, {0, 2, 1, 3}));
+     test_cases.emplace_back(new test_mul_mat(GGML_TYPE_Q6_K,  GGML_TYPE_F32, 63,  5, 2304, {3, 2}, {2, 2}));
+-- 
+2.53.0
+

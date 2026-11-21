@@ -1,0 +1,33 @@
+From 47a780c3ee5dc164d1afd3be70cb0964164b4b12 Mon Sep 17 00:00:00 2001
+From: newmodels <newmodels@localhost>
+Date: Sat, 21 Nov 2026 05:13:38 +0100
+Subject: [PATCH 5/6] local: GGML_SYCL_NO_STRIDED_SCALE disables the strided
+ scale path (A/B switch)
+
+---
+ ggml/src/ggml-sycl/ggml-sycl.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/ggml/src/ggml-sycl/ggml-sycl.cpp b/ggml/src/ggml-sycl/ggml-sycl.cpp
+index 81992e54b..bd87da73a 100644
+--- a/ggml/src/ggml-sycl/ggml-sycl.cpp
++++ b/ggml/src/ggml-sycl/ggml-sycl.cpp
+@@ -7778,11 +7778,14 @@ static bool do_ggml_backend_sycl_device_supports_op(ggml_backend_dev_t dev, cons
+         case GGML_OP_SCALE:
+             // the scale kernel is f32 only; flat for contiguous src0, strided for row-contiguous views into a
+             // contiguous dst (local patch, newmodels)
++            {
++            static const bool no_strided = getenv("GGML_SYCL_NO_STRIDED_SCALE") != nullptr;  // same-binary A/B switch
+             return op->type == GGML_TYPE_F32 && op->src[0]->type == GGML_TYPE_F32 &&
+                    (ggml_is_contiguous(op->src[0]) ||
+-                    (op->src[0]->nb[0] == sizeof(float) && ggml_is_contiguous(op) &&
++                    (!no_strided && op->src[0]->nb[0] == sizeof(float) && ggml_is_contiguous(op) &&
+                      op->src[0]->nb[1] % sizeof(float) == 0 && op->src[0]->nb[2] % sizeof(float) == 0 &&
+                      op->src[0]->nb[3] % sizeof(float) == 0));
++            }
+         case GGML_OP_CONT:
+             return true;
+         case GGML_OP_TRI:
+-- 
+2.53.0
+
