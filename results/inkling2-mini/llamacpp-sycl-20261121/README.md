@@ -31,6 +31,8 @@ tree, `$WORK` = scratch folder, `$LAB` = lab repository, `$HOME` = home folder. 
   `decode_avg_w` and `decode_j_per_tok` = card energy counter over the decode phase.
 - Greedy files (`exact.jsonl`): 5 fixed prompts, temperature 0 (`top_k` 1), up to 256 tokens, reasoning on;
   `sha256` of the full output.
+- Memory files (`mem.jsonl`, in `T1-cand-*` and `cand1-graphon-*`): process VRAM, free visible VRAM and host memory
+  before load, after load and after each step.
 
 ## Runs
 

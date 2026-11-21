@@ -24,4 +24,5 @@ All in [`results/inkling2-mini/llamacpp-sycl-20261121/`](../../results/inkling2-
 | Kernel tests vs CPU | `VL1-verify-local/tbo-*.txt` |
 | Scheduler splits 194 → 2 | `S1-env-sweep/server-log-excerpt.txt`, `P2-vtune/splits.txt` |
 | Closed arms DNR-034, DNR-036, DNR-037 | `inkling-dspark-*`, `inkling-base-*/server-log-excerpt.txt`, `S2-env-sweep-local/*.jsonl` |
+| VRAM at `-c 49152` | `T1-cand-20261121T103748Z/mem.jsonl`, `cand1-graphon-20261121T032935Z/mem.jsonl` |
 | Byte ceiling (computed) | `ceiling/inkling-udq4kxl.out` |
