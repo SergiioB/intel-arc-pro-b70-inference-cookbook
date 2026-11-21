@@ -1,0 +1,22 @@
+== kl-loc
+chunk             PPL               ln(PPL(Q)/PPL(base))          KL Divergence              Δp RMS            Same top p
+Mean PPL(Q)                   :   7.812004 ±   0.280889
+Mean PPL(base)                :   7.806798 ±   0.279877
+Mean PPL(Q)/PPL(base)         :   1.000667 ±   0.001027
+Mean PPL(Q)-PPL(base)         :   0.005206 ±   0.008036
+Mean    KLD:   0.001117 ±   0.000049
+Maximum KLD:   0.145991
+Median  KLD:   0.000349
+RMS Δp    :  0.830 ± 0.037 %
+Same top p: 98.490 ± 0.171 %
+== kl-loc-nop2
+chunk             PPL               ln(PPL(Q)/PPL(base))          KL Divergence              Δp RMS            Same top p
+Mean PPL(Q)                   :   7.815925 ±   0.280967
+Mean PPL(base)                :   7.806798 ±   0.279877
+Mean PPL(Q)/PPL(base)         :   1.001169 ±   0.000717
+Mean PPL(Q)-PPL(base)         :   0.009127 ±   0.005646
+Mean    KLD:  -0.000000 ±   0.000000
+Maximum KLD:   0.000060
+Median  KLD:  -0.000000
+RMS Δp    :  0.001 ± 0.000 %
+Same top p: 100.000 ± 0.000 %

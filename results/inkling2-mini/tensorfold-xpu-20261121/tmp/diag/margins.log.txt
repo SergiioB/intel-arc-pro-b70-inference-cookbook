@@ -1,0 +1,5 @@
+i0: reasoning equal
+i1: prefix 12, llama.cpp chose 1719 'def' (27.062), card chose 2918 'Let' (27.108); reference top 2918 margin 0.045; |llama - card| 0.045
+i2: prefix 43, llama.cpp chose 68 'e' (20.789), card chose 82 's' (21.004); reference top 82 margin 0.215; |llama - card| 0.215
+i3: prefix 28, llama.cpp chose 220 ' ' (26.311), card chose 189105 ' indexing' (26.401); reference top 189105 margin 0.090; |llama - card| 0.090
+i4: prefix 88, llama.cpp chose 149971 ' all' (26.847), card chose 150332 ' many' (26.896); reference top 150332 margin 0.050; |llama - card| 0.050

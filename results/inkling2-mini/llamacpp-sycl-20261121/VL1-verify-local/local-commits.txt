@@ -1,0 +1,6 @@
+a96c0ef18 local: SYCL fusion of the Inkling clip() chain (SQR..MUL, 8 nodes -> 1 kernel, same per-node arithmetic); GGML_SYCL_NO_CLIP_FUSION disables; test-backend-ops case
+47a780c3e local: GGML_SYCL_NO_STRIDED_SCALE disables the strided scale path (A/B switch)
+20bff349a local: SYCL GQA-grouped p021/nc decode attention mat-vecs (read each KV row once per KV head; same per-output arithmetic); GGML_SYCL_NO_GQA_MV disables; test cases
+e42336d2e local: SYCL scale: strided kernel for row-contiguous views (Inkling SITU scales of the gate/up halves ran on the CPU); test cases
+24bb5b491 local: SYCL fused dequant GEMM: NVFP4 A stage (grouped MUL_MAT_ID for n_tokens > 1); test-backend-ops cases with Inkling 2 Mini expert shapes
+b470eb589 local: SYCL get_rows (float): size the work-group to the row; fixes int range overflow of the Inkling relative-bias gather at n_kv >= 16384

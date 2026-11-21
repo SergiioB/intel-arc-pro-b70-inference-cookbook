@@ -1,0 +1,6 @@
+long INK2_X=0 decode 1499 steps: 20.893 s, 71.75 tok/s (host sync every step, no graph replay)
+long INK2_FD1=1 decode 1499 steps: 23.286 s, 64.37 tok/s (host sync every step, no graph replay)
+long INK2_SPLIT=0 INK2_SPLITSWA=0 decode 1499 steps: 20.694 s, 72.43 tok/s (host sync every step, no graph replay)
+long INK2_X=0 decode 1499 steps: 20.972 s, 71.48 tok/s (host sync every step, no graph replay)
+long INK2_FD1=1 decode 1499 steps: 23.313 s, 64.30 tok/s (host sync every step, no graph replay)
+long INK2_SPLIT=0 INK2_SPLITSWA=0 decode 1499 steps: 20.662 s, 72.55 tok/s (host sync every step, no graph replay)

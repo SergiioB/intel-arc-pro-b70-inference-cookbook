@@ -1,0 +1,3 @@
+5:0.00.698.101 E llama_init_from_model: failed to initialize the context: dflash requires ctx_other to be set (this warning is normal during memory fitting)
+6:0.00.719.355 W operator(): failed to measure the memory of the extra model, fitting without it: failed to create llama_context from model
+13:0.03.062.406 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 49152, kv_unified = 'false'
