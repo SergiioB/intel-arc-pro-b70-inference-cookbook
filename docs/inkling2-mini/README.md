@@ -12,7 +12,7 @@ patch was not compared on these prompts. Work on both continues.
 |---|---|---|
 | TensorFold XPU, tag `b70-inkling2-mini-20261121`, one card | Research build, numbers will change; not upstream TensorFold. 71.48 / 64.05 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 2,048-token replies). Per-pass error against a float32 reference passes; greedy output equals llama.cpp's on 1 of 5 prompts; KL not yet measured. Prompt reading slower than llama.cpp (TTFT 104.8 s at 9,172 tokens) | [below](#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121) |
 | llama.cpp SYCL + 2 upstream PRs + 6 local patches, one card | Research recipe; output bit-exact against the 0001-only build (KL 0, greedy 5/5). 29.09 / 25.14 tok/s decode at 76 / 9,172 prompt tokens (model-card sampling, 1,024-token replies) | [INKLING2-MINI-LLAMACPP.md](INKLING2-MINI-LLAMACPP.md) |
-| llama.cpp with patch 0002 active (fast-prefill variant) | Lossy, opt-in only. Prompt reading 2.4x at 76 tokens and 1.55x at 9,172 against the 0001-only control A; fails the KL gate | [§6 of the recipe](INKLING2-MINI-LLAMACPP.md#6-prompt-reading-and-time-to-first-token) |
+| llama.cpp with patch 0002 active (fast-prefill variant) | Lossy, opt-in only. Prompt reading 1.55x at 9,172 tokens against the 0001-only control A (2.4x at 76 tokens, where fixed per-request cost dominates); fails the KL gate | [§6 of the recipe](INKLING2-MINI-LLAMACPP.md#6-prompt-reading-and-time-to-first-token) |
 
 Do not mix: both routes read the same GGUF file, but engines, patches and numbers belong to their own route. The
 llama.cpp patch stack in [`patches/inkling2-mini-llamacpp/`](../../patches/inkling2-mini-llamacpp/APPLY.md) applies to
@@ -33,7 +33,7 @@ time, prompt in 64-row chunks, sampling on the card). Code: [`SergiioB/TensorFol
 ### What you need
 
 - One Arc Pro B70; measured at 230 W cap and 2,800 MHz. Ubuntu 26.04, kernel 7.0.0-29, compute-runtime and `ocloc`
-  26.05.37020.3, Zig 0.17.0, Python 3 with `transformers` (measured 5.15.0, `tokenizers` 0.22.2).
+  26.05.37020.3, Zig 0.17.0, `objcopy` (binutils, for the binary check), Python 3 with `transformers` (measured 5.15.0, `tokenizers` 0.22.2).
 - The same model file as the llama.cpp route: `unsloth/Inkling-2-Mini-GGUF` @ `b08906e3`,
   `Inkling-2-Mini-UD-Q4_K_XL.gguf`, sha256 `e62d463c135ffe283df8d94b279a96ca145ac128b52ce854478613045bf4de15`
   ([download line](INKLING2-MINI-LLAMACPP.md#3-serve)).
@@ -96,7 +96,7 @@ Raw rows: [`results/inkling2-mini/tensorfold-xpu-20261121/`](../../results/inkli
   and cannot be rebuilt exactly; it shows that answers arrive, not the tag's speed over long replies.
 - Same-binary gain from the new defaults: +79 % at 76 tokens, +91 % at 9,172 (control rows above).
 - Prompt reading is the weak side: 117 tok/s at 76 tokens and 87.6 tok/s at 9,172 (engine timing), TTFT 104.8 s at
-  9,172 tokens against 54.4 s on the llama.cpp recipe's 0001 build. A faster prompt path is being built separately and
+  9,172 tokens against 54.4 s on the llama.cpp 0001-only control A (the recipe's own prompt speed is not measured). A faster prompt path is being built separately and
   is not in the tag.
 
 > **Correctness (plain):**

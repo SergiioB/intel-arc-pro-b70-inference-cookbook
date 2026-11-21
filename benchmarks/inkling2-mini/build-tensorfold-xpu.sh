@@ -3,7 +3,7 @@
 #
 #   ZIG=<zig 0.17.0> benchmarks/inkling2-mini/build-tensorfold-xpu.sh <new dir>
 #
-# Needs Zig 0.17.0 and Intel's ocloc on PATH (measured with intel-ocloc 26.05.37020.3). About 2 minutes.
+# Needs Zig 0.17.0, Intel's ocloc (measured with intel-ocloc 26.05.37020.3) and objcopy (binutils) on PATH. About 2 minutes.
 # The whole-file sha256 differs from the measured binary because build paths land in the debug sections;
 # the code (.text), constants with both kernel binaries (.rodata) and .data must match the hashes below.
 set -euo pipefail

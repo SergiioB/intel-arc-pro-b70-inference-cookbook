@@ -57,5 +57,9 @@ tree, `$WORK` = scratch folder, `$LAB` = lab repository, `$HOME` = home folder. 
 
 ## Not in this folder
 
-Server logs (large, local paths) and the 2 GB KL base logits file. The TensorFold XPU runs are in
+Server logs (large, local paths); the 2 GB KL base logits file; `outputs.jsonl` of the 2,048-token runs (all
+replies are empty: reasoning only, see `chars` in `cells.jsonl`); llama-bench `.stderr` files; `P1-profile`'s
+unitrace and scheduler-debug output (unitrace hung, scheduler debug printed nothing); the failed VTune collections of
+`P2-vtune` (only `splits.txt` and `env.txt` are kept); the hill-climb plan and theory notes (lab prose). The
+TensorFold XPU runs are in
 [`../tensorfold-xpu-20261121/`](../tensorfold-xpu-20261121/README.md).
