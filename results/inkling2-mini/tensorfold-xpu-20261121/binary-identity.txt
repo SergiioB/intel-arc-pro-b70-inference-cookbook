@@ -1,0 +1,11 @@
+# Binary identity: tag b70-inkling2-mini-20261121 rebuild vs the binary measured in check4 (2026-11-21T15:38:29Z)
+rebuild: git clone --depth 1 --branch b70-inkling2-mini-20261121 https://github.com/SergiioB/TensorFold.git; HEAD e47dc7ae8e06c9cdefb846e01cf4671bad6cb3db
+         zig 0.17.0 build xpu-inkling2 -Doptimize=ReleaseFast -j2; ocloc from intel-ocloc 26.05.37020.3-1; 107 s
+file sha256 rebuild  030dc1272493b7e4fc4c6e854c0739c1f17eddc6e212f244e400230d1f8d06dd  size 8883008
+file sha256 measured 7175a4f58909aaf080a3cf63b3af3e6dc4748c1bce0916a91a9f19072f739ce6  size 8882936   (differ: build paths in debug sections)
+section .text rebuild f766626a2b07e6acdd08ce2f866796c8601627957f48098ea35dd019f2a250dd measured f766626a2b07e6acdd08ce2f866796c8601627957f48098ea35dd019f2a250dd
+section .rodata rebuild fef235af923140e8c303b7ad1086abfa1c93f8af9b91f88341ada4cadba00348 measured fef235af923140e8c303b7ad1086abfa1c93f8af9b91f88341ada4cadba00348
+section .data rebuild 80b19f955e72a2fbc2891bd5686d4180a2969036ed7a8004c59e153a34a0e5ee measured 80b19f955e72a2fbc2891bd5686d4180a2969036ed7a8004c59e153a34a0e5ee
+kernel ink2.bin sha256 ba7ab9a4a6ce1ff84a1f26d1e2d6b74eaebef2cf9902f74aa6add74676690029 (1788392 bytes): inside rebuild True, inside measured True
+kernel ink2_256.bin sha256 1453473f06e657c6ef81bc94caa495d7bf9cf0da3609f5205172e950ba6d3227 (1783432 bytes): inside rebuild True, inside measured True
+symbols with a different size: 0 of 1207

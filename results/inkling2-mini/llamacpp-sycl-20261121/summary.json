@@ -23,6 +23,11 @@
      "decode_card_w": 157.2,
      "decode_j_per_token": 8.28,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -51,6 +56,11 @@
      "decode_card_w": 175.1,
      "decode_j_per_token": 9.89,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -79,6 +89,11 @@
      "decode_card_w": 203.7,
      "decode_j_per_token": 14.64,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -112,6 +127,11 @@
      "decode_card_w": 179.6,
      "decode_j_per_token": 7.06,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -140,6 +160,11 @@
      "decode_card_w": 197.1,
      "decode_j_per_token": 8.81,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -168,6 +193,11 @@
      "decode_card_w": 225.5,
      "decode_j_per_token": 13.54,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -201,6 +231,11 @@
      "decode_card_w": 157.2,
      "decode_j_per_token": 8.29,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -229,6 +264,11 @@
      "decode_card_w": 174.8,
      "decode_j_per_token": 9.91,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -257,6 +297,11 @@
      "decode_card_w": 203.7,
      "decode_j_per_token": 14.65,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -290,6 +335,11 @@
      "decode_card_w": 174.2,
      "decode_j_per_token": 6.68,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -318,6 +368,11 @@
      "decode_card_w": 195.9,
      "decode_j_per_token": 8.7,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -351,6 +406,11 @@
      "decode_card_w": 180.3,
      "decode_j_per_token": 6.2,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -379,6 +439,11 @@
      "decode_card_w": 200.6,
      "decode_j_per_token": 7.98,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -412,6 +477,11 @@
      "decode_card_w": 174.3,
      "decode_j_per_token": 6.67,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -440,6 +510,11 @@
      "decode_card_w": 195.6,
      "decode_j_per_token": 8.71,
      "nonempty_answers": "0/3",
+     "reasoning_answer_tokens": [
+      "not reported",
+      "not reported",
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -474,6 +549,9 @@
      "decode_card_w": 147.5,
      "decode_j_per_token": 7.56,
      "nonempty_answers": "0/1",
+     "reasoning_answer_tokens": [
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -500,6 +578,9 @@
      "decode_card_w": 172.8,
      "decode_j_per_token": 9.66,
      "nonempty_answers": "0/1",
+     "reasoning_answer_tokens": [
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -534,6 +615,9 @@
      "decode_card_w": 147.9,
      "decode_j_per_token": 10.97,
      "nonempty_answers": "0/1",
+     "reasoning_answer_tokens": [
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,
@@ -560,6 +644,9 @@
      "decode_card_w": 159.4,
      "decode_j_per_token": 11.81,
      "nonempty_answers": "0/1",
+     "reasoning_answer_tokens": [
+      "not reported"
+     ],
      "sampling": {
       "temperature": 1.0,
       "top_p": 1.0,

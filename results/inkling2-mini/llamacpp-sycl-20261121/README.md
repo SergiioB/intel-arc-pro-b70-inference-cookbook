@@ -57,4 +57,5 @@ tree, `$WORK` = scratch folder, `$LAB` = lab repository, `$HOME` = home folder. 
 
 ## Not in this folder
 
-Server logs (large, local paths), the 2 GB KL base logits file, the TensorFold port's runs (unreleased research).
+Server logs (large, local paths) and the 2 GB KL base logits file. The TensorFold XPU runs are in
+[`../tensorfold-xpu-20261121/`](../tensorfold-xpu-20261121/README.md).

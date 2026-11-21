@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Compile the Inkling 2 Mini llama.cpp SYCL evidence into one summary JSON.
+"""Compile the Inkling 2 Mini evidence folders into one summary JSON each.
 
 Usage: python3 benchmarks/inkling2-mini/summarize.py results/inkling2-mini/llamacpp-sycl-20261121
+       python3 benchmarks/inkling2-mini/summarize.py results/inkling2-mini/tensorfold-xpu-20261121
 
 Reads only the raw rows in that folder. Every number the recipe publishes is in the output.
 """
@@ -42,10 +43,36 @@ def median(values: list[float]) -> float:
     return round(statistics.median(values), 2)
 
 
+TF_CELLS = {
+    "tagged_e47dc7ae8_defaults": "check4-20261121T134525Z/cell-after/cells.jsonl",
+    "tagged_e47dc7ae8_check2_settings": "check4-20261121T134525Z/cell-before/cells.jsonl",
+    "older_889fdb304_8192_tokens": "speed3-20261121T133350Z/depth/cells.jsonl",
+}
+
+
 def depth_cells(root: pathlib.Path, run: str) -> dict[str, Any]:
+    return cells_file(root / run / "depth" / "cells.jsonl")
+
+
+def answer_split(row: dict[str, Any]) -> str:
+    usage = (row.get("last_chunk_extra") or {}).get("usage") or {}
+    details = usage.get("completion_tokens_details") or {}
+    if "answer_tokens" not in details:
+        return "not reported"
+    return f"{details['reasoning_tokens']}/{details['answer_tokens']}"
+
+
+def prompt_rate(timings: dict[str, Any]) -> float:
+    """llama.cpp reports prompt_per_second; the TensorFold wrapper reports prompt_n and prompt_ms."""
+    if "prompt_per_second" in timings:
+        return float(timings["prompt_per_second"])
+    return float(timings["prompt_n"]) / float(timings["prompt_ms"]) * 1000.0
+
+
+def cells_file(path: pathlib.Path) -> dict[str, Any]:
     groups: dict[int, list[dict[str, Any]]] = defaultdict(list)
     failed: list[str] = []
-    for row in read_jsonl(root / run / "depth" / "cells.jsonl"):
+    for row in read_jsonl(path):
         if row.get("prompt_tokens") is None:  # the server died before the first token
             failed.append(f"depth {row['depth']} seed {row.get('seed')}: no token, {row['wall_s']} s")
             continue
@@ -58,13 +85,12 @@ def depth_cells(root: pathlib.Path, run: str) -> dict[str, Any]:
             "completion_tokens": sorted({r["completion_tokens"] for r in rows}),
             "decode_tok_s": median([r["decode_tok_s"] for r in rows]),
             "decode_tok_s_range": [min(r["decode_tok_s"] for r in rows), max(r["decode_tok_s"] for r in rows)],
-            "engine_prompt_tok_s": median(
-                [r["last_chunk_extra"]["timings"]["prompt_per_second"] for r in rows]
-            ),
+            "engine_prompt_tok_s": median([prompt_rate(r["last_chunk_extra"]["timings"]) for r in rows]),
             "ttft_s": median([r["ttft_s"] for r in rows]),
             "decode_card_w": median([r["decode_avg_w"] for r in rows]),
             "decode_j_per_token": median([r["decode_j_per_tok"] for r in rows]),
             "nonempty_answers": f"{sum(1 for r in rows if r['chars'] > 0)}/{len(rows)}",
+            "reasoning_answer_tokens": [answer_split(r) for r in rows],
             "sampling": rows[0].get("sampling_fields"),
         }
     return out
@@ -110,6 +136,10 @@ def ppl(root: pathlib.Path, rel: str) -> str:
 
 def main() -> int:
     root = pathlib.Path(sys.argv[1])
+    if (root / "check4-20261121T134525Z").is_dir():
+        cells = {key: {"file": rel, "cells": cells_file(root / rel)} for key, rel in TF_CELLS.items()}
+        print(json.dumps({"depth": cells}, indent=1))
+        return 0
     summary: dict[str, Any] = {"depth": {}, "greedy": {}}
     for key, run in DEPTH_RUNS.items():
         summary["depth"][key] = {"run": run, "cells": depth_cells(root, run)}

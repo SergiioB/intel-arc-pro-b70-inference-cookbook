@@ -1,0 +1,6 @@
+i0: EQUAL; ref 40 tok, cand 40 tok, common prefix 40 tok
+i1: differs; ref 83 tok, cand 91 tok, common prefix 12 tok; ref next 'def f():\n   ' cand next 'Let me compute:\ndef'
+i2: differs; ref 215 tok, cand 234 tok, common prefix 43 tok; ref next 'e-r-t-' cand next 's-e-r-'
+i3: differs; ref 252 tok, cand 255 tok, common prefix 28 tok; ref next ' semantics: Fibonacci indexing.' cand next ' indexing: Fibonacci typically F('
+i4: differs; ref 241 tok, cand 229 tok, common prefix 88 tok; ref next ' all visible wavelengths, but' cand next ' many wavelengths, but shorter'
+equal 1/5
