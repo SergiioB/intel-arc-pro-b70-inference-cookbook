@@ -2,10 +2,10 @@
 
 > Status: research recipe. One card, one stream, measured 2026-11-21 with 3 seeds a cell. Output bit-exact with
 > the same tree carrying only patch 0001 (the crash fix): KL 0, greedy 5/5. The engine without any local patch was
-> not compared on these prompts. Decode is 29 tok/s at a short prompt, about 23 % of the computed byte ceiling. Work on a
-> TensorFold XPU research build decodes faster but is not yet shown to give the same output
-> ([TensorFold route](README.md#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121)); numbers here will be
-> superseded by a new generation, not edited.
+> not compared on these prompts. Decode is 29 tok/s at a short prompt, about 23 % of the computed byte ceiling. A
+> TensorFold XPU research build decodes faster, but its output is not yet shown to match this recipe's
+> ([TensorFold route](README.md#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121)). New numbers for this
+> recipe will be added as a new generation; these will not be edited.
 
 Labels used on this page: **measured** (a raw file in
 [`results/inkling2-mini/llamacpp-sycl-20261121/`](../../results/inkling2-mini/llamacpp-sycl-20261121/README.md)),
