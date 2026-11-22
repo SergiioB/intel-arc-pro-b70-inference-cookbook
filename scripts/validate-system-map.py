@@ -16,6 +16,7 @@ REQUIRED_INTENTS = {
     "reproduce",
     "connect",
     "operate",
+    "optimise",
     "submit",
     "publish",
     "triage",

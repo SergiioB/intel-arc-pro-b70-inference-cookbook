@@ -5,7 +5,7 @@ This repository is a layered publication system. Use the narrowest authority tha
 ## Control loop
 
 1. Classify the intent using the system map: read, setup, reproduce, connect,
-   operate, submit, publish, or triage.
+   operate, optimise, submit, publish, or triage.
 2. Read `data/system-map.v1.json` and follow that intent's `start` and `then` paths.
 3. Select one model family and one serving route before reading commands.
 4. Change an authority, not a rendered view.
@@ -20,7 +20,7 @@ catalog drift, Python syntax, and unit tests.
 | Layer | Question it answers | Authority |
 |---|---|---|
 | L0 Control | Where do I start and what must remain true? | `AGENTS.md`, `data/system-map.v1.json` |
-| L1 Contracts | What is valid and compatible? | `BENCHMARK-FORMAT`, image/patch matrix, reliability map |
+| L1 Contracts | What is valid and compatible? | `BENCHMARK-FORMAT`, image/patch matrix, reliability map, `OPTIMIZATION-PLAYBOOK` |
 | L2 Recipes | How do I run this exact family and route? | `docs/<family>/`, `benchmarks/<family>/` |
 | L3 Evidence | What happened under exact coordinates? | raw/compact `results/`, `data/benchmarks.v1.json` |
 | L4 Views | What should readers see? | README, generated catalog, SVGs |
@@ -44,6 +44,7 @@ Dependencies flow downward when deciding and upward when publishing: control sel
 | Image or patch compatibility | `docs/IMAGE-AND-PATCH-MATRIX.md` | Family recipe, launcher, tests |
 | Measurement method | `docs/BENCHMARK-FORMAT.md` | Harness/compiler and generation boundary |
 | New family or route | `docs/ADDING-A-RECIPE.md` | Hub, launcher, evidence, catalog record |
+| Optimise / tune / kernel work | `docs/OPTIMIZATION-PLAYBOOK.md` | Standalone [`intel-xpu-inference-optimisation-skill`](https://github.com/SergiioB/intel-xpu-inference-optimisation-skill), `docs/DO-NOT-REPEAT.md`, family recipe |
 | Failure ownership | `docs/RELIABILITY-REPORT.md` | Recipe warning or issue precheck |
 | Host setup | `docs/FULL-SETUP-COMMANDS.md` | Image matrix and selected family recipe |
 | Client connection | `docs/CONNECTING-CLIENTS.md` | Selected family recipe |
