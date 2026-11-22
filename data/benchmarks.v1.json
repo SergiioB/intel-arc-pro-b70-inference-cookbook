@@ -4914,6 +4914,33 @@
         "commit": "3b1547b9cd0f99b6fd8a43cd85adc3d52630b6c8",
         "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/3b1547b9cd0f99b6fd8a43cd85adc3d52630b6c8/results/inkling2-mini/vllm-xpu-20261122/fp8kv-ppl-512k-20261122.json"
       }
+    },
+    {
+      "id": "inkling2-mini-vllm-xpu-sycl-m1-decode-20261122",
+      "kind": "capability",
+      "title": "Inkling 2 Mini opt-in AOT bmg_g31 SYCL M=1 decode attention (+71.0% @ 256K FP8 KV: 20.07 -> 34.32 tok/s, one B70, 230 W)",
+      "summary": "Zero-external-dependency AOT bmg_g31 SYCL SIMT SingleTokSplitKernel (INK2_SYCL_DECODE_ATTN=1, default 0 = stock Triton) cuts isolated M=1 256K FP8 decode attention 4.76x (50.24 ms -> 10.56 ms = 78% of sustained GDDR6 BW, rel_l2=2.58e-3; SWA-40 4.13 -> 3.32 ms). Live same-binary controlled A/B under FULL_DECODE_ONLY XPU graph replay (512K FP8 KV pool, mbt=1024, u=0.95, 230 W): 0K 55.10->55.79 (+1.3%), 64K 37.50->44.94 (+19.8%), 128K 28.90->40.25 (+39.3%), 256K (p=255,946) 20.07->34.32 tok/s (+71.0% / 1.71x). Quality gate 4/4 PASS including 128K exact needle retrieval. Hybrid dispatch preserves Triton XMX DPAS for M>=2.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-22",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186 + CUTLASS Xe2 + FP8 KV + SYCL M=1 decode attn",
+        "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + build-sycl-decode-attn-xe2.sh"
+      },
+      "model": {
+        "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+        "quantization": "native NVFP4/MXFP8 experts + BF16 dense + FP8 E4M3 KV",
+        "speculation": "none (M=1)"
+      },
+      "evidence": {
+        "commit": "80cbe03e69aa1b5b5fe6ad2e5a81602a3376b428",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/80cbe03e69aa1b5b5fe6ad2e5a81602a3376b428/results/inkling2-mini/vllm-xpu-20261122/sycl-m1-decode-20261122.json"
+      }
     }
   ]
 }

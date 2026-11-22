@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-22",
+  "model": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+  "card": "1x Intel Arc Pro B70 (32 GiB, 230 W cap, clean dmesg, 32,615 MiB restored)",
+  "config": {
+    "kv_cache_dtype": "fp8",
+    "max_model_len": 524288,
+    "mbt": 1024,
+    "gpu_memory_utilization": 0.95,
+    "speculation": "none (M=1)",
+    "prefix_caching": false,
+    "graph_replay": "FULL_DECODE_ONLY",
+    "cutlass_moe": true,
+    "env_flag": "INK2_SYCL_DECODE_ATTN=0 (control) vs 1 (AOT bmg_g31 SYCL SingleTokSplitKernel)"
+  },
+  "isolated_kernel_microbenchmark_fp8_m1": {
+    "swa_40_visits_ms": {"triton": 4.13, "sycl": 3.32, "speedup_x": 1.24, "rel_l2": 0.0019},
+    "full_8_visits_256k_ms": {"triton": 50.24, "sycl": 10.56, "speedup_x": 4.76, "rel_l2": 0.00258, "bw_efficiency_pct": 78}
+  },
+  "live_same_binary_ab_graph_replay": [
+    {"depth": 0,      "prompt_tokens": 39,     "triton_tok_s": 55.10, "sycl_tok_s": 55.79, "gain_pct": 1.3},
+    {"depth": 65536,  "prompt_tokens": 65503,  "triton_tok_s": 37.50, "sycl_tok_s": 44.94, "gain_pct": 19.8},
+    {"depth": 131072, "prompt_tokens": 131047, "triton_tok_s": 28.90, "sycl_tok_s": 40.25, "gain_pct": 39.3},
+    {"depth": 256000, "prompt_tokens": 255946, "triton_tok_s": 20.07, "sycl_tok_s": 34.32, "gain_pct": 71.0}
+  ],
+  "quality_gate_sycl_m1": {
+    "math_17x23": {"answer": "391", "pass": true},
+    "canary_20_minus_9_plus_3": {"answer": "14", "pass": true},
+    "strict_json": {"pass": true},
+    "retrieval_128k": {"prompt_tokens": 131029, "reasoning_tokens": 489, "answer": "SYCL-128K-99412-OK", "pass": true}
+  }
+}
