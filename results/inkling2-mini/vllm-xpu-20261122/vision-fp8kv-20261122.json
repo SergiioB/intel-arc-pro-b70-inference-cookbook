@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-22",
+  "model": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+  "card": "1x Intel Arc Pro B70 (32 GiB, 230 W cap, clean dmesg, 32,615 MiB restored)",
+  "vision_tower": {
+    "tensors": 422,
+    "dtype": "bfloat16",
+    "weights_mib": 607.0,
+    "model_load_delta_gib": 0.55,
+    "isolated_xpu_2_images_ms": 29.34,
+    "xpu_vs_cpu_cosine": 0.999421,
+    "bf16_kv_dspark_mbt2048_u093": {
+      "configured_ctx": 81920,
+      "kv_cache_tokens": 84811,
+      "kv_cache_gib": 7.48,
+      "live_checks_pass": "4/4 (1200x675 chart OCR, visual counting 3 red circles + 2 green squares, 2-image color comparison, pure text 17*23=391)"
+    }
+  },
+  "fp8_kv_dspark_vision_mbt2048_u092": {
+    "kv_cache_dtype": "fp8 (float8_e4m3fn)",
+    "prefill_fast_path": "256 MiB reusable BF16 active-page scratch (covers 100% of SWA layers at any ctx and full-attn <=64K; inline FP8 fallback >64K)",
+    "configured_ctx": 163840,
+    "kv_cache_tokens": 177637,
+    "kv_cache_gib": 7.13,
+    "vision_ocr": {"ttft_s": 0.473, "decode_tok_s": 107.14, "pass": true},
+    "vision_count": {"ttft_s": 0.307, "decode_tok_s": 170.48, "pass": true},
+    "retrieval_64k": {"prompt_tokens": 64965, "ttft_s": 23.413, "cold_input_tok_s": 2774.7, "decode_tok_s": 68.03, "pass": true},
+    "card_sampling_ladder_512out": [
+      {"depth": "0", "prompt_tokens": 43, "ttft_s": 0.21, "cold_input_tok_s": 202.7, "decode_tok_s": 67.10},
+      {"depth": "8k", "prompt_tokens": 8155, "ttft_s": 2.29, "cold_input_tok_s": 3557.4, "decode_tok_s": 67.20},
+      {"depth": "32k", "prompt_tokens": 32738, "ttft_s": 10.11, "cold_input_tok_s": 3239.9, "decode_tok_s": 55.26},
+      {"depth": "64k", "prompt_tokens": 65505, "ttft_s": 23.60, "cold_input_tok_s": 2776.0, "decode_tok_s": 47.03},
+      {"depth": "128k", "prompt_tokens": 131039, "ttft_s": 140.06, "cold_input_tok_s": 935.6, "decode_tok_s": 43.56}
+    ]
+  },
+  "fp8_kv_capacity_probes_mbt1024_u095": [
+    {
+      "profile": "fp8-dspark-vision-mbt1024-u095",
+      "configured_ctx": 262144,
+      "kv_cache_tokens": 323439,
+      "kv_cache_gib": 8.38,
+      "max_concurrency_reported": 1.23
+    },
+    {
+      "profile": "fp8-nospec-text-mbt1024-u095",
+      "configured_ctx": 524288,
+      "kv_cache_tokens": 569497,
+      "kv_cache_gib": 10.59,
+      "max_concurrency_reported": 1.09
+    }
+  ]
+}

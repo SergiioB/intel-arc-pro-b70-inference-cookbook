@@ -23,3 +23,4 @@
 | `bt3-cutlass-dspark-effort02.jsonl` | Opt-in CUTLASS Xe2 + DSpark `k=7` `reasoning_effort=0.2` cells (`0` `n=3`, `8k` `n=2`, 5/5 non-empty final answers) |
 | `bt3-cutlass-dspark-scenarios.jsonl` | Opt-in CUTLASS Xe2 + DSpark `k=7` 8 deterministic quality & retrieval scenarios (**8/8 PASS**, 33.8K retrieval in `11.14 s`) |
 | `capacity-profiles.json` | Separate scheduler capacity probes (`mbt=1024` 163K DSpark / 160K real prompt, `mbt=1024` 256K no-spec real prompt, `mbt=512` 308.7K KV pool) with live VRAM and clean `dmesg` receipts |
+| `vision-fp8kv-20261122.json` | Opt-in XPU Vision Tower (`4/4` live multimodal checks, `29.3 ms` ViT, `84.8K` BF16 KV) and FP8 E4M3 KV (`177.6K` KV `0–128K` ladder + OCR + 64K retrieval PASS; `323.4K` KV DSpark+Vision & `569.5K` KV / `512K` no-spec capacity probes) |

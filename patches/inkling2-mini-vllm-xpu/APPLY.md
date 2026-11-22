@@ -11,6 +11,10 @@
    - `moe_cutlass.py` — hybrid dispatcher routing layers 0–19 (NVFP4) to `_inkling_nvfp4_xe2` and layers 20–23 (MXFP8) to `vllm-xpu-kernels` CUTLASS Xe2 grouped GEMM.
    - `vllm-inkling2-xpu-cutlass-optin.patch` — opt-in hook in `vllm_inkling2_xpu/moe.py` gated by `INK2_CUTLASS_MOE=1` (default `0` preserves exact stock plugin behavior).
    - `build-nvfp4-cutlass-xe2.sh` — reproducible `icpx` AOT build & install script (requires `intel/sycl-tla@7b56b936` and `vllm-project/vllm-xpu-kernels@e9b6e4b2` headers).
+3. **Optional XPU Vision Tower & FP8 KV (`vllm-inkling2-xpu`, opt-in flags):**
+   - `vision.py` + `ops_vision.py` — pure PyTorch XPU port of the 23-layer BF16 `Inkling2VisionEncoder` (+0.55 GiB VRAM, `29 ms` for 2 images, bidirectional SDPA, no CUDA/PTX).
+   - `vllm-inkling2-xpu-vision-fp8kv.patch` — wires `model.visual` when `--language-model-only` is omitted and adds `--kv-cache-dtype fp8` (`float8_e4m3fn`) with a reusable 256 MiB BF16 active-page prefill scratch (96% of BF16 prefill speed up to 64K; unlocks `177K`/`323K` KV w/ DSpark+Vision and `569K` KV / `512K` no-spec!).
+   - `install-vision-fp8kv-xpu.sh` — breaks `uv` hardlinks safely and installs both modules + patch.
 
 ## Apply 1: Required PR `#69186` patch
 
@@ -36,3 +40,11 @@ VLLM_XPU_KERNELS_DIR=/tmp/vllm-xpu-kernels \
 ```
 
 Enable at runtime with `INK2_CUTLASS_MOE=1`; leave unset (or `0`) to run the exact unmodified stock `vllm-inkling2-xpu` Triton kernels.
+
+## Apply 3: Optional XPU Vision Tower + FP8 KV Cache
+
+```bash
+VENV=./vllm-inkling-venv patches/inkling2-mini-vllm-xpu/install-vision-fp8kv-xpu.sh
+```
+
+Launch with `VISION=1` and/or `KV_DTYPE=fp8` via `benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh`. Default (`VISION=0 KV_DTYPE=auto`) preserves `--language-model-only` and BF16 KV.
