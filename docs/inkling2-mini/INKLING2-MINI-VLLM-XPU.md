@@ -148,7 +148,48 @@ To directly test whether FP8 KV quantization noise accumulates across the full 5
 | **`393,216` (384K)** | *OOM (`>277K` KV)* | **`3.4557` (`1.2400`)** | *`+0.06%` vs `245K`* | — | **`1,055 tok/s` (`372.6 s`)** | — |
 | **`496,000` (~500K)** | *OOM (`>277K` KV)* | **`3.5833` (`1.2763`)** | *`+3.7%` vs `245K`* | — | **`905 tok/s` (`548.1 s`)** | **`2/2` EXACT PASS (`542.7 s`, `p=495,964`)** |
 
-**Why FP8 KV noise does not blow up across 512K on Inkling 2 Mini:** Inkling 2 explicitly L2-clips K and RMSNorms V right before KV write (`ops/sconv.py`), preventing the channel outliers that break naive FP8 KV on standard transformers; `40/48` visits are `1024`-token SWA while only `8` full-attention visits span the full pool (`model_max_length: 1,048,576` with `log_scaling_alpha=0.1`). **Honest scope:** this proves zero perplexity collapse and exact dual-needle recall on a held-out technical corpus through `496K`, not a broad multi-benchmark 512K RULER/LongBench sweep (which remains untested).
+**Why FP8 KV noise does not blow up across 512K on Inkling 2 Mini:** Inkling 2 explicitly L2-clips K and RMSNorms V right before KV write (`ops/sconv.py`), preventing the channel outliers that break naive FP8 KV on standard transformers; `40/48` visits are `1024`-token SWA while only `8` full-attention visits span the full pool (`model_max_length: 1,048,576` with `log_scaling_alpha=0.1`). **Honest scope:** this proves zero perplexity collapse and exact dual-needle recall on a held-out technical corpus through `496K`, not a broad multi-benchmark 512K multi-task sweep (which remains untested).
+
+### G. How to Push This Further — Measured Step Breakdown, Speculative Decoding & Approach
+
+#### 1. Measured millisecond budget of one `M=8` DSpark verify round (`1× B70`, `230 W`)
+
+Before writing any new kernel or speculative tweak, decompose where the `~38 ms` (`0K`) to `~55–62 ms` (`128K`) per verify step actually goes on our official native `NVFP4/MXFP8` stack:
+
+| Component (per `M=8` verify round) | `0K` (BF16 / FP8 KV) | `128K` (BF16 / FP8 KV) | Measured note |
+|---|---:|---:|---|
+| **`40` SWA attention visits (`window=1024`)** | **`13.3 / 15.7 ms`** (`35%`) | **`13.3 / 15.7 ms`** | Largest constant decode term; Triton split-KV (`9` splits) + combine |
+| **`8` full-attention visits** | `1.6 / 2.4 ms` | **`17.6 / 20.1 ms`** (`32%`) | Combined attention = **`58%` of the step at 128K** |
+| **`36` NVFP4 MoE visits (CUTLASS Xe2)** | `11.31 ms` | `11.31 ms` | Already near bandwidth roof (`M=1: 6.36`, `M=4: 8.73`, `M=8: 11.31 ms`) |
+| **`8` MXFP8 MoE visits (CUTLASS Xe2)** | `~3.5 ms` | `~3.5 ms` | `vllm-xpu-kernels` CUTLASS Xe2 grouped GEMM |
+| **`DSpark` draft round (4 layers + 7× Markov)** | `~5.0 ms` | `~5.0 ms` | `[7,2304]×[2304,200704]` base logits `1.57 ms` + `7×` Markov `0.89 ms` + 4 draft layers `~2.5 ms` |
+| **Dense QKV/O, norms, short-conv, `lm_head`** | `~3.5 ms` | `~3.5 ms` | Already fixed by PR `#69186` |
+
+#### 2. Ranked next levers (highest removable ms share first)
+
+1. **Native SYCL fused-reduction FP8/BF16 decode attention (SWA + 128-partition full attention — `#1` lever, `10–18 ms` removable):**
+   - Increasing Triton decode `num_splits` from `40/9` to `80/16` or `128/16` looked `1.4×–3.3×` faster in isolated 1-layer microbenchmarks, yet **regressed live graph-replayed decode `-10%` to `-12%`** (`73.4 -> 66.0 tok/s` @ 64K, `61.0 -> 53.7 tok/s` @ 128K) due to Triton's separate `_rel_decode_combine_kernel` sequential reduction & L2 pressure across 48 visits (`DNR-030`, reverted to stock `40/9`).
+   - Replacing Triton decode with a **native SYCL fused-reduction kernel** (like the 128-partition SYCL decode path in `Danmoreng/intel-b70-inkling2-mini-vllm`, which reaches `65–77 tok/s` at `196K–232K`) directly attacks the `31–36 ms` attention wall right on top of our official native weights.
+2. **Dedicated fixed-size SWA device ring (`40 × 1024` tokens — `#2` capacity/prefill lever):**
+   - Decouples the 40 local SWA layers from vLLM's `--max-num-batched-tokens` reservation, enabling `mbt=4096` alongside `323K–512K` context + Vision + DSpark simultaneously.
+3. **How to improve Speculative Decoding (`DSpark`) further on this guide:**
+   - **Why naive Adaptive DSpark (`0.75` confidence early-stop) did not clear the 10% Impact Gate today:** on our CUTLASS Xe2 NVFP4 kernel, shrinking verify width `M=8 -> M=4` saves only `2.58 ms` (`11.31 -> 8.73 ms`, `<6%` of a `~38 ms` step), and DSpark's block-8 forward still executes in one pass regardless of `k`.
+   - **What *will* unlock another `+15–25%` from DSpark:**
+     1. **Quantized INT4 / top-256 shortlist draft `lm_head` + fused Markov sampling** (trims the `~5.0 ms` draft round toward `~2.5 ms`).
+     2. **Fused draft input-mix taps** (single SYCL/Triton op instead of separate DFlare mix launches).
+     3. **Re-enable Adaptive DSpark *after* Lever #1 shrinks attention** — once attention drops from `31–36 ms` to `~12 ms`, saving `2.6–4 ms` via `M=4` adaptive verify becomes `~15%` of the smaller step!
+     4. **Validated single-slot ring prefix cache** (sub-second warm 196K follow-ups for single-user coding agents — only after passing a zero-retrieval-miss multi-turn gate!).
+4. **Hybrid oneDNN Prefix SDPA outside the `1024`-token relative-bias band:**
+   - Our Chunked-LSE 256 MiB BF16 scratch already beats EXL3 at `64K` (`2,701` vs `2,397 tok/s`) and `128K` (`2,195` vs `2,157 tok/s`, FP8+Vision+DSpark) and reaches `905 tok/s` at `496K`. Delegating bias-free older keys (`dist >= 1024`) to native oneDNN SDPA can push `128K–512K` prefill even higher.
+
+#### 3. How to approach the next hill-climb step
+
+Follow the exact 5-phase + positive, zero-ego discipline codified in [`docs/OPTIMIZATION-PLAYBOOK.md`](../OPTIMIZATION-PLAYBOOK.md) and [`SergiioB/intel-xpu-inference-optimisation-skill`](https://github.com/SergiioB/intel-xpu-inference-optimisation-skill) (`v2.5.0`):
+1. **Price before coding** (decompose step ms + enforce the 10% Impact Gate).
+2. **Test hypotheses with 5-second isolated microbenchmarks & exact numerical parity oracles** (bit patterns, CPU/FP32 ref) — then **always** verify live under XPU graph replay (`FULL_DECODE_ONLY`).
+3. **Celebrate clean reverts with zero ego** (revert regressions like Triton Split-KV `80/128` immediately and document why).
+4. **Keep native weights canonical** unless an alternate quant beats both quality and speed on your regime; cherry-pick orthogonal runtime wins onto the official checkpoint.
+5. **Prove full-window quality** (`8+` deterministic tasks, matched BF16 vs FP8 held-out PPL, `15%`/`55%` dual-needle recall at `max_tokens >= 384`, live multimodal OCR/counting, clean `vram_mm` & `dmesg`).
 
 ### D. Greedy exactness & step-by-step attribution diagnostics (`temperature=0`, `n=3`, not public headline)
 
