@@ -122,6 +122,15 @@ All measurements use one client-side streaming OpenAI `/v1/chat/completions` obs
 | No-spec + `#69186` | 2048 | 0.95 | 200,000 | 201,310 | 197,823 + 2,048 out (`n=3`) | 116.2 s / 26.31 tok/s | 1,832 MiB |
 | **No-spec + `#69186`** | **1024** | **0.95** | **262,144** | **273,815** | **256,000 + 128 out** | **183.4 s / 23.07 tok/s** | **1,654 MiB** |
 | No-spec + `#69186` | 512 | 0.95 | 262,144 | **308,696** | 256,000 + 128 out | 235.1 s / 23.06 tok/s | 1,562 MiB |
+| **Opt-in Vision + BF16 KV + DSpark** | 2048 | 0.93 | 81,920 | 84,811 | 4/4 multimodal PASS (OCR, count, 2-img) | `0.55–6.43 s` / ~89–98 tok/s | clean |
+| **Opt-in Vision + FP8 KV + DSpark** | 2048 | 0.92 | **163,840** | **177,637** | `0–128K` ladder + OCR + **64K retr PASS** | `23.4 s` / `68.0 tok/s` (64K retr); `67.1->43.6` card | clean |
+| **Opt-in Vision + FP8 KV + DSpark** | **1024** | **0.95** | **262,144** | **323,439** | Load & KV plan verified (`1.23x` @ 256K) | — | clean |
+| **Opt-in No-spec + FP8 KV (text)** | **1024** | **0.95** | **524,288 (512K)** | **569,497** | Load & KV plan verified (`1.09x` @ 512K) | — | clean |
+
+### E. Opt-in XPU Vision Tower + FP8 KV (`install-vision-fp8kv-xpu.sh`)
+
+- **Vision Tower (`422` BF16 tensors, `607.0 MiB`, `+0.55 GiB` model VRAM):** Pure PyTorch XPU + bidirectional SDPA port of the 23-layer ViT (`29.34 ms` for 2 images, `cos = 0.9994` vs CPU BF16). Verified live with 1200×675 chart OCR (`0.47 s` TTFT, `107.1 tok/s`), visual counting (`red_circles=3, green_squares=2`, `0.31 s` TTFT, `170.5 tok/s`), and multi-image prompts (`vision-fp8kv-20261122.json`).
+- **FP8 E4M3 KV (`--kv-cache-dtype fp8`):** Halves both full-attention KV (`32,768 -> 16,384 B/tok`) and all 40 SWA reservations, **more than doubling usable context** (`84.8K -> 177.6K` KV w/ DSpark+Vision at `mbt=2048`; **`323.4K` KV w/ DSpark+Vision** and **`569.5K` KV / `512K` no-spec** at `mbt=1024`). A reusable 256 MiB BF16 active-page scratch keeps cold prefill at **95%–97% of BF16 speed up to 64K** (`3,557 / 3,240 / 2,776 tok/s` at `8K / 32K / 64K`, **64K exact retrieval PASS** at `68.0 tok/s`); above 64K, inline FP8 prefill slows (`936 tok/s` at 128K) and card-sampling decode runs `67.1 -> 43.6 tok/s` (`~12–18%` below BF16 KV at `<=104K`). Keep BF16 KV (`auto`) for peak `<=104K` speed; use `--kv-cache-dtype fp8` when you want **163K–512K context or Vision + DSpark together**.
 
 ### D. Greedy exactness & step-by-step attribution diagnostics (`temperature=0`, `n=3`, not public headline)
 
