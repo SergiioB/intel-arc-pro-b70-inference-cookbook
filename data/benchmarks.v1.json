@@ -4860,6 +4860,33 @@
         "commit": "b447a98171c2bb6a74791eea34dfbc3c7e6d9b00",
         "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b447a98171c2bb6a74791eea34dfbc3c7e6d9b00/results/inkling2-mini/vllm-xpu-20261122/capacity-profiles.json"
       }
+    },
+    {
+      "id": "inkling2-mini-vllm-xpu-vision-fp8kv-20261122",
+      "kind": "capability",
+      "title": "Inkling 2 Mini opt-in XPU Vision Tower (23-layer ViT) & FP8 E4M3 KV cache up to 512K KV (one B70, 230 W)",
+      "summary": "Opt-in XPU port of the 23-layer BF16 vision tower (+0.55 GiB VRAM, 29.3 ms for 2 images, cos 0.9994 vs CPU BF16; 4/4 live multimodal checks PASS: 1200x675 chart OCR, visual counting, 2-image, pure text) plus --kv-cache-dtype fp8 (float8_e4m3fn) with reusable 256 MiB BF16 active-page prefill scratch. With DSpark k=7 + Vision: 177,637 KV tokens at mbt=2048 u=0.92 (OCR 107.1 tok/s, 64K exact retrieval PASS at 68.0 tok/s, cold prefill 3,557/3,240/2,776 tok/s at 8K/32K/64K, card-sampling decode 67.1->43.6 tok/s 0-128K) and 323,439 KV tokens (256K ctx, 1.23x) at mbt=1024 u=0.95. No-spec text-only FP8 KV at mbt=1024 u=0.95 reports 569,497 KV tokens (512K ctx, 1.09x) on one 32 GB B70.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-22",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186 + opt-in CUTLASS Xe2 + Vision + FP8 KV",
+        "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + install-vision-fp8kv-xpu.sh"
+      },
+      "model": {
+        "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+        "quantization": "native NVFP4/MXFP8 experts + BF16 dense/vision + FP8 E4M3 KV",
+        "speculation": "dspark k=7 (177K/323K KV) and none (569K KV)"
+      },
+      "evidence": {
+        "commit": "0ceaf3fb9dd30753abad84e42e2ce9f9873e6426",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/0ceaf3fb9dd30753abad84e42e2ce9f9873e6426/results/inkling2-mini/vllm-xpu-20261122/vision-fp8kv-20261122.json"
+      }
     }
   ]
 }
