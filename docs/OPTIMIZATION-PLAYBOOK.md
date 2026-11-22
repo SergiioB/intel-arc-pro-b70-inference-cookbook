@@ -49,3 +49,10 @@ Every model family owns exactly one clean slice with strict route separation:
 - `benchmarks/<family>/` — executable launchers with no private paths.
 - `results/<family>/<engine>-<YYYYMMDD>/` — sanitized, commit-pinned raw JSONL + `summary.json` + `README.md`.
 - `data/benchmarks.v1.json` — single numeric authority (renders `docs/BENCHMARK-CATALOG.md` via `scripts/render-benchmark-catalog.py`).
+
+### 5. FP8 KV Prefill (`11x` via Chunked-LSE 256 MiB Scratch), XPU ViT Porting & 512K Quality Gates
+
+- **Triton XPU 1-byte FP8 `tl.make_tensor_descriptor` trap (`5.4x–11x` slowdown):** Loading `float8_e4m3fn` or `uint8` directly with 2D tensor descriptors breaks Xe2's 16-bit DPAS block layout (`256.6 ms` vs `46.8 ms` BF16 at 64K; `~510 ms` at 128K).
+- **Fix (Chunked-LSE over ONE fixed-size `256 MiB` reusable BF16 scratch):** Materialize active pages into a single pre-allocated module-level BF16 scratch (`<= 256 MiB` — never dynamic `torch.empty((n_active, ...))` per chunk, which fragments PyTorch XPU's caching allocator and hits `UR_RESULT_ERROR_OUT_OF_DEVICE_MEMORY` at 64K!) and merge 64K key chunks via exact FP32 online FlashAttention LSE (`lse_max_err = 5.7e-6`). Result: **`46.4 ms` at 128K (`11x` faster)** and **`91%–97%` of native BF16 prefill speed all the way to 512K** (`1,822 / 1,378 / 1,055 / 905 tok/s` at `128K / 245K / 384K / 496K`).
+- **Porting ViT Vision Towers to Intel XPU without PTX:** Replace CUDA PTX `cvt.rn.bf16.f32` inline asm and CUDA FA2/FA3/FA4 with vectorized PyTorch XPU ops + native `F.scaled_dot_product_attention(..., is_causal=False)` (`29.3 ms` for 2 images across 23 BF16 layers, `+0.55 GiB` VRAM, 4/4 multimodal PASS).
+- **Mandatory 512K FP8 KV Quality Gate:** Never ship quantized KV on pool size alone — measure matched BF16 vs FP8 held-out natural-prose perplexity (`4K`–`245K`: `-0.48%` to `+0.41%`, `+0.07%` @ `245K`, MAE `0.066` nats; `3.4557` @ `384K`; `3.5833` @ `496K`) and `15%` oldest + `55%` mid dual-needle exact recall (`2/2` PASS at `245,726` and `495,964` tokens, using `max_tokens >= 384` for reasoning models).
