@@ -5,9 +5,10 @@
 ## Start here
 
 1. Read `data/system-map.v1.json`.
-2. Choose the closest task intent: read, setup, reproduce, connect, operate, submit, publish, or triage.
+2. Choose the closest task intent: read, setup, reproduce, connect, operate, optimise, submit, publish, or triage.
 3. Follow only that intent's `start` and `then` paths until the task requires another authority.
 4. Read `docs/AGENT-SYSTEM.md` before changing repository structure or public claims.
+5. When optimising, hill-climbing, porting, or writing XPU/SYCL kernels for an Intel Arc GPU, start with `skills/intel-xpu-inference-optimisation/SKILL.md` (plus `scripts/b70_preflight.py` and `scripts/b70_ceiling.py`).
 
 This repository is the public recipe and evidence catalog. Private lab campaigns do not belong here. Never publish credentials, private host paths, local addresses, unpublished image names, or raw evidence that exposes them.
 
@@ -46,6 +47,7 @@ Closing an arm from a source reading — kernel coverage tables, plugin dispatch
 - Production operation: `docs/RELIABILITY-REPORT.md`
 - Leaderboard submission: `docs/localmaxxing-submission-schema.md`
 - New or changed recipe: `docs/ADDING-A-RECIPE.md`
+- Optimise / hill-climb a model on Intel XPU: `skills/intel-xpu-inference-optimisation/SKILL.md` and `docs/OPTIMIZATION-PLAYBOOK.md`
 - Before any experiment: `docs/DO-NOT-REPEAT.md`
 - Ledger rules and record shape: `docs/EVIDENCE-LEDGERS.md`
 - Benchmark or capability record: `data/benchmarks.v1.json`

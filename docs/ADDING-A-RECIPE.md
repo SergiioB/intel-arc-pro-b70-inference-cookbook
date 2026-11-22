@@ -1,6 +1,6 @@
 # Adding or Changing a Recipe
 
-Use this workflow for a model family, serving route, patch stack, benchmark generation, or public capability record.
+Use this workflow for a model family, serving route, patch stack, benchmark generation, or public capability record. Before tuning or benchmarking on Intel Arc Pro B60/B70, run the preflight and roofline checks in [`skills/intel-xpu-inference-optimisation/SKILL.md`](../skills/intel-xpu-inference-optimisation/SKILL.md) (`b70_preflight.py`, `b70_ceiling.py`, and [`references/publishing.md`](../skills/intel-xpu-inference-optimisation/references/publishing.md)).
 
 ## 1. Declare the delta
 

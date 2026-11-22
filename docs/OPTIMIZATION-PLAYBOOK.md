@@ -2,6 +2,8 @@
 
 Canonical engineering method distilled from measured B70 campaigns across vLLM XPU, TensorFold XPU, exl3xpu, and llama.cpp SYCL. Read this alongside [WHAT-WORKED.md](WHAT-WORKED.md) and [DO-NOT-REPEAT.md](DO-NOT-REPEAT.md) before starting a port, quant conversion, or kernel change.
 
+**Reusable Agent Skill:** This playbook is packaged as an installable, executable agent skill at [`skills/intel-xpu-inference-optimisation/SKILL.md`](../skills/intel-xpu-inference-optimisation/SKILL.md) (plus standalone [`PROMPT.md`](../skills/intel-xpu-inference-optimisation/PROMPT.md)), with detailed references ([ceilings](../skills/intel-xpu-inference-optimisation/references/ceilings.md), [levers](../skills/intel-xpu-inference-optimisation/references/levers.md), [gotchas](../skills/intel-xpu-inference-optimisation/references/gotchas.md), [methodology](../skills/intel-xpu-inference-optimisation/references/methodology.md), [publishing](../skills/intel-xpu-inference-optimisation/references/publishing.md)) and stdlib-only CLI helpers (`b70_preflight.py` and `b70_ceiling.py`).
+
 ## 1. DOs: How to Consistently Reach Peak B70 Speed
 
 1. **Price the roofline before touching a kernel.**

@@ -1,0 +1,33 @@
+{
+  "name": "Inkling 2 Mini (26.4B Native NVFP4/MXFP8, 48 visits) on 1x Intel Arc Pro B70",
+  "hardware": {
+    "gpu_count": 1,
+    "vram_gib": 31.85,
+    "sustained_bw_gb_s": 525.0,
+    "practical_xmx_tflops": 78.0
+  },
+  "model": {
+    "resident_weights_gib": 18.0,
+    "runtime_overhead_gib": 3.0,
+    "dense_active_gb": 2.45,
+    "expert_active_gb": 1.95,
+    "lm_head_gb": 0.926,
+    "effective_active_params_b": 5.4,
+    "full_attn_visits": 8,
+    "swa_attn_visits": 40,
+    "swa_window": 1024,
+    "kv_heads": 8,
+    "head_dim": 128,
+    "attn_hidden_size": 3072,
+    "kv_bytes_per_elem": 2.0,
+    "vllm_swa_batch_multiplier": 6.0
+  },
+  "speculation": {
+    "draft_k": 7,
+    "draft_overhead_ms": 5.5,
+    "verify_compute_overhead_ms": 15.0,
+    "acceptance_lens": [2.4, 2.66, 3.1, 3.3]
+  },
+  "depths": [0, 2048, 8192, 32768, 65536, 104320, 131072, 160000, 196608, 256000],
+  "mbt_sweep": [512, 1024, 2048, 4096]
+}
