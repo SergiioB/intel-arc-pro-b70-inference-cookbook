@@ -25,8 +25,8 @@
       "then": ["watchdog/README.md", "docs/POWER-SWEET-SPOTS.md", "docs/DUAL-B70-TP2.md"]
     },
     "optimise": {
-      "start": "skills/intel-xpu-inference-optimisation/SKILL.md",
-      "then": ["docs/OPTIMIZATION-PLAYBOOK.md", "docs/DO-NOT-REPEAT.md", "docs/WHAT-WORKED.md"]
+      "start": "docs/OPTIMIZATION-PLAYBOOK.md",
+      "then": ["docs/DO-NOT-REPEAT.md", "docs/WHAT-WORKED.md", "docs/IMAGE-AND-PATCH-MATRIX.md"]
     },
     "submit": {
       "start": "docs/localmaxxing-submission-schema.md",
@@ -61,12 +61,11 @@
     "architecture_reference": "docs/architecture/architecture.md",
     "feature_flags_registry": "docs/FEATURE-FLAGS.md",
     "first_run_selection": "data/first-run.v1.json",
-    "optimization_playbook": "docs/OPTIMIZATION-PLAYBOOK.md",
-    "optimization_skill": "skills/intel-xpu-inference-optimisation/SKILL.md"
+    "optimization_playbook": "docs/OPTIMIZATION-PLAYBOOK.md"
   },
   "layers": [
     {"id": "L0", "name": "control", "contains": ["AGENTS.md", "data/system-map.v1.json"]},
-    {"id": "L1", "name": "contracts", "contains": ["docs/BENCHMARK-FORMAT.md", "docs/IMAGE-AND-PATCH-MATRIX.md", "docs/RELIABILITY-REPORT.md", "docs/CONFIRM-A-RECIPE.md", "docs/OPTIMIZATION-PLAYBOOK.md", "skills/intel-xpu-inference-optimisation/"]},
+    {"id": "L1", "name": "contracts", "contains": ["docs/BENCHMARK-FORMAT.md", "docs/IMAGE-AND-PATCH-MATRIX.md", "docs/RELIABILITY-REPORT.md", "docs/CONFIRM-A-RECIPE.md", "docs/OPTIMIZATION-PLAYBOOK.md"]},
     {"id": "L2", "name": "family recipes", "contains": ["docs/<family>/", "benchmarks/<family>/"]},
     {"id": "L3", "name": "evidence", "contains": ["results/", "data/benchmarks.v1.json"]},
     {"id": "L4", "name": "views", "contains": ["README.md", "START.md", "docs/BENCHMARK-CATALOG.md", "docs/architecture/architecture.md", "docs/FEATURE-FLAGS.md", "docs/assets/"]}
