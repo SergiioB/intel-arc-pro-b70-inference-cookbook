@@ -4887,6 +4887,33 @@
         "commit": "0ceaf3fb9dd30753abad84e42e2ce9f9873e6426",
         "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/0ceaf3fb9dd30753abad84e42e2ce9f9873e6426/results/inkling2-mini/vllm-xpu-20261122/vision-fp8kv-20261122.json"
       }
+    },
+    {
+      "id": "inkling2-mini-vllm-xpu-fp8kv-ppl-512k-20261122",
+      "kind": "capability",
+      "title": "Inkling 2 Mini FP8 E4M3 KV 4K-496K perplexity stability (+0.07% @ 245K, 3.58 @ 496K) & 496K dual-needle recall (one B70, 230 W)",
+      "summary": "Matched BF16 vs FP8 E4M3 KV held-out natural technical prose perplexity (256-token window, no-spec, mbt=1024, u=0.95) shows -0.48% to +0.41% delta across 4K-245K (+0.07% at 245,760 tokens: 3.4536 vs 3.4512, logprob MAE 0.066 nats \u2014 noise does not grow with depth). Beyond the 277K BF16 VRAM limit, FP8 KV stays 3.4557 at 384K (+0.06% vs 245K) and 3.5833 at 496K (+3.7% vs 245K, zero collapse), passing 2/2 dual-needle exact recall (15% oldest + 55% mid KV) at both 245,726 tokens (181.8 s) and 495,964 tokens (542.7 s). Chunked-LSE 256 MiB BF16 prefill scratch runs 11x faster than inline FP8 at 128K-512K (1,822 / 1,378 / 1,055 / 905 tok/s at 128K / 245K / 384K / 496K).",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-22",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186 + opt-in CUTLASS Xe2 + FP8 KV Chunked-LSE",
+        "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + install-vision-fp8kv-xpu.sh"
+      },
+      "model": {
+        "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+        "quantization": "native NVFP4/MXFP8 experts + BF16 dense + FP8 E4M3 KV",
+        "speculation": "none"
+      },
+      "evidence": {
+        "commit": "3b1547b9cd0f99b6fd8a43cd85adc3d52630b6c8",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/3b1547b9cd0f99b6fd8a43cd85adc3d52630b6c8/results/inkling2-mini/vllm-xpu-20261122/fp8kv-ppl-512k-20261122.json"
+      }
     }
   ]
 }

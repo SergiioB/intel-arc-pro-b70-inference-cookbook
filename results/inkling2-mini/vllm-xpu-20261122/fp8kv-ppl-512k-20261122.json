@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-22",
+  "model": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+  "model_max_length_config": 1048576,
+  "card": "1x Intel Arc Pro B70 (32 GiB, 230 W cap, clean dmesg, 32,615 MiB restored)",
+  "config": {
+    "mbt": 1024,
+    "gpu_memory_utilization": 0.95,
+    "speculation": "none",
+    "prefix_caching": false,
+    "bf16_kv_pool_tokens": 277603,
+    "fp8_kv_pool_tokens": 569497,
+    "fp8_prefill_path": "256 MiB reusable BF16 scratch with exact FP32 online FlashAttention LSE chunking across 64K key windows (91% of BF16 prefill speed up to 512K)",
+    "eval_slice": "256 strictly held-out natural technical prose tokens conditioned on full preceding 4K..496K corpus"
+  },
+  "perplexity_comparison": [
+    {"depth": 4096,   "bf16_ppl": 5.3595, "bf16_nll": 1.67887, "fp8_ppl": 5.3780, "fp8_nll": 1.68232, "delta_ppl": 0.0185,  "delta_pct": 0.35,  "logprob_mae": 0.0971, "fp8_prefill_tok_s": 683.0},
+    {"depth": 32768,  "bf16_ppl": 3.9832, "bf16_nll": 1.38208, "fp8_ppl": 3.9995, "fp8_nll": 1.38618, "delta_ppl": 0.0163,  "delta_pct": 0.41,  "logprob_mae": 0.0822, "fp8_prefill_tok_s": 2558.5},
+    {"depth": 65536,  "bf16_ppl": 3.6716, "bf16_nll": 1.30062, "fp8_ppl": 3.6657, "fp8_nll": 1.29901, "delta_ppl": -0.0059, "delta_pct": -0.16, "logprob_mae": 0.0589, "fp8_prefill_tok_s": 2241.1},
+    {"depth": 131072, "bf16_ppl": 3.3813, "bf16_nll": 1.21826, "fp8_ppl": 3.3650, "fp8_nll": 1.21343, "delta_ppl": -0.0163, "delta_pct": -0.48, "logprob_mae": 0.0726, "fp8_prefill_tok_s": 1822.1},
+    {"depth": 245760, "bf16_ppl": 3.4512, "bf16_nll": 1.23872, "fp8_ppl": 3.4536, "fp8_nll": 1.23942, "delta_ppl": 0.0024,  "delta_pct": 0.07,  "logprob_mae": 0.0660, "fp8_prefill_tok_s": 1378.3},
+    {"depth": 393216, "bf16_ppl": null,   "bf16_nll": null,    "fp8_ppl": 3.4557, "fp8_nll": 1.24004, "delta_ppl": null,    "delta_pct": null,  "logprob_mae": null,   "fp8_prefill_tok_s": 1055.2, "note": "BF16 exceeds 277K KV pool on 1x 32 GB B70; FP8 +0.06% vs 245K"},
+    {"depth": 496000, "bf16_ppl": null,   "bf16_nll": null,    "fp8_ppl": 3.5833, "fp8_nll": 1.27630, "delta_ppl": null,    "delta_pct": null,  "logprob_mae": null,   "fp8_prefill_tok_s": 905.0,  "note": "BF16 exceeds 277K KV pool on 1x 32 GB B70; FP8 +3.7% vs 245K (zero collapse)"}
+  ],
+  "dual_needle_exact_retrieval_fp8": [
+    {
+      "depth": 245760,
+      "prompt_tokens": 245726,
+      "wall_s": 181.78,
+      "early_15pct_pass": true,
+      "mid_55pct_pass": true,
+      "both_pass": true
+    },
+    {
+      "depth": 496000,
+      "prompt_tokens": 495964,
+      "wall_s": 542.67,
+      "early_15pct_pass": true,
+      "mid_55pct_pass": true,
+      "both_pass": true
+    }
+  ]
+}

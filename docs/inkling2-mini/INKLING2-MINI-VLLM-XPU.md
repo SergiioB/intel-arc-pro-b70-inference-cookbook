@@ -130,7 +130,25 @@ All measurements use one client-side streaming OpenAI `/v1/chat/completions` obs
 ### E. Opt-in XPU Vision Tower + FP8 KV (`install-vision-fp8kv-xpu.sh`)
 
 - **Vision Tower (`422` BF16 tensors, `607.0 MiB`, `+0.55 GiB` model VRAM):** Pure PyTorch XPU + bidirectional SDPA port of the 23-layer ViT (`29.34 ms` for 2 images, `cos = 0.9994` vs CPU BF16). Verified live with 1200×675 chart OCR (`0.47 s` TTFT, `107.1 tok/s`), visual counting (`red_circles=3, green_squares=2`, `0.31 s` TTFT, `170.5 tok/s`), and multi-image prompts (`vision-fp8kv-20261122.json`).
-- **FP8 E4M3 KV (`--kv-cache-dtype fp8`):** Halves both full-attention KV (`32,768 -> 16,384 B/tok`) and all 40 SWA reservations, **more than doubling usable context** (`84.8K -> 177.6K` KV w/ DSpark+Vision at `mbt=2048`; **`323.4K` KV w/ DSpark+Vision** and **`569.5K` KV / `512K` no-spec** at `mbt=1024`). A reusable 256 MiB BF16 active-page scratch keeps cold prefill at **95%–97% of BF16 speed up to 64K** (`3,557 / 3,240 / 2,776 tok/s` at `8K / 32K / 64K`, **64K exact retrieval PASS** at `68.0 tok/s`); above 64K, inline FP8 prefill slows (`936 tok/s` at 128K) and card-sampling decode runs `67.1 -> 43.6 tok/s` (`~12–18%` below BF16 KV at `<=104K`). Keep BF16 KV (`auto`) for peak `<=104K` speed; use `--kv-cache-dtype fp8` when you want **163K–512K context or Vision + DSpark together**.
+- **FP8 E4M3 KV (`--kv-cache-dtype fp8`):** Halves both full-attention KV (`32,768 -> 16,384 B/tok`) and all 40 SWA reservations, **more than doubling usable context** (`84.8K -> 177.6K` KV w/ DSpark+Vision at `mbt=2048`; **`323.4K` KV w/ DSpark+Vision** and **`569.5K` KV / `512K` no-spec** at `mbt=1024`). A reusable 256 MiB BF16 active-page scratch with **exact FP32 online FlashAttention LSE chunking across 64K key windows** keeps FP8 cold prefill at **91%–97% of native BF16 speed all the way to 512K** (`1,822 tok/s` @ 128K, `1,378 tok/s` @ 245K, `1,055 tok/s` @ 384K, **`905 tok/s` @ 496K** — **11× faster** than inline FP8 2D-descriptor Triton loads at 128K+!). Keep BF16 KV (`auto`) for peak `<=104K` decode speed (`80.4 -> 55.3` vs `67.1 -> 43.6 tok/s`); use `--kv-cache-dtype fp8` when you want **163K–512K context or Vision + DSpark together**.
+
+### F. FP8 E4M3 KV Long-Context Perplexity & 496K Dual-Needle Quality Proof (`fp8kv-ppl-512k-20261122.json`)
+
+![Inkling 2 Mini FP8 vs BF16 KV Perplexity & 496K Dual-Needle Retrieval](../assets/b70-inkling2-mini-fp8kv-ppl-512k-20261122.png)
+
+To directly test whether FP8 KV quantization noise accumulates across the full 512K pool, we scored a strictly held-out 256-token natural technical prose window conditioned on `4K`–`496K` preceding tokens (`no-spec`, `mbt=1024`, `u=0.95`, `temp=0`, zero prefix cache) and ran dual-needle exact recall (`15%` oldest KV + `55%` mid KV) at `245K` and `496K`:
+
+| Context Depth | BF16 KV PPL (NLL) | **FP8 E4M3 KV PPL (NLL)** | ΔPPL (`FP8 − BF16`) | Token Logprob MAE | FP8 Cold Prefill | FP8 Dual-Needle Recall (`15%` + `55%`) |
+|---:|---:|---:|---:|---:|---:|---|
+| `4,096` (4K) | `5.3595` (`1.6789`) | `5.3780` (`1.6823`) | `+0.0185` (`+0.35%`) | `0.0971` nats | `683 tok/s` | — |
+| `32,768` (32K) | `3.9832` (`1.3821`) | `3.9995` (`1.3862`) | `+0.0163` (`+0.41%`) | `0.0822` nats | `2,559 tok/s` | — |
+| `65,536` (64K) | `3.6716` (`1.3006`) | `3.6657` (`1.2990`) | `-0.0059` (`-0.16%`) | `0.0589` nats | `2,241 tok/s` | `64K` single-needle PASS (`68.0 tok/s`) |
+| `131,072` (128K) | `3.3813` (`1.2183`) | `3.3650` (`1.2134`) | `-0.0163` (`-0.48%`) | `0.0726` nats | `1,822 tok/s` (`91.4%` BF16) | — |
+| **`245,760` (240K)** | `3.4512` (`1.2387`) | **`3.4536` (`1.2394`)** | **`+0.0024` (`+0.07%`)** | **`0.0660` nats** | **`1,378 tok/s` (`90.7%` BF16)** | **`2/2` EXACT PASS (`181.8 s`)** |
+| **`393,216` (384K)** | *OOM (`>277K` KV)* | **`3.4557` (`1.2400`)** | *`+0.06%` vs `245K`* | — | **`1,055 tok/s` (`372.6 s`)** | — |
+| **`496,000` (~500K)** | *OOM (`>277K` KV)* | **`3.5833` (`1.2763`)** | *`+3.7%` vs `245K`* | — | **`905 tok/s` (`548.1 s`)** | **`2/2` EXACT PASS (`542.7 s`, `p=495,964`)** |
+
+**Why FP8 KV noise does not blow up across 512K on Inkling 2 Mini:** Inkling 2 explicitly L2-clips K and RMSNorms V right before KV write (`ops/sconv.py`), preventing the channel outliers that break naive FP8 KV on standard transformers; `40/48` visits are `1024`-token SWA while only `8` full-attention visits span the full pool (`model_max_length: 1,048,576` with `log_scaling_alpha=0.1`). **Honest scope:** this proves zero perplexity collapse and exact dual-needle recall on a held-out technical corpus through `496K`, not a broad multi-benchmark 512K RULER/LongBench sweep (which remains untested).
 
 ### D. Greedy exactness & step-by-step attribution diagnostics (`temperature=0`, `n=3`, not public headline)
 
