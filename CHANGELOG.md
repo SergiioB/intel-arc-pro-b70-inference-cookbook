@@ -12,6 +12,14 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.15.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.14.0...v1.15.0) (2026-11-22)
+
+
+### Features
+
+* **control-plane:** wire optimise intent and standalone Intel XPU optimisation skill ([79b6032](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/79b6032ff1c0abd8dd1ec5ce7b7324b59966e217))
+* **skills:** add Intel XPU inference optimisation skill and wire optimise intent across cookbook ([37462b0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/37462b0622143a51880b7291a03237914971ac6a))
+
 ## [1.14.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.13.1...v1.14.0) (2026-11-22)
 
 
