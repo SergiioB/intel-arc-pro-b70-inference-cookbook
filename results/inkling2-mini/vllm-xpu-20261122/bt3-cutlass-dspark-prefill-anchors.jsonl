@@ -1,0 +1,12 @@
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3147.7, "completion_tokens": 1, "prompt_tokens": 2047, "rep": 0, "target_prompt_tokens": 2048, "ttft_s": 0.65}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3919.9, "completion_tokens": 1, "prompt_tokens": 2048, "rep": 1, "target_prompt_tokens": 2048, "ttft_s": 0.522}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3983.0, "completion_tokens": 1, "prompt_tokens": 2047, "rep": 2, "target_prompt_tokens": 2048, "ttft_s": 0.514}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3742.9, "completion_tokens": 1, "prompt_tokens": 8192, "rep": 0, "target_prompt_tokens": 8192, "ttft_s": 2.189}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3748.4, "completion_tokens": 1, "prompt_tokens": 8192, "rep": 1, "target_prompt_tokens": 8192, "ttft_s": 2.185}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3765.7, "completion_tokens": 1, "prompt_tokens": 8192, "rep": 2, "target_prompt_tokens": 8192, "ttft_s": 2.175}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3329.6, "completion_tokens": 1, "prompt_tokens": 32768, "rep": 0, "target_prompt_tokens": 32768, "ttft_s": 9.842}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3330.3, "completion_tokens": 1, "prompt_tokens": 32767, "rep": 1, "target_prompt_tokens": 32768, "ttft_s": 9.839}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 3325.7, "completion_tokens": 1, "prompt_tokens": 32768, "rep": 2, "target_prompt_tokens": 32768, "ttft_s": 9.853}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 2892.7, "completion_tokens": 1, "prompt_tokens": 65535, "rep": 0, "target_prompt_tokens": 65536, "ttft_s": 22.656}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 2890.2, "completion_tokens": 1, "prompt_tokens": 65536, "rep": 1, "target_prompt_tokens": 65536, "ttft_s": 22.675}
+{"arm": "vllm-pr69186-cutlass-dspark-k7", "cold_input_tok_s": 2890.8, "completion_tokens": 1, "prompt_tokens": 65536, "rep": 2, "target_prompt_tokens": 65536, "ttft_s": 22.671}

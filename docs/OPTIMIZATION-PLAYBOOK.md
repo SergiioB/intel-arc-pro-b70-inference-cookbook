@@ -24,6 +24,10 @@ Canonical engineering method distilled from measured B70 campaigns across vLLM X
    Set `VLLM_RPC_BASE_PATH` to a short `/tmp/...` directory so ZeroMQ Unix socket paths never exceed Linux's 107-byte `sun_path` limit when running inside deep campaign directories.
 10. **Match multi-card topology to workload.**
     For multiple independent users, run one server per B70 (2x aggregate, zero collective tax). For single-stream decode/prefill beyond one card's bandwidth/FLOP ceiling, use peer-store TP2 without remote atomics (see [DUAL-B70-TP2.md](DUAL-B70-TP2.md)).
+11. **Tune `--max-num-batched-tokens` on Sliding Window Attention (SWA) models to unlock 2x–3x larger context.**
+    In vLLM's `SlidingWindowManager`, SWA KV reservation scales with `max_num_batched_tokens` across every local-attention layer visit (40 visits in Inkling 2 Mini). Raising `mbt` to `4096`/`8192` collapses Inkling's single-B70 context from 200K down to ~7K, while lowering `mbt` from `2048` to `1024` unlocks **163K with DSpark** (vs 106K) and **256K no-spec** (vs 200K; `308.7K` KV pool at `mbt=512`). Always report `mbt=1024`/`512` capacity profiles separately from `mbt=2048` speed ladders.
+12. **Prefer AOT `bmg_g31` CUTLASS Xe2 grouped GEMM over generic Triton for packed MoE prefill and speculative verification (`M=8`–`2048`).**
+    Writing a native NVFP4 (`e2m1`+`e4m3`/16) CUTLASS Xe2 grouped GEMM (`sycl-tla` + `icpx -device bmg_g31 -ze-opt-large-register-file`) with a 1-WG SLM route-sort and fused SwiGLU — paired with `vllm-xpu-kernels` MXFP8 CUTLASS Xe2 — lifted Inkling 2 Mini + DSpark `k=7` by **+40% decode (`57.2 -> 80.4 tok/s` card sampling, `71.6 -> 95.1` greedy)** and **+24% cold prefill (`3,172 -> 3,920 tok/s`)** with `rel_l2 <= 5e-5` vs FP32 and **8/8 quality/retrieval scenarios PASS**. Always gate custom kernels behind an opt-in env flag (`INK2_CUTLASS_MOE=1`, default `0`) so the stock path remains reproducible.
 
 ## 2. DON'Ts: Closed Traps (See [DO-NOT-REPEAT.md](DO-NOT-REPEAT.md))
 

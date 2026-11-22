@@ -1,0 +1,57 @@
+diff --git a/vllm_inkling2_xpu/moe.py b/vllm_inkling2_xpu/moe.py
+--- a/vllm_inkling2_xpu/moe.py
++++ b/vllm_inkling2_xpu/moe.py
+@@ -3,6 +3,7 @@
+ """Inkling2 packed NVFP4 and MXFP8 experts for Intel XPU."""
+ 
+ from collections.abc import Callable, Sequence
++import os
+ from typing import Literal
+ 
+ import torch
+@@ -16,6 +17,7 @@ from vllm.model_executor.utils import is_weights_pre_processed, set_weight_attrs
+ from vllm.models.inkling2.configs import Inkling2ModelConfig
+ from .ops._codec import PackedProjection
+ from .ops.moe import packed_experts, validate_config
++from .ops.moe_cutlass import cutlass_experts
+ from .ops.moe_packed import repack_nvfp4_split_half
+ from .ops.moe_router import select_experts
+ 
+@@ -91,6 +93,23 @@ class Inkling2Experts(nn.Module):
+         param.data.copy_(loaded)
+ 
+     def process_weights_after_loading(self) -> None:
++        self._use_cutlass = os.getenv("INK2_CUTLASS_MOE", "0") == "1"
++        if self._use_cutlass:
++            if self.nvfp4:
++                self._w13_esc = (self.w13_weight_amax / self.w13_weight_outer_scale_denominator).to(torch.float32).contiguous()
++                self._w2_esc = (self.w2_weight_amax / self.w2_weight_outer_scale_denominator).to(torch.float32).contiguous()
++                self._w13_w = self.w13_weight.contiguous()
++                self._w2_w = self.w2_weight.contiguous()
++            else:
++                self._w13_esc = None
++                self._w2_esc = None
++                self.w13_weight.data = self.w13_weight.data.transpose(-1, -2).contiguous()
++                self.w2_weight.data = self.w2_weight.data.transpose(-1, -2).contiguous()
++                self._w13_w = self.w13_weight
++                self._w2_w = self.w2_weight
++            self._w13_s = self.w13_weight_scale.contiguous()
++            self._w2_s = self.w2_weight_scale.contiguous()
++            return
+         # Kernel-format reloads already hold split-half weights.
+         if self.nvfp4 and not is_weights_pre_processed():
+             repack_nvfp4_split_half(self.w13_weight)
+@@ -117,6 +136,14 @@ class Inkling2Experts(nn.Module):
+     ) -> torch.Tensor:
+         """Run packed projections and combine the selected experts' outputs."""
+         ids, weights, is_padding = routing
++        if getattr(self, "_use_cutlass", False):
++            return cutlass_experts(
++                x, ids, weights, is_padding,
++                self._w13_w, self._w13_s, self._w13_esc,
++                self._w2_w, self._w2_s, self._w2_esc,
++                self.nvfp4, self.num_experts, self.gate_cap, self.up_cap,
++            )
+         return packed_experts(
+             x,
+             ids,
