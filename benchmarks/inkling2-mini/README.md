@@ -1,9 +1,10 @@
 # Inkling 2 Mini benchmark slice
 
-Scripts for the Inkling 2 Mini routes: [TensorFold XPU research build](../../docs/inkling2-mini/README.md#tensorfold-xpu-research-build-tag-b70-inkling2-mini-20261121) and [llama.cpp recipe](../../docs/inkling2-mini/INKLING2-MINI-LLAMACPP.md).
+Scripts for the Inkling 2 Mini routes: [vLLM XPU primary recipe](../../docs/inkling2-mini/INKLING2-MINI-VLLM-XPU.md), [TensorFold XPU research build](../../docs/inkling2-mini/INKLING2-MINI-TENSORFOLD.md), and [llama.cpp SYCL recipe](../../docs/inkling2-mini/INKLING2-MINI-LLAMACPP.md).
 
 | File | Does | GPU |
 |---|---|---|
+| `launch-inkling2-mini-vllm-xpu.sh` | Serves the unmodified native checkpoint on one B70 with vLLM XPU + `vllm-inkling2-xpu` (supports 90K daily, 200K max-ctx, and optional DSpark profiles) | yes |
 | `prepare-llamacpp.sh` | Builds the exact source tree (upstream base + 2 PR merges + local patches 0001–0006) and checks both git tree hashes | no |
 | `build-llamacpp-sycl.sh` | SYCL build, ahead-of-time for `bmg_g31` | no |
 | `launch-inkling2-mini-llamacpp.sh` | Serves the exact default on one card | yes |

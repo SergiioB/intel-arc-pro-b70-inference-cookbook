@@ -1,0 +1,13 @@
+--- a/vllm/model_executor/layers/logits_processor.py
++++ b/vllm/model_executor/layers/logits_processor.py
+@@ -157,8 +157,8 @@
+             )
+         if (
+             self.head_dtype == torch.float32
+-            and (current_platform.is_cuda() or current_platform.is_rocm())
+-            and hidden_states.is_cuda
++            and (current_platform.is_cuda_alike() or current_platform.is_xpu())
++            and hidden_states.device.type == current_platform.device_type
+         ):
+             # Accumulate the projection directly into fp32. This avoids
+             # materializing an fp32 copy of the lm_head weight on every step,
