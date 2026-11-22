@@ -29,6 +29,7 @@ DSPARK="${DSPARK:-0}"
 VISION="${VISION:-0}"
 KV_DTYPE="${KV_DTYPE:-auto}"
 INK2_CUTLASS_MOE="${INK2_CUTLASS_MOE:-0}"
+INK2_SYCL_DECODE_ATTN="${INK2_SYCL_DECODE_ATTN:-0}"
 
 RPC_DIR="$(mktemp -d /tmp/ink2-ipc-XXXXXX)"
 trap 'rm -rf "$RPC_DIR"' EXIT
@@ -38,6 +39,7 @@ export ZE_AFFINITY_MASK="$GPU"
 export VLLM_WORKER_MULTIPROC_METHOD=spawn
 export VLLM_RPC_BASE_PATH="$RPC_DIR"
 export INK2_CUTLASS_MOE
+export INK2_SYCL_DECODE_ATTN
 
 EXTRA=()
 if [[ "$VISION" == "1" ]]; then

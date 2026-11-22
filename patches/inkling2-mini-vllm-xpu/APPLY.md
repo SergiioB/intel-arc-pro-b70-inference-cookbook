@@ -48,3 +48,13 @@ VENV=./vllm-inkling-venv patches/inkling2-mini-vllm-xpu/install-vision-fp8kv-xpu
 ```
 
 Launch with `VISION=1` and/or `KV_DTYPE=fp8` via `benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh`. Default (`VISION=0 KV_DTYPE=auto`) preserves `--language-model-only` and BF16 KV.
+
+## Apply 4: Optional Opt-In AOT `bmg_g31` SYCL `M=1` Decode Attention (`+71%` @ 256K!)
+
+Zero external header dependencies beyond Intel oneAPI `icpx` + PyTorch XPU:
+
+```bash
+VENV=./vllm-inkling-venv patches/inkling2-mini-vllm-xpu/build-sycl-decode-attn-xe2.sh
+```
+
+Enable at runtime with `INK2_SYCL_DECODE_ATTN=1` (default `0` preserves exact stock Triton). Accelerates `M=1` (no-spec) long-context FP8 KV decode by `+19.8%` @ 64K, `+39.3%` @ 128K, and **`+71.0%` @ 256K** (`20.07 -> 34.32 tok/s`) under live XPU graph replay while keeping Triton XMX DPAS on `M>=2`.

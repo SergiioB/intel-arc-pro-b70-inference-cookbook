@@ -167,9 +167,15 @@ Before writing any new kernel or speculative tweak, decompose where the `~38 ms`
 
 #### 2. Ranked next levers (highest removable ms share first)
 
-1. **Native SYCL fused-reduction FP8/BF16 decode attention (SWA + 128-partition full attention — `#1` lever, `10–18 ms` removable):**
-   - Increasing Triton decode `num_splits` from `40/9` to `80/16` or `128/16` looked `1.4×–3.3×` faster in isolated 1-layer microbenchmarks, yet **regressed live graph-replayed decode `-10%` to `-12%`** (`73.4 -> 66.0 tok/s` @ 64K, `61.0 -> 53.7 tok/s` @ 128K) due to Triton's separate `_rel_decode_combine_kernel` sequential reduction & L2 pressure across 48 visits (`DNR-030`, reverted to stock `40/9`).
-   - Replacing Triton decode with a **native SYCL fused-reduction kernel** (like the 128-partition SYCL decode path in `Danmoreng/intel-b70-inkling2-mini-vllm`, which reaches `65–77 tok/s` at `196K–232K`) directly attacks the `31–36 ms` attention wall right on top of our official native weights.
+1. **AOT `bmg_g31` SYCL Decode Attention — SHIPPED for `M=1` (`+71.0%` @ `256K` FP8 KV!), & SIMT-vs-XMX Regime Split (`sycl-m1-decode-20261122.json`):**
+   - **Shipped (`INK2_SYCL_DECODE_ATTN=1`, `build-sycl-decode-attn-xe2.sh`):** Our zero-spill 4-SG/WG SIMT `SingleTokSplitKernel` (contiguous page chunks, 4-key tiled softmax, `1 KB` SLM E4M3 LUT, reusable graph-safe scratch) cuts isolated `M=1` `256K` FP8 attention **`4.76×`** (`50.24 ms -> 10.56 ms` = `78%` of sustained GDDR6 BW; SWA-40 `4.13 -> 3.32 ms` = `1.24×`, `rel_l2 <= 2.58e-3`).
+   - **Live same-binary controlled A/B under XPU graph replay (`FULL_DECODE_ONLY`, `512K` FP8 KV, `mbt=1024`, `u=0.95`, `230 W`, `4/4` quality + `128K` exact retrieval `'SYCL-128K-99412-OK'` PASS, `32,615 MiB` restored):**
+     - `0K`: `55.10 -> 55.79 tok/s` (`+1.3%`)
+     - `64K`: `37.50 -> 44.94 tok/s` (**`+19.8%`**)
+     - `128K`: `28.90 -> 40.25 tok/s` (**`+39.3%`**)
+     - **`256K` (`p=255,946`):** **`20.07 -> 34.32 tok/s` (`+71.0%` / `1.71×` faster end-to-end!)**
+   - **Why `M=1` uses SYCL SIMT while `M=8` stays on Triton XMX DPAS:** At `M=1` (`G=3` query rows), Triton's `tl.dot` pads `3` rows into a `16`-row XMX tile (`81%` wasted), so SIMT wins by `4.76×`. At `M=8` (`24` rows = `206 GFLOPs` @ 256K), SIMT becomes compute-bound (`109 ms`) while hardware XMX DPAS (`tl.dot`) runs `2.7×` faster (`40.7 ms`), and SYCL `joint_matrix` `get_wi_data` in `icpx 2026.1` spills accumulators to private memory (`23.7 -> 70.6 ms`). Hybrid dispatch (`M=1` → SYCL SIMT, `M>=2` → Triton XMX DPAS) captures the best of both regimes; beating Triton on `M=8` requires an ESIMD / native XMX kernel without `get_wi_data` spills.
+   - *(Closed arm: increasing Triton decode `num_splits` from `40/9` to `80/16` or `128/16` looked `1.4×–3.3×` faster in isolated 1-layer microbenchmarks yet regressed live graph-replayed decode `-10%` to `-12%` (`73.4 -> 66.0` @ 64K, `61.0 -> 53.7` @ 128K) due to sequential combine-kernel reduction & L2 traffic across 48 visits; reverted to stock `40/9`.)*
 2. **Dedicated fixed-size SWA device ring (`40 × 1024` tokens — `#2` capacity/prefill lever):**
    - Decouples the 40 local SWA layers from vLLM's `--max-num-batched-tokens` reservation, enabling `mbt=4096` alongside `323K–512K` context + Vision + DSpark simultaneously.
 3. **How to improve Speculative Decoding (`DSpark`) further on this guide:**
