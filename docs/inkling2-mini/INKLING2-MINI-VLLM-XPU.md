@@ -1,0 +1,147 @@
+# Inkling 2 Mini on Intel Arc Pro B70: vLLM XPU + `vllm-inkling2-xpu` + Opt-in CUTLASS Xe2
+
+**Primary one-card route (measured 2026-11-22).** Serves the unmodified [`thinkingmachines/Inkling-2-Mini`](https://huggingface.co/thinkingmachines/Inkling-2-Mini) checkpoint (native NVFP4/MXFP8 routed experts, BF16 dense/attention/`lm_head`, BF16 KV cache) on a single 32 GB Intel Arc Pro B70 across two complementary single-card operating profiles:
+
+- **Speed-first interactive profile (`INK2_CUTLASS_MOE=1` opt-in + DSpark `k=7`):** **80.4 to 55.3 tok/s decode** across `0` to `104K` (`temp=1.0`, `effort=0.9`, `2048` out, `n=3`), **99.2 tok/s at `effort=0.2`** (`0K`, real finished answers), **3,920 to 2,891 tok/s cold prefill** (`2K` to `64K`), **8/8 deterministic quality & retrieval tasks PASS** (33.8K retrieval in `11.1 s`), and **163K context (`160K` real prompt at `46.2 tok/s`)** when `--max-num-batched-tokens 1024`.
+- **Max-context no-spec profile (stock plugin + PR `#69186`):** **200,000 context at `mbt=2048`** (`3,172 to 1,711 tok/s` cold prefill, `54.5 to 26.3 tok/s` decode, `135K` retrieval PASS), **256K (`262,144`) proven real prompt at `mbt=1024`** (`23.1 tok/s`, `183 s` TTFT, `1,654 MiB` free), and **308,696 KV tokens reported at `mbt=512`**.
+
+Credit: out-of-tree XPU plugin by [`mgaruccio/vllm-inkling2-xpu`](https://github.com/mgaruccio/vllm-inkling2-xpu), XPU FP32 `lm_head` fast path from upstream [vLLM PR #69186](https://github.com/vllm-project/vllm/pull/69186), and [`intel/sycl-tla`](https://github.com/intel/sycl-tla) + [`vllm-project/vllm-xpu-kernels`](https://github.com/vllm-project/vllm-xpu-kernels) Xe2 CUTLASS headers.
+
+![Inkling 2 Mini on one Intel Arc Pro B70: realistic card-sampling decode, cold prefill, and maximum proven context by scheduler profile](../assets/b70-inkling2-mini-vllm-xpu-context-20261122.png)
+
+## 1. Pinned Stack
+
+| Component | Exact Pin |
+|---|---|
+| Hardware | 1x Intel Arc Pro B70 (32 GB, non-display card, `xe` driver, 230 W cap) |
+| Model | `thinkingmachines/Inkling-2-Mini` @ `ed40e7da625f594fc9c4990f5f66be24873c22d7` (`model-00001-of-00001.safetensors` sha256 `65e60f51aa1284d4fb022584908c315270334d991828bb774af60584523539d1`) |
+| vLLM XPU | `vllm-0.34.0rc1.dev1133+g647a76866.xpu` (upstream `647a76866b4559a74e27d1c6b55fbffe85c07ce4`, wheel sha256 `7f16548be2192e6ce7cf2d77a96b4b04418648a5178b3bfa9c15e13f042520fb`) |
+| Runtime | `torch==2.15.0+xpu`, `triton==3.9.0+xpu`, `vllm-xpu-kernels==0.1.17` |
+| Plugin | `mgaruccio/vllm-inkling2-xpu` @ `2e9d28b04ff23f5d9996a221ffaa0ae3a440d8f9` (`--no-deps`) |
+| Required patch | [`patches/inkling2-mini-vllm-xpu/pr69186-logits-processor.patch`](../../patches/inkling2-mini-vllm-xpu/pr69186-logits-processor.patch) (2-line XPU FP32 `lm_head` fast path; skip once PR #69186 merges) |
+| Optional speed kernel | [`patches/inkling2-mini-vllm-xpu/build-nvfp4-cutlass-xe2.sh`](../../patches/inkling2-mini-vllm-xpu/build-nvfp4-cutlass-xe2.sh) — AOT `bmg_g31` native NVFP4 (`e2m1`+`e4m3`/16) CUTLASS Xe2 grouped GEMM + MXFP8 CUTLASS Xe2 + SLM route-sort + fused softcapped SwiGLU. **Opt-in via `INK2_CUTLASS_MOE=1`**; default `0` keeps the exact stock plugin untouched. |
+
+Do not convert this checkpoint to GPTQ INT4 or EXL3 (see `DNR-009`, `DNR-035`, `DNR-041`). Experts stay in their original NVFP4 (layers 0–19) and MXFP8 (layers 20–23) storage and unpack to BF16/FP16 operands in registers (`W4A16`/`W8A16`); Battlemage has no native FP4/FP8 DPAS hardware.
+
+## 2. Install, Patch, and Optional CUTLASS Xe2 Build
+
+```bash
+uv venv --python 3.14 vllm-inkling-venv
+uv pip install --no-build --python vllm-inkling-venv/bin/python \
+  --index https://download.pytorch.org/whl/xpu \
+  --index-strategy unsafe-best-match \
+  --find-links https://vllm-project.github.io/vllm-xpu-kernels/whl/vllm-xpu-kernels/ \
+  "https://wheels.vllm.ai/647a76866b4559a74e27d1c6b55fbffe85c07ce4/vllm-0.34.0rc1.dev1133%2Bg647a76866.xpu-cp38-abi3-manylinux_2_34_x86_64.whl" \
+  "torch==2.15.0+xpu" \
+  "triton @ https://wheels.vllm.ai/647a76866b4559a74e27d1c6b55fbffe85c07ce4/triton-3.9.0%2Bxpu-py3-none-any.whl" \
+  "vllm-xpu-kernels==0.1.17"
+
+uv pip install --python vllm-inkling-venv/bin/python --no-deps \
+  "git+https://github.com/mgaruccio/vllm-inkling2-xpu@2e9d28b04ff23f5d9996a221ffaa0ae3a440d8f9"
+```
+
+Apply PR `#69186` (required) and optionally build the native NVFP4 CUTLASS Xe2 extension (`bmg_g31` AOT SYCL, numerical parity `rel_l2 <= 5.0e-5` vs exact FP32 reference) following [`patches/inkling2-mini-vllm-xpu/APPLY.md`](../../patches/inkling2-mini-vllm-xpu/APPLY.md). Keep `VLLM_RPC_BASE_PATH` on a short directory such as `/tmp/ink2-ipc-*` so ZeroMQ IPC socket paths stay under Linux's 107-byte `sun_path` limit.
+
+## 3. Serve (Pick Your Operating Profile)
+
+Use [`benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh`](../../benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh):
+
+```bash
+# 1. Fastest interactive profile (DSpark k=7 + opt-in CUTLASS Xe2, 106K ctx, ~2.5 GiB free VRAM)
+VLLM_BIN=./vllm-inkling-venv/bin/vllm MODEL=/path/to/Inkling-2-Mini \
+  DSPARK=1 INK2_CUTLASS_MOE=1 CTX=106496 MAX_BATCHED=2048 GPU_MEM_UTIL=0.93 \
+  benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh
+
+# 2. Long-context + DSpark profile (163K ctx / 194K KV, 160K real prompt @ 46.2 tok/s, ~1.5 GiB free)
+VLLM_BIN=./vllm-inkling-venv/bin/vllm MODEL=/path/to/Inkling-2-Mini \
+  DSPARK=1 INK2_CUTLASS_MOE=1 CTX=163840 MAX_BATCHED=1024 GPU_MEM_UTIL=0.95 \
+  benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh
+
+# 3. Full-speed 200K no-spec profile (stock plugin + PR #69186, ~1.8 GiB free VRAM)
+VLLM_BIN=./vllm-inkling-venv/bin/vllm MODEL=/path/to/Inkling-2-Mini \
+  CTX=200000 MAX_BATCHED=2048 GPU_MEM_UTIL=0.95 \
+  benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh
+
+# 4. Maximum single-card 256K profile (256,000 real prompt proven, 273.8K KV, ~1.65 GiB free)
+#    (MAX_BATCHED=512 expands KV pool to 308,696 tokens with slower prefill)
+VLLM_BIN=./vllm-inkling-venv/bin/vllm MODEL=/path/to/Inkling-2-Mini \
+  CTX=262144 MAX_BATCHED=1024 GPU_MEM_UTIL=0.95 \
+  benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh
+```
+
+Required serving flags and why:
+- `--language-model-only --dtype bfloat16`: text-only XPU path; BF16 activations and KV cache.
+- `-cc.mode=none -cc.cudagraph_mode=FULL_DECODE_ONLY`: disables unsupported `torch.compile` while enabling XPU decode graph replay.
+- `--no-enable-prefix-caching`: prefix caching stays off until multi-turn corruption checks pass on this stack.
+- `--max-num-batched-tokens` (`2048` vs `1024` vs `512`): vLLM's `SlidingWindowManager` scales SWA in-flight block reservation with `max_num_batched_tokens` across all 40 local-attention visits. Setting `4096`/`8192` collapses max context to `~7K`; lowering to `1024` unlocks **163K with DSpark** and **256K no-spec** (`308.7K` KV tokens at `512`).
+- `--reasoning-parser inkling --enable-auto-tool-choice --tool-call-parser inkling`: separates `message.reasoning` from `message.content`; without it, raw reasoning leaks into `content`.
+
+## 4. Measured Performance (1x B70, 230 W, C1, Cold Cache)
+
+All measurements use one client-side streaming OpenAI `/v1/chat/completions` observer capturing both `delta.reasoning` and `delta.content`, with `vllm:prefix_cache_hits_total` delta verified at `0.0` on every request. Raw receipts: [`results/inkling2-mini/vllm-xpu-20261122/`](../../results/inkling2-mini/vllm-xpu-20261122/README.md).
+
+### A. Realistic model-card sampling across context (`temperature=1.0`, `top_p=1.0`, `reasoning_effort=0.9`, `max_tokens=2048`, `n=3` seeds)
+
+| Depth | Prompt tok | No-spec + `#69186` (stock) | + DSpark `k=7` (stock) | **+ CUTLASS Xe2 + DSpark `k=7`** | CUTLASS+DSpark TTFT / cold in | CUTLASS+DSpark J/tok (acc) |
+|---|---:|---:|---:|---:|---:|---:|
+| `0` | 163–188 | 54.51 tok/s | 57.24 tok/s | **80.40 tok/s** (73.5–82.5) | 0.148 s / 1,239 tok/s | 2.71 J/t (`acc 2.66`) |
+| `8k` | 9,268–9,283 | 51.44 tok/s | 56.50 tok/s | **72.70 tok/s** (64.2–85.4) | 2.594 s / **3,578 tok/s** | 3.03 J/t (`acc 2.48`) |
+| `32k` | 39,062–39,072 | 44.66 tok/s | 52.54 tok/s | **63.61 tok/s** (57.5–65.3) | 12.173 s / **3,210 tok/s** | 3.57 J/t (`acc 2.35`) |
+| `64k` | 65,634–65,648 | 39.92 tok/s | 50.08 tok/s | **64.03 tok/s** (56.5–66.2) | 22.764 s / **2,883 tok/s** | 3.59 J/t (`acc 2.54`) |
+| `max-88k / 104k` | 87,936 / 104,320 | 36.83 tok/s (88K) | 45.01 tok/s (104K) | **55.32 tok/s** (104K, 55.0–55.7) | 41.801 s / **2,496 tok/s** | 4.15 J/t (`acc 2.40`) |
+| `128k` | 131,171 | **31.66 tok/s** (`CTX=200K`) | — | — | — | — |
+| `160k` *(mbt=1024 probe)* | 160,000 | — | — | **46.16 tok/s** (`g=128`, `u=0.95`) | 80.34 s / **1,992 tok/s** | 4.96 J/t (`acc 2.30`) |
+| `max-198k` | 197,823 | **26.31 tok/s** (`CTX=200K`) | — | — | — | — |
+| `256k` *(mbt=1024 probe)* | 256,000 | **23.07 tok/s** (`g=128`, `u=0.95`) | — | — | — | — |
+
+**Finished-answer check at `reasoning_effort=0.2` (`max_tokens=2048`):**
+- At `effort=0.9`, synthetic prompts at `0–64K` spent all 2,048 tokens inside `<think>` (`empty_answer = 3/3`), whereas `max-88k`/`max-104k`/`max-198k` returned finished answers (`0/3` empty).
+- At `reasoning_effort=0.2`, **all completed requests returned finished non-empty answers (`0` empty)**:
+  - **No-spec + `#69186`:** `54.51` (`0K`, `n=3`) / `51.44 tok/s` (`8K`, `n=3`).
+  - **Stock + DSpark `k=7`:** `72.13` (`0K`, `n=3`, `acc 3.08`) / `76.00 tok/s` (`8K`, `n=3`, `acc 3.35`).
+  - **CUTLASS Xe2 + DSpark `k=7`:** **`99.15 tok/s`** (`0K`, `n=3`, range `91.9–99.4`, `acc 3.26`, `2.20 J/tok`) / **`82.00 tok/s`** (`8K`, `n=2`, range `72.4–91.6`, `acc 2.79`).
+
+### B. Cold prefill anchors (`pN/g1`, `n=3`, unique entropy-first prefixes, zero prefix cache)
+
+| Target prompt | Stock + `#69186` TTFT (rate) | **CUTLASS Xe2 + DSpark TTFT (rate)** | Speedup |
+|---:|---:|---:|---:|
+| 2,048 | 0.646 s (3,172 tok/s) | **0.522 s (3,920 tok/s)** | **+23.6%** |
+| 8,192 | 2.648 s (3,094 tok/s) | **2.185 s (3,748 tok/s)** | **+21.2%** |
+| 16,384 | 5.477 s (2,992 tok/s) | — | — |
+| 32,768 | 11.696 s (2,802 tok/s) | **9.842 s (3,330 tok/s)** | **+18.9%** |
+| 65,536 | 26.394 s (2,483 tok/s) | **22.671 s (2,891 tok/s)** | **+16.4%** |
+| 131,072 | 64.693 s (2,026 tok/s) | — | — |
+| 196,608 | 114.920 s (1,711 tok/s) | — | — |
+
+### C. Maximum proven context by scheduler profile (separate from `mbt=2048` speed ladder)
+
+| Profile | `mbt` | `u` | Configured ctx | KV pool | Real prompt proven | Deep TTFT / decode | Min free VRAM |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| CUTLASS Xe2 + DSpark `k=7` | 2048 | 0.93 | 106,496 | 109,600 | 104,320 + 2,048 out (`n=3`) | 41.8 s / **55.32 tok/s** | 2,554 MiB |
+| **CUTLASS Xe2 + DSpark `k=7`** | **1024** | **0.95** | **163,840** | **194,128** | **160,000 + 128 out** | **80.3 s / 46.16 tok/s** | **1,520 MiB** |
+| No-spec + `#69186` | 2048 | 0.95 | 200,000 | 201,310 | 197,823 + 2,048 out (`n=3`) | 116.2 s / 26.31 tok/s | 1,832 MiB |
+| **No-spec + `#69186`** | **1024** | **0.95** | **262,144** | **273,815** | **256,000 + 128 out** | **183.4 s / 23.07 tok/s** | **1,654 MiB** |
+| No-spec + `#69186` | 512 | 0.95 | 262,144 | **308,696** | 256,000 + 128 out | 235.1 s / 23.06 tok/s | 1,562 MiB |
+
+### D. Greedy exactness & step-by-step attribution diagnostics (`temperature=0`, `n=3`, not public headline)
+
+| Arm (`mbt=2048`) | Depth `0` (`p76`) | Depth `8k` (`p9172`) | J/tok (`0 / 8k`) | Parity / acceptance note |
+|---|---:|---:|---:|---|
+| Unpatched base (no `#69186`, no-spec) | 39.71 tok/s | 37.49 tok/s | 4.71 / 5.06 | Control |
+| + PR `#69186` (no-spec) | 56.44 tok/s (+42.1%) | 51.99 tok/s (+38.7%) | 3.27 / 3.58 | **3/3 byte-identical to base at 8K**; freed +1.22 GiB KV |
+| + PR `#69186` + DSpark `k=7` (stock) | 71.64 tok/s (+80.4%) | 67.25 tok/s (+79.4%) | 2.66 / 2.88 | `acc 3.00 / 2.97`; alters greedy hashes vs no-spec |
+| **+ CUTLASS Xe2 + PR `#69186` + DSpark `k=7`** | **95.09 tok/s** (94.5–100.0, **2.40x**) | **91.73 tok/s** (**2.45x**) | **2.28 / 2.34** | `acc 3.01 / 3.11`; native NVFP4 `rel_l2 <= 5e-5` vs FP32 |
+
+## 5. Quality, Retrieval, and Claim Boundaries
+
+Deterministic chat/code/JSON/multi-turn and needle-in-a-haystack retrieval suite (`temperature=0`, `seed=4242`, `--reasoning-parser inkling`):
+- **CUTLASS Xe2 + PR `#69186` + DSpark `k=7` (`bt3-cutlass-dspark-scenarios.jsonl`):** **8/8 PASS** — `math-return-trip` (`1.00 s`), `structured-dispatch` (`3.07 s`), `code-state-trace` (`5.19 s`, exact `[1, 2, 5, 6, 7, 4]`), `code-boundary` (`2.44 s`), `conversation-correction` (`4.86 s`), `retrieval-64-records` (`1.13 s`), `retrieval-384-records` (`3.31 s`), and **`retrieval-1536-records` (33.8K tokens, `11.14 s` — 53x faster than TensorFold's 592 s)**.
+- **Stock + PR `#69186` + DSpark `k=7`:** **8/8 PASS** (`retrieval-1536` in `13.42 s`).
+- **Stock + PR `#69186` (no-spec, `scenarios.jsonl`):** **8/9 PASS** including **`retrieval-6144-records` (135,291 tokens, `72.9 s` PASS)**; failed `code-state-trace`.
+
+**Explicit limits (not claimed):**
+- Single B70, text-only, `C1` (`--max-num-seqs 1`); multi-user batching and vision inputs are untested.
+- `W4A16`/`W8A16` BF16 activations (not native Blackwell FP4 DPAS).
+- `INK2_CUTLASS_MOE=1` is an opt-in community kernel (`rel_l2 <= 5.0e-5` numerical parity vs exact FP32, not bit-exact). Default `INK2_CUTLASS_MOE=0` preserves the exact upstream plugin.
+- DSpark `k=7` does not produce byte-identical greedy hashes to no-spec; do not claim `drafted == serial`.
+- Capacity probes at `mbt=1024`/`512` (`160K` DSpark and `256K` no-spec) used `g=128` completion tokens and a different scheduler chunk size than the `mbt=2048`, `g=2048`, `n=3` speed ladders; they prove capacity and deep-context throughput under that scheduler profile and are kept separate from the `mbt=2048` tables.

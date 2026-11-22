@@ -1230,7 +1230,7 @@
       },
       "engine": {
         "name": "llama.cpp SYCL",
-        "version": "qwen4exp-capable icx/icpx 2026.1.1 build (sha256 7c2d6adc…)"
+        "version": "qwen4exp-capable icx/icpx 2026.1.1 build (sha256 7c2d6adc\u2026)"
       },
       "model": {
         "id": "Signal-3.8-Flash-Next",
@@ -4551,6 +4551,314 @@
       "evidence": {
         "commit": "849129dde4d1bcbc467babb857cc85c11fa650ad",
         "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/849129dde4d1bcbc467babb857cc85c11fa650ad/results/inkling2-mini/tensorfold-xpu-20261121/summary.json"
+      }
+    },
+    {
+      "id": "inkling2-mini-vllm-xpu-pr69186-90k-20261122",
+      "kind": "benchmark",
+      "title": "Inkling 2 Mini native NVFP4/MXFP8, vLLM XPU + vllm-inkling2-xpu + PR #69186, 0-88K full ladder (one B70, 230 W)",
+      "summary": "Primary one-card route at CTX=90112, u=0.88 (min_vram 4,002 MiB): 54.51 / 51.44 / 44.66 / 39.92 / 36.83 tok/s decode at 0 / 8K / 32K / 64K / 88K (model-card sampling, 3 seeds, 2,048 max tokens); cold prefill 3,172 to 2,483 tok/s (2K to 64K). Same-session PR #69186 A/B adds +42.1% / +38.7% greedy decode (3/3 byte-identical at 8K) and +1.22 GiB KV. Deterministic quality suite: 7/8 pass on this profile including 33.8K retrieval.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-22",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186",
+        "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + PR #69186, PyTorch 2.15.0+xpu, Triton 3.9.0+xpu"
+      },
+      "model": {
+        "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+        "quantization": "native NVFP4 (L0-19 experts) + MXFP8 (L20-23 experts) + BF16 dense/attention/lm_head (W4A16/W8A16 BF16 activations, BF16 KV)",
+        "speculation": "none"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 9268,
+        "output_tokens": 2048,
+        "context_limit_tokens": 90112,
+        "cache": "disabled (--no-enable-prefix-caching, unique entropy-first prefixes, 0 cache hits)",
+        "reasoning_effort": "0.9 (card default)"
+      },
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "mode": "thinking, reasoning_effort 0.9, FULL_DECODE_ONLY graphs, --reasoning-parser inkling",
+        "source": "https://huggingface.co/thinkingmachines/Inkling-2-Mini"
+      },
+      "metrics": [
+        {
+          "name": "decode_tok_s_depth_0",
+          "value": 54.51,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_8k",
+          "value": 51.44,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_32k",
+          "value": 44.66,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_64k",
+          "value": 39.92,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p2048",
+          "value": 3171.8,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p8192",
+          "value": 3093.7,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p65536",
+          "value": 2483.0,
+          "unit": "tok/s"
+        },
+        {
+          "name": "ttft_s_depth_8k",
+          "value": 3.104,
+          "unit": "s"
+        },
+        {
+          "name": "decode_j_per_token_depth_8k",
+          "value": 3.706,
+          "unit": "J/token"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 3
+      },
+      "evidence": {
+        "commit": "bf21ba8c9e6f9d292d256b426e09cdc8a397107d",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/bf21ba8c9e6f9d292d256b426e09cdc8a397107d/results/inkling2-mini/vllm-xpu-20261122/summary.json"
+      }
+    },
+    {
+      "id": "inkling2-mini-vllm-xpu-pr69186-200k-20261122",
+      "kind": "benchmark",
+      "title": "Inkling 2 Mini native NVFP4/MXFP8, vLLM XPU + vllm-inkling2-xpu + PR #69186, 128K-200K max context (one B70, 230 W)",
+      "summary": "Maximum single-card context profile at CTX=200000, u=0.95 (min_vram 1,832 MiB; 256k does not fit): 31.66 tok/s decode and 64.79 s TTFT (2,025 tok/s) at 128K (131,171 tokens); 26.31 tok/s decode and 116.22 s TTFT (1,702 tok/s) at 198K (197,823 tokens, 0/3 empty answers). 135,291-token exact retrieval scenario passed in 72.85 s.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-22",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186",
+        "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + PR #69186, PyTorch 2.15.0+xpu, Triton 3.9.0+xpu"
+      },
+      "model": {
+        "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+        "quantization": "native NVFP4 (L0-19 experts) + MXFP8 (L20-23 experts) + BF16 dense/attention/lm_head (W4A16/W8A16 BF16 activations, BF16 KV)",
+        "speculation": "none"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 131171,
+        "output_tokens": 2048,
+        "context_limit_tokens": 200000,
+        "cache": "disabled (--no-enable-prefix-caching, unique entropy-first prefixes, 0 cache hits)",
+        "reasoning_effort": "0.9 (card default)"
+      },
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "mode": "thinking, reasoning_effort 0.9, FULL_DECODE_ONLY graphs, --reasoning-parser inkling",
+        "source": "https://huggingface.co/thinkingmachines/Inkling-2-Mini"
+      },
+      "metrics": [
+        {
+          "name": "decode_tok_s_depth_128k",
+          "value": 31.66,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_198k",
+          "value": 26.31,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p131072",
+          "value": 2026.1,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p196608",
+          "value": 1710.8,
+          "unit": "tok/s"
+        },
+        {
+          "name": "ttft_s_depth_128k",
+          "value": 64.785,
+          "unit": "s"
+        },
+        {
+          "name": "ttft_s_depth_198k",
+          "value": 116.218,
+          "unit": "s"
+        },
+        {
+          "name": "decode_j_per_token_depth_128k",
+          "value": 6.5,
+          "unit": "J/token"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 3
+      },
+      "evidence": {
+        "commit": "bf21ba8c9e6f9d292d256b426e09cdc8a397107d",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/bf21ba8c9e6f9d292d256b426e09cdc8a397107d/results/inkling2-mini/vllm-xpu-20261122/summary.json"
+      }
+    },
+    {
+      "id": "inkling2-mini-vllm-xpu-cutlass-dspark-106k-20261122",
+      "kind": "benchmark",
+      "title": "Inkling 2 Mini native NVFP4/MXFP8, vLLM XPU + PR #69186 + opt-in CUTLASS Xe2 + DSpark k=7, 0-104K ladder (one B70, 230 W)",
+      "summary": "Opt-in CUTLASS Xe2 NVFP4+MXFP8 grouped-GEMM kernel (INK2_CUTLASS_MOE=1, rel_l2 <= 5e-5 vs FP32) + PR #69186 + DSpark k=7 at CTX=106496, mbt=2048, u=0.93 (min_vram 2,554 MiB): 80.40 / 72.70 / 63.61 / 64.03 / 55.32 tok/s decode across 0 / 8K / 32K / 64K / 104K (model-card sampling, 3 seeds, 2,048 out; effort=0.2 0K: 99.15 tok/s with non-empty answers; greedy 0/8K: 95.09 / 91.73 tok/s); cold prefill 3,920 to 2,891 tok/s (2K to 64K). Deterministic quality & retrieval suite: 8/8 PASS (33.8K retrieval in 11.14 s). DSpark changes greedy output hashes vs no-spec.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-22",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186 + opt-in CUTLASS Xe2",
+        "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + PR #69186 + INK2_CUTLASS_MOE=1 (AOT bmg_g31 sycl-tla@7b56b936), PyTorch 2.15.0+xpu, Triton 3.9.0+xpu"
+      },
+      "model": {
+        "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+        "quantization": "native NVFP4 (L0-19 experts) + MXFP8 (L20-23 experts) + BF16 dense/attention/lm_head (W4A16/W8A16 BF16 activations, BF16 KV)",
+        "speculation": "dspark (num_speculative_tokens=7)"
+      },
+      "workload": {
+        "concurrency": 1,
+        "prompt_tokens": 9283,
+        "output_tokens": 2048,
+        "context_limit_tokens": 106496,
+        "cache": "disabled (--no-enable-prefix-caching, unique entropy-first prefixes, 0 cache hits)",
+        "reasoning_effort": "0.9 (card default; effort=0.2 also measured)"
+      },
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "mode": "thinking, reasoning_effort 0.9, FULL_DECODE_ONLY graphs, --reasoning-parser inkling",
+        "source": "https://huggingface.co/thinkingmachines/Inkling-2-Mini"
+      },
+      "metrics": [
+        {
+          "name": "decode_tok_s_depth_0",
+          "value": 80.4,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_8k",
+          "value": 72.7,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_32k",
+          "value": 63.61,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_64k",
+          "value": 64.03,
+          "unit": "tok/s"
+        },
+        {
+          "name": "decode_tok_s_depth_104k",
+          "value": 55.32,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p2048",
+          "value": 3919.9,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p8192",
+          "value": 3748.4,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p32768",
+          "value": 3329.6,
+          "unit": "tok/s"
+        },
+        {
+          "name": "cold_input_tok_s_p65536",
+          "value": 2890.8,
+          "unit": "tok/s"
+        },
+        {
+          "name": "ttft_s_depth_8k",
+          "value": 2.594,
+          "unit": "s"
+        },
+        {
+          "name": "decode_j_per_token_depth_0",
+          "value": 2.713,
+          "unit": "J/token"
+        },
+        {
+          "name": "decode_j_per_token_depth_8k",
+          "value": 3.033,
+          "unit": "J/token"
+        }
+      ],
+      "statistics": {
+        "statistic": "median",
+        "samples": 3
+      },
+      "evidence": {
+        "commit": "b447a98171c2bb6a74791eea34dfbc3c7e6d9b00",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b447a98171c2bb6a74791eea34dfbc3c7e6d9b00/results/inkling2-mini/vllm-xpu-20261122/bt3-cutlass-dspark-cells.jsonl"
+      }
+    },
+    {
+      "id": "inkling2-mini-vllm-xpu-capacity-256k-20261122",
+      "kind": "capability",
+      "title": "Inkling 2 Mini single-B70 max-context profiles via SWA mbt=1024/512: 256K no-spec & 163K DSpark (one B70, 230 W)",
+      "summary": "Separate scheduler capacity probes lowering --max-num-batched-tokens from 2048 to 1024/512 at u=0.95 to shrink SWA in-flight reservation across 40 local-attention visits: (1) No-spec + PR #69186 at mbt=1024 completes a real 256,000-token prompt + 128 output (273,815 KV pool, 183.4 s TTFT / 1,395.6 tok/s cold prefill, 23.07 tok/s decode, 1,654 MiB free VRAM, clean dmesg); mbt=512 expands the reported KV pool to 308,696 tokens. (2) Opt-in CUTLASS Xe2 + DSpark k=7 at mbt=1024 completes a real 160,000-token prompt + 128 output (194,128 KV pool, 80.3 s TTFT / 1,991.5 tok/s cold prefill, 46.16 tok/s decode, 1,520 MiB free VRAM, clean dmesg). Capacity probes use a different scheduler chunk size and output budget (128 tok) than the mbt=2048 speed ladders.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-22",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 1,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186 (+ opt-in CUTLASS Xe2 for DSpark arm)",
+        "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + PR #69186, mbt=1024/512, u=0.95"
+      },
+      "model": {
+        "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+        "quantization": "native NVFP4 (L0-19 experts) + MXFP8 (L20-23 experts) + BF16 dense/attention/lm_head (BF16 KV)",
+        "speculation": "none (256K/308K) and dspark k=7 (163K)"
+      },
+      "evidence": {
+        "commit": "b447a98171c2bb6a74791eea34dfbc3c7e6d9b00",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/b447a98171c2bb6a74791eea34dfbc3c7e6d9b00/results/inkling2-mini/vllm-xpu-20261122/capacity-profiles.json"
       }
     }
   ]

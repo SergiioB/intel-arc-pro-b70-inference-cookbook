@@ -1,0 +1,8 @@
+{"completion_tokens": null, "id": "math-return-trip", "prompt_tokens": null, "score": "pass", "wall_s": 1.002}
+{"completion_tokens": null, "id": "structured-dispatch", "prompt_tokens": null, "score": "pass", "wall_s": 3.066}
+{"completion_tokens": null, "id": "code-state-trace", "prompt_tokens": null, "score": "pass", "wall_s": 5.194}
+{"completion_tokens": null, "id": "code-boundary", "prompt_tokens": null, "score": "pass", "wall_s": 2.439}
+{"completion_tokens": null, "id": "conversation-correction", "prompt_tokens": null, "score": "pass", "wall_s": 4.861}
+{"completion_tokens": null, "id": "retrieval-64-records", "prompt_tokens": null, "score": "pass", "wall_s": 1.13}
+{"completion_tokens": null, "id": "retrieval-384-records", "prompt_tokens": null, "score": "pass", "wall_s": 3.306}
+{"completion_tokens": null, "id": "retrieval-1536-records", "prompt_tokens": null, "score": "pass", "wall_s": 11.145}
