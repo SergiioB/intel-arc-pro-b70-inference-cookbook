@@ -9,7 +9,7 @@ diff --git a/vllm_inkling2_xpu/moe.py b/vllm_inkling2_xpu/moe.py
  from typing import Literal
  
  import torch
-@@ -16,6 +17,7 @@ from vllm.model_executor.utils import is_weights_pre_processed, set_weight_attrs
+@@ -16,6 +17,7 @@
  from vllm.models.inkling2.configs import Inkling2ModelConfig
  from .ops._codec import PackedProjection
  from .ops.moe import packed_experts, validate_config
@@ -17,7 +17,7 @@ diff --git a/vllm_inkling2_xpu/moe.py b/vllm_inkling2_xpu/moe.py
  from .ops.moe_packed import repack_nvfp4_split_half
  from .ops.moe_router import select_experts
  
-@@ -91,6 +93,23 @@ class Inkling2Experts(nn.Module):
+@@ -92,6 +94,23 @@
          param.data.copy_(loaded)
  
      def process_weights_after_loading(self) -> None:
@@ -41,7 +41,7 @@ diff --git a/vllm_inkling2_xpu/moe.py b/vllm_inkling2_xpu/moe.py
          # Kernel-format reloads already hold split-half weights.
          if self.nvfp4 and not is_weights_pre_processed():
              repack_nvfp4_split_half(self.w13_weight)
-@@ -117,6 +136,14 @@ class Inkling2Experts(nn.Module):
+@@ -120,6 +139,13 @@
      ) -> torch.Tensor:
          """Run packed projections and combine the selected experts' outputs."""
          ids, weights, is_padding = routing
