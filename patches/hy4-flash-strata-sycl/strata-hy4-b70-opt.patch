@@ -324,7 +324,7 @@ index cac18ac..5afff75 100644
              return 1;
          }
 diff --git a/engine/src/hy4flash/sycl/sy_peer.h b/engine/src/hy4flash/sycl/sy_peer.h
-index 914cc32..23a9351 100644
+index 914cc32..0e1931b 100644
 --- a/engine/src/hy4flash/sycl/sy_peer.h
 +++ b/engine/src/hy4flash/sycl/sy_peer.h
 @@ -26,6 +26,7 @@
@@ -531,7 +531,7 @@ index 914cc32..23a9351 100644
              pd.h_tok_off[0] = 0;
              for (int t = 0; t < T; ++t) {
                  int hit_k[vcache_detail::VC_NTOP], nh = 0;
-@@ -414,23 +519,50 @@ public:
+@@ -414,23 +519,55 @@ public:
                      const int k = hit_k[a];
                      const int e = idx_host[t * vcache_detail::VC_NTOP + k];
                      const Meta& m = meta_[(size_t)L * 512 + e];
@@ -578,12 +578,17 @@ index 914cc32..23a9351 100644
  
      void launch_decode(const float* z_dev_g0, const float* z_host_pinned) {
          if (!active()) return;
-+        // Self-defend primary-queue ordering (z_dev_g0 readiness + prior finish_decode reads of d_zpeer0).
-+        try { Q().wait(); } catch (...) {}
++        // Self-defend primary-queue ordering only when a peer will read z_dev_g0/d_zpeer0 over P2P:
++        // the peer queue cannot see Q()'s in-order guarantees. With the pinned-host bounce the copy
++        // source (z_host_pinned) was already produced before run_routed_experts was entered (evw.wait),
++        // and all !p2p folding runs on Q() itself, so a full drain here only stalls the host 41x/token.
++        bool any_p2p = false;
++        for (const auto& pd : peers_) if (pd.planned_pairs > 0 && pd.p2p_ok) any_p2p = true;
++        if (any_p2p || env_dec_wait()) { try { Q().wait(); } catch (...) {} }
          for (auto& pd : peers_) {
              if (pd.planned_pairs <= 0) continue;
              const int T = pd.planned_T;
-@@ -441,7 +573,11 @@ public:
+@@ -441,7 +578,11 @@ public:
              } else {
                  pq.memcpy(pd.d_z, z_host_pinned, nz * sizeof(float));
              }
@@ -596,7 +601,7 @@ index 914cc32..23a9351 100644
              if (pd.p2p_ok) {
                  pd.done_ev = pq.memcpy(pd.d_zpeer0, pd.d_zout, nz * sizeof(float));
              } else {
-@@ -459,22 +595,7 @@ public:
+@@ -459,22 +600,7 @@ public:
              if (!pd.active_launch) continue;
              pd.done_ev.wait();
              pd.active_launch = false;
@@ -620,7 +625,7 @@ index 914cc32..23a9351 100644
          }
      }
  
-@@ -560,7 +681,303 @@ public:
+@@ -560,7 +686,307 @@ public:
          }
      }
  
@@ -871,6 +876,10 @@ index 914cc32..23a9351 100644
 +        static const int v = [] { const char* e = std::getenv("HY4S_PEER_PF_LEGACY"); return e && e[0] == '1'; }();
 +        return v;
 +    }
++    static bool env_dec_wait() {
++        static const int v = [] { const char* e = std::getenv("HY4S_PEER_DEC_WAIT"); return e && e[0] == '1'; }();
++        return v;
++    }
 +
 +    // Native SG16 + dedup + Q8_1_G64 + SLM decode on the peer's own queue — the exact kernel sequence
 +    // SyVramExpertCache::launch_decode runs on the primary GPU (see sy_vram_cache.h), producing
@@ -924,7 +933,7 @@ index 914cc32..23a9351 100644
      void enqueue_peer_eval(PeerDev& pd, int T, int npairs) {
          sycl::queue& pq = *pd.q;
          pq.memcpy(pd.d_pairs, pd.h_pairs, (size_t)npairs * sizeof(vcache_detail::VramPair));
-@@ -629,7 +1046,9 @@ private:
+@@ -629,7 +1055,9 @@ private:
      std::vector<int> owner_;      // [nlayers * 512]: -1 or peer index in peers_
      std::vector<uint8_t*> d_ptr_; // [nlayers * 512]: device ptr on owning peer
      std::vector<PeerDev> peers_;
