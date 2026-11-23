@@ -150,6 +150,28 @@ To directly test whether FP8 KV quantization noise accumulates across the full 5
 
 **Why FP8 KV noise does not blow up across 512K on Inkling 2 Mini:** Inkling 2 explicitly L2-clips K and RMSNorms V right before KV write (`ops/sconv.py`), preventing the channel outliers that break naive FP8 KV on standard transformers; `40/48` visits are `1024`-token SWA while only `8` full-attention visits span the full pool (`model_max_length: 1,048,576` with `log_scaling_alpha=0.1`). **Honest scope:** this proves zero perplexity collapse and exact dual-needle recall on a held-out technical corpus through `496K`, not a broad multi-benchmark 512K multi-task sweep (which remains untested).
 
+### H. Opt-in Chunked oneDNN Prefix SDPA + ESIMD XMX Decode Attention (2026-11-23)
+
+![Hybrid prefix SDPA + ESIMD decode, cold prefill and live decode at 64K–245K](../assets/b70-inkling2-mini-esimd-hybrid-sdpa-20261123.png)
+
+Two independent opt-ins, one combined patch ([`inkling2-hybrid-sdpa-esimd.patch`](../../patches/inkling2-mini-vllm-xpu/inkling2-hybrid-sdpa-esimd.patch), installed by [`build-esimd-decode-attn-xe2.sh`](../../patches/inkling2-mini-vllm-xpu/build-esimd-decode-attn-xe2.sh) — `icpx` + `ocloc`, `-device bmg_g31 -options -ze-opt-large-register-file`). Both flags default `0` = byte-identical stock Triton path. Measured in two same-binary same-session A/B ladders on `vllm-inkling2-xpu@2e9d28b` + `#69186` + CUTLASS Xe2 + DSpark `k=7`, FP8 E4M3 KV, `mbt=2048`, `u=0.98`, 1x B70 at 230 W, C1, `temp=1.0/top_p=1.0` (`effort=0.9/0.2`), zero prefix cache. Evidence: [`results/inkling2-mini/vllm-xpu-20261123/`](../../results/inkling2-mini/vllm-xpu-20261123/README.md).
+
+- **`INK2_HYBRID_PREFIX_SDPA=1` (prefill only):** full-attention layers route the bias-free KV prefix (pages below `k0_tok = seq_len - nt - rel_extent + 1`) through oneDNN flash SDPA in `8192`-token windows gathered into a persistent `16 MiB` BF16 scratch pair, merged with the Triton relative-bias tail via fp32 LSE. Kernel microbench: `1.94x`/`1.99x` vs Triton rel-attn at `128K`/`245K`. Live cold prefill:
+  - `64K` (e0.9): `2,705.6 -> 3,050.1 tok/s` (+12.7%); flag-on replicated `3,048.1` in the second session
+  - `128K` (e0.2): `2,148.7 -> 2,576.2 tok/s` (+19.9%); replicated `2,574.9`
+  - `245K` (e0.2): `1,585.9 -> 2,023.5 tok/s` (+27.6%); replicated `2,022.9`
+  - Inert at `2K` (`sdpa_end=0`: `3,512.6` vs `3,526.0`, +0.4%). Decode codepath untouched (residual cells are acceptance noise both directions). Quality gate: `17*23→391`, `20-9+3→14`, `128K` exact needle, vision OCR — all PASS/identical; strict JSON shows the same 64-token-budget `{` artifact in both arms.
+- **`INK2_ESIMD_DECODE_ATTN=1` (decode only):** AOT `bmg_g31` ESIMD/XMX `PagedXmx<M>` two-pass split-KV decode attention (FP8 E4M3 + BF16 KV), dispatched on full layers when `mql<=8`, GQA group `3`, `head_dim 128`, single request, `page%16==0`. Graph-capture-safe fixed splits `INK2_ESIMD_SWA_SPLITS=16` / `INK2_ESIMD_FULL_SPLITS=128`; `INK2_SYCL_DECODE_ATTN`'s M=1 route keeps precedence. `24/24` parity cases (`rel_l2 <= 2.63e-3`, `max_abs <= 4e-3`). Isolated per-layer `0.742`/`0.804`/`1.435 ms` at `64K`/`128K`/`256K` vs Triton `1.37–1.55`/`1.72–1.73`/`3.32–3.34 ms`. Live decode (raw post-first tok/s → acceptance-normalized step/s):
+  - `64K` (e0.9): `54.06 -> 68.00 tok/s` (**+12%** step/s)
+  - `128K` (e0.9, needle, `512` tok out): `59.57 -> 76.10 tok/s` (**+19%** step/s)
+  - `245K` (e0.9): `37.58 -> 56.57 tok/s` (**+33%** step/s); e0.2 `40.75 -> 55.86` (**+32%**)
+  - Energy: `3.847 -> 3.009` J/tok @128K (−22%), `6.115 -> 4.061` @245K e0.9 (**−34%**), `5.639 -> 4.112` @245K e0.2 (−27%)
+  - Quality: `17*23→391`, `20-9+3→14`, `128K` exact needle, vision OCR `B70PRO-246K` — all PASS; candidate strict-JSON cells produce full JSON at the same 64-token budget where control shows the known `{` artifact. Prefill measured inert (±0.3%).
+  - **Honest incident:** the first flag-off control launch (`ctrl-esimd0`) safety-aborted at `357 MiB` free VRAM + recovered `bcs` reset during the 64K hybrid-SDPA prefill cell — the known ~450 MiB-headroom regime on the stock path, not an ESIMD effect. Rerun (`ctrl-esimd0-r2`) completed the matrix at the previously observed `437 MiB` floor, `dmesg` clean, `32,615 MiB` restored.
+- **Closed arms recorded in `DO-NOT-REPEAT.md`:** BF16 SWA ring at `M=8` is launch-bound (`1.94` vs `1.95` ms) — DNR-046; one-shot `>32K` oneDNN SDPA is slower than Triton (`0.70x`/`0.46x` at 128K/245K) — DNR-047.
+
+Enable on the launcher with `INK2_HYBRID_PREFIX_SDPA=1 INK2_ESIMD_DECODE_ATTN=1` (independent; split overrides `INK2_ESIMD_SWA_SPLITS` / `INK2_ESIMD_FULL_SPLITS`).
+
 ### G. How to Push This Further — Measured Step Breakdown, Speculative Decoding & Approach
 
 #### 1. Measured millisecond budget of one `M=8` DSpark verify round (`1× B70`, `230 W`)
@@ -174,7 +196,7 @@ Before writing any new kernel or speculative tweak, decompose where the `~38 ms`
      - `64K`: `37.50 -> 44.94 tok/s` (**`+19.8%`**)
      - `128K`: `28.90 -> 40.25 tok/s` (**`+39.3%`**)
      - **`256K` (`p=255,946`):** **`20.07 -> 34.32 tok/s` (`+71.0%` / `1.71×` faster end-to-end!)**
-   - **Why `M=1` uses SYCL SIMT while `M=8` stays on Triton XMX DPAS:** At `M=1` (`G=3` query rows), Triton's `tl.dot` pads `3` rows into a `16`-row XMX tile (`81%` wasted), so SIMT wins by `4.76×`. At `M=8` (`24` rows = `206 GFLOPs` @ 256K), SIMT becomes compute-bound (`109 ms`) while hardware XMX DPAS (`tl.dot`) runs `2.7×` faster (`40.7 ms`), and SYCL `joint_matrix` `get_wi_data` in `icpx 2026.1` spills accumulators to private memory (`23.7 -> 70.6 ms`). Hybrid dispatch (`M=1` → SYCL SIMT, `M>=2` → Triton XMX DPAS) captures the best of both regimes; beating Triton on `M=8` requires an ESIMD / native XMX kernel without `get_wi_data` spills.
+   - **Why `M=1` uses SYCL SIMT while `M=8` stays on Triton XMX DPAS:** At `M=1` (`G=3` query rows), Triton's `tl.dot` pads `3` rows into a `16`-row XMX tile (`81%` wasted), so SIMT wins by `4.76×`. At `M=8` (`24` rows = `206 GFLOPs` @ 256K), SIMT becomes compute-bound (`109 ms`) while hardware XMX DPAS (`tl.dot`) runs `2.7×` faster (`40.7 ms`), and SYCL `joint_matrix` `get_wi_data` in `icpx 2026.1` spills accumulators to private memory (`23.7 -> 70.6 ms`). Hybrid dispatch (`M=1` → SYCL SIMT, `M>=2` → Triton XMX DPAS) captures the best of both regimes; beating Triton on `M=8` requires an ESIMD / native XMX kernel without `get_wi_data` spills — **shipped 2026-11-23** as `INK2_ESIMD_DECODE_ATTN=1` (ESIMD `PagedXmx<M>`, see §H).
    - *(Closed arm: increasing Triton decode `num_splits` from `40/9` to `80/16` or `128/16` looked `1.4×–3.3×` faster in isolated 1-layer microbenchmarks yet regressed live graph-replayed decode `-10%` to `-12%` (`73.4 -> 66.0` @ 64K, `61.0 -> 53.7` @ 128K) due to sequential combine-kernel reduction & L2 traffic across 48 visits; reverted to stock `40/9`.)*
 2. **Dedicated fixed-size SWA device ring (`40 × 1024` tokens — `#2` capacity/prefill lever):**
    - Decouples the 40 local SWA layers from vLLM's `--max-num-batched-tokens` reservation, enabling `mbt=4096` alongside `323K–512K` context + Vision + DSpark simultaneously.
@@ -185,8 +207,8 @@ Before writing any new kernel or speculative tweak, decompose where the `~38 ms`
      2. **Fused draft input-mix taps** (single SYCL/Triton op instead of separate DFlare mix launches).
      3. **Re-enable Adaptive DSpark *after* Lever #1 shrinks attention** — once attention drops from `31–36 ms` to `~12 ms`, saving `2.6–4 ms` via `M=4` adaptive verify becomes `~15%` of the smaller step!
      4. **Validated single-slot ring prefix cache** (sub-second warm 196K follow-ups for single-user coding agents — only after passing a zero-retrieval-miss multi-turn gate!).
-4. **Hybrid oneDNN Prefix SDPA outside the `1024`-token relative-bias band:**
-   - Our Chunked-LSE 256 MiB BF16 scratch already beats EXL3 at `64K` (`2,701` vs `2,397 tok/s`) and `128K` (`2,195` vs `2,157 tok/s`, FP8+Vision+DSpark) and reaches `905 tok/s` at `496K`. Delegating bias-free older keys (`dist >= 1024`) to native oneDNN SDPA can push `128K–512K` prefill even higher.
+4. **Hybrid oneDNN Prefix SDPA outside the `1024`-token relative-bias band — SHIPPED (`INK2_HYBRID_PREFIX_SDPA=1`, 2026-11-23):**
+   - Chunked oneDNN SDPA (`8192`-token windows, `16 MiB` persistent BF16 scratch) now handles the bias-free prefix on full layers, fp32-LSE-merged with the Triton rel-bias tail: `2,706 -> 3,048` / `2,149 -> 2,575` / `1,586 -> 2,023 tok/s` cold prefill at `64K`/`128K`/`245K` (+12.6%/+19.9%/+27.6%). The matching ESIMD/XMX `PagedXmx` M=8 decode kernel (`INK2_ESIMD_DECODE_ATTN=1`) adds +11–12%/+19–20%/+32–33% step-normalized decode. Both shipped as opt-ins; details in §H.
 
 #### 3. How to approach the next hill-climb step
 

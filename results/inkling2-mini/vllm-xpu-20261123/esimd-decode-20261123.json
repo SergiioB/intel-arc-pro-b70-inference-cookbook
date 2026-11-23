@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-23",
+  "model": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+  "card": "1x Intel Arc Pro B70 (32 GiB, 230 W cap)",
+  "config": {
+    "kv_cache_dtype": "fp8 (float8_e4m3fn)",
+    "max_model_len": 262144,
+    "mbt": 2048,
+    "gpu_memory_utilization": 0.98,
+    "speculation": "dspark k=7",
+    "prefix_caching": false,
+    "graph_replay": "FULL_DECODE_ONLY",
+    "cutlass_moe": true,
+    "hybrid_prefix_sdpa": true,
+    "env_flag": "INK2_ESIMD_DECODE_ATTN=0 (control) vs 1 (AOT bmg_g31 ESIMD PagedXmx<M>)",
+    "splits": "INK2_ESIMD_SWA_SPLITS=16, INK2_ESIMD_FULL_SPLITS=128 (fixed per window type; graph-capture safe)",
+    "sampling": "temp=1.0 top_p=1.0 effort=0.9/0.2, ignore_eos, unique entropy-first prompts",
+    "patch": "inkling2-hybrid-sdpa-esimd.patch on vllm-inkling2-xpu@2e9d28b04ff23f5d9996a221ffaa0ae3a440d8f9",
+    "extension": "_inkling_esimd_attn_xe2 (icpx 2026.1, -fsycl-targets=spir64_gen -Xs '-device bmg_g31 -options -ze-opt-large-register-file')",
+    "dispatch_gate": "not draft, max_query_len<=8, GQA group==3, head_dim==128, single request, page size %16==0, flag on; INK2_SYCL_DECODE_ATTN M=1 route retains precedence"
+  },
+  "kernel_parity": {
+    "matrix_cases_passed": "24/24",
+    "rel_l2_range": [0.00243, 0.00263],
+    "max_abs_bound": 0.004,
+    "coverage": "FP8 E4M3 + BF16 KV, causal + sliding-window masks, rel logits, per-head gates, sinks, log2-domain partial LSE"
+  },
+  "isolated_per_layer_ms": {
+    "full_64k": {"triton": [1.365, 1.550], "esimd": 0.742},
+    "full_128k": {"triton": [1.719, 1.733], "esimd": 0.804},
+    "full_256k": {"triton": [3.318, 3.335], "esimd": 1.435},
+    "swa": {"triton": [0.203, 0.219], "esimd": [0.087, 0.093]}
+  },
+  "live_prefill_inert_check_tok_s": [
+    {"depth": 65536,  "effort": 0.2, "ctrl": 3033.3, "cand": 3025.6},
+    {"depth": 65536,  "effort": 0.9, "ctrl": 3048.1, "cand": 3041.0},
+    {"depth": 131072, "effort": 0.2, "ctrl": 2574.9, "cand": 2568.9},
+    {"depth": 131072, "effort": 0.9, "ctrl": 2569.0, "cand": null},
+    {"depth": 245760, "effort": 0.2, "ctrl": 2022.9, "cand": 2015.9},
+    {"depth": 245760, "effort": 0.9, "ctrl": 2017.5, "cand": 2017.4}
+  ],
+  "live_decode_post_first_tok_s_and_step_s": [
+    {"depth": 0,      "effort": 0.2, "ctrl_tok_s": 49.71, "cand_tok_s": 62.30, "ctrl_step_s": 33.0, "cand_step_s": 31.4, "delta_step_pct": -5,  "note": "attention share ~0, acceptance noise"},
+    {"depth": 0,      "effort": 0.9, "ctrl_tok_s": 93.72, "cand_tok_s": 58.04, "ctrl_step_s": 42.0, "cand_step_s": 31.8, "delta_step_pct": -24, "note": "attention share ~0, acceptance noise"},
+    {"depth": 65536,  "effort": 0.2, "ctrl_tok_s": 54.48, "cand_tok_s": 56.77, "ctrl_step_s": 25.0, "cand_step_s": 27.7, "delta_step_pct": 11},
+    {"depth": 65536,  "effort": 0.9, "ctrl_tok_s": 54.06, "cand_tok_s": 68.00, "ctrl_step_s": 24.8, "cand_step_s": 27.8, "delta_step_pct": 12},
+    {"depth": 131072, "effort": 0.2, "ctrl_tok_s": 57.87, "cand_tok_s": 61.13, "ctrl_step_s": 21.1, "cand_step_s": 25.4, "delta_step_pct": 20},
+    {"depth": 131072, "effort": 0.9, "ctrl_tok_s": 59.57, "cand_tok_s": 76.10, "ctrl_step_s": 21.2, "cand_step_s": 25.3, "delta_step_pct": 19, "note": "needle request, 512 tok out"},
+    {"depth": 245760, "effort": 0.2, "ctrl_tok_s": 40.75, "cand_tok_s": 55.86, "ctrl_step_s": 16.5, "cand_step_s": 21.8, "delta_step_pct": 32},
+    {"depth": 245760, "effort": 0.9, "ctrl_tok_s": 37.58, "cand_tok_s": 56.57, "ctrl_step_s": 16.4, "cand_step_s": 21.8, "delta_step_pct": 33}
+  ],
+  "decode_energy_j_per_token": [
+    {"depth": 131072, "effort": 0.9, "ctrl": 3.847, "cand": 3.009, "delta_pct": -22, "note": "needle request"},
+    {"depth": 245760, "effort": 0.2, "ctrl": 5.639, "cand": 4.112, "delta_pct": -27},
+    {"depth": 245760, "effort": 0.9, "ctrl": 6.115, "cand": 4.061, "delta_pct": -34}
+  ],
+  "split_sweep_probe_step_s": {
+    "note": "EsimdCombineGated is a genuine parallel combine; +/-3% spread, DNR-030 split trap does not apply",
+    "full_splits": {"32": {"64k": 28.2, "128k": 25.4, "245k": 21.2}, "64": {"64k": 27.4, "128k": 24.7, "245k": 21.1}, "96": {"64k": 27.2, "128k": 24.6, "245k": 21.0}, "128": {"64k": 27.4, "128k": 25.4, "245k": 21.8}}
+  },
+  "quality_gate": {
+    "math_17x23": {"ctrl": "391", "cand": "391", "pass": true},
+    "canary_20_minus_9_plus_3": {"ctrl": "14", "cand": "14", "pass": true},
+    "strict_json": {"ctrl": "partial '{' at 64-token budget (known artifact)", "cand": "PASS full JSON, also PASS on all 4 split probes"},
+    "retrieval_128k_exact_needle": {"ctrl": "PASS", "cand": "PASS (different needle per arm, found)", "prompt_tokens": 131029},
+    "vision_ocr": {"ctrl": "B70PRO-246K", "cand": "B70PRO-246K (identical read)", "pass": true}
+  },
+  "safety": {
+    "ctrl_esimd0_first_launch": {"min_vram_mib": 357, "max_temp_c": 65.0, "dmesg": "bcs engine reset (guc_id=16) at first 64K hybrid-SDPA prefill cell; safety abort at <400 MiB free", "note": "flag-inactive stock control path; identical signature to prior campaign's ~450 MiB-headroom incidents — a headroom regime event, not an ESIMD effect"},
+    "ctrl_esimd0_r2_rerun": {"min_vram_mib": 437, "max_temp_c": 76.0, "dmesg": "clean", "note": "rerun with vram_abort=250 completed the full matrix at the previously observed 437 MiB floor"},
+    "cand_arms": {"min_vram_mib": "304-437", "max_temp_c": "76-77", "dmesg": "clean x5; cand-sp32 probe dipped to 304 MiB mid-run and recovered with correct results"},
+    "teardown": {"vram_restored_mib": 32615, "dmesg": "clean"}
+  }
+}

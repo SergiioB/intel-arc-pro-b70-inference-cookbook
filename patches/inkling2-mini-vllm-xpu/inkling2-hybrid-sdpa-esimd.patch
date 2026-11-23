@@ -1,0 +1,246 @@
+diff --git a/vllm_inkling2_xpu/attention.py b/vllm_inkling2_xpu/attention.py
+index 3fa1da5..046a600 100644
+--- a/vllm_inkling2_xpu/attention.py
++++ b/vllm_inkling2_xpu/attention.py
+@@ -2,6 +2,7 @@
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ """Inkling2 relative-bias attention with short-conv K/V on Intel XPU."""
+ 
++import os
+ from functools import partial
+ from typing import cast
+ 
+@@ -47,6 +48,39 @@ from .ops.sconv import attention_prologue, shift_rel_proj
+ from .sconv import K_STREAM, V_STREAM, Inkling2ShortConv, conv_metadata
+ 
+ _FP8_PREFILL_SCRATCH: dict[tuple[torch.device, int, int, int], torch.Tensor] = {}
++_SDPA_PREFILL_SCRATCH: dict[tuple[torch.device, int, int, int], torch.Tensor] = {}
++
++# INK2_HYBRID_PREFIX_SDPA=1 routes the bias-free KV prefix ([0, K0//page)
++# where K0 = seqlen - nt - rel_extent + 1) of full-attention prefill layers
++# through oneDNN flash SDPA in <=_SDPA_WIN-page windows, merged with the
++# Triton relative-bias tail via fp32 online softmax (LSE). Default 0 keeps
++# the stock Chunked-LSE Triton path for all pages.
++_HYBRID_PREFIX_SDPA = os.environ.get("INK2_HYBRID_PREFIX_SDPA", "0") == "1"
++_SDPA_WIN = 128  # pages per SDPA window (8192 tokens)
++
++
++def _merge_lse(
++    out: torch.Tensor,
++    lse: torch.Tensor,
++    o_other: torch.Tensor,
++    l_other: torch.Tensor,
++    nt: int,
++) -> None:
++    """Merge `(o_other, l_other)` into `(out, lse)` in place (fp32 LSE)."""
++    l0 = lse[:, :nt]
++    l1 = l_other[:, :nt] if l_other.dim() == 2 else l_other
++    m = torch.maximum(l0, l1)
++    m_safe = torch.where(torch.isinf(m), torch.zeros_like(m), m)
++    w0 = torch.exp(l0 - m_safe)
++    w1 = torch.exp(l1 - m_safe)
++    ws = w0 + w1
++    ws_safe = torch.where(ws == 0, torch.ones_like(ws), ws)
++    lse[:, :nt] = torch.where(
++        ws == 0, torch.full_like(m, float("-inf")), m_safe + torch.log(ws_safe)
++    )
++    out[:nt] = out[:nt] * (w0 / ws_safe).t().unsqueeze(
++        -1
++    ) + o_other[:nt] * (w1 / ws_safe).t().unsqueeze(-1)
+ 
+ 
+ class Inkling2AttentionMetadataBuilder(FlashAttentionMetadataBuilder):
+@@ -587,7 +621,91 @@ class Inkling2Attention(nn.Module, AttentionLayerBase):
+                         k_hi_tok=p_hi * page,
+                     )
+ 
+-                if n_active <= max_pages:
++                sdpa_end = 0
++                if _HYBRID_PREFIX_SDPA and not self.is_local and self.rel_extent:
++                    k0_tok = seq_len - nt - self.rel_extent + 1
++                    if k0_tok > 0:
++                        sdpa_end = min(end_page, k0_tok // page)
++
++                if sdpa_end:
++                    kv_h = kv_cache.shape[1]
++                    group = self.num_heads // kv_h
++                    skey = (q.device, kv_h, page, self.head_dim)
++                    skv = _SDPA_PREFILL_SCRATCH.get(skey)
++                    if skv is None:
++                        skv = (
++                            torch.empty(
++                                (kv_h, _SDPA_WIN * page, self.head_dim),
++                                dtype=torch.bfloat16,
++                                device=q.device,
++                            ),
++                            torch.empty(
++                                (kv_h, _SDPA_WIN * page, self.head_dim),
++                                dtype=torch.bfloat16,
++                                device=q.device,
++                            ),
++                        )
++                        _SDPA_PREFILL_SCRATCH[skey] = skv
++                    sk, sv = skv
++                    q5 = q[:nt].permute(1, 0, 2).view(
++                        kv_h, group, nt, self.head_dim
++                    )
++                    acc = False
++                    for p_lo in range(0, sdpa_end, _SDPA_WIN):
++                        p_hi = min(p_lo + _SDPA_WIN, sdpa_end)
++                        cnt = p_hi - p_lo
++                        w = cnt * page
++                        active = block_table[0, p_lo:p_hi].to(torch.int64)
++                        for s in range(0, cnt, 128):
++                            e = min(s + 128, cnt)
++                            sel = kv_fp8.index_select(0, active[s:e]).to(
++                                torch.bfloat16
++                            )
++                            sk[:, s * page : e * page] = (
++                                sel[..., : self.head_dim]
++                                .permute(1, 0, 2, 3)
++                                .reshape(kv_h, (e - s) * page, self.head_dim)
++                            )
++                            sv[:, s * page : e * page] = (
++                                sel[..., self.head_dim :]
++                                .permute(1, 0, 2, 3)
++                                .reshape(kv_h, (e - s) * page, self.head_dim)
++                            )
++                        o5, l5, *_ = (
++                            torch.ops.aten._scaled_dot_product_flash_attention(
++                                q5,
++                                sk[:, :w].unsqueeze(1),
++                                sv[:, :w].unsqueeze(1),
++                                dropout_p=0.0,
++                                is_causal=False,
++                                scale=self.scaling,
++                            )
++                        )
++                        o_w = (
++                            o5.reshape(self.num_heads, nt, self.head_dim)
++                            .permute(1, 0, 2)
++                            .float()
++                        )
++                        l_w = l5.reshape(self.num_heads, nt).float()
++                        if not acc:
++                            out[:nt].copy_(o_w)
++                            lse[:, :nt].copy_(l_w)
++                            acc = True
++                        else:
++                            _merge_lse(out, lse, o_w, l_w, nt)
++                    o_tmp = torch.empty_like(out)
++                    l_tmp = torch.empty_like(lse)
++                    p_lo = sdpa_end
++                    while p_lo < end_page:
++                        p_hi = min(p_lo + max_pages, end_page)
++                        if not acc:
++                            _run_chunk(p_lo, p_hi, out, lse)
++                            acc = True
++                        else:
++                            _run_chunk(p_lo, p_hi, o_tmp, l_tmp)
++                            _merge_lse(out, lse, o_tmp, l_tmp, nt)
++                        p_lo = p_hi
++                elif n_active <= max_pages:
+                     _run_chunk(start_page, end_page, out, lse)
+                 else:
+                     o_tmp = torch.empty_like(out)
+diff --git a/vllm_inkling2_xpu/ops/attention.py b/vllm_inkling2_xpu/ops/attention.py
+index b7f8bdc..84a77ac 100644
+--- a/vllm_inkling2_xpu/ops/attention.py
++++ b/vllm_inkling2_xpu/ops/attention.py
+@@ -12,6 +12,10 @@ from .attention_triton import MODE_GATED, MODE_PARTIAL, rel_attention
+ 
+ _SYCL_DECODE_ATTN_EXT = None
+ _SYCL_DECODE_SCRATCH: dict[tuple, tuple[torch.Tensor, torch.Tensor]] = {}
++_ESIMD_DECODE_ATTN_EXT = None
++_ESIMD_DECODE_SCRATCH: dict[tuple, tuple[torch.Tensor, torch.Tensor]] = {}
++_ESIMD_DEBUG_SEEN: set[tuple] = set()
++_ESIMD_MAX_SPLITS = 512
+ 
+ 
+ def _get_sycl_decode_attn():
+@@ -22,6 +26,25 @@ def _get_sycl_decode_attn():
+     return _SYCL_DECODE_ATTN_EXT
+ 
+ 
++def _get_esimd_decode_attn():
++    global _ESIMD_DECODE_ATTN_EXT
++    if _ESIMD_DECODE_ATTN_EXT is None:
++        try:
++            from . import _inkling_esimd_attn_xe2 as ext
++        except Exception:
++            return None
++        _ESIMD_DECODE_ATTN_EXT = ext
++    return _ESIMD_DECODE_ATTN_EXT
++
++
++def _esimd_decode_splits(window: int) -> int:
++    # Fixed per window type so a graph captured once replays at any depth
++    # (DNR-030: seqlen-dependent grids mislead isolated microbenchmarks).
++    if window > 0:
++        return int(os.getenv("INK2_ESIMD_SWA_SPLITS", "16"))
++    return int(os.getenv("INK2_ESIMD_FULL_SPLITS", "128"))
++
++
+ @triton.jit
+ def _sigmoid(x):
+     return tl.sigmoid(x)
+@@ -351,6 +374,59 @@ def _decode_attention(
+             sycl_splits,
+         )
+         return
++    if (
++        not draft
++        and max_query_len <= 8
++        and group == 3
++        and head_dim == 128
++        and block_table.shape[0] == 1
++        and key_cache.shape[1] % 16 == 0
++        and os.getenv("INK2_ESIMD_DECODE_ATTN", "0") == "1"
++    ):
++        ext = _get_esimd_decode_attn()
++        if ext is not None:
++            esimd_splits = _esimd_decode_splits(window)
++            ekey = (q.device, num_tokens, num_heads, head_dim)
++            sc = _ESIMD_DECODE_SCRATCH.get(ekey)
++            if sc is None or sc[0].shape[0] < esimd_splits:
++                rows = max(_ESIMD_MAX_SPLITS, esimd_splits)
++                sc = (
++                    q.new_empty((rows, *q.shape), dtype=torch.float32),
++                    q.new_empty(
++                        (rows, num_tokens, num_heads), dtype=torch.float32
++                    ),
++                )
++                _ESIMD_DECODE_SCRATCH[ekey] = sc
++            if os.getenv("INK2_ESIMD_DEBUG", "0") == "1":
++                dbg = (window, esimd_splits, max_query_len, num_tokens)
++                if dbg not in _ESIMD_DEBUG_SEEN:
++                    _ESIMD_DEBUG_SEEN.add(dbg)
++                    print(
++                        f"[INK2_ESIMD] dispatch mql={max_query_len} "
++                        f"window={window} splits={esimd_splits} "
++                        f"T={num_tokens}",
++                        flush=True,
++                    )
++            ext.rel_decode_esimd_xe2(
++                q,
++                key_cache,
++                value_cache,
++                rel_logits,
++                gate,
++                sinks,
++                out,
++                block_table,
++                cache_seqlens,
++                cu_seqlens_q,
++                sc[0],
++                sc[1],
++                max_query_len,
++                num_actual_tokens,
++                softmax_scale,
++                window,
++                esimd_splits,
++            )
++            return
+     # A single split writes the (gated) output itself.
+     fuse_gate = num_splits == 1
+     o_part = q.new_empty(
