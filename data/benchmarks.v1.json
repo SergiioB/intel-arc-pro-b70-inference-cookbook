@@ -4941,6 +4941,33 @@
         "commit": "80cbe03e69aa1b5b5fe6ad2e5a81602a3376b428",
         "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/80cbe03e69aa1b5b5fe6ad2e5a81602a3376b428/results/inkling2-mini/vllm-xpu-20261122/sycl-m1-decode-20261122.json"
       }
+    },
+    {
+      "id": "hy4-flash-strata-sycl-dual-b70-20261123",
+      "kind": "capability",
+      "title": "Hy4-Flash (512-expert MoE + Engram) on 2x B70 via patched Strata v0.2.20 SYCL (703-738 tok/s prefill 8K-124K, 17-20 serial / 39.5-39.7 dfly2, 128K full-speed / 1M loadable)",
+      "summary": "Patched Niko1221/Strata v0.2.20 (strata-hy4-b70-opt.patch: parallel grouped SG16 XMX peer prefill with +64 tail-row padding, --peer-vram-experts-gb 25 asymmetric 42 GiB VRAM expert pool, SG16 peer decode, and clean GPU/copy/peer queue drain before fast exit) on 2x 32 GiB Intel Arc Pro B70s (230 W, Hy4-Flash-SQ-64.strata + Hy4-Flash-Engram-Q8.strata, pinned peer staging). Collapses peer_pf_ms 20,607 -> 22.7 ms (907x), lifting cold prefill 2.86-2.99x over stock to 715.4 @ 8K, 723.9-737.8 @ 28K, 726.9 @ 64K, and 702.7-712.1 tok/s @ 124K (all-VRAM KV 1.97 GB). Decode: 17.0-20.2 tok/s serial / 38.3-39.7 tok/s with opt-in --draft dfly2 (parity unverifiable due to serial greedy cross-request drift). Quality: 5/5 deterministic gate + 2/2 thinking modes + 125,999-tok exact needle PASS. Max loadable context: 1,048,576 (1M, RAM-bound); host-KV above 128K incurs a 7.4x prefill cliff (98.2 tok/s @ 64K). Clean QUIT teardown produces +0 GPU dmesg faults across 11/12 steady-state sessions.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-23",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 2,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "Strata SYCL (strata-hy4-sycl 0.1.66) + strata-hy4-b70-opt.patch",
+        "version": "Niko1221/Strata@v0.2.20 (a34979fc) + strata-hy4-b70-opt.patch"
+      },
+      "model": {
+        "id": "strata-engine/Hy4-Flash-Strata@995bac22 (Hy4-Flash-SQ-64.strata + Hy4-Flash-Engram-Q8.strata)",
+        "quantization": "SQ-64 routed experts + Engram-Q8 + fp16 MLA/SWA KV",
+        "speculation": "off (serial) / dfly2 (opt-in)"
+      },
+      "evidence": {
+        "commit": "004d32db9286fa65adcde41445a7c2f85bd7dd00",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/004d32db9286fa65adcde41445a7c2f85bd7dd00/results/hy4-flash/strata-sycl-20261123/strata-sycl-maxctx-20261123.json"
+      }
     }
   ]
 }
