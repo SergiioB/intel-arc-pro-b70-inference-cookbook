@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-23",
+  "hardware": "2x Intel Arc Pro B70 (32 GiB each, 230 W, xe / LZ 20.2.0 / UR 1.14.37020)",
+  "model": "strata-engine/Hy4-Flash-Strata@995bac22 (Hy4-Flash-SQ-64.strata + Hy4-Flash-Engram-Q8.strata)",
+  "engine": "Niko1221/Strata@v0.2.20 + strata-hy4-b70-opt.patch (binary sha256 a1380b43...)",
+  "c1_dfly2_lossless_parity": {
+    "env": "HY4S_VRAM_STATIC=1",
+    "sampling": "seed=4242 temperature=0 top_p=1.0",
+    "serial_rep0_eq_rep1": true,
+    "drafted_eq_serial": "3/3 exact SHA-256 match",
+    "prompts": [
+      {"name": "chat0", "serial_sha16": "caeaf6c6a6783f31", "dfly2_sha16": "caeaf6c6a6783f31", "accepted": 68, "match": true},
+      {"name": "jsondet", "serial_sha16": "90cfb13f9c72ceea", "dfly2_sha16": "90cfb13f9c72ceea", "accepted": 67, "match": true},
+      {"name": "filler8k", "serial_sha16": "979c6e6242c55200", "dfly2_sha16": "979c6e6242c55200", "accepted": 92, "match": true}
+    ],
+    "root_cause_prior_drift": "SyVramExpertCache adaptive=1 residency mutations across requests changed FP reduction tier; HY4S_VRAM_STATIC=1 restores 100% bit-exactness"
+  },
+  "c2_qwait_gated_on_any_p2p": {
+    "verdict": "speed-neutral cleanup (retained; evw.wait() already host-blocks per layer)",
+    "serial_0k_28k_tps": [19.35, 18.06, 18.06],
+    "dfly2_0k_28k_tps": [27.33, 38.74, 38.74],
+    "quality_gate": "5/5 PASS",
+    "gpu_dmesg_delta": 0
+  },
+  "c3_256k_all_vram_kv": {
+    "config": "--max-context 262144 --kv-host-above 262144 --vram-experts-gb 14 --peer-vram-experts-gb 25 --ram-experts-gb 36",
+    "kv_total_gb": 3.78,
+    "kv_host_gb": 0.0,
+    "peer_min_free_mib": 4697,
+    "primary_min_free_mib": 5307,
+    "prompt_tokens": 245752,
+    "needle_key": "HY4-245K-B70-7731",
+    "needle_pos_approx": 119265,
+    "serial": {"prefill_tps": 665.2, "ttft_s": 369.5, "decode_tps": 15.87, "needle_pass": true},
+    "dfly2": {"prefill_tps": 665.3, "ttft_s": 369.4, "decode_tps": 18.98, "gain_pct": 19.6, "needle_pass": true, "out_sha8": "bc2a4642"}
+  },
+  "teardown": {"sessions_clean": "6/6 READY first try, QUIT rc=0", "gpu_dmesg_delta": 0, "vram_restored_mib": [31198, 32615]}
+}

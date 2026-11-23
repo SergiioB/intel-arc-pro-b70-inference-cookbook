@@ -9,7 +9,7 @@ Updated 2026-11-23: routes are **strictly isolated** — do not mix engines, mod
 
 | Route | Artifact | Status | Cold prefill | Decode (depth ladder) | Context proven | Guide |
 |---|---|---|---|---|---|---|
-| **Patched Strata v0.2.20 + `strata-hy4-b70-opt.patch` (primary dual-B70)** | `strata-engine/Hy4-Flash-Strata` @ `995bac22`: `Hy4-Flash-SQ-64.strata` + `Hy4-Flash-Engram-Q8.strata` (~120 GiB) | **Primary route**, measured 2026-11-23. 5/5 deterministic quality gate, **`125,999`-tok exact needle PASS**, `+0` steady-state GPU faults | **702.7–737.8 tok/s (`8K → 124K` all-VRAM KV, `2.99x` stock)** | **17.0–20.2 tok/s serial**, **38.3–39.7 tok/s (`28K → 124K`) with `--draft dfly2`** (`2.32x`, opt-in, parity unverifiable) | **`131,072` (`128K`) full-speed all-VRAM** (`126,976` measured); **`1,048,576` (`1M`) loadable** (host-KV `7.4x` prefill cliff above `128K`) | [HY4-FLASH-STRATA-SYCL.md](HY4-FLASH-STRATA-SYCL.md) |
+| **Patched Strata v0.2.20 + `strata-hy4-b70-opt.patch` (primary dual-B70)** | `strata-engine/Hy4-Flash-Strata` @ `995bac22`: `Hy4-Flash-SQ-64.strata` + `Hy4-Flash-Engram-Q8.strata` (~120 GiB) | **Primary route**, measured 2026-11-23. 5/5 gate, **`245,752`-tok needle PASS**, **lossless `dfly2` (`3/3` SHA-256 w/ `HY4S_VRAM_STATIC=1`)**, `+0` GPU exit faults | **665.3–737.8 tok/s (`8K → 245K` all-VRAM KV, `2.99x` stock)** | **15.9–20.2 tok/s serial**, **38.3–39.7 tok/s (`28K → 124K`) / `19.0` (`245K`) with lossless `--draft dfly2`** | **`262,144` (`256K`) full-speed all-VRAM** (`--kv-host-above 262144`); **`1,048,576` (`1M`) loadable** (RAM-bound) | [HY4-FLASH-STRATA-SYCL.md](HY4-FLASH-STRATA-SYCL.md) |
 | Strata v0.2.20 **stock** (control) | same packs | Works but **not recommended**: every engine exit fired `xe` `bcs`/`guc` faults and the next launch hung ~50 % of the time (fixed by the patch) | 251.7 tok/s @8K, 246.6 @28K | 17.55 / 18.74 / 18.07 tok/s at 0K / 8K / 28K | 32,768 | same guide, `HY4S_PEER_PF_LEGACY=1 HY4S_PEER_DEC_SG32=1` control arm |
 | llama.cpp-hy4pr **GGUF fallback** (upstream [llama.cpp PR #32517](https://github.com/ggml-org/llama.cpp/pull/32517) line) | `Hy4-flash-Q3_K_M` GGUF, 3 shards, ~100 GiB | Works-with-caveats fallback: runs on the existing GGUF, no `.strata` conversion needed; decode is host-serialization-bound (~3x off its weight roofline) | 189 tok/s @8K | 11.33 tok/s, ~depth-invariant to 8K | 12,288 proven | recipe §"GGUF fallback" |
 
@@ -36,10 +36,9 @@ Verified from GGUF tensor census and `.strata` pack headers (see [HY4-FLASH-STRA
 
 ## Explicit claim boundaries
 
-- Serial greedy decode on the Strata engine is **nondeterministic** on open-ended prompts (`HY4S_SYNCALL=1` does not fix it) — inter-arm token-for-token parity cannot be certified yet.
-- `--draft dfly2` is **opt-in and parity-unverifiable** (not proven lossless, not proven lossy). The 39.7 t/s row is a speed observation, never "the model's answer".
+- With `HY4S_VRAM_STATIC=1`, serial greedy is **100% bit-deterministic** and **`--draft dfly2` is proven 100% lossless (`drafted == serial` 3/3 exact SHA-256)**; with default `adaptive=1`, cross-request expert promotions cause benign tier drift.
 - All Strata numbers were measured with **P2P disabled** (`probe_p2p` false): peer traffic ran through pinned-host staging. P2P-capable hosts are unverified.
-- Full-speed all-VRAM context is proven through `126,976` tokens (`128K` config, `125,999`-tok exact needle PASS); `256K / 512K / 1M` are load+smoke proven (RAM-bound at `1M`), while host-KV (`--kv-host-above 131072`) incurs a `7.4x` prefill cliff (`98.2 tok/s` @64K). Peer budgets >25 GiB, `--kv-host-above 262144`, concurrency >1, and non-B70 GPUs are **untested**.
+- Full-speed all-VRAM context is proven through `245,752` tokens (`256K` config `--kv-host-above 262144`, `3.78 GB` KV, `245K` exact needle PASS on both serial and `dfly2`); `512K / 1M` are load+smoke proven (RAM-bound at `1M`), while host-KV incurs a `7.4x` prefill cliff (`98.2 tok/s` @64K). Peer budgets >25 GiB, concurrency >1, and non-B70 GPUs are **untested**.
 - llama.cpp-hy4pr numbers are a same-prompts baseline from a private lab campaign (Q3_K_M, 12K ctx); they classify the engine gap, they are not a quality ranking.
 
 ## Evidence and records

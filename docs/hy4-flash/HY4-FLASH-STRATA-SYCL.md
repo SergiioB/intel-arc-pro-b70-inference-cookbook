@@ -59,11 +59,11 @@ PEER_VRAM_EXP=-1 HY4S_PEER_PF_LEGACY=1 HY4S_PEER_DEC_SG32=1 \
   STRATA_BIN=... NATIVE_PACK=... ENGRAM_PACK=... \
   benchmarks/hy4-flash/launch-hy4-flash-strata-sycl.sh
 
-# 4. Deep-context profiles (verified loadable up to 1M; 128K is max full-speed all-VRAM rung)
+# 4. Deep-context profiles (verified loadable up to 1M; 256K is max full-speed all-VRAM rung!)
 CTX=131072 VRAM_EXP=15 PEER_VRAM_EXP=25 KV_HOST_ABOVE=131072 \
-  benchmarks/hy4-flash/launch-hy4-flash-strata-sycl.sh  # 128K all-VRAM KV (1.97 GB, 703-727 t/s pf!)
-CTX=262144 VRAM_EXP=15 PEER_VRAM_EXP=25 KV_HOST_ABOVE=131072 \
-  benchmarks/hy4-flash/launch-hy4-flash-strata-sycl.sh  # 256K host-mapped KV (3.62 GB host; 98 t/s pf cliff)
+  benchmarks/hy4-flash/launch-hy4-flash-strata-sycl.sh  # 128K all-VRAM KV (1.97 GB, 703-727 t/s pf)
+CTX=262144 VRAM_EXP=14 PEER_VRAM_EXP=25 KV_HOST_ABOVE=262144 DRAFT=dfly2 \
+  benchmarks/hy4-flash/launch-hy4-flash-strata-sycl.sh  # 256K all-VRAM KV (3.78 GB, 665 t/s @245K, 245K needle PASS!)
 ```
 
 Placement receipt at `17/25` (engine log): `[experts] unified pool: 4918 GPU0 VRAM (17.00 GiB), 7233 peer VRAM (25.00 GiB), 8841 RAM (19.77 GB), 0 cold SSD` — the entire 512×42 expert table is VRAM+RAM resident, zero SSD streaming, ~79 s load. Keep `--vram-experts-gb <= 17` on the primary: at 19–20 GiB it transiently hit 0 MiB free. Peer card floor at 25 GiB: **4,618 MiB** — inside the ≥3 GiB constraint.
@@ -81,17 +81,19 @@ Sampling: quality gate & parity `seed=4242 temperature=0 top_p=1.0`; depth ladde
 | 28K | 11.33 | 18.07 | 17.04 | **18.18** | **39.73** |
 | 64K (`65,536`, all-VRAM @128K, `15/25`) | — | — | — | **18.79** | **38.28** (`2.04x`) |
 | 124K (`126,976`, all-VRAM @128K, `15/25`) | — | — | — | **17.04** | **39.49** (`2.32x`) |
+| 245K (`245,752`, all-VRAM @256K, `14/25`) | — | — | — | **15.87** (`needle PASS`) | **18.98** (`+19.6%`, `needle PASS`) |
 | 64K (`65,536`, host-KV @256K, `15/25`) | — | — | — | 18.12 | — |
 
 ### B. Cold prefill tok/s and TTFT
 
-| Depth | llama.cpp-hy4pr | Strata stock | `opt-17-17` | **`opt-17-25` / `15-25` asym** | `opt` + `dfly2` |
+| Depth | llama.cpp-hy4pr | Strata stock | `opt-17-17` | **`opt` asym (all-VRAM)** | `opt` + `dfly2` |
 |---|---:|---:|---:|---:|---:|
 | 0K | — | 37.0 | 43.0 | 47.6 | 50.1 |
 | 8K | 189 | 251.7 | 658.7 | **715.4** (`11.5 s`) | 719.9 |
 | 28K | — | 246.6 | 676.5 | **723.9** (`39.6 s`) | **737.8** (`38.9 s`) |
 | 64K (`65,536`, all-VRAM @128K) | — | — | — | **726.9** (`90.2 s`) | **724.6** (`90.5 s`) |
 | 124K (`126,976`, all-VRAM @128K) | — | — | — | **702.7** (`180.7 s`) | **712.1** (`178.3 s`) |
+| **245K (`245,752`, all-VRAM @256K)** | — | — | — | **665.2** (`369.5 s`) | **665.3** (`369.4 s`) |
 | 64K (`65,536`, host-KV @256K) | — | — | — | 98.2 (`667.4 s`, `7.4x` cliff) | — |
 
 ### B2. Localized Maximum Context Capacity Ladder (dual B70, `25 GiB` peer, `36 GB` RAM arena)
@@ -99,12 +101,15 @@ Sampling: quality gate & parity `seed=4242 temperature=0 top_p=1.0`; depth ladde
 | Configured ctx | Primary VRAM exp | KV total (host) | Peer card min free | Primary card min free | Host MemAvail min | READY | 16-tok smoke | Practical verdict |
 |---|---:|---:|---:|---:|---:|---:|---|---|
 | `32,768` (`32K`) | `17 GiB` | `0.61 GB` (`0`) | `4,618 MiB` | `1,391 MiB` | — | `79.0 s` | Full R2 ladder | Full speed (all-VRAM KV) |
-| **`131,072` (`128K`)** | **`15 GiB`** | **`1.97 GB` (`0`)** | **`5,251 MiB`** | **`6,924 MiB`** | **`26.77 GiB`** | **`83.0 s`** | **PASS (`18.16 t/s`)** | **Max practical full-speed context (`703–727 t/s` pf, `126K` needle PASS)** |
-| `262,144` (`256K`) | `15 GiB` | `3.78 GB` (`3.62 GB`) | `5,002 MiB` | `8,494 MiB` | `24.62 GiB` | `85.4 s` | PASS (`15.54 t/s`) | Host-KV slows prefill `7.4x` (`98.2 t/s` @64K); decode unaffected |
-| `524,288` (`512K`) | `14 GiB` | `7.41 GB` (`7.25 GB`) | `5,000 MiB` | `9,261 MiB` | `20.46 GiB` | `85.9 s` | PASS (`18.19 t/s`) | Loadable; host-KV prefill-bound (`>40 min` @245K) |
+| `131,072` (`128K`) | `15 GiB` | `1.97 GB` (`0`) | `5,251 MiB` | `6,924 MiB` | `26.77 GiB` | `83.0 s` | PASS (`18.16 t/s`) | Full speed (`703–727 t/s` pf, `126K` needle PASS) |
+| **`262,144` (`256K` all-VRAM)** | **`14 GiB`** | **`3.78 GB` (`0`)** | **`4,697 MiB`** | **`5,307 MiB`** | — | **Clean** | **Full 245K ladder** | **Max practical full-speed context (`665.3 t/s` @245K, `245K` needle PASS!)** |
+| `262,144` (`256K` host-KV) | `15 GiB` | `3.78 GB` (`3.62 GB`) | `5,002 MiB` | `8,494 MiB` | `24.62 GiB` | `85.4 s` | PASS (`15.54 t/s`) | Host-KV slows prefill `7.4x` (`98.2 t/s` @64K); use `--kv-host-above 262144` instead! |
+| `524,288` (`512K`) | `14 GiB` | `7.41 GB` (`7.25 GB`) | `5,000 MiB` | `9,261 MiB` | `20.46 GiB` | `85.9 s` | PASS (`18.19 t/s`) | Loadable; host-KV prefill-bound |
 | **`1,048,576` (`1M`)** | **`12 GiB`** | **`14.65 GB` (`14.5 GB`)** | **`4,988 MiB`** | **`10,797 MiB`** | **`12.49 GiB`** | **`89.0 s`** | **PASS (`17.53 t/s`)** | **Max loadable safe context (RAM-bound, not VRAM)** |
 
-**Exact deep-context needle retrieval:** at **`125,999` prompt tokens** (key at `~61,146`, `no_think`, greedy `seed=4242`, `max_new=512`), `opt-15-25` all-VRAM KV returned **`HY4-128K-B70-9421`** (`finish=stop`, `698.9 tok/s` prefill, `16.98 tok/s` decode) — **PASS**. A `245,756`-token host-KV needle attempt timed out at `2,400 s` due to the `7.4x` host-KV prefill cliff (no verdict; skipped `dfly2@245K` and `480K@512K` per predeclared stop rules). Notice that at `256K` total KV is only `3.78 GB` while Primary Card 1 had `6,924 MiB` free at `128K` — testing `--kv-host-above 262144` (keeping `3.78 GB` KV 100% in VRAM!) is the immediate zero-code next check to unlock `~700 tok/s` all-VRAM prefill at `256K`.
+**Exact deep-context needle retrieval (2/2 PASS up to `245K`):**
+- **`125,999` tokens** (key at `~61,146`, all-VRAM @128K): returned **`HY4-128K-B70-9421`** (`698.9 tok/s` prefill, `16.98 tok/s` decode) — **PASS**.
+- **`245,752` tokens** (key at `~119,265`, all-VRAM @256K `--kv-host-above 262144`): returned **`HY4-245K-B70-7731`** on **BOTH serial (`665.2 tok/s` pf, `15.87 t/s` dec)** and **`dfly2` (`665.3 tok/s` pf, `18.98 t/s` dec, identical output SHA `bc2a4642`)** — **PASS**.
 
 Ratios vs stock: prefill **2.62x** (`17-17` @8K) → **2.84x** (`17-25` @8K) → **2.94x** (`17-25` @28K); serial decode ~`1.6x` the llama.cpp-hy4pr baseline and depth-flat; dfly2 decode **2.20x** stock at 28K.
 
@@ -124,10 +129,13 @@ All five sessions: READY on first try, clean `QUIT` rc=0, VRAM restored to basel
 
 Deterministic gate (`seed=4242 temperature=0`, thinking default `high`): arithmetic `17×23=391`, `20−9+3=14`, strict JSON `{"a":1,"b":[2,3],"ok":true}`, train reasoning `60`, code-state trace exact — **5/5 on every completed ladder arm**, plus both thinking directions honored (`no_think` → 2-token bare answer; `high` → think section + answer). The gate also passed **under dfly2** at 22.8–29.5 t/s.
 
-**Determinism (honest, still open):**
-- Serial greedy is **not** bit-deterministic on open-ended prompts: back-to-back reps diverge (chat0 at token 24 in the R2 syncall probe; `HY4S_SYNCALL=1` does **not** fix it — DNR-045). Short structured prompts sit in a stable region (`jsondet` bit-identical 95/95, matching the round-1 legacy trajectory).
-- Because serial itself wanders, **`--draft dfly2` parity is unverifiable** — drafted trajectories land inside the serial-reachable set (so "lossy" is not proven either). Ship dfly2 behind the flag; a determinism root-cause is the gate for any drafted-vs-serial claim.
-- The round-1 "dfly2 LOSSY" verdict is corrected: the mismatch sha it compared against was later reproduced by pure serial runs.
+**Determinism & `--draft dfly2` Lossless Parity — CONFIRMED (`strata-sycl-confirm-20261123.json`):**
+- Root cause of earlier cross-request serial greedy drift: **`SyVramExpertCache` `adaptive=1`** promoted experts across requests, changing which FP reduction tier ran on rep1 (`HY4S_SYNCALL=1` couldn't fix residency drift — DNR-045).
+- Setting **`HY4S_VRAM_STATIC=1`** makes serial greedy **100% bit-identical (`rep0 == rep1`)** AND proves **`--draft dfly2` is 100% LOSSLESS (`drafted == serial` 3/3 exact full-length SHA-256 match at `seed=4242, temp=0`):**
+  - `chat0`: `caeaf6c6a6783f31` == `caeaf6c6a6783f31` (`68` accepted)
+  - `jsondet`: `90cfb13f9c72ceea` == `90cfb13f9c72ceea` (`67` accepted)
+  - `filler8k`: `979c6e6242c55200` == `979c6e6242c55200` (`92` accepted)
+- **Measured `Q().wait()` gating (`sy_peer.h:562`, `any_p2p`):** Retained as a clean ordering improvement (`5/5` gate, `+0` GPU `dmesg`), verified **speed-neutral** (`18.1–19.4` serial / `27.3–38.7` dfly2) because `evw.wait()` already host-blocks per layer — confirming that **device-side MoE planning (#2)** or **worker-thread overlap (#3)** are the real next decode speed levers.
 
 ## 6. Optimization Approach, Thought Process, What Worked vs. What Failed, and How to Push Further
 

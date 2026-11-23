@@ -4968,6 +4968,33 @@
         "commit": "004d32db9286fa65adcde41445a7c2f85bd7dd00",
         "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/004d32db9286fa65adcde41445a7c2f85bd7dd00/results/hy4-flash/strata-sycl-20261123/strata-sycl-maxctx-20261123.json"
       }
+    },
+    {
+      "id": "hy4-flash-strata-sycl-confirm-lossless-256k-20261123",
+      "kind": "capability",
+      "title": "Hy4-Flash on 2x B70: confirmed lossless dfly2 (3/3 SHA-256 w/ HY4S_VRAM_STATIC=1) & 256K all-VRAM KV (665 tok/s @ 245K + needle PASS)",
+      "summary": "Confirms three open items on patched Strata v0.2.20 SYCL (2x 32 GiB Arc Pro B70, 230 W): (1) HY4S_VRAM_STATIC=1 restores 100% bit-deterministic serial greedy and proves --draft dfly2 is 100% lossless (drafted == serial 3/3 exact SHA-256: caeaf6c6a6783f31, 90cfb13f9c72ceea, 979c6e6242c55200); (2) --max-context 262144 --kv-host-above 262144 (3.78 GB KV, 0 host, 14/25 GiB experts, 4,697/5,307 MiB free) eliminates the 7.4x host-KV prefill cliff: 245,752-tok prompt hits 665.2/665.3 tok/s cold prefill (369.4 s TTFT), 15.87 serial / 18.98 dfly2 decode, and exact needle HY4-245K-B70-7731 PASS on both; (3) gating Q().wait() on any_p2p is retained as a speed-neutral ordering cleanup (evw.wait() already host-blocks per layer). 6/6 clean QUIT sessions, +0 GPU dmesg faults, baseline VRAM restored.",
+      "evidence_status": "validated",
+      "measured_at": "2026-11-23",
+      "hardware": {
+        "gpu_model": "Intel Arc Pro B70",
+        "gpu_count": 2,
+        "vram_gib_per_gpu": 32,
+        "power_cap_w": 230
+      },
+      "engine": {
+        "name": "Strata SYCL (strata-hy4-sycl 0.1.66) + strata-hy4-b70-opt.patch",
+        "version": "Niko1221/Strata@v0.2.20 + strata-hy4-b70-opt.patch (a1380b43)"
+      },
+      "model": {
+        "id": "strata-engine/Hy4-Flash-Strata@995bac22 (Hy4-Flash-SQ-64.strata + Hy4-Flash-Engram-Q8.strata)",
+        "quantization": "SQ-64 + Engram-Q8 + fp16 all-VRAM MLA/SWA KV",
+        "speculation": "dfly2 (lossless drafted==serial 3/3 under HY4S_VRAM_STATIC=1)"
+      },
+      "evidence": {
+        "commit": "ac1b7638a81e04c0e849b19424cbdb8bacd75c4e",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/ac1b7638a81e04c0e849b19424cbdb8bacd75c4e/results/hy4-flash/strata-sycl-20261123/strata-sycl-confirm-20261123.json"
+      }
     }
   ]
 }
