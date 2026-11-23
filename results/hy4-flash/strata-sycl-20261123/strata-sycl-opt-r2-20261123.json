@@ -1,0 +1,133 @@
+{
+  "id": "hy4-flash-strata-sycl-opt-r2-20261123",
+  "kind": "campaign-summary",
+  "status": "provisional",
+  "date": "2026-11-23",
+  "title": "Hy4-Flash Strata SYCL dual-B70 round-2 opt campaign (pf_cap_p tail-row fix verified)",
+  "sanitization": "private host paths, mount points and PCI addresses removed; GPU positions reported by role only",
+  "hardware": {
+    "gpu_model": "Intel Arc Pro B70 (BMG-G31)",
+    "gpu_count": 2,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230,
+    "roles": "primary = compute card (engine --gpus index 0), peer = display card (engine --gpus index 1)",
+    "driver": "xe",
+    "level_zero": "20.2.0",
+    "ur": "1.14.37020",
+    "p2p": "probe_p2p() false on every load; all peer traffic via USM pinned-host staging"
+  },
+  "engine": {
+    "name": "strata-hy4-sycl",
+    "version": "0.1.66",
+    "source": "Niko1221/Strata v0.2.20 @ a34979fc94f3d126b9bb8210f4ad311345688b52",
+    "patch": "patches/hy4-flash-strata-sycl/strata-hy4-b70-opt.patch",
+    "patch_sha256": "1f55feccc96156d11726abf8d0460c7af44af979b790b72b318e4d6a8869d3f0",
+    "build": "engine/src/hy4flash/sycl/build_hy4_sycl.sh bmg; icpx 2026.1.1 -O3 -fsycl -fsycl-targets=intel_gpu_bmg_g21,intel_gpu_bmg_g31,spir64 -DHY4S_DISABLE_SG8 -DHY4S_ENABLE_SG16_XMX + oneMKL 2026.1",
+    "binary_sha256": "6d85f1adaf7174b8e4bfcb0bb8c98fdf5c95723d8df4cde4cbaa1035e8c05e1c",
+    "binary_bytes": 19502016
+  },
+  "model": {
+    "native_pack": "Hy4-Flash-SQ-64.strata",
+    "native_pack_bytes": 62030467072,
+    "native_pack_sha256": "b2cc38fe4bded35df82a701f9e868ea09c6fcd9be52c8446289e394f804417b2",
+    "engram_pack": "Hy4-Flash-Engram-Q8.strata",
+    "engram_pack_bytes": 67584905216,
+    "engram_pack_sha256": "ab0cf9b3f9c64bd25f6212d4508e7443ab8b9bc133fbccc7bdfb83510a20c2c1",
+    "pack_source": "strata-engine/Hy4-Flash-Strata @ 995bac227ab7e0d221772be641e2b5954a9fac06",
+    "quantization": "SQ-64 native + Engram-Q8"
+  },
+  "launch_shape": "--serve --native SQ-64 --engram Q8 --max-context 32768 --threads 8 --gpus 1,0 --vram-experts-gb 17 --ram-experts-gb 36 --kv-host-above 131072 (+ --peer-vram-experts-gb 25, + --draft dfly2 per arm)",
+  "sampling": {
+    "gate_and_parity": "seed=4242 temperature=0 top_p=1.0",
+    "depth_ladder": "seed=4242 temperature=0.6 top_p=0.95"
+  },
+  "timing": "engine protocol prompt_ms/decode_ms fields, not wall or SSE estimates; cold launches; C1",
+  "placement_opt_17_25": {
+    "primary_vram_experts": 4918,
+    "peer_vram_experts": 7233,
+    "ram_experts": 8841,
+    "ram_gb": 19.77,
+    "cold_ssd_experts": 0,
+    "load_s": 79.0,
+    "log_receipt": "[experts] unified pool: 4918 GPU0 VRAM (17.00 GiB), 7233 peer VRAM (25.00 GiB), 8841 RAM (19.77 GB), 0 cold SSD"
+  },
+  "decode_tok_s": {
+    "0K": {"llamacpp_hy4pr": 11.33, "strata_stock": 17.55, "opt_17_17": 18.90, "opt_17_25": 20.24, "opt_17_25_dfly2": 26.31},
+    "8K": {"llamacpp_hy4pr": 11.33, "strata_stock": 18.74, "opt_17_17": 16.97, "opt_17_25": 18.47, "opt_17_25_dfly2": 33.32},
+    "28K": {"llamacpp_hy4pr": 11.33, "strata_stock": 18.07, "opt_17_17": 17.04, "opt_17_25": 18.18, "opt_17_25_dfly2": 39.73}
+  },
+  "prefill_tok_s": {
+    "0K": {"llamacpp_hy4pr": null, "strata_stock": 37.0, "opt_17_17": 43.0, "opt_17_25": 47.6, "opt_17_25_dfly2": 50.1},
+    "8K": {"llamacpp_hy4pr": 189.0, "strata_stock": 251.7, "opt_17_17": 658.7, "opt_17_25": 715.4, "opt_17_25_dfly2": 719.9},
+    "28K": {"llamacpp_hy4pr": null, "strata_stock": 246.6, "opt_17_17": 676.5, "opt_17_25": 723.9, "opt_17_25_dfly2": 737.8}
+  },
+  "ttft_28k_s": {"strata_stock": 116.4, "opt_17_17": 42.4, "opt_17_25": 39.6, "opt_17_25_dfly2": 38.9},
+  "ratios_vs_stock": {
+    "prefill_8k": {"opt_17_17": 2.62, "opt_17_25": 2.84},
+    "prefill_28k": {"opt_17_25": 2.94},
+    "decode_28k": {"opt_17_25_serial": 1.00, "opt_17_25_dfly2": 2.20}
+  },
+  "arms": [
+    {"arm": "opt-17-17-28k", "config": "opt defaults (grouped prefill + SG16 decode), 17 GiB primary", "rc": 0, "gate": "5/5 +2 think", "key_result": "28K prefill 676.5 t/s, decode 17.04 t/s; first clean opt-path 28K", "new_gpu_dmesg_lines": 0},
+    {"arm": "opt-17-25-asym", "config": "+ --peer-vram-experts-gb 25", "rc": 0, "gate": "5/5 +2", "key_result": "28K prefill 723.9 t/s, decode 18.18 t/s; peer card floor 4,618 MiB", "new_gpu_dmesg_lines": 0},
+    {"arm": "opt-17-25-dfly2", "config": "+ --draft dfly2", "rc": 0, "gate": "5/5 +2", "key_result": "28K decode 39.73 t/s, prefill 737.8 t/s; accept <= 102/128 drafted", "new_gpu_dmesg_lines": 0},
+    {"arm": "opt-17-25-timing", "config": "HY4S_STEP_TIMING=1, 8K + 64 tok", "rc": 0, "gate": null, "key_result": "prefill 710.1 t/s, decode 19.43 t/s; 2,665 step lines", "new_gpu_dmesg_lines": 0},
+    {"arm": "opt-17-25-syncall", "config": "HY4S_SYNCALL=1, 2 greedy reps", "rc": 0, "gate": null, "key_result": "chat0 still nondeterministic (diverges at token 24); jsondet bit-identical 95/95", "new_gpu_dmesg_lines": 1, "dmesg_note": "deferred deletion of a prior-round coredump, not a new fault"}
+  ],
+  "phase_timing_step_timing_8k_64tok": {
+    "prefill": {
+      "layer_steps": 82,
+      "instrumented_ms": 4784.3,
+      "wall_ms_approx": 11500,
+      "phases_ms": {"gx_ms": 4761.6, "peer_pf_ms": 22.7, "vcache_ms": 0.0, "cpu_exp_ms": 0.0, "peer_dec_ms": 0.0},
+      "vs_round1_legacy": {"instrumented_total_ms": "26171 -> 4784 (5.5x)", "peer_pf_ms": "20607.5 (78.7%) -> 22.7 (0.5%)", "gx_ms": "5563.9 -> 4761.6"}
+    },
+    "decode": {
+      "layer_steps": 2583,
+      "instrumented_ms": 362.2,
+      "wall_ms": 3294,
+      "phases_ms": {"vcache_ms": 187.4, "cpu_exp_ms": 125.6, "peer_dec_ms": 49.2, "gx_ms": 0.0, "peer_pf_ms": 0.0},
+      "shares": {"vcache_ms": "51.7%", "cpu_exp_ms": "34.7%", "peer_dec_ms": "13.6%"},
+      "vs_round1_legacy": {"instrumented_total_ms": "664 -> 362 (1.8x)", "cpu_exp_ms": "491.0 (73.9%) -> 125.6 (34.7%, -74% abs)", "vcache_ms": "136.8 (20.6%) -> 187.4 (51.7% of smaller total)", "peer_dec_ms": "36.5 (5.5%) -> 49.2 (13.6%)"}
+    }
+  },
+  "quality_gate": {
+    "suite": "arith 17x23=391, arith 20-9+3=14, strict JSON, train reasoning 60, code-state trace, think no_think, think high",
+    "result": "5/5 on all three ladder arms (opt-17-17-28k, opt-17-25-asym, opt-17-25-dfly2); thinking honored both ways",
+    "dfly2_note": "gate passed under dfly2 at 22.8-29.5 t/s - first gate pass on the drafted path"
+  },
+  "determinism": {
+    "serial_greedy": "nondeterministic on open-ended prompts even under HY4S_SYNCALL=1 (chat0 diverges at token 24; prefix match 24/128); jsondet bit-identical 95/95 matching the round-1 legacy trajectory",
+    "dfly2_parity": "unverifiable, not proven lossy: dfly2 produced sha256 prefixes reachable by serial trajectories, but parity-reps still diverged in-session",
+    "syncall_cost": "~5-8% slower decode; diagnostic only"
+  },
+  "vram_floors_mib": {
+    "opt_17_17_28k": {"peer": 12999, "primary": 1395},
+    "opt_17_25_asym": {"peer": 4618, "primary": 1391},
+    "opt_17_25_dfly2": {"peer": 4662, "primary": 1228},
+    "opt_17_25_timing": {"peer": 4649, "primary": 6171},
+    "opt_17_25_syncall": {"peer": 5186, "primary": 6204}
+  },
+  "teardown_receipt": {
+    "sessions": "5/5 clean QUIT rc=0, READY on first try",
+    "vram_restored_mib": {"peer": 31062, "primary": 32615},
+    "dmesg_delta_lines": 2,
+    "dmesg_delta_detail": "1 perf-interrupt host line (non-GPU) + 1 deferred prior-coredump deletion notice; +0 faults, +0 resets, +0 ccs/bcs/guc errors across all arms"
+  },
+  "dead_levers": [
+    {"lever": "HY4S_XMX_I8=1", "result": "prefill 240.0 t/s (-3% noise), decode 18.59 t/s; gx path is bandwidth-bound", "verdict": "no win - DO-NOT-REPEAT DNR-043"},
+    {"lever": "STRATA_CPUEXP_ACT=q8", "result": "decode 17.86 t/s ~= high mode; CPU-expert path is DRAM-bandwidth-bound, not math-bound", "verdict": "no win - DO-NOT-REPEAT DNR-044"}
+  ],
+  "claim_boundaries": [
+    "Measured on two Arc Pro B70 (BMG-G31), xe driver, Level Zero 20.2.0 / UR 1.14.37020, 230 W caps, C1, max-context 32768.",
+    "P2P was never enabled on this host (probe_p2p false); peer access ran through pinned-host staging. P2P-capable hosts are unverified.",
+    "Serial greedy decode is nondeterministic on open-ended prompts on this engine (pre-existing; HY4S_SYNCALL=1 does not fix it). Parity claims between arms are limited by that nondeterminism.",
+    "--draft dfly2 stays opt-in: biggest decode lever (2.2x at 28K) but parity is unverifiable; do not publish as lossless.",
+    "Depths beyond 28,672, peer budgets above 25 GiB, HY4S_XMX_I8=2, concurrency >1, and non-B70 GPUs are untested.",
+    "Requires native .strata packs (~120 GiB); the Q3_K_M GGUF cannot be loaded by this engine."
+  ],
+  "pending": {
+    "deep_context_rows": "64K / 128K / 245K+ cells reserved for the follow-on deep-context campaign (insertion points marked DEEP_CTX_ROWS in docs/hy4-flash/HY4-FLASH-STRATA-SYCL.md)",
+    "remaining_levers_breakdown": "REMAINING_LEVERS placeholder in the same doc"
+  }
+}
