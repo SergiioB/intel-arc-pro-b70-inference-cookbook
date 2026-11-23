@@ -14,6 +14,15 @@
 #   6. Vision + DSpark + FP8 KV (163K / 177.6K KV):    VISION=1 KV_DTYPE=fp8 DSPARK=1 INK2_CUTLASS_MOE=1 CTX=163840 MAX_BATCHED=2048 GPU_MEM_UTIL=0.92
 #   7. Vision + DSpark + FP8 KV 256K (323.4K KV):      VISION=1 KV_DTYPE=fp8 DSPARK=1 INK2_CUTLASS_MOE=1 CTX=262144 MAX_BATCHED=1024 GPU_MEM_UTIL=0.95
 #   8. Max 512K no-spec FP8 KV (569.5K KV):            KV_DTYPE=fp8 CTX=524288 MAX_BATCHED=1024 GPU_MEM_UTIL=0.95
+#
+# Opt-in kernels (all default 0 = exact stock Triton path):
+#   INK2_CUTLASS_MOE=1        CUTLASS Xe2 NVFP4/MXFP8 MoE GEMM
+#   INK2_SYCL_DECODE_ATTN=1   SYCL M=1 decode attention (no-spec FP8 KV long-context)
+#   INK2_HYBRID_PREFIX_SDPA=1 chunked oneDNN SDPA over the bias-free prefill prefix
+#                             (+Triton relative-bias tail); decode path unchanged
+#   INK2_ESIMD_DECODE_ATTN=1  ESIMD/XMX PagedXmx decode attention on full layers
+#                             (split defaults INK2_ESIMD_SWA_SPLITS=16, INK2_ESIMD_FULL_SPLITS=128,
+#                              fixed per window type for graph-capture safety)
 set -euo pipefail
 
 : "${VLLM_BIN:=vllm}"
@@ -30,6 +39,10 @@ VISION="${VISION:-0}"
 KV_DTYPE="${KV_DTYPE:-auto}"
 INK2_CUTLASS_MOE="${INK2_CUTLASS_MOE:-0}"
 INK2_SYCL_DECODE_ATTN="${INK2_SYCL_DECODE_ATTN:-0}"
+INK2_HYBRID_PREFIX_SDPA="${INK2_HYBRID_PREFIX_SDPA:-0}"
+INK2_ESIMD_DECODE_ATTN="${INK2_ESIMD_DECODE_ATTN:-0}"
+INK2_ESIMD_SWA_SPLITS="${INK2_ESIMD_SWA_SPLITS:-16}"
+INK2_ESIMD_FULL_SPLITS="${INK2_ESIMD_FULL_SPLITS:-128}"
 
 RPC_DIR="$(mktemp -d /tmp/ink2-ipc-XXXXXX)"
 trap 'rm -rf "$RPC_DIR"' EXIT
@@ -40,6 +53,10 @@ export VLLM_WORKER_MULTIPROC_METHOD=spawn
 export VLLM_RPC_BASE_PATH="$RPC_DIR"
 export INK2_CUTLASS_MOE
 export INK2_SYCL_DECODE_ATTN
+export INK2_HYBRID_PREFIX_SDPA
+export INK2_ESIMD_DECODE_ATTN
+export INK2_ESIMD_SWA_SPLITS
+export INK2_ESIMD_FULL_SPLITS
 
 EXTRA=()
 if [[ "$VISION" == "1" ]]; then
