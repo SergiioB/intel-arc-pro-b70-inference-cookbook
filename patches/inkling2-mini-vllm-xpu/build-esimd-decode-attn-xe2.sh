@@ -6,6 +6,11 @@ set -euo pipefail
 # Python environment. Zero external header dependencies beyond Intel oneAPI
 # icpx + PyTorch XPU; the spir64_gen device target also needs ocloc on PATH.
 #
+# Prerequisites when INSTALL=1: Apply 3 (install-vision-fp8kv-xpu.sh) and
+# Apply 4 (build-sycl-decode-attn-xe2.sh) must already be applied to the
+# plugin tree, because inkling2-hybrid-sdpa-esimd.patch stacks on their
+# attention.py and ops/attention.py anchors.
+#
 # Usage:
 #   VENV=/path/to/vllm-inkling-venv ./build-esimd-decode-attn-xe2.sh
 #   INSTALL=0 BUILD_DIR=/tmp/esimd-build VENV=... ./build-esimd-decode-attn-xe2.sh  # build only
@@ -50,7 +55,11 @@ for rel in attention.py ops/attention.py; do
   cp "$f" "${f}.bak" && rm -f "$f" && cp "${f}.bak" "$f" && rm -f "${f}.bak"
 done
 if ! grep -q "INK2_ESIMD_DECODE_ATTN" "$PLUGIN_DIR/ops/attention.py"; then
-  patch -d "$(dirname "$PLUGIN_DIR")" -p1 < "$SCRIPT_DIR/inkling2-hybrid-sdpa-esimd.patch"
+  if ! patch --dry-run --batch --forward -d "$(dirname "$PLUGIN_DIR")" -p1 < "$SCRIPT_DIR/inkling2-hybrid-sdpa-esimd.patch" >/dev/null; then
+    echo "error: inkling2-hybrid-sdpa-esimd.patch dry-run failed — apply Apply 3 (install-vision-fp8kv-xpu.sh) and Apply 4 (build-sycl-decode-attn-xe2.sh) first." >&2
+    exit 1
+  fi
+  patch --batch --forward -d "$(dirname "$PLUGIN_DIR")" -p1 < "$SCRIPT_DIR/inkling2-hybrid-sdpa-esimd.patch"
 fi
 
 echo "Installed AOT bmg_g31 ESIMD XMX Paged Decode Attention to: $PLUGIN_DIR/ops/_inkling_esimd_attn_xe2${EXT_SUFFIX}"

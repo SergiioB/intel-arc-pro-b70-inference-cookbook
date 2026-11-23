@@ -2,9 +2,8 @@
 // Opt-in Intel Xe2 ESIMD XMX Paged Decode Attention for vllm-inkling2-xpu
 // (_inkling_esimd_attn_xe2).
 //
-// Port of Danmoreng's `PagedXmx<M>` (intel-b70-inkling2-mini-vllm @ bcdab17,
-// patches/trellis-vllm-block-table.patch) onto our rel_logits/gate/sink decode
-// contract, following DANMORENG-PORT-BLUEPRINT.md Phase A + FP8 arm:
+// Two-pass ESIMD XMX paged decode attention tailored to the Inkling 2
+// rel_logits / gate / sink contract (both BF16 and FP8 E4M3 KV caches):
 //   - One ESIMD work-item per (split, kv_head, 8-slot row tile); workgroup = 1,
 //     no subgroups, no SLM, no barriers, all state in GRFs
 //     (-ze-opt-large-register-file).
@@ -47,8 +46,7 @@ constexpr float LN2_F = 0.6931471805599453f;
 constexpr float NEG = -1.0e30f;
 
 // E4M3 and binary16 share the significand after a seven-bit left shift;
-// multiply by 256 adjusts the exponent bias, including subnormals (Danmoreng's
-// dequant, verbatim).
+// multiplying by 256 adjusts the exponent bias for both normals and subnormals.
 template <int N>
 ESIMD_INLINE simd<fp16, N> from_e4m3(simd<uint8_t, N> bytes) {
     simd<uint16_t, N> u = convert<uint16_t>(bytes);

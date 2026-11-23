@@ -71,6 +71,8 @@ Enable at runtime with `INK2_SYCL_DECODE_ATTN=1` (default `0` preserves exact st
 
 ## Apply 5: Optional Chunked oneDNN Prefix SDPA + ESIMD XMX Decode (`INK2_HYBRID_PREFIX_SDPA=1`, `INK2_ESIMD_DECODE_ATTN=1`)
 
+**Prerequisites:** requires **Apply 3** (`install-vision-fp8kv-xpu.sh`) and **Apply 4** (`build-sycl-decode-attn-xe2.sh`) to be applied first (`inkling2-hybrid-sdpa-esimd.patch` stacks on their `attention.py` and `ops/attention.py` anchors; `build-esimd-decode-attn-xe2.sh` runs an atomic `patch --dry-run` preflight and exits cleanly without partial edits if prerequisites are missing).
+
 Zero external header dependencies beyond Intel oneAPI `icpx` + PyTorch XPU; `ocloc` must be on `PATH` for the `bmg_g31` AOT device target. The build compiles `_inkling_esimd_attn_xe2` with `-options -ze-opt-large-register-file`, installs it into `vllm_inkling2_xpu/ops/`, and applies the combined opt-in patch:
 
 ```bash

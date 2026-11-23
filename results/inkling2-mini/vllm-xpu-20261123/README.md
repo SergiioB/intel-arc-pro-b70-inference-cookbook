@@ -17,7 +17,7 @@ Both flags default `0` = exact stock Triton behavior.
 
 | File | Contents |
 |---|---|
-| `hybrid-prefix-sdpa-20261123.json` | Same-binary A/B of `INK2_HYBRID_PREFIX_SDPA`: kernel microbench (`1.42x`/`1.94x`/`1.99x` chunked oneDNN vs Triton rel-attn at 64K/128K/245K), live cold prefill `2,706 -> 3,048` / `2,149 -> 2,575` / `1,586 -> 2,023 tok/s` (+12.6%/+19.9%/+27.6%), decode-untouched cells, 5/5 quality gate, safety + closed arms (BF16 SWA ring launch-bound `1.94 vs 1.95 ms`; one-shot >32K oneDNN SDPA trap `0.70x`/`0.46x`) |
+| `hybrid-prefix-sdpa-20261123.json` | Same-binary A/B of `INK2_HYBRID_PREFIX_SDPA`: kernel microbench (`1.42x` one-shot @ 64K; `1.94x`/`1.99x` chunked 8K oneDNN @ 128K/245K vs Triton rel-attn), live cold prefill `2,706 -> 3,048` / `2,149 -> 2,575` / `1,586 -> 2,023 tok/s` (+12.6%/+19.9%/+27.6%), decode-untouched cells, 5/5 quality gate, safety + closed arms (BF16 SWA ring launch-bound `1.94 vs 1.95 ms`; one-shot >32K oneDNN SDPA trap `0.70x`/`0.46x`) |
 | `esimd-decode-20261123.json` | Same-binary A/B of `INK2_ESIMD_DECODE_ATTN` (hybrid SDPA active in both arms): 24/24 kernel parity (`rel_l2 <= 2.63e-3`), isolated per-layer `0.742`/`0.804`/`1.435 ms` at 64K/128K/256K vs Triton `1.37–1.55`/`1.72–1.73`/`3.32–3.34`, live decode `54.1 -> 68.0` / `59.6 -> 76.1` / `37.6 -> 56.6 tok/s` (+11–12%/+19–20%/+32–33% acceptance-normalized step/s), `-22%` to `-34%` J/token, split sweep, quality gate, safety incl. `ctrl-esimd0` incident |
 
 ## Honest incident note (control arm, flag-inactive stock path)
