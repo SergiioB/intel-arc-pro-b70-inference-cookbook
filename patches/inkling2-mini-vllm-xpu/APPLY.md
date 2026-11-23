@@ -28,6 +28,8 @@ patch -p1 -d "$(dirname "$(dirname "$(dirname "$(dirname "$LP")")")")" < patches
 
 ## Apply 2: Optional Native NVFP4 CUTLASS Xe2 extension (`INK2_CUTLASS_MOE=1`)
 
+The AOT `bmg_g31` step also needs `ocloc` on `PATH`. The oneAPI compiler packages do not ship it; install the `intel-ocloc` package from the [compute-runtime release](https://github.com/intel/compute-runtime/releases) that matches your Level Zero driver. Verified end to end with icpx `2026.1.1`, `torch 2.15.0+xpu`, compute-runtime `26.40.40196.8`, and plugin `2e9d28b`; the build, opt-in patch, and module import were checked on 2026-11-23.
+
 ```bash
 source /opt/intel/oneapi/setvars.sh
 git clone https://github.com/intel/sycl-tla.git /tmp/sycl-tla && git -C /tmp/sycl-tla checkout 7b56b936b87f799f80dde60c2fd8d11c1128cebb

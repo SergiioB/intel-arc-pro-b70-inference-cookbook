@@ -217,5 +217,10 @@ Deterministic chat/code/JSON/multi-turn and needle-in-a-haystack retrieval suite
 - Single B70, text-only, `C1` (`--max-num-seqs 1`); multi-user batching and vision inputs are untested.
 - `W4A16`/`W8A16` BF16 activations (not native Blackwell FP4 DPAS).
 - `INK2_CUTLASS_MOE=1` is an opt-in community kernel (`rel_l2 <= 5.0e-5` numerical parity vs exact FP32, not bit-exact). Default `INK2_CUTLASS_MOE=0` preserves the exact upstream plugin.
+- Independent lossless check of `INK2_CUTLASS_MOE=1`. This is external lab evidence at development tier; it is not a cookbook reproduction and its rates are not catalog rows.
+  - **Parity:** teacher-forced against CPU FP32 Transformers (experts dequantized to fp32) over 4,174 positions, top-1 agreement is `0.9935`. The Triton experts it replaced scored `0.9933`, and the CPU BF16-vs-FP32 floor is `0.9938`, so the kernel adds no measurable quality loss.
+  - **Determinism:** greedy outputs were bit-identical across repeated runs, with and without DSpark.
+  - **Same-session deltas:** the per-step cost of DSpark `k=7` dropped by `11–23%` across `0–30K` context, and 8K cold prefill rose by `13%`. Non-spec `M=1` decode was `3%` slower than the Triton GEMV path.
+  - **Evidence:** [`mgaruccio/b70-inference` results/20261123-inkling2-external-kernels-compare](https://github.com/mgaruccio/b70-inference/tree/main/results/20261123-inkling2-external-kernels-compare).
 - DSpark `k=7` does not produce byte-identical greedy hashes to no-spec; do not claim `drafted == serial`.
 - Capacity probes at `mbt=1024`/`512` (`160K` DSpark and `256K` no-spec) used `g=128` completion tokens and a different scheduler chunk size than the `mbt=2048`, `g=2048`, `n=3` speed ladders; they prove capacity and deep-context throughput under that scheduler profile and are kept separate from the `mbt=2048` tables.
