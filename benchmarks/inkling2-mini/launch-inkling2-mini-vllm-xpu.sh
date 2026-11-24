@@ -23,6 +23,13 @@
 #   INK2_ESIMD_DECODE_ATTN=1  ESIMD/XMX PagedXmx decode attention on full layers
 #                             (split defaults INK2_ESIMD_SWA_SPLITS=16, INK2_ESIMD_FULL_SPLITS=128,
 #                              fixed per window type for graph-capture safety)
+#
+# Opt-in verified prefix caching (default 0 = --no-enable-prefix-caching exact stock):
+#   RING_PREFIX_CACHE=1       exports INK2_RING_PREFIX_CACHE=1 and enables
+#                             --enable-prefix-caching with the exact-tail
+#                             single-slot ring guard (Apply 6,
+#                             install-ring-prefix-cache.sh required first;
+#                             requires --max-num-seqs 1, already set below)
 set -euo pipefail
 
 : "${VLLM_BIN:=vllm}"
@@ -43,6 +50,8 @@ INK2_HYBRID_PREFIX_SDPA="${INK2_HYBRID_PREFIX_SDPA:-0}"
 INK2_ESIMD_DECODE_ATTN="${INK2_ESIMD_DECODE_ATTN:-0}"
 INK2_ESIMD_SWA_SPLITS="${INK2_ESIMD_SWA_SPLITS:-16}"
 INK2_ESIMD_FULL_SPLITS="${INK2_ESIMD_FULL_SPLITS:-128}"
+RING_PREFIX_CACHE="${RING_PREFIX_CACHE:-0}"
+INK2_RING_PREFIX_CACHE="$RING_PREFIX_CACHE"
 
 RPC_DIR="$(mktemp -d /tmp/ink2-ipc-XXXXXX)"
 trap 'rm -rf "$RPC_DIR"' EXIT
@@ -57,6 +66,7 @@ export INK2_HYBRID_PREFIX_SDPA
 export INK2_ESIMD_DECODE_ATTN
 export INK2_ESIMD_SWA_SPLITS
 export INK2_ESIMD_FULL_SPLITS
+export INK2_RING_PREFIX_CACHE
 
 EXTRA=()
 if [[ "$VISION" == "1" ]]; then
@@ -70,6 +80,11 @@ fi
 if [[ "$DSPARK" == "1" ]]; then
   EXTRA+=(--speculative-config '{"method":"dspark","num_speculative_tokens":7}')
 fi
+if [[ "$RING_PREFIX_CACHE" == "1" ]]; then
+  EXTRA+=(--enable-prefix-caching)
+else
+  EXTRA+=(--no-enable-prefix-caching)
+fi
 
 exec "$VLLM_BIN" serve "$MODEL" \
   --host "$HOST" \
@@ -81,7 +96,6 @@ exec "$VLLM_BIN" serve "$MODEL" \
   --max-num-seqs 1 \
   --block-size 64 \
   --gpu-memory-utilization "$GPU_MEM_UTIL" \
-  --no-enable-prefix-caching \
   -cc.mode=none \
   -cc.cudagraph_mode=FULL_DECODE_ONLY \
   --reasoning-parser inkling \

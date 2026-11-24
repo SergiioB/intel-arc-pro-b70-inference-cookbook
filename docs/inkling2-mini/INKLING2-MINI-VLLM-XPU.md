@@ -72,7 +72,7 @@ VLLM_BIN=./vllm-inkling-venv/bin/vllm MODEL=/path/to/Inkling-2-Mini \
 Required serving flags and why:
 - `--language-model-only --dtype bfloat16`: text-only XPU path; BF16 activations and KV cache.
 - `-cc.mode=none -cc.cudagraph_mode=FULL_DECODE_ONLY`: disables unsupported `torch.compile` while enabling XPU decode graph replay.
-- `--no-enable-prefix-caching`: prefix caching stays off until multi-turn corruption checks pass on this stack.
+- `--no-enable-prefix-caching` (default; `RING_PREFIX_CACHE=1` flips it on + `INK2_RING_PREFIX_CACHE=1`): stock hits diverge on resends ([vLLM #53912](https://github.com/vllm-project/vllm/issues/53912)) — opt-in via Apply 6's ring guard (§I).
 - `--max-num-batched-tokens` (`2048` vs `1024` vs `512`): vLLM's `SlidingWindowManager` scales SWA in-flight block reservation with `max_num_batched_tokens` across all 40 local-attention visits. Setting `4096`/`8192` collapses max context to `~7K`; lowering to `1024` unlocks **163K with DSpark** and **256K no-spec** (`308.7K` KV tokens at `512`).
 - `--reasoning-parser inkling --enable-auto-tool-choice --tool-call-parser inkling`: separates `message.reasoning` from `message.content`; without it, raw reasoning leaks into `content`.
 
@@ -172,6 +172,17 @@ Two independent opt-ins, one combined patch ([`inkling2-hybrid-sdpa-esimd.patch`
 
 Enable on the launcher with `INK2_HYBRID_PREFIX_SDPA=1 INK2_ESIMD_DECODE_ATTN=1` (independent; split overrides `INK2_ESIMD_SWA_SPLITS` / `INK2_ESIMD_FULL_SPLITS`).
 
+### I. Opt-in Exact-Tail Single-Slot Ring Prefix Cache (2026-11-24)
+
+![Cold vs warm resend vs +new-turn TTFT, 5-turn session, control gate](../assets/b70-inkling2-mini-ring-prefix-cache-20261124.png)
+
+`RING_PREFIX_CACHE=1` on the launcher ([`install-ring-prefix-cache.sh`](../../patches/inkling2-mini-vllm-xpu/install-ring-prefix-cache.sh) first; `0` = exact stock). Measured 2026-11-24 on the §H stack + `--enable-prefix-caching`, `mbt=2048`, `u=0.92`, C1, greedy `temp=0` + `return_token_ids`. Evidence: [`results/inkling2-mini/vllm-xpu-20261124/`](../../results/inkling2-mini/vllm-xpu-20261124/README.md).
+
+- **Why:** stock `--enable-prefix-caching` returned **3 distinct token-id SHA-256s** on one repeated 2K prompt (divergence @ token 12–72, [vLLM #53912](https://github.com/vllm-project/vllm/issues/53912) class, persists without `--speculative-config`): block-hash hits restore K/V pages but not SWA conv state / local-attention rings / DSpark draft caches.
+- **How:** scheduler-side `RingPrefix` (`hit_tokens=128`, `slack=136`) admits only hits inside a live/saved frontier; `RingPrefixWorker` snapshots the final-slack tail, replays it byte-exact on exact-tail resends, restores conv-state rows for `+new-turn` hits. Uncovered hits fail closed (`RuntimeError`, never fired).
+- **Results:** resends **bit-identical** at `18K`/`75K`/`128K` in `0.05–0.23 s` vs `5.21–49.6 s` cold; `+new-turn` `0.18–0.47 s` w/ exact needle recall; 5-turn `75K` session `0.35–0.38 s`/turn. `cache_salt` isolation clean.
+- **Honest notes:** both `128K` new-salt recomputes flipped a few reasoning-token ids (text byte-identical) — pre-existing engine nondeterminism (`cached=0` = no ring I/O). One Xe timeout on cold session turn-0 (completed correctly).
+
 ### G. How to Push This Further — Measured Step Breakdown, Speculative Decoding & Approach
 
 #### 1. Measured millisecond budget of one `M=8` DSpark verify round (`1× B70`, `230 W`)
@@ -206,7 +217,7 @@ Before writing any new kernel or speculative tweak, decompose where the `~38 ms`
      1. **Quantized INT4 / top-256 shortlist draft `lm_head` + fused Markov sampling** (trims the `~5.0 ms` draft round toward `~2.5 ms`).
      2. **Fused draft input-mix taps** (single SYCL/Triton op instead of separate DFlare mix launches).
      3. **Re-enable Adaptive DSpark *after* Lever #1 shrinks attention** — once attention drops from `31–36 ms` to `~12 ms`, saving `2.6–4 ms` via `M=4` adaptive verify becomes `~15%` of the smaller step!
-     4. **Validated single-slot ring prefix cache** (sub-second warm 196K follow-ups for single-user coding agents — only after passing a zero-retrieval-miss multi-turn gate!).
+     4. **Validated single-slot ring prefix cache — SHIPPED (`RING_PREFIX_CACHE=1`, §I).**
 4. **Hybrid oneDNN Prefix SDPA outside the `1024`-token relative-bias band — SHIPPED (`INK2_HYBRID_PREFIX_SDPA=1`, 2026-11-23):**
    - Chunked oneDNN SDPA (`8192`-token windows, `16 MiB` persistent BF16 scratch) now handles the bias-free prefix on full layers, fp32-LSE-merged with the Triton rel-bias tail: `2,706 -> 3,048` / `2,149 -> 2,575` / `1,586 -> 2,023 tok/s` cold prefill at `64K`/`128K`/`245K` (+12.6%/+19.9%/+27.6%). The matching ESIMD/XMX `PagedXmx` M=8 decode kernel (`INK2_ESIMD_DECODE_ATTN=1`) adds +11–12%/+19–20%/+32–33% step-normalized decode. Both shipped as opt-ins; details in §H.
 
