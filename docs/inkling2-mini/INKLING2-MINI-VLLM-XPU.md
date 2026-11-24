@@ -72,7 +72,7 @@ VLLM_BIN=./vllm-inkling-venv/bin/vllm MODEL=/path/to/Inkling-2-Mini \
 Required serving flags and why:
 - `--language-model-only --dtype bfloat16`: text-only XPU path; BF16 activations and KV cache.
 - `-cc.mode=none -cc.cudagraph_mode=FULL_DECODE_ONLY`: disables unsupported `torch.compile` while enabling XPU decode graph replay.
-- `--no-enable-prefix-caching` (default; `RING_PREFIX_CACHE=1` flips it on + `INK2_RING_PREFIX_CACHE=1`): stock hits diverge on exact resends ([vLLM #53912](https://github.com/vllm-project/vllm/issues/53912)) — opt-in only via Apply 6's ring guard (§I).
+- `--no-enable-prefix-caching` (default; `RING_PREFIX_CACHE=1` flips it on + `INK2_RING_PREFIX_CACHE=1`): stock hits diverge on resends ([vLLM #53912](https://github.com/vllm-project/vllm/issues/53912)) — opt-in via Apply 6's ring guard (§I).
 - `--max-num-batched-tokens` (`2048` vs `1024` vs `512`): vLLM's `SlidingWindowManager` scales SWA in-flight block reservation with `max_num_batched_tokens` across all 40 local-attention visits. Setting `4096`/`8192` collapses max context to `~7K`; lowering to `1024` unlocks **163K with DSpark** and **256K no-spec** (`308.7K` KV tokens at `512`).
 - `--reasoning-parser inkling --enable-auto-tool-choice --tool-call-parser inkling`: separates `message.reasoning` from `message.content`; without it, raw reasoning leaks into `content`.
 
@@ -181,7 +181,7 @@ Enable on the launcher with `INK2_HYBRID_PREFIX_SDPA=1 INK2_ESIMD_DECODE_ATTN=1`
 - **Why:** stock `--enable-prefix-caching` returned **3 distinct token-id SHA-256s** on one repeated 2K prompt (divergence @ token 12–72, [vLLM #53912](https://github.com/vllm-project/vllm/issues/53912) class, persists without `--speculative-config`): block-hash hits restore K/V pages but not SWA conv state / local-attention rings / DSpark draft caches.
 - **How:** scheduler-side `RingPrefix` (`hit_tokens=128`, `slack=136`) admits only hits inside a live/saved frontier; `RingPrefixWorker` snapshots the final-slack tail, replays it byte-exact on exact-tail resends, restores conv-state rows for `+new-turn` hits. Uncovered hits fail closed (`RuntimeError`, never fired).
 - **Results:** resends **bit-identical** at `18K`/`75K`/`128K` in `0.05–0.23 s` vs `5.21–49.6 s` cold; `+new-turn` `0.18–0.47 s` w/ exact needle recall; 5-turn `75K` session `0.35–0.38 s`/turn. `cache_salt` isolation clean.
-- **Honest notes:** both `128K` new-salt recomputes flipped a few reasoning-token ids (text byte-identical) — pre-existing engine nondeterminism (`cached=0` = no ring I/O). One Xe timeout on cold session turn-0 (completed correctly). Module tests 19/19.
+- **Honest notes:** both `128K` new-salt recomputes flipped a few reasoning-token ids (text byte-identical) — pre-existing engine nondeterminism (`cached=0` = no ring I/O). One Xe timeout on cold session turn-0 (completed correctly).
 
 ### G. How to Push This Further — Measured Step Breakdown, Speculative Decoding & Approach
 

@@ -5049,6 +5049,33 @@
     "commit": "0f562be60aecb24d9a4e6f85c86eefab1c6883fe",
     "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/0f562be60aecb24d9a4e6f85c86eefab1c6883fe/results/inkling2-mini/vllm-xpu-20261123/esimd-decode-20261123.json"
    }
+  },
+  {
+   "id": "inkling2-mini-vllm-xpu-ring-prefix-cache-20261124",
+   "kind": "capability",
+   "title": "Inkling 2 Mini opt-in exact-tail ring prefix cache (bit-identical resends 0.05-0.23 s at 18K-128K, one B70, 230 W)",
+   "summary": "Single-slot ring prefix cache (INK2_RING_PREFIX_CACHE=1 + --enable-prefix-caching, --max-num-seqs 1; 0 = exact stock) fixing stock hits that diverge on resends (vLLM #53912 class, 3 distinct token SHA-256s on one 2K prompt): RingPrefix (hit_tokens=128, slack=136) admits only frontier-covered hits; RingPrefixWorker replays the saved tail byte-exact or restores conv-state rows, else fails closed. Live gate 2026-11-24 (FP8 KV + CUTLASS Xe2 + DSpark k=7 + hybrid SDPA + ESIMD, mbt=2048, u=0.92, greedy temp=0): resends bit-identical at 18K/75K/128K in 0.05-0.23 s vs 5.21-49.6 s cold; +new-turn 0.18-0.47 s w/ exact needle recall; 5-turn 75K session 0.35-0.38 s/turn; salt isolation clean; anomalies: sporadic 128K cold-token flip (pre-existing), one Xe timeout.",
+   "evidence_status": "validated",
+   "measured_at": "2026-11-24",
+   "hardware": {
+    "gpu_model": "Intel Arc Pro B70",
+    "gpu_count": 1,
+    "vram_gib_per_gpu": 32,
+    "power_cap_w": 230
+   },
+   "engine": {
+    "name": "vLLM XPU + vllm-inkling2-xpu + PR #69186 + CUTLASS Xe2 + FP8 KV + hybrid SDPA + ESIMD + ring prefix cache",
+    "version": "vllm-0.34.0rc1.dev1133+g647a76866.xpu + vllm-inkling2-xpu@2e9d28b0 + install-ring-prefix-cache.sh"
+   },
+   "model": {
+    "id": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+    "quantization": "native NVFP4/MXFP8 experts + BF16 dense + FP8 E4M3 KV",
+    "speculation": "dspark k=7"
+   },
+   "evidence": {
+    "commit": "eea944459f158e8379b3537bfe4465c2cd286171",
+    "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/eea944459f158e8379b3537bfe4465c2cd286171/results/inkling2-mini/vllm-xpu-20261124/ring-prefix-cache-20261124.json"
+   }
   }
  ]
 }
