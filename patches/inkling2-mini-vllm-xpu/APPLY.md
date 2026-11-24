@@ -23,6 +23,11 @@
    - `attn_esimd_xe2.cpp` — AOT `bmg_g31` ESIMD/XMX `PagedXmx<M>` decode attention (FP8 E4M3 + BF16 KV, two-pass split-KV, `-ze-opt-large-register-file`).
    - `inkling2-hybrid-sdpa-esimd.patch` — adds both opt-ins to `vllm_inkling2_xpu/attention.py` (chunked oneDNN SDPA over the bias-free prefill prefix, fp32-LSE merged with the Triton relative-bias tail) and `vllm_inkling2_xpu/ops/attention.py` (ESIMD `PagedXmx` decode dispatch: `mql<=8`, GQA group `3`, `head_dim 128`, single request). Both flags default `0` = exact stock behavior.
    - `build-esimd-decode-attn-xe2.sh` — reproducible `icpx` AOT build & install script (also needs `ocloc` on `PATH`).
+6. **Optional opt-in exact-tail single-slot prefix cache (`vllm` + `vllm-inkling2-xpu`, `INK2_RING_PREFIX_CACHE=1`):**
+   - `ring_prefix.py` + `prefix_tail.py` + `ring_prefix_worker.py` — ring-history scheduler guard + exact prefill-tail snapshots (token ids, hidden rows, per-cache byte rows) covering the conv/local-attention/DSpark state vLLM's block-hash reuse does not restore.
+   - `vllm-ring-prefix-cache-kvmanager.patch` — five flag-gated hooks in `vllm/v1/core/kv_cache_manager.py` (`limit()` before `find_longest_cache_hit`, `covers()` veto after, `scheduled()` in `allocate_slots`, `finish()` in `free`, hash reset in `reset_prefix_cache`).
+   - `vllm-inkling2-xpu-ring-prefix-optin.patch` — flag validation (requires `--enable-prefix-caching` + `--max-num-seqs 1`), worker construction, `forward()` entry/exit, and `requires_raw_input_tokens` only under the flag.
+   - `install-ring-prefix-cache.sh` — copies the three modules, runs an atomic `patch --dry-run` preflight on both patches before touching any file, and breaks `uv` hardlinks on the patch targets; idempotent on a second run.
 
 ## Apply 1: Required PR `#69186` patch
 
@@ -86,3 +91,24 @@ Enable at runtime with `INK2_HYBRID_PREFIX_SDPA=1` and/or `INK2_ESIMD_DECODE_ATT
 - **Decode (`INK2_ESIMD_DECODE_ATTN=1`):** two-pass ESIMD XMX `PagedXmx` on full-attention layers: `54.1 -> 68.0` tok/s @ 64K, `59.6 -> 76.1` @ 128K, `37.6 -> 56.6` @ 245K raw post-first rate (`+11–12%` / `+19–20%` / `+32–33%` acceptance-normalized step/s) under live XPU graph replay; `-22%` to `-34%` J/token at 128K/245K.
 
 Evidence: `results/inkling2-mini/vllm-xpu-20261123/`; catalog records `inkling2-mini-vllm-xpu-hybrid-prefix-sdpa-20261123` and `inkling2-mini-vllm-xpu-esimd-decode-20261123` in `data/benchmarks.v1.json`.
+
+## Apply 6: Optional Exact-Tail Single-Slot Prefix Cache (`INK2_RING_PREFIX_CACHE=1`)
+
+**Prerequisites:** the pinned vLLM wheel (`vllm-0.34.0rc1.dev1133+g647a76866.xpu`) and plugin (`vllm-inkling2-xpu@2e9d28b`) — `vllm-ring-prefix-cache-kvmanager.patch` anchors on the stock `vllm/v1/core/kv_cache_manager.py` and `vllm-inkling2-xpu-ring-prefix-optin.patch` anchors on `model.py` (verified to apply on both the untouched plugin file and the post-Apply-3 tree; no earlier Apply is required). Runtime prerequisites enforced by the patch itself: `--enable-prefix-caching` and `--max-num-seqs 1` (the launcher already passes `--max-num-seqs 1`). No compiler, `icpx`, or GPU is needed — pure Python modules plus two source patches.
+
+```bash
+VENV=./vllm-inkling-venv patches/inkling2-mini-vllm-xpu/install-ring-prefix-cache.sh
+```
+
+The installer copies `ring_prefix.py` / `prefix_tail.py` / `ring_prefix_worker.py` into `vllm_inkling2_xpu/`, runs an atomic `patch --dry-run --batch --forward` preflight on **both** patches before modifying any file (a failed dry-run exits without touching the tree), breaks `uv` hardlinks on `model.py` and `kv_cache_manager.py`, then applies the patches. Re-running it is a verified no-op.
+
+Enable at runtime with `RING_PREFIX_CACHE=1` on `benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh` (exports `INK2_RING_PREFIX_CACHE=1` and switches `--no-enable-prefix-caching` to `--enable-prefix-caching`; default `0` keeps the exact stock launcher line). Requires `INK2_ESIMD_DECODE_ATTN`/`INK2_HYBRID_PREFIX_SDPA`/`INK2_CUTLASS_MOE`/`DSPARK` to be set independently — measured with all four on, but the mechanism gates none of them.
+
+Why this exists: stock `--enable-prefix-caching` on this hybrid stack returns *different* outputs on exact resends — the flag-off control produced three distinct SHA-256 digests on one repeated 2K prompt (first token-id divergence at index 12–72; upstream [vLLM #53912](https://github.com/vllm-project/vllm/issues/53912) class). Block-hash reuse restores K/V pages but not the sliding-window conv state, local-attention rings, or DSpark draft caches, so a naive hit replays a prefix built on wrong state. The ring guard admits only hits that land inside a live or saved frontier (`cache_hit_alignment_tokens = 128`, `slack = 136`), and the worker replays the captured exact tail byte-for-byte. Measured 2026-11-24 on 1x B70 at 230 W, FP8 KV + DSpark `k=7` + CUTLASS Xe2 + hybrid SDPA + ESIMD decode, `mbt=2048`:
+
+- Exact resends replay bit-identical output (token-id + text SHA match) at `18K`/`75K`/`128K` in `0.05–0.23 s` vs `5.21–49.6 s` cold; `+new-turn` hits prefill only the appended tokens in `0.18–0.47 s` with exact needle recall.
+- 5-turn growing session at `75K`: every turn hits the shared-prefix boundary `75008`, `0.35–0.38 s` TTFT (vs `74.7 s` cold turn 0), turn-4 recalls both turn-0 and turn-2 needles exactly.
+- `cache_salt` isolation clean (`cached=0`, fresh recompute); sporadic cold-path 128K reasoning-token flips are a pre-existing engine property, not mechanism state (see evidence README).
+- Multi-seq and `--language-model-only`-omitted vision forwards are handled (multimodal tails are never captured; `IMAGE_PAD` forwards skip).
+
+Evidence: `results/inkling2-mini/vllm-xpu-20261124/`; catalog record `inkling2-mini-vllm-xpu-ring-prefix-cache-20261124` in `data/benchmarks.v1.json`.
