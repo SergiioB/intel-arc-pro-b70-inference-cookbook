@@ -14,6 +14,7 @@
 #   6. Vision + DSpark + FP8 KV (163K / 177.6K KV):    VISION=1 KV_DTYPE=fp8 DSPARK=1 INK2_CUTLASS_MOE=1 CTX=163840 MAX_BATCHED=2048 GPU_MEM_UTIL=0.92
 #   7. Vision + DSpark + FP8 KV 256K (323.4K KV):      VISION=1 KV_DTYPE=fp8 DSPARK=1 INK2_CUTLASS_MOE=1 CTX=262144 MAX_BATCHED=1024 GPU_MEM_UTIL=0.95
 #   8. Max 512K no-spec FP8 KV (569.5K KV):            KV_DTYPE=fp8 CTX=524288 MAX_BATCHED=1024 GPU_MEM_UTIL=0.95
+#   9. 409K DSpark / C32 (separate patched stack; see the recipe): INK2_PROFILE=sparse-409k
 #
 # Opt-in kernels (all default 0 = exact stock Triton path):
 #   INK2_CUTLASS_MOE=1        CUTLASS Xe2 NVFP4/MXFP8 MoE GEMM
@@ -38,6 +39,22 @@ GPU="${GPU:-0}"
 HOST="${HOST:-127.0.0.1}"
 PORT="${PORT:-8000}"
 SERVED_NAME="${SERVED_NAME:-inkling-2-mini}"
+INK2_PROFILE="${INK2_PROFILE:-legacy}"
+case "$INK2_PROFILE" in
+  legacy) ;;
+  sparse-409k)
+    : "${CTX:=409000}" "${MAX_SEQS:=32}" "${GPU_MEM_UTIL:=0.98}" "${MAX_BATCHED:=2048}"
+    : "${DSPARK:=1}" "${KV_DTYPE:=fp8}" "${INK2_CUTLASS_MOE:=1}" "${INK2_HYBRID_PREFIX_SDPA:=1}"
+    export INK2_SPARSE_CONV_HISTORY=1
+    if [[ "${RING_PREFIX_CACHE:-0}" != 0 || "${VISION:-0}" != 0 ||
+          "${INK2_SYCL_DECODE_ATTN:-0}" != 0 || "${INK2_ESIMD_DECODE_ATTN:-0}" != 0 ]]; then
+      echo 'sparse-409k is text-only and does not use the legacy ring or decode patches' >&2
+      exit 2
+    fi
+    ;;
+  *) echo "Unknown INK2_PROFILE: $INK2_PROFILE" >&2; exit 2 ;;
+esac
+MAX_SEQS="${MAX_SEQS:-1}"
 CTX="${CTX:-90112}"
 GPU_MEM_UTIL="${GPU_MEM_UTIL:-0.88}"
 MAX_BATCHED="${MAX_BATCHED:-2048}"
@@ -78,9 +95,23 @@ if [[ "$KV_DTYPE" != "auto" ]]; then
   EXTRA+=(--kv-cache-dtype "$KV_DTYPE")
 fi
 if [[ "$DSPARK" == "1" ]]; then
-  EXTRA+=(--speculative-config '{"method":"dspark","num_speculative_tokens":7}')
+  if [[ "$INK2_PROFILE" == sparse-409k ]]; then
+    EXTRA+=(--speculative-config '{"method":"dspark","num_speculative_tokens":7,"draft_sample_method":"probabilistic"}')
+  else
+    EXTRA+=(--speculative-config '{"method":"dspark","num_speculative_tokens":7}')
+  fi
 fi
-if [[ "$RING_PREFIX_CACHE" == "1" ]]; then
+if [[ "$INK2_PROFILE" == sparse-409k ]]; then
+  EXTRA+=(--no-async-scheduling --generation-config auto)
+  if [[ -f "$MODEL/chat_template.jinja" ]]; then
+    EXTRA+=(--chat-template "$MODEL/chat_template.jinja")
+  fi
+fi
+if [[ "$RING_PREFIX_CACHE" == "1" && "$MAX_SEQS" != 1 ]]; then
+  echo 'The legacy ring prefix cache requires MAX_SEQS=1' >&2
+  exit 2
+fi
+if [[ "$RING_PREFIX_CACHE" == "1" || "$INK2_PROFILE" == sparse-409k ]]; then
   EXTRA+=(--enable-prefix-caching)
 else
   EXTRA+=(--no-enable-prefix-caching)
@@ -93,7 +124,7 @@ exec "$VLLM_BIN" serve "$MODEL" \
   --dtype bfloat16 \
   --max-model-len "$CTX" \
   --max-num-batched-tokens "$MAX_BATCHED" \
-  --max-num-seqs 1 \
+  --max-num-seqs "$MAX_SEQS" \
   --block-size 64 \
   --gpu-memory-utilization "$GPU_MEM_UTIL" \
   -cc.mode=none \

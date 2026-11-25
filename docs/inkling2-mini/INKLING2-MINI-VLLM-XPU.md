@@ -42,6 +42,19 @@ uv pip install --python vllm-inkling-venv/bin/python --no-deps \
 
 Apply PR `#69186` (required) and optionally build the native NVFP4 CUTLASS Xe2 extension (`bmg_g31` AOT SYCL, numerical parity `rel_l2 <= 5.0e-5` vs exact FP32 reference) following [`patches/inkling2-mini-vllm-xpu/APPLY.md`](../../patches/inkling2-mini-vllm-xpu/APPLY.md). Keep `VLLM_RPC_BASE_PATH` on a short directory such as `/tmp/ink2-ipc-*` so ZeroMQ IPC socket paths stay under Linux's 107-byte `sun_path` limit.
 
+### Separate source route: sparse conv history (`#69444`)
+
+For the 409K/C32 profile, follow the [pinned source instructions in the XPU plugin](https://github.com/mgaruccio/vllm-inkling2-xpu/blob/b0cb8f61e4d869df1da97b83d27b80113c24fdd1/README.md#optional-409k-text-only-serving-with-dspark-and-sparse-conv-history). The patch order is in the [image and patch matrix](../IMAGE-AND-PATCH-MATRIX.md). Install the plugin into the same vLLM environment and build its native CUTLASS Xe2 extension using the plugin's build helper. Do not layer any of the old wheel overlays or single-slot ring cache on top of this source stack.
+
+```bash
+VLLM_BIN=./vllm-inkling-venv/bin/vllm MODEL=/path/to/Inkling-2-Mini \
+  INK2_PROFILE=sparse-409k benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh
+```
+
+This text-only profile sets `CTX=409000`, `MAX_SEQS=32`, `MAX_BATCHED=2048`, and `GPU_MEM_UTIL=0.98`, with FP8 KV, native prefix caching, synchronous scheduling, CUTLASS Xe2, hybrid SYCL-TLA prefill, and DSpark k=7 probabilistic drafting. The older launcher defaults are unchanged. If your engine cannot fit the context, set a lower `CTX`; leave the KV sizing checks enabled. C32 is a scheduler limit, not a promise that 32 long requests fit the shared KV pool.
+
+The [external development evidence](https://github.com/mgaruccio/b70-inference/blob/16e94ad4/results/20261125-inkling2-sparse-conv/README.md#production-c32-at-409000-tokens) verifies one near-limit request, not answer quality at 409K or mixed-traffic latency. It is not a cookbook benchmark reproduction.
+
 ## 3. Serve (Pick Your Operating Profile)
 
 Use [`benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh`](../../benchmarks/inkling2-mini/launch-inkling2-mini-vllm-xpu.sh):

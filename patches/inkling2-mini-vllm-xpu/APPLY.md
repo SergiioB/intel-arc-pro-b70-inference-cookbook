@@ -1,5 +1,7 @@
 # Patch Stack: Inkling 2 Mini on vLLM XPU
 
+For the separate upstream-based 409K source route, see the [image and patch matrix](../../docs/IMAGE-AND-PATCH-MATRIX.md) and [recipe](../../docs/inkling2-mini/INKLING2-MINI-VLLM-XPU.md#separate-source-route-sparse-conv-history-69444). The older wheel overlays below are not part of that stack.
+
 - **Target vLLM base:** `vllm-0.34.0rc1.dev1133+g647a76866.xpu` (upstream commit `647a76866b4559a74e27d1c6b55fbffe85c07ce4`, before upstream [vLLM PR #69186](https://github.com/vllm-project/vllm/pull/69186) merged).
 - **Plugin:** [`mgaruccio/vllm-inkling2-xpu`](https://github.com/mgaruccio/vllm-inkling2-xpu) pinned at `2e9d28b04ff23f5d9996a221ffaa0ae3a440d8f9` (installed `--no-deps` into the same environment).
 
