@@ -1,0 +1,23 @@
+Running 130 items in this shard
+........................................................................ [ 55%]
+..........................................................               [100%]
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_converter_streaming.py::test_streaming_biascorr_conversion_tiny_llama
+tests/test_converter_streaming.py::test_streaming_calibration_is_causal_bit_identical_prefix
+  /work/vllm-hf-int4-g16/hf_int4_g16_xpu/calibration.py:360: FutureWarning: `device` is deprecated and will be removed in version 5.18 for `LlamaRotaryEmbedding.__init__`.
+    rotary = rotary_cls(config=cfg, device=dev)
+
+tests/test_converter_streaming.py::test_streaming_biascorr_conversion_tiny_qwen35_conditional
+  /work/vllm-hf-int4-g16/hf_int4_g16_xpu/calibration.py:360: FutureWarning: `device` is deprecated and will be removed in version 5.18 for `Qwen3_5TextRotaryEmbedding.__init__`.
+    rotary = rotary_cls(config=cfg, device=dev)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+130 passed, 5 warnings in 84.18s (0:01:24)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+pytest_rc=0

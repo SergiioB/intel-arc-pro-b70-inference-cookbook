@@ -1,0 +1,1345 @@
+{
+  "experiment": "exp14c frozen 329-item graded battery on live vLLM serve, GPU1 sequential",
+  "created_at": "2026-11-25T03:28:14.832081+00:00",
+  "image": "vllm/vllm-openai-xpu:v0.31.0",
+  "port": 8091,
+  "gpu_assignment": "GPU1 only <card-node> <render-node>, container level_zero:0/ZE_AFFINITY_MASK=0",
+  "battery_harness": "exact frozen fixtures and request shape from <lab-fixtures>/battery.py; code items cap 1024, regression items cap 1536 (the exact exp12a battery behavior). cap-hit accounting reports both 1536 and 1024.",
+  "grader": "exact no-network Docker grade.sh + tf-prefix-attn-20261113/grade.py + qwen38-wsp-20261104 fixtures/graders.py",
+  "arms": {
+    "vllm_hf_int4_g16_bc": {
+      "key": "vllm_hf_int4_g16_bc",
+      "model": "./models/Qwen3.8-27B-HF-INT4-G16-BC",
+      "env": {
+        "HF_INT4_G16_BIASCORR_MODE": "default",
+        "HF_INT4_G16_MODE": "auto"
+      },
+      "plugin_editable_install": true,
+      "cooldown_before_arm": {
+        "start": {
+          "act_mhz": 0,
+          "energy1_input_uj": 2154163384826,
+          "gt0_act_mhz": 0,
+          "gt0_cur_mhz": 2800,
+          "gt0_max_mhz": 2800,
+          "gt1_act_mhz": 0,
+          "gt1_cur_mhz": 400,
+          "gt1_max_mhz": 1500,
+          "hwmon": "<hwmon>",
+          "power_cap_w": 230.0,
+          "temp_c": 28.0,
+          "utc": "2026-11-25T03:28:14Z",
+          "vram_usage_bytes": 28087762944,
+          "vram_visible_avail_mib": 5869
+        },
+        "end": {
+          "act_mhz": 0,
+          "energy1_input_uj": 2154168922241,
+          "gt0_act_mhz": 0,
+          "gt0_cur_mhz": 2800,
+          "gt0_max_mhz": 2800,
+          "gt1_act_mhz": 0,
+          "gt1_cur_mhz": 400,
+          "gt1_max_mhz": 1500,
+          "hwmon": "<hwmon>",
+          "power_cap_w": 230.0,
+          "temp_c": 28.0,
+          "utc": "2026-11-25T03:28:15Z",
+          "vram_usage_bytes": 28087762944,
+          "vram_visible_avail_mib": 5869
+        },
+        "rule": "wait until <=55C or 30s plateau/no improvement"
+      },
+      "telemetry_before_start": {
+        "act_mhz": 0,
+        "energy1_input_uj": 2154171643676,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 28.0,
+        "utc": "2026-11-25T03:28:15Z",
+        "vram_usage_bytes": 28087762944,
+        "vram_visible_avail_mib": 5869
+      },
+      "started_at": "2026-11-25T03:28:15.078292+00:00",
+      "startup": {
+        "ok": true,
+        "startup_s": 0.0,
+        "state": "running|0",
+        "models": {
+          "object": "list",
+          "data": [
+            {
+              "id": "default",
+              "object": "model",
+              "created": 1795577295,
+              "owned_by": "vllm",
+              "root": "./models/Qwen3.8-27B-HF-INT4-G16-BC",
+              "parent": null,
+              "max_model_len": 8192,
+              "permission": [
+                {
+                  "id": "modelperm-8f67699c36804483",
+                  "object": "model_permission",
+                  "created": 1795577295,
+                  "allow_create_engine": false,
+                  "allow_sampling": true,
+                  "allow_logprobs": true,
+                  "allow_search_indices": false,
+                  "allow_view": true,
+                  "allow_fine_tuning": false,
+                  "organization": "*",
+                  "group": null,
+                  "is_blocking": false
+                }
+              ]
+            }
+          ]
+        },
+        "container_id": "63212498e628e61fc3a337ffd3d4267b568001fbe2c511a06689249a8ee111ae",
+        "container_started_at": "2026-11-25T02:30:13.67459226Z",
+        "container_cmd": "[\"-lc\",\"set -o pipefail; cd /work/vllm-hf-int4-g16; pip install --no-deps --no-build-isolation -e . > /work/results/exp14c_329_hf_g16_bc/pip-install.log 2>&1; exec vllm serve ./models/Qwen3.8-27B-HF-INT4-G16-BC --served-model-name default --host 127.0.0.1 --port 8091 --max-model-len 8192 --max-num-seqs 96 --gpu-memory-utilization 0.90 --trust-remote-code\"]",
+        "reused_existing_container": true,
+        "reuse_reason": "healthy existing Arm 1 container preserved so all 329 rows come from one identical server instance/code load"
+      },
+      "telemetry_after_ready": {
+        "act_mhz": 0,
+        "energy1_input_uj": 2154176036621,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 28.0,
+        "utc": "2026-11-25T03:28:15Z",
+        "vram_usage_bytes": 28087762944,
+        "vram_visible_avail_mib": 5869
+      },
+      "warmup_discarded": {
+        "usage": {
+          "prompt_tokens": 15,
+          "total_tokens": 17,
+          "completion_tokens": 2,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "finish_reason": "stop"
+      },
+      "battery": {
+        "items_expected": 329,
+        "newly_generated": 141,
+        "wall_s_new_generation": 1399.628,
+        "completion_tokens_new": 40869,
+        "generations": "./results/exp14c_329_hf_g16_bc/generations.jsonl"
+      },
+      "telemetry_after_battery_before_stop": {
+        "act_mhz": 0,
+        "energy1_input_uj": 2475977820983,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 75.0,
+        "utc": "2026-11-25T03:51:35Z",
+        "vram_usage_bytes": 28087762944,
+        "vram_visible_avail_mib": 5869
+      },
+      "cleanup": {
+        "state_before_removal": "running|0",
+        "server_log": "./results/exp14c_329_hf_g16_bc/server.log",
+        "server_log_sha256": "a4c0f83829dffd8c41facad064cd530dc43512b0b056a6009968ffa08e99e0ef",
+        "log_bytes": 134875
+      },
+      "telemetry_after_cleanup": {
+        "act_mhz": 0,
+        "energy1_input_uj": 2476500165649,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 63.0,
+        "utc": "2026-11-25T03:51:45Z",
+        "vram_usage_bytes": 42246144,
+        "vram_visible_avail_mib": 32615
+      },
+      "grade": {
+        "rc": 0,
+        "stdout_tail": "vllm_hf_int4_g16_bc {'tune': [79, 82], 'test': [78, 82], 'knowledge_professional': [40, 55], 'structured_output': [55, 55], 'instruction_following': [35, 55]}\n",
+        "stderr_tail": "",
+        "graded": "./results/exp14c_329_hf_g16_bc/grade/graded.json",
+        "summary": "./results/exp14c_329_hf_g16_bc/grade/summary.txt"
+      },
+      "finished_at": "2026-11-25T03:51:53.905155+00:00",
+      "quick_results": {
+        "rows": 329,
+        "graded_items": 329,
+        "total_pass": 287,
+        "per_split": {
+          "instruction_following": {
+            "pass": 35,
+            "total": 55
+          },
+          "knowledge_professional": {
+            "pass": 40,
+            "total": 55
+          },
+          "structured_output": {
+            "pass": 55,
+            "total": 55
+          },
+          "test": {
+            "pass": 78,
+            "total": 82
+          },
+          "tune": {
+            "pass": 79,
+            "total": 82
+          }
+        },
+        "capstats": {
+          "cap_hits_completion_tokens_eq_1536": 7,
+          "cap_hits_completion_tokens_eq_1024": 4,
+          "finish_length": 11,
+          "completion_tokens_total": 105119
+        }
+      }
+    },
+    "vllm_shipped_gptq": {
+      "key": "vllm_shipped_gptq",
+      "model": "<models>/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+      "env": {},
+      "plugin_editable_install": false,
+      "cooldown_before_arm": {
+        "start": {
+          "act_mhz": 0,
+          "energy1_input_uj": 2476880580993,
+          "gt0_act_mhz": 0,
+          "gt0_cur_mhz": 2800,
+          "gt0_max_mhz": 2800,
+          "gt1_act_mhz": 0,
+          "gt1_cur_mhz": 400,
+          "gt1_max_mhz": 1500,
+          "hwmon": "<hwmon>",
+          "power_cap_w": 230.0,
+          "temp_c": 63.0,
+          "utc": "2026-11-25T03:51:53Z",
+          "vram_usage_bytes": 42246144,
+          "vram_visible_avail_mib": 32615
+        },
+        "end": {
+          "act_mhz": 0,
+          "energy1_input_uj": 2478372360412,
+          "gt0_act_mhz": 0,
+          "gt0_cur_mhz": 2800,
+          "gt0_max_mhz": 2800,
+          "gt1_act_mhz": 0,
+          "gt1_cur_mhz": 400,
+          "gt1_max_mhz": 1500,
+          "hwmon": "<hwmon>",
+          "power_cap_w": 230.0,
+          "temp_c": 63.0,
+          "utc": "2026-11-25T03:52:25Z",
+          "vram_usage_bytes": 42246144,
+          "vram_visible_avail_mib": 32615
+        },
+        "rule": "wait until <=55C or 30s plateau/no improvement"
+      },
+      "telemetry_before_start": {
+        "act_mhz": 0,
+        "energy1_input_uj": 2478375226013,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 63.0,
+        "utc": "2026-11-25T03:52:25Z",
+        "vram_usage_bytes": 42246144,
+        "vram_visible_avail_mib": 32615
+      },
+      "started_at": "2026-11-25T03:52:25.985521+00:00",
+      "startup": {
+        "ok": true,
+        "startup_s": 171.022,
+        "state": "running|0",
+        "models": {
+          "object": "list",
+          "data": [
+            {
+              "id": "default",
+              "object": "model",
+              "created": 1795578917,
+              "owned_by": "vllm",
+              "root": "<models>/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+              "parent": null,
+              "max_model_len": 8192,
+              "permission": [
+                {
+                  "id": "modelperm-970802e034f26b21",
+                  "object": "model_permission",
+                  "created": 1795578917,
+                  "allow_create_engine": false,
+                  "allow_sampling": true,
+                  "allow_logprobs": true,
+                  "allow_search_indices": false,
+                  "allow_view": true,
+                  "allow_fine_tuning": false,
+                  "organization": "*",
+                  "group": null,
+                  "is_blocking": false
+                }
+              ]
+            }
+          ]
+        },
+        "container_id": "ebf2f1b207a505d0e864168015c86a44de2fa6ec9cd90f67943f2e4ce811a924",
+        "docker_command": [
+          "docker",
+          "run",
+          "-d",
+          "--entrypoint",
+          "bash",
+          "--name",
+          "wave2bb-e14c-gptq",
+          "--label",
+          "b70.owner=devin-wave2bb",
+          "--device",
+          "<card-node>",
+          "--device",
+          "<render-node>",
+          "--group-add",
+          "990",
+          "--ipc=host",
+          "--network",
+          "host",
+          "--log-opt",
+          "max-size=32m",
+          "-v",
+          "<disk-a>:<disk-a>",
+          "-v",
+          ".:/work",
+          "-v",
+          "<disk-b>:<disk-b>:ro",
+          "-v",
+          "./container-tmp/wave2bb-e14c-gptq:/tmp",
+          "-e",
+          "ONEAPI_DEVICE_SELECTOR=level_zero:0",
+          "-e",
+          "ZE_AFFINITY_MASK=0",
+          "-e",
+          "VLLM_WORKER_MULTIPROC_METHOD=spawn",
+          "-e",
+          "HF_HUB_OFFLINE=1",
+          "-e",
+          "TRANSFORMERS_OFFLINE=1",
+          "-e",
+          "HF_HOME=/work/container-cache/wave2bb-e14c-gptq/hf",
+          "-e",
+          "VLLM_CACHE_ROOT=/work/container-cache/wave2bb-e14c-gptq/vllm",
+          "-e",
+          "XDG_CACHE_HOME=/work/container-cache/wave2bb-e14c-gptq/xdg",
+          "-e",
+          "TRITON_CACHE_DIR=/work/container-cache/wave2bb-e14c-gptq/triton",
+          "vllm/vllm-openai-xpu:v0.31.0",
+          "-lc",
+          "set -o pipefail; exec vllm serve <models>/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16 --served-model-name default --host 127.0.0.1 --port 8091 --max-model-len 8192 --max-num-seqs 96 --gpu-memory-utilization 0.90 --trust-remote-code"
+        ]
+      },
+      "telemetry_after_ready": {
+        "act_mhz": 0,
+        "energy1_input_uj": 2492030476135,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 60.0,
+        "utc": "2026-11-25T03:55:17Z",
+        "vram_usage_bytes": 27611381760,
+        "vram_visible_avail_mib": 6323
+      },
+      "warmup_discarded": {
+        "usage": {
+          "prompt_tokens": 15,
+          "total_tokens": 17,
+          "completion_tokens": 2,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "finish_reason": "stop"
+      },
+      "battery": {
+        "items_expected": 329,
+        "newly_generated": 329,
+        "wall_s_new_generation": 3386.566,
+        "completion_tokens_new": 112092,
+        "generations": "./results/exp14c_329_shipped_gptq/generations.jsonl"
+      },
+      "telemetry_after_battery_before_stop": {
+        "act_mhz": 0,
+        "energy1_input_uj": 3008364137634,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 74.0,
+        "utc": "2026-11-25T04:51:43Z",
+        "vram_usage_bytes": 27613220864,
+        "vram_visible_avail_mib": 6321
+      },
+      "cleanup": {
+        "state_before_removal": "running|0",
+        "server_log": "./results/exp14c_329_shipped_gptq/server.log",
+        "server_log_sha256": "82921823f1d0819de6464f83655efce8ecb0f152e0da70d5768d3ed7877647be",
+        "log_bytes": 128433
+      },
+      "telemetry_after_cleanup": {
+        "act_mhz": 0,
+        "energy1_input_uj": 3008590015930,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 63.0,
+        "utc": "2026-11-25T04:51:48Z",
+        "vram_usage_bytes": 42246144,
+        "vram_visible_avail_mib": 32615
+      },
+      "grade": {
+        "rc": 0,
+        "stdout_tail": "vllm_shipped_gptq {'tune': [79, 82], 'test': [76, 82], 'knowledge_professional': [40, 55], 'structured_output': [55, 55], 'instruction_following': [33, 55]}\n",
+        "stderr_tail": "",
+        "graded": "./results/exp14c_329_shipped_gptq/grade/graded.json",
+        "summary": "./results/exp14c_329_shipped_gptq/grade/summary.txt"
+      },
+      "finished_at": "2026-11-25T04:51:56.561125+00:00",
+      "quick_results": {
+        "rows": 329,
+        "graded_items": 329,
+        "total_pass": 283,
+        "per_split": {
+          "instruction_following": {
+            "pass": 33,
+            "total": 55
+          },
+          "knowledge_professional": {
+            "pass": 40,
+            "total": 55
+          },
+          "structured_output": {
+            "pass": 55,
+            "total": 55
+          },
+          "test": {
+            "pass": 76,
+            "total": 82
+          },
+          "tune": {
+            "pass": 79,
+            "total": 82
+          }
+        },
+        "capstats": {
+          "cap_hits_completion_tokens_eq_1536": 10,
+          "cap_hits_completion_tokens_eq_1024": 4,
+          "finish_length": 14,
+          "completion_tokens_total": 112092
+        }
+      }
+    }
+  },
+  "errors": [],
+  "summary": {
+    "vllm_hf_int4_g16_bc": {
+      "total_pass": 287,
+      "total_items": 329,
+      "per_split": {
+        "instruction_following": {
+          "pass": 35,
+          "total": 55
+        },
+        "knowledge_professional": {
+          "pass": 40,
+          "total": 55
+        },
+        "structured_output": {
+          "pass": 55,
+          "total": 55
+        },
+        "test": {
+          "pass": 78,
+          "total": 82
+        },
+        "tune": {
+          "pass": 79,
+          "total": 82
+        }
+      },
+      "capstats": {
+        "cap_hits_completion_tokens_eq_1536": 7,
+        "cap_hits_completion_tokens_eq_1024": 4,
+        "finish_length": 11,
+        "completion_tokens_total": 105119
+      }
+    },
+    "vllm_shipped_gptq": {
+      "total_pass": 283,
+      "total_items": 329,
+      "per_split": {
+        "instruction_following": {
+          "pass": 33,
+          "total": 55
+        },
+        "knowledge_professional": {
+          "pass": 40,
+          "total": 55
+        },
+        "structured_output": {
+          "pass": 55,
+          "total": 55
+        },
+        "test": {
+          "pass": 76,
+          "total": 82
+        },
+        "tune": {
+          "pass": 79,
+          "total": 82
+        }
+      },
+      "capstats": {
+        "cap_hits_completion_tokens_eq_1536": 10,
+        "cap_hits_completion_tokens_eq_1024": 4,
+        "finish_length": 14,
+        "completion_tokens_total": 112092
+      }
+    }
+  },
+  "comparisons": {
+    "vllm_hf_int4_g16_bc__vs__vllm_shipped_gptq": {
+      "n_items": 329,
+      "candidate_pass": 287,
+      "baseline_pass": 283,
+      "fixed_by_candidate_count": 11,
+      "broken_in_candidate_count": 7,
+      "mcnemar_exact_two_sided_p": 0.48068,
+      "fixed_by_candidate_items": [
+        {
+          "id": "he-067",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "bution\n    oranges = int(parts[2])\n              ^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: 'and'",
+          "candidate_completion_tokens": 356,
+          "baseline_completion_tokens": 293,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-091",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "assert candidate(\"Is the sky blue?\") == 0, \"Test 2\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Test 2",
+          "candidate_completion_tokens": 334,
+          "baseline_completion_tokens": 230,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-093",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "gging!)\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "candidate_completion_tokens": 289,
+          "baseline_completion_tokens": 441,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-116",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "File \"/tmp/tmpgltqwf8o.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax",
+          "candidate_completion_tokens": 508,
+          "baseline_completion_tokens": 1024,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-134",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "mp/tmp2rn2olfc.py\", line 57, in check\n    assert candidate(\"A\") == True\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 524,
+          "baseline_completion_tokens": 533,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-1402",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 42,
+          "baseline_completion_tokens": 19,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-1609",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 374,
+          "baseline_completion_tokens": 274,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-1897",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 139,
+          "baseline_completion_tokens": 43,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-484",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='C' gold='C'",
+          "baseline_detail": "got='C' gold='C'",
+          "candidate_completion_tokens": 678,
+          "baseline_completion_tokens": 1536,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": true
+        },
+        {
+          "id": "prof-law-1453",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='B' gold='B'",
+          "baseline_detail": "got='B' gold='B'",
+          "candidate_completion_tokens": 1195,
+          "baseline_completion_tokens": 1536,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": true
+        },
+        {
+          "id": "prof-med-6339",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='J' gold='J'",
+          "baseline_detail": "got='J' gold='J'",
+          "candidate_completion_tokens": 684,
+          "baseline_completion_tokens": 1536,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": true
+        }
+      ],
+      "broken_in_candidate_items": [
+        {
+          "id": "he-032",
+          "split": "tune",
+          "candidate_detail": "k\n    assert math.fabs(poly(coeffs, solution)) < 1e-4\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 659,
+          "baseline_completion_tokens": 638,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-127",
+          "split": "test",
+          "candidate_detail": " 59, in check\n    assert candidate((-1, 1), (0, 4)) == \"NO\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 495,
+          "baseline_completion_tokens": 730,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-130",
+          "split": "tune",
+          "candidate_detail": "File \"/tmp/tmpql2p1yyn.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 1024,
+          "baseline_completion_tokens": 617,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-2811",
+          "split": "instruction_following",
+          "candidate_detail": "0/1 rules followed",
+          "baseline_detail": "1/1 rules followed",
+          "candidate_completion_tokens": 496,
+          "baseline_completion_tokens": 415,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-435",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='F' gold='I'",
+          "baseline_detail": "got='I' gold='I'",
+          "candidate_completion_tokens": 574,
+          "baseline_completion_tokens": 787,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-econ-7222",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='D' gold='C'",
+          "baseline_detail": "got='C' gold='C'",
+          "candidate_completion_tokens": 1536,
+          "baseline_completion_tokens": 461,
+          "candidate_cap1536_hit": true,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-law-1957",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='G' gold='E'",
+          "baseline_detail": "got='E' gold='E'",
+          "candidate_completion_tokens": 1536,
+          "baseline_completion_tokens": 1261,
+          "candidate_cap1536_hit": true,
+          "baseline_cap1536_hit": false
+        }
+      ],
+      "discordant_cap1536_hits": {
+        "candidate": 2,
+        "baseline": 3
+      },
+      "same_pass_fail_count": 311
+    },
+    "vllm_hf_int4_g16_bc__vs__exp12a_tensorfold_mlx4bit": {
+      "n_items": 329,
+      "candidate_pass": 287,
+      "baseline_pass": 282,
+      "fixed_by_candidate_count": 9,
+      "broken_in_candidate_count": 4,
+      "mcnemar_exact_two_sided_p": 0.26685,
+      "fixed_by_candidate_items": [
+        {
+          "id": "he-083",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "File \"/tmp/tmpjf6p5ias.py\", line 32, in check\n    assert candidate(2) == 18\n           ^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 318,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-091",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "assert candidate(\"Is the sky blue?\") == 0, \"Test 2\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Test 2",
+          "candidate_completion_tokens": 334,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-093",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "gging!)\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "candidate_completion_tokens": 289,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-160",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "rt candidate(['+', '*', '-'], [2, 3, 4, 5]) == 9\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 273,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-1402",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 42,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-2605",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 69,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-401",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='I' gold='I'",
+          "baseline_detail": "got='J' gold='I'",
+          "candidate_completion_tokens": 796,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-657",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='E' gold='E'",
+          "baseline_detail": "got='H' gold='E'",
+          "candidate_completion_tokens": 718,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-law-1453",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='B' gold='B'",
+          "baseline_detail": "got='D' gold='B'",
+          "candidate_completion_tokens": 1195,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        }
+      ],
+      "broken_in_candidate_items": [
+        {
+          "id": "he-127",
+          "split": "test",
+          "candidate_detail": " 59, in check\n    assert candidate((-1, 1), (0, 4)) == \"NO\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 495,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-435",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='F' gold='I'",
+          "baseline_detail": "got='I' gold='I'",
+          "candidate_completion_tokens": 574,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-econ-7222",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='D' gold='C'",
+          "baseline_detail": "got='C' gold='C'",
+          "candidate_completion_tokens": 1536,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": true,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-med-6013",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='H' gold='G'",
+          "baseline_detail": "got='G' gold='G'",
+          "candidate_completion_tokens": 441,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        }
+      ],
+      "discordant_cap1536_hits": {
+        "candidate": 1,
+        "baseline": 0
+      },
+      "same_pass_fail_count": 316
+    },
+    "vllm_hf_int4_g16_bc__vs__exp12a_tensorfold_mlx_biascorr": {
+      "n_items": 329,
+      "candidate_pass": 287,
+      "baseline_pass": 284,
+      "fixed_by_candidate_count": 10,
+      "broken_in_candidate_count": 7,
+      "mcnemar_exact_two_sided_p": 0.62906,
+      "fixed_by_candidate_items": [
+        {
+          "id": "he-083",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "File \"/tmp/tmprtm_497u.py\", line 34, in check\n    assert candidate(2) == 18\n           ^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 318,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-108",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "ah1h.py\", line 38, in check\n    assert candidate([-1, -2, 0]) == 0\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 301,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-115",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "date([[1,1,1,1], [1,1,1,1]], 9) == 2, \"Error\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Error",
+          "candidate_completion_tokens": 388,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-116",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "File \"/tmp/tmpglc8d3qg.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax",
+          "candidate_completion_tokens": 508,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-140",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 3 (good for debugging!)",
+          "candidate_completion_tokens": 310,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-1402",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 42,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-3409",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 27,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-657",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='E' gold='E'",
+          "baseline_detail": "got='J' gold='E'",
+          "candidate_completion_tokens": 718,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-law-1453",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='B' gold='B'",
+          "baseline_detail": "got='F' gold='B'",
+          "candidate_completion_tokens": 1195,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-med-6339",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='J' gold='J'",
+          "baseline_detail": "got='J' gold='J'",
+          "candidate_completion_tokens": 684,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        }
+      ],
+      "broken_in_candidate_items": [
+        {
+          "id": "he-032",
+          "split": "tune",
+          "candidate_detail": "k\n    assert math.fabs(poly(coeffs, solution)) < 1e-4\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 659,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-127",
+          "split": "test",
+          "candidate_detail": " 59, in check\n    assert candidate((-1, 1), (0, 4)) == \"NO\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 495,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-130",
+          "split": "tune",
+          "candidate_detail": "File \"/tmp/tmpql2p1yyn.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 1024,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-435",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='F' gold='I'",
+          "baseline_detail": "got='I' gold='I'",
+          "candidate_completion_tokens": 574,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-econ-7222",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='D' gold='C'",
+          "baseline_detail": "got='C' gold='C'",
+          "candidate_completion_tokens": 1536,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": true,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-law-1957",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='G' gold='E'",
+          "baseline_detail": "got='E' gold='E'",
+          "candidate_completion_tokens": 1536,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": true,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-med-6170",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='C' gold='J'",
+          "baseline_detail": "got='J' gold='J'",
+          "candidate_completion_tokens": 815,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        }
+      ],
+      "discordant_cap1536_hits": {
+        "candidate": 2,
+        "baseline": 0
+      },
+      "same_pass_fail_count": 312
+    },
+    "vllm_shipped_gptq__vs__exp12a_tensorfold_mlx4bit": {
+      "n_items": 329,
+      "candidate_pass": 283,
+      "baseline_pass": 282,
+      "fixed_by_candidate_count": 9,
+      "broken_in_candidate_count": 8,
+      "mcnemar_exact_two_sided_p": 1.0,
+      "fixed_by_candidate_items": [
+        {
+          "id": "he-032",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "k\n    assert math.fabs(poly(coeffs, solution)) < 1e-4\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 638,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-083",
+          "split": "test",
+          "candidate_detail": "PASS",
+          "baseline_detail": "File \"/tmp/tmpjf6p5ias.py\", line 32, in check\n    assert candidate(2) == 18\n           ^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 365,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-130",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "File \"/tmp/tmpfadrptu6.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax",
+          "candidate_completion_tokens": 617,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-160",
+          "split": "tune",
+          "candidate_detail": "PASS",
+          "baseline_detail": "rt candidate(['+', '*', '-'], [2, 3, 4, 5]) == 9\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "candidate_completion_tokens": 296,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-2605",
+          "split": "instruction_following",
+          "candidate_detail": "2/2 rules followed",
+          "baseline_detail": "1/2 rules followed",
+          "candidate_completion_tokens": 123,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-2811",
+          "split": "instruction_following",
+          "candidate_detail": "1/1 rules followed",
+          "baseline_detail": "0/1 rules followed",
+          "candidate_completion_tokens": 415,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-401",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='I' gold='I'",
+          "baseline_detail": "got='J' gold='I'",
+          "candidate_completion_tokens": 752,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-657",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='E' gold='E'",
+          "baseline_detail": "got='H' gold='E'",
+          "candidate_completion_tokens": 722,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-law-1957",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='E' gold='E'",
+          "baseline_detail": "got='H' gold='E'",
+          "candidate_completion_tokens": 1261,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        }
+      ],
+      "broken_in_candidate_items": [
+        {
+          "id": "he-067",
+          "split": "test",
+          "candidate_detail": "bution\n    oranges = int(parts[2])\n              ^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: 'and'",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 293,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-116",
+          "split": "tune",
+          "candidate_detail": "File \"/tmp/tmpgltqwf8o.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 1024,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "he-134",
+          "split": "tune",
+          "candidate_detail": "mp/tmp2rn2olfc.py\", line 57, in check\n    assert candidate(\"A\") == True\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+          "baseline_detail": "PASS",
+          "candidate_completion_tokens": 533,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-1609",
+          "split": "instruction_following",
+          "candidate_detail": "1/2 rules followed",
+          "baseline_detail": "2/2 rules followed",
+          "candidate_completion_tokens": 274,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "ifeval-1897",
+          "split": "instruction_following",
+          "candidate_detail": "1/2 rules followed",
+          "baseline_detail": "2/2 rules followed",
+          "candidate_completion_tokens": 43,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-biz-484",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='C' gold='C'",
+          "baseline_detail": "got='C' gold='C'",
+          "candidate_completion_tokens": 1536,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": true,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-med-6013",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='C' gold='G'",
+          "baseline_detail": "got='G' gold='G'",
+          "candidate_completion_tokens": 545,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": false,
+          "baseline_cap1536_hit": false
+        },
+        {
+          "id": "prof-med-6339",
+          "split": "knowledge_professional",
+          "candidate_detail": "got='J' gold='J'",
+          "baseline_detail": "got='J' gold='J'",
+          "candidate_completion_tokens": 1536,
+          "baseline_completion_tokens": null,
+          "candidate_cap1536_hit": true,
+          "baseline_cap1536_hit": false
+        }
+      ],
+      "discordant_cap1536_hits": {
+        "candidate": 2,
+        "baseline": 0
+      },
+      "same_pass_fail_count": 312
+    }
+  },
+  "exp12a_reference": {
+    "tensorfold_mlx4bit_pass": 282,
+    "tensorfold_mlx_biascorr_pass": 284,
+    "source": "exp12a_329_battery_summary.json"
+  },
+  "finished_at": "2026-11-25T04:51:56.571405+00:00",
+  "final_docker_ps": "",
+  "final_telemetry": {
+    "act_mhz": 0,
+    "energy1_input_uj": 3008989736572,
+    "gt0_act_mhz": 0,
+    "gt0_cur_mhz": 2800,
+    "gt0_max_mhz": 2800,
+    "gt1_act_mhz": 0,
+    "gt1_cur_mhz": 400,
+    "gt1_max_mhz": 1500,
+    "hwmon": "<hwmon>",
+    "power_cap_w": 230.0,
+    "temp_c": 63.0,
+    "utc": "2026-11-25T04:51:56Z",
+    "vram_usage_bytes": 42246144,
+    "vram_visible_avail_mib": 32615
+  },
+  "final_disk": {
+    "/": {
+      "free_bytes": 1940537344,
+      "used_bytes": 224510816256,
+      "total_bytes": 228804210688
+    },
+    "<disk-a>": {
+      "free_bytes": 4090724352,
+      "used_bytes": 483558756352,
+      "total_bytes": 491094290432
+    },
+    "<disk-b>": {
+      "free_bytes": 18833760256,
+      "used_bytes": 914488655872,
+      "total_bytes": 983349346304
+    }
+  },
+  "receipt_finished_at": "2026-11-25T04:51:56.707873+00:00",
+  "independent_verification": {
+    "verified_at": "2026-11-25T04:54:38.328195+00:00",
+    "method": "re-read generations.jsonl and grade/graded.json for both arms; recomputed exact two-sided McNemar binomial statistics from discordance counts",
+    "arms_complete_zero_row_errors": true,
+    "exact_mcnemar": {
+      "vllm_hf_int4_g16_bc__vs__vllm_shipped_gptq": {
+        "fixed_by_candidate_count": 11,
+        "broken_in_candidate_count": 7,
+        "mcnemar_exact_two_sided_p_rational": "15751/32768",
+        "mcnemar_exact_two_sided_p_exact_decimal": "0.480682373046875",
+        "recomputed_matches_receipt_rounded5": true
+      },
+      "vllm_hf_int4_g16_bc__vs__exp12a_tensorfold_mlx4bit": {
+        "fixed_by_candidate_count": 9,
+        "broken_in_candidate_count": 4,
+        "mcnemar_exact_two_sided_p_rational": "1093/4096",
+        "mcnemar_exact_two_sided_p_exact_decimal": "0.266845703125",
+        "recomputed_matches_receipt_rounded5": true
+      },
+      "vllm_hf_int4_g16_bc__vs__exp12a_tensorfold_mlx_biascorr": {
+        "fixed_by_candidate_count": 10,
+        "broken_in_candidate_count": 7,
+        "mcnemar_exact_two_sided_p_rational": "20613/32768",
+        "mcnemar_exact_two_sided_p_exact_decimal": "0.629058837890625",
+        "recomputed_matches_receipt_rounded5": true
+      },
+      "vllm_shipped_gptq__vs__exp12a_tensorfold_mlx4bit": {
+        "fixed_by_candidate_count": 9,
+        "broken_in_candidate_count": 8,
+        "mcnemar_exact_two_sided_p_rational": "1/1",
+        "mcnemar_exact_two_sided_p_exact_decimal": "1",
+        "recomputed_matches_receipt_rounded5": true
+      }
+    },
+    "note": "comparison values in the original runner payload are rounded to 5 decimals; the rational/decimal values in this verification block are the unrounded exact-test representations."
+  }
+}

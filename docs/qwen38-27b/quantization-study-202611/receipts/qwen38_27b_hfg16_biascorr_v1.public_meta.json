@@ -1,0 +1,138 @@
+{
+  "cal_label": "converter_mixed_train",
+  "cal_shape": [
+    2,
+    512
+  ],
+  "cal_scored_tokens": 1022,
+  "cal_token_ids_sha256": "c14de8789c52ed86f55e8f6672595a3db3de811770fca119e028cd6627970e9b",
+  "pos0_excluded": true,
+  "num_tensors": 496,
+  "size_bytes": 15678488,
+  "size_mib": 14.952,
+  "sidecar_sha256": "afafdc60de19310990da8d6dea0fd3f24f05e79c518643dd6c9234669034d9a8",
+  "tensor_bytes_match_checkpoint": true,
+  "copied_tensors_identical_to_bf16": 703,
+  "status": "PUBLISHABLE",
+  "kl_gate": {
+    "status": "PUBLISHABLE",
+    "checks": {
+      "prose_kl_drops_ci95_below_0": true,
+      "prose_minus_b_worsens_kl": true,
+      "code_kl_drops_ci95_below_0": true,
+      "code_minus_b_worsens_kl": true
+    },
+    "failed_checks": [],
+    "domains": {
+      "prose": {
+        "kl_base": 0.03195908071916281,
+        "kl_plus": 0.027077860312970128,
+        "kl_minus": 0.05727161760262289,
+        "delta_plus": -0.004881220406192687,
+        "delta_plus_pct": -15.273344215016436,
+        "delta_plus_ci95_blk32": [
+          -0.007408192532254802,
+          -0.0027971521756646783
+        ],
+        "delta_minus": 0.025312536883460076,
+        "delta_minus_ci95_blk32": [
+          0.020263385443335925,
+          0.03103741417178011
+        ],
+        "shape": [
+          4,
+          511
+        ]
+      },
+      "code": {
+        "kl_base": 0.1490477243540091,
+        "kl_plus": 0.12897423586449422,
+        "kl_minus": 0.2546337080788237,
+        "delta_plus": -0.020073488489514877,
+        "delta_plus_pct": -13.467826212386543,
+        "delta_plus_ci95_blk32": [
+          -0.029620073848943634,
+          -0.011505576810704616
+        ],
+        "delta_minus": 0.1055859837248146,
+        "delta_minus_ci95_blk32": [
+          0.08270534744370953,
+          0.13118785629078525
+        ],
+        "shape": [
+          4,
+          511
+        ]
+      }
+    },
+    "bootstrap": {
+      "block": 32,
+      "n_boot": 10000,
+      "seed": 20261125,
+      "resampling": "within window"
+    },
+    "eval": {
+      "prose": {
+        "token_ids_sha256": "14049ba0a85c3ba6227f01cd3c0450a25c9182228aa161654c0a9db01879adc3",
+        "cal_6gram_overlap": 0
+      },
+      "code": {
+        "token_ids_sha256": "6c3a613f281669f2ceb3e58272194b584a64e4b3cacd766a8119a0b8eb5e0832",
+        "cal_6gram_overlap": 0
+      }
+    },
+    "wall_s": 182.31
+  },
+  "decode_check_l0_gate_proj_sqnr_db": 22.1292,
+  "wall_s": 212.67,
+  "provenance": {
+    "sidecar_file": "qwen38_27b_hfg16_biascorr_v1.safetensors",
+    "bf16_reference": {
+      "repo": "Qwen/Qwen3.8-27B",
+      "revision": "8c0b3d30f3ae96f5c7f774de704bf0ada83e422a"
+    },
+    "quantized_checkpoint": {
+      "name": "Qwen3.8-27B-HF-INT4-G16-BC",
+      "format_version": "hf_int4_g16/1",
+      "index_sha256": "fcefbfcac38d5a61130cc1def2446131b865fe95e9f9a74b755caea16e07070b"
+    },
+    "generator": "gate_hfg16_sidecar.py",
+    "generator_sha256": "6cb8728f46cf9a18f969dce8ed0e360cad3e491f952734018ba452945d235f8f",
+    "calibration": {
+      "prose": "WikiText-2 train, 512 tokens from token 512",
+      "code": "512 tokens from token 1024 of CPython 3.12.3 os.py, pathlib.py, enum.py, json/__init__.py, argparse.py",
+      "note": "These tensors were computed by the checkpoint converter. This run copied them and gated them."
+    },
+    "related_offline_receipt": {
+      "file": "exp15a_tfq3_vs_hfg16_64l.json",
+      "arm": "HF_G16_as_shipped_W4A16_BC",
+      "kl_wt2": 0.02707786,
+      "kl_code": 0.12897424,
+      "note": "Same stored tensors. That run had no as-shipped no-correction arm and no -b arm."
+    },
+    "corpora": {
+      "repo": "Salesforce/wikitext",
+      "config": "wikitext-2-raw-v1",
+      "train_parquet_sha256": "e83889baabc497075506f91975be5fac0d45c5290b6b20582c8cd1e853d0c9f7",
+      "test_parquet_sha256": "5f1bea067869d04849c0f975a2b29c4ff47d867f484f5010ea5e861eab246d91"
+    },
+    "held_out": {
+      "prose": "WikiText-2 test, first 4 x 512 tokens",
+      "code": "CPython 3.12.3 difflib.py, first 4 x 512 tokens"
+    },
+    "runtime": {
+      "container_image": "vllm/vllm-openai-xpu:v0.31.0",
+      "python": "3.12.3",
+      "torch": "2.14.0+xpu",
+      "transformers": "5.17.0",
+      "triton": "3.8.0+xpu",
+      "pyarrow": "25.0.1",
+      "device": "1x Intel Arc Pro B70",
+      "power_cap_w": 230,
+      "max_freq_mhz": 2800,
+      "network": "none"
+    },
+    "scope": "Next-token KL against BF16 in a 64-layer BF16 causal PyTorch stream on one GPU. It does not run TensorFold or vLLM kernels and does not measure task accuracy or speed.",
+    "raw_receipt_sha256": "d4b53cf0c87456da5ce0b14a7506482a5566e252113672c4686af3e2f97ef835"
+  }
+}

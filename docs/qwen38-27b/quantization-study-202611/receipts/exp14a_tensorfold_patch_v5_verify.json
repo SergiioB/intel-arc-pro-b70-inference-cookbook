@@ -1,0 +1,138 @@
+{
+  "schema": "exp14a_tensorfold_patch_v5_verify/1",
+  "run_id": "20261125-075413",
+  "gpu_mask": "0",
+  "frozen_inputs": "/dev/shm/wave5d-frozen (RAM, removed after the run; hashes below)",
+  "logs": "./exp14a_v3_logs_20261125-075413",
+  "unique_sidecar": {
+    "path": "./qwen38_mlx4_biascorr_unique_idx_496L.safetensors",
+    "sha256": "665e80ee1d5ccdae32eac59ae4ce132606e5899e441482d32a59bf9766b6a307"
+  },
+  "adjacent_swap_sidecar": {
+    "path": "./qwen38_mlx4_biascorr_unique_idx_swap_k01_496L.safetensors",
+    "sha256": "a1b58cc7e3b7765aef3e1f3ad188897b6addb63820537d15ceaf750405d0de10"
+  },
+  "generator_log": "./results/make_index_sidecars_fp16_unique.log",
+  "null_control_zero_audit_lines": [],
+  "unique_zero_audit_lines": [
+    "fp64 ref: zero-input exact fp16(bias) audit: 49920/49920 exact (0 mismatches), direct fp32 exact 49920/49920",
+    "fp64 ref: zero-input exact fp16(bias) audit: 15360/15360 exact (0 mismatches), direct fp32 exact 15360/15360",
+    "fp64 ref: zero-input exact fp16(bias) audit: 104448/104448 exact (0 mismatches), direct fp32 exact 104448/104448",
+    "fp64 ref: zero-input exact fp16(bias) audit: 15360/15360 exact (0 mismatches), direct fp32 exact 15360/15360",
+    "fp64 ref: zero-input exact fp16(bias) audit: 43008/43008 exact (0 mismatches), direct fp32 exact 43008/43008",
+    "fp64 ref: zero-input exact fp16(bias) audit: 15360/15360 exact (0 mismatches), direct fp32 exact 15360/15360",
+    "fp64 ref: zero-input exact fp16(bias) audit: 104448/104448 exact (0 mismatches), direct fp32 exact 104448/104448",
+    "fp64 ref: zero-input exact fp16(bias) audit: 15360/15360 exact (0 mismatches), direct fp32 exact 15360/15360"
+  ],
+  "unique_fused_swiglu_lines": [
+    "fp64 ref: fused SwiGLU production output vs independent FP64 oracle: rel L2 1.58e-3, max abs 7.25e-2, bound 5.00e-3",
+    "fp64 ref: fused SwiGLU production output vs independent FP64 oracle: rel L2 1.60e-3, max abs 7.08e-2, bound 5.00e-3"
+  ],
+  "negative_controls": {
+    "adjacent_k01_swap": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_adjacent_k01_swap.log",
+      "required_error": "BiasCorrZeroInputMismatch",
+      "observed": true
+    },
+    "swiglu_bound": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_swiglu_bound.log",
+      "required_error": "FusedSwigluOracleMismatch",
+      "observed": true
+    },
+    "incomplete_1L": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_incomplete_1L.log",
+      "required_error": "IncompleteBiasCorrCoverage",
+      "observed": true
+    },
+    "orphan": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_orphan.log",
+      "required_error": "UnusedBiasCorrTensor",
+      "observed": true
+    },
+    "nan": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_nan.log",
+      "required_error": "NonFiniteBiasCorr",
+      "observed": true
+    },
+    "gemma4": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_gemma4.log",
+      "required_error": "UnsupportedBiasCorrFamily",
+      "observed": true
+    }
+  },
+  "passed": true,
+  "real_fp32_sidecar_tag_mode_off": {
+    "sidecar": "./qwen38_mlx4_biascorr_mixed2048_496L.safetensors",
+    "sidecar_sha256": "5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79",
+    "log": "./exp14a_v3_logs_20261125-075413/real_sidecar_tagoff.log",
+    "rc": 0,
+    "audits": 8,
+    "fp16_rounding_exact": 363264,
+    "total": 363264,
+    "mismatches": 0,
+    "promoted_fp16_equals_original_fp32": 3246,
+    "note": "promoted equality is what the v4 rule also required with tag mode off; v4 would therefore have counted 360018 of 363264 as mismatches (derived from these counts, v4 binary not rerun). The log label \"direct fp32 exact\" means promoted FP16 output == FP32 bias; no FP32 buffer is read.",
+    "fused_swiglu_lines": [
+      "fp64 ref: fused SwiGLU production output vs independent FP64 oracle: rel L2 1.79e-3, max abs 8.32e-3, bound 5.00e-3",
+      "fp64 ref: fused SwiGLU production output vs independent FP64 oracle: rel L2 1.74e-3, max abs 7.02e-3, bound 5.00e-3"
+    ]
+  },
+  "nonfinite_swiglu_bound_negatives": {
+    "nan": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_swiglu_bound_nan.log",
+      "rc": 1,
+      "required_error": "BadSwigluRelL2Bound",
+      "observed": true
+    },
+    "inf": {
+      "log": "./exp14a_v3_logs_20261125-075413/neg_swiglu_bound_inf.log",
+      "rc": 1,
+      "required_error": "BadSwigluRelL2Bound",
+      "observed": true
+    }
+  },
+  "frozen_inputs_sha256": {
+    "fp64_l0_s0.bin": "634f21a455ebb13e43d7b5e92f748f1a11d5d72ce5f2878b4827a10a499f9583",
+    "fp64_l0_s1.bin": "a53af83834b40d8f3126439958598480028a3456df313601d571a3f0daa7d835",
+    "fp64_l0_s2.bin": "8be8ef6427c6f122b6703d44121005682d5060be1e33c619237d0f6a5798dc43",
+    "fp64_l0_s3.bin": "75a3eaf217a4e55ec0a5581d2f1edd67eed13f363d0869ea2e67c0a81b27963d",
+    "fp64_l3_s0.bin": "4b0970f4e5249380470766450e303791a3df37d95eb6479ce7581f2992c8534f",
+    "fp64_l3_s1.bin": "9200ca3002b39819c3fb88aebfb960e1ac854b39f9481ff94a99f51a23f631e2",
+    "fp64_l3_s2.bin": "6a46975d2bd6606cfba732fcc5354b4068ccb956b5fb930f118315476ce490fb",
+    "fp64_l3_s3.bin": "e3ad16b50ceb72e782b6a58d589d0ca6d144ed7316d0b4cefeca2e48dfa60b9d"
+  },
+  "tensorfold_patch": {
+    "path": "./publish-bundle/tensorfold-biascorr-fused-epilogue.patch",
+    "sha256": "fa6ce685b4822a9cecfe28717cd8e471a6e07376cc97f482a054aba70dfc5f8d",
+    "bytes": 91486,
+    "files": 17,
+    "excludes": [
+      "zig/build/xpu.zig (host-local ocloc flag workaround)"
+    ],
+    "git_apply_check": "clean against a temporary index read from HEAD 2286abc0c; all postimage blob hashes equal the working tree",
+    "note": "the binaries below were built from the working tree, which includes the excluded xpu.zig workaround"
+  },
+  "builds": {
+    "xpu_qwen27": {
+      "path": "./tensorfold-biascorr/src/zig-out/bin/xpu-qwen27",
+      "optimize": "ReleaseFast",
+      "bytes": 13268656,
+      "sha256": "8d079ccde0e04aa6edabb61a0b1871880e620845c7952f60339891be9a805428",
+      "cache": "empty local cache in /dev/shm"
+    },
+    "tensorfold_native": {
+      "path": "./tensorfold-biascorr/src/zig-out/xpu/bin/tensorfold-native",
+      "optimize": "ReleaseFast",
+      "bytes": 50373704,
+      "sha256": "75c15aba7afd97fc68c2ad1a33a604955eed53c4f5c087b68f45bb03bc7ff176",
+      "cache": "empty local cache in /dev/shm"
+    }
+  },
+  "zig_fmt_check": "rc=0 (zig 0.17.0)",
+  "pr_check": [
+    "WARN: Zig changed: pass --pr NUMBER to check its Unreleased line",
+    "merge base 2286abc0c45c284dae60a9286ae02612eda3b44c; 18 changed files; lean 221 vs 221, 0 new",
+    "0 error(s), 1 warning(s); warnings are advisory"
+  ],
+  "runner_log": "./results/exp14a_v5_runner.out"
+}

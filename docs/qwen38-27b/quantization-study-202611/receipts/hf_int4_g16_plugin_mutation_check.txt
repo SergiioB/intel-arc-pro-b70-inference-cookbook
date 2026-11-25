@@ -1,0 +1,4 @@
+MUTATION a_kv_width: pytest rc=1 :: 4 failed, 126 deselected, 2 warnings in 19.33s
+MUTATION b_two_way: pytest rc=1 :: 2 failed, 128 deselected, 2 warnings in 19.58s
+MUTATION c_cap_scope: pytest rc=1 :: 4 failed, 126 deselected, 2 warnings in 19.24s
+MUTATION d_admit_once: pytest rc=1 :: 1 failed, 129 deselected, 2 warnings in 35.68s

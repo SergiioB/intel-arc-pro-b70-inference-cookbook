@@ -1,0 +1,1111 @@
+{
+  "experiment": "Exp 12B: Second-Card (GPU0) & Dual-Card (--tp 2) Fused-Epilogue Verification",
+  "binary_sha256": "62fb382866a5fa1efa27ed2a7845d1e2a2c9eb1e207a9a456c6262c5cdec8f3b",
+  "mixed_sidecar_sha256": "5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79",
+  "zero_sidecar_sha256": "fabad5ed2b951d4434aaaa762a64c784b2f8c9082bf105e1591d57dc7f7324b2",
+  "configs": {
+    "gpu0": {
+      "arms": {
+        "baseline": {
+          "hw": "gpu0",
+          "tp": 1,
+          "arm": "baseline",
+          "boot_s": 14.02,
+          "dnr": {
+            "drafted": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.148
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.131
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.137
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.128
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.131
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.136
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.129
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.124
+              }
+            },
+            "serial": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.143
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.145
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.209
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.177
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.178
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.117
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.116
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.142
+              }
+            }
+          },
+          "long": {
+            "drafted": {
+              "ring_kv": {
+                "sha256": "f17a67c71eb2a55918901c7352bf5e3284ca1fc465bc0f804b71a16f50342748",
+                "completion_tokens": 216,
+                "wall_s": 1.443,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 1.583,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 1.114,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            },
+            "serial": {
+              "ring_kv": {
+                "sha256": "f17a67c71eb2a55918901c7352bf5e3284ca1fc465bc0f804b71a16f50342748",
+                "completion_tokens": 216,
+                "wall_s": 6.776,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 6.057,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 5.034,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            }
+          },
+          "dnr_pass": {
+            "drafted": 7,
+            "serial": 7
+          },
+          "drafted_serial_exact": "11/11",
+          "biascorr_log": null
+        },
+        "zero_bias": {
+          "hw": "gpu0",
+          "tp": 1,
+          "arm": "zero_bias",
+          "boot_s": 7.01,
+          "dnr": {
+            "drafted": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.124
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.126
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.127
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.126
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.128
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.128
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.127
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.122
+              }
+            },
+            "serial": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.143
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.145
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.21
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.178
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.18
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.118
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.117
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.144
+              }
+            }
+          },
+          "long": {
+            "drafted": {
+              "ring_kv": {
+                "sha256": "f17a67c71eb2a55918901c7352bf5e3284ca1fc465bc0f804b71a16f50342748",
+                "completion_tokens": 216,
+                "wall_s": 1.33,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 1.542,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 1.083,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            },
+            "serial": {
+              "ring_kv": {
+                "sha256": "f17a67c71eb2a55918901c7352bf5e3284ca1fc465bc0f804b71a16f50342748",
+                "completion_tokens": 216,
+                "wall_s": 6.807,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 6.082,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 5.052,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            }
+          },
+          "dnr_pass": {
+            "drafted": 7,
+            "serial": 7
+          },
+          "drafted_serial_exact": "11/11",
+          "biascorr_log": "biascorr sidecar loaded: ./qwen38_mlx4_zerobias_496L.safetensors (matched=496/496, sha256=fabad5ed2b951d4434aaaa762a64c784b2f8c9082bf105e1591d57dc7f7324b2)"
+        },
+        "biascorr_mixed": {
+          "hw": "gpu0",
+          "tp": 1,
+          "arm": "biascorr_mixed",
+          "boot_s": 7.01,
+          "dnr": {
+            "drafted": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.123
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.128
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.129
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.126
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.128
+              },
+              "prime": {
+                "want": "no",
+                "got": "No",
+                "pass": true,
+                "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+                "wall_s": 0.131
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.126
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.122
+              }
+            },
+            "serial": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.143
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.145
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.21
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.178
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.179
+              },
+              "prime": {
+                "want": "no",
+                "got": "No",
+                "pass": true,
+                "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+                "wall_s": 0.117
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.116
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.142
+              }
+            }
+          },
+          "long": {
+            "drafted": {
+              "ring_kv": {
+                "sha256": "af9ce43dfd6a15be1d174d7ed5e73be1e29e6eea1e7c7bdaa3b637a86220188a",
+                "completion_tokens": 214,
+                "wall_s": 1.378,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "facd7f211ea73cb8f179f5d5fe9d6882a32d33b625f38119b674c9197ebd90a6",
+                "completion_tokens": 192,
+                "wall_s": 1.682,
+                "preview": "There is **no bug** in the function.\n\n### Explanation\nThe function correctly removes duplicates whil"
+              },
+              "math_step": {
+                "sha256": "2190c4e832875668e1fd1c31a2986d95bd4f6d3c480e0a30cbb72ad7fd3e2c0f",
+                "completion_tokens": 160,
+                "wall_s": 1.125,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify p"
+              }
+            },
+            "serial": {
+              "ring_kv": {
+                "sha256": "af9ce43dfd6a15be1d174d7ed5e73be1e29e6eea1e7c7bdaa3b637a86220188a",
+                "completion_tokens": 214,
+                "wall_s": 6.751,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "facd7f211ea73cb8f179f5d5fe9d6882a32d33b625f38119b674c9197ebd90a6",
+                "completion_tokens": 192,
+                "wall_s": 6.088,
+                "preview": "There is **no bug** in the function.\n\n### Explanation\nThe function correctly removes duplicates whil"
+              },
+              "math_step": {
+                "sha256": "2190c4e832875668e1fd1c31a2986d95bd4f6d3c480e0a30cbb72ad7fd3e2c0f",
+                "completion_tokens": 160,
+                "wall_s": 5.057,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify p"
+              }
+            }
+          },
+          "dnr_pass": {
+            "drafted": 8,
+            "serial": 8
+          },
+          "drafted_serial_exact": "11/11",
+          "biascorr_log": "biascorr sidecar loaded: ./qwen38_mlx4_biascorr_mixed2048_496L.safetensors (matched=496/496, sha256=5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79)"
+        }
+      },
+      "zero_vs_baseline": {
+        "exact": 22,
+        "total": 22,
+        "all_match": true,
+        "diffs": []
+      },
+      "mixed_vs_baseline": {
+        "exact": 14,
+        "total": 22,
+        "all_match": false,
+        "diffs": [
+          "drafted:dnr:prime",
+          "drafted:long:ring_kv",
+          "drafted:long:py_bug",
+          "drafted:long:math_step",
+          "serial:dnr:prime",
+          "serial:long:ring_kv",
+          "serial:long:py_bug",
+          "serial:long:math_step"
+        ]
+      }
+    },
+    "tp2": {
+      "arms": {
+        "baseline": {
+          "hw": "tp2",
+          "tp": 2,
+          "arm": "baseline",
+          "boot_s": 6.51,
+          "dnr": {
+            "drafted": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.109
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.099
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.098
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.099
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.098
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.099
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.098
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.096
+              }
+            },
+            "serial": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.104
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.107
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.146
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.126
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.127
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.087
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.086
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.104
+              }
+            }
+          },
+          "long": {
+            "drafted": {
+              "ring_kv": {
+                "sha256": "1daac7852822c1563a78d276f1a9caff8b618690c1b44306f50bbf3adcda485a",
+                "completion_tokens": 214,
+                "wall_s": 1.014,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 1.166,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 0.819,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            },
+            "serial": {
+              "ring_kv": {
+                "sha256": "1daac7852822c1563a78d276f1a9caff8b618690c1b44306f50bbf3adcda485a",
+                "completion_tokens": 214,
+                "wall_s": 4.321,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 3.901,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 3.247,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            }
+          },
+          "dnr_pass": {
+            "drafted": 7,
+            "serial": 7
+          },
+          "drafted_serial_exact": "11/11",
+          "biascorr_log": null
+        },
+        "zero_bias": {
+          "hw": "tp2",
+          "tp": 2,
+          "arm": "zero_bias",
+          "boot_s": 6.51,
+          "dnr": {
+            "drafted": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.11
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.099
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.098
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.098
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.099
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.099
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.099
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.096
+              }
+            },
+            "serial": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.105
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.107
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.147
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.126
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.127
+              },
+              "prime": {
+                "want": "no",
+                "got": "Yes",
+                "pass": false,
+                "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+                "wall_s": 0.087
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.087
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.105
+              }
+            }
+          },
+          "long": {
+            "drafted": {
+              "ring_kv": {
+                "sha256": "1daac7852822c1563a78d276f1a9caff8b618690c1b44306f50bbf3adcda485a",
+                "completion_tokens": 214,
+                "wall_s": 1.012,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 1.167,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 0.823,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            },
+            "serial": {
+              "ring_kv": {
+                "sha256": "1daac7852822c1563a78d276f1a9caff8b618690c1b44306f50bbf3adcda485a",
+                "completion_tokens": 214,
+                "wall_s": 4.341,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+                "completion_tokens": 192,
+                "wall_s": 3.917,
+                "preview": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and "
+              },
+              "math_step": {
+                "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+                "completion_tokens": 160,
+                "wall_s": 3.258,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identi"
+              }
+            }
+          },
+          "dnr_pass": {
+            "drafted": 7,
+            "serial": 7
+          },
+          "drafted_serial_exact": "11/11",
+          "biascorr_log": "biascorr sidecar loaded: ./qwen38_mlx4_zerobias_496L.safetensors (matched=496/496, sha256=fabad5ed2b951d4434aaaa762a64c784b2f8c9082bf105e1591d57dc7f7324b2)"
+        },
+        "biascorr_mixed": {
+          "hw": "tp2",
+          "tp": 2,
+          "arm": "biascorr_mixed",
+          "boot_s": 6.51,
+          "dnr": {
+            "drafted": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.111
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.101
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.099
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.098
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.099
+              },
+              "prime": {
+                "want": "no",
+                "got": "No",
+                "pass": true,
+                "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+                "wall_s": 0.099
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.097
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.096
+              }
+            },
+            "serial": {
+              "sumsq": {
+                "want": "14",
+                "got": "14",
+                "pass": true,
+                "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+                "wall_s": 0.105
+              },
+              "sum3": {
+                "want": "20",
+                "got": "20",
+                "pass": true,
+                "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                "wall_s": 0.107
+              },
+              "mul": {
+                "want": "1296",
+                "got": "1296",
+                "pass": true,
+                "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+                "wall_s": 0.147
+              },
+              "div": {
+                "want": "143",
+                "got": "143",
+                "pass": true,
+                "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+                "wall_s": 0.127
+              },
+              "days": {
+                "want": "366",
+                "got": "366",
+                "pass": true,
+                "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+                "wall_s": 0.127
+              },
+              "prime": {
+                "want": "no",
+                "got": "No",
+                "pass": true,
+                "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+                "wall_s": 0.087
+              },
+              "letters": {
+                "want": "6",
+                "got": "6",
+                "pass": true,
+                "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                "wall_s": 0.087
+              },
+              "seq": {
+                "want": "32",
+                "got": "32",
+                "pass": true,
+                "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+                "wall_s": 0.105
+              }
+            }
+          },
+          "long": {
+            "drafted": {
+              "ring_kv": {
+                "sha256": "af9ce43dfd6a15be1d174d7ed5e73be1e29e6eea1e7c7bdaa3b637a86220188a",
+                "completion_tokens": 214,
+                "wall_s": 1.021,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "09d267ce78940f9983a4f5499080c04943f14b14938a3c3229a2a1819e0e53b9",
+                "completion_tokens": 192,
+                "wall_s": 1.307,
+                "preview": "There is **no bug** in the function.\n\n### Explanation\nThe function relies on the fact that the `set."
+              },
+              "math_step": {
+                "sha256": "2190c4e832875668e1fd1c31a2986d95bd4f6d3c480e0a30cbb72ad7fd3e2c0f",
+                "completion_tokens": 160,
+                "wall_s": 0.852,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify p"
+              }
+            },
+            "serial": {
+              "ring_kv": {
+                "sha256": "af9ce43dfd6a15be1d174d7ed5e73be1e29e6eea1e7c7bdaa3b637a86220188a",
+                "completion_tokens": 214,
+                "wall_s": 4.35,
+                "preview": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr"
+              },
+              "py_bug": {
+                "sha256": "09d267ce78940f9983a4f5499080c04943f14b14938a3c3229a2a1819e0e53b9",
+                "completion_tokens": 192,
+                "wall_s": 3.92,
+                "preview": "There is **no bug** in the function.\n\n### Explanation\nThe function relies on the fact that the `set."
+              },
+              "math_step": {
+                "sha256": "2190c4e832875668e1fd1c31a2986d95bd4f6d3c480e0a30cbb72ad7fd3e2c0f",
+                "completion_tokens": 160,
+                "wall_s": 3.258,
+                "preview": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify p"
+              }
+            }
+          },
+          "dnr_pass": {
+            "drafted": 8,
+            "serial": 8
+          },
+          "drafted_serial_exact": "11/11",
+          "biascorr_log": "biascorr sidecar loaded: ./qwen38_mlx4_biascorr_mixed2048_496L.safetensors (matched=496/496, sha256=5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79)"
+        }
+      },
+      "zero_vs_baseline": {
+        "exact": 22,
+        "total": 22,
+        "all_match": true,
+        "diffs": []
+      },
+      "mixed_vs_baseline": {
+        "exact": 14,
+        "total": 22,
+        "all_match": false,
+        "diffs": [
+          "drafted:dnr:prime",
+          "drafted:long:ring_kv",
+          "drafted:long:py_bug",
+          "drafted:long:math_step",
+          "serial:dnr:prime",
+          "serial:long:ring_kv",
+          "serial:long:py_bug",
+          "serial:long:math_step"
+        ]
+      }
+    }
+  },
+  "gpu0_vs_tp2": {
+    "baseline": {
+      "exact": 20,
+      "total": 22,
+      "all_match": false,
+      "diffs": [
+        "drafted:long:ring_kv",
+        "serial:long:ring_kv"
+      ]
+    },
+    "biascorr_mixed": {
+      "exact": 20,
+      "total": 22,
+      "all_match": false,
+      "diffs": [
+        "drafted:long:py_bug",
+        "serial:long:py_bug"
+      ]
+    }
+  },
+  "wall_s": 186.3
+}

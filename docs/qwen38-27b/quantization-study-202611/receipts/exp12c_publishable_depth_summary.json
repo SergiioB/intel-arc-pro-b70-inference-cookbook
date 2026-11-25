@@ -1,0 +1,244 @@
+{
+  "experiment": "Exp 12C: Official Publishable Depth Speed Ladder (check_publishable.py PASS)",
+  "sampling": "qwen38-27b:nothink-p0",
+  "max_context": 139264,
+  "xpu_attn_pref": 256,
+  "power_cap_w": 230,
+  "binary_sha256": "62fb382866a5fa1efa27ed2a7845d1e2a2c9eb1e207a9a456c6262c5cdec8f3b",
+  "sidecar_sha256": "5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79",
+  "arms": {
+    "baseline": {
+      "arm": "baseline",
+      "biascorr_log": null,
+      "check_publishable_rc": 0,
+      "check_publishable_out": "NOTE label as \"does not fit (largest: 139264)\": 256k\nPASS",
+      "by_depth": {
+        "0": {
+          "n": 3,
+          "prompt_tokens": 68,
+          "ttft_s_median": 0.117,
+          "ttft_s_vals": [
+            0.117,
+            0.117,
+            0.117
+          ],
+          "prefill_tok_s_median": 581.2,
+          "decode_tok_s_median": 107.42,
+          "decode_tok_s_vals": [
+            106.72,
+            115.79,
+            107.42
+          ],
+          "decode_avg_w_median": 213.8,
+          "temp_end_max_c": 70
+        },
+        "8k": {
+          "n": 3,
+          "prompt_tokens": 7976,
+          "ttft_s_median": 4.675,
+          "ttft_s_vals": [
+            4.674,
+            4.675,
+            4.679
+          ],
+          "prefill_tok_s_median": 1706.1,
+          "decode_tok_s_median": 96.69,
+          "decode_tok_s_vals": [
+            96.69,
+            89.89,
+            100.38
+          ],
+          "decode_avg_w_median": 211.9,
+          "temp_end_max_c": 72
+        },
+        "32k": {
+          "n": 3,
+          "prompt_tokens": 32552,
+          "ttft_s_median": 21.727,
+          "ttft_s_vals": [
+            21.673,
+            21.727,
+            21.739
+          ],
+          "prefill_tok_s_median": 1498.2,
+          "decode_tok_s_median": 86.51,
+          "decode_tok_s_vals": [
+            86.51,
+            95.81,
+            86.4
+          ],
+          "decode_avg_w_median": 224.3,
+          "temp_end_max_c": 74
+        },
+        "64k": {
+          "n": 3,
+          "prompt_tokens": 65320,
+          "ttft_s_median": 50.632,
+          "ttft_s_vals": [
+            50.58,
+            50.632,
+            50.638
+          ],
+          "prefill_tok_s_median": 1290.1,
+          "decode_tok_s_median": 71.39,
+          "decode_tok_s_vals": [
+            71.39,
+            73.45,
+            67.61
+          ],
+          "decode_avg_w_median": 229.1,
+          "temp_end_max_c": 74
+        },
+        "128k": {
+          "n": 3,
+          "prompt_tokens": 130856,
+          "ttft_s_median": 129.234,
+          "ttft_s_vals": [
+            129.248,
+            129.216,
+            129.234
+          ],
+          "prefill_tok_s_median": 1012.6,
+          "decode_tok_s_median": 54.58,
+          "decode_tok_s_vals": [
+            39.78,
+            55.81,
+            54.58
+          ],
+          "decode_avg_w_median": 229.9,
+          "temp_end_max_c": 74
+        }
+      }
+    },
+    "biascorr_mixed": {
+      "arm": "biascorr_mixed",
+      "biascorr_log": "biascorr sidecar loaded: ./qwen38_mlx4_biascorr_mixed2048_496L.safetensors (matched=496/496, sha256=5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79)",
+      "check_publishable_rc": 0,
+      "check_publishable_out": "NOTE label as \"does not fit (largest: 139264)\": 256k\nPASS",
+      "by_depth": {
+        "0": {
+          "n": 3,
+          "prompt_tokens": 68,
+          "ttft_s_median": 0.117,
+          "ttft_s_vals": [
+            0.117,
+            0.117,
+            0.117
+          ],
+          "prefill_tok_s_median": 581.2,
+          "decode_tok_s_median": 112.63,
+          "decode_tok_s_vals": [
+            112.63,
+            115.68,
+            112.41
+          ],
+          "decode_avg_w_median": 213.7,
+          "temp_end_max_c": 70
+        },
+        "8k": {
+          "n": 3,
+          "prompt_tokens": 7976,
+          "ttft_s_median": 4.694,
+          "ttft_s_vals": [
+            4.707,
+            4.682,
+            4.694
+          ],
+          "prefill_tok_s_median": 1699.2,
+          "decode_tok_s_median": 102.5,
+          "decode_tok_s_vals": [
+            102.5,
+            101.3,
+            105.27
+          ],
+          "decode_avg_w_median": 211.6,
+          "temp_end_max_c": 73
+        },
+        "32k": {
+          "n": 3,
+          "prompt_tokens": 32552,
+          "ttft_s_median": 21.779,
+          "ttft_s_vals": [
+            21.778,
+            21.779,
+            21.788
+          ],
+          "prefill_tok_s_median": 1494.7,
+          "decode_tok_s_median": 88.97,
+          "decode_tok_s_vals": [
+            87.83,
+            88.97,
+            95.54
+          ],
+          "decode_avg_w_median": 224.7,
+          "temp_end_max_c": 74
+        },
+        "64k": {
+          "n": 3,
+          "prompt_tokens": 65320,
+          "ttft_s_median": 50.782,
+          "ttft_s_vals": [
+            50.787,
+            50.771,
+            50.782
+          ],
+          "prefill_tok_s_median": 1286.3,
+          "decode_tok_s_median": 73.49,
+          "decode_tok_s_vals": [
+            73.49,
+            75.82,
+            73.42
+          ],
+          "decode_avg_w_median": 229.0,
+          "temp_end_max_c": 74
+        },
+        "128k": {
+          "n": 3,
+          "prompt_tokens": 130856,
+          "ttft_s_median": 129.523,
+          "ttft_s_vals": [
+            129.523,
+            129.525,
+            129.232
+          ],
+          "prefill_tok_s_median": 1010.3,
+          "decode_tok_s_median": 54.05,
+          "decode_tok_s_vals": [
+            59.94,
+            50.57,
+            54.05
+          ],
+          "decode_avg_w_median": 230.0,
+          "temp_end_max_c": 75
+        }
+      }
+    }
+  },
+  "deltas_bc_vs_base": {
+    "0": {
+      "ttft_delta_pct": 0.0,
+      "prefill_delta_pct": 0.0,
+      "decode_delta_pct": 4.85
+    },
+    "8k": {
+      "ttft_delta_pct": 0.41,
+      "prefill_delta_pct": -0.4,
+      "decode_delta_pct": 6.01
+    },
+    "32k": {
+      "ttft_delta_pct": 0.24,
+      "prefill_delta_pct": -0.23,
+      "decode_delta_pct": 2.84
+    },
+    "64k": {
+      "ttft_delta_pct": 0.3,
+      "prefill_delta_pct": -0.29,
+      "decode_delta_pct": 2.94
+    },
+    "128k": {
+      "ttft_delta_pct": 0.22,
+      "prefill_delta_pct": -0.23,
+      "decode_delta_pct": -0.97
+    }
+  }
+}
