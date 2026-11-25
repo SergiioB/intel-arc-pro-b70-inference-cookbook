@@ -1,0 +1,172 @@
+{
+  "experiment": "Exp 12A: Frozen 329-Item Graded Battery (Baseline vs Fused BiasCorr-Mixed)",
+  "binary_sha256": "62fb382866a5fa1efa27ed2a7845d1e2a2c9eb1e207a9a456c6262c5cdec8f3b",
+  "sidecar_sha256": "5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79",
+  "biascorr_log": "biascorr sidecar loaded: ./qwen38_mlx4_biascorr_mixed2048_496L.safetensors (matched=496/496, sha256=5719cfb4ec2978b8c6e201a587dc81b9a3871e6931168cbfb33e0b5872c74b79)",
+  "total_items": 329,
+  "baseline_pass": 282,
+  "biascorr_mixed_pass": 284,
+  "net_delta": 2,
+  "broken_to_fixed_count": 9,
+  "fixed_to_broken_count": 7,
+  "mcnemar_exact_p": 0.80362,
+  "identical_output_sha256_count": 127,
+  "changed_output_sha256_count": 202,
+  "per_split": {
+    "instruction_following": {
+      "baseline": [
+        33,
+        55
+      ],
+      "biascorr_mixed": [
+        33,
+        55
+      ],
+      "delta": 0
+    },
+    "knowledge_professional": {
+      "baseline": [
+        40,
+        55
+      ],
+      "biascorr_mixed": [
+        41,
+        55
+      ],
+      "delta": 1
+    },
+    "structured_output": {
+      "baseline": [
+        55,
+        55
+      ],
+      "biascorr_mixed": [
+        55,
+        55
+      ],
+      "delta": 0
+    },
+    "test": {
+      "baseline": [
+        76,
+        82
+      ],
+      "biascorr_mixed": [
+        77,
+        82
+      ],
+      "delta": 1
+    },
+    "tune": {
+      "baseline": [
+        78,
+        82
+      ],
+      "biascorr_mixed": [
+        78,
+        82
+      ],
+      "delta": 0
+    }
+  },
+  "broken_to_fixed_items": [
+    {
+      "id": "he-032",
+      "split": "tune",
+      "base_detail": "k\n    assert math.fabs(poly(coeffs, solution)) < 1e-4\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+      "bc_detail": "PASS"
+    },
+    {
+      "id": "he-091",
+      "split": "test",
+      "base_detail": "assert candidate(\"Is the sky blue?\") == 0, \"Test 2\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Test 2",
+      "bc_detail": "PASS"
+    },
+    {
+      "id": "he-093",
+      "split": "test",
+      "base_detail": "gging!)\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 1 (good for debugging!)",
+      "bc_detail": "PASS"
+    },
+    {
+      "id": "he-130",
+      "split": "tune",
+      "base_detail": "File \"/tmp/tmpfadrptu6.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax",
+      "bc_detail": "PASS"
+    },
+    {
+      "id": "he-160",
+      "split": "tune",
+      "base_detail": "rt candidate(['+', '*', '-'], [2, 3, 4, 5]) == 9\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+      "bc_detail": "PASS"
+    },
+    {
+      "id": "ifeval-2605",
+      "split": "instruction_following",
+      "base_detail": "1/2 rules followed",
+      "bc_detail": "2/2 rules followed"
+    },
+    {
+      "id": "prof-biz-401",
+      "split": "knowledge_professional",
+      "base_detail": "got='J' gold='I'",
+      "bc_detail": "got='I' gold='I'"
+    },
+    {
+      "id": "prof-law-1957",
+      "split": "knowledge_professional",
+      "base_detail": "got='H' gold='E'",
+      "bc_detail": "got='E' gold='E'"
+    },
+    {
+      "id": "prof-med-6170",
+      "split": "knowledge_professional",
+      "base_detail": "got='F' gold='J'",
+      "bc_detail": "got='J' gold='J'"
+    }
+  ],
+  "fixed_to_broken_items": [
+    {
+      "id": "he-108",
+      "split": "tune",
+      "base_detail": "PASS",
+      "bc_detail": "ah1h.py\", line 38, in check\n    assert candidate([-1, -2, 0]) == 0\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
+    },
+    {
+      "id": "he-115",
+      "split": "test",
+      "base_detail": "PASS",
+      "bc_detail": "date([[1,1,1,1], [1,1,1,1]], 9) == 2, \"Error\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Error"
+    },
+    {
+      "id": "he-116",
+      "split": "tune",
+      "base_detail": "PASS",
+      "bc_detail": "File \"/tmp/tmpglc8d3qg.py\", line 2\n    ```python\n    ^\nSyntaxError: invalid syntax"
+    },
+    {
+      "id": "he-140",
+      "split": "tune",
+      "base_detail": "PASS",
+      "bc_detail": "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: This prints if this assert fails 3 (good for debugging!)"
+    },
+    {
+      "id": "ifeval-3409",
+      "split": "instruction_following",
+      "base_detail": "2/2 rules followed",
+      "bc_detail": "1/2 rules followed"
+    },
+    {
+      "id": "prof-med-6013",
+      "split": "knowledge_professional",
+      "base_detail": "got='G' gold='G'",
+      "bc_detail": "got='H' gold='G'"
+    },
+    {
+      "id": "prof-med-6339",
+      "split": "knowledge_professional",
+      "base_detail": "got='J' gold='J'",
+      "bc_detail": "got='J' gold='J'"
+    }
+  ]
+}

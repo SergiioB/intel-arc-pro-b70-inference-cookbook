@@ -1,0 +1,129 @@
+{
+  "cal_label": "wt2train_tail_pydecimal_2048",
+  "cal_shape": [
+    4,
+    512
+  ],
+  "cal_scored_tokens": 2044,
+  "cal_token_ids_sha256": "e10f3445897905b71d15829bf8632e43d2f47f8261d5b2026ad5730d6631f269",
+  "pos0_excluded": true,
+  "num_tensors": 496,
+  "size_bytes": 15678520,
+  "size_mib": 14.952,
+  "sidecar_sha256": "f5fce21b31f477229cab3e62cb42d67094983fd0185e7fc6e363df1ad38ed932",
+  "compute_s": 47.205,
+  "wall_s": 194.46,
+  "mean_l2": 2.403,
+  "max_l2": 16.16133,
+  "status": "PUBLISHABLE",
+  "kl_gate": {
+    "status": "PUBLISHABLE",
+    "checks": {
+      "prose_kl_drops_ci95_below_0": true,
+      "prose_minus_b_worsens_kl": true,
+      "code_kl_drops_ci95_below_0": true,
+      "code_minus_b_worsens_kl": true
+    },
+    "failed_checks": [],
+    "domains": {
+      "prose": {
+        "kl_base": 0.05059843614228394,
+        "kl_plus": 0.03850041793611702,
+        "kl_minus": 0.08791206505818176,
+        "delta_plus": -0.012098018206166919,
+        "delta_plus_pct": -23.909865854642266,
+        "delta_plus_ci95_blk32": [
+          -0.016671017251039835,
+          -0.00805954020453219
+        ],
+        "delta_minus": 0.03731362891589782,
+        "delta_minus_ci95_blk32": [
+          0.029443444142116013,
+          0.04683533621250347
+        ],
+        "shape": [
+          4,
+          511
+        ]
+      },
+      "code": {
+        "kl_base": 0.1840748609545634,
+        "kl_plus": 0.15787311538160498,
+        "kl_minus": 0.2989832638442155,
+        "delta_plus": -0.026201745572958433,
+        "delta_plus_pct": -14.234287852824188,
+        "delta_plus_ci95_blk32": [
+          -0.0371679960573007,
+          -0.015556487789121635
+        ],
+        "delta_minus": 0.11490840288965211,
+        "delta_minus_ci95_blk32": [
+          0.09730017414291572,
+          0.13380074872939496
+        ],
+        "shape": [
+          4,
+          511
+        ]
+      }
+    },
+    "bootstrap": {
+      "block": 32,
+      "n_boot": 10000,
+      "seed": 20261125,
+      "resampling": "within window"
+    },
+    "eval": {
+      "prose": {
+        "token_ids_sha256": "14049ba0a85c3ba6227f01cd3c0450a25c9182228aa161654c0a9db01879adc3",
+        "cal_6gram_overlap": 0
+      },
+      "code": {
+        "token_ids_sha256": "6c3a613f281669f2ceb3e58272194b584a64e4b3cacd766a8119a0b8eb5e0832",
+        "cal_6gram_overlap": 0
+      }
+    },
+    "wall_s": 212.58
+  },
+  "provenance": {
+    "sidecar_file": "qwen38_27b_mlx4_biascorr_v1.safetensors",
+    "bf16_reference": {
+      "repo": "Qwen/Qwen3.8-27B",
+      "revision": "8c0b3d30f3ae96f5c7f774de704bf0ada83e422a"
+    },
+    "quantized_checkpoint": {
+      "repo": "TensorFold/Qwen3.8-27B-MLX-4bit",
+      "revision": "22d8d538154e0e5b6f8dcb1fcc74a60a0798104c"
+    },
+    "generator": "export_biascorr.py",
+    "generator_sha256": "f7bc23f16c76f2fd73619428aa0dd23aa34782284502a1e0d1f9dd61662e300a",
+    "calibration": {
+      "prose": "WikiText-2 train, --prose-from-tail --prose-tail-offset 4096, 2 x 512 tokens",
+      "code": "CPython 3.12.3 _pydecimal.py, first 2 x 512 tokens"
+    },
+    "corpora": {
+      "repo": "Salesforce/wikitext",
+      "config": "wikitext-2-raw-v1",
+      "train_parquet_sha256": "e83889baabc497075506f91975be5fac0d45c5290b6b20582c8cd1e853d0c9f7",
+      "test_parquet_sha256": "5f1bea067869d04849c0f975a2b29c4ff47d867f484f5010ea5e861eab246d91"
+    },
+    "held_out": {
+      "prose": "WikiText-2 test, first 4 x 512 tokens",
+      "code": "CPython 3.12.3 difflib.py, first 4 x 512 tokens"
+    },
+    "runtime": {
+      "container_image": "vllm/vllm-openai-xpu:v0.31.0",
+      "python": "3.12.3",
+      "torch": "2.14.0+xpu",
+      "transformers": "5.17.0",
+      "triton": "3.8.0+xpu",
+      "pyarrow": "25.0.1",
+      "device": "1x Intel Arc Pro B70",
+      "power_cap_w": 230,
+      "max_freq_mhz": 2800,
+      "network": "none"
+    },
+    "scope": "Next-token KL against BF16 in a 64-layer BF16 causal PyTorch stream on one GPU. It does not run TensorFold or vLLM kernels and does not measure task accuracy or speed.",
+    "raw_receipt_sha256": "b4afd81a1773ef199a9b4e4d911a88a7af563dff6b5a2bddd8681da714090165"
+  }
+}

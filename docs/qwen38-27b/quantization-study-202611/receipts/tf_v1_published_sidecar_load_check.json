@@ -1,0 +1,54 @@
+{
+  "schema": "tf_v1_published_sidecar_load_check/1",
+  "derived_from": "TensorFold server log of the run (raw_sha256 in the manifest)",
+  "binary_sha256": "75c15aba7afd97fc68c2ad1a33a604955eed53c4f5c087b68f45bb03bc7ff176",
+  "binary_note": "Patch v5 build. SHA-256 taken from the on-disk binary, unchanged since before the run; the server log does not print it. The build tree included the host-local zig/build/xpu.zig workaround that the shipped 17-file patch excludes.",
+  "sidecar_sha256": "f5fce21b31f477229cab3e62cb42d67094983fd0185e7fc6e363df1ad38ed932",
+  "matched": "496/496",
+  "device": "1x Intel Arc Pro B70",
+  "request": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 4242,
+    "max_tokens": 256,
+    "thinking": false,
+    "context": 8192,
+    "drafter": "DFlash2"
+  },
+  "warmup_discarded": 1,
+  "pairs": [
+    {
+      "prompt_index": 0,
+      "prompt_tokens": 30,
+      "completion_tokens": 17,
+      "drafted_output_sha_prefix": "7ed5ee4d0ea9",
+      "serial_output_sha_prefix": "7ed5ee4d0ea9",
+      "match": true,
+      "drafted_accepted": "14/45"
+    },
+    {
+      "prompt_index": 1,
+      "prompt_tokens": 25,
+      "completion_tokens": 112,
+      "drafted_output_sha_prefix": "e73fe7e50712",
+      "serial_output_sha_prefix": "e73fe7e50712",
+      "match": true,
+      "drafted_accepted": "98/210"
+    },
+    {
+      "prompt_index": 2,
+      "prompt_tokens": 34,
+      "completion_tokens": 3,
+      "drafted_output_sha_prefix": "b5842e8a1d05",
+      "serial_output_sha_prefix": "b5842e8a1d05",
+      "match": true,
+      "drafted_accepted": "2/15"
+    }
+  ],
+  "drafted_equals_serial": "3/3",
+  "not_measured": [
+    "speed",
+    "329-item battery",
+    "--tp 2"
+  ]
+}

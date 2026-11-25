@@ -1,0 +1,1465 @@
+{
+  "experiment": "Exp 13A causal-v2: real shipped GPTQ-Int4-sym-G128 vs exact shipped MLX-4bit vs HF-INT4-G16/Had128NoPerm vs FP8 on full 64L Qwen3.8-27B",
+  "meta": {
+    "gpu_assignment": "container-visible xpu:0 backed exclusively by host GPU1 (<card-node> <render-node>)",
+    "seed": 101,
+    "num_layers": 64,
+    "scored_tokens_per_domain": 2044,
+    "reference_model": "/bf16",
+    "mlx_checkpoint": "/mlx",
+    "reference_validation": "Causal-v2 corrects the original exp13a standalone-layer attention dispatch bug by pinning full_cfg._attn_implementation='sdpa'. The Exp11 cache was produced through Qwen3_5ForCausalLM(text_cfg), which had true causal SDPA; this receipt validates the streamed BF16 reference by WT2 PPL ~= 7.798 and by direct final-norm hidden-state comparison against exp11_cache.pt.",
+    "mlx_endpoint_scope": "MLX arms use exact quantized shipped embedding and lm_head dequantization; transformer linear weights are exact MLX affine q*scale+bias dequantizations. GPTQ/FP8 endpoint and unquantized residual tensors are evaluated in the BF16 reference harness as a quantization-isolation choice.",
+    "gptq_checkpoint": "/gptq",
+    "fp8_checkpoint": "/fp8",
+    "corpus": {
+      "wt2_eval_sha256": "14049ba0a85c3ba6227f01cd3c0450a25c9182228aa161654c0a9db01879adc3",
+      "code_eval_sha256": "6c3a613f281669f2ceb3e58272194b584a64e4b3cacd766a8119a0b8eb5e0832",
+      "historical_mixed_wt2_code_2048_sha256": "1dfe706cdbc116289778697ce6416b5b6bf92daa831ca16e6eef043ae8c5ee6f",
+      "historical_mixed_overlap_with_wt2_eval_6gram": 0,
+      "historical_mixed_overlap_with_code_eval_6gram": 1,
+      "strict_mixed_wt2_code_2048_off512_sha256": "0f3b0c9fecaaf03fb215019bdc42550ab5c659bc6737d79fce6cb2bb011d5242",
+      "strict_mixed_overlap_with_wt2_eval_6gram": 0,
+      "strict_mixed_overlap_with_code_eval_6gram": 0,
+      "strict_construction": "same 2 WT2 tail windows as Exp11B; same Python calibration files, but token offset +512 to remove the single historical code-eval 6-gram collision",
+      "eval_scored_tokens_per_domain": 2044
+    },
+    "important_corpus_correction": "Historical mixed_wt2_code_2048 has one shared code 6-gram; strict corrected mixed calibration is used for every new BC arm.",
+    "dtype_scope": "Quantization-quality harness: all dequantized weights and hidden activations evaluated in the BF16 reference harness. GPTQ's FP16 unquantized embedding/head serving-dtype effect is intentionally not confounded into quantization KL; quantized transformer matrices are exact checkpoint dequantizations.",
+    "startup_verification": {
+      "gptq_l0_gate_sqnr_db": 16.7723,
+      "fp8_l0_gate_sqnr_db": 31.5199,
+      "gptq_dequant_formula": "W=(unpack_low_nibble(qweight)-(unpack_low_nibble(qzeros)+1))*scales[g_idx]; sym=true stored zeros verified as 7 => zp 8",
+      "fp8_dequant_formula": "W=float(fp8_e4m3)*repeat_128x128(weight_scale_inv)"
+    },
+    "attention_implementation": "sdpa",
+    "causal_cache_validation": {
+      "wt2": {
+        "cache_key": "wt_h_bf_norm",
+        "max_abs_diff": 0.0,
+        "mean_abs_diff": 0.0,
+        "shape": [
+          4,
+          512,
+          5120
+        ]
+      },
+      "code": {
+        "cache_key": "cd_h_bf_norm",
+        "max_abs_diff": 0.0,
+        "mean_abs_diff": 0.0,
+        "shape": [
+          4,
+          512,
+          5120
+        ]
+      }
+    },
+    "checkpoint_quantized_module_inventory": {
+      "gptq": {
+        "quantized": 400,
+        "unquantized": 96
+      },
+      "fp8": {
+        "quantized": 400,
+        "unquantized": 96
+      }
+    },
+    "quantized_modules_seen_in_stream": {
+      "gptq": 400,
+      "fp8": 400
+    },
+    "elapsed_sec": 573.81,
+    "gpu1_telemetry": {
+      "start": {
+        "energy1_input_uj": 1954413317382,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 53.0,
+        "utc": "2026-11-25T02:10:42Z",
+        "vram_usage_bytes": 42246144,
+        "vram_visible_avail_mib": 32615
+      },
+      "end": {
+        "energy1_input_uj": 2037892841186,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "<hwmon>",
+        "power_cap_w": 230.0,
+        "temp_c": 56.0,
+        "utc": "2026-11-25T02:20:38Z",
+        "vram_usage_bytes": 42246144,
+        "vram_visible_avail_mib": 32615
+      },
+      "energy_delta_j": 83479.523804
+    }
+  },
+  "weight_sqnr_by_projection_family": {
+    "gptq": {
+      "linear_attn.in_proj_qkv": {
+        "sqnr_db": 17.2876,
+        "n_tensors": 48
+      },
+      "linear_attn.in_proj_z": {
+        "sqnr_db": 17.4169,
+        "n_tensors": 48
+      },
+      "linear_attn.out_proj": {
+        "sqnr_db": 16.771,
+        "n_tensors": 48
+      },
+      "mlp.down_proj": {
+        "sqnr_db": 16.3207,
+        "n_tensors": 64
+      },
+      "mlp.gate_proj": {
+        "sqnr_db": 17.3172,
+        "n_tensors": 64
+      },
+      "mlp.up_proj": {
+        "sqnr_db": 17.3882,
+        "n_tensors": 64
+      },
+      "self_attn.k_proj": {
+        "sqnr_db": 16.1896,
+        "n_tensors": 16
+      },
+      "self_attn.o_proj": {
+        "sqnr_db": 16.8023,
+        "n_tensors": 16
+      },
+      "self_attn.q_proj": {
+        "sqnr_db": 17.3874,
+        "n_tensors": 16
+      },
+      "self_attn.v_proj": {
+        "sqnr_db": 16.3057,
+        "n_tensors": 16
+      }
+    },
+    "fp8": {
+      "linear_attn.in_proj_qkv": {
+        "sqnr_db": 31.514,
+        "n_tensors": 48
+      },
+      "linear_attn.in_proj_z": {
+        "sqnr_db": 31.5121,
+        "n_tensors": 48
+      },
+      "linear_attn.out_proj": {
+        "sqnr_db": 31.5203,
+        "n_tensors": 48
+      },
+      "mlp.down_proj": {
+        "sqnr_db": 31.5224,
+        "n_tensors": 64
+      },
+      "mlp.gate_proj": {
+        "sqnr_db": 31.5191,
+        "n_tensors": 64
+      },
+      "mlp.up_proj": {
+        "sqnr_db": 31.5205,
+        "n_tensors": 64
+      },
+      "self_attn.k_proj": {
+        "sqnr_db": 31.5217,
+        "n_tensors": 16
+      },
+      "self_attn.o_proj": {
+        "sqnr_db": 31.5212,
+        "n_tensors": 16
+      },
+      "self_attn.q_proj": {
+        "sqnr_db": 31.5135,
+        "n_tensors": 16
+      },
+      "self_attn.v_proj": {
+        "sqnr_db": 31.5208,
+        "n_tensors": 16
+      }
+    }
+  },
+  "mean_x_cross_domain_cosine_wt2_vs_code": {
+    "linear_attn.in_proj_a": {
+      "mean": 0.84184,
+      "p5": 0.41208,
+      "median": 0.92018,
+      "n": 48
+    },
+    "linear_attn.in_proj_b": {
+      "mean": 0.84184,
+      "p5": 0.41208,
+      "median": 0.92018,
+      "n": 48
+    },
+    "linear_attn.in_proj_qkv": {
+      "mean": 0.84184,
+      "p5": 0.41208,
+      "median": 0.92018,
+      "n": 48
+    },
+    "linear_attn.in_proj_z": {
+      "mean": 0.84184,
+      "p5": 0.41208,
+      "median": 0.92018,
+      "n": 48
+    },
+    "linear_attn.out_proj": {
+      "mean": 0.40408,
+      "p5": 0.2153,
+      "median": 0.3744,
+      "n": 48
+    },
+    "mlp.down_proj": {
+      "mean": 0.28088,
+      "p5": 0.08242,
+      "median": 0.24235,
+      "n": 64
+    },
+    "mlp.gate_proj": {
+      "mean": 0.63697,
+      "p5": 0.35157,
+      "median": 0.67307,
+      "n": 64
+    },
+    "mlp.up_proj": {
+      "mean": 0.63697,
+      "p5": 0.35157,
+      "median": 0.67307,
+      "n": 64
+    },
+    "self_attn.k_proj": {
+      "mean": 0.85256,
+      "p5": 0.51291,
+      "median": 0.93182,
+      "n": 16
+    },
+    "self_attn.o_proj": {
+      "mean": 0.48012,
+      "p5": 0.29417,
+      "median": 0.45558,
+      "n": 16
+    },
+    "self_attn.q_proj": {
+      "mean": 0.85256,
+      "p5": 0.51291,
+      "median": 0.93182,
+      "n": 16
+    },
+    "self_attn.v_proj": {
+      "mean": 0.85256,
+      "p5": 0.51291,
+      "median": 0.93182,
+      "n": 16
+    }
+  },
+  "results": {
+    "BF16_reference": {
+      "wt2": {
+        "kl_vs_bf16": 0.0,
+        "nll": 2.053896,
+        "ppl": 7.79822,
+        "top1_agree_pct": 100.0,
+        "n_tokens": 2044
+      },
+      "code": {
+        "kl_vs_bf16": 0.0,
+        "nll": 0.86473,
+        "ppl": 2.37436,
+        "top1_agree_pct": 100.0,
+        "n_tokens": 2044
+      }
+    },
+    "FP8_shipped": {
+      "wt2": {
+        "kl_vs_bf16": 0.00358217,
+        "nll": 2.055751,
+        "ppl": 7.8127,
+        "top1_agree_pct": 97.6027,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 23.475
+      },
+      "code": {
+        "kl_vs_bf16": 0.01688586,
+        "nll": 0.867628,
+        "ppl": 2.38126,
+        "top1_agree_pct": 96.4775,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 18.153
+      }
+    },
+    "GPTQ_shipped_base": {
+      "wt2": {
+        "kl_vs_bf16": 0.04941556,
+        "nll": 2.094188,
+        "ppl": 8.11885,
+        "top1_agree_pct": 91.4384,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 13.23
+      },
+      "code": {
+        "kl_vs_bf16": 0.30198259,
+        "nll": 1.041896,
+        "ppl": 2.83459,
+        "top1_agree_pct": 85.7143,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 5.881
+      }
+    },
+    "GPTQ_shipped_BC_strictmixed": {
+      "wt2": {
+        "kl_vs_bf16": 0.05221039,
+        "nll": 2.095186,
+        "ppl": 8.12695,
+        "top1_agree_pct": 91.047,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 12.93
+      },
+      "code": {
+        "kl_vs_bf16": 0.28700701,
+        "nll": 1.031598,
+        "ppl": 2.80555,
+        "top1_agree_pct": 85.8121,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 6.059
+      }
+    },
+    "GPTQ_shipped_NegControl_minus_b": {
+      "wt2": {
+        "kl_vs_bf16": 0.05356396,
+        "nll": 2.098822,
+        "ppl": 8.15656,
+        "top1_agree_pct": 91.2916,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 12.874
+      },
+      "code": {
+        "kl_vs_bf16": 0.3402925,
+        "nll": 1.074825,
+        "ppl": 2.92948,
+        "top1_agree_pct": 83.953,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 5.43
+      }
+    },
+    "MLX_shipped_base": {
+      "wt2": {
+        "kl_vs_bf16": 0.05059844,
+        "nll": 2.096271,
+        "ppl": 8.13577,
+        "top1_agree_pct": 90.5577,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 13.3
+      },
+      "code": {
+        "kl_vs_bf16": 0.18407486,
+        "nll": 0.967968,
+        "ppl": 2.63259,
+        "top1_agree_pct": 88.3562,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 8.184
+      }
+    },
+    "MLX_shipped_BC_strictmixed": {
+      "wt2": {
+        "kl_vs_bf16": 0.03896783,
+        "nll": 2.090654,
+        "ppl": 8.0902,
+        "top1_agree_pct": 91.4384,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 14.296
+      },
+      "code": {
+        "kl_vs_bf16": 0.15879047,
+        "nll": 0.957851,
+        "ppl": 2.60609,
+        "top1_agree_pct": 88.8943,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 8.834
+      }
+    },
+    "MLX_shipped_NegControl_minus_b": {
+      "wt2": {
+        "kl_vs_bf16": 0.0871384,
+        "nll": 2.12406,
+        "ppl": 8.36503,
+        "top1_agree_pct": 88.3562,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 11.186
+      },
+      "code": {
+        "kl_vs_bf16": 0.29836942,
+        "nll": 1.038365,
+        "ppl": 2.82459,
+        "top1_agree_pct": 84.5401,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 6.311
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+      "wt2": {
+        "kl_vs_bf16": 0.0316253,
+        "nll": 2.075964,
+        "ppl": 7.97223,
+        "top1_agree_pct": 94.1292,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 14.984
+      },
+      "code": {
+        "kl_vs_bf16": 0.14920348,
+        "nll": 0.970234,
+        "ppl": 2.63856,
+        "top1_agree_pct": 90.0196,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 9.491
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A16_BC_strictmixed": {
+      "wt2": {
+        "kl_vs_bf16": 0.02720035,
+        "nll": 2.071316,
+        "ppl": 7.93526,
+        "top1_agree_pct": 94.4716,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 16.049
+      },
+      "code": {
+        "kl_vs_bf16": 0.12848957,
+        "nll": 0.935095,
+        "ppl": 2.54745,
+        "top1_agree_pct": 91.2427,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 10.361
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A8_DF": {
+      "wt2": {
+        "kl_vs_bf16": 0.03260331,
+        "nll": 2.077154,
+        "ppl": 7.98172,
+        "top1_agree_pct": 93.7867,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 14.943
+      },
+      "code": {
+        "kl_vs_bf16": 0.15465675,
+        "nll": 0.976873,
+        "ppl": 2.65614,
+        "top1_agree_pct": 89.726,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 9.339
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A8_BC_strictmixed": {
+      "wt2": {
+        "kl_vs_bf16": 0.0285273,
+        "nll": 2.073015,
+        "ppl": 7.94875,
+        "top1_agree_pct": 94.5205,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 15.838
+      },
+      "code": {
+        "kl_vs_bf16": 0.13506682,
+        "nll": 0.940966,
+        "ppl": 2.56246,
+        "top1_agree_pct": 91.5362,
+        "n_tokens": 2044,
+        "l63_normed_hidden_centered_sqnr_db": 10.201
+      }
+    }
+  },
+  "paired_blk32_bootstrap_95ci": {
+    "GPTQ_shipped_BC_strictmixed__vs__GPTQ_shipped_base": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.00279482,
+          "ci95_blk32": [
+            0.00200649,
+            0.00372959
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -0.39138943,
+          "ci95_blk32": [
+            -0.99206349,
+            0.1984127
+          ],
+          "p_a_lt_b_blk32": 0.8842,
+          "significant": false,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.01497557,
+          "ci95_blk32": [
+            -0.02201588,
+            -0.00807931
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.09784736,
+          "ci95_blk32": [
+            -0.64484127,
+            0.74404762
+          ],
+          "p_a_lt_b_blk32": 0.4163,
+          "significant": false,
+          "n_blocks": 63
+        }
+      }
+    },
+    "GPTQ_shipped_NegControl_minus_b__vs__GPTQ_shipped_base": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.0041484,
+          "ci95_blk32": [
+            0.00308469,
+            0.00520463
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -0.14677104,
+          "ci95_blk32": [
+            -0.74404762,
+            0.69444444
+          ],
+          "p_a_lt_b_blk32": 0.5214,
+          "significant": false,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.03830991,
+          "ci95_blk32": [
+            0.03034798,
+            0.04800359
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -1.76125245,
+          "ci95_blk32": [
+            -2.67857143,
+            -0.99206349
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A16_BC_strictmixed__vs__Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.00442496,
+          "ci95_blk32": [
+            -0.00694826,
+            -0.00217805
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.34246575,
+          "ci95_blk32": [
+            -0.34722222,
+            1.04166667
+          ],
+          "p_a_lt_b_blk32": 0.151,
+          "significant": false,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.02071391,
+          "ci95_blk32": [
+            -0.02992311,
+            -0.01130394
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 1.22309198,
+          "ci95_blk32": [
+            0.44642857,
+            2.28174603
+          ],
+          "p_a_lt_b_blk32": 0.0013,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A8_BC_strictmixed__vs__Had128NoPerm_HF_INT4_G16_W4A8_DF": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.00407601,
+          "ci95_blk32": [
+            -0.00702971,
+            -0.00148843
+          ],
+          "p_a_lt_b_blk32": 0.9995,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.73385519,
+          "ci95_blk32": [
+            -0.09920635,
+            1.58730159
+          ],
+          "p_a_lt_b_blk32": 0.0357,
+          "significant": false,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.01958993,
+          "ci95_blk32": [
+            -0.02888414,
+            -0.00917454
+          ],
+          "p_a_lt_b_blk32": 0.9999,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 1.81017613,
+          "ci95_blk32": [
+            0.89285714,
+            2.82738095
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A8_DF__vs__Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.00097801,
+          "ci95_blk32": [
+            0.00027329,
+            0.00187059
+          ],
+          "p_a_lt_b_blk32": 0.0019,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -0.34246575,
+          "ci95_blk32": [
+            -0.84325397,
+            0.14880952
+          ],
+          "p_a_lt_b_blk32": 0.9101,
+          "significant": false,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.00545327,
+          "ci95_blk32": [
+            0.00114398,
+            0.00971028
+          ],
+          "p_a_lt_b_blk32": 0.0064,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -0.29354207,
+          "ci95_blk32": [
+            -0.84325397,
+            0.34722222
+          ],
+          "p_a_lt_b_blk32": 0.7735,
+          "significant": false,
+          "n_blocks": 63
+        }
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A8_BC_strictmixed__vs__Had128NoPerm_HF_INT4_G16_W4A16_BC_strictmixed": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.00132696,
+          "ci95_blk32": [
+            0.00052803,
+            0.00222959
+          ],
+          "p_a_lt_b_blk32": 0.0003,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.04892368,
+          "ci95_blk32": [
+            -0.49603175,
+            0.5952381
+          ],
+          "p_a_lt_b_blk32": 0.3911,
+          "significant": false,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.00657725,
+          "ci95_blk32": [
+            0.00288045,
+            0.0114658
+          ],
+          "p_a_lt_b_blk32": 0.0001,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.29354207,
+          "ci95_blk32": [
+            -0.24801587,
+            0.74404762
+          ],
+          "p_a_lt_b_blk32": 0.1288,
+          "significant": false,
+          "n_blocks": 63
+        }
+      }
+    },
+    "GPTQ_shipped_base__vs__Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.01779026,
+          "ci95_blk32": [
+            0.01054003,
+            0.02622673
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -2.69080235,
+          "ci95_blk32": [
+            -4.06746032,
+            -1.48809524
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.1527791,
+          "ci95_blk32": [
+            0.12726155,
+            0.18709133
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -4.30528376,
+          "ci95_blk32": [
+            -5.70436508,
+            -3.02579365
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "GPTQ_shipped_BC_strictmixed__vs__Had128NoPerm_HF_INT4_G16_W4A16_BC_strictmixed": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.02501004,
+          "ci95_blk32": [
+            0.01732938,
+            0.03409095
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -3.42465753,
+          "ci95_blk32": [
+            -4.81150794,
+            -2.28174603
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.15851744,
+          "ci95_blk32": [
+            0.13292349,
+            0.19159186
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -5.43052838,
+          "ci95_blk32": [
+            -7.09325397,
+            -4.21626984
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "MLX_shipped_BC_strictmixed__vs__MLX_shipped_base": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.0116306,
+          "ci95_blk32": [
+            -0.0164997,
+            -0.00741691
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.88062622,
+          "ci95_blk32": [
+            0.0483631,
+            1.88492063
+          ],
+          "p_a_lt_b_blk32": 0.0193,
+          "significant": true,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.02528439,
+          "ci95_blk32": [
+            -0.03505872,
+            -0.01449212
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.53816047,
+          "ci95_blk32": [
+            -0.5952381,
+            1.53769841
+          ],
+          "p_a_lt_b_blk32": 0.1966,
+          "significant": false,
+          "n_blocks": 63
+        }
+      }
+    },
+    "MLX_shipped_NegControl_minus_b__vs__MLX_shipped_base": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.03653997,
+          "ci95_blk32": [
+            0.02866163,
+            0.04634364
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -2.20156556,
+          "ci95_blk32": [
+            -3.17460317,
+            -1.33928571
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.11429456,
+          "ci95_blk32": [
+            0.09506645,
+            0.13696289
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -3.81604697,
+          "ci95_blk32": [
+            -4.96031746,
+            -2.67857143
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "MLX_shipped_base__vs__GPTQ_shipped_base": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.00118287,
+          "ci95_blk32": [
+            -0.00705264,
+            0.00815988
+          ],
+          "p_a_lt_b_blk32": 0.3693,
+          "significant": false,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -0.88062622,
+          "ci95_blk32": [
+            -2.28174603,
+            0.49603175
+          ],
+          "p_a_lt_b_blk32": 0.8889,
+          "significant": false,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.11790773,
+          "ci95_blk32": [
+            -0.14778309,
+            -0.09371068
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 2.64187867,
+          "ci95_blk32": [
+            1.24007937,
+            4.46428571
+          ],
+          "p_a_lt_b_blk32": 0.0001,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "MLX_shipped_BC_strictmixed__vs__Had128NoPerm_HF_INT4_G16_W4A16_BC_strictmixed": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.01176749,
+          "ci95_blk32": [
+            0.0081392,
+            0.01512043
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -3.0332681,
+          "ci95_blk32": [
+            -4.51388889,
+            -1.68650794
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.0303009,
+          "ci95_blk32": [
+            0.01691117,
+            0.0464808
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -2.34833659,
+          "ci95_blk32": [
+            -3.7202381,
+            -1.19047619
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "GPTQ_shipped_base__vs__FP8_shipped": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.04583339,
+          "ci95_blk32": [
+            0.03459086,
+            0.05968438
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -6.16438356,
+          "ci95_blk32": [
+            -7.39087302,
+            -5.00992063
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.28509673,
+          "ci95_blk32": [
+            0.24306251,
+            0.33420986
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -10.76320939,
+          "ci95_blk32": [
+            -12.54960317,
+            -9.12698413
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    },
+    "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__FP8_shipped": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.02804313,
+          "ci95_blk32": [
+            0.02171683,
+            0.03557721
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -3.47358121,
+          "ci95_blk32": [
+            -4.46428571,
+            -2.38095238
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": 0.13231763,
+          "ci95_blk32": [
+            0.10824721,
+            0.15579011
+          ],
+          "p_a_lt_b_blk32": 0.0,
+          "significant": true,
+          "n_blocks": 63
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": -6.45792564,
+          "ci95_blk32": [
+            -7.93650794,
+            -5.20833333
+          ],
+          "p_a_lt_b_blk32": 1.0,
+          "significant": true,
+          "n_blocks": 63
+        }
+      }
+    }
+  },
+  "mlx_shipped_crosscheck_exp11b_exact_copy": {
+    "source_receipt": "exp11b_mixed_cal.json",
+    "note": "PROVENANCE ONLY -- DO NOT USE AS VALID KL EVIDENCE: these Exp11B values were computed against the corrupted cached BF16 hidden reference identified in Exp13A. This receipt recomputes exact shipped MLX arms directly against a streamed BF16 reference.",
+    "arms": {
+      "orig": {
+        "wt2_kl": 0.050614,
+        "wt2_top1_pct": 90.558,
+        "code_kl": 0.183255,
+        "code_top1_pct": 88.503,
+        "dnr_pass": 7,
+        "dnr_total": 8,
+        "dnr_cases": {
+          "sumsq": {
+            "want": "14",
+            "got": "14",
+            "pass": true
+          },
+          "sum3": {
+            "want": "20",
+            "got": "20",
+            "pass": true
+          },
+          "mul": {
+            "want": "1296",
+            "got": "1296",
+            "pass": true
+          },
+          "div": {
+            "want": "143",
+            "got": "143",
+            "pass": true
+          },
+          "days": {
+            "want": "366",
+            "got": "366",
+            "pass": true
+          },
+          "prime": {
+            "want": "no",
+            "got": "Yes",
+            "pass": false
+          },
+          "letters": {
+            "want": "6",
+            "got": "6",
+            "pass": true
+          },
+          "seq": {
+            "want": "32",
+            "got": "32",
+            "pass": true
+          }
+        },
+        "eval_s": 29.61
+      },
+      "wt2_disjoint_2048": {
+        "wt2_kl": 0.039188,
+        "wt2_top1_pct": 91.634,
+        "code_kl": 0.166633,
+        "code_top1_pct": 88.748,
+        "dnr_pass": 8,
+        "dnr_total": 8,
+        "dnr_cases": {
+          "sumsq": {
+            "want": "14",
+            "got": "14",
+            "pass": true
+          },
+          "sum3": {
+            "want": "20",
+            "got": "20",
+            "pass": true
+          },
+          "mul": {
+            "want": "1296",
+            "got": "1296",
+            "pass": true
+          },
+          "div": {
+            "want": "143",
+            "got": "143",
+            "pass": true
+          },
+          "days": {
+            "want": "366",
+            "got": "366",
+            "pass": true
+          },
+          "prime": {
+            "want": "no",
+            "got": "No",
+            "pass": true
+          },
+          "letters": {
+            "want": "6",
+            "got": "6",
+            "pass": true
+          },
+          "seq": {
+            "want": "32",
+            "got": "32",
+            "pass": true
+          }
+        },
+        "eval_s": 16.35
+      },
+      "code_disjoint_512": {
+        "wt2_kl": 0.041286,
+        "wt2_top1_pct": 90.9,
+        "code_kl": 0.158802,
+        "code_top1_pct": 89.335,
+        "dnr_pass": 8,
+        "dnr_total": 8,
+        "dnr_cases": {
+          "sumsq": {
+            "want": "14",
+            "got": "14",
+            "pass": true
+          },
+          "sum3": {
+            "want": "20",
+            "got": "20",
+            "pass": true
+          },
+          "mul": {
+            "want": "1296",
+            "got": "1296",
+            "pass": true
+          },
+          "div": {
+            "want": "143",
+            "got": "143",
+            "pass": true
+          },
+          "days": {
+            "want": "366",
+            "got": "366",
+            "pass": true
+          },
+          "prime": {
+            "want": "no",
+            "got": "No",
+            "pass": true
+          },
+          "letters": {
+            "want": "6",
+            "got": "6",
+            "pass": true
+          },
+          "seq": {
+            "want": "32",
+            "got": "32",
+            "pass": true
+          }
+        },
+        "eval_s": 16.35
+      },
+      "mixed_wt2_code_2048": {
+        "wt2_kl": 0.038685,
+        "wt2_top1_pct": 91.634,
+        "code_kl": 0.155996,
+        "code_top1_pct": 89.237,
+        "dnr_pass": 8,
+        "dnr_total": 8,
+        "dnr_cases": {
+          "sumsq": {
+            "want": "14",
+            "got": "14",
+            "pass": true
+          },
+          "sum3": {
+            "want": "20",
+            "got": "20",
+            "pass": true
+          },
+          "mul": {
+            "want": "1296",
+            "got": "1296",
+            "pass": true
+          },
+          "div": {
+            "want": "143",
+            "got": "143",
+            "pass": true
+          },
+          "days": {
+            "want": "366",
+            "got": "366",
+            "pass": true
+          },
+          "prime": {
+            "want": "no",
+            "got": "No",
+            "pass": true
+          },
+          "letters": {
+            "want": "6",
+            "got": "6",
+            "pass": true
+          },
+          "seq": {
+            "want": "32",
+            "got": "32",
+            "pass": true
+          }
+        },
+        "eval_s": 16.36
+      }
+    },
+    "paired_vs_orig_blk32": {
+      "wt2_disjoint_2048": {
+        "wt2": {
+          "delta_kl": -0.011425,
+          "pct_change": -22.573,
+          "ci95_lo": -0.016507,
+          "ci95_hi": -0.007254,
+          "significant": true
+        },
+        "code": {
+          "delta_kl": -0.016622,
+          "pct_change": -9.071,
+          "ci95_lo": -0.030017,
+          "ci95_hi": -0.004184,
+          "significant": true
+        }
+      },
+      "code_disjoint_512": {
+        "wt2": {
+          "delta_kl": -0.009328,
+          "pct_change": -18.429,
+          "ci95_lo": -0.014477,
+          "ci95_hi": -0.004996,
+          "significant": true
+        },
+        "code": {
+          "delta_kl": -0.024454,
+          "pct_change": -13.344,
+          "ci95_lo": -0.035407,
+          "ci95_hi": -0.014345,
+          "significant": true
+        }
+      },
+      "mixed_wt2_code_2048": {
+        "wt2": {
+          "delta_kl": -0.011929,
+          "pct_change": -23.569,
+          "ci95_lo": -0.01704,
+          "ci95_hi": -0.007736,
+          "significant": true
+        },
+        "code": {
+          "delta_kl": -0.027259,
+          "pct_change": -14.875,
+          "ci95_lo": -0.039641,
+          "ci95_hi": -0.016138,
+          "significant": true
+        }
+      }
+    },
+    "mixed_disjointness": {
+      "sixgram_overlap_with_wt2_eval": 0,
+      "sixgram_overlap_with_code_eval": 1,
+      "cal_token_ids_sha256": "1dfe706cdbc116289778697ce6416b5b6bf92daa831ca16e6eef043ae8c5ee6f"
+    }
+  },
+  "live_vllm_wt2_reconciliation": {
+    "exact_token_identity": {
+      "exp14b_token_ids_sha256_2048": "c0d6b0ccb99ead858f271bbb3512ffed2fcf3fad86da03c5b51098e7b2a33f45",
+      "exp11_cache_wt_eval_rows_flattened_json_sha256": "c0d6b0ccb99ead858f271bbb3512ffed2fcf3fad86da03c5b51098e7b2a33f45",
+      "exact_match": true,
+      "scored_positions_live": 2044,
+      "scored_tokens_per_domain_exp13a": 2044,
+      "note": "Both use the first 2048 WT2 tokens in four independent 512-token windows; position 0 of each window is unscored, leaving 2044 scored positions. The exact flattened token-id JSON sha256 matches; there is no newline/tokenization mismatch."
+    },
+    "bf16_reference": {
+      "harness_ppl": 7.79822,
+      "live_vllm_ppl": 7.948867930201732,
+      "absolute_delta": -0.150648,
+      "relative_delta_pct": -1.8952,
+      "harness_nll": 2.053896,
+      "live_mean_nll": 2.0730295198098174
+    },
+    "hf_int4_g16_bc_w4a16": {
+      "harness_ppl": 7.93526,
+      "live_vllm_ppl": 7.948867930201732,
+      "absolute_delta": -0.013608,
+      "relative_delta_pct": -0.1712,
+      "harness_nll": 2.071316,
+      "live_mean_nll": 2.0730295198098174
+    },
+    "hf_int4_g16_bc_w4a8_live_shape_relevant": {
+      "harness_ppl": 7.94875,
+      "live_vllm_ppl": 7.948867930201732,
+      "absolute_delta": -0.000118,
+      "relative_delta_pct": -0.0015,
+      "harness_nll": 2.073015,
+      "live_mean_nll": 2.0730295198098174
+    },
+    "interpretation": "Live vLLM WT2 PPL 7.948867930201732 is on the causal 7.8-8.0 scale, not the non-causal 2.85 artifact scale. W4A8 is the live-serving-relevant large-M/prefill DPAS path; W4A16 is the small-M decode-like matrix path. Residual deltas include endpoint dtype/harness differences and live kernels versus exact dequantized BF16-harness evaluation.",
+    "source_live_receipt": "./results/exp14b_wt2_2044_window_diagnostic.json",
+    "source_exp13a_receipt": "./results/exp13a_causal_64l_v2.json"
+  },
+  "gpu1_telemetry": {
+    "start": {
+      "energy1_input_uj": 1954413317382,
+      "gt0_act_mhz": 0,
+      "gt0_cur_mhz": 2800,
+      "gt0_max_mhz": 2800,
+      "gt1_act_mhz": 0,
+      "gt1_cur_mhz": 400,
+      "gt1_max_mhz": 1500,
+      "hwmon": "<hwmon>",
+      "power_cap_w": 230.0,
+      "temp_c": 53.0,
+      "utc": "2026-11-25T02:10:42Z",
+      "vram_usage_bytes": 42246144,
+      "vram_visible_avail_mib": 32615,
+      "act_mhz": 0
+    },
+    "end": {
+      "energy1_input_uj": 2037892841186,
+      "gt0_act_mhz": 0,
+      "gt0_cur_mhz": 2800,
+      "gt0_max_mhz": 2800,
+      "gt1_act_mhz": 0,
+      "gt1_cur_mhz": 400,
+      "gt1_max_mhz": 1500,
+      "hwmon": "<hwmon>",
+      "power_cap_w": 230.0,
+      "temp_c": 56.0,
+      "utc": "2026-11-25T02:20:38Z",
+      "vram_usage_bytes": 42246144,
+      "vram_visible_avail_mib": 32615,
+      "act_mhz": 0
+    },
+    "energy_delta_j": 83479.523804
+  }
+}
