@@ -15,7 +15,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 MAX_BYTES = 1024 * 1024
 MAX_LINES = 1200
-SIZE_EXEMPT_PREFIXES = ("docs/assets/", "results/")
+SIZE_EXEMPT_PREFIXES = ("docs/assets/", "results/", "data/docs-corpus.v1.json")
 LINE_COUNT_PREFIXES = ("scripts/", "tests/", "benchmarks/")
 
 
