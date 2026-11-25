@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-23",
+  "hardware": "2x Intel Arc Pro B70 (32 GiB each, 230 W, xe / LZ 20.2.0 / UR 1.14.37020)",
+  "model": "strata-engine/Hy4-Flash-Strata@995bac22 (Hy4-Flash-SQ-64.strata + Hy4-Flash-Engram-Q8.strata)",
+  "engine": "Niko1221/Strata@v0.2.20 + patches/hy4-flash-strata-sycl/strata-hy4-b70-opt.patch (binary sha256 6d85f1ad...)",
+  "max_context_load_ladder": [
+    {"ctx": 32768, "primary_vram_exp_gib": 17, "peer_vram_exp_gib": 25, "kv_gb": 0.61, "kv_host_gb": 0.0, "peer_min_free_mib": 4618, "primary_min_free_mib": 1391, "ready_s": 79.0, "verdict": "FULL_SPEED_ALL_VRAM"},
+    {"ctx": 131072, "primary_vram_exp_gib": 15, "peer_vram_exp_gib": 25, "kv_gb": 1.97, "kv_host_gb": 0.0, "peer_min_free_mib": 5251, "primary_min_free_mib": 6924, "mem_avail_min_gib": 26.77, "ready_s": 83.0, "smoke_dec_tps": 18.16, "verdict": "MAX_PRACTICAL_ALL_VRAM"},
+    {"ctx": 262144, "primary_vram_exp_gib": 15, "peer_vram_exp_gib": 25, "kv_gb": 3.78, "kv_host_gb": 3.62, "peer_min_free_mib": 5002, "primary_min_free_mib": 8494, "mem_avail_min_gib": 24.62, "ready_s": 85.4, "smoke_dec_tps": 15.54, "verdict": "LOAD_OK_HOST_KV_PREFILL_CLIFF"},
+    {"ctx": 524288, "primary_vram_exp_gib": 14, "peer_vram_exp_gib": 25, "kv_gb": 7.41, "kv_host_gb": 7.25, "peer_min_free_mib": 5000, "primary_min_free_mib": 9261, "mem_avail_min_gib": 20.46, "ready_s": 85.9, "smoke_dec_tps": 18.19, "verdict": "LOAD_OK_HOST_KV"},
+    {"ctx": 1048576, "primary_vram_exp_gib": 12, "peer_vram_exp_gib": 25, "kv_gb": 14.65, "kv_host_gb": 14.5, "peer_min_free_mib": 4988, "primary_min_free_mib": 10797, "mem_avail_min_gib": 12.49, "ready_s": 89.0, "smoke_dec_tps": 17.53, "verdict": "MAX_LOADABLE_SAFE_CONTEXT_RAM_BOUND"}
+  ],
+  "deep_speed_ladder": [
+    {"depth": 65536, "ctx": 131072, "kv": "vram", "draft": "off", "prefill_tps": 726.9, "ttft_s": 90.2, "decode_tps": 18.79},
+    {"depth": 126976, "ctx": 131072, "kv": "vram", "draft": "off", "prefill_tps": 702.7, "ttft_s": 180.7, "decode_tps": 17.04},
+    {"depth": 65536, "ctx": 131072, "kv": "vram", "draft": "dfly2", "prefill_tps": 724.6, "ttft_s": 90.5, "decode_tps": 38.28, "accept": "211/225"},
+    {"depth": 126976, "ctx": 131072, "kv": "vram", "draft": "dfly2", "prefill_tps": 712.1, "ttft_s": 178.3, "decode_tps": 39.49, "accept": "214/230"},
+    {"depth": 65536, "ctx": 262144, "kv": "host", "draft": "off", "prefill_tps": 98.2, "ttft_s": 667.4, "decode_tps": 18.12}
+  ],
+  "needle_retrieval": {
+    "depth_125999": {"needle_key": "HY4-128K-B70-9421", "pos_approx": 61146, "effort": "no_think", "prefill_tps": 698.9, "decode_tps": 16.98, "pass": true},
+    "depth_245756_host_kv": {"pass": null, "note": "timed out at 2400s due to 7.4x host-KV prefill cliff (~98 tok/s)"}
+  },
+  "dmesg_clean_sessions": "6/7 clean QUIT (+0 GPU lines); 1 forced SIGTERM mid-GEN on 245K timeout produced expected mid-DMA teardown faults; final VRAM restored cleanly"
+}

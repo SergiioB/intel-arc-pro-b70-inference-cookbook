@@ -12,6 +12,37 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.17.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.16.0...v1.17.0) (2026-11-22)
+
+
+### Features
+
+* **inkling2-mini:** 4K-496K FP8 KV perplexity stability (+0.07% @ 245K) & 496K dual-needle recall + Chunked-LSE prefill ([9b3bb1c](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/9b3bb1c8af0671090ebf98ab0d5fafee1a07322d))
+* **inkling2-mini:** add 4K-496K FP8 KV perplexity & dual-needle proof plus Chunked-LSE 512K prefill ([3b1547b](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/3b1547b9cd0f99b6fd8a43cd85adc3d52630b6c8))
+
+## [1.16.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.15.0...v1.16.0) (2026-11-22)
+
+
+### Features
+
+* **inkling2-mini:** add opt-in XPU Vision Tower (23-layer ViT) and FP8 E4M3 KV cache (up to 512K KV) ([0ceaf3f](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/0ceaf3fb9dd30753abad84e42e2ce9f9873e6426))
+* **inkling2-mini:** opt-in XPU Vision Tower (23-layer ViT) & FP8 E4M3 KV cache (up to 512K KV) ([b699f7a](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/b699f7abdc27daef4cbac7ffb09952f72fd4d563))
+
+## [1.15.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.14.0...v1.15.0) (2026-11-22)
+
+
+### Features
+
+* **control-plane:** wire optimise intent and standalone Intel XPU optimisation skill ([79b6032](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/79b6032ff1c0abd8dd1ec5ce7b7324b59966e217))
+* **skills:** add Intel XPU inference optimisation skill and wire optimise intent across cookbook ([37462b0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/37462b0622143a51880b7291a03237914971ac6a))
+
+## [1.14.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.13.1...v1.14.0) (2026-11-22)
+
+
+### Features
+
+* **inkling2-mini:** add opt-in CUTLASS Xe2 NVFP4 kernel, DSpark 0-104K & 160K/256K evidence, and context charts ([b447a98](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/b447a98171c2bb6a74791eea34dfbc3c7e6d9b00))
+
 ## [1.13.1](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.13.0...v1.13.1) (2026-11-17)
 
 

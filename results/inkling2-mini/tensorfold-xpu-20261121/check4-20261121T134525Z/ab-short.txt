@@ -1,0 +1,4 @@
+short [INK2_X=0] decode 64 steps: 0.873 s, 73.34 tok/s (host sync every step, no graph replay)
+short [INK2_CH256=1 INK2_SPLIT=2048 INK2_SPLITSWA=100000 INK2_ROWS=2 INK2_DOWN1=1 INK2_CONV256=1] decode 64 steps: 0.899 s, 71.19 tok/s (host sync every step, no graph replay)
+short [INK2_X=0] decode 64 steps: 0.871 s, 73.51 tok/s (host sync every step, no graph replay)
+short [INK2_CH256=1 INK2_SPLIT=2048 INK2_SPLITSWA=100000 INK2_ROWS=2 INK2_DOWN1=1 INK2_CONV256=1] decode 64 steps: 0.899 s, 71.21 tok/s (host sync every step, no graph replay)

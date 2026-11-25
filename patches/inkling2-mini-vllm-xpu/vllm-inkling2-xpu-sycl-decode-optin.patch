@@ -1,0 +1,72 @@
+--- a/vllm_inkling2_xpu/ops/attention.py
++++ b/vllm_inkling2_xpu/ops/attention.py
+@@ -2,6 +2,7 @@
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ """Inkling2 split-KV attention, gate/sink and log-scaling kernels for XPU."""
+ 
++import os
+ import torch
+ 
+ from vllm.triton_utils import tl, tldevice, triton
+@@ -9,6 +10,17 @@
+ 
+ from .attention_triton import MODE_GATED, MODE_PARTIAL, rel_attention
+ 
++_SYCL_DECODE_ATTN_EXT = None
++_SYCL_DECODE_SCRATCH: dict[tuple, tuple[torch.Tensor, torch.Tensor]] = {}
++
++
++def _get_sycl_decode_attn():
++    global _SYCL_DECODE_ATTN_EXT
++    if _SYCL_DECODE_ATTN_EXT is None:
++        from . import _inkling_attn_xe2 as ext
++        _SYCL_DECODE_ATTN_EXT = ext
++    return _SYCL_DECODE_ATTN_EXT
++
+ 
+ @triton.jit
+ def _sigmoid(x):
+@@ -302,6 +314,43 @@
+     assert key_cache.stride() == value_cache.stride() and key_cache.stride(3) == 1
+     assert q.stride(1) == head_dim and q.stride(2) == 1
+     assert out.is_contiguous()
++    if (
++        not draft
++        and max_query_len == 1
++        and group == 3
++        and head_dim == 128
++        and os.getenv("INK2_SYCL_DECODE_ATTN", "0") == "1"
++    ):
++        ext = _get_sycl_decode_attn()
++        sycl_splits = 4 if window > 0 else 32
++        skey = (q.device, sycl_splits, num_tokens, num_heads, head_dim)
++        sc = _SYCL_DECODE_SCRATCH.get(skey)
++        if sc is None:
++            sc = (
++                q.new_empty((sycl_splits, *q.shape), dtype=torch.float32),
++                q.new_empty((sycl_splits, num_tokens, num_heads), dtype=torch.float32),
++            )
++            _SYCL_DECODE_SCRATCH[skey] = sc
++        ext.rel_decode_attn_xe2(
++            q,
++            key_cache,
++            value_cache,
++            rel_logits,
++            gate,
++            sinks,
++            out,
++            block_table,
++            cache_seqlens,
++            cu_seqlens_q,
++            sc[0],
++            sc[1],
++            max_query_len,
++            num_actual_tokens,
++            softmax_scale,
++            window,
++            sycl_splits,
++        )
++        return
+     # A single split writes the (gated) output itself.
+     fuse_gate = num_splits == 1
+     o_part = q.new_empty(

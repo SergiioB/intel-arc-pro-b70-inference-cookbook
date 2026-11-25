@@ -1,0 +1,60 @@
+--- a/vllm_inkling2_xpu/model.py
++++ b/vllm_inkling2_xpu/model.py
+@@ -10,6 +10,7 @@
+ Looped checkpoints (`loop_config`) are `Inkling2LoopModel` (`loop.py`).
+ """
+ 
++import os
+ from collections import Counter
+ from collections.abc import Callable, Iterable, Sequence
+ 
+@@ -374,6 +375,28 @@
+             org_vocab_size=text_config.vocab_size,
+             soft_cap=text_config.final_logit_softcapping,
+         )
++        self.ring_prefix_worker = None
++        # With INK2_RING_PREFIX_CACHE the runner must keep passing input_ids
++        # next to inputs_embeds so the ring worker can verify and capture
++        # exact token ids; unset keeps the stock ids-are-dropped behaviour.
++        self.requires_raw_input_tokens = (
++            os.environ.get("INK2_RING_PREFIX_CACHE", "0") == "1"
++        )
++        if os.environ.get("INK2_RING_PREFIX_CACHE", "0") == "1":
++            if not vllm_config.cache_config.enable_prefix_caching:
++                raise ValueError(
++                    "INK2_RING_PREFIX_CACHE requires --enable-prefix-caching"
++                )
++            if vllm_config.scheduler_config.max_num_seqs != 1:
++                raise ValueError(
++                    "INK2_RING_PREFIX_CACHE requires --max-num-seqs 1"
++                )
++            from .ring_prefix_worker import RingPrefixWorker
++
++            self.ring_prefix_worker = RingPrefixWorker(
++                vllm_config.compilation_config.static_forward_context,
++                vllm_config,
++            )
+ 
+     def get_language_model(self) -> nn.Module:
+         return self
+@@ -423,10 +446,19 @@
+         inputs_embeds: torch.Tensor | None = None,
+         **kwargs: object,
+     ) -> torch.Tensor | tuple[torch.Tensor, list[torch.Tensor]]:
++        worker = self.ring_prefix_worker
++        orig_embeds = inputs_embeds
++        if worker is not None:
++            early = worker.entry(input_ids, positions, orig_embeds)
++            if early is not None:
++                return early
+         if inputs_embeds is None:
+             assert input_ids is not None
+             inputs_embeds = self.model.embed_input_ids(input_ids)
+-        return self.model(positions, inputs_embeds)
++        output = self.model(positions, inputs_embeds)
++        if worker is not None:
++            worker.exit(input_ids, orig_embeds, output)
++        return output
+ 
+     def compute_logits(self, hidden_states: torch.Tensor) -> torch.Tensor | None:
+         return self.logits_processor(self.lm_head, hidden_states)

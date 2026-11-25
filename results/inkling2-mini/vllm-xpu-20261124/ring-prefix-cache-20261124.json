@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-24",
+  "model": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+  "card": "1x Intel Arc Pro B70 (32 GiB, 230 W cap)",
+  "config": {
+    "kv_cache_dtype": "fp8 (float8_e4m3fn)",
+    "max_model_len": 162816,
+    "mbt": 2048,
+    "max_num_seqs": 1,
+    "block_size": 64,
+    "gpu_memory_utilization": 0.92,
+    "limit_mm_per_prompt": "{\"image\":4} (Vision tower active; IMAGE_PAD forwards excluded from tail capture)",
+    "speculation": "dspark k=7",
+    "prefix_caching": true,
+    "extra_flags": "--enable-prompt-tokens-details",
+    "graph_replay": "FULL_DECODE_ONLY",
+    "opt_ins": "INK2_CUTLASS_MOE=1 INK2_HYBRID_PREFIX_SDPA=1 INK2_ESIMD_DECODE_ATTN=1",
+    "env_flag": "INK2_RING_PREFIX_CACHE=1 (opt-in; 0/unset = exact stock, all hooks no-op)",
+    "sampling": "greedy temp=0, return_token_ids, needle prompts",
+    "ring_geometry": "hash_tokens=16 (GCD of KV group block sizes {16,128,64}), hit_tokens=128 (cache_hit_alignment_tokens = LCM scheduler block), slack=136 (hit_tokens + min_snapshot_rows - 1)"
+  },
+  "mechanism": "vLLM block-hash reuse restores KV pages but not the sliding-window conv state, local-attention rings, or DSpark draft caches of this hybrid stack, so a stock prefix hit replays a prefix built on missing state and returns divergent output. RingPrefix (scheduler) admits only hits landing inside a live or saved frontier (hit-aligned boundaries within slack of ring_high or the last >=9-row forward checkpoint); RingPrefixWorker captures the final-slack prefill tail (token ids + hidden + aux + per-cache byte rows) and replays it byte-exact on an exact-tail resend, or restores the saved conv-state rows for +new-turn hits, failing closed with RuntimeError on any uncovered hit.",
+  "control_flag_off_same_prompt_2k": {
+    "purpose": "prove the divergence the mechanism fixes is real and pre-existing on stock --enable-prefix-caching",
+    "cold_sha256": "baf9a0e6", "resend1_sha256": "fea5d784", "resend2_sha256": "2a0d3a60",
+    "result": "three DISTINCT token-id digests on one exact-resend prompt; first divergence at token index 12-72 across trials (vLLM #53912 class); same mismatch with --speculative-config removed (spec decode ruled out)"
+  },
+  "initial_gate_slack32": {
+    "note": "first port: slack=32 window; resends replay only when prompt end lands within 32 tokens of a hit boundary; designed-miss elsewhere (cached=0, clean full recompute)",
+    "gates": [
+      {"depth": 18000, "prompt": 18075, "cold_ttft_s": 5.253, "resend1_s": 0.055, "resend2_s": 0.054, "cached": 18048, "uncached": 27, "sha_match": [true, true], "new_turn": {"cached": 0, "ttft_s": 5.212, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 5.202, "sha_match": true}},
+      {"depth": 75000, "prompt": 75021, "cold_ttft_s": 25.445, "resend1_s": 0.133, "resend2_s": 0.129, "cached": 75008, "uncached": 13, "sha_match": [true, true], "new_turn": {"cached": 0, "ttft_s": 25.580, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 25.497, "sha_match": true}},
+      {"depth": 128000, "prompt": 128013, "cold_ttft_s": 49.546, "resend1_s": 0.233, "resend2_s": 0.231, "cached": 128000, "uncached": 13, "sha_match": [true, true], "new_turn": {"cached": 0, "ttft_s": 49.990, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 49.818, "sha_match": true}}
+    ]
+  },
+  "full_matrix_slack136": {
+    "note": "corrected geometry (hit_tokens=128, slack=136): 100% of prompt lengths get verified hits; rem is server-side prompt_tokens % 64",
+    "gates": [
+      {"depth": 18098, "rem64": 50, "prompt": 18098, "cold_ttft_s": 5.347, "resend1_s": 0.053, "resend2_s": 0.054, "cached": 18048, "uncached": 50, "sha_match": [true, true], "new_turn": {"cached": 18048, "uncached": 76, "ttft_s": 0.228, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 5.235, "sha_match": true}},
+      {"depth": 18112, "rem64": 0, "prompt": 18112, "cold_ttft_s": 5.227, "resend1_s": 0.054, "resend2_s": 0.054, "cached": 18048, "uncached": 64, "sha_match": [true, true], "new_turn": {"cached": 18048, "uncached": 90, "ttft_s": 0.184, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 5.236, "sha_match": true}},
+      {"depth": 18116, "rem64": 4, "prompt": 18116, "cold_ttft_s": 5.213, "resend1_s": 0.053, "resend2_s": 0.053, "cached": 18048, "uncached": 68, "sha_match": [true, true], "new_turn": {"cached": 18048, "uncached": 94, "ttft_s": 0.183, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 5.232, "sha_match": true}},
+      {"depth": 75060, "rem64": 52, "prompt": 75060, "cold_ttft_s": 25.390, "resend1_s": 0.138, "resend2_s": 0.131, "cached": 75008, "uncached": 52, "sha_match": [true, true], "new_turn": {"cached": 75008, "uncached": 78, "ttft_s": 0.326, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 25.458, "sha_match": true}},
+      {"depth": 128044, "rem64": 44, "prompt": 128044, "cold_ttft_s": 49.471, "resend1_s": 0.233, "resend2_s": 0.211, "cached": 128000, "uncached": 44, "sha_match": [true, true], "new_turn": {"cached": 128000, "uncached": 70, "ttft_s": 0.465, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 49.753, "token_sha_match": false, "text_sha_match": true, "note": "anomaly 1 below"}},
+      {"depth": 128060, "rem64": 60, "prompt": 128060, "cold_ttft_s": 49.589, "resend1_s": 0.214, "resend2_s": 0.212, "cached": 128000, "uncached": 60, "sha_match": [true, true], "new_turn": {"cached": 128000, "uncached": 86, "ttft_s": 0.470, "needle_hit": true}, "new_salt": {"cached": 0, "ttft_s": 52.668, "token_sha_match": false, "text_sha_match": true, "note": "anomaly 1 below"}}
+    ],
+    "coverage_comparison": "all six uncached remainders (44-68) sit OUTSIDE the old 32-token window: every one of these gates was a designed miss (cached=0) under the slack=32 port"
+  },
+  "growing_session_75k_5turn": {
+    "salt": "sess75000-972b3efe",
+    "turns": [
+      {"turn": 0, "input": 75036, "cached": 0, "uncached": 75036, "ttft_s": 74.736, "decode_tok_s": 499.7, "recall": "codeA planted (KEY-B02A0052)", "note": "includes one Xe driver job-timeout/reset (dmesg 10:41:26, single event, engine ccs reset); request completed correctly, other 75K colds ~25 s; cold path performs zero ring ops so flagged as infra event, not mechanism"},
+      {"turn": 1, "input": 75066, "cached": 75008, "uncached": 58, "ttft_s": 0.351, "decode_tok_s": 84.0},
+      {"turn": 2, "input": 75096, "cached": 75008, "uncached": 88, "ttft_s": 0.364, "decode_tok_s": 81.9, "recall": "codeB planted (KEY-281AED7A)"},
+      {"turn": 3, "input": 75119, "cached": 75008, "uncached": 111, "ttft_s": 0.355, "decode_tok_s": 113.0, "recall": "codeA exact"},
+      {"turn": 4, "input": 75148, "cached": 75008, "uncached": 140, "ttft_s": 0.377, "decode_tok_s": 77.2, "recall": "codeA + codeB exact"}
+    ],
+    "note": "every growing turn hits the shared-prefix boundary 75008; uncached grows only by the appended turn size, never the transcript"
+  },
+  "quality_gate": {
+    "math_17x23": {"answer": "391", "pass": true},
+    "canary_20_minus_9_plus_3": {"answer": "14", "pass": true},
+    "vision_ocr": {"want": "OCR-TEST-7734", "got": "OCR-TEST-7734", "pass": true, "note": "mm forward: new=True, IMAGE_PAD capture skipped, no error"}
+  },
+  "anomalies": {
+    "128k_new_salt_token_sha_divergence": "2/2 128K gates: independent fresh recompute (cached=0) token-id SHA differs from cold while final answer text is byte-identical (needle KEY correct, finish=stop). Diagnosed pre-existing sporadic engine nondeterminism at 128K (two back-to-back independent full computes of the same 128K prompt diverged once in reasoning-token ids; likely spec-decode verify or MoE borderline logits) - NOT mechanism state contamination: cached=0 requests perform no ring reads/writes, resends stayed bit-exact, no fail-closed RuntimeError fired. 18K/75K recomputes bit-identical (5/5 controls).",
+    "xe_engine_timeout": "one Xe driver job-timeout/reset at 10:41:26 during the 75K session cold turn-0 (dmesg, single event, ccs engine reset, job completed correctly); dmesg clean otherwise"
+  },
+  "fail_closed_guard": "RuntimeError('admitted prefix hit exceeds both retained ring histories') never fired across all gates, sessions, and controls",
+  "cpu_tests": {"test_ring_prefix": "13/13 pass", "test_prefix_tail": "2/2 pass", "test_flag_gate": "4/4 pass"},
+  "safety": {"vram_after_teardown_mib_free": 32615, "dmesg": "clean except the one noted 10:41:26 timeout event", "processes": "0 vllm procs after SIGTERM"}
+}

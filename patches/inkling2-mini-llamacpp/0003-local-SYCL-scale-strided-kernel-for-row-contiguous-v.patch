@@ -1,0 +1,98 @@
+From e42336d2e0a255b666e73a8db88c93dc471194f8 Mon Sep 17 00:00:00 2001
+From: newmodels <newmodels@localhost>
+Date: Sat, 21 Nov 2026 05:10:46 +0100
+Subject: [PATCH 3/6] local: SYCL scale: strided kernel for row-contiguous
+ views (Inkling SITU scales of the gate/up halves ran on the CPU); test cases
+
+---
+ ggml/src/ggml-sycl/ggml-sycl.cpp | 44 ++++++++++++++++++++++++++++++--
+ tests/test-backend-ops.cpp       |  4 +++
+ 2 files changed, 46 insertions(+), 2 deletions(-)
+
+diff --git a/ggml/src/ggml-sycl/ggml-sycl.cpp b/ggml/src/ggml-sycl/ggml-sycl.cpp
+index 9da436ced..f1882d643 100644
+--- a/ggml/src/ggml-sycl/ggml-sycl.cpp
++++ b/ggml/src/ggml-sycl/ggml-sycl.cpp
+@@ -2575,6 +2575,31 @@ static void ggml_mul_mat_vec_nc_f16_f32_sycl(
+ 
+ 
+ 
++// local patch (newmodels): scale of a row-contiguous strided view into a contiguous dst. Inkling's SITU
++// activation scales the gate and up halves of the fused gate_up output, which are views with a row stride of
++// 2*n_ff; the flat kernel refused them and the scheduler ran both scales of every layer visit on the CPU.
++static void scale_f32_strided_sycl(const float * x, float * dst, const float scale, const float bias,
++                                   const int64_t ne0, const int64_t ne1, const int64_t ne2, const int64_t k,
++                                   const int64_t s01, const int64_t s02, const int64_t s03, queue_ptr stream) {
++    const int64_t num_blocks = (k + SYCL_SCALE_BLOCK_SIZE - 1) / SYCL_SCALE_BLOCK_SIZE;
++    stream->parallel_for(
++        sycl::nd_range<3>(sycl::range<3>(1, 1, num_blocks) * sycl::range<3>(1, 1, SYCL_SCALE_BLOCK_SIZE),
++                          sycl::range<3>(1, 1, SYCL_SCALE_BLOCK_SIZE)),
++        [=](sycl::nd_item<3> item_ct1) {
++            const int64_t i = (int64_t) item_ct1.get_local_range(2) * item_ct1.get_group(2) + item_ct1.get_local_id(2);
++            if (i >= k) {
++                return;
++            }
++            const int64_t i0 = i % ne0;
++            int64_t       t  = i / ne0;
++            const int64_t i1 = t % ne1;
++            t /= ne1;
++            const int64_t i2 = t % ne2;
++            const int64_t i3 = t / ne2;
++            dst[i] = scale * x[i0 + i1 * s01 + i2 * s02 + i3 * s03] + bias;
++        });
++}
++
+ static void scale_f32_sycl(const float *x, float *dst, const float scale, const float bias,
+                            const int k, queue_ptr stream) {
+     const int num_blocks = (k + SYCL_SCALE_BLOCK_SIZE - 1) / SYCL_SCALE_BLOCK_SIZE;
+@@ -3577,6 +3602,16 @@ inline void ggml_sycl_op_scale(ggml_backend_sycl_context & ctx, ggml_tensor * ds
+     memcpy(&scale, (float *) dst->op_params + 0, sizeof(float));
+     memcpy(&bias,  (float *) dst->op_params + 1, sizeof(float));
+ 
++    const ggml_tensor * src0 = dst->src[0];
++    if (!ggml_is_contiguous(src0)) {
++        // local patch (newmodels): row-contiguous view (supports_op guarantees nb0 == 4 and a contiguous dst)
++        scale_f32_strided_sycl(src0_dd, dst_dd, scale, bias, src0->ne[0], src0->ne[1], src0->ne[2], ggml_nelements(src0),
++                               src0->nb[1] / sizeof(float), src0->nb[2] / sizeof(float), src0->nb[3] / sizeof(float),
++                               main_stream);
++        SYCL_CHECK(0);
++        return;
++    }
++
+     // the kernel indexes in 32-bit
+     GGML_ASSERT(ggml_nelements(dst->src[0]) <= INT32_MAX);
+ 
+@@ -7603,8 +7638,13 @@ static bool do_ggml_backend_sycl_device_supports_op(ggml_backend_dev_t dev, cons
+         case GGML_OP_RMS_NORM_BACK:
+             return ggml_is_contiguous(op->src[0]);
+         case GGML_OP_SCALE:
+-            // the scale kernel is f32 only, and reads src0 flat
+-            return op->type == GGML_TYPE_F32 && op->src[0]->type == GGML_TYPE_F32 && ggml_is_contiguous(op->src[0]);
++            // the scale kernel is f32 only; flat for contiguous src0, strided for row-contiguous views into a
++            // contiguous dst (local patch, newmodels)
++            return op->type == GGML_TYPE_F32 && op->src[0]->type == GGML_TYPE_F32 &&
++                   (ggml_is_contiguous(op->src[0]) ||
++                    (op->src[0]->nb[0] == sizeof(float) && ggml_is_contiguous(op) &&
++                     op->src[0]->nb[1] % sizeof(float) == 0 && op->src[0]->nb[2] % sizeof(float) == 0 &&
++                     op->src[0]->nb[3] % sizeof(float) == 0));
+         case GGML_OP_CONT:
+             return true;
+         case GGML_OP_TRI:
+diff --git a/tests/test-backend-ops.cpp b/tests/test-backend-ops.cpp
+index 30a9c2be2..462d50b75 100644
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -11692,6 +11692,10 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {10, 10, 10, 10}, 2.0f, 1.0f));
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {10, 10, 10, 10}, 2.0f, 1.0f, true)); // inplace test
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {100, 10, 10, 10}, 2.0f, 1.0f));
++    // local patch (newmodels): non-contiguous views (Inkling SITU scales the halves of gate_up)
++    test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {10, 10, 10, 10}, 2.0f, 1.0f, false, 1));
++    test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {1152, 8, 1, 1}, 0.25f, 0.0f, false, 1));
++    test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {1152, 8, 512, 1}, 0.04f, 0.0f, false, 1));
+     test_cases.emplace_back(new test_scale(GGML_TYPE_BF16, {10, 10, 10, 10}, 2.0f, 1.0f));
+     test_cases.emplace_back(new test_scale(GGML_TYPE_BF16, {10, 10, 10, 10}, 2.0f, 1.0f, true)); // inplace test
+     test_cases.emplace_back(new test_scale(GGML_TYPE_BF16, {100, 10, 10, 10}, 0.5f, 0.0f));
+-- 
+2.53.0
+

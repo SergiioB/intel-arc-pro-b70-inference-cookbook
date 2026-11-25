@@ -1,0 +1,155 @@
+From a96c0ef180b8c30e54c87320f61082e11a092c7a Mon Sep 17 00:00:00 2001
+From: newmodels <newmodels@localhost>
+Date: Sat, 21 Nov 2026 05:48:44 +0100
+Subject: [PATCH 6/6] local: SYCL fusion of the Inkling clip() chain (SQR..MUL,
+ 8 nodes -> 1 kernel, same per-node arithmetic); GGML_SYCL_NO_CLIP_FUSION
+ disables; test-backend-ops case
+
+---
+ ggml/src/ggml-sycl/ggml-sycl.cpp | 79 ++++++++++++++++++++++++++++++++
+ tests/test-backend-ops.cpp       | 25 ++++++++++
+ 2 files changed, 104 insertions(+)
+
+diff --git a/ggml/src/ggml-sycl/ggml-sycl.cpp b/ggml/src/ggml-sycl/ggml-sycl.cpp
+index bd87da73a..dff838d51 100644
+--- a/ggml/src/ggml-sycl/ggml-sycl.cpp
++++ b/ggml/src/ggml-sycl/ggml-sycl.cpp
+@@ -6767,6 +6767,79 @@ catch (sycl::exception const &exc) {
+   std::exit(1);
+ }
+ 
++// local patch (newmodels): Inkling 2 Mini clip() as one kernel. The graph scales each row to an L2 norm of at
++// most a threshold with 8 nodes: SQR, SUM_ROWS, SQRT, SCALE(1, eps), FILL(threshold), DIV, CLAMP(0, 1), MUL(x, f).
++// One sub-group per row reproduces each node's arithmetic: x*x rounded before the add (contraction off), the same
++// lane-strided sum and xor reduction as k_sum_rows_f32, sycl::sqrt, n + eps (the multiplier must be exactly 1),
++// threshold / n, the op_clamp ternary and x * f. GGML_SYCL_NO_CLIP_FUSION=1 disables it.
++static void k_inkling_clip_rows(const float * __restrict__ x, float * __restrict__ dst, const int ncols,
++                                const float eps, const float threshold, const float lo, const float hi,
++                                const sycl::nd_item<3> & item_ct1) {
++#pragma clang fp contract(off)
++    const int row  = item_ct1.get_group(1);
++    const int lane = item_ct1.get_local_id(2);
++    const float * xr = x + (size_t) row * ncols;
++    float sum = 0.0f;
++    for (int i = lane; i < ncols; i += item_ct1.get_local_range(2)) {
++        const float sq = xr[i] * xr[i];
++        sum += sq;
++    }
++    sum = warp_reduce_sum(sum, item_ct1);
++    float n = sycl::sqrt(sum);
++    n = n + eps;
++    float f = threshold / n;
++    f = f < lo ? lo : (f > hi ? hi : f);
++    float * dr = dst + (size_t) row * ncols;
++    for (int i = lane; i < ncols; i += item_ct1.get_local_range(2)) {
++        dr[i] = xr[i] * f;
++    }
++}
++
++// returns the number of nodes consumed (8) or 0
++static int ggml_sycl_try_inkling_clip_fusion(ggml_backend_sycl_context & ctx, const ggml_cgraph * cgraph, int i) {
++    static const bool disabled = getenv("GGML_SYCL_NO_CLIP_FUSION") != nullptr;
++    if (disabled || !g_ggml_sycl_enable_fusion || i + 7 >= cgraph->n_nodes) {
++        return 0;
++    }
++    ggml_tensor * const * n = cgraph->nodes + i;
++    const enum ggml_op ops[8] = { GGML_OP_SQR, GGML_OP_SUM_ROWS, GGML_OP_SQRT, GGML_OP_SCALE,
++                                  GGML_OP_FILL, GGML_OP_DIV, GGML_OP_CLAMP, GGML_OP_MUL };
++    for (int k = 0; k < 8; ++k) {
++        if (n[k]->op != ops[k] || n[k]->type != GGML_TYPE_F32) {
++            return 0;
++        }
++    }
++    const ggml_tensor * x = n[0]->src[0];
++    if (x->type != GGML_TYPE_F32 || !ggml_is_contiguous(x) || !ggml_is_contiguous(n[7]) || !ggml_are_same_shape(x, n[7]) ||
++        n[1]->src[0] != n[0] || n[2]->src[0] != n[1] || n[3]->src[0] != n[2] || n[4]->src[0] != n[3] ||
++        n[5]->src[0] != n[4] || n[5]->src[1] != n[3] || n[6]->src[0] != n[5] ||
++        n[7]->src[0] != x || n[7]->src[1] != n[6] || n[1]->ne[0] != 1 || ggml_nrows(n[1]) != ggml_nrows(x)) {
++        return 0;
++    }
++    const float scale = ggml_get_op_params_f32(n[3], 0);
++    if (scale != 1.0f) {
++        return 0;
++    }
++    const int outputs[1] = { i + 7 };
++    if (!ggml_can_fuse_subgraph(cgraph, i, 8, ops, outputs, 1)) {
++        return 0;
++    }
++    const float eps       = ggml_get_op_params_f32(n[3], 1);
++    const float threshold = ggml_get_op_params_f32(n[4], 0);
++    const float lo        = ggml_get_op_params_f32(n[6], 0);
++    const float hi        = ggml_get_op_params_f32(n[6], 1);
++    const int   ncols     = (int) x->ne[0];
++    const int   nrows     = (int) ggml_nrows(x);
++    const float * xd = (const float *) x->data;
++    float *       dd = (float *) n[7]->data;
++    queue_ptr stream = ctx.stream();
++    stream->parallel_for(sycl::nd_range<3>(sycl::range<3>(1, nrows, WARP_SIZE), sycl::range<3>(1, 1, WARP_SIZE)),
++                         [=](sycl::nd_item<3> item_ct1) [[sycl::reqd_sub_group_size(WARP_SIZE)]] {
++                             k_inkling_clip_rows(xd, dd, ncols, eps, threshold, lo, hi, item_ct1);
++                         });
++    return 8;
++}
++
+ static bool ggml_sycl_is_view_or_noop(const ggml_tensor * t) {
+     return ggml_is_empty(t) || t->op == GGML_OP_RESHAPE || t->op == GGML_OP_TRANSPOSE ||
+            t->op == GGML_OP_VIEW || t->op == GGML_OP_PERMUTE || t->op == GGML_OP_NONE;
+@@ -6878,6 +6951,12 @@ static void ggml_backend_sycl_graph_compute_impl(ggml_backend_sycl_context * syc
+                 continue;
+             }
+         }
++        if (node->op == GGML_OP_SQR) {
++            if (const int used = ggml_sycl_try_inkling_clip_fusion(*sycl_ctx, cgraph, i)) {
++                i += used - 1;
++                continue;
++            }
++        }
+         if (node->op == GGML_OP_RMS_NORM &&
+             ggml_sycl_can_fuse(cgraph, i, { GGML_OP_RMS_NORM, GGML_OP_MUL, GGML_OP_ADD }, {})) {
+             ggml_sycl_op_rms_norm_fused_add(*sycl_ctx, node, cgraph->nodes[i + 1], cgraph->nodes[i + 2]);
+diff --git a/tests/test-backend-ops.cpp b/tests/test-backend-ops.cpp
+index a53944644..15139491a 100644
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -3781,6 +3781,25 @@ struct test_add_id : public test_case {
+ };
+ 
+ // GGML_OP_SCALE
++// local patch (newmodels): Inkling 2 Mini clip(): rows scaled to an L2 norm of at most a threshold.
++// The SYCL backend fuses this 8-node chain; the CPU reference runs it node by node.
++struct test_inkling_clip : public test_case {
++    const std::array<int64_t, 4> ne;
++    const float threshold;
++    std::string vars() override { return VARS_TO_STR2(ne, threshold); }
++    test_inkling_clip(std::array<int64_t, 4> ne = {128, 24, 5, 1}, float threshold = 2.0f) : ne(ne), threshold(threshold) {}
++    ggml_tensor * build_graph(ggml_context * ctx) override {
++        ggml_tensor * x = ggml_new_tensor(ctx, GGML_TYPE_F32, 4, ne.data());
++        ggml_set_name(x, "x");
++        ggml_tensor * norm = ggml_sqrt(ctx, ggml_sum_rows(ctx, ggml_sqr(ctx, x)));
++        norm = ggml_scale_bias(ctx, norm, 1.0f, 1e-6f);
++        ggml_tensor * factor = ggml_div(ctx, ggml_fill(ctx, norm, threshold), norm);
++        ggml_tensor * out = ggml_mul(ctx, x, ggml_clamp(ctx, factor, 0.0f, 1.0f));
++        ggml_set_name(out, "out");
++        return out;
++    }
++};
++
+ struct test_scale : public test_case {
+     const ggml_type type;
+     const std::array<int64_t, 4> ne;
+@@ -11692,6 +11711,12 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {10, 10, 10, 10}, 2.0f, 1.0f));
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {10, 10, 10, 10}, 2.0f, 1.0f, true)); // inplace test
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {100, 10, 10, 10}, 2.0f, 1.0f));
++    // local patch (newmodels): Inkling clip() chain (fused on SYCL)
++    for (float th : {2.0f, 22.627417f, 8.0f}) {
++        test_cases.emplace_back(new test_inkling_clip({128, 24, 5, 1}, th));
++        test_cases.emplace_back(new test_inkling_clip({16, 24, 5, 1}, th));
++        test_cases.emplace_back(new test_inkling_clip({128, 8, 1, 1}, th));
++    }
+     // local patch (newmodels): non-contiguous views (Inkling SITU scales the halves of gate_up)
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {10, 10, 10, 10}, 2.0f, 1.0f, false, 1));
+     test_cases.emplace_back(new test_scale(GGML_TYPE_F32, {1152, 8, 1, 1}, 0.25f, 0.0f, false, 1));
+-- 
+2.53.0
+

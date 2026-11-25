@@ -1,0 +1,14 @@
+0.00.677.975 W load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+0.02.191.129 W resolve_fused_ops: layer 0 is assigned to device SYCL0 but Flash Attention is assigned to device CPU (usually due to missing support)
+0.02.191.132 W resolve_fused_ops: Flash Attention not supported, set to disabled
+0.02.219.485 I cmn          init: llama threadpool init, n_threads = 8
+0.02.488.732 I 
+0.02.488.787 I system_info: n_threads = 8 (n_threads_batch = 8) / 16 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.02.488.840 I perplexity: saving all logits to $WORK/prof/klbase-20261121T120248Z.bin
+0.02.488.845 I perplexity: tokenizing the input ..
+0.03.334.632 I perplexity: tokenization took 845.781 ms
+0.03.334.753 I perplexity: calculating perplexity over 20 chunks, n_ctx=512, batch_size=2048, n_seq=4
+0.17.168.586 I perplexity: 13.73 seconds per pass - ETA 1.13 minutes
+[1]5.4509,[2]6.6057,[3]6.1228,[4]6.7057,[5]6.6818,[6]7.2140,[7]7.6685,[8]7.8371,[9]8.2307,[10]8.4048,[11]8.3185,[12]8.3828,[13]8.4231,[14]8.6972,[15]8.3193,[16]8.1518,[17]8.1575,[18]7.8055,[19]7.8746,[20]7.8159,
+1.09.588.170 I Final estimate: PPL = 7.8159 +/- 0.28097
+

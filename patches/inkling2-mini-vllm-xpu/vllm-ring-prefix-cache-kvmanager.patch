@@ -1,0 +1,92 @@
+--- a/vllm/v1/core/kv_cache_manager.py
++++ b/vllm/v1/core/kv_cache_manager.py
+@@ -2,6 +2,7 @@
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ 
+ import itertools
++import os
+ from collections.abc import Sequence
+ from dataclasses import dataclass
+ from typing import Literal, overload
+@@ -146,6 +147,15 @@
+         enable_mamba_shared_prefix_checkpoint: bool = False,
+     ) -> None:
+         self.max_model_len = max_model_len
++        self.inkling_history = None
++        if os.environ.get("INK2_RING_PREFIX_CACHE", "0") == "1":
++            from vllm_inkling2_xpu.ring_prefix import RingPrefix
++
++            self.inkling_history = RingPrefix(
++                hash_block_size,
++                getattr(kv_cache_config, "cache_hit_alignment_tokens", None)
++                or scheduler_block_size,
++            )
+         # When unset, fall back to `max_model_len` so the recycling-aware cap
+         # collapses to the prior (uncapped) admission behavior. The scheduler
+         # always supplies the real value at runtime.
+@@ -312,11 +322,22 @@
+         # num_computed_tokens to be block-size aligned. Removing this limitation
+         # could slightly improve performance in the future.
+         max_cache_hit_length = request.get_max_cache_hit_length(max_cache_hit_length)
++        if self.inkling_history is not None:
++            max_cache_hit_length = self.inkling_history.limit(
++                request.block_hashes, max_cache_hit_length, request.num_tokens
++            )
+         computed_blocks, num_new_computed_tokens, num_uncached = (
+             self.coordinator.find_longest_cache_hit(
+                 request.block_hashes, max_cache_hit_length, request.num_tokens
+             )
+         )
++        if (
++            self.inkling_history is not None
++            and num_new_computed_tokens
++            and not self.inkling_history.covers(num_new_computed_tokens)
++        ):
++            computed_blocks = tuple(() for _ in range(self.num_kv_cache_groups))
++            num_new_computed_tokens = num_uncached = 0
+ 
+         # When kv_cache_report_mode is "full", emit BlockStored events
+         # for the reused prefix cache blocks so that external consumers
+@@ -620,6 +641,13 @@
+             num_encoder_tokens,
+         )
+ 
++        if self.inkling_history is not None:
++            self.inkling_history.scheduled(
++                request.request_id,
++                total_computed_tokens + num_new_tokens,
++                num_new_tokens,
++            )
++
+         # P/D: delay caching blocks if we have to recv from
+         # remote. Update state for locally cached blocks.
+         if delay_cache_blocks:
+@@ -647,6 +675,19 @@
+             request: The request to free the blocks.
+ 
+         """
++        if self.inkling_history is not None:
++            committed = (
++                min(request.num_tokens, request.num_computed_tokens)
++                if request.status
++                in (
++                    RequestStatus.FINISHED_STOPPED,
++                    RequestStatus.FINISHED_LENGTH_CAPPED,
++                )
++                else 0
++            )
++            self.inkling_history.finish(
++                request.request_id, committed, request.block_hashes
++            )
+         self.coordinator.free(request)
+ 
+     def remove_skipped_blocks(
+@@ -702,6 +743,8 @@
+             False otherwise.
+ 
+         """
++        if self.inkling_history is not None:
++            self.inkling_history.hashes = ()
+         if not self.coordinator.reset_prefix_cache():
+             return False
+         if self.log_stats:

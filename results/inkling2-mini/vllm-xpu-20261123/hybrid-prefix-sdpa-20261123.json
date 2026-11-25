@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-23",
+  "model": "thinkingmachines/Inkling-2-Mini@ed40e7da625f594fc9c4990f5f66be24873c22d7",
+  "card": "1x Intel Arc Pro B70 (32 GiB, 230 W cap)",
+  "config": {
+    "kv_cache_dtype": "fp8 (float8_e4m3fn)",
+    "max_model_len": 262144,
+    "mbt": 2048,
+    "gpu_memory_utilization": 0.98,
+    "speculation": "dspark k=7",
+    "prefix_caching": false,
+    "graph_replay": "FULL_DECODE_ONLY",
+    "cutlass_moe": true,
+    "env_flag": "INK2_HYBRID_PREFIX_SDPA=0 (control) vs 1 (chunked oneDNN SDPA prefix)",
+    "sampling": "temp=1.0 top_p=1.0 effort=0.9/0.2, ignore_eos, unique entropy-first prompts",
+    "patch": "inkling2-hybrid-sdpa-esimd.patch on vllm-inkling2-xpu@2e9d28b04ff23f5d9996a221ffaa0ae3a440d8f9"
+  },
+  "mechanism": "Full-attention layers route the bias-free KV prefix (pages below k0_tok = seq_len - nt - rel_extent + 1) through oneDNN flash SDPA in 8192-token windows gathered into a persistent 16 MiB BF16 sk/sv scratch pair, merged with the Triton relative-bias tail via fp32 LSE. Decode codepath untouched.",
+  "kernel_microbenchmark_fp8_prefill_prefix_ms": [
+    {"depth": 65536,  "q_len": 2048, "k0_tok": 63489,  "triton_rel_attn": 45.55, "onednn_oneshot": 31.99,  "onednn_oneshot_x": 1.42, "onednn_chunked_8k": null,  "rel_l2": 0.0024},
+    {"depth": 131072, "q_len": 2048, "k0_tok": 128001, "triton_rel_attn": 94.46, "onednn_oneshot": 134.67, "onednn_oneshot_x": 0.70, "onednn_chunked_8k": 48.62, "chunked_x": 1.94, "rel_l2": 0.00255},
+    {"depth": 245760, "q_len": 2048, "k0_tok": 242689, "triton_rel_attn": 179.85, "onednn_oneshot": 389.73, "onednn_oneshot_x": 0.46, "onednn_chunked_8k": 90.29, "chunked_x": 1.99, "rel_l2": 0.00192}
+  ],
+  "live_cold_prefill_tok_s": [
+    {"depth": 2048,   "effort": 0.9, "ctrl": 3512.6, "cand": 3526.0, "delta_pct": 0.4,  "ctrl_ttft_s": 0.583,  "cand_ttft_s": 0.581},
+    {"depth": 65536,  "effort": 0.2, "ctrl": 2708.4, "cand": 3039.7, "delta_pct": 12.2, "ctrl_ttft_s": 24.198, "cand_ttft_s": 21.560},
+    {"depth": 65536,  "effort": 0.9, "ctrl": 2705.6, "cand": 3050.1, "delta_pct": 12.7, "ctrl_ttft_s": 24.223, "cand_ttft_s": 21.487},
+    {"depth": 131072, "effort": 0.2, "ctrl": 2148.7, "cand": 2576.2, "delta_pct": 19.9, "ctrl_ttft_s": 61.000, "cand_ttft_s": 50.877},
+    {"depth": 131072, "effort": 0.9, "ctrl": 2147.7, "cand": 2567.8, "delta_pct": 19.6, "ctrl_ttft_s": 61.014, "cand_ttft_s": 51.030, "note": "needle request"},
+    {"depth": 245760, "effort": 0.2, "ctrl": 1585.9, "cand": 2023.5, "delta_pct": 27.6, "ctrl_ttft_s": 154.968, "cand_ttft_s": 121.455},
+    {"depth": 245760, "effort": 0.9, "ctrl": 1585.4, "cand": 2022.3, "delta_pct": 27.5, "ctrl_ttft_s": 155.017, "cand_ttft_s": 121.526}
+  ],
+  "flag_on_replication_second_session": [
+    {"depth": 65536,  "effort": 0.9, "tok_s": 3048.1},
+    {"depth": 131072, "effort": 0.2, "tok_s": 2574.9},
+    {"depth": 245760, "effort": 0.2, "tok_s": 2022.9}
+  ],
+  "live_decode_tok_s_no_codepath_change": [
+    {"depth": 2048,   "effort": 0.2, "ctrl": 66.69, "cand": 61.0,  "delta_pct": -8.5, "note": "acceptance noise, decode untouched"},
+    {"depth": 2048,   "effort": 0.9, "ctrl": 71.01, "cand": 59.55, "delta_pct": -16.0, "note": "acceptance noise, decode untouched"},
+    {"depth": 65536,  "effort": 0.2, "ctrl": 53.22, "cand": 49.01, "delta_pct": -7.9, "note": "acceptance noise, decode untouched"},
+    {"depth": 65536,  "effort": 0.9, "ctrl": 59.02, "cand": 61.9,  "delta_pct": 4.9},
+    {"depth": 131072, "effort": 0.2, "ctrl": 42.61, "cand": 43.3,  "delta_pct": 1.6},
+    {"depth": 131072, "effort": 0.9, "ctrl": 63.2,  "cand": 60.51, "delta_pct": -4.3, "note": "acceptance noise"},
+    {"depth": 245760, "effort": 0.2, "ctrl": 36.53, "cand": 41.51, "delta_pct": 13.6},
+    {"depth": 245760, "effort": 0.9, "ctrl": 34.35, "cand": 39.93, "delta_pct": 16.2}
+  ],
+  "quality_gate": {
+    "math_17x23": {"answer": "391", "pass": true, "identical_both_arms": true},
+    "canary_20_minus_9_plus_3": {"answer": "14", "pass": true, "identical_both_arms": true},
+    "strict_json": {"result": "partial '{' at 64-token output budget in BOTH arms (max_tokens-bound artifact, not a regression)"},
+    "retrieval_128k_exact_needle": {"pass": true},
+    "vision_ocr": {"result": "B70PRO-246K read, identical both arms", "pass": true}
+  },
+  "safety": {
+    "ctrl_arm": {"vram_before_mib": 32615, "min_vram_mib": 764, "max_temp_c": 77.0, "vram_after_mib": 32615, "dmesg": "clean"},
+    "cand_arm": {"vram_before_mib": 32615, "min_vram_mib": 437, "max_temp_c": 76.0, "vram_after_mib": 32615, "dmesg": "clean"},
+    "prefinal_iterations_note": "v1/v2 candidate iterations hit bcs engine resets + VRAM dives (308/382 MiB) from per-window allocations under ~1.1 GiB ready headroom; v3 shipped persistent 16 MiB scratch with zero per-window allocations and completed cleanly at the 437 MiB floor."
+  },
+  "closed_arms": {
+    "bf16_swa_ring_m8_speed": "fp8 paged 1.94 ms vs bf16 paged 1.95 ms (0.999x, 40 SWA visits, median of 5): kernel is launch-bound at M=8, 0% decode gain; capacity premise separately confirmed (mbt=4096 needs +3.31 GiB KV at 262144)",
+    "onednn_oneshot_gt32k": "single-shot _scaled_dot_product_flash_attention on the whole prefix is slower than Triton rel-attn at >=128K depth (0.70x @128K, 0.46x @245K); per-key cost grows superlinearly with window (0.31->0.45 us/key, 8K->65K); chunked 8192-token windows required"
+  }
+}

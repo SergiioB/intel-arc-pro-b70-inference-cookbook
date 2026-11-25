@@ -1,0 +1,6 @@
+4b8cd55235a197c5e2cc3d9902b8c6dcffc292644b3085378da3d684f5a4a3c9  0001-local-SYCL-get_rows-float-size-the-work-group-to-the.patch
+d0b9dfc099b410fd18996c6903ec55b55d89a334f319668f478e25c5669c0981  0002-local-SYCL-fused-dequant-GEMM-NVFP4-A-stage-grouped-.patch
+421c9a2199f51758ada767d826f72589478eb3142fedbb9e744b8730b2bddd79  0003-local-SYCL-scale-strided-kernel-for-row-contiguous-v.patch
+67b9dee9201ba8dcbc3b62efd352483e709f5e7b6b6e264b8c9c1e805d516063  0004-local-SYCL-GQA-grouped-p021-nc-decode-attention-mat-.patch
+7a54b79880d32f0f122179fc13c035780af2dac19edd06d3041d07ded803db4c  0005-local-GGML_SYCL_NO_STRIDED_SCALE-disables-the-stride.patch
+fca225287f385b7ba504d600a2b0e0ebc7efb80a8c7be90a08c2e33f69316348  0006-local-SYCL-fusion-of-the-Inkling-clip-chain-SQR.MUL-.patch

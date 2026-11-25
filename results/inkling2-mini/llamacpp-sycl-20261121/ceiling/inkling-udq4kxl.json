@@ -1,0 +1,41 @@
+{
+ "_note": "Inkling 2 Mini UD-Q4_K_XL, one card. Loop: layers 6-17 run 3 passes = 48 layer applications. dense_gb = 0.832 GB x 48/24 + 0.17 GB SWA KV (1024-token window, 40 apps). experts_gb = effective pool over 48 applications: 44 NVFP4 apps x 0.573 GB (gate_up 382 MB + down 191 MB) + 4 Q8_0 apps x 1.083 GB. Corrected 2026-11-21 03:40 CET: the first version counted NVFP4 tensors as 0 bytes (parser had no type 40), which gave 186 tok/s. kv = 8 global-layer applications x 8 kv heads x 128 x 2 (K,V) x 2 B (f16). Draft: dspark 3 layers 0.39 GB + target LM head 0.492 GB once per round of 3, spread as 3 x (0.13 + 0.164).",
+ "bandwidth_gbs": 528,
+ "peak_tflops": 157,
+ "mfu": 0.5,
+ "dense_gb": 1.83,
+ "experts_gb": 29.54,
+ "top_k": 8,
+ "n_experts": 128,
+ "lm_head_gb": 0.492,
+ "active_params_b": 5.4,
+ "attn_layers": 8,
+ "attn_heads": 24,
+ "head_dim": 128,
+ "kv_bytes_per_token": 32768,
+ "draft_layer_gb": 0.13,
+ "draft_head_gb": 0.164,
+ "spec": [
+  {
+   "drafts": 0,
+   "accept": 1.0
+  },
+  {
+   "drafts": 3,
+   "accept": 2.0
+  },
+  {
+   "drafts": 3,
+   "accept": 3.0
+  }
+ ],
+ "contexts": [
+  128,
+  8192,
+  32768,
+  131072
+ ],
+ "concurrency": [
+  1
+ ]
+}

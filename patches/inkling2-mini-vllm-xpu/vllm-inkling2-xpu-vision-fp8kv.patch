@@ -1,0 +1,261 @@
+--- a/vllm_inkling2_xpu/model.py
++++ b/vllm_inkling2_xpu/model.py
+@@ -30,6 +30,7 @@
+     SupportsEagle3,
+     SupportsMultiModal,
+ )
++from vllm.model_executor.models.utils import _merge_multimodal_embeddings
+ from vllm.models.inkling.nvidia.sconv_swa_attn import InklingConvState
+ from vllm.multimodal import MULTIMODAL_REGISTRY
+ from vllm.sequence import IntermediateTensors
+@@ -48,6 +49,7 @@
+ from .ops.attn_res import attn_res
+ from .ops.norm import rms_norm
+ from .sconv import ATTN_STREAM, MLP_STREAM, Inkling2ShortConv
++from .vision import Inkling2VisionEncoder
+ 
+ 
+ class Inkling2RMSNorm(nn.Module):
+@@ -349,14 +351,15 @@
+                 "expert parallelism disabled"
+             )
+         mm_config = vllm_config.model_config.multimodal_config
+-        if (
+-            config.vision_config is not None
+-            and mm_config is not None
+-            and mm_config.get_limit_per_prompt("image")
+-        ):
+-            raise NotImplementedError("Inkling2 XPU requires --language-model-only")
+         self.config = config
+         self.text_config = text_config = config.text_config
++        self.visual = (
++            Inkling2VisionEncoder(config.vision_config, text_config.hidden_size)
++            if config.vision_config is not None
++            and mm_config is not None
++            and mm_config.get_limit_per_prompt("image")
++            else None
++        )
+         model_cls = Inkling2Model
+         if text_config.loop_config is not None:
+             from .loop import Inkling2LoopModel
+@@ -385,9 +388,15 @@
+         raise ValueError("Only image modality is supported")
+ 
+     def embed_multimodal(self, **kwargs: object) -> MultiModalEmbeddings:
+-        if kwargs:
+-            raise NotImplementedError("Inkling2 XPU does not support image inputs")
+-        return ()
++        patches = kwargs.get("vision_pixels")
++        grid_thw = kwargs.get("vision_grid_thw")
++        if patches is None or grid_thw is None:
++            return ()
++        assert isinstance(patches, torch.Tensor)
++        assert isinstance(grid_thw, torch.Tensor)
++        assert self.visual is not None
++        embeds = self.visual(patches, grid_thw)
++        return embeds.split(grid_thw.prod(-1).tolist())
+ 
+     def embed_input_ids(
+         self,
+@@ -396,9 +405,15 @@
+         *,
+         is_multimodal: torch.Tensor | None = None,
+     ) -> torch.Tensor:
+-        if multimodal_embeddings:
+-            raise NotImplementedError("Inkling2 XPU does not support image inputs")
+-        return self.model.embed_input_ids(input_ids)
++        inputs_embeds = self.model.embed_input_ids(input_ids)
++        if not multimodal_embeddings:
++            return inputs_embeds
++        assert is_multimodal is not None
++        return _merge_multimodal_embeddings(
++            inputs_embeds=inputs_embeds,
++            multimodal_embeddings=multimodal_embeddings,
++            is_multimodal=is_multimodal,
++        )
+ 
+     def forward(
+         self,
+@@ -427,8 +442,11 @@
+         }
+         loaded: set[str] = set()
+         loaded_shards: set[tuple[str, int]] = set()
++        visual_weights: list[tuple[str, torch.Tensor]] = []
+         for name, weight in weights:
+             if name.startswith("model.visual."):
++                if self.visual is not None:
++                    visual_weights.append((name.removeprefix("model.visual."), weight))
+                 continue
+             for old, new in self._renames:
+                 name = name.replace(old, new)
+@@ -470,6 +488,8 @@
+             fused = next(f for f in num_shards if f in name)
+             if count == num_shards[fused]:
+                 loaded.add(name)
++        if self.visual is not None:
++            loaded |= {f"visual.{n}" for n in self.visual.load_weights(visual_weights)}
+         if missing := params.keys() - loaded:
+             raise ValueError(f"Missing checkpoint tensors: {sorted(missing)}")
+         return loaded
+--- a/vllm_inkling2_xpu/attention.py
++++ b/vllm_inkling2_xpu/attention.py
+@@ -46,6 +46,8 @@
+ from .ops.sconv import attention_prologue, shift_rel_proj
+ from .sconv import K_STREAM, V_STREAM, Inkling2ShortConv, conv_metadata
+ 
++_FP8_PREFILL_SCRATCH: dict[tuple[torch.device, int, int, int], torch.Tensor] = {}
++
+ 
+ class Inkling2AttentionMetadataBuilder(FlashAttentionMetadataBuilder):
+     """Record leading decode/verify requests for mixed batches."""
+@@ -242,9 +244,10 @@
+         vllm_config = get_current_vllm_config()
+         self.max_decode_query_len = max_decode_query_len(vllm_config)
+         cache_dtype = vllm_config.cache_config.cache_dtype
+-        supported: tuple[str, ...] = ("auto", "bfloat16")
++        supported: tuple[str, ...] = ("auto", "bfloat16", "fp8", "fp8_e4m3")
+         if cache_dtype not in supported:
+             raise ValueError(f"Inkling2 KV cache dtype must be one of {supported}")
++        self.fp8_kv = cache_dtype in ("fp8", "fp8_e4m3")
+         self.kv_cache = torch.tensor([])
+         forward_context = vllm_config.compilation_config.static_forward_context
+         if prefix in forward_context:
+@@ -289,6 +292,9 @@
+     def _split_kv_cache(
+         self, kv_cache: torch.Tensor
+     ) -> tuple[torch.Tensor, torch.Tensor]:
++        if self.fp8_kv:
++            # Every loop pass owns byte storage containing unit-scale E4M3 KV.
++            kv_cache = kv_cache.view(torch.float8_e4m3fn)
+         key_cache, value_cache = kv_cache.transpose(1, 2).split(self.head_dim, dim=-1)
+         return (
+             canonicalize_singleton_dim_strides(key_cache),
+@@ -520,7 +526,101 @@
+         cu_seqlens_q = md.query_start_loc[num_decodes:]
+         if num_decodes:
+             cu_seqlens_q = cu_seqlens_q - num_decode_tokens
+-        key_cache, value_cache = self._split_kv_cache(kv_cache)
++        block_table = md.block_table[num_decodes:]
++        cache_seqlens = md.seq_lens[num_decodes:]
++        if self.fp8_kv and block_table.shape[0] == 1:
++            page = kv_cache.shape[2]
++            seq_len = int(cache_seqlens[0].item())
++            end_page = (seq_len + page - 1) // page
++            if self.is_local:
++                first_tok = max(0, seq_len - md.max_query_len - self.sliding_window)
++                start_page = first_tok // page
++            else:
++                start_page = 0
++            n_active = end_page - start_page
++            # One shared reusable BF16 scratch buffer (<= 256 MiB, zero allocator
++            # fragmentation across chunked prefill steps). Covers 100% of SWA
++            # layers (~12 MiB) in 1 pass and full-attn up to 512K+ via exact
++            # online FlashAttention LSE chunking (~5x faster than inline FP8!).
++            page_bf16_bytes = kv_cache.shape[1] * kv_cache.shape[2] * kv_cache.shape[3] * 2
++            max_pages = (256 * 1024 * 1024) // page_bf16_bytes
++            if 0 < n_active and end_page <= block_table.shape[1]:
++                kv_fp8 = kv_cache.view(torch.float8_e4m3fn)
++                buf_key = (q.device, kv_cache.shape[1], kv_cache.shape[2], kv_cache.shape[3])
++                buf = _FP8_PREFILL_SCRATCH.get(buf_key)
++                if buf is None:
++                    buf = torch.empty(
++                        (max_pages, kv_cache.shape[1], kv_cache.shape[2], kv_cache.shape[3]),
++                        dtype=torch.bfloat16,
++                        device=q.device,
++                    )
++                    _FP8_PREFILL_SCRATCH[buf_key] = buf
++
++                def _run_chunk(p_lo: int, p_hi: int, o_dst: torch.Tensor, l_dst: torch.Tensor) -> None:
++                    cnt = p_hi - p_lo
++                    active = block_table[0, p_lo:p_hi].to(torch.int64)
++                    kv_bf16 = buf[:cnt]
++                    for s in range(0, cnt, 128):
++                        e = min(s + 128, cnt)
++                        kv_bf16[s:e].copy_(kv_fp8.index_select(0, active[s:e]))
++                    kc, vc = kv_bf16.transpose(1, 2).split(self.head_dim, dim=-1)
++                    kc = canonicalize_singleton_dim_strides(kc)
++                    vc = canonicalize_singleton_dim_strides(vc)
++                    remapped = torch.zeros((1, p_hi), dtype=torch.int32, device=q.device)
++                    remapped[0, p_lo:p_hi] = torch.arange(cnt, dtype=torch.int32, device=q.device)
++                    rel_attention(
++                        q[:nt],
++                        kc,
++                        vc,
++                        o_dst,
++                        l_dst,
++                        rel_logits,
++                        block_table=remapped,
++                        cache_seqlens=cache_seqlens,
++                        cu_seqlens_q=cu_seqlens_q,
++                        max_query_len=md.max_query_len,
++                        softmax_scale=self.scaling,
++                        window=self.sliding_window if self.is_local else 0,
++                        num_splits=1,
++                        mode=MODE_OUT_LSE,
++                        k_lo_tok=p_lo * page,
++                        k_hi_tok=p_hi * page,
++                    )
++
++                if n_active <= max_pages:
++                    _run_chunk(start_page, end_page, out, lse)
++                else:
++                    o_tmp = torch.empty_like(out)
++                    l_tmp = torch.empty_like(lse)
++                    first = True
++                    for p_lo in range(start_page, end_page, max_pages):
++                        p_hi = min(p_lo + max_pages, end_page)
++                        if first:
++                            _run_chunk(p_lo, p_hi, out, lse)
++                            first = False
++                        else:
++                            _run_chunk(p_lo, p_hi, o_tmp, l_tmp)
++                            l0 = lse[:, :nt]
++                            l1 = l_tmp[:, :nt]
++                            m = torch.maximum(l0, l1)
++                            m_safe = torch.where(torch.isinf(m), torch.zeros_like(m), m)
++                            w0 = torch.exp(l0 - m_safe)
++                            w1 = torch.exp(l1 - m_safe)
++                            ws = w0 + w1
++                            ws_safe = torch.where(ws == 0, torch.ones_like(ws), ws)
++                            lse[:, :nt] = torch.where(
++                                ws == 0, torch.full_like(m, float("-inf")), m_safe + torch.log(ws_safe)
++                            )
++                            out[:nt] = (
++                                out[:nt] * (w0 / ws_safe).t().unsqueeze(-1)
++                                + o_tmp[:nt] * (w1 / ws_safe).t().unsqueeze(-1)
++                            )
++                out[nt:].zero_()
++                lse[:, nt:].zero_()
++                return
++            key_cache, value_cache = self._split_kv_cache(kv_cache)
++        else:
++            key_cache, value_cache = self._split_kv_cache(kv_cache)
+         rel_attention(
+             q[:nt],
+             key_cache,
+@@ -528,8 +628,8 @@
+             out,
+             lse,
+             rel_logits,
+-            block_table=md.block_table[num_decodes:],
+-            cache_seqlens=md.seq_lens[num_decodes:],
++            block_table=block_table,
++            cache_seqlens=cache_seqlens,
+             cu_seqlens_q=cu_seqlens_q,
+             max_query_len=md.max_query_len,
+             softmax_scale=self.scaling,
+--- a/vllm_inkling2_xpu/dspark.py
++++ b/vllm_inkling2_xpu/dspark.py
+@@ -161,7 +161,10 @@
+                 v.view(-1, self.num_kv_heads, self.head_dim),
+                 md.slot_mapping[: q.shape[0]],
+             )
+-            key_cache, value_cache = self.attn.kv_cache.transpose(1, 2).split(
++            kv_cache = self.attn.kv_cache
++            if kv_cache.dtype == torch.uint8:
++                kv_cache = kv_cache.view(torch.float8_e4m3fn)
++            key_cache, value_cache = kv_cache.transpose(1, 2).split(
+                 self.head_dim, dim=-1
+             )
+             num_reqs = min(q.shape[0] // self.block, md.seq_lens.shape[0])
+# Note: apply ops/attention_prefill.py k_lo_tok/k_hi_tok + FP8 dtype support via ops_attention_prefill.py
