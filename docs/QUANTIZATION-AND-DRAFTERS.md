@@ -83,7 +83,7 @@ here disputes that regime — it is simply not single-card quantized Xe2 serving
 
 ## 3. Related pages
 
-- [4-bit quantization study (2026-11-25)](qwen38-27b/quantization-study-202611/README.md):
+- [4-bit quantization study (2026-11-25)](qwen38-27b/quantization-study-202611/README.md) · [**V11 study (12 families, MoE, 2-bit rescue, rotated KV)**](qwen38-27b/quantization-study-v11-202611/README.md):
   when post-hoc bias correction lowers KL drift, when it raises it, and the gate
   that tells the two apart.
 - [Qwen3.8-27B GPTQ recipe](qwen38-27b/QWEN38-VLLM-XPU.md) — the serving route

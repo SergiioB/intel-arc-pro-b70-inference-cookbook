@@ -1,3 +1,5 @@
+> Superseding generation: see [Quantization Deep Study V11](../quantization-study-v11-202611/README.md) (12 model families, live multimodal Gemma-4 MoE, 2-bit rescue, rotated KV vs TurboQuant, Bonsai-2, Spanish & 4K confirmations, quiet-host Gate 5).
+
 # Fixing 4-Bit LLMs After Quantization: 15 MiB Bias Sidecars, Trellis vs Scalar Limits, and Live Xe2 W4A8 Serving on Intel Arc Pro B70
 
 **Date:** November 25, 2026

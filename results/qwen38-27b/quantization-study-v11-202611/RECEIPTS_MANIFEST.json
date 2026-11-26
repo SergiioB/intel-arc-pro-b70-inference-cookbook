@@ -1,0 +1,302 @@
+{
+  "file_count": 48,
+  "files": {
+    "COMPLETE_RESEARCH_CHRONICLE_V2.md": {
+      "bytes": 44247,
+      "kind": "text",
+      "pre_finalization_bundle_sha256": "b461c23828fc073c8e30ebfa0a8f7c4c50496da93e634a91bb96e0e2e4cf2d3e",
+      "sanitized_sha256": "b48253d7139c1612a6818531aa4364adf7f425981c8db1763ee7a2900c1838a3"
+    },
+    "astra_wave9h_v020_final_signoff.md": {
+      "bytes": 611,
+      "kind": "text",
+      "sanitized_sha256": "4e1143bb556da7467e0322af2ab9b9c57018ae9f8fdc01b93f216ba280eaecee",
+      "raw_sha256": "4e1143bb556da7467e0322af2ab9b9c57018ae9f8fdc01b93f216ba280eaecee"
+    },
+    "exp13a_causal_64l_v2.json": {
+      "bytes": 39088,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "7401539b36439c1d328a49c95dd58989173e90d79617d2cfffbc64453149cbd3",
+      "sanitized_sha256": "bf995be82fd3b6540043019a797b0d6f7ec0a8a40744a5b397efcf47fb1a49a2"
+    },
+    "exp13b_cross_arch.json": {
+      "bytes": 153852,
+      "kind": "json",
+      "sanitized_sha256": "4443ce5edc6440c5e7295f2fefbe797c459cff688a7de13b4082134402a4bfdf",
+      "raw_sha256": "8c130a974b6241344b8761ed15243b78c62693242f619b6c6a7a3c54c327ab32"
+    },
+    "exp13b_qwen25_dense.json": {
+      "bytes": 39032,
+      "kind": "json",
+      "sanitized_sha256": "5dc2340804d32b4e2a207d387f3e780cdee50b7fd409cba55e5508ea966bb34a",
+      "raw_sha256": "5dc2340804d32b4e2a207d387f3e780cdee50b7fd409cba55e5508ea966bb34a"
+    },
+    "exp13b_qwen38_kv_causal_v2.json": {
+      "bytes": 5945,
+      "kind": "json",
+      "sanitized_sha256": "400d8e84adaba56be18b5c037c04b3ee941de36df565d0543ddf495b0e44478b",
+      "raw_sha256": "07e8aca2a29ebc7708ccb3efed8d73d4b313e4142ff483dbde2a39d4ae78f54c"
+    },
+    "exp13b_smollm2_dense.json": {
+      "bytes": 39025,
+      "kind": "json",
+      "sanitized_sha256": "bd4481e2d77d87758a97bf219bf915136519845e5f5c777f1224bd42b12ff656",
+      "raw_sha256": "bd4481e2d77d87758a97bf219bf915136519845e5f5c777f1224bd42b12ff656"
+    },
+    "exp14c_vllm_329_battery.json": {
+      "bytes": 48259,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "d59a2ba5941835a09529f41af8378c72933b31513ea872534271bb3f92723798",
+      "sanitized_sha256": "8e2d1ca3f4c6b264dfbf5d24fe80b391011253d1109f2022c0f5a62e63c5af6c"
+    },
+    "exp14d_vllm_speed_ladder.json": {
+      "bytes": 282282,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "ac21641223e5fbf8e2c7d8cfd1440f82c5b042c8f148718d70502b3a7c167646",
+      "sanitized_sha256": "809179ecd2f0f31077c86f85b61ac5c259b0ff93bbf1b802c63e4a0bcb89911a"
+    },
+    "exp15a_tfq3_vs_hfg16_64l.json": {
+      "bytes": 2312152,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "0b2550f6e9e5b16ea934c1fb822b2096da246d205643c17e47dc50be704ac3f7",
+      "sanitized_sha256": "e992d34d6e03bbe8dbcc252f4065315600495f58e6be5b63f8ca6dd0851554b5"
+    },
+    "exp15b_llama32_3b.json": {
+      "bytes": 415625,
+      "kind": "json",
+      "sanitized_sha256": "9d3a4953480f0125c05e1cc0376df1beca6aaced222486cfc0605c2e02d0667d",
+      "raw_sha256": "9d3a4953480f0125c05e1cc0376df1beca6aaced222486cfc0605c2e02d0667d"
+    },
+    "exp15b_multifamily_scores.json": {
+      "bytes": 87734,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "fe2922e64a3e0783b4f8a9553e95af762a09cea4d504919e15655b0a4aa85eb3",
+      "sanitized_sha256": "a5d888561f685ba331e07dd1b336801c09fa537afcf455161da6a98fa87bc349"
+    },
+    "exp15b_olmo2_7b.json": {
+      "bytes": 420688,
+      "kind": "json",
+      "sanitized_sha256": "f69ce92cc4c059ff66f511b3ef208c46a814751a4dd39c38dffce489735c3aa0",
+      "raw_sha256": "f69ce92cc4c059ff66f511b3ef208c46a814751a4dd39c38dffce489735c3aa0"
+    },
+    "exp15b_olmoe_1b7b.json": {
+      "bytes": 427590,
+      "kind": "json",
+      "sanitized_sha256": "7de838b130fc9aa5579b71e9be00b8d1912cab4a7fa88c1c059dc771b188eb2f",
+      "raw_sha256": "7de838b130fc9aa5579b71e9be00b8d1912cab4a7fa88c1c059dc771b188eb2f"
+    },
+    "exp15b_phi4_mini.json": {
+      "bytes": 408790,
+      "kind": "json",
+      "sanitized_sha256": "44e22ba0c200033b9a183ae3cae36075b2a409fdb5cd0849104839203b1fb0bc",
+      "raw_sha256": "44e22ba0c200033b9a183ae3cae36075b2a409fdb5cd0849104839203b1fb0bc"
+    },
+    "exp15c_hfg16_refine_64l.json": {
+      "bytes": 116911,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "eacb5c3c994151bd8dd1679b4c1c65b82ddd8e749a4a55a2fdc745077efa5997",
+      "sanitized_sha256": "33891457ba101ee7eeb07991e86745a1344a7bb61bfcaaa633c5f03117165551"
+    },
+    "exp16_wiener_affinecorr.json": {
+      "bytes": 461106,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "f0fd25c96407a1763f3907da47fb31e9518c4e680de236fb0d5552ce74862fa1",
+      "sanitized_sha256": "4740cde11a89d4043f10ccdd1b15f007e2788e74965d8d56730ae4d31a7d1804"
+    },
+    "exp17_moe_grouped_prefill_bench_gpu0.json": {
+      "bytes": 29001,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "fcceefb05ade2e919d86fa4244ab91052cfc07ff128a3a09f208b3ea3ef06914",
+      "sanitized_sha256": "fcceefb05ade2e919d86fa4244ab91052cfc07ff128a3a09f208b3ea3ef06914"
+    },
+    "exp17_moe_plugin_pytest_wave9f_gpu0.log": {
+      "bytes": 143901,
+      "kind": "log",
+      "sanitized_sha256": "c6e25ef65756d1374bf187ef4a0bae163eb4d289d8c2fda952d1cd5e8e35785d",
+      "raw_sha256": "a1ed3d8caa2bf894f384da4530630443aa849afc1f20ad027b9d46d42b7e9389"
+    },
+    "exp17_v020_vs_v010_compat_gpu0.json": {
+      "bytes": 143049,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "ddb6e6e474ec5c97e5bf9b7d250bbc5cc1c13a3137147680de44c0e2b3c6c43f",
+      "sanitized_sha256": "de404f07d8b81fad1f8098b618710f6e0a86cd0e4ed1dc7755f232f41655fcc9"
+    },
+    "exp17_wave9d_mutation.log": {
+      "bytes": 1024,
+      "kind": "log",
+      "sanitized_sha256": "346a744192ed3979eac096ed89091e342af23e0a94def6b3a0352a161bb37c47",
+      "raw_sha256": "346a744192ed3979eac096ed89091e342af23e0a94def6b3a0352a161bb37c47"
+    },
+    "exp17_wave9f_mutation.log": {
+      "bytes": 3135,
+      "kind": "log",
+      "sanitized_sha256": "11b09e91bd0d55aa91b70f4f4fbaf3089185e58a859b8d117b9b6e43ddec63d1",
+      "raw_sha256": "11b09e91bd0d55aa91b70f4f4fbaf3089185e58a859b8d117b9b6e43ddec63d1"
+    },
+    "exp17_wave9h_17of17_note.md": {
+      "bytes": 897,
+      "kind": "text",
+      "sanitized_sha256": "943bb37cd872429187c445add8c1cd65e5a011c394265e6a9f07dc9d418f3826",
+      "origin": "provenance note written for this bundle; no raw source"
+    },
+    "exp17a_gemma4_e4b.json": {
+      "bytes": 587516,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "16ec5f5472918130c5616fc9fa6ffce822c78fcda35797d1df3419cd76b5cf04",
+      "sanitized_sha256": "d9a2a26078b544598a20d0b1b929762c41f24c400a07a21011f53d6179883ef3"
+    },
+    "exp17a_granite4_htiny.json": {
+      "bytes": 638767,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "c1e2ea6ce691814dc39d1c8220fcf937d9355e87b7013d469a551a86bc14a1d1",
+      "sanitized_sha256": "cb704079ccbff77a9eebb8d3242e245ba0c7ba0d649ae16e6a32b8c71f344a92"
+    },
+    "exp17a_modern3_summary.json": {
+      "bytes": 96599,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "12322b8d0368d43bfbdaf9d8df960b85f1070de3c857e4c88589cc857f4cfb3b",
+      "sanitized_sha256": "66d228a95c0fb43f4e74c7c6e476bd571ed52465165755c611d1ac08b996796b"
+    },
+    "exp17a_qwen3_8b.json": {
+      "bytes": 573258,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "b02aee1066e6cf06f35ff4626f410a7bc137a2fa6df58351e6f431a2626ae1a0",
+      "sanitized_sha256": "ea406d9a3ef5b0e35420e40aa007235c8d2095d5fd74d673054993d66c9fe8fd"
+    },
+    "exp17b_PROCESS.md": {
+      "bytes": 10000,
+      "kind": "text",
+      "pre_finalization_bundle_sha256": "f7e61244cc84550b2ad58cc1a38115549feede4dd45069c524f6978ed5c6f39f",
+      "sanitized_sha256": "d5e3402b1aaa61fc7ed23d47e60cc325bbc305cd1467a3a87124b7bad12996f5"
+    },
+    "exp17b_gemma4_26b_a4b.json": {
+      "bytes": 15288897,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "00a3c1850571eef98c419e7ffc372830db97f46261cbf1ef85fe3ad27f7bbd92",
+      "sanitized_sha256": "ba73e3a31221978784663b0032252f3b876d90913d7799ed0afe6cddd51dc245"
+    },
+    "exp17c_PROCESS.md": {
+      "bytes": 12088,
+      "kind": "text",
+      "pre_finalization_bundle_sha256": "680bb38b3ec1e56997e3fc08fc72d32018a942eb29f479f1496a4dd558300856",
+      "sanitized_sha256": "4e99027a20d0cd23602f68877499f87f0f91206f26f66d3e6f5d4b40ebfa850f"
+    },
+    "exp17c_qwen36_35b_a3b.json": {
+      "bytes": 14897845,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "ba8da60cc2a5e41a0cd4f8d5225785fdb95237c54d8ab9e4dbb6318924dd0722",
+      "sanitized_sha256": "a3583b2314519a590c27e536731335bc21b615b02bf4e2976a75c144270004fa"
+    },
+    "exp17d_gemma4_26b_had64_ablation_and_live_vllm.json": {
+      "bytes": 9278997,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "5919f8716e3ad76ff8c0944f70064863e836912850e173f685bf83d4f058224e",
+      "sanitized_sha256": "77b6c7daf0f090db109d2bf67eff3eaa425ea57c333b0aa1e74a3d1c66b1c347"
+    },
+    "exp18_llamacpp_mlx_loader_blueprint.md": {
+      "bytes": 23990,
+      "kind": "text",
+      "pre_finalization_bundle_sha256": "234fc9c00f4e4be04653278a65ceb71f1ae4bd4ae859c4dd6397058687d44861",
+      "sanitized_sha256": "209d1a52e765c8cc3459c424cdc9e1eae84f7ecfad929b2ee9c4b56cc8fb9702"
+    },
+    "exp18_ultralowbit_64l.json": {
+      "bytes": 8773147,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "8ac67c7ecc9cf21330f72d82030a544d0ab43bb6524ff6a4de4ce4cf0e8ebc0c",
+      "sanitized_sha256": "6674b90d08c40324b623a0c7eeb0450ec74c9ced5385ab59a2f26d7db26cda86"
+    },
+    "exp18_ultralowbit_tasks160.json": {
+      "bytes": 140165,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "e6180816018869f317055b4bf9b8a5a2629ddc30b5545715f25b7a8bcfb26b67",
+      "sanitized_sha256": "90c9d9b764eee5edec2af092044d2865cc4b038f050cbbb5e7ed6083e84772e8"
+    },
+    "exp18_ultralowbit_tasks160_had_int2.json": {
+      "bytes": 140682,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "6f5965490ddc6aaa22e764c50c7d9967f2a24f1a75292df5947d9221be502ecd",
+      "sanitized_sha256": "c957c3a2dff9515543481634e9b7489f9039f97710c4d8655e10fca21af7857d"
+    },
+    "exp19_PROCESS.md": {
+      "bytes": 6412,
+      "kind": "text",
+      "pre_finalization_bundle_sha256": "3ccf92960e2abf3c83bfa12bafe86b9e24c6b5976895909e5b12d48d51e18c9a",
+      "sanitized_sha256": "647ef535970122ab5f1097fdf741f5d883163bdcf2400d9c577766c3585d4b2d"
+    },
+    "exp19a_turboquant_kv_qwen38.json": {
+      "bytes": 12298764,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "de6ca3f1f4952e4d7aaebd010f01586052866f086bb779ec63b9b6c94d60f8ef",
+      "sanitized_sha256": "d23acff15eaf7cfc2ba911dbf80e2ec950bdc9b3a2768bb8d19a6ce803d6b739"
+    },
+    "exp19b_posthoc_ptq_sparsity_control.json": {
+      "bytes": 2771954,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "e61cb2360147d3e4e24a11422f729b89d80a35f60dbab6b19862a1f6637dd2be",
+      "sanitized_sha256": "b824ce57908cf1f7e77c37c5a275a4533240734605a2408c664db47e6add116a"
+    },
+    "exp19b_ternary_bonsai2_27b.json": {
+      "bytes": 8527806,
+      "kind": "json",
+      "pre_finalization_bundle_sha256": "ab6535942631e1345e5909a31d984acab2b1519190a7e7c9b0a1d0a486576b5b",
+      "sanitized_sha256": "677a487631bdba6fc10e8c12aeeb6b437da290bd5d810dd312cc5d997b3736cd"
+    },
+    "exp20_confirmations.json": {
+      "bytes": 137374,
+      "kind": "json",
+      "raw_sha256": "db5711705867c4e0ffe0e942ac18de7d519757b99d62114af5cd1079d2228f85",
+      "sanitized_sha256": "664fb482348d9513b4e922210b8184224e97d45cd21b319e543eacf26582946a"
+    },
+    "gate5_tfv5_v1_depth_gpu0.json": {
+      "bytes": 88081,
+      "kind": "json",
+      "raw_sha256": "8e7eba09c7f60ea2e68d829ccb6b4841b06375b00fc598c357d1abe1b6d7f866",
+      "sanitized_sha256": "971ef3f179316271d1c507b3ceb62d373f2e6010066626473757c219f3ebbd5d"
+    },
+    "gate5_tfv5_v1_tp2_parity.json": {
+      "bytes": 107817,
+      "kind": "json",
+      "raw_sha256": "f13ac3f14cfd08ddb2c6aaa27b45b1336aab469567bd9ad4494e4bcdf9e4e404",
+      "sanitized_sha256": "43cfeef7b926caaf6f2b835f774cb653cd12dd0b5908df6fcbe78d982bf8bfbd"
+    },
+    "gate5_v020_quiethost_moe_crossover.json": {
+      "bytes": 94313,
+      "kind": "json",
+      "raw_sha256": "0419d91741707554bdd7422bd50986ea1c48193c9edefb11bbc8d2d19584ef68",
+      "sanitized_sha256": "0419d91741707554bdd7422bd50986ea1c48193c9edefb11bbc8d2d19584ef68"
+    },
+    "opus55_wave9g_v020_final_signoff.md": {
+      "bytes": 9380,
+      "kind": "text",
+      "sanitized_sha256": "68cbb84b9c47444fed0aa9b31b6368a69294c34e68304f50c76c92dec368a19d",
+      "raw_sha256": "d77a5bd4726df36784901c9aaba7da08985fc87502be7eacd78f06f6d82a66b0"
+    },
+    "opus55_wave9h_v020_final_signoff.md": {
+      "bytes": 1617,
+      "kind": "text",
+      "sanitized_sha256": "7af23c06eae189d498b9b14f62fc38d2e65e889a698bbab70dae7dc04526e9c2",
+      "raw_sha256": "7af23c06eae189d498b9b14f62fc38d2e65e889a698bbab70dae7dc04526e9c2"
+    },
+    "rotkv_cpu_pytest_30of30.log": {
+      "bytes": 4379,
+      "kind": "log",
+      "sanitized_sha256": "9554693dcb073d084428189282988dd8fe98b3296ad72d8ef32a430385cee67f",
+      "raw_sha256": "fcd350fafea9e6b77b8442bc5a346f9a0e4eab86e341152f9d6e8e2ebe02a29f"
+    }
+  },
+  "generated_utc": "2026-11-26T02:23:40Z",
+  "note": "Sanitized public copies of experiment receipts. Local absolute paths, PCI identifiers, numbered hwmon thermal paths, random temporary script paths, and hostnames are redacted. raw_sha256 is recorded before sanitization for the four newly copied Exp20/Gate5 receipts; older inherited entries record their pre-finalization bundle hash because they arrived as already-curated public copies. The research chronicle has one wording-only slop-term cleanup after pre-finalization. Gate 7C added 16 files: four exp13b and four per-family exp15b receipts, two plugin mutation logs, the Wave 9F pytest log, three v0.2.0 sign-off reviews, one CPU-only pytest log, and one provenance note. The 31 earlier receipts are byte-identical to the Gate 7B audit set. For the new files raw_sha256 is the hash before sanitization. The exp13b copies are the already published V10 sanitized copies; the two dense exp13b and four exp15b files are byte-identical to the raw results.",
+  "receipt_file_count_excluding_manifest": 47,
+  "sanitization": {
+    "hostname_replacements": "local hostnames -> redacted-hostname",
+    "path_replacements": [
+      "absolute data-disk paths -> data-root/... or study-root/...",
+      "absolute home-directory paths -> home-root/... or user-home/..."
+    ],
+    "pci_replacements": "PCI bus/device/function identifiers -> redacted-pci-*",
+    "thermal_replacements": "numbered hwmon paths/indices -> redacted-thermal-*",
+    "build_path_replacements": "temporary build and scratch paths -> <build-tree> or <scratch>/...",
+    "dash_replacements": "en and em dashes in the new review copies -> ASCII hyphen or comma"
+  },
+  "schema": "receipts_manifest/v11-final-gate7c"
+}
