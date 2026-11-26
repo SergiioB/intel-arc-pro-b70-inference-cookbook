@@ -677,6 +677,59 @@ Both Claude Opus 5.5 and GPT-6.2 Astra signed off `vllm-hf-int4-g16-xpu` v0.2.0 
 
 Separate Step B DPAS MoE and packed 3-bit rotated KV CPU prototypes are not shipped in this bundle. Their CPU-only suite passes 30/30 tests (`results/qwen38-27b/quantization-study-v11-202611/rotkv_cpu_pytest_30of30.log`), covering bit packing, parallel bucket scan parity, DPAS unpack exactness, and rotated-KV attention reference math. These are algorithmic CPU references only. They are not GPU timing, GPU quality, or v0.2.0 release evidence.
 
+### 11.8 Quiet-host multimodal Gemma-4-26B live serving and direct converter gate (`Exp 21`)
+
+To close the earlier busy-host caveat on live `Gemma-4-26B-A4B-it` serving and test the released `v0.2.0` converter's `--cal-chat-template` flag directly on GPU kernels, `Exp 21` converted `google/gemma-4-26B-A4B-it` (`14.64 GiB`, `205` chat-calibrated linear layers), ran the 4-check gate twice on the served GPU kernels, and served the full multimodal model with XPU graphs enabled on a verified quiet host (`host_quiet: true`, GPU1 `0%` compute, `230 W / 2,800 MHz`, `52 to 55 C`, `n=3`, Gemma-4 model-card sampling `temperature=1.0`, `top_p=0.95`, `top_k=64`, thinking off). Receipt: [exp21_gemma4_26b_quiethost_chatcal_live.json](../../../results/qwen38-27b/quantization-study-v11-202611/exp21_gemma4_26b_quiethost_chatcal_live.json).
+
+| Prompt tokens | TTFT (s) | Prefill tok/s | Decode tok/s (range) | Decode J/token |
+|---:|---:|---:|---|---:|
+| `51` | `0.079` | `646*` | `84.76` (`84.57 to 84.88`) | `1.987` |
+| `1,988` | `1.588` | `1,252` | `70.80` (`70.36 to 71.14`) | `2.324` |
+| `8,133` | `14.376` | `566` | `55.60` (`55.46 to 55.70`) | `2.724` |
+
+`*51-token prefill reflects request overhead.` Live checks passed `8/8` text and code canaries plus the vision probe, and live vs offline perplexity matched closely (`25.983` vs `25.982` WikiText-2, `12.175` vs `12.166` Code, `137.12` vs `141.02` OOD chat).
+
+Direct 4-check gate on the converter's default `--cal-chat-template` output (served GPU kernels, `2,044` scored targets per domain):
+
+- WikiText-2: `0.14059 -> 0.11203` (`-20.3%`, 95% CI `[-0.03862, -0.01852]`) -> **PASS**.
+- OOD chat: `1.21506 -> 0.93723` (`-22.9%`, 95% CI `[-0.38112, -0.18173]`) -> **PASS** (fixes the raw-text OOD failure).
+- Reversed-sign `-b` control: worse on all three domains -> **PASS**.
+- Code: `0.19103 -> 0.16713` (`-12.5%`, 95% CI `[-0.04884, +0.00073]`) -> **FAIL** on served GPU kernels by `0.00073` (while simulated math passed `[-0.05385, -0.00723]`). Under our pre-registered served-kernel rule, this sidecar stays marked `publishable: false` and is not released until the converter adopts the 4-prose plus 4-code chat calibration mix and clears fresh held-out domains.
+
+### 11.9 Why decode tok/s alone misleads: live 8K to 128K end-to-end turn latency and energy (`Exp 22`)
+
+A common objection to `HF-INT4-G16` is that single-user decode is `10% to 12%` slower than shipped `GPTQ-Int4-sym-G128`. On hardware without native INT4 tensor cores, a controlled `~10%` decode dequantization cost is a deliberate trade-off if prompt reading and code fidelity improve enough to shorten real interactive turns (RAG, repository analysis, and first-turn agent prompts where time-to-first-token dominates the user wait).
+
+To test how that trade-off actually scales past `32K`, `Exp 22` ran live `vllm serve` (`vllm/vllm-openai-xpu:v0.31.0`, `FP8` KV cache, XPU graphs enabled, `--no-enable-prefix-caching`, `230 W / 2,800 MHz`, `<= 55 C`, `host_quiet: true`, `qwen38-27b:nothink-p0` sampling, interleaved `ABABAB`, `n=3` per cell = `24` timed runs, `256` fixed output tokens) comparing `Qwen3.8-27B-HF-INT4-G16-BC` against shipped `GPTQ-Int4-sym-G128` from `8K` to `128K` on one B70. Both models passed `3/3` hidden-needle retrieval checks at `64K` and `3/3` at `128K` under `FP8` KV cache. Receipt (`242/242` checks passed): [exp22_vllm_longctx_turn_scaling.json](../../../results/qwen38-27b/quantization-study-v11-202611/exp22_vllm_longctx_turn_scaling.json).
+
+| Context (`FP8` KV, 256 out) | Arm | TTFT (s) | Prefill tok/s | Decode tok/s | Total turn (s) | Turn J | J / out-tok | TTFT share |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| `8K` | `HF-G16-BC` | `3.65` | `2,244` | `27.96` | `12.77` | `2,930` | `11.45` | `28.6%` |
+| `8K` | `GPTQ` | `4.57` | `1,794` | `31.57` | `12.64` | `2,884` | `11.27` | `36.1%` |
+| `32K` | `HF-G16-BC` | `19.19` | `1,707` | `26.21` | `28.92` | `6,639` | `25.93` | `66.4%` |
+| `32K` | `GPTQ` | `22.52` | `1,455` | `29.46` | `31.18` | `7,142` | `27.90` | `72.2%` |
+| `64K` | `HF-G16-BC` | `50.87` | `1,288` | `24.27` | `61.38` | `14,093` | `55.05` | `82.9%` |
+| `64K` | `GPTQ` | `56.49` | `1,160` | `27.14` | `65.89` | `15,111` | `59.03` | `85.7%` |
+| `128K` | `HF-G16-BC` | `151.88` | `863` | `21.27` | `163.87` | `37,635` | `147.01` | `92.7%` |
+| `128K` | `GPTQ` | `158.38` | `828` | `23.50` | `169.23` | `38,782` | `151.49` | `93.6%` |
+
+| Context | Turn speedup (`GPTQ / HF-G16`) | Time saved per turn | Energy saved per turn | Calculated break-even output length |
+|---|---:|---:|---:|---:|
+| `8K` | `0.990x` | `-0.13 s` | `-1.6%` | `~225` tokens |
+| `32K` | `1.078x` | `+2.25 s` | `7.0%` | `~791` tokens |
+| `64K` | `1.073x` | `+4.51 s` | `6.7%` | `~1,292` tokens |
+| `128K` | `1.033x` | `+5.36 s` | `3.0%` | `~1,455` tokens |
+
+Three practical conclusions follow from `Exp 22`:
+
+1. **Cold long-context turns favor `HF-INT4-G16-BC` in both wall clock and energy from `32K` through `128K`:** Because TTFT grows from `28.6%` of the turn at `8K` to `66.4%` at `32K`, `82.9%` at `64K`, and `92.7%` at `128K`, faster prefill more than pays back the `~10%` decode difference for any reply shorter than `~791` tokens at `32K`, `~1,292` tokens at `64K`, and `~1,455` tokens at `128K` (saving `2.25 s` to `5.36 s` and `3.0% to 7.0%` card energy per turn, alongside less than half the coding KL drift).
+2. **Relative prefill advantage peaks in the `8K to 64K` band and narrows at `128K`:** Prefill speedup drops from `+25.1%` at `8K` (`2,244` vs `1,794 tok/s`) to `+17.3%` at `32K`, `+11.0%` at `64K`, and `+4.2%` at `128K`. That narrowing matches quadratic `O(L^2)` attention overtaking linear `O(L)` weight GEMMs at `128K` (not separately profiled at the kernel level in this run). Note also that `Exp 22` uses `FP8` KV cache and `135,168` max context, so its absolute `32K` prefill (`1,707 tok/s`) should not be mixed with `Exp 14D` (`2,054 tok/s`, BF16 KV, `36,864` max context).
+3. **Warm prefix-cached multi-turn agents remain untested here:** When an agent reuses a cached prefix across turns and only prefills a short delta, decode speed dominates again and `GPTQ` retains its `~10%` single-user decode edge. Multi-turn prefix-cached comparison is left for future work.
+
+### 11.10 Validation scope: single-author lab study (not formal external peer review)
+
+Methodological rigor in this report is high for a single-operator lab study: negative results, retracted errors (such as the 3-bit 384-token truncation artifact and earlier prefix-cache contamination), exact software tags, thermal cooldown logs, and `49` sanitized receipts are published alongside the positive results, with tight repeat variance (`< 0.2 s` total turn spread across `Exp 22` repeats). At the same time, readers should weigh a clear structural limit: this is single-author work conducted on one dual-B70 workstation. Automated audits by independent AI reviewers (Opus 5.5, GPT-6.2 Astra, and Gemini 4 Neon) caught real bugs and tightened disclosures, but they are not a substitute for independent human peer review or cross-hardware replication on other GPUs, drivers, and model suites.
+
 ## 12. Bottom line
 The strongest positive result is not a single number. It is a chain:
 
