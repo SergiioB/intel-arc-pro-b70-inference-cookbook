@@ -1,0 +1,952 @@
+{
+  "experiment": "Exp 17 Wave 9D: grouped-by-expert W4A16 MoE prefill (Step A) vs pair path vs vLLM BF16",
+  "created": "2026-11-25T18:59:37+0000",
+  "device": "Intel(R) Arc(TM) Pro B70 Graphics",
+  "torch": "2.14.0+xpu",
+  "image": "vllm/vllm-openai-xpu:v0.31.0",
+  "vram_fraction_cap": 0.55,
+  "use_deterministic_algorithms": true,
+  "power_cap_w": 230.0,
+  "grouped_min_tokens": 16,
+  "tile": {
+    "rows_BM": 16,
+    "cols_BN": 32,
+    "weight_panel_BK": 64
+  },
+  "kernel_metadata": {
+    "source_sha256": "8dadce795ffb4a3452480bad0869dbcfec18ff983a3b9dcd6f9eb889213e24fa",
+    "binary_sha256": "5ce45179db2abc74d1dd71a2b1fa832a2c68a4bfd8dd658ef8b53b3a6f76f322",
+    "binary_bytes": 3056016,
+    "build_options": "-cl-std=CL3.0 -cl-mad-enable -cl-intel-256-GRF-per-thread",
+    "device": "bmg_g31",
+    "kernel_count": 42,
+    "exported_kernels": [
+      "bf16_m128_n16",
+      "bf16_m16_sk4",
+      "bf16_m32_n16",
+      "bf16_m8_sk4",
+      "fused_fwht128_actq",
+      "fused_fwht64_actq",
+      "hf_decode_fused_had64_m1",
+      "hf_decode_fused_had64_m2",
+      "hf_decode_fused_had64_m4",
+      "hf_decode_fused_m1",
+      "hf_decode_fused_m2",
+      "hf_decode_fused_m4",
+      "hf_dpas_m128_n16",
+      "hf_dpas_m128_n16_gsk2",
+      "hf_dpas_m128_n16_p1",
+      "hf_dpas_m128_n16_p4",
+      "hf_dpas_m128_n16_wg8",
+      "hf_dpas_m128_n16_wg8_p1",
+      "hf_dpas_m16_sk4",
+      "hf_dpas_m32_n16",
+      "hf_dpas_m32_sk4",
+      "hf_dpas_m64_n16",
+      "hf_dpas_m64_n16_wg16",
+      "hf_dpas_m8_sk4",
+      "hf_moe_bucket_count",
+      "hf_moe_bucket_scan",
+      "hf_moe_bucket_scatter",
+      "hf_moe_bucket_zero",
+      "hf_moe_pair_had128_bf16",
+      "hf_moe_pair_had128_f32",
+      "hf_moe_pair_had64_bf16",
+      "hf_moe_pair_had64_f32",
+      "hf_moe_rotate_had128",
+      "hf_moe_rotate_had64",
+      "hf_moe_tile_had128_bf16",
+      "hf_moe_tile_had128_f32",
+      "hf_moe_tile_had64_bf16",
+      "hf_moe_tile_had64_f32",
+      "mlx_decode_m1",
+      "mlx_decode_m2",
+      "mlx_decode_m4",
+      "reduce_gsk2_epilogue"
+    ],
+    "grf_count_min": 256,
+    "grf_count_max": 256,
+    "spill_metadata_present": false,
+    "required_kernels_present": true
+  },
+  "method": "synchronized single calls; median over n after 3 warm-up calls; pair and grouped alternate for 3 rounds and the middle round is reported; random packed weights and router logits; eager unless the key says graph_replay; card cooled to <=55 C (or 120 s) per cell",
+  "notes": [
+    "GPU0 only. NOT a verified quiet host: containers of other sessions running at start (GPU1): exp18-ultralowbit-gpu1 . Other GPU1 load breaks host rule 3.1 for timed results; pair and grouped alternate on the same card so both see the same contention.",
+    "cascadia-node and its ovms child (both started before this session) hold GPU0 render node with 0 cycles on every GPU engine in fdinfo, about 68 MB resident VRAM each.",
+    "Mean card power above the 230 W cap in some cells comes from sampling windows well under 1 s; unexplained, so power fields support no claim."
+  ],
+  "shapes": {
+    "gemma4_26b_a4b": {
+      "E": 128,
+      "topk": 8,
+      "H": 2816,
+      "I": 704,
+      "activation": "gelu_tanh",
+      "gmac_per_token": 0.047579136,
+      "batches": {
+        "1": {
+          "default_path": "pair",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "f5b2b91f943edee3c7cdc3618e16a9a36726edaa4b1b530607850c3788429d48",
+          "distinct_experts_routed": 8,
+          "start_temp_c": 49.0,
+          "experts_pair": {
+            "median_ms": 0.5578,
+            "p10_ms": 0.5468,
+            "p90_ms": 0.5748,
+            "n": 200,
+            "mean_card_power_w": 89.6,
+            "round_medians_ms": [
+              0.5578,
+              0.5489,
+              0.5687
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 0.0971,
+            "p10_ms": 0.0964,
+            "p90_ms": 0.0984,
+            "n": 200
+          },
+          "experts_grouped_forced": {
+            "median_ms": 0.7486,
+            "p10_ms": 0.7307,
+            "p90_ms": 1.0203,
+            "n": 200,
+            "mean_card_power_w": 94.3,
+            "round_medians_ms": [
+              0.7449,
+              0.7486,
+              0.7599
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 0.1235,
+            "p10_ms": 0.1225,
+            "p90_ms": 0.125,
+            "n": 200
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1032,
+            "rotate_x_ms": 0.0625,
+            "w13_tiles_ms": 0.0822,
+            "activation_ms": 0.0841,
+            "rotate_inner_ms": 0.0623,
+            "w2_tiles_ms": 0.0785,
+            "tiles": 8,
+            "tile_grid_rows": 8
+          },
+          "runner_packed_pair": {
+            "median_ms": 0.6447,
+            "p10_ms": 0.6302,
+            "p90_ms": 0.6614,
+            "n": 200
+          },
+          "runner_packed_default": {
+            "median_ms": 0.6377,
+            "p10_ms": 0.6277,
+            "p90_ms": 0.6741,
+            "n": 200
+          },
+          "runner_bf16": {
+            "median_ms": 0.5061,
+            "p10_ms": 0.5008,
+            "p90_ms": 0.515,
+            "n": 200,
+            "mean_card_power_w": 105.4
+          },
+          "speedup_grouped_over_pair_experts": 0.745,
+          "speedup_grouped_over_pair_graph_replay": 0.786,
+          "speedup_default_over_pair_runner": 1.011,
+          "packed_default_runner_over_bf16_runner_time": 1.26,
+          "weight_gib_read_per_call": {
+            "pair": 0.0237,
+            "grouped": 0.0237
+          },
+          "end_temp_c": 52.0
+        },
+        "8": {
+          "default_path": "pair",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "e78dfdc6312f34276b25844286951a4b175d90fb7f7e2aed3f0d589ef76978c7",
+          "distinct_experts_routed": 55,
+          "start_temp_c": 52.0,
+          "experts_pair": {
+            "median_ms": 0.6542,
+            "p10_ms": 0.6506,
+            "p90_ms": 0.6629,
+            "n": 100,
+            "mean_card_power_w": 196.9,
+            "round_medians_ms": [
+              0.655,
+              0.6541,
+              0.6542
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 0.4535,
+            "p10_ms": 0.4518,
+            "p90_ms": 0.4559,
+            "n": 100
+          },
+          "experts_grouped_forced": {
+            "median_ms": 0.7728,
+            "p10_ms": 0.7661,
+            "p90_ms": 0.7805,
+            "n": 100,
+            "mean_card_power_w": 166.5,
+            "round_medians_ms": [
+              0.7728,
+              0.7758,
+              0.7704
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 0.4467,
+            "p10_ms": 0.4446,
+            "p90_ms": 0.4491,
+            "n": 100
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1032,
+            "rotate_x_ms": 0.063,
+            "w13_tiles_ms": 0.2764,
+            "activation_ms": 0.0812,
+            "rotate_inner_ms": 0.0621,
+            "w2_tiles_ms": 0.1896,
+            "tiles": 55,
+            "tile_grid_rows": 64
+          },
+          "runner_packed_pair": {
+            "median_ms": 0.7275,
+            "p10_ms": 0.7207,
+            "p90_ms": 0.7383,
+            "n": 100
+          },
+          "runner_packed_default": {
+            "median_ms": 0.7396,
+            "p10_ms": 0.7267,
+            "p90_ms": 0.7514,
+            "n": 100
+          },
+          "runner_bf16": {
+            "median_ms": 1.442,
+            "p10_ms": 1.4318,
+            "p90_ms": 1.4575,
+            "n": 100,
+            "mean_card_power_w": 177.4
+          },
+          "speedup_grouped_over_pair_experts": 0.847,
+          "speedup_grouped_over_pair_graph_replay": 1.015,
+          "speedup_default_over_pair_runner": 0.984,
+          "packed_default_runner_over_bf16_runner_time": 0.513,
+          "weight_gib_read_per_call": {
+            "pair": 0.1893,
+            "grouped": 0.1627
+          },
+          "end_temp_c": 55.0
+        },
+        "16": {
+          "default_path": "grouped",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "134f96fc6481cba8adb82e9cb7b7270cf63765accceedb9d7e3c265b2a09b42e",
+          "distinct_experts_routed": 88,
+          "start_temp_c": 55.0,
+          "experts_pair": {
+            "median_ms": 1.0217,
+            "p10_ms": 1.0152,
+            "p90_ms": 1.0284,
+            "n": 100,
+            "mean_card_power_w": 226.9,
+            "round_medians_ms": [
+              1.0165,
+              1.0228,
+              1.0217
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 0.8321,
+            "p10_ms": 0.8265,
+            "p90_ms": 0.851,
+            "n": 100
+          },
+          "experts_grouped_forced": {
+            "median_ms": 1.0115,
+            "p10_ms": 1.0018,
+            "p90_ms": 2.3077,
+            "n": 100,
+            "mean_card_power_w": 151.4,
+            "round_medians_ms": [
+              1.0115,
+              1.0071,
+              1.0234
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 0.6958,
+            "p10_ms": 0.6924,
+            "p90_ms": 0.7006,
+            "n": 100
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1216,
+            "rotate_x_ms": 0.0643,
+            "w13_tiles_ms": 0.4055,
+            "activation_ms": 0.0906,
+            "rotate_inner_ms": 0.0676,
+            "w2_tiles_ms": 0.2908,
+            "tiles": 88,
+            "tile_grid_rows": 128
+          },
+          "runner_packed_pair": {
+            "median_ms": 1.1098,
+            "p10_ms": 1.0996,
+            "p90_ms": 1.1191,
+            "n": 100
+          },
+          "runner_packed_default": {
+            "median_ms": 1.0829,
+            "p10_ms": 1.0718,
+            "p90_ms": 1.0999,
+            "n": 100
+          },
+          "runner_bf16": {
+            "median_ms": 2.1394,
+            "p10_ms": 2.1279,
+            "p90_ms": 2.1615,
+            "n": 100,
+            "mean_card_power_w": 183.3
+          },
+          "speedup_grouped_over_pair_experts": 1.01,
+          "speedup_grouped_over_pair_graph_replay": 1.196,
+          "speedup_default_over_pair_runner": 1.025,
+          "packed_default_runner_over_bf16_runner_time": 0.506,
+          "weight_gib_read_per_call": {
+            "pair": 0.3787,
+            "grouped": 0.2603
+          },
+          "end_temp_c": 55.0
+        },
+        "64": {
+          "default_path": "grouped",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "08db79be07d003ddd8ff13a64d7edc043f3df094181862c3a2b77836b3ae3267",
+          "distinct_experts_routed": 124,
+          "start_temp_c": 51.0,
+          "experts_pair": {
+            "median_ms": 3.2366,
+            "p10_ms": 3.1938,
+            "p90_ms": 3.261,
+            "n": 50,
+            "mean_card_power_w": 251.9,
+            "round_medians_ms": [
+              3.2366,
+              3.2452,
+              3.2295
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 3.0389,
+            "p10_ms": 3.0138,
+            "p90_ms": 3.0603,
+            "n": 50
+          },
+          "experts_grouped_forced": {
+            "median_ms": 1.5898,
+            "p10_ms": 1.532,
+            "p90_ms": 1.8911,
+            "n": 50,
+            "mean_card_power_w": 192.4,
+            "round_medians_ms": [
+              1.6012,
+              1.5757,
+              1.5898
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 1.2788,
+            "p10_ms": 1.2587,
+            "p90_ms": 1.3074,
+            "n": 50
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.2584,
+            "rotate_x_ms": 0.0686,
+            "w13_tiles_ms": 0.6794,
+            "activation_ms": 0.0853,
+            "rotate_inner_ms": 0.0636,
+            "w2_tiles_ms": 0.5112,
+            "tiles": 124,
+            "tile_grid_rows": 161
+          },
+          "runner_packed_pair": {
+            "median_ms": 3.3103,
+            "p10_ms": 3.2931,
+            "p90_ms": 3.3311,
+            "n": 50
+          },
+          "runner_packed_default": {
+            "median_ms": 1.6141,
+            "p10_ms": 1.5964,
+            "p90_ms": 1.6339,
+            "n": 50
+          },
+          "runner_bf16": {
+            "median_ms": 2.9104,
+            "p10_ms": 2.8804,
+            "p90_ms": 2.9594,
+            "n": 50,
+            "mean_card_power_w": 188.1
+          },
+          "speedup_grouped_over_pair_experts": 2.036,
+          "speedup_grouped_over_pair_graph_replay": 2.376,
+          "speedup_default_over_pair_runner": 2.051,
+          "packed_default_runner_over_bf16_runner_time": 0.555,
+          "weight_gib_read_per_call": {
+            "pair": 1.5146,
+            "grouped": 0.3668
+          },
+          "end_temp_c": 53.0
+        },
+        "512": {
+          "default_path": "grouped",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "c4dbc66f5ca7c3fe489ca5b4dc2db201a8f9d73446313e414aaf6d4c627bf756",
+          "distinct_experts_routed": 128,
+          "start_temp_c": 54.0,
+          "experts_pair": {
+            "median_ms": 24.3073,
+            "p10_ms": 23.9763,
+            "p90_ms": 24.3989,
+            "n": 20,
+            "mean_card_power_w": 242.8,
+            "round_medians_ms": [
+              24.3073,
+              24.343,
+              24.2222
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 24.1844,
+            "p10_ms": 23.9162,
+            "p90_ms": 24.3044,
+            "n": 20
+          },
+          "experts_grouped_forced": {
+            "median_ms": 7.12,
+            "p10_ms": 7.0098,
+            "p90_ms": 7.2,
+            "n": 20,
+            "mean_card_power_w": 242.8,
+            "round_medians_ms": [
+              7.112,
+              7.5824,
+              7.12
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 7.372,
+            "p10_ms": 7.2486,
+            "p90_ms": 7.5171,
+            "n": 20
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1504,
+            "rotate_x_ms": 0.0764,
+            "w13_tiles_ms": 3.8311,
+            "activation_ms": 0.2028,
+            "rotate_inner_ms": 0.0711,
+            "w2_tiles_ms": 2.4709,
+            "tiles": 308,
+            "tile_grid_rows": 385
+          },
+          "runner_packed_pair": {
+            "median_ms": 24.3402,
+            "p10_ms": 23.8584,
+            "p90_ms": 24.4825,
+            "n": 20
+          },
+          "runner_packed_default": {
+            "median_ms": 7.1931,
+            "p10_ms": 7.0568,
+            "p90_ms": 7.2851,
+            "n": 20
+          },
+          "runner_bf16": {
+            "median_ms": 3.9815,
+            "p10_ms": 3.9607,
+            "p90_ms": 4.0624,
+            "n": 20,
+            "mean_card_power_w": 224.8
+          },
+          "speedup_grouped_over_pair_experts": 3.414,
+          "speedup_grouped_over_pair_graph_replay": 3.281,
+          "speedup_default_over_pair_runner": 3.384,
+          "packed_default_runner_over_bf16_runner_time": 1.807,
+          "weight_gib_read_per_call": {
+            "pair": 12.1172,
+            "grouped": 0.9112
+          },
+          "end_temp_c": 54.0
+        }
+      },
+      "peak_device_gib": 3.124
+    },
+    "qwen36_35b_a3b": {
+      "E": 256,
+      "topk": 8,
+      "H": 2048,
+      "I": 512,
+      "activation": "silu",
+      "gmac_per_token": 0.025165824,
+      "batches": {
+        "1": {
+          "default_path": "pair",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "5eeb369a2362dec1988bcbe32c45f95682fdcfe0df9d4045446927228bff883b",
+          "distinct_experts_routed": 8,
+          "start_temp_c": 51.0,
+          "experts_pair": {
+            "median_ms": 0.5862,
+            "p10_ms": 0.5727,
+            "p90_ms": 0.6048,
+            "n": 200,
+            "mean_card_power_w": 92.3,
+            "round_medians_ms": [
+              0.5862,
+              0.5784,
+              0.6101
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 0.0787,
+            "p10_ms": 0.078,
+            "p90_ms": 0.08,
+            "n": 200
+          },
+          "experts_grouped_forced": {
+            "median_ms": 0.8074,
+            "p10_ms": 0.7635,
+            "p90_ms": 0.8286,
+            "n": 200,
+            "mean_card_power_w": 90.7,
+            "round_medians_ms": [
+              0.7807,
+              0.8074,
+              0.8146
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 0.1246,
+            "p10_ms": 0.124,
+            "p90_ms": 0.1259,
+            "n": 200
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1201,
+            "rotate_x_ms": 0.0709,
+            "w13_tiles_ms": 0.086,
+            "activation_ms": 0.0917,
+            "rotate_inner_ms": 0.0708,
+            "w2_tiles_ms": 0.0875,
+            "tiles": 8,
+            "tile_grid_rows": 8
+          },
+          "runner_packed_pair": {
+            "median_ms": 0.6844,
+            "p10_ms": 0.6601,
+            "p90_ms": 0.6994,
+            "n": 200
+          },
+          "runner_packed_default": {
+            "median_ms": 0.6807,
+            "p10_ms": 0.6631,
+            "p90_ms": 0.697,
+            "n": 200
+          },
+          "runner_bf16": {
+            "median_ms": 0.4736,
+            "p10_ms": 0.4591,
+            "p90_ms": 0.492,
+            "n": 200,
+            "mean_card_power_w": 106.3
+          },
+          "speedup_grouped_over_pair_experts": 0.726,
+          "speedup_grouped_over_pair_graph_replay": 0.632,
+          "speedup_default_over_pair_runner": 1.005,
+          "packed_default_runner_over_bf16_runner_time": 1.437,
+          "weight_gib_read_per_call": {
+            "pair": 0.0125,
+            "grouped": 0.0125
+          },
+          "end_temp_c": 52.0
+        },
+        "8": {
+          "default_path": "pair",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "dd8792e45b6e00e593f28ec73afbbc020c55019c50a14063ef2e54ac336c51d1",
+          "distinct_experts_routed": 60,
+          "start_temp_c": 52.0,
+          "experts_pair": {
+            "median_ms": 0.6164,
+            "p10_ms": 0.6077,
+            "p90_ms": 0.638,
+            "n": 100,
+            "mean_card_power_w": 149.4,
+            "round_medians_ms": [
+              0.5912,
+              0.6217,
+              0.6164
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 0.3241,
+            "p10_ms": 0.3211,
+            "p90_ms": 0.3278,
+            "n": 100
+          },
+          "experts_grouped_forced": {
+            "median_ms": 0.84,
+            "p10_ms": 0.8271,
+            "p90_ms": 0.8724,
+            "n": 100,
+            "mean_card_power_w": 129.8,
+            "round_medians_ms": [
+              0.8056,
+              0.8411,
+              0.84
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 0.3536,
+            "p10_ms": 0.3514,
+            "p90_ms": 0.3574,
+            "n": 100
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1208,
+            "rotate_x_ms": 0.0698,
+            "w13_tiles_ms": 0.187,
+            "activation_ms": 0.0914,
+            "rotate_inner_ms": 0.0704,
+            "w2_tiles_ms": 0.166,
+            "tiles": 60,
+            "tile_grid_rows": 64
+          },
+          "runner_packed_pair": {
+            "median_ms": 0.6865,
+            "p10_ms": 0.6424,
+            "p90_ms": 0.7233,
+            "n": 100
+          },
+          "runner_packed_default": {
+            "median_ms": 0.6929,
+            "p10_ms": 0.6821,
+            "p90_ms": 0.7097,
+            "n": 100
+          },
+          "runner_bf16": {
+            "median_ms": 0.9919,
+            "p10_ms": 0.9789,
+            "p90_ms": 1.0115,
+            "n": 100,
+            "mean_card_power_w": 159.1
+          },
+          "speedup_grouped_over_pair_experts": 0.734,
+          "speedup_grouped_over_pair_graph_replay": 0.917,
+          "speedup_default_over_pair_runner": 0.991,
+          "packed_default_runner_over_bf16_runner_time": 0.699,
+          "weight_gib_read_per_call": {
+            "pair": 0.1003,
+            "grouped": 0.0941
+          },
+          "end_temp_c": 54.0
+        },
+        "16": {
+          "default_path": "grouped",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "5b1d74d1a61e6b85bbd8bd3d40880a7d24cf6edcea444f7dd439d280abc12c6a",
+          "distinct_experts_routed": 106,
+          "start_temp_c": 54.0,
+          "experts_pair": {
+            "median_ms": 0.7448,
+            "p10_ms": 0.7371,
+            "p90_ms": 0.7627,
+            "n": 100,
+            "mean_card_power_w": 189.3,
+            "round_medians_ms": [
+              0.7448,
+              0.7379,
+              0.7529
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 0.5517,
+            "p10_ms": 0.5472,
+            "p90_ms": 0.5561,
+            "n": 100
+          },
+          "experts_grouped_forced": {
+            "median_ms": 0.8541,
+            "p10_ms": 0.8419,
+            "p90_ms": 0.8723,
+            "n": 100,
+            "mean_card_power_w": 164.9,
+            "round_medians_ms": [
+              0.8317,
+              0.8663,
+              0.8541
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 0.5288,
+            "p10_ms": 0.5266,
+            "p90_ms": 0.5314,
+            "n": 100
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1363,
+            "rotate_x_ms": 0.0709,
+            "w13_tiles_ms": 0.2889,
+            "activation_ms": 0.0923,
+            "rotate_inner_ms": 0.0706,
+            "w2_tiles_ms": 0.2591,
+            "tiles": 106,
+            "tile_grid_rows": 128
+          },
+          "runner_packed_pair": {
+            "median_ms": 0.8298,
+            "p10_ms": 0.8226,
+            "p90_ms": 0.8573,
+            "n": 100
+          },
+          "runner_packed_default": {
+            "median_ms": 0.9351,
+            "p10_ms": 0.9241,
+            "p90_ms": 0.9449,
+            "n": 100
+          },
+          "runner_bf16": {
+            "median_ms": 1.4953,
+            "p10_ms": 1.4797,
+            "p90_ms": 1.5182,
+            "n": 100,
+            "mean_card_power_w": 173.6
+          },
+          "speedup_grouped_over_pair_experts": 0.872,
+          "speedup_grouped_over_pair_graph_replay": 1.043,
+          "speedup_default_over_pair_runner": 0.887,
+          "packed_default_runner_over_bf16_runner_time": 0.625,
+          "weight_gib_read_per_call": {
+            "pair": 0.2007,
+            "grouped": 0.1662
+          },
+          "end_temp_c": 54.0
+        },
+        "64": {
+          "default_path": "grouped",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "6f5b91699bbb99a8eeae6f6dccf969b7de54040eb62388101f5d5e9cca41a036",
+          "distinct_experts_routed": 218,
+          "start_temp_c": 55.0,
+          "experts_pair": {
+            "median_ms": 2.0772,
+            "p10_ms": 2.0689,
+            "p90_ms": 2.0944,
+            "n": 50,
+            "mean_card_power_w": 231.2,
+            "round_medians_ms": [
+              2.0772,
+              2.0722,
+              2.085
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 1.89,
+            "p10_ms": 1.8684,
+            "p90_ms": 1.9022,
+            "n": 50
+          },
+          "experts_grouped_forced": {
+            "median_ms": 1.4246,
+            "p10_ms": 1.3863,
+            "p90_ms": 1.5646,
+            "n": 50,
+            "mean_card_power_w": 164.0,
+            "round_medians_ms": [
+              1.4183,
+              1.4246,
+              1.4438
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 1.086,
+            "p10_ms": 1.0803,
+            "p90_ms": 1.105,
+            "n": 50
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.1381,
+            "rotate_x_ms": 0.0656,
+            "w13_tiles_ms": 0.5797,
+            "activation_ms": 0.0928,
+            "rotate_inner_ms": 0.0662,
+            "w2_tiles_ms": 0.5169,
+            "tiles": 218,
+            "tile_grid_rows": 289
+          },
+          "runner_packed_pair": {
+            "median_ms": 2.1625,
+            "p10_ms": 2.1513,
+            "p90_ms": 2.1733,
+            "n": 50
+          },
+          "runner_packed_default": {
+            "median_ms": 1.4513,
+            "p10_ms": 1.4225,
+            "p90_ms": 1.6075,
+            "n": 50
+          },
+          "runner_bf16": {
+            "median_ms": 2.7003,
+            "p10_ms": 2.6876,
+            "p90_ms": 2.7116,
+            "n": 50,
+            "mean_card_power_w": 185.8
+          },
+          "speedup_grouped_over_pair_experts": 1.458,
+          "speedup_grouped_over_pair_graph_replay": 1.74,
+          "speedup_default_over_pair_runner": 1.49,
+          "packed_default_runner_over_bf16_runner_time": 0.537,
+          "weight_gib_read_per_call": {
+            "pair": 0.8027,
+            "grouped": 0.3418
+          },
+          "end_temp_c": 54.0
+        },
+        "512": {
+          "default_path": "grouped",
+          "differing_output_words_vs_pair": {
+            "pair": 0,
+            "grouped_forced": 0,
+            "default": 0
+          },
+          "output_sha256": "e32e887c7ec4cddb6b909bea006c2efdab1f81474a90ea726eccef3e5c23c197",
+          "distinct_experts_routed": 256,
+          "start_temp_c": 54.0,
+          "experts_pair": {
+            "median_ms": 14.9878,
+            "p10_ms": 14.7906,
+            "p90_ms": 15.081,
+            "n": 20,
+            "mean_card_power_w": 230.1,
+            "round_medians_ms": [
+              14.9631,
+              15.0573,
+              14.9878
+            ]
+          },
+          "experts_pair_graph_replay": {
+            "median_ms": 14.9469,
+            "p10_ms": 14.8662,
+            "p90_ms": 14.9761,
+            "n": 20
+          },
+          "experts_grouped_forced": {
+            "median_ms": 4.722,
+            "p10_ms": 4.6874,
+            "p90_ms": 4.7392,
+            "n": 20,
+            "mean_card_power_w": 227.2,
+            "round_medians_ms": [
+              4.639,
+              4.7259,
+              4.722
+            ]
+          },
+          "experts_grouped_forced_graph_replay": {
+            "median_ms": 4.4868,
+            "p10_ms": 4.4435,
+            "p90_ms": 4.4986,
+            "n": 20
+          },
+          "grouped_stages_ms": {
+            "bucket_ms": 0.3577,
+            "rotate_x_ms": 0.076,
+            "w13_tiles_ms": 1.9087,
+            "activation_ms": 0.1168,
+            "rotate_inner_ms": 0.0652,
+            "w2_tiles_ms": 2.0073,
+            "tiles": 367,
+            "tile_grid_rows": 513
+          },
+          "runner_packed_pair": {
+            "median_ms": 15.0987,
+            "p10_ms": 15.0255,
+            "p90_ms": 15.1797,
+            "n": 20
+          },
+          "runner_packed_default": {
+            "median_ms": 4.7374,
+            "p10_ms": 4.6959,
+            "p90_ms": 4.7508,
+            "n": 20
+          },
+          "runner_bf16": {
+            "median_ms": 3.3879,
+            "p10_ms": 3.364,
+            "p90_ms": 3.4038,
+            "n": 20,
+            "mean_card_power_w": 198.6
+          },
+          "speedup_grouped_over_pair_experts": 3.174,
+          "speedup_grouped_over_pair_graph_replay": 3.331,
+          "speedup_default_over_pair_runner": 3.187,
+          "packed_default_runner_over_bf16_runner_time": 1.398,
+          "weight_gib_read_per_call": {
+            "pair": 6.4219,
+            "grouped": 0.5754
+          },
+          "end_temp_c": 53.0
+        }
+      },
+      "peak_device_gib": 5.108
+    }
+  }
+}

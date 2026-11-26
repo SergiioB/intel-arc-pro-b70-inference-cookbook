@@ -1,0 +1,2932 @@
+{
+  "schema": "gate5_tfv5_v1_tp2_parity/1",
+  "experiment": "Gate 5 Part 1b: patch v5 + exact v1 sidecar, 11-prompt drafted==serial on GPU0 and --tp 2",
+  "binary": "study-root/tensorfold-biascorr/src/zig-out/xpu/bin/tensorfold-native",
+  "binary_sha256": "75c15aba7afd97fc68c2ad1a33a604955eed53c4f5c087b68f45bb03bc7ff176",
+  "sidecar": "study-root/stage-hf-biascorr-sidecars-v1/qwen38_27b_mlx4_biascorr_v1.safetensors",
+  "sidecar_sha256": "f5fce21b31f477229cab3e62cb42d67094983fd0185e7fc6e363df1ad38ed932",
+  "suite_source": "scripts/exp12b_original.py",
+  "suite_source_sha256": "a7cdddfe3ea0385f93803c937cb836ec59424d6704c870c97d52a768001408d9",
+  "sampling": "greedy (temperature 0, top_p 1, seed 4242, thinking off): exactness only, not a speed figure",
+  "suite": [
+    {
+      "name": "sumsq",
+      "group": "dnr",
+      "prompt": "What does this Python print? Reply with the number only.\nprint(sum(i*i for i in range(4)))",
+      "max_tokens": 24
+    },
+    {
+      "name": "sum3",
+      "group": "dnr",
+      "prompt": "What does this print? Reply with the number only.\nx = 0\nfor i in range(1, 5):\n    x += i * 2\nprint(x)",
+      "max_tokens": 24
+    },
+    {
+      "name": "mul",
+      "group": "dnr",
+      "prompt": "What is 48 * 27? Reply with the number only.",
+      "max_tokens": 24
+    },
+    {
+      "name": "div",
+      "group": "dnr",
+      "prompt": "What is 1001 divided by 7? Reply with the number only.",
+      "max_tokens": 24
+    },
+    {
+      "name": "days",
+      "group": "dnr",
+      "prompt": "How many days are in a leap year? Reply with the number only.",
+      "max_tokens": 24
+    },
+    {
+      "name": "prime",
+      "group": "dnr",
+      "prompt": "Is 91 a prime number? Reply yes or no.",
+      "max_tokens": 24
+    },
+    {
+      "name": "letters",
+      "group": "dnr",
+      "prompt": "How many letters are in the word 'banana'? Reply with the number only.",
+      "max_tokens": 24
+    },
+    {
+      "name": "seq",
+      "group": "dnr",
+      "prompt": "What is the next number: 2, 4, 8, 16? Reply with the number only.",
+      "max_tokens": 24
+    },
+    {
+      "name": "ring_kv",
+      "group": "long",
+      "prompt": "Write a compact, self-contained C++17 class RingKV for a fixed-capacity ring buffer of int64_t block IDs supporting push, pop, and size. Keep it under 40 lines.",
+      "max_tokens": 256
+    },
+    {
+      "name": "py_bug",
+      "group": "long",
+      "prompt": "Find and fix the subtle bug in this Python function, then show the corrected 6-line function:\ndef dedup_keep_order(xs):\n    seen = set()\n    return [x for x in xs if x not in seen and not seen.add(x)]\nWait: is there actually a bug? Explain briefly.",
+      "max_tokens": 192
+    },
+    {
+      "name": "math_step",
+      "group": "long",
+      "prompt": "Solve for all real x: x^3 - 6x^2 + 11x - 6 = 0. Show brief factoring and list the roots.",
+      "max_tokens": 160
+    }
+  ],
+  "configs": {
+    "gpu0": {
+      "arms": {
+        "unset": {
+          "hw": "gpu0",
+          "tp": 1,
+          "arm": "unset",
+          "host_before": {
+            "label": "parity gpu0 unset",
+            "utc": "2026-11-26T00:10:38Z",
+            "inference_procs": [],
+            "containers": [],
+            "cards": [
+              {
+                "gpu": 0,
+                "pci": "redacted-pci-gpu0",
+                "hwmon": "redacted-thermal-path-gpu0",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 59.0,
+                "vram_visible_avail_mib": 32163
+              },
+              {
+                "gpu": 1,
+                "pci": "redacted-pci-gpu1",
+                "hwmon": "redacted-thermal-path-gpu1",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 65.0,
+                "vram_visible_avail_mib": 32482
+              }
+            ],
+            "load1": 1.193359375
+          },
+          "server": {
+            "cmd": [
+              "study-root/tensorfold-biascorr/src/zig-out/xpu/bin/tensorfold-native",
+              "serve",
+              "tensorfold-root/models/Qwen3.8-27B-MLX-4bit",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "8038",
+              "--drafter",
+              "tensorfold-root/models/Qwen3.8-27B-DFlash2",
+              "--context",
+              "32768",
+              "--parallel",
+              "1",
+              "--prompt-cache-gib",
+              "0",
+              "--no-thinking",
+              "--no-update-check"
+            ],
+            "env": [
+              "HOME=/dev/shm/gate5-home",
+              "ZE_AFFINITY_MASK=0"
+            ],
+            "boot_s": 6.51,
+            "pid": 1256781,
+            "running_binary_sha256": "75c15aba7afd97fc68c2ad1a33a604955eed53c4f5c087b68f45bb03bc7ff176"
+          },
+          "drafted": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.127,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.084,
+                "decode_s": 0.042
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.083,
+                "decode_s": 0.042
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 4,
+                "offered": 15,
+                "ttft_s": 0.084,
+                "decode_s": 0.041
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.083,
+                "decode_s": 0.042
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.126,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.084,
+                "decode_s": 0.041
+              }
+            },
+            "prime": {
+              "text": "Yes",
+              "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+              "completion_tokens": 2,
+              "wall_s": 0.128,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "c5259d204c3f",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.086,
+                "decode_s": 0.041
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.126,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.084,
+                "decode_s": 0.041
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.121,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.079,
+                "decode_s": 0.041
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 1024;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\n\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"RingKV full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"RingKV empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "f17a67c71eb2a55918901c7352bf5e3284ca1fc465bc0f804b71a16f50342748",
+              "completion_tokens": 216,
+              "wall_s": 1.312,
+              "server": {
+                "prompt": 55,
+                "tokens": 216,
+                "server_sha": "edfacd5ef2c6",
+                "finish": "stop",
+                "rounds": 30,
+                "accepted": 185,
+                "offered": 450,
+                "ttft_s": 0.083,
+                "decode_s": 1.228
+              }
+            },
+            "py_bug": {
+              "text": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and not seen.add(x)` works correctly due to how Python evaluates boolean expressions and the return value of `set.add()`:\n\n1. `x not in seen` checks if `x` is already in the set. If `x` is already in `seen`, this is `False`, and the `and` short-circuits, so `seen.add(x)` is **not** called. The item is excluded from the list.\n2. If `x` is **not** in `seen`, the first part is `True`. Then `seen.add(x)` is evaluated. `set.add()` returns `None`. `not None` evaluates to `True`. So the whole condition is `True`, and `x` is included in the list.\n\nThus, the function correctly deduplicates while preserving order.",
+              "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+              "completion_tokens": 192,
+              "wall_s": 1.523,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "b31e12835b71",
+                "finish": "length",
+                "rounds": 34,
+                "accepted": 158,
+                "offered": 510,
+                "ttft_s": 0.109,
+                "decode_s": 1.414
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Rational Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial $a_n x^n + \\dots + a_0 = 0$ must be a factor of the constant term ($a_0 = -6$) divided by a factor of the leading coefficient ($a_n = 1$).\n\nFactors of $-6$: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\nSince the leading coefficient is $1",
+              "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+              "completion_tokens": 160,
+              "wall_s": 1.069,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "987f97e48dab",
+                "finish": "length",
+                "rounds": 24,
+                "accepted": 135,
+                "offered": 360,
+                "ttft_s": 0.082,
+                "decode_s": 0.986
+              }
+            }
+          },
+          "serial": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.141,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.079,
+                "decode_s": 0.062
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.144,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.081,
+                "decode_s": 0.062
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.207,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 4,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.084,
+                "decode_s": 0.123
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.176,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.083,
+                "decode_s": 0.092
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.177,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.084,
+                "decode_s": 0.092
+              }
+            },
+            "prime": {
+              "text": "Yes",
+              "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+              "completion_tokens": 2,
+              "wall_s": 0.116,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "c5259d204c3f",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.085,
+                "decode_s": 0.031
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.115,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.084,
+                "decode_s": 0.031
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.141,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.079,
+                "decode_s": 0.062
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 1024;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\n\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"RingKV full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"RingKV empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "f17a67c71eb2a55918901c7352bf5e3284ca1fc465bc0f804b71a16f50342748",
+              "completion_tokens": 216,
+              "wall_s": 6.711,
+              "server": {
+                "prompt": 55,
+                "tokens": 216,
+                "server_sha": "edfacd5ef2c6",
+                "finish": "stop",
+                "rounds": 215,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.082,
+                "decode_s": 6.628
+              }
+            },
+            "py_bug": {
+              "text": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and not seen.add(x)` works correctly due to how Python evaluates boolean expressions and the return value of `set.add()`:\n\n1. `x not in seen` checks if `x` is already in the set. If `x` is already in `seen`, this is `False`, and the `and` short-circuits, so `seen.add(x)` is **not** called. The item is excluded from the list.\n2. If `x` is **not** in `seen`, the first part is `True`. Then `seen.add(x)` is evaluated. `set.add()` returns `None`. `not None` evaluates to `True`. So the whole condition is `True`, and `x` is included in the list.\n\nThus, the function correctly deduplicates while preserving order.",
+              "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+              "completion_tokens": 192,
+              "wall_s": 5.999,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "b31e12835b71",
+                "finish": "length",
+                "rounds": 191,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.108,
+                "decode_s": 5.89
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Rational Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial $a_n x^n + \\dots + a_0 = 0$ must be a factor of the constant term ($a_0 = -6$) divided by a factor of the leading coefficient ($a_n = 1$).\n\nFactors of $-6$: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\nSince the leading coefficient is $1",
+              "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+              "completion_tokens": 160,
+              "wall_s": 4.982,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "987f97e48dab",
+                "finish": "length",
+                "rounds": 159,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.081,
+                "decode_s": 4.9
+              }
+            }
+          },
+          "vram_loaded_mib_free": {
+            "0": 12625,
+            "1": 32482
+          },
+          "sidecar_log_lines": [],
+          "server_log_tp_line": [
+            "info: qwen27-xpu: tp=1, 1 streams of 32768 tokens, DFlash2 trees for a lone stream"
+          ],
+          "per_prompt": [
+            {
+              "prompt": "sumsq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61"
+            },
+            {
+              "prompt": "sum3",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b"
+            },
+            {
+              "prompt": "mul",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                5,
+                5
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "4/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                4,
+                4
+              ],
+              "text_sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175"
+            },
+            {
+              "prompt": "div",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727"
+            },
+            {
+              "prompt": "days",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8"
+            },
+            {
+              "prompt": "prime",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e"
+            },
+            {
+              "prompt": "letters",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                1,
+                1
+              ],
+              "text_sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"
+            },
+            {
+              "prompt": "seq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b"
+            },
+            {
+              "prompt": "ring_kv",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                216,
+                216
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "185/450",
+              "serial_accepted": "0/0",
+              "chars": [
+                608,
+                608
+              ],
+              "text_sha256": "f17a67c71eb2a55918901c7352bf5e3284ca1fc465bc0f804b71a16f50342748"
+            },
+            {
+              "prompt": "py_bug",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                192,
+                192
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "158/510",
+              "serial_accepted": "0/0",
+              "chars": [
+                707,
+                707
+              ],
+              "text_sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829"
+            },
+            {
+              "prompt": "math_step",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                160,
+                160
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "135/360",
+              "serial_accepted": "0/0",
+              "chars": [
+                509,
+                509
+              ],
+              "text_sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63"
+            }
+          ],
+          "drafted_serial_exact": "11/11",
+          "drafting_active": {
+            "drafted_accepted_total": 496,
+            "serial_offered_total": 0
+          },
+          "empty_outputs": 0,
+          "dnr_pass": {
+            "drafted": 7,
+            "serial": 7
+          },
+          "host_after_vram_mib_free": {
+            "0": 32165,
+            "1": 32482
+          }
+        },
+        "v1": {
+          "hw": "gpu0",
+          "tp": 1,
+          "arm": "v1",
+          "host_before": {
+            "label": "parity gpu0 v1",
+            "utc": "2026-11-26T00:11:12Z",
+            "inference_procs": [],
+            "containers": [],
+            "cards": [
+              {
+                "gpu": 0,
+                "pci": "redacted-pci-gpu0",
+                "hwmon": "redacted-thermal-path-gpu0",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 61.0,
+                "vram_visible_avail_mib": 32165
+              },
+              {
+                "gpu": 1,
+                "pci": "redacted-pci-gpu1",
+                "hwmon": "redacted-thermal-path-gpu1",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 33.0,
+                "vram_visible_avail_mib": 32482
+              }
+            ],
+            "load1": 1.0263671875
+          },
+          "server": {
+            "cmd": [
+              "study-root/tensorfold-biascorr/src/zig-out/xpu/bin/tensorfold-native",
+              "serve",
+              "tensorfold-root/models/Qwen3.8-27B-MLX-4bit",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "8038",
+              "--drafter",
+              "tensorfold-root/models/Qwen3.8-27B-DFlash2",
+              "--context",
+              "32768",
+              "--parallel",
+              "1",
+              "--prompt-cache-gib",
+              "0",
+              "--no-thinking",
+              "--no-update-check"
+            ],
+            "env": [
+              "HOME=/dev/shm/gate5-home",
+              "XPU_BIASCORR_FILE=study-root/stage-hf-biascorr-sidecars-v1/qwen38_27b_mlx4_biascorr_v1.safetensors",
+              "ZE_AFFINITY_MASK=0"
+            ],
+            "boot_s": 6.51,
+            "pid": 1257621,
+            "running_binary_sha256": "75c15aba7afd97fc68c2ad1a33a604955eed53c4f5c087b68f45bb03bc7ff176"
+          },
+          "drafted": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.083,
+                "decode_s": 0.041
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.083,
+                "decode_s": 0.042
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 4,
+                "offered": 15,
+                "ttft_s": 0.084,
+                "decode_s": 0.041
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.083,
+                "decode_s": 0.042
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.127,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.084,
+                "decode_s": 0.042
+              }
+            },
+            "prime": {
+              "text": "No",
+              "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+              "completion_tokens": 2,
+              "wall_s": 0.128,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "ea7d7c679aa4",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.085,
+                "decode_s": 0.042
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.124,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.084,
+                "decode_s": 0.04
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.121,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.079,
+                "decode_s": 0.041
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 64;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "1138d952a011fd6a9172cd3e9a4bf5e617092349b6a1886ea3de47a47e88c778",
+              "completion_tokens": 210,
+              "wall_s": 1.274,
+              "server": {
+                "prompt": 55,
+                "tokens": 210,
+                "server_sha": "9e6fd73befae",
+                "finish": "stop",
+                "rounds": 29,
+                "accepted": 180,
+                "offered": 435,
+                "ttft_s": 0.083,
+                "decode_s": 1.19
+              }
+            },
+            "py_bug": {
+              "text": "There is **no bug** in the function.\n\n### Explanation\nThe function `dedup_keep_order` is a well-known Python idiom for removing duplicates while preserving order. It works correctly because:\n\n1. `seen.add(x)` adds `x` to the set `seen` and returns `None`.\n2. `not seen.add(x)` evaluates to `not None`, which is `True`.\n3. The condition `x not in seen and not seen.add(x)` ensures that:\n   - `x` is not already in `seen` (i.e., it’s a new element).\n   - `seen.add(x)` is executed (side effect: adds `x` to `seen`).\n   - The expression evaluates to `True`, so `x` is included in the result.\n\nThis is a concise and correct way to deduplicate a list while maintaining order.\n\n### Corrected (Unchanged",
+              "sha256": "c8fbace1f72fcf4b290a7538ca2d872f0ea445a42d03800e747330afe3b7759c",
+              "completion_tokens": 192,
+              "wall_s": 1.57,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "306ea836553b",
+                "finish": "length",
+                "rounds": 35,
+                "accepted": 161,
+                "offered": 525,
+                "ttft_s": 0.109,
+                "decode_s": 1.46
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial must be a divisor of the constant term ($-6$) divided by a divisor of the leading coefficient ($1$).\nPossible rational roots are: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\n\nLet's test $x = 1$:\n$$1^3 - 6(1)^2 + 11(1) - 6 = 1 - ",
+              "sha256": "533410623e1782d4c48a4637f1f508778bc0a14c4eb89e23950b8e1bc93f8493",
+              "completion_tokens": 160,
+              "wall_s": 1.068,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "97084796ff46",
+                "finish": "length",
+                "rounds": 24,
+                "accepted": 135,
+                "offered": 360,
+                "ttft_s": 0.082,
+                "decode_s": 0.985
+              }
+            }
+          },
+          "serial": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.141,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.079,
+                "decode_s": 0.062
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.144,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.082,
+                "decode_s": 0.062
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.208,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 4,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.084,
+                "decode_s": 0.123
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.176,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.082,
+                "decode_s": 0.093
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.177,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.084,
+                "decode_s": 0.093
+              }
+            },
+            "prime": {
+              "text": "No",
+              "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+              "completion_tokens": 2,
+              "wall_s": 0.116,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "ea7d7c679aa4",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.085,
+                "decode_s": 0.031
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.115,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.084,
+                "decode_s": 0.031
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.141,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.079,
+                "decode_s": 0.062
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 64;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "1138d952a011fd6a9172cd3e9a4bf5e617092349b6a1886ea3de47a47e88c778",
+              "completion_tokens": 210,
+              "wall_s": 6.546,
+              "server": {
+                "prompt": 55,
+                "tokens": 210,
+                "server_sha": "9e6fd73befae",
+                "finish": "stop",
+                "rounds": 209,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.083,
+                "decode_s": 6.463
+              }
+            },
+            "py_bug": {
+              "text": "There is **no bug** in the function.\n\n### Explanation\nThe function `dedup_keep_order` is a well-known Python idiom for removing duplicates while preserving order. It works correctly because:\n\n1. `seen.add(x)` adds `x` to the set `seen` and returns `None`.\n2. `not seen.add(x)` evaluates to `not None`, which is `True`.\n3. The condition `x not in seen and not seen.add(x)` ensures that:\n   - `x` is not already in `seen` (i.e., it’s a new element).\n   - `seen.add(x)` is executed (side effect: adds `x` to `seen`).\n   - The expression evaluates to `True`, so `x` is included in the result.\n\nThis is a concise and correct way to deduplicate a list while maintaining order.\n\n### Corrected (Unchanged",
+              "sha256": "c8fbace1f72fcf4b290a7538ca2d872f0ea445a42d03800e747330afe3b7759c",
+              "completion_tokens": 192,
+              "wall_s": 6.015,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "306ea836553b",
+                "finish": "length",
+                "rounds": 191,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.109,
+                "decode_s": 5.906
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial must be a divisor of the constant term ($-6$) divided by a divisor of the leading coefficient ($1$).\nPossible rational roots are: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\n\nLet's test $x = 1$:\n$$1^3 - 6(1)^2 + 11(1) - 6 = 1 - ",
+              "sha256": "533410623e1782d4c48a4637f1f508778bc0a14c4eb89e23950b8e1bc93f8493",
+              "completion_tokens": 160,
+              "wall_s": 4.997,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "97084796ff46",
+                "finish": "length",
+                "rounds": 159,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.081,
+                "decode_s": 4.915
+              }
+            }
+          },
+          "vram_loaded_mib_free": {
+            "0": 12603,
+            "1": 32482
+          },
+          "sidecar_log_lines": [
+            "biascorr sidecar loaded: study-root/stage-hf-biascorr-sidecars-v1/qwen38_27b_mlx4_biascorr_v1.safetensors (matched=496/496, expected=496, sha256=f5fce21b31f477229cab3e62cb42d67094983fd0185e7fc6e363df1ad38ed932)"
+          ],
+          "server_log_tp_line": [
+            "info: qwen27-xpu: tp=1, 1 streams of 32768 tokens, DFlash2 trees for a lone stream"
+          ],
+          "per_prompt": [
+            {
+              "prompt": "sumsq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61"
+            },
+            {
+              "prompt": "sum3",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b"
+            },
+            {
+              "prompt": "mul",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                5,
+                5
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "4/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                4,
+                4
+              ],
+              "text_sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175"
+            },
+            {
+              "prompt": "div",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727"
+            },
+            {
+              "prompt": "days",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8"
+            },
+            {
+              "prompt": "prime",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d"
+            },
+            {
+              "prompt": "letters",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                1,
+                1
+              ],
+              "text_sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"
+            },
+            {
+              "prompt": "seq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b"
+            },
+            {
+              "prompt": "ring_kv",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                210,
+                210
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "180/435",
+              "serial_accepted": "0/0",
+              "chars": [
+                589,
+                589
+              ],
+              "text_sha256": "1138d952a011fd6a9172cd3e9a4bf5e617092349b6a1886ea3de47a47e88c778"
+            },
+            {
+              "prompt": "py_bug",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                192,
+                192
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "161/525",
+              "serial_accepted": "0/0",
+              "chars": [
+                696,
+                696
+              ],
+              "text_sha256": "c8fbace1f72fcf4b290a7538ca2d872f0ea445a42d03800e747330afe3b7759c"
+            },
+            {
+              "prompt": "math_step",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                160,
+                160
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "135/360",
+              "serial_accepted": "0/0",
+              "chars": [
+                488,
+                488
+              ],
+              "text_sha256": "533410623e1782d4c48a4637f1f508778bc0a14c4eb89e23950b8e1bc93f8493"
+            }
+          ],
+          "drafted_serial_exact": "11/11",
+          "drafting_active": {
+            "drafted_accepted_total": 494,
+            "serial_offered_total": 0
+          },
+          "empty_outputs": 0,
+          "dnr_pass": {
+            "drafted": 8,
+            "serial": 8
+          },
+          "host_after_vram_mib_free": {
+            "0": 32163,
+            "1": 32482
+          }
+        }
+      },
+      "v1_vs_unset": {
+        "equal": 14,
+        "total": 22,
+        "diffs": [
+          "drafted:prime",
+          "drafted:ring_kv",
+          "drafted:py_bug",
+          "drafted:math_step",
+          "serial:prime",
+          "serial:ring_kv",
+          "serial:py_bug",
+          "serial:math_step"
+        ]
+      }
+    },
+    "tp2": {
+      "arms": {
+        "unset": {
+          "hw": "tp2",
+          "tp": 2,
+          "arm": "unset",
+          "host_before": {
+            "label": "parity tp2 unset",
+            "utc": "2026-11-26T00:11:46Z",
+            "inference_procs": [],
+            "containers": [],
+            "cards": [
+              {
+                "gpu": 0,
+                "pci": "redacted-pci-gpu0",
+                "hwmon": "redacted-thermal-path-gpu0",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 64.0,
+                "vram_visible_avail_mib": 32163
+              },
+              {
+                "gpu": 1,
+                "pci": "redacted-pci-gpu1",
+                "hwmon": "redacted-thermal-path-gpu1",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 33.0,
+                "vram_visible_avail_mib": 32482
+              }
+            ],
+            "load1": 1.2705078125
+          },
+          "server": {
+            "cmd": [
+              "study-root/tensorfold-biascorr/src/zig-out/xpu/bin/tensorfold-native",
+              "serve",
+              "tensorfold-root/models/Qwen3.8-27B-MLX-4bit",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "8039",
+              "--drafter",
+              "tensorfold-root/models/Qwen3.8-27B-DFlash2",
+              "--context",
+              "32768",
+              "--parallel",
+              "1",
+              "--prompt-cache-gib",
+              "0",
+              "--no-thinking",
+              "--no-update-check",
+              "--tp",
+              "2"
+            ],
+            "env": [
+              "HOME=/dev/shm/gate5-home"
+            ],
+            "boot_s": 6.0,
+            "pid": 1258483,
+            "running_binary_sha256": "75c15aba7afd97fc68c2ad1a33a604955eed53c4f5c087b68f45bb03bc7ff176"
+          },
+          "drafted": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.101,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.069,
+                "decode_s": 0.032
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.098,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.067,
+                "decode_s": 0.031
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.097,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 4,
+                "offered": 15,
+                "ttft_s": 0.066,
+                "decode_s": 0.031
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.098,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.065,
+                "decode_s": 0.032
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.098,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.066,
+                "decode_s": 0.031
+              }
+            },
+            "prime": {
+              "text": "Yes",
+              "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+              "completion_tokens": 2,
+              "wall_s": 0.098,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "c5259d204c3f",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.066,
+                "decode_s": 0.031
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.098,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.066,
+                "decode_s": 0.031
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.095,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.063,
+                "decode_s": 0.031
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 1024;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\n\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"ring full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"ring empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "1daac7852822c1563a78d276f1a9caff8b618690c1b44306f50bbf3adcda485a",
+              "completion_tokens": 214,
+              "wall_s": 1.007,
+              "server": {
+                "prompt": 55,
+                "tokens": 214,
+                "server_sha": "5b0e71957d08",
+                "finish": "stop",
+                "rounds": 30,
+                "accepted": 183,
+                "offered": 450,
+                "ttft_s": 0.069,
+                "decode_s": 0.938
+              }
+            },
+            "py_bug": {
+              "text": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and not seen.add(x)` works correctly due to how Python evaluates boolean expressions and the return value of `set.add()`:\n\n1. `x not in seen` checks if `x` is already in the set. If `x` is already in `seen`, this is `False`, and the `and` short-circuits, so `seen.add(x)` is **not** called. The item is excluded from the list.\n2. If `x` is **not** in `seen`, the first part is `True`. Then `seen.add(x)` is evaluated. `set.add()` returns `None`. `not None` evaluates to `True`. So the whole condition is `True`, and `x` is included in the list.\n\nThus, the function correctly deduplicates while preserving order.",
+              "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+              "completion_tokens": 192,
+              "wall_s": 1.155,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "b31e12835b71",
+                "finish": "length",
+                "rounds": 34,
+                "accepted": 158,
+                "offered": 510,
+                "ttft_s": 0.084,
+                "decode_s": 1.07
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Rational Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial $a_n x^n + \\dots + a_0 = 0$ must be a factor of the constant term ($a_0 = -6$) divided by a factor of the leading coefficient ($a_n = 1$).\n\nFactors of $-6$: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\nSince the leading coefficient is $1",
+              "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+              "completion_tokens": 160,
+              "wall_s": 0.816,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "987f97e48dab",
+                "finish": "length",
+                "rounds": 24,
+                "accepted": 135,
+                "offered": 360,
+                "ttft_s": 0.066,
+                "decode_s": 0.749
+              }
+            }
+          },
+          "serial": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.104,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.064,
+                "decode_s": 0.04
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.107,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.04
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.148,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 4,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.068,
+                "decode_s": 0.079
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.125,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.059
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.126,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.059
+              }
+            },
+            "prime": {
+              "text": "Yes",
+              "sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e",
+              "completion_tokens": 2,
+              "wall_s": 0.087,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "c5259d204c3f",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.067,
+                "decode_s": 0.02
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.086,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.02
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.104,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.064,
+                "decode_s": 0.039
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 1024;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\n\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"ring full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"ring empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "1daac7852822c1563a78d276f1a9caff8b618690c1b44306f50bbf3adcda485a",
+              "completion_tokens": 214,
+              "wall_s": 4.282,
+              "server": {
+                "prompt": 55,
+                "tokens": 214,
+                "server_sha": "5b0e71957d08",
+                "finish": "stop",
+                "rounds": 213,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.068,
+                "decode_s": 4.214
+              }
+            },
+            "py_bug": {
+              "text": "Actually, **there is no bug** in this function.\n\n### Explanation:\nThe expression `x not in seen and not seen.add(x)` works correctly due to how Python evaluates boolean expressions and the return value of `set.add()`:\n\n1. `x not in seen` checks if `x` is already in the set. If `x` is already in `seen`, this is `False`, and the `and` short-circuits, so `seen.add(x)` is **not** called. The item is excluded from the list.\n2. If `x` is **not** in `seen`, the first part is `True`. Then `seen.add(x)` is evaluated. `set.add()` returns `None`. `not None` evaluates to `True`. So the whole condition is `True`, and `x` is included in the list.\n\nThus, the function correctly deduplicates while preserving order.",
+              "sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829",
+              "completion_tokens": 192,
+              "wall_s": 3.864,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "b31e12835b71",
+                "finish": "length",
+                "rounds": 191,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.084,
+                "decode_s": 3.779
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the **Rational Root Theorem** to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Rational Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial $a_n x^n + \\dots + a_0 = 0$ must be a factor of the constant term ($a_0 = -6$) divided by a factor of the leading coefficient ($a_n = 1$).\n\nFactors of $-6$: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\nSince the leading coefficient is $1",
+              "sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63",
+              "completion_tokens": 160,
+              "wall_s": 3.212,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "987f97e48dab",
+                "finish": "length",
+                "rounds": 159,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 3.146
+              }
+            }
+          },
+          "vram_loaded_mib_free": {
+            "0": 20993,
+            "1": 22895
+          },
+          "sidecar_log_lines": [],
+          "server_log_tp_line": [
+            "info: qwen27-xpu: tp=2, 1 streams of 32768 tokens, DFlash2 trees for a lone stream"
+          ],
+          "per_prompt": [
+            {
+              "prompt": "sumsq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61"
+            },
+            {
+              "prompt": "sum3",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b"
+            },
+            {
+              "prompt": "mul",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                5,
+                5
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "4/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                4,
+                4
+              ],
+              "text_sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175"
+            },
+            {
+              "prompt": "div",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727"
+            },
+            {
+              "prompt": "days",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8"
+            },
+            {
+              "prompt": "prime",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "85a39ab345d672ff8ca9b9c6876f3adcacf45ee7c1e2dbd2408fd338bd55e07e"
+            },
+            {
+              "prompt": "letters",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                1,
+                1
+              ],
+              "text_sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"
+            },
+            {
+              "prompt": "seq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b"
+            },
+            {
+              "prompt": "ring_kv",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                214,
+                214
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "183/450",
+              "serial_accepted": "0/0",
+              "chars": [
+                604,
+                604
+              ],
+              "text_sha256": "1daac7852822c1563a78d276f1a9caff8b618690c1b44306f50bbf3adcda485a"
+            },
+            {
+              "prompt": "py_bug",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                192,
+                192
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "158/510",
+              "serial_accepted": "0/0",
+              "chars": [
+                707,
+                707
+              ],
+              "text_sha256": "c7a3fdefb6df849b6c9c00d7ec8ffef9dec9df84f070f1d2b1d7403d2fea7829"
+            },
+            {
+              "prompt": "math_step",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                160,
+                160
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "135/360",
+              "serial_accepted": "0/0",
+              "chars": [
+                509,
+                509
+              ],
+              "text_sha256": "628d1a7e59903aa329ed2f6b6a1d560784fc33f644b3c830794cc0ffc238df63"
+            }
+          ],
+          "drafted_serial_exact": "11/11",
+          "drafting_active": {
+            "drafted_accepted_total": 494,
+            "serial_offered_total": 0
+          },
+          "empty_outputs": 0,
+          "dnr_pass": {
+            "drafted": 7,
+            "serial": 7
+          },
+          "host_after_vram_mib_free": {
+            "0": 32165,
+            "1": 32482
+          }
+        },
+        "v1": {
+          "hw": "tp2",
+          "tp": 2,
+          "arm": "v1",
+          "host_before": {
+            "label": "parity tp2 v1",
+            "utc": "2026-11-26T00:12:12Z",
+            "inference_procs": [],
+            "containers": [],
+            "cards": [
+              {
+                "gpu": 0,
+                "pci": "redacted-pci-gpu0",
+                "hwmon": "redacted-thermal-path-gpu0",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 61.0,
+                "vram_visible_avail_mib": 32165
+              },
+              {
+                "gpu": 1,
+                "pci": "redacted-pci-gpu1",
+                "hwmon": "redacted-thermal-path-gpu1",
+                "power_cap_w": 230.0,
+                "max_freq_mhz": 2800,
+                "temp_c": 47.0,
+                "vram_visible_avail_mib": 32482
+              }
+            ],
+            "load1": 1.2978515625
+          },
+          "server": {
+            "cmd": [
+              "study-root/tensorfold-biascorr/src/zig-out/xpu/bin/tensorfold-native",
+              "serve",
+              "tensorfold-root/models/Qwen3.8-27B-MLX-4bit",
+              "--host",
+              "127.0.0.1",
+              "--port",
+              "8039",
+              "--drafter",
+              "tensorfold-root/models/Qwen3.8-27B-DFlash2",
+              "--context",
+              "32768",
+              "--parallel",
+              "1",
+              "--prompt-cache-gib",
+              "0",
+              "--no-thinking",
+              "--no-update-check",
+              "--tp",
+              "2"
+            ],
+            "env": [
+              "HOME=/dev/shm/gate5-home",
+              "XPU_BIASCORR_FILE=study-root/stage-hf-biascorr-sidecars-v1/qwen38_27b_mlx4_biascorr_v1.safetensors"
+            ],
+            "boot_s": 6.01,
+            "pid": 1259257,
+            "running_binary_sha256": "75c15aba7afd97fc68c2ad1a33a604955eed53c4f5c087b68f45bb03bc7ff176"
+          },
+          "drafted": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.105,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.073,
+                "decode_s": 0.032
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.099,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.067,
+                "decode_s": 0.032
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.098,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 4,
+                "offered": 15,
+                "ttft_s": 0.066,
+                "decode_s": 0.031
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.098,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.066,
+                "decode_s": 0.032
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.1,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 3,
+                "offered": 15,
+                "ttft_s": 0.067,
+                "decode_s": 0.032
+              }
+            },
+            "prime": {
+              "text": "No",
+              "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+              "completion_tokens": 2,
+              "wall_s": 0.099,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "ea7d7c679aa4",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.067,
+                "decode_s": 0.032
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.097,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 1,
+                "offered": 15,
+                "ttft_s": 0.066,
+                "decode_s": 0.03
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.095,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 2,
+                "offered": 15,
+                "ttft_s": 0.064,
+                "decode_s": 0.031
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 1024;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "d5c5970b8d2788cc7e8c428619b9150f8c145384c22a03ac4353227798b1ed1b",
+              "completion_tokens": 212,
+              "wall_s": 0.973,
+              "server": {
+                "prompt": 55,
+                "tokens": 212,
+                "server_sha": "15359f1db657",
+                "finish": "stop",
+                "rounds": 29,
+                "accepted": 182,
+                "offered": 435,
+                "ttft_s": 0.069,
+                "decode_s": 0.904
+              }
+            },
+            "py_bug": {
+              "text": "There is **no bug** in the provided function.\n\n### Explanation\nThe function `dedup_keep_order` is a well-known Python idiom for removing duplicates while preserving order. It works correctly because:\n\n1. `seen.add(x)` adds `x` to the set `seen` and returns `None`.\n2. `not seen.add(x)` evaluates to `not None`, which is `True`.\n3. The condition `x not in seen and not seen.add(x)` ensures that:\n   - `x` is not already in `seen` (so it’s a new element).\n   - `seen.add(x)` is executed (adding `x` to `seen`), and since it returns `None`, `not None` is `True`, so the element is included in the result.\n\nThis is a concise and correct way to deduplicate a list while maintaining order.\n\n### Corrected (Un",
+              "sha256": "1519dce36138cfdfa7e96bf97d1ef6d6417ca6fdf11ba098c05ca8efb88d342c",
+              "completion_tokens": 192,
+              "wall_s": 1.162,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "280302081a74",
+                "finish": "length",
+                "rounds": 34,
+                "accepted": 157,
+                "offered": 510,
+                "ttft_s": 0.084,
+                "decode_s": 1.077
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial must be a divisor of the constant term ($-6$) divided by a divisor of the leading coefficient ($1$).\nPossible rational roots are: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\n\nLet's test $x = 1$:\n$$1^3 - 6(1)^2 + 11(1) - 6 = 1 - ",
+              "sha256": "533410623e1782d4c48a4637f1f508778bc0a14c4eb89e23950b8e1bc93f8493",
+              "completion_tokens": 160,
+              "wall_s": 0.814,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "97084796ff46",
+                "finish": "length",
+                "rounds": 24,
+                "accepted": 135,
+                "offered": 360,
+                "ttft_s": 0.066,
+                "decode_s": 0.748
+              }
+            }
+          },
+          "serial": {
+            "sumsq": {
+              "text": "14",
+              "sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61",
+              "completion_tokens": 3,
+              "wall_s": 0.104,
+              "server": {
+                "prompt": 36,
+                "tokens": 3,
+                "server_sha": "b5842e8a1d05",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.064,
+                "decode_s": 0.04
+              }
+            },
+            "sum3": {
+              "text": "20",
+              "sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+              "completion_tokens": 3,
+              "wall_s": 0.106,
+              "server": {
+                "prompt": 51,
+                "tokens": 3,
+                "server_sha": "b26abce2fa50",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.039
+              }
+            },
+            "mul": {
+              "text": "1296",
+              "sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175",
+              "completion_tokens": 5,
+              "wall_s": 0.146,
+              "server": {
+                "prompt": 28,
+                "tokens": 5,
+                "server_sha": "66e0b038d7cd",
+                "finish": "stop",
+                "rounds": 4,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.079
+              }
+            },
+            "div": {
+              "text": "143",
+              "sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727",
+              "completion_tokens": 4,
+              "wall_s": 0.126,
+              "server": {
+                "prompt": 30,
+                "tokens": 4,
+                "server_sha": "eddf4023922b",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.06
+              }
+            },
+            "days": {
+              "text": "366",
+              "sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8",
+              "completion_tokens": 4,
+              "wall_s": 0.126,
+              "server": {
+                "prompt": 27,
+                "tokens": 4,
+                "server_sha": "be45c8c83ecf",
+                "finish": "stop",
+                "rounds": 3,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.059
+              }
+            },
+            "prime": {
+              "text": "No",
+              "sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d",
+              "completion_tokens": 2,
+              "wall_s": 0.087,
+              "server": {
+                "prompt": 25,
+                "tokens": 2,
+                "server_sha": "ea7d7c679aa4",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.067,
+                "decode_s": 0.02
+              }
+            },
+            "letters": {
+              "text": "6",
+              "sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+              "completion_tokens": 2,
+              "wall_s": 0.086,
+              "server": {
+                "prompt": 28,
+                "tokens": 2,
+                "server_sha": "3c9be8806483",
+                "finish": "stop",
+                "rounds": 1,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 0.02
+              }
+            },
+            "seq": {
+              "text": "32",
+              "sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b",
+              "completion_tokens": 3,
+              "wall_s": 0.104,
+              "server": {
+                "prompt": 37,
+                "tokens": 3,
+                "server_sha": "68bf4a32f3a0",
+                "finish": "stop",
+                "rounds": 2,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.064,
+                "decode_s": 0.04
+              }
+            },
+            "ring_kv": {
+              "text": "```cpp\n#include <cstdint>\n#include <array>\n#include <stdexcept>\n\nclass RingKV {\n    static constexpr size_t CAP = 1024;\n    std::array<int64_t, CAP> buf{};\n    size_t head = 0, tail = 0, sz = 0;\npublic:\n    void push(int64_t id) {\n        if (sz == CAP) throw std::overflow_error(\"full\");\n        buf[tail] = id;\n        tail = (tail + 1) % CAP;\n        ++sz;\n    }\n    int64_t pop() {\n        if (sz == 0) throw std::underflow_error(\"empty\");\n        int64_t v = buf[head];\n        head = (head + 1) % CAP;\n        --sz;\n        return v;\n    }\n    size_t size() const { return sz; }\n};\n```",
+              "sha256": "d5c5970b8d2788cc7e8c428619b9150f8c145384c22a03ac4353227798b1ed1b",
+              "completion_tokens": 212,
+              "wall_s": 4.267,
+              "server": {
+                "prompt": 55,
+                "tokens": 212,
+                "server_sha": "15359f1db657",
+                "finish": "stop",
+                "rounds": 211,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.068,
+                "decode_s": 4.199
+              }
+            },
+            "py_bug": {
+              "text": "There is **no bug** in the provided function.\n\n### Explanation\nThe function `dedup_keep_order` is a well-known Python idiom for removing duplicates while preserving order. It works correctly because:\n\n1. `seen.add(x)` adds `x` to the set `seen` and returns `None`.\n2. `not seen.add(x)` evaluates to `not None`, which is `True`.\n3. The condition `x not in seen and not seen.add(x)` ensures that:\n   - `x` is not already in `seen` (so it’s a new element).\n   - `seen.add(x)` is executed (adding `x` to `seen`), and since it returns `None`, `not None` is `True`, so the element is included in the result.\n\nThis is a concise and correct way to deduplicate a list while maintaining order.\n\n### Corrected (Un",
+              "sha256": "1519dce36138cfdfa7e96bf97d1ef6d6417ca6fdf11ba098c05ca8efb88d342c",
+              "completion_tokens": 192,
+              "wall_s": 3.884,
+              "server": {
+                "prompt": 78,
+                "tokens": 192,
+                "server_sha": "280302081a74",
+                "finish": "length",
+                "rounds": 191,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.085,
+                "decode_s": 3.798
+              }
+            },
+            "math_step": {
+              "text": "To solve the equation $x^3 - 6x^2 + 11x - 6 = 0$, we can use the Rational Root Theorem to identify potential rational roots and then factor the polynomial.\n\n### Step 1: Identify Potential Roots\nThe Rational Root Theorem states that any rational root $p/q$ of the polynomial must be a divisor of the constant term ($-6$) divided by a divisor of the leading coefficient ($1$).\nPossible rational roots are: $\\pm 1, \\pm 2, \\pm 3, \\pm 6$.\n\nLet's test $x = 1$:\n$$1^3 - 6(1)^2 + 11(1) - 6 = 1 - ",
+              "sha256": "533410623e1782d4c48a4637f1f508778bc0a14c4eb89e23950b8e1bc93f8493",
+              "completion_tokens": 160,
+              "wall_s": 3.23,
+              "server": {
+                "prompt": 49,
+                "tokens": 160,
+                "server_sha": "97084796ff46",
+                "finish": "length",
+                "rounds": 159,
+                "accepted": 0,
+                "offered": 0,
+                "ttft_s": 0.066,
+                "decode_s": 3.163
+              }
+            }
+          },
+          "vram_loaded_mib_free": {
+            "0": 20971,
+            "1": 22883
+          },
+          "sidecar_log_lines": [
+            "biascorr sidecar loaded: study-root/stage-hf-biascorr-sidecars-v1/qwen38_27b_mlx4_biascorr_v1.safetensors (matched=496/496, expected=496, sha256=f5fce21b31f477229cab3e62cb42d67094983fd0185e7fc6e363df1ad38ed932)"
+          ],
+          "server_log_tp_line": [
+            "info: qwen27-xpu: tp=2, 1 streams of 32768 tokens, DFlash2 trees for a lone stream"
+          ],
+          "per_prompt": [
+            {
+              "prompt": "sumsq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "8527a891e224136950ff32ca212b45bc93f69fbb801c3b1ebedac52775f99e61"
+            },
+            {
+              "prompt": "sum3",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b"
+            },
+            {
+              "prompt": "mul",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                5,
+                5
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "4/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                4,
+                4
+              ],
+              "text_sha256": "f7961248034a58c430eda8e243830a0876f062e793810e0bb97d929fc35bb175"
+            },
+            {
+              "prompt": "div",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "d6f0c71ef0c88e45e4b3a2118fcb83b0def392d759c901e9d755d0e879028727"
+            },
+            {
+              "prompt": "days",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                4,
+                4
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "3/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                3,
+                3
+              ],
+              "text_sha256": "600b4cdf20cc06a7b5a5cca5f7464296861815519af6d8a14604201b13965ab8"
+            },
+            {
+              "prompt": "prime",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "1ea442a134b2a184bd5d40104401f2a37fbc09ccf3f4bc9da161c6099be3691d"
+            },
+            {
+              "prompt": "letters",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                2,
+                2
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "1/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                1,
+                1
+              ],
+              "text_sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"
+            },
+            {
+              "prompt": "seq",
+              "group": "dnr",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                3,
+                3
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "2/15",
+              "serial_accepted": "0/0",
+              "chars": [
+                2,
+                2
+              ],
+              "text_sha256": "e29c9c180c6279b0b02abd6a1801c7c04082cf486ec027aa13515e4f3884bb6b"
+            },
+            {
+              "prompt": "ring_kv",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                212,
+                212
+              ],
+              "finish": [
+                "stop",
+                "stop"
+              ],
+              "drafted_accepted": "182/435",
+              "serial_accepted": "0/0",
+              "chars": [
+                591,
+                591
+              ],
+              "text_sha256": "d5c5970b8d2788cc7e8c428619b9150f8c145384c22a03ac4353227798b1ed1b"
+            },
+            {
+              "prompt": "py_bug",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                192,
+                192
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "157/510",
+              "serial_accepted": "0/0",
+              "chars": [
+                702,
+                702
+              ],
+              "text_sha256": "1519dce36138cfdfa7e96bf97d1ef6d6417ca6fdf11ba098c05ca8efb88d342c"
+            },
+            {
+              "prompt": "math_step",
+              "group": "long",
+              "text_sha256_equal": true,
+              "server_token_sha_equal": true,
+              "completion_tokens": [
+                160,
+                160
+              ],
+              "finish": [
+                "length",
+                "length"
+              ],
+              "drafted_accepted": "135/360",
+              "serial_accepted": "0/0",
+              "chars": [
+                488,
+                488
+              ],
+              "text_sha256": "533410623e1782d4c48a4637f1f508778bc0a14c4eb89e23950b8e1bc93f8493"
+            }
+          ],
+          "drafted_serial_exact": "11/11",
+          "drafting_active": {
+            "drafted_accepted_total": 492,
+            "serial_offered_total": 0
+          },
+          "empty_outputs": 0,
+          "dnr_pass": {
+            "drafted": 8,
+            "serial": 8
+          },
+          "host_after_vram_mib_free": {
+            "0": 32163,
+            "1": 32482
+          }
+        }
+      },
+      "v1_vs_unset": {
+        "equal": 14,
+        "total": 22,
+        "diffs": [
+          "drafted:prime",
+          "drafted:ring_kv",
+          "drafted:py_bug",
+          "drafted:math_step",
+          "serial:prime",
+          "serial:ring_kv",
+          "serial:py_bug",
+          "serial:math_step"
+        ]
+      }
+    }
+  },
+  "gpu0_vs_tp2_same_arm": {
+    "unset": {
+      "equal": 20,
+      "total": 22,
+      "diffs": [
+        "drafted:ring_kv",
+        "serial:ring_kv"
+      ]
+    },
+    "v1": {
+      "equal": 18,
+      "total": 22,
+      "diffs": [
+        "drafted:ring_kv",
+        "drafted:py_bug",
+        "serial:ring_kv",
+        "serial:py_bug"
+      ]
+    }
+  },
+  "unset_vs_exp12b_old_binary_baseline": {
+    "old_binary_sha256": "62fb382866a5fa1efa27ed2a7845d1e2a2c9eb1e207a9a456c6262c5cdec8f3b",
+    "gpu0": {
+      "equal": 22,
+      "total": 22,
+      "diffs": []
+    },
+    "tp2": {
+      "equal": 22,
+      "total": 22,
+      "diffs": []
+    }
+  },
+  "wall_s": 119.5,
+  "passed": true
+}

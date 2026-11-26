@@ -1,0 +1,235 @@
+{
+  "experiment": "Qwen3.8-27B attention K-vs-V HadHF-G16 sensitivity control causal-v2",
+  "gpu_assignment": "GPU1 only via card1/<render-node>",
+  "attention_implementation": "sdpa",
+  "corpus": {
+    "wt2_eval_sha256": "14049ba0a85c3ba6227f01cd3c0450a25c9182228aa161654c0a9db01879adc3",
+    "code_eval_sha256": "6c3a613f281669f2ceb3e58272194b584a64e4b3cacd766a8119a0b8eb5e0832",
+    "scored_tokens_per_domain": 2044
+  },
+  "architecture_note": "Qwen3.8 hybrid linear/full attention with QK-Norm; K/V projections exist only in the 16 full-attention layers",
+  "quantized_projection_counts": {
+    "all": 496,
+    "k": 16,
+    "v": 16
+  },
+  "results": {
+    "BF16": {
+      "wt2": {
+        "kl_vs_bf16": 0.0,
+        "nll": 2.053896,
+        "ppl": 7.79822,
+        "top1_agree_pct": 100.0,
+        "n_tokens": 2044
+      },
+      "code": {
+        "kl_vs_bf16": 0.0,
+        "nll": 0.86473,
+        "ppl": 2.37436,
+        "top1_agree_pct": 100.0,
+        "n_tokens": 2044
+      }
+    },
+    "HadHF_G16_All_W4A16_DF": {
+      "wt2": {
+        "kl_vs_bf16": 0.03200773,
+        "nll": 2.076387,
+        "ppl": 7.9756,
+        "top1_agree_pct": 94.1781,
+        "n_tokens": 2044
+      },
+      "code": {
+        "kl_vs_bf16": 0.15012321,
+        "nll": 0.968354,
+        "ppl": 2.63361,
+        "top1_agree_pct": 89.8728,
+        "n_tokens": 2044
+      }
+    },
+    "HadHF_G16_Konly_W4A16_DF": {
+      "wt2": {
+        "kl_vs_bf16": 0.00078972,
+        "nll": 2.0533,
+        "ppl": 7.79358,
+        "top1_agree_pct": 98.8748,
+        "n_tokens": 2044
+      },
+      "code": {
+        "kl_vs_bf16": 0.00220425,
+        "nll": 0.866355,
+        "ppl": 2.37823,
+        "top1_agree_pct": 99.0215,
+        "n_tokens": 2044
+      }
+    },
+    "HadHF_G16_Vonly_W4A16_DF": {
+      "wt2": {
+        "kl_vs_bf16": 0.00283051,
+        "nll": 2.056034,
+        "ppl": 7.81492,
+        "top1_agree_pct": 97.8963,
+        "n_tokens": 2044
+      },
+      "code": {
+        "kl_vs_bf16": 0.0099404,
+        "nll": 0.870825,
+        "ppl": 2.38888,
+        "top1_agree_pct": 97.8963,
+        "n_tokens": 2044
+      }
+    }
+  },
+  "paired_blk32_bootstrap_95ci": {
+    "HadHF_G16_Konly_W4A16_DF__vs__HadHF_G16_Vonly_W4A16_DF": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.00204078,
+          "ci95_blk32": [
+            -0.00268657,
+            -0.00154704
+          ],
+          "significant": true
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 0.97847358,
+          "ci95_blk32": [
+            0.29761905,
+            1.73611111
+          ],
+          "significant": true
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.00773615,
+          "ci95_blk32": [
+            -0.00990802,
+            -0.00587095
+          ],
+          "significant": true
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 1.12524462,
+          "ci95_blk32": [
+            0.54563492,
+            1.73611111
+          ],
+          "significant": true
+        }
+      }
+    },
+    "HadHF_G16_Konly_W4A16_DF__vs__HadHF_G16_All_W4A16_DF": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.03121801,
+          "ci95_blk32": [
+            -0.03914577,
+            -0.0244281
+          ],
+          "significant": true
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 4.69667319,
+          "ci95_blk32": [
+            3.5218254,
+            5.80357143
+          ],
+          "significant": true
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.14791896,
+          "ci95_blk32": [
+            -0.1742849,
+            -0.12054096
+          ],
+          "significant": true
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 9.14872798,
+          "ci95_blk32": [
+            7.73809524,
+            10.71428571
+          ],
+          "significant": true
+        }
+      }
+    },
+    "HadHF_G16_Vonly_W4A16_DF__vs__HadHF_G16_All_W4A16_DF": {
+      "wt2": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.02917722,
+          "ci95_blk32": [
+            -0.03669814,
+            -0.02272561
+          ],
+          "significant": true
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 3.71819961,
+          "ci95_blk32": [
+            2.43055556,
+            4.86111111
+          ],
+          "significant": true
+        }
+      },
+      "code": {
+        "delta_kl": {
+          "delta_a_minus_b": -0.1401828,
+          "ci95_blk32": [
+            -0.16523753,
+            -0.11398306
+          ],
+          "significant": true
+        },
+        "delta_top1_pp": {
+          "delta_a_minus_b": 8.02348337,
+          "ci95_blk32": [
+            6.69642857,
+            9.42460317
+          ],
+          "significant": true
+        }
+      }
+    }
+  },
+  "elapsed_sec": 417.54,
+  "gpu1_telemetry": {
+    "start": {
+      "act_mhz": 0,
+      "energy1_input_uj": 2040850561035,
+      "gt0_act_mhz": 0,
+      "gt0_cur_mhz": 2800,
+      "gt0_max_mhz": 2800,
+      "gt1_act_mhz": 0,
+      "gt1_cur_mhz": 400,
+      "gt1_max_mhz": 1500,
+      "hwmon": "<hwmon>",
+      "power_cap_w": 230.0,
+      "temp_c": 56.0,
+      "utc": "2026-11-25T02:21:42Z",
+      "vram_usage_bytes": 42246144,
+      "vram_visible_avail_mib": 32615
+    },
+    "end": null,
+    "end_capture_note": "outer runner was terminated by the session environment before it could sample end telemetry; cleanup/idle sample below is explicitly late, not exact end-of-run",
+    "late_cleanup_sample": {
+      "act_mhz": 0,
+      "energy1_input_uj": 2106402053039,
+      "gt0_act_mhz": 0,
+      "gt0_cur_mhz": 2800,
+      "gt0_max_mhz": 2800,
+      "gt1_act_mhz": 0,
+      "gt1_cur_mhz": 400,
+      "gt1_max_mhz": 1500,
+      "hwmon": "<hwmon>",
+      "power_cap_w": 230.0,
+      "temp_c": 58.0,
+      "utc": "2026-11-25T02:29:33Z",
+      "vram_usage_bytes": 42246144,
+      "vram_visible_avail_mib": 32615
+    }
+  }
+}

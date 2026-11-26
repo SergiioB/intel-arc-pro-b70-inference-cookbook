@@ -1,0 +1,3654 @@
+{
+  "compact_total_correct_kl": {
+    "llama32_3b": {
+      "BF16": 104,
+      "HF_G16_W4A16_BC": {
+        "drop_vs_bf16": 20,
+        "kl": 0.10551974,
+        "total": 84
+      },
+      "HF_G16_W4A16_DF": {
+        "drop_vs_bf16": 11,
+        "kl": 0.07955469,
+        "total": 93
+      },
+      "MLX_asym_G64_BC": {
+        "drop_vs_bf16": 12,
+        "kl": 0.13324424,
+        "total": 92
+      },
+      "MLX_asym_G64_DF": {
+        "drop_vs_bf16": 10,
+        "kl": 0.10283416,
+        "total": 94
+      },
+      "SymINT4_G128_RTN_DF": {
+        "drop_vs_bf16": 14,
+        "kl": 0.14006285,
+        "total": 90
+      }
+    },
+    "olmo2_7b": {
+      "BF16": 90,
+      "HF_G16_W4A16_BC": {
+        "drop_vs_bf16": -3,
+        "kl": 0.20539005,
+        "total": 93
+      },
+      "HF_G16_W4A16_DF": {
+        "drop_vs_bf16": 1,
+        "kl": 0.06894957,
+        "total": 89
+      },
+      "MLX_asym_G64_BC": {
+        "drop_vs_bf16": -2,
+        "kl": 0.25920898,
+        "total": 92
+      },
+      "MLX_asym_G64_DF": {
+        "drop_vs_bf16": -9,
+        "kl": 0.090526,
+        "total": 99
+      },
+      "SymINT4_G128_RTN_DF": {
+        "drop_vs_bf16": -1,
+        "kl": 0.1771291,
+        "total": 91
+      }
+    },
+    "olmoe_1b7b": {
+      "BF16": 83,
+      "HF_G16_W4A16_BC": {
+        "drop_vs_bf16": 6,
+        "kl": 0.10100489,
+        "total": 77
+      },
+      "HF_G16_W4A16_DF": {
+        "drop_vs_bf16": 1,
+        "kl": 0.10636704,
+        "total": 82
+      },
+      "MLX_asym_G64_BC": {
+        "drop_vs_bf16": 5,
+        "kl": 0.12724425,
+        "total": 78
+      },
+      "MLX_asym_G64_DF": {
+        "drop_vs_bf16": 15,
+        "kl": 0.13444787,
+        "total": 68
+      },
+      "SymINT4_G128_RTN_DF": {
+        "drop_vs_bf16": 9,
+        "kl": 0.20159905,
+        "total": 74
+      }
+    },
+    "phi4_mini": {
+      "BF16": 104,
+      "HF_G16_W4A16_BC": {
+        "drop_vs_bf16": 2,
+        "kl": 0.2014225,
+        "total": 102
+      },
+      "HF_G16_W4A16_DF": {
+        "drop_vs_bf16": -3,
+        "kl": 0.19174727,
+        "total": 107
+      },
+      "MLX_asym_G64_BC": {
+        "drop_vs_bf16": 13,
+        "kl": 0.2258611,
+        "total": 91
+      },
+      "MLX_asym_G64_DF": {
+        "drop_vs_bf16": 9,
+        "kl": 0.22982319,
+        "total": 95
+      },
+      "SymINT4_G128_RTN_DF": {
+        "drop_vs_bf16": 4,
+        "kl": 0.25431418,
+        "total": 100
+      }
+    }
+  },
+  "diagnostics": {
+    "llama32_3b": {
+      "cross_domain_mean_x_cosine": {
+        "down_proj": {
+          "mean": 0.57871,
+          "median": 0.56145,
+          "n": 28,
+          "p5": 0.41248
+        },
+        "gate_proj": {
+          "mean": 0.43928,
+          "median": 0.42082,
+          "n": 28,
+          "p5": 0.35983
+        },
+        "k_proj": {
+          "mean": 0.72108,
+          "median": 0.7013,
+          "n": 28,
+          "p5": 0.59262
+        },
+        "o_proj": {
+          "mean": 0.35835,
+          "median": 0.33676,
+          "n": 28,
+          "p5": 0.24807
+        },
+        "q_proj": {
+          "mean": 0.72108,
+          "median": 0.7013,
+          "n": 28,
+          "p5": 0.59262
+        },
+        "up_proj": {
+          "mean": 0.43928,
+          "median": 0.42082,
+          "n": 28,
+          "p5": 0.35983
+        },
+        "v_proj": {
+          "mean": 0.72108,
+          "median": 0.7013,
+          "n": 28,
+          "p5": 0.59262
+        }
+      },
+      "kv_isolation": {
+        "code": {
+          "delta_k_only_minus_v_only": -0.00713836,
+          "k_only_kl": 0.00192133,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.00905969
+        },
+        "combined": {
+          "delta_k_only_minus_v_only": -0.00672006,
+          "k_only_kl": 0.00177495,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.00849501
+        },
+        "wt2": {
+          "delta_k_only_minus_v_only": -0.00630175,
+          "k_only_kl": 0.00162857,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.00793032
+        }
+      },
+      "mcnemar_total_160": {
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__BF16_reference": {
+          "broken_in_first": 28,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.00119324,
+          "fixed_in_first": 8,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "broken_in_first": 16,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.09313965,
+          "fixed_in_first": 7,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 19,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 1.0,
+          "fixed_in_first": 18,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__SymINT4_G128_RTN_DF": {
+          "broken_in_first": 19,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.75522866,
+          "fixed_in_first": 22,
+          "n_items": 160
+        },
+        "MLX_asym_G64_BC__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 13,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.83881974,
+          "fixed_in_first": 11,
+          "n_items": 160
+        }
+      },
+      "model": {
+        "architectures": [
+          "LlamaForCausalLM"
+        ],
+        "hidden_size": 3072,
+        "layers_evaluated": 28,
+        "layers_full": 28,
+        "type": "LlamaForCausalLM"
+      },
+      "moe_biascorr_policy_choice": {
+        "Had128NoPerm_HF_INT4_G16_W4A16": {
+          "winner": "BC"
+        },
+        "MLX_asym_G64": {
+          "winner": "BC"
+        }
+      }
+    },
+    "olmo2_7b": {
+      "cross_domain_mean_x_cosine": {
+        "down_proj": {
+          "mean": 0.6717,
+          "median": 0.66974,
+          "n": 32,
+          "p5": 0.52237
+        },
+        "gate_proj": {
+          "mean": 0.57301,
+          "median": 0.62802,
+          "n": 32,
+          "p5": 0.27104
+        },
+        "k_proj": {
+          "mean": 0.60455,
+          "median": 0.68364,
+          "n": 32,
+          "p5": 0.2754
+        },
+        "o_proj": {
+          "mean": 0.36797,
+          "median": 0.34706,
+          "n": 32,
+          "p5": 0.20742
+        },
+        "q_proj": {
+          "mean": 0.60455,
+          "median": 0.68364,
+          "n": 32,
+          "p5": 0.2754
+        },
+        "up_proj": {
+          "mean": 0.57301,
+          "median": 0.62802,
+          "n": 32,
+          "p5": 0.27104
+        },
+        "v_proj": {
+          "mean": 0.60455,
+          "median": 0.68364,
+          "n": 32,
+          "p5": 0.2754
+        }
+      },
+      "kv_isolation": {
+        "code": {
+          "delta_k_only_minus_v_only": -0.00843364,
+          "k_only_kl": 0.00226947,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.01070311
+        },
+        "combined": {
+          "delta_k_only_minus_v_only": -0.00734665,
+          "k_only_kl": 0.00214442,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.00949107
+        },
+        "wt2": {
+          "delta_k_only_minus_v_only": -0.00625966,
+          "k_only_kl": 0.00201937,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.00827903
+        }
+      },
+      "mcnemar_total_160": {
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__BF16_reference": {
+          "broken_in_first": 11,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.69003797,
+          "fixed_in_first": 14,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "broken_in_first": 11,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.55719709,
+          "fixed_in_first": 15,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 19,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.08715855,
+          "fixed_in_first": 9,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__SymINT4_G128_RTN_DF": {
+          "broken_in_first": 13,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.83881974,
+          "fixed_in_first": 11,
+          "n_items": 160
+        },
+        "MLX_asym_G64_BC__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 15,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.21003962,
+          "fixed_in_first": 8,
+          "n_items": 160
+        }
+      },
+      "model": {
+        "architectures": [
+          "Olmo2ForCausalLM"
+        ],
+        "hidden_size": 4096,
+        "layers_evaluated": 32,
+        "layers_full": 32,
+        "type": "Olmo2ForCausalLM"
+      },
+      "moe_biascorr_policy_choice": {
+        "Had128NoPerm_HF_INT4_G16_W4A16": {
+          "winner": "BC"
+        },
+        "MLX_asym_G64": {
+          "winner": "BC"
+        }
+      }
+    },
+    "olmoe_1b7b": {
+      "cross_domain_mean_x_cosine": {
+        "experts.down_proj": {
+          "mean": 0.25453,
+          "median": 0.217,
+          "n": 986,
+          "p5": 0.0447
+        },
+        "experts.gate_up_proj": {
+          "mean": 0.33899,
+          "median": 0.33235,
+          "n": 986,
+          "p5": 0.14276
+        },
+        "k_proj": {
+          "mean": 0.70378,
+          "median": 0.73506,
+          "n": 16,
+          "p5": 0.43731
+        },
+        "o_proj": {
+          "mean": 0.2611,
+          "median": 0.22664,
+          "n": 16,
+          "p5": 0.11865
+        },
+        "q_proj": {
+          "mean": 0.70378,
+          "median": 0.73506,
+          "n": 16,
+          "p5": 0.43731
+        },
+        "v_proj": {
+          "mean": 0.70378,
+          "median": 0.73506,
+          "n": 16,
+          "p5": 0.43731
+        }
+      },
+      "expert_tokens_per_layer_pos1plus": {
+        "0": [
+          534,
+          184,
+          233,
+          224,
+          212,
+          208,
+          497,
+          229,
+          197,
+          18,
+          193,
+          169,
+          282,
+          306,
+          184,
+          220,
+          243,
+          265,
+          237,
+          265,
+          257,
+          866,
+          278,
+          64,
+          250,
+          240,
+          254,
+          225,
+          319,
+          172,
+          185,
+          206,
+          239,
+          264,
+          6,
+          214,
+          211,
+          170,
+          223,
+          186,
+          402,
+          608,
+          157,
+          272,
+          225,
+          158,
+          306,
+          321,
+          216,
+          216,
+          224,
+          222,
+          174,
+          383,
+          440,
+          235,
+          177,
+          237,
+          498,
+          228,
+          275,
+          310,
+          264,
+          75
+        ],
+        "1": [
+          183,
+          270,
+          158,
+          182,
+          162,
+          463,
+          158,
+          237,
+          214,
+          270,
+          121,
+          236,
+          218,
+          258,
+          260,
+          581,
+          257,
+          222,
+          757,
+          181,
+          264,
+          375,
+          130,
+          270,
+          209,
+          1128,
+          195,
+          308,
+          116,
+          222,
+          223,
+          238,
+          279,
+          148,
+          205,
+          150,
+          137,
+          329,
+          128,
+          190,
+          290,
+          140,
+          342,
+          98,
+          137,
+          253,
+          78,
+          916,
+          183,
+          223,
+          266,
+          204,
+          228,
+          253,
+          245,
+          207,
+          120,
+          105,
+          285,
+          280,
+          112,
+          303,
+          263,
+          189
+        ],
+        "10": [
+          263,
+          293,
+          598,
+          211,
+          92,
+          169,
+          243,
+          222,
+          211,
+          274,
+          304,
+          404,
+          220,
+          393,
+          215,
+          211,
+          622,
+          415,
+          194,
+          384,
+          45,
+          159,
+          125,
+          211,
+          118,
+          65,
+          161,
+          222,
+          187,
+          229,
+          303,
+          227,
+          310,
+          198,
+          294,
+          123,
+          279,
+          374,
+          287,
+          235,
+          250,
+          238,
+          171,
+          527,
+          405,
+          187,
+          190,
+          291,
+          128,
+          233,
+          174,
+          216,
+          303,
+          274,
+          191,
+          149,
+          972,
+          45,
+          195,
+          218,
+          170,
+          111,
+          462,
+          162
+        ],
+        "11": [
+          268,
+          35,
+          124,
+          258,
+          138,
+          176,
+          279,
+          404,
+          247,
+          110,
+          74,
+          241,
+          222,
+          1025,
+          40,
+          272,
+          95,
+          228,
+          255,
+          234,
+          251,
+          248,
+          240,
+          395,
+          241,
+          89,
+          141,
+          1017,
+          22,
+          167,
+          242,
+          240,
+          171,
+          274,
+          292,
+          130,
+          239,
+          161,
+          183,
+          108,
+          127,
+          131,
+          231,
+          97,
+          482,
+          271,
+          283,
+          922,
+          14,
+          213,
+          54,
+          203,
+          163,
+          176,
+          286,
+          189,
+          254,
+          352,
+          391,
+          204,
+          149,
+          306,
+          258,
+          1020
+        ],
+        "12": [
+          218,
+          226,
+          786,
+          96,
+          213,
+          153,
+          283,
+          254,
+          667,
+          238,
+          226,
+          54,
+          78,
+          132,
+          287,
+          232,
+          278,
+          306,
+          18,
+          102,
+          129,
+          276,
+          248,
+          71,
+          132,
+          281,
+          205,
+          255,
+          147,
+          140,
+          313,
+          498,
+          152,
+          155,
+          227,
+          4,
+          206,
+          151,
+          988,
+          149,
+          113,
+          168,
+          226,
+          916,
+          141,
+          525,
+          261,
+          180,
+          279,
+          223,
+          391,
+          550,
+          357,
+          253,
+          222,
+          434,
+          140,
+          173,
+          174,
+          310,
+          164,
+          231,
+          244,
+          103
+        ],
+        "13": [
+          175,
+          283,
+          932,
+          540,
+          74,
+          260,
+          789,
+          271,
+          297,
+          85,
+          207,
+          611,
+          167,
+          44,
+          26,
+          122,
+          31,
+          57,
+          166,
+          88,
+          290,
+          212,
+          319,
+          70,
+          144,
+          965,
+          190,
+          397,
+          190,
+          185,
+          186,
+          313,
+          425,
+          224,
+          216,
+          271,
+          276,
+          260,
+          185,
+          145,
+          188,
+          375,
+          102,
+          331,
+          204,
+          112,
+          60,
+          792,
+          160,
+          117,
+          173,
+          112,
+          367,
+          37,
+          267,
+          375,
+          55,
+          133,
+          262,
+          53,
+          39,
+          570,
+          649,
+          131
+        ],
+        "14": [
+          242,
+          205,
+          207,
+          382,
+          37,
+          173,
+          973,
+          502,
+          18,
+          332,
+          236,
+          437,
+          181,
+          214,
+          137,
+          339,
+          222,
+          101,
+          220,
+          154,
+          239,
+          261,
+          46,
+          225,
+          277,
+          222,
+          121,
+          154,
+          450,
+          90,
+          16,
+          271,
+          89,
+          15,
+          306,
+          150,
+          960,
+          182,
+          370,
+          490,
+          189,
+          302,
+          348,
+          40,
+          331,
+          216,
+          291,
+          198,
+          311,
+          197,
+          98,
+          62,
+          552,
+          239,
+          118,
+          212,
+          147,
+          231,
+          916,
+          551,
+          151,
+          82,
+          116,
+          208
+        ],
+        "15": [
+          195,
+          336,
+          330,
+          205,
+          170,
+          106,
+          136,
+          335,
+          870,
+          91,
+          296,
+          94,
+          44,
+          280,
+          307,
+          297,
+          167,
+          1049,
+          12,
+          101,
+          333,
+          393,
+          168,
+          214,
+          67,
+          37,
+          339,
+          487,
+          177,
+          265,
+          916,
+          233,
+          59,
+          107,
+          376,
+          184,
+          474,
+          138,
+          7,
+          8,
+          205,
+          176,
+          65,
+          177,
+          639,
+          193,
+          268,
+          262,
+          162,
+          233,
+          58,
+          31,
+          140,
+          220,
+          247,
+          321,
+          295,
+          294,
+          578,
+          520,
+          265,
+          193,
+          240,
+          167
+        ],
+        "2": [
+          178,
+          288,
+          94,
+          237,
+          69,
+          711,
+          208,
+          176,
+          118,
+          278,
+          313,
+          215,
+          96,
+          189,
+          461,
+          281,
+          363,
+          167,
+          100,
+          257,
+          255,
+          196,
+          326,
+          334,
+          175,
+          265,
+          235,
+          245,
+          329,
+          298,
+          237,
+          180,
+          234,
+          297,
+          278,
+          286,
+          168,
+          168,
+          310,
+          315,
+          1100,
+          284,
+          80,
+          88,
+          280,
+          572,
+          199,
+          128,
+          222,
+          112,
+          222,
+          15,
+          156,
+          120,
+          331,
+          63,
+          211,
+          106,
+          336,
+          109,
+          585,
+          535,
+          221,
+          347
+        ],
+        "3": [
+          135,
+          37,
+          156,
+          106,
+          214,
+          81,
+          138,
+          218,
+          246,
+          597,
+          178,
+          202,
+          324,
+          76,
+          108,
+          664,
+          76,
+          60,
+          253,
+          418,
+          300,
+          84,
+          239,
+          491,
+          94,
+          442,
+          112,
+          185,
+          317,
+          205,
+          467,
+          491,
+          204,
+          236,
+          201,
+          382,
+          319,
+          307,
+          373,
+          174,
+          254,
+          207,
+          315,
+          866,
+          237,
+          166,
+          195,
+          310,
+          75,
+          319,
+          199,
+          185,
+          385,
+          38,
+          309,
+          136,
+          227,
+          387,
+          382,
+          342,
+          119,
+          104,
+          491,
+          194
+        ],
+        "4": [
+          88,
+          140,
+          150,
+          51,
+          267,
+          173,
+          504,
+          226,
+          253,
+          6,
+          220,
+          880,
+          79,
+          211,
+          182,
+          111,
+          156,
+          751,
+          84,
+          1237,
+          154,
+          808,
+          123,
+          412,
+          272,
+          520,
+          450,
+          183,
+          95,
+          48,
+          184,
+          11,
+          81,
+          76,
+          180,
+          244,
+          184,
+          152,
+          210,
+          252,
+          196,
+          216,
+          288,
+          323,
+          91,
+          149,
+          41,
+          636,
+          39,
+          142,
+          281,
+          307,
+          281,
+          137,
+          27,
+          834,
+          173,
+          198,
+          240,
+          338,
+          220,
+          314,
+          434,
+          39
+        ],
+        "5": [
+          960,
+          177,
+          808,
+          96,
+          100,
+          95,
+          204,
+          165,
+          538,
+          217,
+          407,
+          259,
+          87,
+          198,
+          316,
+          120,
+          326,
+          465,
+          327,
+          174,
+          201,
+          288,
+          316,
+          94,
+          236,
+          116,
+          64,
+          137,
+          535,
+          266,
+          289,
+          340,
+          197,
+          55,
+          220,
+          365,
+          118,
+          543,
+          165,
+          370,
+          677,
+          71,
+          1027,
+          128,
+          128,
+          196,
+          129,
+          149,
+          46,
+          43,
+          203,
+          200,
+          429,
+          274,
+          301,
+          252,
+          0,
+          254,
+          285,
+          80,
+          198,
+          100,
+          63,
+          165
+        ],
+        "6": [
+          47,
+          384,
+          533,
+          389,
+          192,
+          788,
+          218,
+          191,
+          150,
+          76,
+          47,
+          3,
+          310,
+          242,
+          67,
+          521,
+          579,
+          138,
+          922,
+          91,
+          301,
+          299,
+          194,
+          104,
+          416,
+          234,
+          263,
+          364,
+          173,
+          95,
+          241,
+          38,
+          18,
+          62,
+          3,
+          102,
+          286,
+          179,
+          104,
+          172,
+          223,
+          109,
+          988,
+          41,
+          109,
+          39,
+          104,
+          245,
+          303,
+          223,
+          235,
+          121,
+          960,
+          186,
+          213,
+          418,
+          137,
+          737,
+          92,
+          260,
+          98,
+          305,
+          465,
+          205
+        ],
+        "7": [
+          364,
+          172,
+          676,
+          504,
+          858,
+          392,
+          217,
+          49,
+          72,
+          104,
+          302,
+          100,
+          181,
+          34,
+          206,
+          453,
+          277,
+          1014,
+          218,
+          265,
+          237,
+          510,
+          228,
+          376,
+          191,
+          11,
+          397,
+          169,
+          17,
+          267,
+          263,
+          201,
+          305,
+          28,
+          194,
+          507,
+          180,
+          143,
+          432,
+          221,
+          157,
+          283,
+          107,
+          169,
+          208,
+          272,
+          515,
+          27,
+          392,
+          138,
+          157,
+          52,
+          225,
+          146,
+          34,
+          255,
+          318,
+          198,
+          483,
+          219,
+          80,
+          281,
+          237,
+          64
+        ],
+        "8": [
+          300,
+          305,
+          117,
+          1068,
+          118,
+          44,
+          240,
+          9,
+          121,
+          223,
+          360,
+          224,
+          233,
+          165,
+          250,
+          223,
+          572,
+          306,
+          348,
+          181,
+          389,
+          238,
+          111,
+          171,
+          226,
+          225,
+          138,
+          336,
+          240,
+          188,
+          350,
+          128,
+          247,
+          57,
+          222,
+          349,
+          229,
+          439,
+          116,
+          59,
+          232,
+          110,
+          299,
+          34,
+          206,
+          285,
+          67,
+          241,
+          103,
+          126,
+          261,
+          331,
+          299,
+          232,
+          974,
+          321,
+          183,
+          362,
+          971,
+          13,
+          139,
+          307,
+          105,
+          286
+        ],
+        "9": [
+          287,
+          213,
+          216,
+          136,
+          570,
+          926,
+          501,
+          367,
+          227,
+          48,
+          258,
+          219,
+          94,
+          344,
+          158,
+          159,
+          223,
+          494,
+          219,
+          22,
+          320,
+          274,
+          166,
+          213,
+          121,
+          91,
+          160,
+          231,
+          381,
+          217,
+          197,
+          120,
+          245,
+          229,
+          144,
+          313,
+          238,
+          302,
+          259,
+          287,
+          123,
+          166,
+          278,
+          271,
+          218,
+          156,
+          1059,
+          208,
+          357,
+          154,
+          224,
+          687,
+          314,
+          230,
+          167,
+          272,
+          139,
+          26,
+          302,
+          218,
+          128,
+          133,
+          161,
+          172
+        ]
+      },
+      "kv_isolation": {
+        "code": {
+          "delta_k_only_minus_v_only": -0.01825785,
+          "k_only_kl": 0.00775113,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.02600899
+        },
+        "combined": {
+          "delta_k_only_minus_v_only": -0.02260321,
+          "k_only_kl": 0.00982487,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.03242808
+        },
+        "wt2": {
+          "delta_k_only_minus_v_only": -0.02694858,
+          "k_only_kl": 0.0118986,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.03884718
+        }
+      },
+      "mcnemar_total_160": {
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__BF16_reference": {
+          "broken_in_first": 18,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.36159461,
+          "fixed_in_first": 12,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "broken_in_first": 13,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.38331032,
+          "fixed_in_first": 8,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 10,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.02430651,
+          "fixed_in_first": 24,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__SymINT4_G128_RTN_DF": {
+          "broken_in_first": 13,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.22948101,
+          "fixed_in_first": 21,
+          "n_items": 160
+        },
+        "MLX_asym_G64_BC__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 8,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.0755187,
+          "fixed_in_first": 18,
+          "n_items": 160
+        }
+      },
+      "model": {
+        "architectures": [
+          "OlmoeForCausalLM"
+        ],
+        "hidden_size": 2048,
+        "layers_evaluated": 16,
+        "layers_full": 16,
+        "type": "OlmoeForCausalLM"
+      },
+      "moe_biascorr_policy_choice": {
+        "Had128NoPerm_HF_INT4_G16_W4A16": {
+          "combined_kl": {
+            "Had128NoPerm_HF_INT4_G16_W4A16_BC_all_experts": 0.10100489,
+            "Had128NoPerm_HF_INT4_G16_W4A16_BC_shared_attn_only": 0.10325022,
+            "Had128NoPerm_HF_INT4_G16_W4A16_BC_threshold_64": 0.10138922
+          },
+          "winner": "BC_all_experts"
+        },
+        "MLX_asym_G64": {
+          "combined_kl": {
+            "MLX_asym_G64_BC_all_experts": 0.12809486,
+            "MLX_asym_G64_BC_shared_attn_only": 0.13418957,
+            "MLX_asym_G64_BC_threshold_64": 0.12724425
+          },
+          "winner": "BC_threshold_64"
+        }
+      }
+    },
+    "phi4_mini": {
+      "cross_domain_mean_x_cosine": {
+        "down_proj": {
+          "mean": 0.42339,
+          "median": 0.37043,
+          "n": 32,
+          "p5": 0.22785
+        },
+        "gate_up_proj": {
+          "mean": 0.44706,
+          "median": 0.44103,
+          "n": 32,
+          "p5": 0.25731
+        },
+        "o_proj": {
+          "mean": 0.28486,
+          "median": 0.2202,
+          "n": 32,
+          "p5": 0.05555
+        },
+        "qkv_proj": {
+          "mean": 0.80077,
+          "median": 0.82262,
+          "n": 32,
+          "p5": 0.65024
+        }
+      },
+      "kv_isolation": {
+        "code": {
+          "delta_k_only_minus_v_only": -0.00973936,
+          "k_only_kl": 0.00524895,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.01498831
+        },
+        "combined": {
+          "delta_k_only_minus_v_only": -0.0088921,
+          "k_only_kl": 0.00524897,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.01414108
+        },
+        "wt2": {
+          "delta_k_only_minus_v_only": -0.00804485,
+          "k_only_kl": 0.00524899,
+          "sensitivity": "V-sensitive",
+          "v_only_kl": 0.01329384
+        }
+      },
+      "mcnemar_total_160": {
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__BF16_reference": {
+          "broken_in_first": 10,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.81452942,
+          "fixed_in_first": 8,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC__vs__Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "broken_in_first": 9,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.2668457,
+          "fixed_in_first": 4,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 10,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.05010246,
+          "fixed_in_first": 22,
+          "n_items": 160
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF__vs__SymINT4_G128_RTN_DF": {
+          "broken_in_first": 14,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.31050466,
+          "fixed_in_first": 21,
+          "n_items": 160
+        },
+        "MLX_asym_G64_BC__vs__MLX_asym_G64_DF": {
+          "broken_in_first": 18,
+          "direction": "fixed_in_first means incorrect in second but correct in first",
+          "exact_two_sided_p": 0.5966149,
+          "fixed_in_first": 14,
+          "n_items": 160
+        }
+      },
+      "model": {
+        "architectures": [
+          "Phi3ForCausalLM"
+        ],
+        "hidden_size": 3072,
+        "layers_evaluated": 32,
+        "layers_full": 32,
+        "type": "Phi3ForCausalLM"
+      },
+      "moe_biascorr_policy_choice": {
+        "Had128NoPerm_HF_INT4_G16_W4A16": {
+          "winner": "BC"
+        },
+        "MLX_asym_G64": {
+          "winner": "BC"
+        }
+      }
+    }
+  },
+  "experiment": "Exp15B cross-family aggregate: causal KL plus 160-item deterministic graded tasks",
+  "generated_at": "2026-11-25T09:49:38Z",
+  "kl_scoreboard": {
+    "llama32_3b": {
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "code_kl": 0.09949982,
+        "combined_kl": 0.10551974,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC",
+        "task_drop": 20,
+        "wt2_kl": 0.11153966
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "code_kl": 0.08105461,
+        "combined_kl": 0.07955469,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "task_drop": 11,
+        "wt2_kl": 0.07805476
+      },
+      "MLX_asym_G64_BC": {
+        "code_kl": 0.13107929,
+        "combined_kl": 0.13324424,
+        "partA_arm": "MLX_asym_G64_BC",
+        "task_drop": 12,
+        "wt2_kl": 0.13540918
+      },
+      "MLX_asym_G64_DF": {
+        "code_kl": 0.09951118,
+        "combined_kl": 0.10283416,
+        "partA_arm": "MLX_asym_G64_DF",
+        "task_drop": 10,
+        "wt2_kl": 0.10615714
+      },
+      "SymINT4_G128_RTN_DF": {
+        "code_kl": 0.14379647,
+        "combined_kl": 0.14006285,
+        "partA_arm": "SymINT4_G128_RTN_DF",
+        "task_drop": 14,
+        "wt2_kl": 0.13632923
+      },
+      "_all_partA_arms": {
+        "BF16": {
+          "code": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 2.159758,
+            "ppl": 8.66904,
+            "top1_agree_pct": 100.0
+          },
+          "combined": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 2.691336,
+            "ppl": 14.75137,
+            "top1_agree_pct": 100.0
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+          "code": {
+            "kl_vs_bf16": 0.09949982,
+            "n_tokens": 2044,
+            "nll": 2.244419,
+            "ppl": 9.43493,
+            "top1_agree_pct": 87.182
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10551974,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.11153966,
+            "n_tokens": 2044,
+            "nll": 2.841553,
+            "ppl": 17.14237,
+            "top1_agree_pct": 83.9041
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "code": {
+            "kl_vs_bf16": 0.08105461,
+            "n_tokens": 2044,
+            "nll": 2.22129,
+            "ppl": 9.21922,
+            "top1_agree_pct": 88.1605
+          },
+          "combined": {
+            "kl_vs_bf16": 0.07955469,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.07805476,
+            "n_tokens": 2044,
+            "nll": 2.782126,
+            "ppl": 16.15332,
+            "top1_agree_pct": 87.4266
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Konly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.00192133,
+            "n_tokens": 2044,
+            "nll": 2.161618,
+            "ppl": 8.68518,
+            "top1_agree_pct": 98.2877
+          },
+          "combined": {
+            "kl_vs_bf16": 0.00177495,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.00162857,
+            "n_tokens": 2044,
+            "nll": 2.693082,
+            "ppl": 14.77715,
+            "top1_agree_pct": 98.5323
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Vonly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.00905969,
+            "n_tokens": 2044,
+            "nll": 2.164488,
+            "ppl": 8.71014,
+            "top1_agree_pct": 96.8689
+          },
+          "combined": {
+            "kl_vs_bf16": 0.00849501,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.00793032,
+            "n_tokens": 2044,
+            "nll": 2.686538,
+            "ppl": 14.68076,
+            "top1_agree_pct": 95.9393
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.12497138,
+            "n_tokens": 2044,
+            "nll": 2.247291,
+            "ppl": 9.46206,
+            "top1_agree_pct": 85.1761
+          },
+          "combined": {
+            "kl_vs_bf16": 0.11602847,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.10708557,
+            "n_tokens": 2044,
+            "nll": 2.782794,
+            "ppl": 16.16412,
+            "top1_agree_pct": 84.9315
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_BC": {
+          "code": {
+            "kl_vs_bf16": 0.10068812,
+            "n_tokens": 2044,
+            "nll": 2.243908,
+            "ppl": 9.43012,
+            "top1_agree_pct": 87.3288
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10546299,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.11023786,
+            "n_tokens": 2044,
+            "nll": 2.841553,
+            "ppl": 17.14236,
+            "top1_agree_pct": 84.2955
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_DF": {
+          "code": {
+            "kl_vs_bf16": 0.08162098,
+            "n_tokens": 2044,
+            "nll": 2.220265,
+            "ppl": 9.20977,
+            "top1_agree_pct": 88.2094
+          },
+          "combined": {
+            "kl_vs_bf16": 0.080047,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.07847302,
+            "n_tokens": 2044,
+            "nll": 2.781731,
+            "ppl": 16.14694,
+            "top1_agree_pct": 87.4266
+          }
+        },
+        "MLX_asym_G64_BC": {
+          "code": {
+            "kl_vs_bf16": 0.13107929,
+            "n_tokens": 2044,
+            "nll": 2.285655,
+            "ppl": 9.83212,
+            "top1_agree_pct": 84.7847
+          },
+          "combined": {
+            "kl_vs_bf16": 0.13324424,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.13540918,
+            "n_tokens": 2044,
+            "nll": 2.836299,
+            "ppl": 17.05253,
+            "top1_agree_pct": 83.953
+          }
+        },
+        "MLX_asym_G64_DF": {
+          "code": {
+            "kl_vs_bf16": 0.09951118,
+            "n_tokens": 2044,
+            "nll": 2.245222,
+            "ppl": 9.44251,
+            "top1_agree_pct": 86.7906
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10283416,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.10615714,
+            "n_tokens": 2044,
+            "nll": 2.765921,
+            "ppl": 15.89367,
+            "top1_agree_pct": 85.7143
+          }
+        },
+        "MLX_asym_G64_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.16869982,
+            "n_tokens": 2044,
+            "nll": 2.28409,
+            "ppl": 9.81675,
+            "top1_agree_pct": 83.5616
+          },
+          "combined": {
+            "kl_vs_bf16": 0.16409393,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.15948803,
+            "n_tokens": 2044,
+            "nll": 2.779807,
+            "ppl": 16.11591,
+            "top1_agree_pct": 81.8493
+          }
+        },
+        "NVFP4_46_BC": {
+          "code": {
+            "kl_vs_bf16": 0.06923316,
+            "n_tokens": 2044,
+            "nll": 2.199867,
+            "ppl": 9.02381,
+            "top1_agree_pct": 88.8943
+          },
+          "combined": {
+            "kl_vs_bf16": 0.06858482,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.06793649,
+            "n_tokens": 2044,
+            "nll": 2.795512,
+            "ppl": 16.37101,
+            "top1_agree_pct": 88.2094
+          }
+        },
+        "NVFP4_46_DF": {
+          "code": {
+            "kl_vs_bf16": 0.05861024,
+            "n_tokens": 2044,
+            "nll": 2.20124,
+            "ppl": 9.03621,
+            "top1_agree_pct": 90.1174
+          },
+          "combined": {
+            "kl_vs_bf16": 0.0584423,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.05827436,
+            "n_tokens": 2044,
+            "nll": 2.784393,
+            "ppl": 16.18999,
+            "top1_agree_pct": 89.1879
+          }
+        },
+        "NVFP4_46_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.10116914,
+            "n_tokens": 2044,
+            "nll": 2.235563,
+            "ppl": 9.35174,
+            "top1_agree_pct": 86.3503
+          },
+          "combined": {
+            "kl_vs_bf16": 0.09960083,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.09803251,
+            "n_tokens": 2044,
+            "nll": 2.818773,
+            "ppl": 16.75628,
+            "top1_agree_pct": 85.7632
+          }
+        },
+        "SymINT4_G128_RTN_BC": {
+          "code": {
+            "kl_vs_bf16": 0.17750703,
+            "n_tokens": 2044,
+            "nll": 2.286151,
+            "ppl": 9.837,
+            "top1_agree_pct": 82.9746
+          },
+          "combined": {
+            "kl_vs_bf16": 0.17220571,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.1669044,
+            "n_tokens": 2044,
+            "nll": 2.827052,
+            "ppl": 16.89558,
+            "top1_agree_pct": 82.4364
+          }
+        },
+        "SymINT4_G128_RTN_DF": {
+          "code": {
+            "kl_vs_bf16": 0.14379647,
+            "n_tokens": 2044,
+            "nll": 2.259398,
+            "ppl": 9.57732,
+            "top1_agree_pct": 84.002
+          },
+          "combined": {
+            "kl_vs_bf16": 0.14006285,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.13632923,
+            "n_tokens": 2044,
+            "nll": 2.809737,
+            "ppl": 16.60555,
+            "top1_agree_pct": 83.953
+          }
+        },
+        "SymINT4_G128_RTN_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.29600288,
+            "n_tokens": 2044,
+            "nll": 2.398345,
+            "ppl": 11.00495,
+            "top1_agree_pct": 76.908
+          },
+          "combined": {
+            "kl_vs_bf16": 0.2811706,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.26633831,
+            "n_tokens": 2044,
+            "nll": 2.978964,
+            "ppl": 19.66743,
+            "top1_agree_pct": 77.2016
+          }
+        }
+      }
+    },
+    "olmo2_7b": {
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "code_kl": 0.18345028,
+        "combined_kl": 0.20539005,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC",
+        "task_drop": -3,
+        "wt2_kl": 0.22732982
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "code_kl": 0.06481869,
+        "combined_kl": 0.06894957,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "task_drop": 1,
+        "wt2_kl": 0.07308045
+      },
+      "MLX_asym_G64_BC": {
+        "code_kl": 0.2303782,
+        "combined_kl": 0.25920898,
+        "partA_arm": "MLX_asym_G64_BC",
+        "task_drop": -2,
+        "wt2_kl": 0.28803976
+      },
+      "MLX_asym_G64_DF": {
+        "code_kl": 0.08217393,
+        "combined_kl": 0.090526,
+        "partA_arm": "MLX_asym_G64_DF",
+        "task_drop": -9,
+        "wt2_kl": 0.09887807
+      },
+      "SymINT4_G128_RTN_DF": {
+        "code_kl": 0.15635938,
+        "combined_kl": 0.1771291,
+        "partA_arm": "SymINT4_G128_RTN_DF",
+        "task_drop": -1,
+        "wt2_kl": 0.19789881
+      },
+      "_all_partA_arms": {
+        "BF16": {
+          "code": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 2.342814,
+            "ppl": 10.41049,
+            "top1_agree_pct": 100.0
+          },
+          "combined": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 2.462449,
+            "ppl": 11.73351,
+            "top1_agree_pct": 100.0
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+          "code": {
+            "kl_vs_bf16": 0.18345028,
+            "n_tokens": 2044,
+            "nll": 2.511086,
+            "ppl": 12.3183,
+            "top1_agree_pct": 85.9589
+          },
+          "combined": {
+            "kl_vs_bf16": 0.20539005,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.22732982,
+            "n_tokens": 2044,
+            "nll": 2.650374,
+            "ppl": 14.15934,
+            "top1_agree_pct": 83.9041
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "code": {
+            "kl_vs_bf16": 0.06481869,
+            "n_tokens": 2044,
+            "nll": 2.363878,
+            "ppl": 10.6321,
+            "top1_agree_pct": 90.2153
+          },
+          "combined": {
+            "kl_vs_bf16": 0.06894957,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.07308045,
+            "n_tokens": 2044,
+            "nll": 2.498045,
+            "ppl": 12.1587,
+            "top1_agree_pct": 89.2857
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Konly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.00226947,
+            "n_tokens": 2044,
+            "nll": 2.338365,
+            "ppl": 10.36428,
+            "top1_agree_pct": 98.3366
+          },
+          "combined": {
+            "kl_vs_bf16": 0.00214442,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.00201937,
+            "n_tokens": 2044,
+            "nll": 2.462416,
+            "ppl": 11.73312,
+            "top1_agree_pct": 97.8963
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Vonly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.01070311,
+            "n_tokens": 2044,
+            "nll": 2.328291,
+            "ppl": 10.26039,
+            "top1_agree_pct": 95.6458
+          },
+          "combined": {
+            "kl_vs_bf16": 0.00949107,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.00827903,
+            "n_tokens": 2044,
+            "nll": 2.474706,
+            "ppl": 11.87822,
+            "top1_agree_pct": 96.2329
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.29451916,
+            "n_tokens": 2044,
+            "nll": 2.555215,
+            "ppl": 12.87407,
+            "top1_agree_pct": 80.773
+          },
+          "combined": {
+            "kl_vs_bf16": 0.30031737,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.30611558,
+            "n_tokens": 2044,
+            "nll": 2.629857,
+            "ppl": 13.87178,
+            "top1_agree_pct": 78.9628
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_BC": {
+          "code": {
+            "kl_vs_bf16": 0.18859428,
+            "n_tokens": 2044,
+            "nll": 2.515227,
+            "ppl": 12.36942,
+            "top1_agree_pct": 85.8121
+          },
+          "combined": {
+            "kl_vs_bf16": 0.20799932,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.22740437,
+            "n_tokens": 2044,
+            "nll": 2.650156,
+            "ppl": 14.15624,
+            "top1_agree_pct": 83.8552
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_DF": {
+          "code": {
+            "kl_vs_bf16": 0.0672123,
+            "n_tokens": 2044,
+            "nll": 2.370685,
+            "ppl": 10.70472,
+            "top1_agree_pct": 89.9217
+          },
+          "combined": {
+            "kl_vs_bf16": 0.07158918,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.07596606,
+            "n_tokens": 2044,
+            "nll": 2.498499,
+            "ppl": 12.16422,
+            "top1_agree_pct": 89.2857
+          }
+        },
+        "MLX_asym_G64_BC": {
+          "code": {
+            "kl_vs_bf16": 0.2303782,
+            "n_tokens": 2044,
+            "nll": 2.600129,
+            "ppl": 13.46547,
+            "top1_agree_pct": 84.0998
+          },
+          "combined": {
+            "kl_vs_bf16": 0.25920898,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.28803976,
+            "n_tokens": 2044,
+            "nll": 2.754804,
+            "ppl": 15.71795,
+            "top1_agree_pct": 81.8982
+          }
+        },
+        "MLX_asym_G64_DF": {
+          "code": {
+            "kl_vs_bf16": 0.08217393,
+            "n_tokens": 2044,
+            "nll": 2.385306,
+            "ppl": 10.86239,
+            "top1_agree_pct": 88.8943
+          },
+          "combined": {
+            "kl_vs_bf16": 0.090526,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.09887807,
+            "n_tokens": 2044,
+            "nll": 2.498236,
+            "ppl": 12.16102,
+            "top1_agree_pct": 87.7202
+          }
+        },
+        "MLX_asym_G64_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.32704537,
+            "n_tokens": 2044,
+            "nll": 2.524944,
+            "ppl": 12.4902,
+            "top1_agree_pct": 79.501
+          },
+          "combined": {
+            "kl_vs_bf16": 0.34645959,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.3658738,
+            "n_tokens": 2044,
+            "nll": 2.639989,
+            "ppl": 14.01305,
+            "top1_agree_pct": 77.593
+          }
+        },
+        "NVFP4_46_BC": {
+          "code": {
+            "kl_vs_bf16": 0.17687008,
+            "n_tokens": 2044,
+            "nll": 2.490697,
+            "ppl": 12.06969,
+            "top1_agree_pct": 86.4971
+          },
+          "combined": {
+            "kl_vs_bf16": 0.19739298,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.21791587,
+            "n_tokens": 2044,
+            "nll": 2.582993,
+            "ppl": 13.2367,
+            "top1_agree_pct": 82.681
+          }
+        },
+        "NVFP4_46_DF": {
+          "code": {
+            "kl_vs_bf16": 0.06987227,
+            "n_tokens": 2044,
+            "nll": 2.387234,
+            "ppl": 10.88335,
+            "top1_agree_pct": 88.9922
+          },
+          "combined": {
+            "kl_vs_bf16": 0.07325545,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.07663862,
+            "n_tokens": 2044,
+            "nll": 2.501861,
+            "ppl": 12.20519,
+            "top1_agree_pct": 87.5245
+          }
+        },
+        "NVFP4_46_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.28145469,
+            "n_tokens": 2044,
+            "nll": 2.653185,
+            "ppl": 14.19919,
+            "top1_agree_pct": 82.2407
+          },
+          "combined": {
+            "kl_vs_bf16": 0.30947166,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.33748863,
+            "n_tokens": 2044,
+            "nll": 2.774212,
+            "ppl": 16.026,
+            "top1_agree_pct": 78.7671
+          }
+        },
+        "SymINT4_G128_RTN_BC": {
+          "code": {
+            "kl_vs_bf16": 0.30181202,
+            "n_tokens": 2044,
+            "nll": 2.540715,
+            "ppl": 12.68874,
+            "top1_agree_pct": 80.5773
+          },
+          "combined": {
+            "kl_vs_bf16": 0.34131432,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.38081662,
+            "n_tokens": 2044,
+            "nll": 2.717115,
+            "ppl": 15.1366,
+            "top1_agree_pct": 74.8043
+          }
+        },
+        "SymINT4_G128_RTN_DF": {
+          "code": {
+            "kl_vs_bf16": 0.15635938,
+            "n_tokens": 2044,
+            "nll": 2.403013,
+            "ppl": 11.05644,
+            "top1_agree_pct": 85.0783
+          },
+          "combined": {
+            "kl_vs_bf16": 0.1771291,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.19789881,
+            "n_tokens": 2044,
+            "nll": 2.596842,
+            "ppl": 13.42129,
+            "top1_agree_pct": 82.681
+          }
+        },
+        "SymINT4_G128_RTN_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.68651411,
+            "n_tokens": 2044,
+            "nll": 2.862621,
+            "ppl": 17.50736,
+            "top1_agree_pct": 72.9452
+          },
+          "combined": {
+            "kl_vs_bf16": 0.70172067,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.71692723,
+            "n_tokens": 2044,
+            "nll": 3.03198,
+            "ppl": 20.73825,
+            "top1_agree_pct": 68.5421
+          }
+        }
+      }
+    },
+    "olmoe_1b7b": {
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "code_kl": 0.07516718,
+        "combined_kl": 0.10100489,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC_all_experts",
+        "task_drop": 6,
+        "wt2_kl": 0.1268426
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "code_kl": 0.08150223,
+        "combined_kl": 0.10636704,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "task_drop": 1,
+        "wt2_kl": 0.13123185
+      },
+      "MLX_asym_G64_BC": {
+        "code_kl": 0.09571815,
+        "combined_kl": 0.12724425,
+        "partA_arm": "MLX_asym_G64_BC_threshold_64",
+        "task_drop": 5,
+        "wt2_kl": 0.15877035
+      },
+      "MLX_asym_G64_DF": {
+        "code_kl": 0.1053082,
+        "combined_kl": 0.13444787,
+        "partA_arm": "MLX_asym_G64_DF",
+        "task_drop": 15,
+        "wt2_kl": 0.16358753
+      },
+      "SymINT4_G128_RTN_DF": {
+        "code_kl": 0.1686537,
+        "combined_kl": 0.20159905,
+        "partA_arm": "SymINT4_G128_RTN_DF",
+        "task_drop": 9,
+        "wt2_kl": 0.2345444
+      },
+      "_all_partA_arms": {
+        "BF16": {
+          "code": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 2.207937,
+            "ppl": 9.09693,
+            "top1_agree_pct": 100.0
+          },
+          "combined": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 2.612169,
+            "ppl": 13.62858,
+            "top1_agree_pct": 100.0
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC_all_experts": {
+          "code": {
+            "kl_vs_bf16": 0.07516718,
+            "n_tokens": 2044,
+            "nll": 2.235596,
+            "ppl": 9.35206,
+            "top1_agree_pct": 89.2857
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10100489,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.1268426,
+            "n_tokens": 2044,
+            "nll": 2.660779,
+            "ppl": 14.30743,
+            "top1_agree_pct": 85.9589
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC_shared_attn_only": {
+          "code": {
+            "kl_vs_bf16": 0.07766227,
+            "n_tokens": 2044,
+            "nll": 2.238704,
+            "ppl": 9.38117,
+            "top1_agree_pct": 89.4325
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10325022,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.12883816,
+            "n_tokens": 2044,
+            "nll": 2.674738,
+            "ppl": 14.50856,
+            "top1_agree_pct": 85.7632
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC_threshold_64": {
+          "code": {
+            "kl_vs_bf16": 0.07503688,
+            "n_tokens": 2044,
+            "nll": 2.23835,
+            "ppl": 9.37785,
+            "top1_agree_pct": 89.2857
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10138922,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.12774156,
+            "n_tokens": 2044,
+            "nll": 2.657768,
+            "ppl": 14.26442,
+            "top1_agree_pct": 85.9589
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "code": {
+            "kl_vs_bf16": 0.08150223,
+            "n_tokens": 2044,
+            "nll": 2.248118,
+            "ppl": 9.4699,
+            "top1_agree_pct": 89.0411
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10636704,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.13123185,
+            "n_tokens": 2044,
+            "nll": 2.689655,
+            "ppl": 14.72659,
+            "top1_agree_pct": 85.91
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Konly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.00775113,
+            "n_tokens": 2044,
+            "nll": 2.208102,
+            "ppl": 9.09843,
+            "top1_agree_pct": 96.5753
+          },
+          "combined": {
+            "kl_vs_bf16": 0.00982487,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.0118986,
+            "n_tokens": 2044,
+            "nll": 2.623041,
+            "ppl": 13.77756,
+            "top1_agree_pct": 95.3523
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Vonly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.02600899,
+            "n_tokens": 2044,
+            "nll": 2.215815,
+            "ppl": 9.16888,
+            "top1_agree_pct": 93.6888
+          },
+          "combined": {
+            "kl_vs_bf16": 0.03242808,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.03884718,
+            "n_tokens": 2044,
+            "nll": 2.627904,
+            "ppl": 13.84472,
+            "top1_agree_pct": 92.2211
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.13180521,
+            "n_tokens": 2044,
+            "nll": 2.28138,
+            "ppl": 9.79019,
+            "top1_agree_pct": 86.2035
+          },
+          "combined": {
+            "kl_vs_bf16": 0.16155532,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.19130542,
+            "n_tokens": 2044,
+            "nll": 2.722809,
+            "ppl": 15.22302,
+            "top1_agree_pct": 82.6321
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_BC": {
+          "code": {
+            "kl_vs_bf16": 0.07539599,
+            "n_tokens": 2044,
+            "nll": 2.242325,
+            "ppl": 9.4152,
+            "top1_agree_pct": 89.8728
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10138104,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.1273661,
+            "n_tokens": 2044,
+            "nll": 2.660387,
+            "ppl": 14.30183,
+            "top1_agree_pct": 85.5186
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_DF": {
+          "code": {
+            "kl_vs_bf16": 0.08268853,
+            "n_tokens": 2044,
+            "nll": 2.248362,
+            "ppl": 9.47221,
+            "top1_agree_pct": 88.2094
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10845083,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.13421312,
+            "n_tokens": 2044,
+            "nll": 2.696158,
+            "ppl": 14.82267,
+            "top1_agree_pct": 85.4207
+          }
+        },
+        "MLX_asym_G64_BC_all_experts": {
+          "code": {
+            "kl_vs_bf16": 0.09613736,
+            "n_tokens": 2044,
+            "nll": 2.286036,
+            "ppl": 9.83587,
+            "top1_agree_pct": 87.9648
+          },
+          "combined": {
+            "kl_vs_bf16": 0.12809486,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.16005236,
+            "n_tokens": 2044,
+            "nll": 2.66544,
+            "ppl": 14.37427,
+            "top1_agree_pct": 82.6321
+          }
+        },
+        "MLX_asym_G64_BC_shared_attn_only": {
+          "code": {
+            "kl_vs_bf16": 0.10187926,
+            "n_tokens": 2044,
+            "nll": 2.290651,
+            "ppl": 9.88137,
+            "top1_agree_pct": 87.9159
+          },
+          "combined": {
+            "kl_vs_bf16": 0.13418957,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.16649988,
+            "n_tokens": 2044,
+            "nll": 2.711067,
+            "ppl": 15.04532,
+            "top1_agree_pct": 83.4638
+          }
+        },
+        "MLX_asym_G64_BC_threshold_64": {
+          "code": {
+            "kl_vs_bf16": 0.09571815,
+            "n_tokens": 2044,
+            "nll": 2.288044,
+            "ppl": 9.85564,
+            "top1_agree_pct": 87.9159
+          },
+          "combined": {
+            "kl_vs_bf16": 0.12724425,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.15877035,
+            "n_tokens": 2044,
+            "nll": 2.66723,
+            "ppl": 14.40003,
+            "top1_agree_pct": 82.3875
+          }
+        },
+        "MLX_asym_G64_DF": {
+          "code": {
+            "kl_vs_bf16": 0.1053082,
+            "n_tokens": 2044,
+            "nll": 2.289608,
+            "ppl": 9.87107,
+            "top1_agree_pct": 86.9863
+          },
+          "combined": {
+            "kl_vs_bf16": 0.13444787,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.16358753,
+            "n_tokens": 2044,
+            "nll": 2.712923,
+            "ppl": 15.07327,
+            "top1_agree_pct": 83.6106
+          }
+        },
+        "MLX_asym_G64_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.19390014,
+            "n_tokens": 2044,
+            "nll": 2.344088,
+            "ppl": 10.42376,
+            "top1_agree_pct": 83.3659
+          },
+          "combined": {
+            "kl_vs_bf16": 0.2382116,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.28252305,
+            "n_tokens": 2044,
+            "nll": 2.799237,
+            "ppl": 16.43211,
+            "top1_agree_pct": 77.6419
+          }
+        },
+        "NVFP4_46_BC": {
+          "code": {
+            "kl_vs_bf16": 0.07822904,
+            "n_tokens": 2044,
+            "nll": 2.219742,
+            "ppl": 9.20496,
+            "top1_agree_pct": 88.3072
+          },
+          "combined": {
+            "kl_vs_bf16": 0.10470238,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.13117571,
+            "n_tokens": 2044,
+            "nll": 2.664117,
+            "ppl": 14.35526,
+            "top1_agree_pct": 85.0294
+          }
+        },
+        "NVFP4_46_DF": {
+          "code": {
+            "kl_vs_bf16": 0.07826131,
+            "n_tokens": 2044,
+            "nll": 2.210548,
+            "ppl": 9.12071,
+            "top1_agree_pct": 87.8669
+          },
+          "combined": {
+            "kl_vs_bf16": 0.09975034,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.12123938,
+            "n_tokens": 2044,
+            "nll": 2.662837,
+            "ppl": 14.33691,
+            "top1_agree_pct": 84.9315
+          }
+        },
+        "NVFP4_46_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.11303614,
+            "n_tokens": 2044,
+            "nll": 2.22671,
+            "ppl": 9.26932,
+            "top1_agree_pct": 86.7417
+          },
+          "combined": {
+            "kl_vs_bf16": 0.13535151,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.15766687,
+            "n_tokens": 2044,
+            "nll": 2.669269,
+            "ppl": 14.42942,
+            "top1_agree_pct": 82.4853
+          }
+        },
+        "SymINT4_G128_RTN_BC": {
+          "code": {
+            "kl_vs_bf16": 0.15645121,
+            "n_tokens": 2044,
+            "nll": 2.264657,
+            "ppl": 9.62782,
+            "top1_agree_pct": 84.002
+          },
+          "combined": {
+            "kl_vs_bf16": 0.20381124,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.25117127,
+            "n_tokens": 2044,
+            "nll": 2.68576,
+            "ppl": 14.66935,
+            "top1_agree_pct": 78.7182
+          }
+        },
+        "SymINT4_G128_RTN_DF": {
+          "code": {
+            "kl_vs_bf16": 0.1686537,
+            "n_tokens": 2044,
+            "nll": 2.303931,
+            "ppl": 10.01347,
+            "top1_agree_pct": 83.5127
+          },
+          "combined": {
+            "kl_vs_bf16": 0.20159905,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.2345444,
+            "n_tokens": 2044,
+            "nll": 2.70365,
+            "ppl": 14.93414,
+            "top1_agree_pct": 80.1859
+          }
+        },
+        "SymINT4_G128_RTN_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.27910274,
+            "n_tokens": 2044,
+            "nll": 2.392758,
+            "ppl": 10.94363,
+            "top1_agree_pct": 79.4031
+          },
+          "combined": {
+            "kl_vs_bf16": 0.29977429,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.32044585,
+            "n_tokens": 2044,
+            "nll": 2.739612,
+            "ppl": 15.48098,
+            "top1_agree_pct": 77.0548
+          }
+        }
+      }
+    },
+    "phi4_mini": {
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "code_kl": 0.1959022,
+        "combined_kl": 0.2014225,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC",
+        "task_drop": 2,
+        "wt2_kl": 0.20694281
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "code_kl": 0.18991379,
+        "combined_kl": 0.19174727,
+        "partA_arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "task_drop": -3,
+        "wt2_kl": 0.19358074
+      },
+      "MLX_asym_G64_BC": {
+        "code_kl": 0.2170987,
+        "combined_kl": 0.2258611,
+        "partA_arm": "MLX_asym_G64_BC",
+        "task_drop": 13,
+        "wt2_kl": 0.23462349
+      },
+      "MLX_asym_G64_DF": {
+        "code_kl": 0.22053963,
+        "combined_kl": 0.22982319,
+        "partA_arm": "MLX_asym_G64_DF",
+        "task_drop": 9,
+        "wt2_kl": 0.23910675
+      },
+      "SymINT4_G128_RTN_DF": {
+        "code_kl": 0.24552239,
+        "combined_kl": 0.25431418,
+        "partA_arm": "SymINT4_G128_RTN_DF",
+        "task_drop": 4,
+        "wt2_kl": 0.26310598
+      },
+      "_all_partA_arms": {
+        "BF16": {
+          "code": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 1.954203,
+            "ppl": 7.05829,
+            "top1_agree_pct": 100.0
+          },
+          "combined": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.0,
+            "n_tokens": 2044,
+            "nll": 2.470176,
+            "ppl": 11.82452,
+            "top1_agree_pct": 100.0
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+          "code": {
+            "kl_vs_bf16": 0.1959022,
+            "n_tokens": 2044,
+            "nll": 2.104581,
+            "ppl": 8.20367,
+            "top1_agree_pct": 84.1977
+          },
+          "combined": {
+            "kl_vs_bf16": 0.2014225,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.20694281,
+            "n_tokens": 2044,
+            "nll": 2.6309,
+            "ppl": 13.88626,
+            "top1_agree_pct": 78.9628
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+          "code": {
+            "kl_vs_bf16": 0.18991379,
+            "n_tokens": 2044,
+            "nll": 2.09601,
+            "ppl": 8.13365,
+            "top1_agree_pct": 83.7084
+          },
+          "combined": {
+            "kl_vs_bf16": 0.19174727,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.19358074,
+            "n_tokens": 2044,
+            "nll": 2.624328,
+            "ppl": 13.79531,
+            "top1_agree_pct": 80.773
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Konly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.00524895,
+            "n_tokens": 2044,
+            "nll": 1.9531,
+            "ppl": 7.05051,
+            "top1_agree_pct": 97.6517
+          },
+          "combined": {
+            "kl_vs_bf16": 0.00524897,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.00524899,
+            "n_tokens": 2044,
+            "nll": 2.471046,
+            "ppl": 11.83482,
+            "top1_agree_pct": 96.3307
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_Vonly_DF": {
+          "code": {
+            "kl_vs_bf16": 0.01498831,
+            "n_tokens": 2044,
+            "nll": 1.956581,
+            "ppl": 7.0751,
+            "top1_agree_pct": 95.5479
+          },
+          "combined": {
+            "kl_vs_bf16": 0.01414108,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.01329384,
+            "n_tokens": 2044,
+            "nll": 2.472848,
+            "ppl": 11.85616,
+            "top1_agree_pct": 93.6888
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A16_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.27146727,
+            "n_tokens": 2044,
+            "nll": 2.165687,
+            "ppl": 8.72059,
+            "top1_agree_pct": 79.8924
+          },
+          "combined": {
+            "kl_vs_bf16": 0.26624608,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.2610249,
+            "n_tokens": 2044,
+            "nll": 2.692158,
+            "ppl": 14.7635,
+            "top1_agree_pct": 78.0333
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_BC": {
+          "code": {
+            "kl_vs_bf16": 0.20590347,
+            "n_tokens": 2044,
+            "nll": 2.109754,
+            "ppl": 8.24621,
+            "top1_agree_pct": 84.0509
+          },
+          "combined": {
+            "kl_vs_bf16": 0.21359288,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.2212823,
+            "n_tokens": 2044,
+            "nll": 2.64973,
+            "ppl": 14.15021,
+            "top1_agree_pct": 78.9139
+          }
+        },
+        "Had128NoPerm_HF_INT4_G16_W4A8_DF": {
+          "code": {
+            "kl_vs_bf16": 0.19924113,
+            "n_tokens": 2044,
+            "nll": 2.101887,
+            "ppl": 8.1816,
+            "top1_agree_pct": 83.7573
+          },
+          "combined": {
+            "kl_vs_bf16": 0.20365966,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.20807819,
+            "n_tokens": 2044,
+            "nll": 2.638656,
+            "ppl": 13.99438,
+            "top1_agree_pct": 80.6262
+          }
+        },
+        "MLX_asym_G64_BC": {
+          "code": {
+            "kl_vs_bf16": 0.2170987,
+            "n_tokens": 2044,
+            "nll": 2.14916,
+            "ppl": 8.57765,
+            "top1_agree_pct": 82.7299
+          },
+          "combined": {
+            "kl_vs_bf16": 0.2258611,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.23462349,
+            "n_tokens": 2044,
+            "nll": 2.644196,
+            "ppl": 14.07213,
+            "top1_agree_pct": 77.8376
+          }
+        },
+        "MLX_asym_G64_DF": {
+          "code": {
+            "kl_vs_bf16": 0.22053963,
+            "n_tokens": 2044,
+            "nll": 2.146378,
+            "ppl": 8.55382,
+            "top1_agree_pct": 82.8767
+          },
+          "combined": {
+            "kl_vs_bf16": 0.22982319,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.23910675,
+            "n_tokens": 2044,
+            "nll": 2.659175,
+            "ppl": 14.2845,
+            "top1_agree_pct": 77.9354
+          }
+        },
+        "MLX_asym_G64_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.33186876,
+            "n_tokens": 2044,
+            "nll": 2.241713,
+            "ppl": 9.40944,
+            "top1_agree_pct": 77.7397
+          },
+          "combined": {
+            "kl_vs_bf16": 0.34101704,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.35016533,
+            "n_tokens": 2044,
+            "nll": 2.765556,
+            "ppl": 15.88787,
+            "top1_agree_pct": 72.5049
+          }
+        },
+        "NVFP4_46_BC": {
+          "code": {
+            "kl_vs_bf16": 0.16470288,
+            "n_tokens": 2044,
+            "nll": 2.090002,
+            "ppl": 8.08493,
+            "top1_agree_pct": 85.6654
+          },
+          "combined": {
+            "kl_vs_bf16": 0.16166663,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.15863038,
+            "n_tokens": 2044,
+            "nll": 2.587899,
+            "ppl": 13.3018,
+            "top1_agree_pct": 82.0939
+          }
+        },
+        "NVFP4_46_DF": {
+          "code": {
+            "kl_vs_bf16": 0.15951888,
+            "n_tokens": 2044,
+            "nll": 2.081319,
+            "ppl": 8.01503,
+            "top1_agree_pct": 85.9589
+          },
+          "combined": {
+            "kl_vs_bf16": 0.15405927,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.14859966,
+            "n_tokens": 2044,
+            "nll": 2.576888,
+            "ppl": 13.15613,
+            "top1_agree_pct": 82.1429
+          }
+        },
+        "NVFP4_46_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.21619334,
+            "n_tokens": 2044,
+            "nll": 2.126688,
+            "ppl": 8.38704,
+            "top1_agree_pct": 82.8767
+          },
+          "combined": {
+            "kl_vs_bf16": 0.20671093,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.19722853,
+            "n_tokens": 2044,
+            "nll": 2.622166,
+            "ppl": 13.76551,
+            "top1_agree_pct": 79.5988
+          }
+        },
+        "SymINT4_G128_RTN_BC": {
+          "code": {
+            "kl_vs_bf16": 0.26066789,
+            "n_tokens": 2044,
+            "nll": 2.168425,
+            "ppl": 8.7445,
+            "top1_agree_pct": 80.9198
+          },
+          "combined": {
+            "kl_vs_bf16": 0.29300002,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.32533215,
+            "n_tokens": 2044,
+            "nll": 2.753807,
+            "ppl": 15.7023,
+            "top1_agree_pct": 75.4403
+          }
+        },
+        "SymINT4_G128_RTN_DF": {
+          "code": {
+            "kl_vs_bf16": 0.24552239,
+            "n_tokens": 2044,
+            "nll": 2.164578,
+            "ppl": 8.71092,
+            "top1_agree_pct": 80.6751
+          },
+          "combined": {
+            "kl_vs_bf16": 0.25431418,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.26310598,
+            "n_tokens": 2044,
+            "nll": 2.68244,
+            "ppl": 14.62072,
+            "top1_agree_pct": 75.1468
+          }
+        },
+        "SymINT4_G128_RTN_minus_b": {
+          "code": {
+            "kl_vs_bf16": 0.42127677,
+            "n_tokens": 2044,
+            "nll": 2.342345,
+            "ppl": 10.4056,
+            "top1_agree_pct": 74.1683
+          },
+          "combined": {
+            "kl_vs_bf16": 0.41646495,
+            "n_tokens": 4088
+          },
+          "wt2": {
+            "kl_vs_bf16": 0.41165314,
+            "n_tokens": 2044,
+            "nll": 2.813571,
+            "ppl": 16.66934,
+            "top1_agree_pct": 69.9609
+          }
+        }
+      }
+    }
+  },
+  "kl_task_correlation_20_points": {
+    "n": 20,
+    "pearson": -0.15544730980848576,
+    "points": [
+      {
+        "arm": "SymINT4_G128_RTN_DF",
+        "kl": 0.14006285,
+        "model": "llama32_3b",
+        "task_drop": 14.0
+      },
+      {
+        "arm": "MLX_asym_G64_DF",
+        "kl": 0.10283416,
+        "model": "llama32_3b",
+        "task_drop": 10.0
+      },
+      {
+        "arm": "MLX_asym_G64_BC",
+        "kl": 0.13324424,
+        "model": "llama32_3b",
+        "task_drop": 12.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "kl": 0.07955469,
+        "model": "llama32_3b",
+        "task_drop": 11.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC",
+        "kl": 0.10551974,
+        "model": "llama32_3b",
+        "task_drop": 20.0
+      },
+      {
+        "arm": "SymINT4_G128_RTN_DF",
+        "kl": 0.25431418,
+        "model": "phi4_mini",
+        "task_drop": 4.0
+      },
+      {
+        "arm": "MLX_asym_G64_DF",
+        "kl": 0.22982319,
+        "model": "phi4_mini",
+        "task_drop": 9.0
+      },
+      {
+        "arm": "MLX_asym_G64_BC",
+        "kl": 0.2258611,
+        "model": "phi4_mini",
+        "task_drop": 13.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "kl": 0.19174727,
+        "model": "phi4_mini",
+        "task_drop": -3.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC",
+        "kl": 0.2014225,
+        "model": "phi4_mini",
+        "task_drop": 2.0
+      },
+      {
+        "arm": "SymINT4_G128_RTN_DF",
+        "kl": 0.1771291,
+        "model": "olmo2_7b",
+        "task_drop": -1.0
+      },
+      {
+        "arm": "MLX_asym_G64_DF",
+        "kl": 0.090526,
+        "model": "olmo2_7b",
+        "task_drop": -9.0
+      },
+      {
+        "arm": "MLX_asym_G64_BC",
+        "kl": 0.25920898,
+        "model": "olmo2_7b",
+        "task_drop": -2.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "kl": 0.06894957,
+        "model": "olmo2_7b",
+        "task_drop": 1.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC",
+        "kl": 0.20539005,
+        "model": "olmo2_7b",
+        "task_drop": -3.0
+      },
+      {
+        "arm": "SymINT4_G128_RTN_DF",
+        "kl": 0.20159905,
+        "model": "olmoe_1b7b",
+        "task_drop": 9.0
+      },
+      {
+        "arm": "MLX_asym_G64_DF",
+        "kl": 0.13444787,
+        "model": "olmoe_1b7b",
+        "task_drop": 15.0
+      },
+      {
+        "arm": "MLX_asym_G64_BC",
+        "kl": 0.12724425,
+        "model": "olmoe_1b7b",
+        "task_drop": 5.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_DF",
+        "kl": 0.10636704,
+        "model": "olmoe_1b7b",
+        "task_drop": 1.0
+      },
+      {
+        "arm": "Had128NoPerm_HF_INT4_G16_W4A16_BC",
+        "kl": 0.10100489,
+        "model": "olmoe_1b7b",
+        "task_drop": 6.0
+      }
+    ],
+    "spearman": -0.11592028465458372,
+    "x": "combined KL(BF16 || quantized arm), equal mean of WT2 and Code positions",
+    "y": "BF16_total_correct_minus_arm_total_correct on frozen 160-item suite"
+  },
+  "models": {
+    "llama32_3b": {
+      "commit_sha": "006f5dcd1393c3add266de40994ba96225e9689d",
+      "repo": "unsloth/Llama-3.2-3B-Instruct"
+    },
+    "olmo2_7b": {
+      "commit_sha": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+      "repo": "allenai/OLMo-2-1124-7B-Instruct"
+    },
+    "olmoe_1b7b": {
+      "commit_sha": "b89a7c4bc24fb9e55ce2543c9458ce0ca5c4650e",
+      "repo": "allenai/OLMoE-1B-7B-0125-Instruct"
+    },
+    "phi4_mini": {
+      "commit_sha": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "repo": "microsoft/Phi-4-mini-instruct"
+    }
+  },
+  "notes": [
+    "Router weights in OLMoE are control-plane parameters and were not quantized; attention projections and routed expert matrices were quantized.",
+    "MMLU includes both exact generated-letter accuracy and immediate-next-token four-way logprob accuracy.",
+    "McNemar direction is fixed_in_first/broken_in_first as documented in each per-model receipt."
+  ],
+  "task_scoreboard": {
+    "llama32_3b": {
+      "BF16_reference": {
+        "gsm8k": "47/60",
+        "humaneval": "26/40",
+        "mmlu": "31/60",
+        "mmlu_logprob": "31/60",
+        "total": "104/160",
+        "total_correct": 104
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "gsm8k": "44/60",
+        "humaneval": "19/40",
+        "mmlu": "21/60",
+        "mmlu_logprob": "22/60",
+        "total": "84/160",
+        "total_correct": 84
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "gsm8k": "44/60",
+        "humaneval": "21/40",
+        "mmlu": "28/60",
+        "mmlu_logprob": "28/60",
+        "total": "93/160",
+        "total_correct": 93
+      },
+      "MLX_asym_G64_BC": {
+        "gsm8k": "45/60",
+        "humaneval": "21/40",
+        "mmlu": "26/60",
+        "mmlu_logprob": "23/60",
+        "total": "92/160",
+        "total_correct": 92
+      },
+      "MLX_asym_G64_DF": {
+        "gsm8k": "48/60",
+        "humaneval": "21/40",
+        "mmlu": "25/60",
+        "mmlu_logprob": "23/60",
+        "total": "94/160",
+        "total_correct": 94
+      },
+      "SymINT4_G128_RTN_DF": {
+        "gsm8k": "45/60",
+        "humaneval": "22/40",
+        "mmlu": "23/60",
+        "mmlu_logprob": "22/60",
+        "total": "90/160",
+        "total_correct": 90
+      }
+    },
+    "olmo2_7b": {
+      "BF16_reference": {
+        "gsm8k": "41/60",
+        "humaneval": "21/40",
+        "mmlu": "28/60",
+        "mmlu_logprob": "31/60",
+        "total": "90/160",
+        "total_correct": 90
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "gsm8k": "42/60",
+        "humaneval": "22/40",
+        "mmlu": "29/60",
+        "mmlu_logprob": "30/60",
+        "total": "93/160",
+        "total_correct": 93
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "gsm8k": "36/60",
+        "humaneval": "23/40",
+        "mmlu": "30/60",
+        "mmlu_logprob": "29/60",
+        "total": "89/160",
+        "total_correct": 89
+      },
+      "MLX_asym_G64_BC": {
+        "gsm8k": "45/60",
+        "humaneval": "16/40",
+        "mmlu": "31/60",
+        "mmlu_logprob": "31/60",
+        "total": "92/160",
+        "total_correct": 92
+      },
+      "MLX_asym_G64_DF": {
+        "gsm8k": "47/60",
+        "humaneval": "20/40",
+        "mmlu": "32/60",
+        "mmlu_logprob": "33/60",
+        "total": "99/160",
+        "total_correct": 99
+      },
+      "SymINT4_G128_RTN_DF": {
+        "gsm8k": "42/60",
+        "humaneval": "22/40",
+        "mmlu": "27/60",
+        "mmlu_logprob": "30/60",
+        "total": "91/160",
+        "total_correct": 91
+      }
+    },
+    "olmoe_1b7b": {
+      "BF16_reference": {
+        "gsm8k": "42/60",
+        "humaneval": "16/40",
+        "mmlu": "25/60",
+        "mmlu_logprob": "27/60",
+        "total": "83/160",
+        "total_correct": 83
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "gsm8k": "31/60",
+        "humaneval": "18/40",
+        "mmlu": "28/60",
+        "mmlu_logprob": "27/60",
+        "total": "77/160",
+        "total_correct": 77
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "gsm8k": "36/60",
+        "humaneval": "20/40",
+        "mmlu": "26/60",
+        "mmlu_logprob": "26/60",
+        "total": "82/160",
+        "total_correct": 82
+      },
+      "MLX_asym_G64_BC": {
+        "gsm8k": "35/60",
+        "humaneval": "17/40",
+        "mmlu": "26/60",
+        "mmlu_logprob": "26/60",
+        "total": "78/160",
+        "total_correct": 78
+      },
+      "MLX_asym_G64_DF": {
+        "gsm8k": "35/60",
+        "humaneval": "8/40",
+        "mmlu": "25/60",
+        "mmlu_logprob": "24/60",
+        "total": "68/160",
+        "total_correct": 68
+      },
+      "SymINT4_G128_RTN_DF": {
+        "gsm8k": "36/60",
+        "humaneval": "12/40",
+        "mmlu": "26/60",
+        "mmlu_logprob": "23/60",
+        "total": "74/160",
+        "total_correct": 74
+      }
+    },
+    "phi4_mini": {
+      "BF16_reference": {
+        "gsm8k": "50/60",
+        "humaneval": "25/40",
+        "mmlu": "29/60",
+        "mmlu_logprob": "30/60",
+        "total": "104/160",
+        "total_correct": 104
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_BC": {
+        "gsm8k": "52/60",
+        "humaneval": "22/40",
+        "mmlu": "28/60",
+        "mmlu_logprob": "29/60",
+        "total": "102/160",
+        "total_correct": 102
+      },
+      "Had128NoPerm_HF_INT4_G16_W4A16_DF": {
+        "gsm8k": "53/60",
+        "humaneval": "28/40",
+        "mmlu": "26/60",
+        "mmlu_logprob": "28/60",
+        "total": "107/160",
+        "total_correct": 107
+      },
+      "MLX_asym_G64_BC": {
+        "gsm8k": "49/60",
+        "humaneval": "14/40",
+        "mmlu": "28/60",
+        "mmlu_logprob": "28/60",
+        "total": "91/160",
+        "total_correct": 91
+      },
+      "MLX_asym_G64_DF": {
+        "gsm8k": "50/60",
+        "humaneval": "22/40",
+        "mmlu": "23/60",
+        "mmlu_logprob": "25/60",
+        "total": "95/160",
+        "total_correct": 95
+      },
+      "SymINT4_G128_RTN_DF": {
+        "gsm8k": "51/60",
+        "humaneval": "20/40",
+        "mmlu": "29/60",
+        "mmlu_logprob": "29/60",
+        "total": "100/160",
+        "total_correct": 100
+      }
+    }
+  },
+  "validation": {
+    "llama32_3b": {
+      "cal_token_sha256": "aaf7c3b8eee5ed32346ecab49ed2278cbeff50573d2f289ae74205ed4b871602",
+      "code_eval_sha256": "72aa8f20af355d1cdb80603b95027b424d2868c2942053fe57fe7345d44e8282",
+      "commit_sha": "006f5dcd1393c3add266de40994ba96225e9689d",
+      "future_maxdiff": 0.0,
+      "manual_maxdiff": 0.0,
+      "overlap_code_6gram": 0,
+      "overlap_wt2_6gram": 0,
+      "patch_identity_maxdiff": 0.0,
+      "skipped_non128_count": 0,
+      "status": "complete",
+      "task_item_count": 160,
+      "wt2_eval_sha256": "9f42345197c848e3b51667374350d659bfdfec2f633d4ccfc57119b8b83f6220"
+    },
+    "olmo2_7b": {
+      "cal_token_sha256": "a633ac777e798e3de674a23b6e9f67548a24b4291e1ee64eecf126c20581126e",
+      "code_eval_sha256": "72aa8f20af355d1cdb80603b95027b424d2868c2942053fe57fe7345d44e8282",
+      "commit_sha": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+      "future_maxdiff": 0.0,
+      "manual_maxdiff": 0.0,
+      "overlap_code_6gram": 0,
+      "overlap_wt2_6gram": 0,
+      "patch_identity_maxdiff": 0.0,
+      "skipped_non128_count": 0,
+      "status": "complete",
+      "task_item_count": 160,
+      "wt2_eval_sha256": "9f42345197c848e3b51667374350d659bfdfec2f633d4ccfc57119b8b83f6220"
+    },
+    "olmoe_1b7b": {
+      "cal_token_sha256": "0eb9f06d13fe1ac045beed9969b031254164363f36e68462c3bb6a4e799d9a8d",
+      "code_eval_sha256": "6388e5e79b1a7929aac45caab999cb13837e7ae1532e42c5ade71276acfa8b70",
+      "commit_sha": "b89a7c4bc24fb9e55ce2543c9458ce0ca5c4650e",
+      "future_maxdiff": 0.0,
+      "manual_maxdiff": 0.0,
+      "overlap_code_6gram": 0,
+      "overlap_wt2_6gram": 0,
+      "patch_identity_maxdiff": 0.0,
+      "skipped_non128_count": 0,
+      "status": "complete",
+      "task_item_count": 160,
+      "wt2_eval_sha256": "a421818a9adb522b218dbfa59e0d41deb2ce19ec7390048846f9f12c07854b96"
+    },
+    "phi4_mini": {
+      "cal_token_sha256": "a6922ecf32434bebeca725be823d9266134ad8500eecf8a84e31223206994d75",
+      "code_eval_sha256": "3b79074efe3585dffbf161a01a9caa2357a932ad1dd2f2d6a14fa26d28f13c31",
+      "commit_sha": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "future_maxdiff": 0.0,
+      "manual_maxdiff": 0.0,
+      "overlap_code_6gram": 0,
+      "overlap_wt2_6gram": 0,
+      "patch_identity_maxdiff": 0.0,
+      "skipped_non128_count": 0,
+      "status": "complete",
+      "task_item_count": 160,
+      "wt2_eval_sha256": "b2e78094f8c7e56f8ad4381ceafd50ab6970d198e7d30b0522d45bdece95dee3"
+    }
+  }
+}

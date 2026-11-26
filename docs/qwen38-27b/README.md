@@ -45,7 +45,7 @@ Task quality against Nemotron Bolt 74B-A9B and Qwen3.6-35B-A3B on the same 94 ta
 
 ## Shared topology and compatibility references
 
-- [4-bit quantization study (2026-11-25)](quantization-study-202611/README.md):
+- [4-bit quantization study (2026-11-25)](quantization-study-202611/README.md) · [**Quantization Deep Study V11 (12 families, MoE, 2-bit rescue, KV)**](quantization-study-v11-202611/README.md):
   bias-correction sidecars with a KL pass/fail gate, format comparisons and the
   HF-INT4-G16 vLLM-XPU screen. Research study with its own receipts; it adds no
   benchmark catalog rows.
