@@ -5081,7 +5081,7 @@
       "id": "qwen38-27b-vllm-hf-int4-g16-gptq-v2-depth-20261127",
       "kind": "benchmark",
       "title": "Qwen3.8-27B HF-INT4-G16-GPTQ v2 (vLLM XPU + native OpenCL/DPAS), decode and cold prefill across 109\u201316K context (one B70, 230 W)",
-      "summary": "Full-H closed-loop GPTQ checkpoint in native hf_int4_g16/1 format (496/496 linears, 0 bias_corr, 0 Triton fallbacks). Steady c=1 decode 29.86 tok/s at 109 tok -> 28.00 tok/s at 16K; cold prefill peaks at 2,541.8 tok/s (4K). 329-item graded battery 284/329 (p=0.581 vs v1 287/329; p=1.000 vs GPTQ-G128 283/329), 40-item canary 33/40 paired parity, 24-item Lab 14 works / 2 partial / 8 broken.",
+      "summary": "Full-H closed-loop GPTQ checkpoint in native hf_int4_g16/1 format (496/496 linears, 0 bias_corr, 0 Triton fallbacks). Steady c=1 decode 29.86 tok/s at 109 tok -> 28.00 tok/s at 16K; cold prefill peaks at 2,541.8 tok/s (4K). 329-item graded battery 284/329 (p=0.581 vs v1 287/329; p=1.000 vs GPTQ-G128 283/329), 40-item canary same 33/40 pass set, 24-item Lab 14 works / 2 partial / 8 broken.",
       "evidence_status": "provisional",
       "measured_at": "2026-11-27",
       "hardware": {
@@ -5096,17 +5096,17 @@
       },
       "model": {
         "id": "SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ @e7565b00",
-        "quantization": "HF-INT4-G16-GPTQ (4-bit symmetric g16 + Had16)",
+        "quantization": "HF-INT4-G16-GPTQ (4-bit symmetric g16 + Had128NoPerm)",
         "speculation": "none"
       },
       "workload": {
         "concurrency": 1,
         "prompt_tokens": 15961,
         "output_tokens": 256,
-        "context_limit_tokens": 18432,
+        "context_limit_tokens": 32768,
         "cache": "disabled",
         "reasoning_effort": "non-thinking (greedy)",
-        "note": "metric names carry each cell's median prompt tokens; cold prefill (--no-enable-prefix-caching)"
+        "note": "metric names carry each cell's median prompt tokens (n=3/2/2/2/1 reps across 109/1010/4060/8160/15961); cold prefill (--no-enable-prefix-caching)"
       },
       "sampling": {
         "temperature": 0.0,
@@ -5170,8 +5170,8 @@
         "samples": 2
       },
       "evidence": {
-        "commit": "9d5fc92b8b710773615db243a606cd3121b4677f",
-        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/9d5fc92b8b710773615db243a606cd3121b4677f/docs/qwen38-27b/quantization-study-v12-202611/README.md"
+        "commit": "10e4950ba3fd36f85be423cc68f3a42c1af06ac6",
+        "url": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/blob/10e4950ba3fd36f85be423cc68f3a42c1af06ac6/docs/qwen38-27b/quantization-study-v12-202611/README.md"
       }
     }
   ]

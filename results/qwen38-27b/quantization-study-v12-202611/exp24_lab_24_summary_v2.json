@@ -4,7 +4,7 @@
   "model": "SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ",
   "engine": "vllm/vllm-openai-xpu:v0.31.0 + vllm-hf-int4-g16-xpu v0.2.0 (native OpenCL/DPAS, mode=auto, 0 Triton fallbacks)",
   "hardware": "1x Intel Arc Pro B70 32 GB, 230 W cap",
-  "sampling": "greedy (temperature=0, top_p=1, seed=4242), thinking off, no max_tokens cap (32,768-token server context)",
+  "sampling": "greedy (temperature=0, top_p=1, seed=4242), thinking off, 16,384-token output limit (32,768-token server context)",
   "counts": {
     "total": {
       "works": 14,

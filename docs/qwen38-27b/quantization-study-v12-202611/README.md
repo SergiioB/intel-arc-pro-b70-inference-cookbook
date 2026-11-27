@@ -88,7 +88,7 @@ Evaluated on the exact shipped `v2` weights (`500.4 s`, `57.6 kJ` GPU1, cool `39
 
 **Explicit disclosures & pending tests:**
 - Damping grid (`0.05 / 0.10 / 0.35`) was selected in `Exp 23-Pilot-B` on the held-out WT2/Code windows (every grid arm beat `v1` by `>= 0.69 dB/layer`).
-- Completed in `Exp 24`–`Exp 25` below: full 329-item graded task battery (`284/329`, paired McNemar `p=0.581` vs `v1` `287/329`), 40-item deterministic canary (`33/40` paired parity vs `v1`), 24-item XeCores Lab creative/code suite (`14 works / 2 partial / 8 broken`), and cold-prefill depth speed curve (`109`→`15,961` tokens). Still pending on `v2`: 8K–128K `Exp 22` turn scaling (measured on `v1`, identical kernel geometry), MoE / other 11 families, `TP=2`, and `NVFP4` on 27B.
+- Completed in `Exp 24`–`Exp 25` below: full 329-item graded task battery (`284/329`, paired McNemar `p=0.581` vs `v1` `287/329`), 40-item deterministic canary (same `33/40` pass set vs `v1`), 24-item XeCores Lab creative/code suite (`14 works / 2 partial / 8 broken`), and cold-prefill depth speed curve (`109`→`15,961` tokens). Still pending on `v2`: 8K–128K `Exp 22` turn scaling (measured on `v1`, identical kernel geometry), MoE / other 11 families, `TP=2`, and `NVFP4` on 27B.
 
 ## 6b. Downstream Verification (`Exp 24` & `Exp 25`): 329-Item Battery, 40-Item Canary, Depth Speed & 24-Item Lab Suite
 
@@ -96,7 +96,7 @@ All downstream evaluations ran directly on live `vllm serve` (`vllm/vllm-openai-
 
 ### `Exp 25` — Full 329-Item Graded Battery (`Exp 14C` Harness)
 
-Served at `concurrency=4` (strictly within the `M <= 4` native W4A16 DPAS decode regime of `ops.py`, `75.96` aggregate tok/s over `109,572` completion tokens in `1,442.5 s`, `82.8 kJ` GPU card energy) and graded offline with the exact `grade.py` no-network container:
+Served at `concurrency=4` under `HF_INT4_G16_MODE=auto` (native W4A8 DPAS prefill + `M <= 4` native W4A16 DPAS decode in `ops.py`; `75.96` aggregate tok/s over `109,572` completion tokens in `1,442.5 s`; `82.8 kJ` GPU card energy including `156.9 s` server startup) and graded offline with the exact `grade.py` no-network container:
 
 | Checkpoint (`vllm serve`, greedy `T=0`, thinking off) | Total Pass | `tune` (82) | `test` (82) | `structured_output` (55) | `knowledge_professional` (55) | `instruction_following` (55) | Paired McNemar vs `v2` |
 |---|---:|---:|---:|---:|---:|---:|---|
@@ -108,7 +108,7 @@ Once 4-bit KL sits below `~0.03–0.05` nats, discrete greedy pass/fail on 329 i
 
 ### `Exp 24` — 40-Item Deterministic Canary (Paired `v2` vs `v1`), Cold-Prefill Depth Speed & 24-Item XeCores Lab Suite
 
-- **40-item deterministic canary (`T=0`, thinking off, 100% programmatic verification):** exact parity **`33/40` on `v2` vs `33/40` on `v1`** (`8/8` DNR-009, `8/8` unit-tested Python algorithms, `6/6` subtle bug fixes, `6/6` strict raw JSON/regex/SemVer with zero fences, `3/3` live SQLite & POSIX `sh`, `2/3` Spanish bilingual; both score `0/6` on multi-step mental math with `enable_thinking=False` and no scratchpad).
+- **40-item deterministic canary (`T=0`, thinking off, 100% programmatic verification):** same pass set **`33/40` on `v2` vs `33/40` on `v1`** (16/40 raw outputs differ, identical per-item pass/fail) (`8/8` DNR-009, `8/8` unit-tested Python algorithms, `6/6` subtle bug fixes, `6/6` strict raw JSON/regex/SemVer with zero fences, `3/3` live SQLite & POSIX `sh`, `2/3` Spanish bilingual; both score `0/6` on multi-step mental math with `enable_thinking=False` and no scratchpad).
 - **Single-stream depth speed curve (`c=1`, `--no-enable-prefix-caching`, `256` decode tokens, greedy `T=0`, thinking off):**
 
 | Prompt Depth (tokens) | Decode (tok/s, median) | Cold Prefill (tok/s, median) | Cold TTFT (s) |
@@ -119,8 +119,8 @@ Once 4-bit KL sits below `~0.03–0.05` nats, discrete greedy pass/fail on 329 i
 | `8,160` (`n=2`) | `28.68` | `2,485.90` | `3.28` |
 | `15,961` (`n=1`) | `28.00` | `2,364.84` | `6.75` |
 
-- **24-item canonical XeCores Lab suite (14 standard + 10 hard creative/code prompts, uncapped request on `32,768`-token context, greedy `T=0`, thinking off, visually + Puppeteer + unit-test audited):**
-  - **24/24 artifacts extracted** (`23/24` `finish=stop`; only `h-fractal` entered a repetition loop at `16,384` tokens), steady `28.8–29.8 tok/s` decode.
+- **24-item canonical XeCores Lab suite (14 standard + 10 hard creative/code prompts, `16,384`-token output limit on `32,768`-token server context, greedy `T=0`, thinking off, visually + Puppeteer + unit-test audited):**
+  - **24/24 artifacts extracted** (`23/24` `finish=stop`; only `h-fractal` entered a repetition loop at `16,384` tokens), `27.6–29.8 tok/s` decode (`28.8–29.8` on the 23 finished items; `27.6` on `h-fractal`).
   - **Standard 14-item suite:** **`12 works / 2 broken`** (`h-solar`, `h-life`, `h-balls`, `h-chart`, `h-piano`, `h-todo`, `s-pelican`, `s-tcp`, `py-lru`, `py-expr`, `py-bugfix`, `js-csv` work; `h-webgl` and `h-fractal` broken) — improving over the earlier TensorFold `MLX 4-bit (g64)` Lab run (`11 works / 3 broken`, fixing both `h-piano` and `h-todo`).
   - **Hard 10-item suite:** **`2 works`** (`h-spreadsheet`, `s-metro`), **`2 partial`** (`h-city`, `h-sequencer`), **`6 broken`** (`h-pagoda`, `h-raymarch`, `py-xml`, `py-diff`, `py-jsonpath`, `js-dijkstra`).
   - **Combined 24-item Lab total:** **`14 works · 2 partial · 8 broken`** (`24/24` extracted) vs earlier `MLX 4-bit (g64)` `13 works · 2 partial · 8 broken` (`23/24` extracted).
