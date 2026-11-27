@@ -12,6 +12,27 @@
 - Close the own-corpus shortlist as an invalid thermal screen without a speed claim; point readers to the already verified draft-INT4 result instead of scheduling a duplicate A/B.
 - Qwen3.8-27B SC5: publish the KL screen vs BF16 (SC5 KL 0.418×/0.161× of plain 4.00bpw), the SC_5.00bpw_H6_V6 check (text-identical, does not load), and pin `exl3xpu-mixedk:20261014` (same layers as `20261013`; source: [SergiioB/exl3xpu-mixedk](https://github.com/SergiioB/exl3xpu-mixedk); prior `20261012c` behaves the same) with the one-command launcher path.
 
+## [1.18.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.17.0...v1.18.0) (2026-11-27)
+
+
+### Features
+
+* **hy4-flash:** add dual-B70 Strata SYCL recipe, opt patch, 0K-124K/1M max-context data & 3-panel PNG dashboard ([004d32d](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/004d32db9286fa65adcde41445a7c2f85bd7dd00))
+* **hy4-flash:** dual-B70 patched Strata v0.2.20 SYCL recipe, 0K-124K/1M context ladder & 3-panel PNG dashboard ([70a46fd](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/70a46fd1046730c5487516df1c35d3aca9ce8039))
+* **inkling2-mini:** add opt-in AOT bmg_g31 SYCL M=1 decode attention (+71% @ 256K FP8 KV) ([80cbe03](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/80cbe03e69aa1b5b5fe6ad2e5a81602a3376b428))
+* **inkling2-mini:** opt-in AOT bmg_g31 SYCL M=1 decode attention (+71% @ 256K FP8 KV: 20.07 -&gt; 34.32 tok/s) ([d1e3506](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/d1e3506c85599f728dec18ca4bd8d295855177d6))
+* **inkling2:** opt-in chunked oneDNN prefix SDPA + ESIMD PagedXmx decode attention ([0f562be](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/0f562be60aecb24d9a4e6f85c86eefab1c6883fe))
+* **inkling2:** opt-in exact-tail ring prefix cache — bit-identical resends at 18K-128K ([37d9b7d](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/37d9b7dd1d748a81d7ce97167ecaeeaac1024b9e))
+* **inkling2:** opt-in exact-tail single-slot ring prefix cache ([eea9444](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/eea944459f158e8379b3537bfe4465c2cd286171))
+
+
+### Bug Fixes
+
+* **assets:** correct uncached new-turn range (70-94) and drop dagger glyph in ring-prefix-cache chart ([2fa8961](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/2fa8961933535eb594f21d73c0e8adcad70b3aa3))
+* **inkling2-mini:** declare Apply 3+4 prereqs with atomic patch dry-run & scrub private provenance from attn_esimd_xe2.cpp ([289bc48](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/289bc48f7fca29203b92a0c2034ac62490ff778f))
+* **inkling2-mini:** make the opt-in CUTLASS Xe2 build and opt-in patch apply as published ([af03fa9](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/af03fa9829008dab082c797236293e86ab86226a))
+* **inkling2-mini:** make the opt-in CUTLASS Xe2 build and opt-in patch apply as published ([00314af](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/commit/00314afce633b2f9a9bdb3e6d50c01330439fc13))
+
 ## [1.17.0](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/compare/v1.16.0...v1.17.0) (2026-11-22)
 
 
