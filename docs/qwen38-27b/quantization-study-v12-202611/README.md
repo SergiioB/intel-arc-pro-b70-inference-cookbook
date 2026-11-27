@@ -88,14 +88,53 @@ Evaluated on the exact shipped `v2` weights (`500.4 s`, `57.6 kJ` GPU1, cool `39
 
 **Explicit disclosures & pending tests:**
 - Damping grid (`0.05 / 0.10 / 0.35`) was selected in `Exp 23-Pilot-B` on the held-out WT2/Code windows (every grid arm beat `v1` by `>= 0.69 dB/layer`).
-- Pending on `v2`: 329-item graded task battery (`287/329` was measured on `v1`), 8K–128K `Exp 22` turn scaling (measured on `v1`, identical kernel geometry), MoE / other 11 families, `TP=2`, and `NVFP4` on 27B.
+- Completed in `Exp 24`–`Exp 25` below: full 329-item graded task battery (`284/329`, paired McNemar `p=0.581` vs `v1` `287/329`), 40-item deterministic canary (`33/40` paired parity vs `v1`), 24-item XeCores Lab creative/code suite (`14 works / 2 partial / 8 broken`), and cold-prefill depth speed curve (`109`→`15,961` tokens). Still pending on `v2`: 8K–128K `Exp 22` turn scaling (measured on `v1`, identical kernel geometry), MoE / other 11 families, `TP=2`, and `NVFP4` on 27B.
+
+## 6b. Downstream Verification (`Exp 24` & `Exp 25`): 329-Item Battery, 40-Item Canary, Depth Speed & 24-Item Lab Suite
+
+All downstream evaluations ran directly on live `vllm serve` (`vllm/vllm-openai-xpu:v0.31.0`, `vllm-hf-int4-g16-xpu v0.2.0`, `HF_INT4_G16_BACKEND=native`, `HF_INT4_G16_MODE=auto`, `0` Triton fallbacks, `1× Intel Arc Pro B70 32 GB`, `230 W` cap).
+
+### `Exp 25` — Full 329-Item Graded Battery (`Exp 14C` Harness)
+
+Served at `concurrency=4` (strictly within the `M <= 4` native W4A16 DPAS decode regime of `ops.py`, `75.96` aggregate tok/s over `109,572` completion tokens in `1,442.5 s`, `82.8 kJ` GPU card energy) and graded offline with the exact `grade.py` no-network container:
+
+| Checkpoint (`vllm serve`, greedy `T=0`, thinking off) | Total Pass | `tune` (82) | `test` (82) | `structured_output` (55) | `knowledge_professional` (55) | `instruction_following` (55) | Paired McNemar vs `v2` |
+|---|---:|---:|---:|---:|---:|---:|---|
+| **`v2` `HF-INT4-G16-GPTQ`** (`c=4`, `M<=4` W4A16) | **284 / 329** (`86.3%`) | **80** | 76 | **55** | 40 | 33 | — |
+| `v1` `HF-INT4-G16-BC` (`c=1`) | 287 / 329 (`87.2%`) | 79 | **78** | **55** | 40 | **35** | `5` fixed / `8` broken (`p = 0.581`, n.s.) |
+| Shipped `GPTQ-Int4-sym-G128` (`c=1`) | 283 / 329 (`86.0%`) | 79 | 76 | **55** | 40 | 33 | `9` fixed / `8` broken (`p = 1.000`, n.s.) |
+
+Once 4-bit KL sits below `~0.03–0.05` nats, discrete greedy pass/fail on 329 items is near ceiling (`±3` items is statistically indistinguishable, `p = 0.581`). `Exp 25` confirms **zero downstream task regression** alongside the statistically decisive `-39.3%` WT2 / `-30.4%` Code / 7-of-7 OOD KL reduction measured in `Exp 23`.
+
+### `Exp 24` — 40-Item Deterministic Canary (Paired `v2` vs `v1`), Cold-Prefill Depth Speed & 24-Item XeCores Lab Suite
+
+- **40-item deterministic canary (`T=0`, thinking off, 100% programmatic verification):** exact parity **`33/40` on `v2` vs `33/40` on `v1`** (`8/8` DNR-009, `8/8` unit-tested Python algorithms, `6/6` subtle bug fixes, `6/6` strict raw JSON/regex/SemVer with zero fences, `3/3` live SQLite & POSIX `sh`, `2/3` Spanish bilingual; both score `0/6` on multi-step mental math with `enable_thinking=False` and no scratchpad).
+- **Single-stream depth speed curve (`c=1`, `--no-enable-prefix-caching`, `256` decode tokens, greedy `T=0`, thinking off):**
+
+| Prompt Depth (tokens) | Decode (tok/s, median) | Cold Prefill (tok/s, median) | Cold TTFT (s) |
+|---:|---:|---:|---:|
+| `109` (`n=3`) | `29.86` | `912.23` | `0.12` |
+| `1,010` (`n=2`) | `29.39` | `2,275.39` | `0.44` |
+| `4,060` (`n=2`) | `29.11` | `2,541.82` | `1.60` |
+| `8,160` (`n=2`) | `28.68` | `2,485.90` | `3.28` |
+| `15,961` (`n=1`) | `28.00` | `2,364.84` | `6.75` |
+
+- **24-item canonical XeCores Lab suite (14 standard + 10 hard creative/code prompts, uncapped request on `32,768`-token context, greedy `T=0`, thinking off, visually + Puppeteer + unit-test audited):**
+  - **24/24 artifacts extracted** (`23/24` `finish=stop`; only `h-fractal` entered a repetition loop at `16,384` tokens), steady `28.8–29.8 tok/s` decode.
+  - **Standard 14-item suite:** **`12 works / 2 broken`** (`h-solar`, `h-life`, `h-balls`, `h-chart`, `h-piano`, `h-todo`, `s-pelican`, `s-tcp`, `py-lru`, `py-expr`, `py-bugfix`, `js-csv` work; `h-webgl` and `h-fractal` broken) — improving over the earlier TensorFold `MLX 4-bit (g64)` Lab run (`11 works / 3 broken`, fixing both `h-piano` and `h-todo`).
+  - **Hard 10-item suite:** **`2 works`** (`h-spreadsheet`, `s-metro`), **`2 partial`** (`h-city`, `h-sequencer`), **`6 broken`** (`h-pagoda`, `h-raymarch`, `py-xml`, `py-diff`, `py-jsonpath`, `js-dijkstra`).
+  - **Combined 24-item Lab total:** **`14 works · 2 partial · 8 broken`** (`24/24` extracted) vs earlier `MLX 4-bit (g64)` `13 works · 2 partial · 8 broken` (`23/24` extracted).
 
 ## 7. Sanitized V12 Receipts
 
-All 6 receipts live in [`results/qwen38-27b/quantization-study-v12-202611/`](../../../results/qwen38-27b/quantization-study-v12-202611/RECEIPTS_MANIFEST.json):
+All 10 receipts live in [`results/qwen38-27b/quantization-study-v12-202611/`](../../../results/qwen38-27b/quantization-study-v12-202611/RECEIPTS_MANIFEST.json):
 - `exp23_pilot_a_gptq_v1.json` — Layer-03/40 full-H GPTQ feasibility & calibration-size cliff (`1K` vs `256K`)
 - `exp23_pilot_b_damp_balance.json` — Full-alphabet shuffled stdlib & per-projection damping sweep (`0.05 / 0.10 / 0.35`)
 - `exp23_full_64l_gptq_v1.json` — Full 64-layer sequential closed-loop GPTQ (`496/496` linears, W4A16 & W4A8 KL + W4A16 BC gate)
 - `exp23_ood_and_w4a8_gate.json` — 7-domain OOD & 2K long-context verification + 3-arm W4A8 `BiasCorr` gate (`DF` / `+BC` / `-BC`)
 - `exp23_live_vllm_ab.json` — Live `vllm serve` A/B (`v0.31.0`, `hf-int4-g16-xpu v0.2.0`, `0` Triton fallbacks)
 - `hf_upload_gptq_repo_receipt.json` — Byte-SHA256 verified upload receipt (`2,191/2,191` tensors)
+- `exp24_depth_speed_v2.json` — Single-stream (`c=1`) cold-prefill & decode speed curve across `109`–`15,961` prompt tokens
+- `exp24_canary_40_paired_v2_vs_v1.json` — Paired 40-item deterministic canary (`v2` `33/40` vs `v1` `33/40`)
+- `exp24_lab_24_summary_v2.json` — Audited 24-item XeCores Lab creative/code suite (`14 works / 2 partial / 8 broken`)
+- `exp25_329_v2_report.json` — Full 329-item graded battery (`284/329`, paired McNemar vs `v1` `287/329` and shipped `GPTQ-G128` `283/329`)

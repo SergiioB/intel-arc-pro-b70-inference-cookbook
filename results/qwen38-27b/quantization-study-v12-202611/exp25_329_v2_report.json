@@ -1,0 +1,173 @@
+{
+  "experiment": "exp25_329_v2_gptq",
+  "date": "2026-11-27",
+  "model": "SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ",
+  "concurrency": 4,
+  "decode_kernel_regime": "W4A16 native DPAS (ops.py M<=4)",
+  "triton_fallback_mentions": 0,
+  "startup_s": 156.93,
+  "wall_s_generation": 1442.46,
+  "completion_tokens_total": 109572,
+  "agg_tok_s": 75.96,
+  "cap_hits_1536": 11,
+  "cap_hits_1024": 4,
+  "grade_rc": 0,
+  "v2_total_pass": 284,
+  "v2_total_items": 329,
+  "v2_splits": {
+    "instruction_following": {
+      "pass": 33,
+      "total": 55
+    },
+    "knowledge_professional": {
+      "pass": 40,
+      "total": 55
+    },
+    "structured_output": {
+      "pass": 55,
+      "total": 55
+    },
+    "test": {
+      "pass": 76,
+      "total": 82
+    },
+    "tune": {
+      "pass": 80,
+      "total": 82
+    }
+  },
+  "v1_splits": {
+    "instruction_following": {
+      "pass": 35,
+      "total": 55
+    },
+    "knowledge_professional": {
+      "pass": 40,
+      "total": 55
+    },
+    "structured_output": {
+      "pass": 55,
+      "total": 55
+    },
+    "test": {
+      "pass": 78,
+      "total": 82
+    },
+    "tune": {
+      "pass": 79,
+      "total": 82
+    }
+  },
+  "shipped_gptq_splits": {
+    "instruction_following": {
+      "pass": 33,
+      "total": 55
+    },
+    "knowledge_professional": {
+      "pass": 40,
+      "total": 55
+    },
+    "structured_output": {
+      "pass": 55,
+      "total": 55
+    },
+    "test": {
+      "pass": 76,
+      "total": 82
+    },
+    "tune": {
+      "pass": 79,
+      "total": 82
+    }
+  },
+  "vs_v1_bc": {
+    "n_items": 329,
+    "candidate_pass": 284,
+    "baseline_pass": 287,
+    "delta_pass": -3,
+    "fixed_count": 5,
+    "broken_count": 8,
+    "mcnemar_exact_two_sided_p": 0.58105,
+    "fixed_ids": [
+      "he-032",
+      "he-130",
+      "prof-biz-435",
+      "prof-econ-7222",
+      "prof-med-6170"
+    ],
+    "broken_ids": [
+      "he-083",
+      "he-115",
+      "he-116",
+      "ifeval-1402",
+      "ifeval-2605",
+      "prof-law-1045",
+      "prof-law-1453",
+      "prof-law-1694"
+    ],
+    "same_count": 316
+  },
+  "vs_shipped_gptq_g128": {
+    "n_items": 329,
+    "candidate_pass": 284,
+    "baseline_pass": 283,
+    "delta_pass": 1,
+    "fixed_count": 9,
+    "broken_count": 8,
+    "mcnemar_exact_two_sided_p": 1.0,
+    "fixed_ids": [
+      "he-067",
+      "he-091",
+      "he-093",
+      "he-134",
+      "ifeval-1609",
+      "ifeval-1897",
+      "prof-biz-484",
+      "prof-med-6170",
+      "prof-med-6339"
+    ],
+    "broken_ids": [
+      "he-083",
+      "he-115",
+      "he-127",
+      "ifeval-2605",
+      "ifeval-2811",
+      "prof-law-1045",
+      "prof-law-1694",
+      "prof-law-1957"
+    ],
+    "same_count": 312
+  },
+  "tel_start": {
+    "act_mhz": 0,
+    "energy1_input_uj": 2327240130493,
+    "gt0_act_mhz": 0,
+    "gt0_cur_mhz": 2800,
+    "gt0_max_mhz": 2800,
+    "gt1_act_mhz": 0,
+    "gt1_cur_mhz": 400,
+    "gt1_max_mhz": 1500,
+    "hwmon": "/sys/class/hwmon/hwmon7",
+    "power_cap_w": 230.0,
+    "temp_c": 64.0,
+    "utc": "2026-11-27T19:32:39Z",
+    "vram_usage_bytes": 42246144,
+    "vram_visible_avail_mib": 32615
+  },
+  "tel_end": {
+    "act_mhz": 0,
+    "energy1_input_uj": 2410016138000,
+    "gt0_act_mhz": 0,
+    "gt0_cur_mhz": 2800,
+    "gt0_max_mhz": 2800,
+    "gt1_act_mhz": 0,
+    "gt1_cur_mhz": 400,
+    "gt1_max_mhz": 1500,
+    "hwmon": "/sys/class/hwmon/hwmon7",
+    "power_cap_w": 230.0,
+    "temp_c": 63.0,
+    "utc": "2026-11-27T19:59:24Z",
+    "vram_usage_bytes": 42246144,
+    "vram_visible_avail_mib": 32615
+  }
+}
