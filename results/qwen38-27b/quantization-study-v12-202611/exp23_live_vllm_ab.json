@@ -1,0 +1,338 @@
+{
+  "experiment": "Exp 19-Live: Served-kernel vLLM XPU A/B (V1-GPTQ-DF vs shipped V1-BC, native backend, auto W4A16/W4A8)",
+  "meta": {
+    "gpu1_telemetry": {
+      "start": {
+        "act_mhz": 0,
+        "energy1_input_uj": 1100108986633,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "/sys/class/hwmon/hwmon7",
+        "power_cap_w": 230.0,
+        "temp_c": 72.0,
+        "utc": "2026-11-27T16:03:38Z"
+      },
+      "end": {
+        "act_mhz": 0,
+        "energy1_input_uj": 1135297585388,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "/sys/class/hwmon/hwmon7",
+        "power_cap_w": 230.0,
+        "temp_c": 62.0,
+        "utc": "2026-11-27T16:08:04Z"
+      },
+      "energy_delta_j": 35188.6
+    },
+    "wt_eval_sha256": "14049ba0a85c3ba6227f01cd3c0450a25c9182228aa161654c0a9db01879adc3",
+    "code_eval_sha256": "6c3a613f281669f2ceb3e58272194b584a64e4b3cacd766a8119a0b8eb5e0832"
+  },
+  "arms": {
+    "V1_GPTQ_DF": {
+      "startup_s": 0.0,
+      "wt2_served": {
+        "scored_positions": 2044,
+        "mean_nll": 2.0651156,
+        "ppl": 7.88621,
+        "window_latencies_s": [
+          0.3096,
+          0.2801,
+          0.28,
+          0.2797
+        ]
+      },
+      "code_served": {
+        "scored_positions": 2044,
+        "mean_nll": 0.92346272,
+        "ppl": 2.51799,
+        "window_latencies_s": [
+          0.2795,
+          0.2794,
+          0.2789,
+          0.2795
+        ]
+      },
+      "speed_and_sanity": {
+        "decode_256tok_reps_tok_s": [
+          29.84,
+          29.93,
+          29.92
+        ],
+        "decode_median_tok_s": 29.92,
+        "decode_latencies_s": [
+          8.5783,
+          8.5528,
+          8.5549
+        ],
+        "prefill_2k_reps": [
+          {
+            "prompt_tokens": 2041,
+            "ttft_s": 0.7945,
+            "prefill_tok_s": 2568.8
+          },
+          {
+            "prompt_tokens": 2041,
+            "ttft_s": 0.8057,
+            "prefill_tok_s": 2533.3
+          }
+        ],
+        "dnr_canaries": {
+          "exact_case": 7,
+          "any_case": 8,
+          "total": 8,
+          "rows": [
+            {
+              "name": "sumsq",
+              "expected": "14",
+              "got": "14",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "sum3",
+              "expected": "20",
+              "got": "20",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "mul",
+              "expected": "1296",
+              "got": "1296",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "div",
+              "expected": "143",
+              "got": "143",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "days",
+              "expected": "366",
+              "got": "366",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "prime",
+              "expected": "no",
+              "got": "No",
+              "exact_case": false,
+              "any_case": true
+            },
+            {
+              "name": "letters",
+              "expected": "6",
+              "got": "6",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "seq",
+              "expected": "32",
+              "got": "32",
+              "exact_case": true,
+              "any_case": true
+            }
+          ]
+        },
+        "sanity": [
+          {
+            "id": "math_arith",
+            "passed": true,
+            "output_preview": "To compute $(37 \\times 43) - (19 \\times 29)$, we will perform the multiplications separately and then subtract the results.\n\n**Step 1: Compute $37 \\times 43$**\n\nWe can break this down as:\n$$37 \\times 43 = 37 \\times (40 + 3)$$\n$$37 \\times 40 = 1480$$\n$$37 \\time"
+          },
+          {
+            "id": "code_merge",
+            "passed": true,
+            "output_preview": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for start, end in intervals[1:]:\n        last_start, last_end = merged[-1]\n        if start <= last_end:\n  "
+          },
+          {
+            "id": "fact_hadamard",
+            "passed": true,
+            "output_preview": "The orthogonality property of a normalized Walsh-Hadamard matrix $H_n$ is that its rows (and columns) are mutually orthogonal unit vectors, which mathematically implies that $H_n H_n^T = I_n$, where $I_n$ is the identity matrix."
+          }
+        ],
+        "sanity_passed": 3,
+        "sanity_total": 3
+      },
+      "triton_fallback_log_hits": 0,
+      "plugin_log_excerpt": [
+        "(APIServer pid=1) INFO 11-27 15:39:49 [vllm_plugin.py:562] hf_int4_g16: 496 quantized linear modules (0 with bias_corr); biascorr_mode=default mode=auto backend=native",
+        "(EngineCore pid=160) INFO 11-27 15:40:05 [core.py:129] Initializing a V1 LLM engine (v0.31.0) with config: model='<stage>/Qwen3.8-27B-HF-INT4-G16-GPTQ', speculative_config=None, tokenizer='<stage>/Qwen3.8-27B-HF-INT4-G16-GPTQ', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=hf_int4_g16, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=xpu, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=default, enable_prefix_caching=False, enable_chunked_prefill=False, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 32, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)",
+        "(EngineCore pid=160) INFO 11-27 15:40:26 [vllm_plugin.py:273] hf_int4_g16: coverage verified before the first forward: 496 linear and 0 expert modules processed"
+      ]
+    },
+    "shipped_V1_BC": {
+      "startup_s": 160.98,
+      "wt2_served": {
+        "scored_positions": 2044,
+        "mean_nll": 2.07392566,
+        "ppl": 7.95599,
+        "window_latencies_s": [
+          0.5264,
+          0.2905,
+          0.2811,
+          0.2808
+        ]
+      },
+      "code_served": {
+        "scored_positions": 2044,
+        "mean_nll": 0.93862229,
+        "ppl": 2.55646,
+        "window_latencies_s": [
+          0.2802,
+          0.2817,
+          0.2818,
+          0.2813
+        ]
+      },
+      "speed_and_sanity": {
+        "decode_256tok_reps_tok_s": [
+          29.6,
+          29.7,
+          29.69
+        ],
+        "decode_median_tok_s": 29.69,
+        "decode_latencies_s": [
+          8.6474,
+          8.6188,
+          8.6219
+        ],
+        "prefill_2k_reps": [
+          {
+            "prompt_tokens": 2041,
+            "ttft_s": 0.8047,
+            "prefill_tok_s": 2536.2
+          },
+          {
+            "prompt_tokens": 2041,
+            "ttft_s": 0.8175,
+            "prefill_tok_s": 2496.5
+          }
+        ],
+        "dnr_canaries": {
+          "exact_case": 8,
+          "any_case": 8,
+          "total": 8,
+          "rows": [
+            {
+              "name": "sumsq",
+              "expected": "14",
+              "got": "14",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "sum3",
+              "expected": "20",
+              "got": "20",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "mul",
+              "expected": "1296",
+              "got": "1296",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "div",
+              "expected": "143",
+              "got": "143",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "days",
+              "expected": "366",
+              "got": "366",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "prime",
+              "expected": "no",
+              "got": "no",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "letters",
+              "expected": "6",
+              "got": "6",
+              "exact_case": true,
+              "any_case": true
+            },
+            {
+              "name": "seq",
+              "expected": "32",
+              "got": "32",
+              "exact_case": true,
+              "any_case": true
+            }
+          ]
+        },
+        "sanity": [
+          {
+            "id": "math_arith",
+            "passed": true,
+            "output_preview": "To compute $(37 \\times 43) - (19 \\times 29)$, we will perform the multiplications separately and then subtract the results.\n\n**Step 1: Compute $37 \\times 43$**\n$$37 \\times 43 = 37 \\times (40 + 3) = (37 \\times 40) + (37 \\times 3)$$\n$$37 \\times 40 = 1480$$\n$$37 "
+          },
+          {
+            "id": "code_merge",
+            "passed": true,
+            "output_preview": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for start, end in intervals[1:]:\n        last = merged[-1]\n        if start <= last[1]:\n            last[1]"
+          },
+          {
+            "id": "fact_hadamard",
+            "passed": true,
+            "output_preview": "The orthogonality property of a normalized Walsh-Hadamard matrix $H_n$ is that its rows (and columns) are mutually orthogonal unit vectors, which mathematically implies that $H_n H_n^T = I_n$ (where $I_n$ is the identity matrix)."
+          }
+        ],
+        "sanity_passed": 3,
+        "sanity_total": 3
+      },
+      "triton_fallback_log_hits": 0,
+      "plugin_log_excerpt": [
+        "(APIServer pid=1) INFO 11-27 16:04:59 [vllm_plugin.py:562] hf_int4_g16: 496 quantized linear modules (496 with bias_corr); biascorr_mode=default mode=auto backend=native",
+        "(EngineCore pid=90) INFO 11-27 16:05:15 [core.py:129] Initializing a V1 LLM engine (v0.31.0) with config: model='/shipped', speculative_config=None, tokenizer='/shipped', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=True, quantization=hf_int4_g16, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=xpu, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=default, enable_prefix_caching=False, enable_chunked_prefill=False, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 32, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)",
+        "(EngineCore pid=90) INFO 11-27 16:05:58 [vllm_plugin.py:273] hf_int4_g16: coverage verified before the first forward: 496 linear and 0 expert modules processed"
+      ]
+    }
+  },
+  "paired_blk32_bootstrap_95ci": {
+    "V1_GPTQ_DF_minus_shipped_V1_BC_served_NLL": {
+      "wt2": {
+        "delta_a_minus_b": -0.00881005,
+        "ci95_blk32_within_window": [
+          -0.01958841,
+          0.00136573
+        ],
+        "p_a_lt_b_blk32": 0.9518,
+        "significant": false
+      },
+      "code": {
+        "delta_a_minus_b": -0.01515957,
+        "ci95_blk32_within_window": [
+          -0.04679553,
+          0.0154958
+        ],
+        "p_a_lt_b_blk32": 0.834,
+        "significant": false
+      }
+    }
+  }
+}

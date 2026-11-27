@@ -1,0 +1,1755 @@
+{
+  "experiment": "Exp 19-Pilot: Full-H Uncentered GPTQ inside exact V1 (hf_int4_g16/1) deep-layer falsification gate",
+  "complete": true,
+  "meta": {
+    "gpu_assignment": "container-visible xpu:0 backed exclusively by host GPU1 (/dev/dri/card1 renderD129)",
+    "device_name": "Intel(R) Arc(TM) Pro B70 Graphics",
+    "seed": 101,
+    "format_version": "hf_int4_g16/1 (xe2_dpas_native_v1)",
+    "pos0_excluded": true,
+    "corpus": {
+      "seq_len": 512,
+      "n_seqs_total": 512,
+      "n_seqs_prose": 256,
+      "n_seqs_code": 256,
+      "non_pos0_tokens_total": 261632,
+      "interleaved_50_50": true,
+      "cal_sha256": "9018416a67b42c53f891230ac2e6a7d2e0abd5d89a27ddeb081f969ef9d0855c",
+      "wt_eval_sha256": "14049ba0a85c3ba6227f01cd3c0450a25c9182228aa161654c0a9db01879adc3",
+      "code_eval_sha256": "6c3a613f281669f2ceb3e58272194b584a64e4b3cacd766a8119a0b8eb5e0832",
+      "overlap_wt2_eval_6gram": 0,
+      "overlap_code_eval_6gram": 0,
+      "wt2_train_total_tokens": 2504636,
+      "stdlib_code_files_count": 51,
+      "stdlib_code_files_first10": [
+        "__future__.py",
+        "_aix_support.py",
+        "_collections_abc.py",
+        "_compat_pickle.py",
+        "_compression.py",
+        "_distutils_system_mod.py",
+        "_markupbase.py",
+        "_osx_support.py",
+        "_py_abc.py",
+        "_pydatetime.py"
+      ],
+      "build_sec": 9.12
+    },
+    "peak_rss_gib": 29.797,
+    "elapsed_sec": 1232.94,
+    "gpu1_telemetry": {
+      "start": {
+        "act_mhz": 0,
+        "energy1_input_uj": 253315871826,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "/sys/class/hwmon/hwmon7",
+        "power_cap_w": 230.0,
+        "temp_c": 45.0,
+        "utc": "2026-11-27T11:58:50Z"
+      },
+      "end": {
+        "act_mhz": 0,
+        "energy1_input_uj": 368833669433,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "/sys/class/hwmon/hwmon7",
+        "power_cap_w": 230.0,
+        "temp_c": 49.0,
+        "utc": "2026-11-27T12:19:47Z"
+      },
+      "energy_delta_j": 115517.8
+    }
+  },
+  "gate": {
+    "criterion": "Best V1-GPTQ at 256K tokens gains >= +1.0 dB over BOTH RTN_BC_256k and shipped_V1_BC on BOTH WT2 and Code held-out sets for BOTH L3.mlp.down_proj and L40.mlp.down_proj.",
+    "checks": {
+      "L3.mlp.down_proj": {
+        "best_arm": "261k_damp005",
+        "wt2_snr_db": 24.05,
+        "code_snr_db": 24.7651,
+        "delta_vs_shipped_V1_BC": {
+          "wt2": 0.6855,
+          "code": 0.8782
+        },
+        "delta_vs_RTN_BC_256k": {
+          "wt2": 0.6688,
+          "code": 0.8299
+        },
+        "passed": false
+      },
+      "L40.mlp.down_proj": {
+        "best_arm": "261k_damp005",
+        "wt2_snr_db": 23.8096,
+        "code_snr_db": 22.4813,
+        "delta_vs_shipped_V1_BC": {
+          "wt2": 1.1197,
+          "code": -0.0101
+        },
+        "delta_vs_RTN_BC_256k": {
+          "wt2": 0.9616,
+          "code": -0.0779
+        },
+        "passed": false
+      }
+    },
+    "passed": false
+  },
+  "layer_timings_sec": {
+    "L0": 185.83,
+    "L1": 6.29,
+    "L2": 6.25,
+    "L3": 254.98,
+    "L4": 7.45,
+    "L5": 7.19,
+    "L6": 7.26,
+    "L7": 5.95,
+    "L8": 7.27,
+    "L9": 7.21,
+    "L10": 7.22,
+    "L11": 5.98,
+    "L12": 7.35,
+    "L13": 7.39,
+    "L14": 7.3,
+    "L15": 6.05,
+    "L16": 7.39,
+    "L17": 7.31,
+    "L18": 7.29,
+    "L19": 5.97,
+    "L20": 7.29,
+    "L21": 7.39,
+    "L22": 7.32,
+    "L23": 5.99,
+    "L24": 7.45,
+    "L25": 7.31,
+    "L26": 7.26,
+    "L27": 5.92,
+    "L28": 7.27,
+    "L29": 7.34,
+    "L30": 7.35,
+    "L31": 5.92,
+    "L32": 7.33,
+    "L33": 7.28,
+    "L34": 7.3,
+    "L35": 5.99,
+    "L36": 7.3,
+    "L37": 7.34,
+    "L38": 7.27,
+    "L39": 194.76,
+    "L40": 318.04
+  },
+  "results": {
+    "L0": {
+      "layer_type": "linear_attention",
+      "projections": {
+        "linear_attn.in_proj_qkv": {
+          "shape": [
+            10240,
+            5120
+          ],
+          "input_group": "attn_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1237,
+              "wt2_snr_db": 31.792,
+              "code_snr_db": 32.3892,
+              "mean_heldout_snr_db": 32.0906
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1237,
+              "wt2_snr_db": 31.792,
+              "code_snr_db": 32.3892,
+              "mean_heldout_snr_db": 32.0906
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1237,
+              "wt2_snr_db": 32.3253,
+              "code_snr_db": 33.1189,
+              "mean_heldout_snr_db": 32.7221
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1237,
+              "wt2_snr_db": 32.3461,
+              "code_snr_db": 33.1472,
+              "mean_heldout_snr_db": 32.7467
+            }
+          },
+          "snapshots": {
+            "65k_damp001": {
+              "weight_sqnr_db": 19.7032,
+              "wt2_snr_db": 35.9895,
+              "code_snr_db": 37.5889,
+              "mean_heldout_snr_db": 36.7892,
+              "train_snr_db": 38.8704,
+              "gptq_wall_s": 2.372,
+              "u_le3_frac": 0.000203,
+              "sat_at_u16_frac": 0.000759,
+              "cholesky_cpu_fp64_s": 1.21,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 20.2501,
+              "wt2_snr_db": 36.437,
+              "code_snr_db": 38.0402,
+              "mean_heldout_snr_db": 37.2386,
+              "train_snr_db": 37.9492,
+              "gptq_wall_s": 2.075,
+              "u_le3_frac": 0.000203,
+              "sat_at_u16_frac": 0.000754,
+              "cholesky_cpu_fp64_s": 1.11,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.2501,
+              "wt2_snr_db": 36.4389,
+              "code_snr_db": 38.0422,
+              "mean_heldout_snr_db": 37.2405
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.1788,
+              "wt2_snr_db": 36.3711,
+              "code_snr_db": 37.9811,
+              "mean_heldout_snr_db": 37.1761,
+              "train_snr_db": 37.8902,
+              "gptq_wall_s": 2.122,
+              "u_le3_frac": 0.001039,
+              "sat_at_u16_frac": 8.9e-05,
+              "pack_roundtrip_max_abs": 0.0
+            }
+          }
+        },
+        "linear_attn.in_proj_z": {
+          "shape": [
+            6144,
+            5120
+          ],
+          "input_group": "attn_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1242,
+              "wt2_snr_db": 29.0916,
+              "code_snr_db": 29.8114,
+              "mean_heldout_snr_db": 29.4515
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1242,
+              "wt2_snr_db": 29.0916,
+              "code_snr_db": 29.8114,
+              "mean_heldout_snr_db": 29.4515
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1242,
+              "wt2_snr_db": 29.4932,
+              "code_snr_db": 30.3852,
+              "mean_heldout_snr_db": 29.9392
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1242,
+              "wt2_snr_db": 29.5116,
+              "code_snr_db": 30.4159,
+              "mean_heldout_snr_db": 29.9638
+            }
+          },
+          "snapshots": {
+            "65k_damp001": {
+              "weight_sqnr_db": 19.7051,
+              "wt2_snr_db": 33.148,
+              "code_snr_db": 34.8623,
+              "mean_heldout_snr_db": 34.0051,
+              "train_snr_db": 36.0631,
+              "gptq_wall_s": 2.144,
+              "u_le3_frac": 0.00025,
+              "sat_at_u16_frac": 0.000762,
+              "cholesky_cpu_fp64_s": 1.21,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 20.255,
+              "wt2_snr_db": 33.5985,
+              "code_snr_db": 35.316,
+              "mean_heldout_snr_db": 34.4573,
+              "train_snr_db": 35.1249,
+              "gptq_wall_s": 2.07,
+              "u_le3_frac": 0.000246,
+              "sat_at_u16_frac": 0.000756,
+              "cholesky_cpu_fp64_s": 1.11,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.255,
+              "wt2_snr_db": 33.6002,
+              "code_snr_db": 35.3183,
+              "mean_heldout_snr_db": 34.4592
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.1821,
+              "wt2_snr_db": 33.516,
+              "code_snr_db": 35.2461,
+              "mean_heldout_snr_db": 34.381,
+              "train_snr_db": 35.0639,
+              "gptq_wall_s": 2.022,
+              "u_le3_frac": 0.001187,
+              "sat_at_u16_frac": 9.3e-05,
+              "pack_roundtrip_max_abs": 0.0
+            }
+          }
+        },
+        "linear_attn.out_proj": {
+          "shape": [
+            5120,
+            6144
+          ],
+          "input_group": "attn_out",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1154,
+              "wt2_snr_db": 30.7448,
+              "code_snr_db": 30.6939,
+              "mean_heldout_snr_db": 30.7193
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1154,
+              "wt2_snr_db": 30.7448,
+              "code_snr_db": 30.6939,
+              "mean_heldout_snr_db": 30.7193
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1154,
+              "wt2_snr_db": 42.351,
+              "code_snr_db": 44.1962,
+              "mean_heldout_snr_db": 43.2736
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1154,
+              "wt2_snr_db": 42.401,
+              "code_snr_db": 44.2482,
+              "mean_heldout_snr_db": 43.3246
+            }
+          },
+          "snapshots": {
+            "65k_damp001": {
+              "weight_sqnr_db": 21.0164,
+              "wt2_snr_db": 46.2368,
+              "code_snr_db": 48.2299,
+              "mean_heldout_snr_db": 47.2333,
+              "train_snr_db": 48.7118,
+              "gptq_wall_s": 2.427,
+              "u_le3_frac": 0.004642,
+              "sat_at_u16_frac": 0.000683,
+              "cholesky_cpu_fp64_s": 1.76,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 21.1017,
+              "wt2_snr_db": 46.4552,
+              "code_snr_db": 48.3419,
+              "mean_heldout_snr_db": 47.3986,
+              "train_snr_db": 48.1351,
+              "gptq_wall_s": 2.522,
+              "u_le3_frac": 0.004665,
+              "sat_at_u16_frac": 0.000684,
+              "cholesky_cpu_fp64_s": 1.84,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 21.1017,
+              "wt2_snr_db": 46.4571,
+              "code_snr_db": 48.346,
+              "mean_heldout_snr_db": 47.4016
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 21.031,
+              "wt2_snr_db": 46.4326,
+              "code_snr_db": 48.2611,
+              "mean_heldout_snr_db": 47.3469,
+              "train_snr_db": 48.0702,
+              "gptq_wall_s": 2.514,
+              "u_le3_frac": 0.009028,
+              "sat_at_u16_frac": 7.4e-05,
+              "pack_roundtrip_max_abs": 0.0
+            }
+          }
+        },
+        "mlp.gate_proj": {
+          "shape": [
+            17408,
+            5120
+          ],
+          "input_group": "mlp_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1311,
+              "wt2_snr_db": 24.8134,
+              "code_snr_db": 24.2657,
+              "mean_heldout_snr_db": 24.5395
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1311,
+              "wt2_snr_db": 24.8134,
+              "code_snr_db": 24.2657,
+              "mean_heldout_snr_db": 24.5395
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1311,
+              "wt2_snr_db": 25.1019,
+              "code_snr_db": 24.5521,
+              "mean_heldout_snr_db": 24.827
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1311,
+              "wt2_snr_db": 25.1443,
+              "code_snr_db": 24.5797,
+              "mean_heldout_snr_db": 24.862
+            }
+          },
+          "snapshots": {
+            "65k_damp001": {
+              "weight_sqnr_db": 19.5833,
+              "wt2_snr_db": 29.7905,
+              "code_snr_db": 28.7626,
+              "mean_heldout_snr_db": 29.2766,
+              "train_snr_db": 30.6419,
+              "gptq_wall_s": 2.2,
+              "u_le3_frac": 0.000118,
+              "sat_at_u16_frac": 0.000774,
+              "cholesky_cpu_fp64_s": 1.1,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 19.8829,
+              "wt2_snr_db": 30.0903,
+              "code_snr_db": 28.9782,
+              "mean_heldout_snr_db": 29.5342,
+              "train_snr_db": 30.1549,
+              "gptq_wall_s": 2.138,
+              "u_le3_frac": 0.000113,
+              "sat_at_u16_frac": 0.000767,
+              "cholesky_cpu_fp64_s": 1.09,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 19.8829,
+              "wt2_snr_db": 30.0924,
+              "code_snr_db": 28.9803,
+              "mean_heldout_snr_db": 29.5364
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 19.8153,
+              "wt2_snr_db": 30.0257,
+              "code_snr_db": 28.9277,
+              "mean_heldout_snr_db": 29.4767,
+              "train_snr_db": 30.0972,
+              "gptq_wall_s": 2.167,
+              "u_le3_frac": 0.000666,
+              "sat_at_u16_frac": 9e-05,
+              "pack_roundtrip_max_abs": 0.0
+            }
+          }
+        },
+        "mlp.down_proj": {
+          "shape": [
+            5120,
+            17408
+          ],
+          "input_group": "mlp_down",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.114,
+              "wt2_snr_db": 26.5847,
+              "code_snr_db": 27.3901,
+              "mean_heldout_snr_db": 26.9874
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.114,
+              "wt2_snr_db": 26.5847,
+              "code_snr_db": 27.3901,
+              "mean_heldout_snr_db": 26.9874
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.114,
+              "wt2_snr_db": 26.6616,
+              "code_snr_db": 27.4586,
+              "mean_heldout_snr_db": 27.0601
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.114,
+              "wt2_snr_db": 26.6787,
+              "code_snr_db": 27.4765,
+              "mean_heldout_snr_db": 27.0776
+            }
+          },
+          "snapshots": {
+            "65k_damp001": {
+              "weight_sqnr_db": 18.1976,
+              "wt2_snr_db": 30.0675,
+              "code_snr_db": 31.1503,
+              "mean_heldout_snr_db": 30.6089,
+              "train_snr_db": 36.0824,
+              "gptq_wall_s": 7.16,
+              "u_le3_frac": 9.4e-05,
+              "sat_at_u16_frac": 0.00065,
+              "cholesky_cpu_fp64_s": 46.77,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 18.9655,
+              "wt2_snr_db": 31.4533,
+              "code_snr_db": 32.3965,
+              "mean_heldout_snr_db": 31.9249,
+              "train_snr_db": 34.2999,
+              "gptq_wall_s": 7.254,
+              "u_le3_frac": 0.00011,
+              "sat_at_u16_frac": 0.000643,
+              "cholesky_cpu_fp64_s": 29.9,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 18.9655,
+              "wt2_snr_db": 31.4536,
+              "code_snr_db": 32.3968,
+              "mean_heldout_snr_db": 31.9252
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 18.8686,
+              "wt2_snr_db": 31.3494,
+              "code_snr_db": 32.292,
+              "mean_heldout_snr_db": 31.8207,
+              "train_snr_db": 34.2092,
+              "gptq_wall_s": 7.265,
+              "u_le3_frac": 0.001435,
+              "sat_at_u16_frac": 2.9e-05,
+              "pack_roundtrip_max_abs": 0.0
+            }
+          }
+        }
+      }
+    },
+    "L3": {
+      "layer_type": "full_attention",
+      "projections": {
+        "self_attn.q_proj": {
+          "shape": [
+            12288,
+            5120
+          ],
+          "input_group": "attn_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1306,
+              "wt2_snr_db": 27.8992,
+              "code_snr_db": 27.4839,
+              "mean_heldout_snr_db": 27.6915
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1306,
+              "wt2_snr_db": 27.8992,
+              "code_snr_db": 27.4839,
+              "mean_heldout_snr_db": 27.6915
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1306,
+              "wt2_snr_db": 38.4539,
+              "code_snr_db": 40.2715,
+              "mean_heldout_snr_db": 39.3627
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1306,
+              "wt2_snr_db": 38.5199,
+              "code_snr_db": 40.3167,
+              "mean_heldout_snr_db": 39.4183
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 20.6516,
+              "wt2_snr_db": 40.3496,
+              "code_snr_db": 42.6551,
+              "mean_heldout_snr_db": 41.5023,
+              "train_snr_db": 44.7096,
+              "gptq_wall_s": 2.102,
+              "u_le3_frac": 0.000132,
+              "sat_at_u16_frac": 0.000761,
+              "cholesky_cpu_fp64_s": 1.1,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 20.9526,
+              "wt2_snr_db": 40.9597,
+              "code_snr_db": 43.1455,
+              "mean_heldout_snr_db": 42.0526,
+              "train_snr_db": 43.6733,
+              "gptq_wall_s": 2.136,
+              "u_le3_frac": 0.000136,
+              "sat_at_u16_frac": 0.000758,
+              "cholesky_cpu_fp64_s": 1.12,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 21.0967,
+              "wt2_snr_db": 41.1821,
+              "code_snr_db": 43.2338,
+              "mean_heldout_snr_db": 42.2079,
+              "train_snr_db": 42.9485,
+              "gptq_wall_s": 2.081,
+              "u_le3_frac": 0.000133,
+              "sat_at_u16_frac": 0.000757,
+              "cholesky_cpu_fp64_s": 1.09,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 21.0967,
+              "wt2_snr_db": 41.1822,
+              "code_snr_db": 43.2437,
+              "mean_heldout_snr_db": 42.213
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 21.0248,
+              "wt2_snr_db": 41.1119,
+              "code_snr_db": 43.1621,
+              "mean_heldout_snr_db": 42.137,
+              "train_snr_db": 42.8864,
+              "gptq_wall_s": 2.096,
+              "u_le3_frac": 0.000727,
+              "sat_at_u16_frac": 8.8e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.686,
+              "wt2_snr_db": 40.9474,
+              "code_snr_db": 42.8744,
+              "mean_heldout_snr_db": 41.9109,
+              "train_snr_db": 42.4413,
+              "gptq_wall_s": 2.113,
+              "u_le3_frac": 0.000131,
+              "sat_at_u16_frac": 0.000752,
+              "cholesky_cpu_fp64_s": 1.06,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "self_attn.o_proj": {
+          "shape": [
+            5120,
+            6144
+          ],
+          "input_group": "attn_out",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1245,
+              "wt2_snr_db": 33.3461,
+              "code_snr_db": 34.0586,
+              "mean_heldout_snr_db": 33.7023
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1245,
+              "wt2_snr_db": 33.3461,
+              "code_snr_db": 34.0586,
+              "mean_heldout_snr_db": 33.7023
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1245,
+              "wt2_snr_db": 36.279,
+              "code_snr_db": 37.9906,
+              "mean_heldout_snr_db": 37.1348
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1245,
+              "wt2_snr_db": 36.4754,
+              "code_snr_db": 38.1691,
+              "mean_heldout_snr_db": 37.3222
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 18.8395,
+              "wt2_snr_db": 39.9909,
+              "code_snr_db": 41.1973,
+              "mean_heldout_snr_db": 40.5941,
+              "train_snr_db": 47.1349,
+              "gptq_wall_s": 2.53,
+              "u_le3_frac": 0.001908,
+              "sat_at_u16_frac": 0.0007,
+              "cholesky_cpu_fp64_s": 1.78,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 19.1916,
+              "wt2_snr_db": 42.3928,
+              "code_snr_db": 42.0229,
+              "mean_heldout_snr_db": 42.2079,
+              "train_snr_db": 45.1532,
+              "gptq_wall_s": 2.548,
+              "u_le3_frac": 0.001938,
+              "sat_at_u16_frac": 0.000699,
+              "cholesky_cpu_fp64_s": 1.78,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 19.4746,
+              "wt2_snr_db": 42.7912,
+              "code_snr_db": 42.3462,
+              "mean_heldout_snr_db": 42.5687,
+              "train_snr_db": 44.1866,
+              "gptq_wall_s": 2.479,
+              "u_le3_frac": 0.001913,
+              "sat_at_u16_frac": 0.000693,
+              "cholesky_cpu_fp64_s": 1.78,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 19.4746,
+              "wt2_snr_db": 42.7926,
+              "code_snr_db": 42.3491,
+              "mean_heldout_snr_db": 42.5708
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 19.4078,
+              "wt2_snr_db": 42.6557,
+              "code_snr_db": 42.333,
+              "mean_heldout_snr_db": 42.4943,
+              "train_snr_db": 44.1114,
+              "gptq_wall_s": 2.569,
+              "u_le3_frac": 0.004589,
+              "sat_at_u16_frac": 7.6e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 20.5961,
+              "wt2_snr_db": 42.621,
+              "code_snr_db": 42.3568,
+              "mean_heldout_snr_db": 42.4889,
+              "train_snr_db": 43.883,
+              "gptq_wall_s": 2.484,
+              "u_le3_frac": 0.001945,
+              "sat_at_u16_frac": 0.000694,
+              "cholesky_cpu_fp64_s": 1.79,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "mlp.gate_proj": {
+          "shape": [
+            17408,
+            5120
+          ],
+          "input_group": "mlp_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1332,
+              "wt2_snr_db": 23.8818,
+              "code_snr_db": 23.6318,
+              "mean_heldout_snr_db": 23.7568
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1332,
+              "wt2_snr_db": 23.8818,
+              "code_snr_db": 23.6318,
+              "mean_heldout_snr_db": 23.7568
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1332,
+              "wt2_snr_db": 23.9869,
+              "code_snr_db": 23.8007,
+              "mean_heldout_snr_db": 23.8938
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1332,
+              "wt2_snr_db": 24.0821,
+              "code_snr_db": 23.8976,
+              "mean_heldout_snr_db": 23.9898
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 19.4467,
+              "wt2_snr_db": 24.4305,
+              "code_snr_db": 24.6996,
+              "mean_heldout_snr_db": 24.565,
+              "train_snr_db": 28.8914,
+              "gptq_wall_s": 2.192,
+              "u_le3_frac": 0.00012,
+              "sat_at_u16_frac": 0.000772,
+              "cholesky_cpu_fp64_s": 1.07,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 20.3185,
+              "wt2_snr_db": 25.6916,
+              "code_snr_db": 25.6852,
+              "mean_heldout_snr_db": 25.6884,
+              "train_snr_db": 27.4676,
+              "gptq_wall_s": 2.266,
+              "u_le3_frac": 0.00012,
+              "sat_at_u16_frac": 0.000765,
+              "cholesky_cpu_fp64_s": 1.14,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 20.6814,
+              "wt2_snr_db": 26.088,
+              "code_snr_db": 25.891,
+              "mean_heldout_snr_db": 25.9895,
+              "train_snr_db": 26.8524,
+              "gptq_wall_s": 2.209,
+              "u_le3_frac": 0.00012,
+              "sat_at_u16_frac": 0.000762,
+              "cholesky_cpu_fp64_s": 1.09,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.6814,
+              "wt2_snr_db": 26.089,
+              "code_snr_db": 25.8924,
+              "mean_heldout_snr_db": 25.9907
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.6101,
+              "wt2_snr_db": 26.023,
+              "code_snr_db": 25.8296,
+              "mean_heldout_snr_db": 25.9263,
+              "train_snr_db": 26.7894,
+              "gptq_wall_s": 2.199,
+              "u_le3_frac": 0.000669,
+              "sat_at_u16_frac": 8.8e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 20.8932,
+              "wt2_snr_db": 26.1209,
+              "code_snr_db": 25.916,
+              "mean_heldout_snr_db": 26.0184,
+              "train_snr_db": 26.8374,
+              "gptq_wall_s": 2.198,
+              "u_le3_frac": 0.000122,
+              "sat_at_u16_frac": 0.000762,
+              "cholesky_cpu_fp64_s": 1.11,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "mlp.down_proj": {
+          "shape": [
+            5120,
+            17408
+          ],
+          "input_group": "mlp_down",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1152,
+              "wt2_snr_db": 23.3594,
+              "code_snr_db": 23.9052,
+              "mean_heldout_snr_db": 23.6323
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1152,
+              "wt2_snr_db": 23.3594,
+              "code_snr_db": 23.9052,
+              "mean_heldout_snr_db": 23.6323
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1152,
+              "wt2_snr_db": 23.3645,
+              "code_snr_db": 23.8869,
+              "mean_heldout_snr_db": 23.6257
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1152,
+              "wt2_snr_db": 23.3812,
+              "code_snr_db": 23.9352,
+              "mean_heldout_snr_db": 23.6582
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 18.2989,
+              "wt2_snr_db": 20.4615,
+              "code_snr_db": 22.5558,
+              "mean_heldout_snr_db": 21.5087,
+              "train_snr_db": 34.3177,
+              "gptq_wall_s": 7.088,
+              "u_le3_frac": 9.3e-05,
+              "sat_at_u16_frac": 0.000647,
+              "cholesky_cpu_fp64_s": 29.95,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 18.9251,
+              "wt2_snr_db": 22.0241,
+              "code_snr_db": 23.6555,
+              "mean_heldout_snr_db": 22.8398,
+              "train_snr_db": 29.9444,
+              "gptq_wall_s": 7.3,
+              "u_le3_frac": 9.2e-05,
+              "sat_at_u16_frac": 0.000639,
+              "cholesky_cpu_fp64_s": 29.75,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 19.7536,
+              "wt2_snr_db": 23.7362,
+              "code_snr_db": 24.5661,
+              "mean_heldout_snr_db": 24.1511,
+              "train_snr_db": 27.6455,
+              "gptq_wall_s": 7.185,
+              "u_le3_frac": 9e-05,
+              "sat_at_u16_frac": 0.000634,
+              "cholesky_cpu_fp64_s": 29.79,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 19.7536,
+              "wt2_snr_db": 23.7363,
+              "code_snr_db": 24.5664,
+              "mean_heldout_snr_db": 24.1513
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 19.6502,
+              "wt2_snr_db": 23.6554,
+              "code_snr_db": 24.4867,
+              "mean_heldout_snr_db": 24.071,
+              "train_snr_db": 27.5475,
+              "gptq_wall_s": 7.137,
+              "u_le3_frac": 0.001372,
+              "sat_at_u16_frac": 2.9e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 20.1936,
+              "wt2_snr_db": 24.05,
+              "code_snr_db": 24.7651,
+              "mean_heldout_snr_db": 24.4076,
+              "train_snr_db": 27.5964,
+              "gptq_wall_s": 7.19,
+              "u_le3_frac": 9.5e-05,
+              "sat_at_u16_frac": 0.000629,
+              "cholesky_cpu_fp64_s": 26.41,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        }
+      }
+    },
+    "L39": {
+      "layer_type": "full_attention",
+      "projections": {
+        "self_attn.q_proj": {
+          "shape": [
+            12288,
+            5120
+          ],
+          "input_group": "attn_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1335,
+              "wt2_snr_db": 26.6413,
+              "code_snr_db": 27.0548,
+              "mean_heldout_snr_db": 26.8481
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1335,
+              "wt2_snr_db": 26.6413,
+              "code_snr_db": 27.0548,
+              "mean_heldout_snr_db": 26.8481
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1335,
+              "wt2_snr_db": 29.2467,
+              "code_snr_db": 28.733,
+              "mean_heldout_snr_db": 28.9899
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1335,
+              "wt2_snr_db": 29.4473,
+              "code_snr_db": 28.9949,
+              "mean_heldout_snr_db": 29.2211
+            }
+          },
+          "snapshots": {
+            "261k_damp001": {
+              "weight_sqnr_db": 20.9946,
+              "wt2_snr_db": 32.1434,
+              "code_snr_db": 30.5861,
+              "mean_heldout_snr_db": 31.3647,
+              "train_snr_db": 32.3038,
+              "gptq_wall_s": 2.222,
+              "u_le3_frac": 0.000123,
+              "sat_at_u16_frac": 0.00076,
+              "cholesky_cpu_fp64_s": 0.99,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.9946,
+              "wt2_snr_db": 32.1452,
+              "code_snr_db": 30.587,
+              "mean_heldout_snr_db": 31.3661
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.9227,
+              "wt2_snr_db": 32.0735,
+              "code_snr_db": 30.5255,
+              "mean_heldout_snr_db": 31.2995,
+              "train_snr_db": 32.2399,
+              "gptq_wall_s": 2.248,
+              "u_le3_frac": 0.000686,
+              "sat_at_u16_frac": 9e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.2128,
+              "wt2_snr_db": 32.1521,
+              "code_snr_db": 30.6598,
+              "mean_heldout_snr_db": 31.406,
+              "train_snr_db": 32.274,
+              "gptq_wall_s": 2.107,
+              "u_le3_frac": 0.000131,
+              "sat_at_u16_frac": 0.000761,
+              "cholesky_cpu_fp64_s": 1.07,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "self_attn.o_proj": {
+          "shape": [
+            5120,
+            6144
+          ],
+          "input_group": "attn_out",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.0952,
+              "wt2_snr_db": 20.3574,
+              "code_snr_db": 20.9011,
+              "mean_heldout_snr_db": 20.6292
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.0952,
+              "wt2_snr_db": 20.3574,
+              "code_snr_db": 20.9011,
+              "mean_heldout_snr_db": 20.6292
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.0952,
+              "wt2_snr_db": 20.143,
+              "code_snr_db": 20.6763,
+              "mean_heldout_snr_db": 20.4097
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.0952,
+              "wt2_snr_db": 20.6938,
+              "code_snr_db": 21.1161,
+              "mean_heldout_snr_db": 20.9049
+            }
+          },
+          "snapshots": {
+            "261k_damp001": {
+              "weight_sqnr_db": 20.4225,
+              "wt2_snr_db": 24.0925,
+              "code_snr_db": 23.2947,
+              "mean_heldout_snr_db": 23.6936,
+              "train_snr_db": 25.4715,
+              "gptq_wall_s": 3.021,
+              "u_le3_frac": 0.004642,
+              "sat_at_u16_frac": 0.000656,
+              "cholesky_cpu_fp64_s": 2.38,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.4225,
+              "wt2_snr_db": 24.0944,
+              "code_snr_db": 23.296,
+              "mean_heldout_snr_db": 23.6952
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.3464,
+              "wt2_snr_db": 24.0511,
+              "code_snr_db": 23.2047,
+              "mean_heldout_snr_db": 23.6279,
+              "train_snr_db": 25.4063,
+              "gptq_wall_s": 2.949,
+              "u_le3_frac": 0.011023,
+              "sat_at_u16_frac": 6.8e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 20.7793,
+              "wt2_snr_db": 24.1713,
+              "code_snr_db": 23.351,
+              "mean_heldout_snr_db": 23.7612,
+              "train_snr_db": 25.4319,
+              "gptq_wall_s": 3.123,
+              "u_le3_frac": 0.004616,
+              "sat_at_u16_frac": 0.000653,
+              "cholesky_cpu_fp64_s": 2.33,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "mlp.gate_proj": {
+          "shape": [
+            17408,
+            5120
+          ],
+          "input_group": "mlp_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1307,
+              "wt2_snr_db": 25.5603,
+              "code_snr_db": 24.4493,
+              "mean_heldout_snr_db": 25.0048
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1307,
+              "wt2_snr_db": 25.5603,
+              "code_snr_db": 24.4493,
+              "mean_heldout_snr_db": 25.0048
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1307,
+              "wt2_snr_db": 26.4676,
+              "code_snr_db": 24.9181,
+              "mean_heldout_snr_db": 25.6928
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1307,
+              "wt2_snr_db": 26.6848,
+              "code_snr_db": 25.1474,
+              "mean_heldout_snr_db": 25.9161
+            }
+          },
+          "snapshots": {
+            "261k_damp001": {
+              "weight_sqnr_db": 21.13,
+              "wt2_snr_db": 28.147,
+              "code_snr_db": 25.9709,
+              "mean_heldout_snr_db": 27.0589,
+              "train_snr_db": 28.6675,
+              "gptq_wall_s": 2.618,
+              "u_le3_frac": 0.000117,
+              "sat_at_u16_frac": 0.000754,
+              "cholesky_cpu_fp64_s": 1.63,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 21.13,
+              "wt2_snr_db": 28.1488,
+              "code_snr_db": 25.9722,
+              "mean_heldout_snr_db": 27.0605
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 21.0559,
+              "wt2_snr_db": 28.0754,
+              "code_snr_db": 25.8923,
+              "mean_heldout_snr_db": 26.9838,
+              "train_snr_db": 28.601,
+              "gptq_wall_s": 2.538,
+              "u_le3_frac": 0.000684,
+              "sat_at_u16_frac": 8.7e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.2601,
+              "wt2_snr_db": 28.1639,
+              "code_snr_db": 25.9985,
+              "mean_heldout_snr_db": 27.0812,
+              "train_snr_db": 28.6576,
+              "gptq_wall_s": 2.584,
+              "u_le3_frac": 0.000117,
+              "sat_at_u16_frac": 0.000753,
+              "cholesky_cpu_fp64_s": 1.46,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "mlp.down_proj": {
+          "shape": [
+            5120,
+            17408
+          ],
+          "input_group": "mlp_down",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1148,
+              "wt2_snr_db": 22.7467,
+              "code_snr_db": 22.4223,
+              "mean_heldout_snr_db": 22.5845
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1148,
+              "wt2_snr_db": 22.7467,
+              "code_snr_db": 22.4223,
+              "mean_heldout_snr_db": 22.5845
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1148,
+              "wt2_snr_db": 22.6468,
+              "code_snr_db": 22.3984,
+              "mean_heldout_snr_db": 22.5226
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1148,
+              "wt2_snr_db": 22.7399,
+              "code_snr_db": 22.475,
+              "mean_heldout_snr_db": 22.6075
+            }
+          },
+          "snapshots": {
+            "261k_damp001": {
+              "weight_sqnr_db": 20.9568,
+              "wt2_snr_db": 23.4239,
+              "code_snr_db": 22.8711,
+              "mean_heldout_snr_db": 23.1475,
+              "train_snr_db": 25.2342,
+              "gptq_wall_s": 8.596,
+              "u_le3_frac": 9.7e-05,
+              "sat_at_u16_frac": 0.000631,
+              "cholesky_cpu_fp64_s": 45.16,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.9568,
+              "wt2_snr_db": 23.4244,
+              "code_snr_db": 22.8712,
+              "mean_heldout_snr_db": 23.1478
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.8512,
+              "wt2_snr_db": 23.3368,
+              "code_snr_db": 22.7518,
+              "mean_heldout_snr_db": 23.0443,
+              "train_snr_db": 25.1329,
+              "gptq_wall_s": 8.923,
+              "u_le3_frac": 0.001436,
+              "sat_at_u16_frac": 2.7e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.1024,
+              "wt2_snr_db": 23.5016,
+              "code_snr_db": 22.9269,
+              "mean_heldout_snr_db": 23.2143,
+              "train_snr_db": 25.224,
+              "gptq_wall_s": 8.807,
+              "u_le3_frac": 9.9e-05,
+              "sat_at_u16_frac": 0.00063,
+              "cholesky_cpu_fp64_s": 40.0,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        }
+      }
+    },
+    "L40": {
+      "layer_type": "linear_attention",
+      "projections": {
+        "linear_attn.in_proj_qkv": {
+          "shape": [
+            10240,
+            5120
+          ],
+          "input_group": "attn_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1358,
+              "wt2_snr_db": 23.5137,
+              "code_snr_db": 23.3612,
+              "mean_heldout_snr_db": 23.4374
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1358,
+              "wt2_snr_db": 23.5137,
+              "code_snr_db": 23.3612,
+              "mean_heldout_snr_db": 23.4374
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1358,
+              "wt2_snr_db": 25.6224,
+              "code_snr_db": 24.5194,
+              "mean_heldout_snr_db": 25.0709
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1358,
+              "wt2_snr_db": 25.8214,
+              "code_snr_db": 24.7756,
+              "mean_heldout_snr_db": 25.2985
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 20.1763,
+              "wt2_snr_db": 26.986,
+              "code_snr_db": 25.0392,
+              "mean_heldout_snr_db": 26.0126,
+              "train_snr_db": 30.2382,
+              "gptq_wall_s": 2.46,
+              "u_le3_frac": 0.000167,
+              "sat_at_u16_frac": 0.000761,
+              "cholesky_cpu_fp64_s": 1.47,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 20.8076,
+              "wt2_snr_db": 27.9156,
+              "code_snr_db": 25.8342,
+              "mean_heldout_snr_db": 26.8749,
+              "train_snr_db": 28.9393,
+              "gptq_wall_s": 2.481,
+              "u_le3_frac": 0.000169,
+              "sat_at_u16_frac": 0.000755,
+              "cholesky_cpu_fp64_s": 1.43,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 21.0512,
+              "wt2_snr_db": 28.2494,
+              "code_snr_db": 26.1198,
+              "mean_heldout_snr_db": 27.1846,
+              "train_snr_db": 28.4816,
+              "gptq_wall_s": 2.494,
+              "u_le3_frac": 0.000168,
+              "sat_at_u16_frac": 0.000753,
+              "cholesky_cpu_fp64_s": 1.53,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 21.0512,
+              "wt2_snr_db": 28.2509,
+              "code_snr_db": 26.1209,
+              "mean_heldout_snr_db": 27.1859
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.979,
+              "wt2_snr_db": 28.1793,
+              "code_snr_db": 26.0808,
+              "mean_heldout_snr_db": 27.13,
+              "train_snr_db": 28.4166,
+              "gptq_wall_s": 2.486,
+              "u_le3_frac": 0.000878,
+              "sat_at_u16_frac": 9e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.2321,
+              "wt2_snr_db": 28.2675,
+              "code_snr_db": 26.1972,
+              "mean_heldout_snr_db": 27.2323,
+              "train_snr_db": 28.4604,
+              "gptq_wall_s": 2.493,
+              "u_le3_frac": 0.000166,
+              "sat_at_u16_frac": 0.000753,
+              "cholesky_cpu_fp64_s": 1.55,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "linear_attn.out_proj": {
+          "shape": [
+            5120,
+            6144
+          ],
+          "input_group": "attn_out",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1107,
+              "wt2_snr_db": 22.458,
+              "code_snr_db": 22.3823,
+              "mean_heldout_snr_db": 22.4201
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1107,
+              "wt2_snr_db": 22.458,
+              "code_snr_db": 22.3823,
+              "mean_heldout_snr_db": 22.4201
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1107,
+              "wt2_snr_db": 22.5366,
+              "code_snr_db": 22.351,
+              "mean_heldout_snr_db": 22.4438
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1107,
+              "wt2_snr_db": 22.6436,
+              "code_snr_db": 22.4542,
+              "mean_heldout_snr_db": 22.5489
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 19.5577,
+              "wt2_snr_db": 23.3087,
+              "code_snr_db": 21.585,
+              "mean_heldout_snr_db": 22.4469,
+              "train_snr_db": 26.7104,
+              "gptq_wall_s": 3.003,
+              "u_le3_frac": 0.002016,
+              "sat_at_u16_frac": 0.000695,
+              "cholesky_cpu_fp64_s": 2.51,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 20.5691,
+              "wt2_snr_db": 24.2734,
+              "code_snr_db": 22.7251,
+              "mean_heldout_snr_db": 23.4992,
+              "train_snr_db": 25.3844,
+              "gptq_wall_s": 3.045,
+              "u_le3_frac": 0.002036,
+              "sat_at_u16_frac": 0.000685,
+              "cholesky_cpu_fp64_s": 2.42,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 20.9132,
+              "wt2_snr_db": 24.8993,
+              "code_snr_db": 23.0132,
+              "mean_heldout_snr_db": 23.9562,
+              "train_snr_db": 24.9874,
+              "gptq_wall_s": 3.086,
+              "u_le3_frac": 0.002054,
+              "sat_at_u16_frac": 0.000686,
+              "cholesky_cpu_fp64_s": 2.38,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.9132,
+              "wt2_snr_db": 24.9014,
+              "code_snr_db": 23.0144,
+              "mean_heldout_snr_db": 23.9579
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.8293,
+              "wt2_snr_db": 24.8387,
+              "code_snr_db": 22.948,
+              "mean_heldout_snr_db": 23.8933,
+              "train_snr_db": 24.9156,
+              "gptq_wall_s": 3.029,
+              "u_le3_frac": 0.005646,
+              "sat_at_u16_frac": 7.3e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.0988,
+              "wt2_snr_db": 24.9105,
+              "code_snr_db": 23.068,
+              "mean_heldout_snr_db": 23.9893,
+              "train_snr_db": 24.9752,
+              "gptq_wall_s": 3.107,
+              "u_le3_frac": 0.002053,
+              "sat_at_u16_frac": 0.000686,
+              "cholesky_cpu_fp64_s": 2.35,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "mlp.gate_proj": {
+          "shape": [
+            17408,
+            5120
+          ],
+          "input_group": "mlp_in",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.132,
+              "wt2_snr_db": 25.7788,
+              "code_snr_db": 24.4973,
+              "mean_heldout_snr_db": 25.138
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.132,
+              "wt2_snr_db": 25.7788,
+              "code_snr_db": 24.4973,
+              "mean_heldout_snr_db": 25.138
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.132,
+              "wt2_snr_db": 26.9327,
+              "code_snr_db": 25.0064,
+              "mean_heldout_snr_db": 25.9696
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.132,
+              "wt2_snr_db": 27.1468,
+              "code_snr_db": 25.253,
+              "mean_heldout_snr_db": 26.1999
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 20.2528,
+              "wt2_snr_db": 27.2981,
+              "code_snr_db": 24.9301,
+              "mean_heldout_snr_db": 26.1141,
+              "train_snr_db": 30.604,
+              "gptq_wall_s": 2.579,
+              "u_le3_frac": 0.000123,
+              "sat_at_u16_frac": 0.000752,
+              "cholesky_cpu_fp64_s": 1.5,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 20.9156,
+              "wt2_snr_db": 28.2584,
+              "code_snr_db": 25.7758,
+              "mean_heldout_snr_db": 27.0171,
+              "train_snr_db": 29.2949,
+              "gptq_wall_s": 2.561,
+              "u_le3_frac": 0.000123,
+              "sat_at_u16_frac": 0.000747,
+              "cholesky_cpu_fp64_s": 1.48,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 21.1593,
+              "wt2_snr_db": 28.6151,
+              "code_snr_db": 26.0507,
+              "mean_heldout_snr_db": 27.3329,
+              "train_snr_db": 28.8847,
+              "gptq_wall_s": 2.566,
+              "u_le3_frac": 0.000122,
+              "sat_at_u16_frac": 0.000747,
+              "cholesky_cpu_fp64_s": 1.35,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 21.1593,
+              "wt2_snr_db": 28.6167,
+              "code_snr_db": 26.0513,
+              "mean_heldout_snr_db": 27.334
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 21.0853,
+              "wt2_snr_db": 28.5567,
+              "code_snr_db": 25.9811,
+              "mean_heldout_snr_db": 27.2689,
+              "train_snr_db": 28.8195,
+              "gptq_wall_s": 2.598,
+              "u_le3_frac": 0.000697,
+              "sat_at_u16_frac": 8.9e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.2924,
+              "wt2_snr_db": 28.6402,
+              "code_snr_db": 26.097,
+              "mean_heldout_snr_db": 27.3686,
+              "train_snr_db": 28.875,
+              "gptq_wall_s": 2.592,
+              "u_le3_frac": 0.000123,
+              "sat_at_u16_frac": 0.000745,
+              "cholesky_cpu_fp64_s": 1.44,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        },
+        "mlp.down_proj": {
+          "shape": [
+            5120,
+            17408
+          ],
+          "input_group": "mlp_down",
+          "baselines": {
+            "RTN_DF": {
+              "weight_sqnr_db": 22.1164,
+              "wt2_snr_db": 22.8282,
+              "code_snr_db": 22.5359,
+              "mean_heldout_snr_db": 22.6821
+            },
+            "shipped_V1_DF": {
+              "weight_sqnr_db": 22.1164,
+              "wt2_snr_db": 22.8282,
+              "code_snr_db": 22.5359,
+              "mean_heldout_snr_db": 22.6821
+            },
+            "shipped_V1_BC": {
+              "weight_sqnr_db": 22.1164,
+              "wt2_snr_db": 22.6899,
+              "code_snr_db": 22.4914,
+              "mean_heldout_snr_db": 22.5907
+            },
+            "RTN_BC_256k": {
+              "weight_sqnr_db": 22.1164,
+              "wt2_snr_db": 22.848,
+              "code_snr_db": 22.5592,
+              "mean_heldout_snr_db": 22.7036
+            }
+          },
+          "snapshots": {
+            "16k_damp001": {
+              "weight_sqnr_db": 18.1579,
+              "wt2_snr_db": 20.6816,
+              "code_snr_db": 19.5616,
+              "mean_heldout_snr_db": 20.1216,
+              "train_snr_db": 29.3575,
+              "gptq_wall_s": 8.693,
+              "u_le3_frac": 9.2e-05,
+              "sat_at_u16_frac": 0.000656,
+              "cholesky_cpu_fp64_s": 40.01,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 16352,
+              "damp": 0.01
+            },
+            "65k_damp001": {
+              "weight_sqnr_db": 20.241,
+              "wt2_snr_db": 22.9985,
+              "code_snr_db": 21.7333,
+              "mean_heldout_snr_db": 22.3659,
+              "train_snr_db": 26.2033,
+              "gptq_wall_s": 8.839,
+              "u_le3_frac": 9.3e-05,
+              "sat_at_u16_frac": 0.000635,
+              "cholesky_cpu_fp64_s": 39.89,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 65408,
+              "damp": 0.01
+            },
+            "261k_damp001": {
+              "weight_sqnr_db": 20.9066,
+              "wt2_snr_db": 23.7598,
+              "code_snr_db": 22.3821,
+              "mean_heldout_snr_db": 23.071,
+              "train_snr_db": 25.1485,
+              "gptq_wall_s": 7.918,
+              "u_le3_frac": 9.8e-05,
+              "sat_at_u16_frac": 0.000629,
+              "cholesky_cpu_fp64_s": 28.58,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.01
+            },
+            "261k_damp001_plusBC": {
+              "weight_sqnr_db": 20.9066,
+              "wt2_snr_db": 23.7602,
+              "code_snr_db": 22.3823,
+              "mean_heldout_snr_db": 23.0713
+            },
+            "261k_damp001_d100": {
+              "weight_sqnr_db": 20.7987,
+              "wt2_snr_db": 23.6639,
+              "code_snr_db": 22.2641,
+              "mean_heldout_snr_db": 22.964,
+              "train_snr_db": 25.0476,
+              "gptq_wall_s": 9.05,
+              "u_le3_frac": 0.001396,
+              "sat_at_u16_frac": 2.8e-05,
+              "pack_roundtrip_max_abs": 0.0
+            },
+            "261k_damp005": {
+              "weight_sqnr_db": 21.0575,
+              "wt2_snr_db": 23.8096,
+              "code_snr_db": 22.4813,
+              "mean_heldout_snr_db": 23.1454,
+              "train_snr_db": 25.1386,
+              "gptq_wall_s": 9.311,
+              "u_le3_frac": 9.4e-05,
+              "sat_at_u16_frac": 0.000628,
+              "cholesky_cpu_fp64_s": 42.37,
+              "pack_roundtrip_max_abs": 0.0,
+              "n_tokens": 261632,
+              "damp": 0.05
+            }
+          }
+        }
+      }
+    }
+  }
+}

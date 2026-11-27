@@ -1,0 +1,8 @@
+{
+  "repo_id": "SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ",
+  "commit_sha": "e7565b005d3e994f5068192848e1d5939428e6ca",
+  "commit_url": "https://huggingface.co/SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ/commit/e7565b005d3e994f5068192848e1d5939428e6ca",
+  "upload_elapsed_s": 10.07,
+  "byte_sha256_verified_tensors": 2191,
+  "safetensors_info": "SafeTensorsInfo(parameters={'F32': 3904000, 'I32': 3043819520, 'BF16': 3430871792, 'I16': 380477440}, total=6859072752)"
+}

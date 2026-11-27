@@ -1,0 +1,709 @@
+{
+  "experiment": "Exp 19-Pilot-B: Full-alphabet code diversity + trace balancing + damping sweep",
+  "complete": true,
+  "meta": {
+    "corpus": {
+      "seq_len": 512,
+      "n_seqs_total": 512,
+      "non_pos0_tokens_total": 261632,
+      "cal_sha256": "66c145e1a22e77bb2195171bc658995aaffdb8e183361a81b0f58f7de8c81b89",
+      "wt_eval_sha256": "14049ba0a85c3ba6227f01cd3c0450a25c9182228aa161654c0a9db01879adc3",
+      "code_eval_sha256": "6c3a613f281669f2ceb3e58272194b584a64e4b3cacd766a8119a0b8eb5e0832",
+      "overlap_wt2_eval_6gram": 0,
+      "overlap_code_eval_6gram": 0,
+      "stdlib_code_files_total_available": 511,
+      "stdlib_code_files_used": 139,
+      "stdlib_code_files_sample15": [
+        "__future__.py",
+        "_collections_abc.py",
+        "_py_abc.py",
+        "_pydecimal.py",
+        "_pylong.py",
+        "_strptime.py",
+        "_sysconfigdata__linux_x86_64-linux-gnu.py",
+        "_weakrefset.py",
+        "asyncio/base_tasks.py",
+        "asyncio/events.py",
+        "asyncio/queues.py",
+        "base64.py",
+        "bz2.py",
+        "cProfile.py",
+        "cgitb.py"
+      ],
+      "build_sec": 5.01
+    },
+    "peak_rss_gib": 31.027,
+    "elapsed_sec": 1333.14,
+    "gpu1_telemetry": {
+      "start": {
+        "act_mhz": 0,
+        "energy1_input_uj": 375225332763,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "/sys/class/hwmon/hwmon7",
+        "power_cap_w": 230.0,
+        "temp_c": 49.0,
+        "utc": "2026-11-27T12:22:08Z"
+      },
+      "end": {
+        "act_mhz": 0,
+        "energy1_input_uj": 499105430969,
+        "gt0_act_mhz": 0,
+        "gt0_cur_mhz": 2800,
+        "gt0_max_mhz": 2800,
+        "gt1_act_mhz": 0,
+        "gt1_cur_mhz": 400,
+        "gt1_max_mhz": 1500,
+        "hwmon": "/sys/class/hwmon/hwmon7",
+        "power_cap_w": 230.0,
+        "temp_c": 46.0,
+        "utc": "2026-11-27T12:51:30Z"
+      },
+      "energy_delta_j": 123880.1
+    }
+  },
+  "results": {
+    "L3": {
+      "layer_type": "full_attention",
+      "trace_balance": {
+        "attn_in": {
+          "tr_prose": 8701.7778,
+          "tr_code": 8706.6714,
+          "ratio_prose_over_code": 0.9994
+        },
+        "attn_out": {
+          "tr_prose": 2.8987,
+          "tr_code": 2.8774,
+          "ratio_prose_over_code": 1.0074
+        },
+        "mlp_in": {
+          "tr_prose": 157.7485,
+          "tr_code": 101.3057,
+          "ratio_prose_over_code": 1.5572
+        },
+        "mlp_down": {
+          "tr_prose": 8.262,
+          "tr_code": 2.8869,
+          "ratio_prose_over_code": 2.8619
+        }
+      },
+      "projections": {
+        "self_attn.q_proj": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.1306,
+            "wt2_snr_db": 38.4539,
+            "code_snr_db": 40.2715,
+            "mean_heldout_snr_db": 39.3627
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 21.6848,
+              "wt2_snr_db": 40.9625,
+              "code_snr_db": 42.8821,
+              "mean_heldout_snr_db": 41.9223,
+              "delta_wt2_vs_ship": 2.5086,
+              "delta_code_vs_ship": 2.6106,
+              "delta_mean_vs_ship": 2.5596
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 21.867,
+              "wt2_snr_db": 40.7152,
+              "code_snr_db": 42.5568,
+              "mean_heldout_snr_db": 41.636,
+              "delta_wt2_vs_ship": 2.2613,
+              "delta_code_vs_ship": 2.2853,
+              "delta_mean_vs_ship": 2.2733
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 21.9854,
+              "wt2_snr_db": 40.4088,
+              "code_snr_db": 42.1632,
+              "mean_heldout_snr_db": 41.286,
+              "delta_wt2_vs_ship": 1.9549,
+              "delta_code_vs_ship": 1.8917,
+              "delta_mean_vs_ship": 1.9233
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 22.0447,
+              "wt2_snr_db": 40.1382,
+              "code_snr_db": 41.8291,
+              "mean_heldout_snr_db": 40.9837,
+              "delta_wt2_vs_ship": 1.6843,
+              "delta_code_vs_ship": 1.5576,
+              "delta_mean_vs_ship": 1.621
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 21.6847,
+              "wt2_snr_db": 40.9629,
+              "code_snr_db": 42.8818,
+              "mean_heldout_snr_db": 41.9223,
+              "delta_wt2_vs_ship": 2.509,
+              "delta_code_vs_ship": 2.6103,
+              "delta_mean_vs_ship": 2.5596
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 21.867,
+              "wt2_snr_db": 40.7155,
+              "code_snr_db": 42.5571,
+              "mean_heldout_snr_db": 41.6363,
+              "delta_wt2_vs_ship": 2.2616,
+              "delta_code_vs_ship": 2.2856,
+              "delta_mean_vs_ship": 2.2736
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 21.9854,
+              "wt2_snr_db": 40.4087,
+              "code_snr_db": 42.163,
+              "mean_heldout_snr_db": 41.2858,
+              "delta_wt2_vs_ship": 1.9548,
+              "delta_code_vs_ship": 1.8915,
+              "delta_mean_vs_ship": 1.9231
+            }
+          }
+        },
+        "self_attn.o_proj": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.1245,
+            "wt2_snr_db": 36.279,
+            "code_snr_db": 37.9906,
+            "mean_heldout_snr_db": 37.1348
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 20.5706,
+              "wt2_snr_db": 42.4268,
+              "code_snr_db": 42.7525,
+              "mean_heldout_snr_db": 42.5896,
+              "delta_wt2_vs_ship": 6.1478,
+              "delta_code_vs_ship": 4.7619,
+              "delta_mean_vs_ship": 5.4548
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 20.9955,
+              "wt2_snr_db": 42.2878,
+              "code_snr_db": 42.603,
+              "mean_heldout_snr_db": 42.4454,
+              "delta_wt2_vs_ship": 6.0088,
+              "delta_code_vs_ship": 4.6124,
+              "delta_mean_vs_ship": 5.3106
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 21.3563,
+              "wt2_snr_db": 41.9439,
+              "code_snr_db": 42.3903,
+              "mean_heldout_snr_db": 42.1671,
+              "delta_wt2_vs_ship": 5.6649,
+              "delta_code_vs_ship": 4.3997,
+              "delta_mean_vs_ship": 5.0323
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 21.5841,
+              "wt2_snr_db": 41.6225,
+              "code_snr_db": 42.0459,
+              "mean_heldout_snr_db": 41.8342,
+              "delta_wt2_vs_ship": 5.3435,
+              "delta_code_vs_ship": 4.0553,
+              "delta_mean_vs_ship": 4.6994
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 20.5665,
+              "wt2_snr_db": 42.4472,
+              "code_snr_db": 42.6923,
+              "mean_heldout_snr_db": 42.5698,
+              "delta_wt2_vs_ship": 6.1682,
+              "delta_code_vs_ship": 4.7017,
+              "delta_mean_vs_ship": 5.435
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 20.9961,
+              "wt2_snr_db": 42.2485,
+              "code_snr_db": 42.6251,
+              "mean_heldout_snr_db": 42.4368,
+              "delta_wt2_vs_ship": 5.9695,
+              "delta_code_vs_ship": 4.6345,
+              "delta_mean_vs_ship": 5.302
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 21.3509,
+              "wt2_snr_db": 41.958,
+              "code_snr_db": 42.3963,
+              "mean_heldout_snr_db": 42.1771,
+              "delta_wt2_vs_ship": 5.679,
+              "delta_code_vs_ship": 4.4057,
+              "delta_mean_vs_ship": 5.0423
+            }
+          }
+        },
+        "mlp.gate_proj": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.1332,
+            "wt2_snr_db": 23.9869,
+            "code_snr_db": 23.8007,
+            "mean_heldout_snr_db": 23.8938
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 20.9116,
+              "wt2_snr_db": 26.1218,
+              "code_snr_db": 25.9292,
+              "mean_heldout_snr_db": 26.0255,
+              "delta_wt2_vs_ship": 2.1349,
+              "delta_code_vs_ship": 2.1285,
+              "delta_mean_vs_ship": 2.1317
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 21.0836,
+              "wt2_snr_db": 26.141,
+              "code_snr_db": 25.93,
+              "mean_heldout_snr_db": 26.0355,
+              "delta_wt2_vs_ship": 2.1541,
+              "delta_code_vs_ship": 2.1293,
+              "delta_mean_vs_ship": 2.1417
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 21.3062,
+              "wt2_snr_db": 26.1325,
+              "code_snr_db": 25.8996,
+              "mean_heldout_snr_db": 26.0161,
+              "delta_wt2_vs_ship": 2.1456,
+              "delta_code_vs_ship": 2.0989,
+              "delta_mean_vs_ship": 2.1223
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 21.5018,
+              "wt2_snr_db": 26.0884,
+              "code_snr_db": 25.8296,
+              "mean_heldout_snr_db": 25.959,
+              "delta_wt2_vs_ship": 2.1015,
+              "delta_code_vs_ship": 2.0289,
+              "delta_mean_vs_ship": 2.0652
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 20.8942,
+              "wt2_snr_db": 25.9859,
+              "code_snr_db": 26.0574,
+              "mean_heldout_snr_db": 26.0217,
+              "delta_wt2_vs_ship": 1.999,
+              "delta_code_vs_ship": 2.2567,
+              "delta_mean_vs_ship": 2.1279
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 21.0679,
+              "wt2_snr_db": 25.9985,
+              "code_snr_db": 26.0569,
+              "mean_heldout_snr_db": 26.0277,
+              "delta_wt2_vs_ship": 2.0116,
+              "delta_code_vs_ship": 2.2562,
+              "delta_mean_vs_ship": 2.1339
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 21.2929,
+              "wt2_snr_db": 25.9989,
+              "code_snr_db": 26.0188,
+              "mean_heldout_snr_db": 26.0088,
+              "delta_wt2_vs_ship": 2.012,
+              "delta_code_vs_ship": 2.2181,
+              "delta_mean_vs_ship": 2.115
+            }
+          }
+        },
+        "mlp.down_proj": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.1152,
+            "wt2_snr_db": 23.3645,
+            "code_snr_db": 23.8869,
+            "mean_heldout_snr_db": 23.6257
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 20.2226,
+              "wt2_snr_db": 24.0639,
+              "code_snr_db": 24.7374,
+              "mean_heldout_snr_db": 24.4007,
+              "delta_wt2_vs_ship": 0.6994,
+              "delta_code_vs_ship": 0.8505,
+              "delta_mean_vs_ship": 0.775
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 20.5465,
+              "wt2_snr_db": 24.2646,
+              "code_snr_db": 24.879,
+              "mean_heldout_snr_db": 24.5718,
+              "delta_wt2_vs_ship": 0.9001,
+              "delta_code_vs_ship": 0.9921,
+              "delta_mean_vs_ship": 0.9461
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 20.9235,
+              "wt2_snr_db": 24.4798,
+              "code_snr_db": 24.983,
+              "mean_heldout_snr_db": 24.7314,
+              "delta_wt2_vs_ship": 1.1153,
+              "delta_code_vs_ship": 1.0961,
+              "delta_mean_vs_ship": 1.1057
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 21.2277,
+              "wt2_snr_db": 24.6098,
+              "code_snr_db": 25.0123,
+              "mean_heldout_snr_db": 24.811,
+              "delta_wt2_vs_ship": 1.2453,
+              "delta_code_vs_ship": 1.1254,
+              "delta_mean_vs_ship": 1.1853
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 20.2959,
+              "wt2_snr_db": 23.8946,
+              "code_snr_db": 25.1302,
+              "mean_heldout_snr_db": 24.5124,
+              "delta_wt2_vs_ship": 0.5301,
+              "delta_code_vs_ship": 1.2433,
+              "delta_mean_vs_ship": 0.8867
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 20.6024,
+              "wt2_snr_db": 24.0896,
+              "code_snr_db": 25.2332,
+              "mean_heldout_snr_db": 24.6614,
+              "delta_wt2_vs_ship": 0.7251,
+              "delta_code_vs_ship": 1.3463,
+              "delta_mean_vs_ship": 1.0357
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 20.9628,
+              "wt2_snr_db": 24.2752,
+              "code_snr_db": 25.3359,
+              "mean_heldout_snr_db": 24.8055,
+              "delta_wt2_vs_ship": 0.9107,
+              "delta_code_vs_ship": 1.449,
+              "delta_mean_vs_ship": 1.1798
+            }
+          }
+        }
+      }
+    },
+    "L40": {
+      "layer_type": "linear_attention",
+      "trace_balance": {
+        "attn_in": {
+          "tr_prose": 4750.0758,
+          "tr_code": 4785.728,
+          "ratio_prose_over_code": 0.9926
+        },
+        "attn_out": {
+          "tr_prose": 116.5591,
+          "tr_code": 126.7763,
+          "ratio_prose_over_code": 0.9194
+        },
+        "mlp_in": {
+          "tr_prose": 3013.0864,
+          "tr_code": 3236.3732,
+          "ratio_prose_over_code": 0.931
+        },
+        "mlp_down": {
+          "tr_prose": 466.0893,
+          "tr_code": 622.3802,
+          "ratio_prose_over_code": 0.7489
+        }
+      },
+      "projections": {
+        "linear_attn.in_proj_qkv": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.1358,
+            "wt2_snr_db": 25.6224,
+            "code_snr_db": 24.5194,
+            "mean_heldout_snr_db": 25.0709
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 21.2251,
+              "wt2_snr_db": 28.2842,
+              "code_snr_db": 26.3452,
+              "mean_heldout_snr_db": 27.3147,
+              "delta_wt2_vs_ship": 2.6618,
+              "delta_code_vs_ship": 1.8258,
+              "delta_mean_vs_ship": 2.2438
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 21.3765,
+              "wt2_snr_db": 28.2708,
+              "code_snr_db": 26.3895,
+              "mean_heldout_snr_db": 27.3301,
+              "delta_wt2_vs_ship": 2.6484,
+              "delta_code_vs_ship": 1.8701,
+              "delta_mean_vs_ship": 2.2592
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 21.5608,
+              "wt2_snr_db": 28.2415,
+              "code_snr_db": 26.4146,
+              "mean_heldout_snr_db": 27.3281,
+              "delta_wt2_vs_ship": 2.6191,
+              "delta_code_vs_ship": 1.8952,
+              "delta_mean_vs_ship": 2.2572
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 21.7115,
+              "wt2_snr_db": 28.1553,
+              "code_snr_db": 26.3947,
+              "mean_heldout_snr_db": 27.275,
+              "delta_wt2_vs_ship": 2.5329,
+              "delta_code_vs_ship": 1.8753,
+              "delta_mean_vs_ship": 2.2041
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 21.2247,
+              "wt2_snr_db": 28.2809,
+              "code_snr_db": 26.3413,
+              "mean_heldout_snr_db": 27.3111,
+              "delta_wt2_vs_ship": 2.6585,
+              "delta_code_vs_ship": 1.8219,
+              "delta_mean_vs_ship": 2.2402
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 21.3767,
+              "wt2_snr_db": 28.2763,
+              "code_snr_db": 26.3837,
+              "mean_heldout_snr_db": 27.33,
+              "delta_wt2_vs_ship": 2.6539,
+              "delta_code_vs_ship": 1.8643,
+              "delta_mean_vs_ship": 2.2591
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 21.5611,
+              "wt2_snr_db": 28.2389,
+              "code_snr_db": 26.4161,
+              "mean_heldout_snr_db": 27.3275,
+              "delta_wt2_vs_ship": 2.6165,
+              "delta_code_vs_ship": 1.8967,
+              "delta_mean_vs_ship": 2.2566
+            }
+          }
+        },
+        "linear_attn.out_proj": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.1107,
+            "wt2_snr_db": 22.5366,
+            "code_snr_db": 22.351,
+            "mean_heldout_snr_db": 22.4438
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 21.0996,
+              "wt2_snr_db": 24.9591,
+              "code_snr_db": 23.1328,
+              "mean_heldout_snr_db": 24.0459,
+              "delta_wt2_vs_ship": 2.4225,
+              "delta_code_vs_ship": 0.7818,
+              "delta_mean_vs_ship": 1.6021
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 21.2505,
+              "wt2_snr_db": 24.9609,
+              "code_snr_db": 23.1755,
+              "mean_heldout_snr_db": 24.0682,
+              "delta_wt2_vs_ship": 2.4243,
+              "delta_code_vs_ship": 0.8245,
+              "delta_mean_vs_ship": 1.6244
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 21.4372,
+              "wt2_snr_db": 24.9467,
+              "code_snr_db": 23.2111,
+              "mean_heldout_snr_db": 24.0789,
+              "delta_wt2_vs_ship": 2.4101,
+              "delta_code_vs_ship": 0.8601,
+              "delta_mean_vs_ship": 1.6351
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 21.5975,
+              "wt2_snr_db": 24.8813,
+              "code_snr_db": 23.2259,
+              "mean_heldout_snr_db": 24.0536,
+              "delta_wt2_vs_ship": 2.3447,
+              "delta_code_vs_ship": 0.8749,
+              "delta_mean_vs_ship": 1.6098
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 21.0996,
+              "wt2_snr_db": 25.0018,
+              "code_snr_db": 23.1142,
+              "mean_heldout_snr_db": 24.058,
+              "delta_wt2_vs_ship": 2.4652,
+              "delta_code_vs_ship": 0.7632,
+              "delta_mean_vs_ship": 1.6142
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 21.2501,
+              "wt2_snr_db": 25.0028,
+              "code_snr_db": 23.152,
+              "mean_heldout_snr_db": 24.0774,
+              "delta_wt2_vs_ship": 2.4662,
+              "delta_code_vs_ship": 0.801,
+              "delta_mean_vs_ship": 1.6336
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 21.4376,
+              "wt2_snr_db": 24.9742,
+              "code_snr_db": 23.1952,
+              "mean_heldout_snr_db": 24.0847,
+              "delta_wt2_vs_ship": 2.4376,
+              "delta_code_vs_ship": 0.8442,
+              "delta_mean_vs_ship": 1.6409
+            }
+          }
+        },
+        "mlp.gate_proj": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.132,
+            "wt2_snr_db": 26.9327,
+            "code_snr_db": 25.0064,
+            "mean_heldout_snr_db": 25.9696
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 21.2891,
+              "wt2_snr_db": 28.6488,
+              "code_snr_db": 26.2527,
+              "mean_heldout_snr_db": 27.4508,
+              "delta_wt2_vs_ship": 1.7161,
+              "delta_code_vs_ship": 1.2463,
+              "delta_mean_vs_ship": 1.4812
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 21.4048,
+              "wt2_snr_db": 28.6629,
+              "code_snr_db": 26.2809,
+              "mean_heldout_snr_db": 27.4719,
+              "delta_wt2_vs_ship": 1.7302,
+              "delta_code_vs_ship": 1.2745,
+              "delta_mean_vs_ship": 1.5023
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 21.5569,
+              "wt2_snr_db": 28.6552,
+              "code_snr_db": 26.312,
+              "mean_heldout_snr_db": 27.4836,
+              "delta_wt2_vs_ship": 1.7225,
+              "delta_code_vs_ship": 1.3056,
+              "delta_mean_vs_ship": 1.514
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 21.6933,
+              "wt2_snr_db": 28.6345,
+              "code_snr_db": 26.3315,
+              "mean_heldout_snr_db": 27.483,
+              "delta_wt2_vs_ship": 1.7018,
+              "delta_code_vs_ship": 1.3251,
+              "delta_mean_vs_ship": 1.5134
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 21.2897,
+              "wt2_snr_db": 28.6807,
+              "code_snr_db": 26.2351,
+              "mean_heldout_snr_db": 27.4579,
+              "delta_wt2_vs_ship": 1.748,
+              "delta_code_vs_ship": 1.2287,
+              "delta_mean_vs_ship": 1.4883
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 21.4054,
+              "wt2_snr_db": 28.6867,
+              "code_snr_db": 26.26,
+              "mean_heldout_snr_db": 27.4734,
+              "delta_wt2_vs_ship": 1.754,
+              "delta_code_vs_ship": 1.2536,
+              "delta_mean_vs_ship": 1.5038
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 21.5575,
+              "wt2_snr_db": 28.6825,
+              "code_snr_db": 26.2951,
+              "mean_heldout_snr_db": 27.4888,
+              "delta_wt2_vs_ship": 1.7498,
+              "delta_code_vs_ship": 1.2887,
+              "delta_mean_vs_ship": 1.5192
+            }
+          }
+        },
+        "mlp.down_proj": {
+          "shipped_V1_BC": {
+            "weight_sqnr_db": 22.1164,
+            "wt2_snr_db": 22.6899,
+            "code_snr_db": 22.4914,
+            "mean_heldout_snr_db": 22.5907
+          },
+          "arms": {
+            "raw_damp005": {
+              "weight_sqnr_db": 21.0525,
+              "wt2_snr_db": 23.8129,
+              "code_snr_db": 22.7409,
+              "mean_heldout_snr_db": 23.2769,
+              "delta_wt2_vs_ship": 1.123,
+              "delta_code_vs_ship": 0.2495,
+              "delta_mean_vs_ship": 0.6862
+            },
+            "raw_damp01": {
+              "weight_sqnr_db": 21.1902,
+              "wt2_snr_db": 23.86,
+              "code_snr_db": 22.825,
+              "mean_heldout_snr_db": 23.3425,
+              "delta_wt2_vs_ship": 1.1701,
+              "delta_code_vs_ship": 0.3336,
+              "delta_mean_vs_ship": 0.7518
+            },
+            "raw_damp02": {
+              "weight_sqnr_db": 21.376,
+              "wt2_snr_db": 23.9024,
+              "code_snr_db": 22.9242,
+              "mean_heldout_snr_db": 23.4133,
+              "delta_wt2_vs_ship": 1.2125,
+              "delta_code_vs_ship": 0.4328,
+              "delta_mean_vs_ship": 0.8226
+            },
+            "raw_damp035": {
+              "weight_sqnr_db": 21.5445,
+              "wt2_snr_db": 23.9097,
+              "code_snr_db": 22.9923,
+              "mean_heldout_snr_db": 23.451,
+              "delta_wt2_vs_ship": 1.2198,
+              "delta_code_vs_ship": 0.5009,
+              "delta_mean_vs_ship": 0.8603
+            },
+            "bal_damp005": {
+              "weight_sqnr_db": 21.0462,
+              "wt2_snr_db": 23.9054,
+              "code_snr_db": 22.666,
+              "mean_heldout_snr_db": 23.2857,
+              "delta_wt2_vs_ship": 1.2155,
+              "delta_code_vs_ship": 0.1746,
+              "delta_mean_vs_ship": 0.695
+            },
+            "bal_damp01": {
+              "weight_sqnr_db": 21.1847,
+              "wt2_snr_db": 23.944,
+              "code_snr_db": 22.7604,
+              "mean_heldout_snr_db": 23.3522,
+              "delta_wt2_vs_ship": 1.2541,
+              "delta_code_vs_ship": 0.269,
+              "delta_mean_vs_ship": 0.7615
+            },
+            "bal_damp02": {
+              "weight_sqnr_db": 21.3715,
+              "wt2_snr_db": 23.9735,
+              "code_snr_db": 22.8405,
+              "mean_heldout_snr_db": 23.407,
+              "delta_wt2_vs_ship": 1.2836,
+              "delta_code_vs_ship": 0.3491,
+              "delta_mean_vs_ship": 0.8163
+            }
+          }
+        }
+      }
+    }
+  }
+}
