@@ -1,0 +1,404 @@
+{
+  "experiment": "exp24_canary_40_paired_v2_vs_v1",
+  "date": "2026-11-27",
+  "v2_model": "SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ",
+  "v1_model": "SergiioB/Qwen3.8-27B-HF-INT4-G16-BC",
+  "sampling": "greedy (temperature=0, top_p=1, seed=4242), thinking off",
+  "v2_total_pass": 33,
+  "v1_total_pass": 33,
+  "total_items": 40,
+  "v2_by_group": {
+    "dnr009": {
+      "pass": 8,
+      "total": 8
+    },
+    "python_code": {
+      "pass": 8,
+      "total": 8
+    },
+    "bugfix": {
+      "pass": 6,
+      "total": 6
+    },
+    "format": {
+      "pass": 6,
+      "total": 6
+    },
+    "math_logic": {
+      "pass": 0,
+      "total": 6
+    },
+    "sql_bash": {
+      "pass": 3,
+      "total": 3
+    },
+    "bilingual": {
+      "pass": 2,
+      "total": 3
+    }
+  },
+  "v1_by_group": {
+    "dnr009": {
+      "pass": 8,
+      "total": 8
+    },
+    "python_code": {
+      "pass": 8,
+      "total": 8
+    },
+    "bugfix": {
+      "pass": 6,
+      "total": 6
+    },
+    "format": {
+      "pass": 6,
+      "total": 6
+    },
+    "math_logic": {
+      "pass": 0,
+      "total": 6
+    },
+    "sql_bash": {
+      "pass": 3,
+      "total": 3
+    },
+    "bilingual": {
+      "pass": 2,
+      "total": 3
+    }
+  },
+  "v2_wall_s": 80.71,
+  "v1_wall_s": 82.93,
+  "v2_es_en_parity_twin": {
+    "es_output": "17",
+    "en_output": "24",
+    "parity_exact_20": false
+  },
+  "v1_es_en_parity_twin": {
+    "es_output": "30",
+    "en_output": "30",
+    "parity_exact_20": false
+  },
+  "items": [
+    {
+      "id": "dnr_sumsq",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='14' expected='14'",
+      "v1_detail": "got='14' expected='14'"
+    },
+    {
+      "id": "dnr_sum3",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='20' expected='20'",
+      "v1_detail": "got='20' expected='20'"
+    },
+    {
+      "id": "dnr_mul",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='1296' expected='1296'",
+      "v1_detail": "got='1296' expected='1296'"
+    },
+    {
+      "id": "dnr_div",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='143' expected='143'",
+      "v1_detail": "got='143' expected='143'"
+    },
+    {
+      "id": "dnr_days",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='366' expected='366'",
+      "v1_detail": "got='366' expected='366'"
+    },
+    {
+      "id": "dnr_prime",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='No' expected='no'",
+      "v1_detail": "got='no' expected='no'"
+    },
+    {
+      "id": "dnr_letters",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='6' expected='6'",
+      "v1_detail": "got='6' expected='6'"
+    },
+    {
+      "id": "dnr_seq",
+      "group": "dnr009",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='32' expected='32'",
+      "v1_detail": "got='32' expected='32'"
+    },
+    {
+      "id": "py_rle",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "py_merge_iv",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "py_topo",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "py_trie",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "py_valid_ip",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "py_flatten",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "py_mat_rot",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "py_roman",
+      "group": "python_code",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "fix_bsearch",
+      "group": "bugfix",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "fix_mut_default",
+      "group": "bugfix",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "fix_shallow_grid",
+      "group": "bugfix",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "fix_rate_window",
+      "group": "bugfix",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "fix_dedup_order",
+      "group": "bugfix",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "fix_py_closure",
+      "group": "bugfix",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "",
+      "v1_detail": ""
+    },
+    {
+      "id": "fmt_json_schema",
+      "group": "format",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "obj={'model': 'qwen38', 'bits': 4, 'symmetric': True, 'layers': [0, 32, 63]}",
+      "v1_detail": "obj={'model': 'qwen38', 'bits': 4, 'symmetric': True, 'layers': [0, 32, 63]}"
+    },
+    {
+      "id": "fmt_json_escape",
+      "group": "format",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "obj={'path': 'C:\\\\new\\\\test\\\\file \"v2\".txt'}",
+      "v1_detail": "obj={'path': 'C:\\\\new\\\\test\\\\file \"v2\".txt'}"
+    },
+    {
+      "id": "fmt_regex_csv",
+      "group": "format",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "lines=['CPU-0012:PASS', 'GPU-0900:FAIL', 'RAM-0001:PASS']",
+      "v1_detail": "lines=['CPU-0012:PASS', 'GPU-0900:FAIL', 'RAM-0001:PASS']"
+    },
+    {
+      "id": "fmt_iso_dates",
+      "group": "format",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "obj=['2024-03-03', '2025-12-25']",
+      "v1_detail": "obj=['2024-03-03', '2025-12-25']"
+    },
+    {
+      "id": "fmt_semver_sort",
+      "group": "format",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "obj=['1.2.0', '1.2.1', '1.10.0', '2.0.0-alpha', '2.0.0']",
+      "v1_detail": "obj=['1.2.0', '1.2.1', '1.10.0', '2.0.0-alpha', '2.0.0']"
+    },
+    {
+      "id": "fmt_enum_csv",
+      "group": "format",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='102,205,419'",
+      "v1_detail": "got='102,205,419'"
+    },
+    {
+      "id": "math_mod",
+      "group": "math_logic",
+      "v2_pass": false,
+      "v1_pass": false,
+      "v2_detail": "got='1' expected='343'",
+      "v1_detail": "got='1' expected='343'"
+    },
+    {
+      "id": "math_comb",
+      "group": "math_logic",
+      "v2_pass": false,
+      "v1_pass": false,
+      "v2_detail": "got='18' expected='65'",
+      "v1_detail": "got='189' expected='65'"
+    },
+    {
+      "id": "math_sys",
+      "group": "math_logic",
+      "v2_pass": false,
+      "v1_pass": false,
+      "v2_detail": "got='4' expected='35'",
+      "v1_detail": "got='5' expected='35'"
+    },
+    {
+      "id": "math_prob",
+      "group": "math_logic",
+      "v2_pass": false,
+      "v1_pass": false,
+      "v2_detail": "got='1/6' expected='1/9'",
+      "v1_detail": "got='1/6' expected='1/9'"
+    },
+    {
+      "id": "logic_knights",
+      "group": "math_logic",
+      "v2_pass": false,
+      "v1_pass": false,
+      "v2_detail": "got='Alice' expected='Bob'",
+      "v1_detail": "got='Alice' expected='Bob'"
+    },
+    {
+      "id": "math_bitwise",
+      "group": "math_logic",
+      "v2_pass": false,
+      "v1_pass": false,
+      "v2_detail": "got='12' expected='216'",
+      "v1_detail": "got='10' expected='216'"
+    },
+    {
+      "id": "sql_agg",
+      "group": "sql_bash",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got=[('ana', 120), ('carl', 120), ('eva', 120)] expected=[('ana', 120), ('carl', 120), ('eva', 120)]",
+      "v1_detail": "got=[('ana', 120), ('carl', 120), ('eva', 120)] expected=[('ana', 120), ('carl', 120), ('eva', 120)]"
+    },
+    {
+      "id": "sql_window",
+      "group": "sql_bash",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got=[('art', 'lia'), ('eng', 'amy'), ('ops', 'cal')] expected=[('art', 'lia'), ('eng', 'amy'), ('ops', 'cal')]",
+      "v1_detail": "got=[('art', 'lia'), ('eng', 'amy'), ('ops', 'cal')] expected=[('art', 'lia'), ('eng', 'amy'), ('ops', 'cal')]"
+    },
+    {
+      "id": "bash_pipe",
+      "group": "sql_bash",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "rc=0 out='2450' err=''",
+      "v1_detail": "rc=0 out='2450' err=''"
+    },
+    {
+      "id": "es_logic",
+      "group": "bilingual",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "got='10' expected='10'",
+      "v1_detail": "got='10' expected='10'"
+    },
+    {
+      "id": "es_json",
+      "group": "bilingual",
+      "v2_pass": true,
+      "v1_pass": true,
+      "v2_detail": "obj={'ciudad': 'Zaragoza', 'anio': 2026, 'km': 312.5}",
+      "v1_detail": "obj={'ciudad': 'Zaragoza', 'anio': 2026, 'km': 312.5}"
+    },
+    {
+      "id": "es_en_parity",
+      "group": "bilingual",
+      "v2_pass": false,
+      "v1_pass": false,
+      "v2_detail": "got='17' expected='20'",
+      "v1_detail": "got='30' expected='20'"
+    }
+  ]
+}

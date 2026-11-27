@@ -27,6 +27,26 @@
       "sha256": "966b4de6644a4d19b241ec4e3df9ac6cc33eebc13c21d5df7b6620d144979f4f"
     },
     {
+      "file": "exp24_canary_40_paired_v2_vs_v1.json",
+      "bytes": 9665,
+      "sha256": "d53eafc78094ce7d53d2d763355a60e6ee08a66c7f76842740c5abdbd5ec7c10"
+    },
+    {
+      "file": "exp24_depth_speed_v2.json",
+      "bytes": 1961,
+      "sha256": "cf963570405aec4891e67bdc0af4ca4c7c9732408e4461a60c9e8213ac67ca78"
+    },
+    {
+      "file": "exp24_lab_24_summary_v2.json",
+      "bytes": 9389,
+      "sha256": "783418eb18f736d5788bd3fd3d667126d08e8eaacc3ccccae77f27794fecfce6"
+    },
+    {
+      "file": "exp25_329_v2_report.json",
+      "bytes": 3503,
+      "sha256": "f446c242ecf44f10715c10d58d6eb866e5714cd3404b441ed0b17eec4f83c978"
+    },
+    {
       "file": "hf_upload_gptq_repo_receipt.json",
       "bytes": 459,
       "sha256": "569af6ad8e761d21ad2d262b8ed53ef858eb6146c32d6929b43853a19cae2e9f"

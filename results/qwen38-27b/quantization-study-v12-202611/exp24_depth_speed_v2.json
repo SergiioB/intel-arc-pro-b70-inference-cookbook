@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-27",
+  "model": "SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ",
+  "cells": [
+    {
+      "target_depth": 128,
+      "prompt_tokens_median": 109,
+      "completion_tokens_median": 256,
+      "decode_tok_s_median": 29.86,
+      "prefill_tok_s_median": 912.23,
+      "decode_reps": [
+        29.87,
+        29.86,
+        29.83
+      ],
+      "prefill_reps": [
+        914.37,
+        869.53,
+        912.23
+      ]
+    },
+    {
+      "target_depth": 1024,
+      "prompt_tokens_median": 1010,
+      "completion_tokens_median": 256,
+      "decode_tok_s_median": 29.39,
+      "prefill_tok_s_median": 2275.39,
+      "decode_reps": [
+        29.41,
+        29.38
+      ],
+      "prefill_reps": [
+        2274.78,
+        2275.99
+      ]
+    },
+    {
+      "target_depth": 4096,
+      "prompt_tokens_median": 4060,
+      "completion_tokens_median": 256,
+      "decode_tok_s_median": 29.11,
+      "prefill_tok_s_median": 2541.82,
+      "decode_reps": [
+        29.11,
+        29.11
+      ],
+      "prefill_reps": [
+        2542.58,
+        2541.05
+      ]
+    },
+    {
+      "target_depth": 8192,
+      "prompt_tokens_median": 8160,
+      "completion_tokens_median": 256,
+      "decode_tok_s_median": 28.68,
+      "prefill_tok_s_median": 2485.9,
+      "decode_reps": [
+        28.68,
+        28.68
+      ],
+      "prefill_reps": [
+        2485.45,
+        2486.35
+      ]
+    },
+    {
+      "target_depth": 16000,
+      "prompt_tokens_median": 15961,
+      "completion_tokens_median": 256,
+      "decode_tok_s_median": 28.0,
+      "prefill_tok_s_median": 2364.84,
+      "decode_reps": [
+        28.0
+      ],
+      "prefill_reps": [
+        2364.84
+      ]
+    }
+  ],
+  "engine": "vllm/vllm-openai-xpu:v0.31.0 + vllm-hf-int4-g16-xpu v0.2.0 (native OpenCL/DPAS, mode=auto, 0 Triton fallbacks)",
+  "hardware": "1x Intel Arc Pro B70 32 GB, 230 W cap",
+  "sampling": "greedy (temperature=0, top_p=1), thinking off, cold prefill (--no-enable-prefix-caching)"
+}
