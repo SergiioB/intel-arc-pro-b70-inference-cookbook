@@ -1,0 +1,35 @@
+{
+  "schema": "v12_receipts_manifest/1",
+  "files": [
+    {
+      "file": "exp23_full_64l_gptq_v1.json",
+      "bytes": 33508,
+      "sha256": "716698339b8f6ce8707ed7e4ebd468e0192e9754921c1ccb9a1bed2d7865b3df"
+    },
+    {
+      "file": "exp23_live_vllm_ab.json",
+      "bytes": 18217,
+      "sha256": "1177c52792f33f5d189db84f5fd7a0b9806740a4873f559458e591e7eba2bebd"
+    },
+    {
+      "file": "exp23_ood_and_w4a8_gate.json",
+      "bytes": 32254,
+      "sha256": "1c12012b41d8bfe5e1ec24c339619a62d7123a11f38fee85151bec57f114314d"
+    },
+    {
+      "file": "exp23_pilot_a_gptq_v1.json",
+      "bytes": 58065,
+      "sha256": "694f1f210a2e3fc503a2e694308ae3d6c4b5a53883c0b1edad037ed998cb52e0"
+    },
+    {
+      "file": "exp23_pilot_b_damp_balance.json",
+      "bytes": 24276,
+      "sha256": "966b4de6644a4d19b241ec4e3df9ac6cc33eebc13c21d5df7b6620d144979f4f"
+    },
+    {
+      "file": "hf_upload_gptq_repo_receipt.json",
+      "bytes": 459,
+      "sha256": "569af6ad8e761d21ad2d262b8ed53ef858eb6146c32d6929b43853a19cae2e9f"
+    }
+  ]
+}

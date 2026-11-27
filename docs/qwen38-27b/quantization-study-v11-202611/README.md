@@ -1,4 +1,7 @@
 # HF-INT4-G16, BiasCorr, and B70 serving: public technical study V11
+
+> **V12 Addendum (2026-11-27):** For calibrated Full-H closed-loop GPTQ inside `hf_int4_g16/1` (`-39.3%` WT2 / `-30.4%` Code / `-12.6%` Spanish Wiki / `-11.8%` OOD-chat KL vs `v1`, `SergiioB/Qwen3.8-27B-HF-INT4-G16-GPTQ`), see [Quantization Study V12 Addendum](../quantization-study-v12-202611/README.md). V11 and all 49 receipts below remain immutable.
+
 Status: Published V11 (Cookbook v1.24.0, 2026-11-26; Claude Opus 5.5 Gate 7D sign-off; supersedes V10 `../quantization-study-202611/README.md`, which remains immutable).
 
 Audience: inference engine maintainers, quantization researchers, and operators who want exact evidence rather than a model-card slogan.
@@ -740,4 +743,3 @@ The strongest positive result is not a single number. It is a chain:
 5. accept negative results as part of the design space.
 
 The strongest negative result is equally clear: compression tricks are not universal. Trellis wins rate-distortion but is not automatically the serving answer. BiasCorr rescues one 2-bit setting but is useless or harmful elsewhere. QJL is mathematically sensible but loses at the tested 3 to 4 bit KV budgets. Dense HF-G16 prefill improves while decode regresses. The apparent 3-bit GSM8K rescue was a generation-cap artifact, while the 2-bit rescue remains statistically strong. A useful public report has to keep those facts adjacent, not bury them under the headline.
-
